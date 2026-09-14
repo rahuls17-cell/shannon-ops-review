@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Shannon Ops Review</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <div class="identity">
+          <span class="mark">SO</span>
+          <div>
+            <strong>Shannon Ops Review</strong>
+            <span>Leadership command center</span>
+          </div>
+        </div>
+        <nav class="tabs" aria-label="Dashboard views">
+          <button class="tab is-active" data-view="command">Command</button>
+          <button class="tab" data-view="payouts">Payouts</button>
+          <button class="tab" data-view="delivery">Delivery</button>
+          <button class="tab" data-view="pipeline">Pipeline</button>
+          <button class="tab" data-view="people">People</button>
+          <button class="tab" data-view="sources">Sources</button>
+        </nav>
+        <div class="refresh-card">
+          <span>Source refresh</span>
+          <strong id="generatedAt">-</strong>
+        </div>
+      </header>
+
+      <main>
+        <div class="filter-bar" id="globalFilters" aria-label="Review filters">
+          <label>Team<select id="teamFilter" aria-label="Filter by team"></select></label>
+          <label>Leader<select id="leaderFilter" aria-label="Filter by leader"></select></label>
+          <label>Manager<select id="managerFilter" aria-label="Filter by manager"></select></label>
+          <label>Trainer<select id="trainerFilter" aria-label="Filter by trainer"></select></label>
+          <button id="resetFilters" class="text-action">Reset filters</button>
+          <span id="filterCount" class="scope-count"></span>
+        </div>
+        <section class="view is-active" id="view-command" aria-labelledby="command-title">
+          <div class="command-hero">
+            <div class="hero-copy">
+              <p class="eyebrow">Shannon / Operations intelligence</p>
+              <h1 id="command-title">Overview</h1>
+              <p>Delivery performance. Financial clarity.</p>
+            </div>
+            <div class="exposure-card">
+              <span>Estimated pending payout <button class="info" data-info="pending" aria-label="About pending payout">i</button></span>
+              <strong id="heroPending">$0</strong>
+              <div class="exposure-meter">
+                <span id="heroPaidMeter"></span>
+              </div>
+              <small id="heroExposureText">-</small>
+            </div>
+          </div>
+
+          <div class="kpi-strip">
+            <article>
+              <span>Accepted v2 tasks <button class="info" data-info="accepted" aria-label="About accepted tasks">i</button></span>
+              <strong id="metricAccepted">0</strong>
+              <small>Trainer-level accepted total</small>
+            </article>
+            <article>
+              <span>Paid out <button class="info" data-info="paid" aria-label="About paid amount">i</button></span>
+              <strong id="metricPaid">$0</strong>
+              <small>At $300 per paid task</small>
+            </article>
+            <article class="risk">
+              <span>Pending tasks <button class="info" data-info="pending" aria-label="About pending tasks">i</button></span>
+              <strong id="metricPendingTasks">0</strong>
+              <small id="metricPending">$0 pending</small>
+            </article>
+            <article>
+              <span>Active trainers <button class="info" data-info="active" aria-label="About active trainers">i</button></span>
+              <strong id="metricActive">0</strong>
+              <small id="metricRoster">0 total records</small>
+            </article>
+          </div>
+
+          <div class="command-grid">
+            <article class="surface wide">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Immediate attention</p>
+                  <h2>Largest pending payout owners</h2>
+                </div>
+                <button class="text-action" data-jump="payouts">Open payout view</button>
+              </div>
+              <div id="topPendingCards" class="leaderboard"></div>
+            </article>
+
+            <article class="surface">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Operational mix</p>
+                  <h2>Pipeline state <button class="info" data-info="pipeline" aria-label="About pipeline">i</button></h2>
+                </div>
+              </div>
+              <div id="pipelineDonut" class="donut-panel"></div>
+            </article>
+
+            <article class="surface bench-comparison">
+              <div class="section-head">
+                <div>
+                  <p class="eyebrow">Bench rollup / Workbook-wide</p>
+                  <h2>Computer vs company <button class="info" data-info="workbook" aria-label="About workbook totals">i</button></h2>
+                </div>
+              </div>
+              <div id="benchCards" class="bench-stack"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="view" id="view-payouts" aria-labelledby="payouts-title">
+          <div class="view-head">
+            <div>
+              <p class="eyebrow">Person-level accountability</p>
+              <h1 id="payouts-title">Payouts</h1>
+            </div>
+            <div class="controls">
+              <input id="personSearch" type="search" placeholder="Search person, email, team, manager" />
+              <select id="benchFilter" aria-label="Filter payouts by bench"><option value="">All benches</option><option value="company">Company bench</option><option value="computer">Computer bench</option><option value="unassigned">Unassigned bench</option></select>
+              <button class="info" data-info="bench" aria-label="About bench filtering">i</button>
+              <select id="paymentFilter" aria-label="Filter payment status"><option value="">All payment states</option><option value="pending">Pending payment</option><option value="paid">Has paid tasks</option><option value="zero">No accepted tasks</option></select>
+            </div>
+          </div>
+          <div class="surface table-surface">
+            <div id="payoutSummary" class="summary-row"></div>
+            <div class="table-wrap">
+              <table class="payout-table">
+                <colgroup>
+                  <col style="width:20%" />
+                  <col style="width:11%" />
+                  <col style="width:17%" />
+                  <col style="width:9%" />
+                  <col style="width:9%" />
+                  <col style="width:9%" />
+                  <col style="width:9%" />
+                  <col style="width:9%" />
+                  <col style="width:7%" />
+                </colgroup>
+                <thead>
+                  <tr>
+                    <th>Person</th>
+                    <th>Team</th>
+                    <th>Manager</th>
+                    <th>Accepted <button class="info" data-info="accepted" aria-label="About accepted">i</button></th>
+                    <th>Paid tasks <button class="info" data-info="paid" aria-label="About paid tasks">i</button></th>
+                    <th>Paid <button class="info" data-info="paid" aria-label="About paid">i</button></th>
+                    <th>Pending tasks</th>
+                    <th>Pending <button class="info" data-info="pending" aria-label="About pending">i</button></th>
+                    <th>Last 24h <button class="info" data-info="daily" aria-label="About last 24 hours">i</button></th>
+                  </tr>
+                </thead>
+                <tbody id="trainerRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-delivery" aria-labelledby="delivery-title">
+          <div class="view-head">
+            <div>
+              <p class="eyebrow">Delivery ownership</p>
+              <h1 id="delivery-title">Team and manager performance</h1>
+            </div>
+          </div>
+          <div id="teamGrid" class="team-grid"></div>
+          <div class="surface">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Daily mining commitment / Workbook-wide</p>
+                <h2>Plan versus actual <button class="info" data-info="workbook" aria-label="About plan scope">i</button></h2>
+              </div>
+            </div>
+            <div id="planCharts" class="plan-grid"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-pipeline" aria-labelledby="pipeline-title">
+          <div class="view-head">
+            <div>
+              <p class="eyebrow">Task flow</p>
+              <h1 id="pipeline-title">Current and historical pipeline</h1>
+            </div>
+            <select id="pipelineFilter" aria-label="Filter pipeline status"></select>
+          </div>
+          <div id="pipelineStats" class="status-grid"></div>
+          <div class="surface table-surface">
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Task</th>
+                    <th>Trainer</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody id="pipelineRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section class="view" id="view-people" aria-labelledby="people-title">
+          <div class="view-head">
+            <div>
+              <p class="eyebrow">People ops</p>
+              <h1 id="people-title">People <button class="info" data-info="workbook" aria-label="About people scope">i</button></h1>
+            </div>
+          </div>
+          <div id="peopleGrid" class="people-grid"></div>
+          <div class="surface">
+            <div class="section-head">
+              <div>
+                <p class="eyebrow">Movement list</p>
+                <h2>Transfers and offboarding</h2>
+              </div>
+            </div>
+            <div id="movementList" class="movement-list"></div>
+          </div>
+        </section>
+
+        <section class="view" id="view-sources" aria-labelledby="sources-title">
+          <div class="view-head">
+            <div>
+              <p class="eyebrow">Traceability</p>
+              <h1 id="sources-title">Workbook tabs used</h1>
+            </div>
+            <div class="source-file" id="sourceName">Workbook loaded locally</div>
+          </div>
+          <div id="sourceTabs" class="source-grid"></div>
+        </section>
+      </main>
+    </div>
+    <div id="infoPopover" class="info-popover" role="tooltip" hidden></div>
+
+    <script src="assets/data.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
