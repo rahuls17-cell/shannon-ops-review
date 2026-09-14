@@ -21,8 +21,6 @@
           <button class="tab" data-view="payouts">Payouts</button>
           <button class="tab" data-view="delivery">Delivery</button>
           <button class="tab" data-view="pipeline">Pipeline</button>
-          <button class="tab" data-view="people">People</button>
-          <button class="tab" data-view="sources">Sources</button>
         </nav>
         <div class="refresh-card">
           <span>Source refresh</span>
@@ -185,8 +183,15 @@
               <p class="eyebrow">Task flow</p>
               <h1 id="pipeline-title">Current and historical pipeline</h1>
             </div>
-            <select id="pipelineFilter" aria-label="Filter pipeline status"></select>
           </div>
+          <div class="pipeline-controls">
+            <label>Start date<input id="pipelineStart" type="date" aria-describedby="pipelineDateError" /></label>
+            <label>End date<input id="pipelineEnd" type="date" aria-describedby="pipelineDateError" /></label>
+            <label>Status<select id="pipelineFilter" aria-label="Filter pipeline status"></select></label>
+            <button id="clearPipelineDates" class="text-action">Clear dates</button>
+            <button class="info" data-info="dates" aria-label="About pipeline date range">i</button>
+          </div>
+          <p id="pipelineDateError" class="negative" role="alert" hidden>Start date must be on or before end date.</p>
           <div id="pipelineStats" class="status-grid"></div>
           <div class="surface table-surface">
             <div class="table-wrap">
@@ -206,35 +211,6 @@
           </div>
         </section>
 
-        <section class="view" id="view-people" aria-labelledby="people-title">
-          <div class="view-head">
-            <div>
-              <p class="eyebrow">People ops</p>
-              <h1 id="people-title">People <button class="info" data-info="workbook" aria-label="About people scope">i</button></h1>
-            </div>
-          </div>
-          <div id="peopleGrid" class="people-grid"></div>
-          <div class="surface">
-            <div class="section-head">
-              <div>
-                <p class="eyebrow">Movement list</p>
-                <h2>Transfers and offboarding</h2>
-              </div>
-            </div>
-            <div id="movementList" class="movement-list"></div>
-          </div>
-        </section>
-
-        <section class="view" id="view-sources" aria-labelledby="sources-title">
-          <div class="view-head">
-            <div>
-              <p class="eyebrow">Traceability</p>
-              <h1 id="sources-title">Workbook tabs used</h1>
-            </div>
-            <div class="source-file" id="sourceName">Workbook loaded locally</div>
-          </div>
-          <div id="sourceTabs" class="source-grid"></div>
-        </section>
       </main>
     </div>
     <div id="infoPopover" class="info-popover" role="tooltip" hidden></div>

@@ -2,6 +2,7 @@ const data = window.OPS_REVIEW_DATA;
 const filterKeys = {teamFilter: 'team', leaderFilter: 'em', managerFilter: 'managerName', trainerFilter: 'email'};
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const infoCopy = {
+  dates: 'Filters Pipeline records by the workbook Date column, including both start and end dates. Either date can be left blank for an open-ended range. Undated records are excluded when a date is selected. Status counts and rows use the same filters. Payout calculations are unaffected.',
   bench: 'Company bench includes the Company team. Computer bench includes Computer A and Computer B. Other or missing teams appear under Unassigned bench. This payout-only filter combines with team, leader, manager, trainer, search and payment state. Totals sum the matching person records without changing payment formulas.',
   accepted: 'Accepted tasks: sum of the Trainers tab v2 total accepted column for the selected people. This is separate from historical pipeline acceptance.',
   paid: 'Paid tasks use the larger of the Trainers paid-out count and the matching paid out tab approved count, joined by email. Displayed paid amount = paid tasks x $300. This is the draft payment model, not a bank-confirmed transaction total.',
@@ -67,7 +68,6 @@ function groupBy(items, keyFn) {
 }
 
 function switchView(viewName) {
-  byId('globalFilters').hidden = ['people','sources'].includes(viewName);
   document.querySelectorAll(".tab").forEach((button) => {
     button.classList.toggle("is-active", button.dataset.view === viewName);
   });
@@ -261,8 +261,24 @@ function renderTeams() {
     .join("");
 }
 
+function filteredPipelineTasks() {
+  const start = byId('pipelineStart').value;
+  const end = byId('pipelineEnd').value;
+  const status = byId('pipelineFilter').value;
+  if (start && end && start > end) return [];
+  return scopedTasks().filter(task => {
+    if (status && (task.status || 'Unknown') !== status) return false;
+    if (!start && !end) return true;
+    return /^\d{4}-\d{2}-\d{2}$/.test(task.date) && (!start || task.date >= start) && (!end || task.date <= end);
+  });
+}
+
 function renderPipeline() {
-  const allTasks = scopedTasks();
+  const invalid = Boolean(byId('pipelineStart').value && byId('pipelineEnd').value && byId('pipelineStart').value > byId('pipelineEnd').value);
+  byId('pipelineDateError').hidden = !invalid;
+  byId('pipelineStart').setAttribute('aria-invalid', String(invalid));
+  byId('pipelineEnd').setAttribute('aria-invalid', String(invalid));
+  const allTasks = filteredPipelineTasks();
   const statuses = Object.entries(
     allTasks.reduce((acc, task) => {
       const key = task.status || "Unknown";
@@ -272,15 +288,12 @@ function renderPipeline() {
   ).sort((a, b) => b[1] - a[1]);
 
   byId("pipelineStats").innerHTML = statuses
-    .slice(0, 5)
     .map(([status, count]) => `<article class="status-card"><span>${status}</span><strong>${fmt(count)}</strong></article>`)
     .join("");
-  renderPipelineRows();
+  renderPipelineRows(allTasks);
 }
 
-function renderPipelineRows() {
-  const selected = byId("pipelineFilter").value;
-  const rows = scopedTasks().filter((task) => !selected || task.status === selected);
+function renderPipelineRows(rows) {
   byId("pipelineRows").innerHTML = rows
     .map(
       (task) => `
@@ -321,55 +334,6 @@ function renderPlan() {
     .join("");
 }
 
-function renderPeopleOps() {
-  const blocks = [
-    ["Leaders", data.leaders.length, "Leadership roster"],
-    ["General engineering", data.generalEngineering.length, "Tooling and engineering support"],
-    ["Full roster", data.roster.length, "All roster records"],
-    ["Transfers/offboarding", data.offboardingTransfers.length, "Movement list"],
-  ];
-  byId("peopleGrid").innerHTML = blocks
-    .map(
-      ([title, count, note]) => `
-        <article class="people-card">
-          <h3>${title}</h3>
-          <strong>${fmt(count)}</strong>
-          <span>${note}</span>
-        </article>
-      `,
-    )
-    .join("");
-
-  byId("movementList").innerHTML = data.offboardingTransfers
-    .slice(0, 12)
-    .map(
-      (row) => `
-        <div class="movement-item">
-          <div class="person">
-            <strong>${row["Team Member Name"] || "Unknown"}</strong>
-            <span>${row["Team Member Email"] || ""}</span>
-          </div>
-          <div><span class="pill">${row.Team || "Unassigned"}</span></div>
-          <div>${row.Comment || row["Column 8"] || "-"}</div>
-        </div>
-      `,
-    )
-    .join("");
-}
-
-function renderSources() {
-  byId("sourceTabs").innerHTML = data.sourceTabs
-    .map(
-      (tab) => `
-        <article class="source-card">
-          <h3>${tab.name}</h3>
-          <span>${fmt(tab.rows)} rows</span>
-          <span>${fmt(tab.columns)} columns</span>
-        </article>
-      `,
-    )
-    .join("");
-}
 
 function wireEvents() {
   document.querySelectorAll(".tab").forEach((button) => {
@@ -385,9 +349,14 @@ function wireEvents() {
   byId('resetFilters').addEventListener('click', () => {
     Object.keys(filterKeys).forEach(id => byId(id).value = '');
     byId('personSearch').value = ''; byId('paymentFilter').value = ''; byId('benchFilter').value = ''; byId('pipelineFilter').value = '';
+    byId('pipelineStart').value = ''; byId('pipelineEnd').value = '';
     refreshScope();
   });
-  byId("pipelineFilter").addEventListener("change", renderPipelineRows);
+  ['pipelineFilter', 'pipelineStart', 'pipelineEnd'].forEach(id => byId(id).addEventListener('change', renderPipeline));
+  byId('clearPipelineDates').addEventListener('click', () => {
+    byId('pipelineStart').value = ''; byId('pipelineEnd').value = '';
+    renderPipeline();
+  });
   const popover = byId('infoPopover');
   function showInfo(button) {
     popover.textContent = infoCopy[button.dataset.info];
@@ -418,8 +387,6 @@ function init() {
   renderTeams();
   renderPipeline();
   renderPlan();
-  renderPeopleOps();
-  renderSources();
   wireEvents();
   refreshScope();
 }
