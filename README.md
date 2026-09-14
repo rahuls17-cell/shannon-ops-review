@@ -9,7 +9,23 @@ Local executive dashboard draft built from `Shannon - Ops Review (P0).xlsx`.
 - Team and manager summary.
 - Current and historical task pipeline view.
 - Daily plan versus actual view.
-- People ops and workbook-tab traceability sections.
+- Pipeline date range and status filters.
+- Harbor finalisation accepted iteration-2 inventory with trainer and bench filters.
+
+## Finalisation feed
+
+The Finalisation view loads the embedded `pipeline-data` JSON from
+https://rahuls17-cell.github.io/harbor-pipeline-dashboard/ on page load or Refresh data.
+It parses data only; source-page scripts are never executed. If unavailable, it uses
+`assets/finalisation.json` and labels it as a saved snapshot with its scan timestamp.
+
+Counts match Harbor task folders, not unique task names. Distinct names are shown
+separately because folders can represent different versions. Owner labels match
+normalized roster names or email usernames only when exactly one record matches.
+Contested owners are not allocated; name-match-only evidence stays flagged.
+Bench derives from the linked trainer team. Unresolved records remain visible in
+the unfiltered inventory. This view does not modify workbook accepted counts,
+paid amounts, pending amounts, or the Command view's workbook metrics.
 
 ## Payment logic
 

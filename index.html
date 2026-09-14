@@ -21,6 +21,7 @@
           <button class="tab" data-view="payouts">Payouts</button>
           <button class="tab" data-view="delivery">Delivery</button>
           <button class="tab" data-view="pipeline">Pipeline</button>
+          <button class="tab" data-view="finalisation">Finalisation</button>
         </nav>
         <div class="refresh-card">
           <span>Source refresh</span>
@@ -211,11 +212,23 @@
           </div>
         </section>
 
+        <section class="view" id="view-finalisation" aria-labelledby="finalisation-title">
+          <div class="view-head"><div><p class="eyebrow">Client QC / Accepted iteration 2</p><h1 id="finalisation-title">Finalisation accepted tasks</h1></div><a href="https://rahuls17-cell.github.io/harbor-pipeline-dashboard/" target="_blank" rel="noopener">Harbor source</a></div>
+          <p id="finalisationStatus" role="status">Loading finalisation data...</p>
+          <div class="pipeline-controls">
+            <label>Bench<select id="finalisationBench"><option value="">All benches</option><option value="company">Company bench</option><option value="computer">Computer bench</option><option value="unassigned">Unassigned</option></select></label>
+            <label>Ownership<select id="finalisationOwnership"><option value="">All ownership</option><option>Matched owner</option><option>Name match only</option><option>Contested owner</option><option>Owner missing</option><option>Roster match unresolved</option></select></label>
+            <button id="refreshFinalisation" class="text-action">Refresh data</button><button class="info" data-info="finalisation" aria-label="About finalisation accepted counts">i</button>
+          </div>
+          <div id="finalisationSummary" class="summary-row"></div>
+          <div class="surface table-surface"><div class="table-wrap"><table><thead><tr><th>Accepted task / Folder</th><th>Trainer</th><th>Team</th><th>Ownership evidence</th><th>Type</th><th>Added</th></tr></thead><tbody id="finalisationRows"></tbody></table></div></div>
+        </section>
       </main>
     </div>
     <div id="infoPopover" class="info-popover" role="tooltip" hidden></div>
 
     <script src="assets/data.js"></script>
+    <script src="finalisation.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

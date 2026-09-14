@@ -1,7 +1,10 @@
 const data = window.OPS_REVIEW_DATA;
+let finalisationSource = null;
+let finalisationRows = [];
 const filterKeys = {teamFilter: 'team', leaderFilter: 'em', managerFilter: 'managerName', trainerFilter: 'email'};
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const infoCopy = {
+  finalisation: 'Accepted iteration-2 task folders from Harbor finalisation. Each folder counts once, matching Harbor; repeated declared task names may be different versions and are shown separately. Owners match exact normalized roster names or email usernames. Name-only evidence stays flagged; contested owners are not assigned to trainers. Bench comes from the matched roster team, never connector type. Person filters exclude unresolved owners. This feed does not change workbook payout counts or payment amounts.',
   dates: 'Filters Pipeline records by the workbook Date column, including both start and end dates. Either date can be left blank for an open-ended range. Undated records are excluded when a date is selected. Status counts and rows use the same filters. Payout calculations are unaffected.',
   bench: 'Company bench includes the Company team. Computer bench includes Computer A and Computer B. Other or missing teams appear under Unassigned bench. This payout-only filter combines with team, leader, manager, trainer, search and payment state. Totals sum the matching person records without changing payment formulas.',
   accepted: 'Accepted tasks: sum of the Trainers tab v2 total accepted column for the selected people. This is separate from historical pipeline acceptance.',
@@ -26,6 +29,55 @@ function refreshScope() {
   populateScopeFilters();
   setText('filterCount', `${fmt(scopedTrainers().length)} of ${fmt(data.trainers.length)} trainers`);
   renderHero(); renderTopPendingCards(); renderDonut(); renderTrainerRows(); renderTeams(); renderPipeline();
+  renderFinalisation();
+}
+
+function renderFinalisation() {
+  if (!finalisationSource) return;
+  const scope = new Set(scopedTrainers().map(row => row.email));
+  const hasScope = Object.keys(filterKeys).some(id => byId(id).value);
+  const bench = byId('finalisationBench').value;
+  const ownership = byId('finalisationOwnership').value;
+  const rows = finalisationRows.filter(row => {
+    const team = row.trainer?.team;
+    const rowBench = team === 'Company' ? 'company' : ['Computer A','Computer B'].includes(team) ? 'computer' : 'unassigned';
+    return (!hasScope || (row.trainer && scope.has(row.trainer.email))) && (!bench || bench === rowBench) && (!ownership || row.attribution === ownership);
+  });
+  byId('finalisationSummary').innerHTML = [
+    ['Accepted folders', rows.length], ['Distinct task names', new Set(rows.map(r=>r.declared_name || r.folder)).size],
+    ['Roster-linked folders', rows.filter(r=>r.trainer).length], ['Unresolved owner folders', rows.filter(r=>!r.trainer).length]
+  ].map(([label,value])=>`<div class="summary-item"><span>${label}</span><strong>${fmt(value)}</strong></div>`).join('');
+  byId('finalisationRows').innerHTML = rows.map(row=>`<tr><td><div class="person"><strong>${esc(row.declared_short || row.folder)}</strong><span>${esc(row.folder)}</span></div></td><td>${esc(row.trainer?.name || row.owner || 'Not recorded')}</td><td>${esc(row.trainer?.team || 'Unassigned')}</td><td>${esc(row.attribution)}<br><small>${esc(row.owner_source || '')}</small></td><td>${row.is_connector ? 'Connector' : 'Non-connector'}</td><td>${esc((row.updated || '').slice(0,10))}</td></tr>`).join('') || '<tr><td colspan="6" class="empty">No accepted folders match these filters.</td></tr>';
+}
+
+async function loadFinalisation() {
+  const button = byId('refreshFinalisation');
+  button.disabled = true;
+  setText('finalisationStatus', 'Refreshing Harbor finalisation...');
+  let source, fallback = false;
+  try {
+    const response = await fetch('https://rahuls17-cell.github.io/harbor-pipeline-dashboard/', {cache:'no-store',signal:AbortSignal.timeout(12000)});
+    if (!response.ok) throw new Error('Source unavailable');
+    const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+    source = JSON.parse(doc.getElementById('pipeline-data').textContent);
+    finalisationRows = window.reconcileFinalisation(source, data.trainers);
+  } catch {
+    fallback = true;
+    try {
+      const response = await fetch('assets/finalisation.json', {cache:'no-store'});
+      if (!response.ok) throw new Error('Snapshot unavailable');
+      source = await response.json();
+      finalisationRows = window.reconcileFinalisation(source, data.trainers);
+    } catch {
+      setText('finalisationStatus', finalisationSource ? 'Refresh failed. Previous finalisation snapshot remains displayed.' : 'Finalisation data unavailable. Retry refresh.');
+      button.disabled = false;
+      return;
+    }
+  }
+  finalisationSource = source;
+  setText('finalisationStatus', `${fallback ? 'Saved snapshot (live source unavailable)' : 'Connected to Harbor'} / Scanned ${source.generated_at} / ${fmt(finalisationRows.length)} accepted iteration-2 folders`);
+  renderFinalisation();
+  button.disabled = false;
 }
 function populateScopeFilters() {
   const labels = {teamFilter:'teams',leaderFilter:'leaders',managerFilter:'managers',trainerFilter:'trainers'};
@@ -336,6 +388,8 @@ function renderPlan() {
 
 
 function wireEvents() {
+  ['finalisationBench','finalisationOwnership'].forEach(id=>byId(id).addEventListener('change',renderFinalisation));
+  byId('refreshFinalisation').addEventListener('click',loadFinalisation);
   document.querySelectorAll(".tab").forEach((button) => {
     button.addEventListener("click", () => switchView(button.dataset.view));
   });
@@ -350,6 +404,7 @@ function wireEvents() {
     Object.keys(filterKeys).forEach(id => byId(id).value = '');
     byId('personSearch').value = ''; byId('paymentFilter').value = ''; byId('benchFilter').value = ''; byId('pipelineFilter').value = '';
     byId('pipelineStart').value = ''; byId('pipelineEnd').value = '';
+    byId('finalisationBench').value = ''; byId('finalisationOwnership').value = '';
     refreshScope();
   });
   ['pipelineFilter', 'pipelineStart', 'pipelineEnd'].forEach(id => byId(id).addEventListener('change', renderPipeline));
@@ -389,6 +444,7 @@ function init() {
   renderPlan();
   wireEvents();
   refreshScope();
+  loadFinalisation();
 }
 
 init();
