@@ -7,250 +7,394 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <div class="app-shell">
-      <header class="topbar">
-        <div class="identity">
-          <span class="mark">SO</span>
-          <div>
-            <strong>Shannon Ops Review</strong>
-            <span>Leadership command center</span>
-          </div>
+    <div class="app">
+      <aside class="sidebar">
+        <div class="side-brand">
+          <span class="brand-mark">SO</span>
+          <span class="brand-text">
+            <strong>Shannon Ops</strong>
+            <span>Review</span>
+          </span>
         </div>
-        <nav class="tabs" aria-label="Dashboard views">
-          <button class="tab is-active" data-view="command">Command</button>
-          <button class="tab" data-view="payouts">Payouts</button>
-          <button class="tab" data-view="delivery">Delivery</button>
-          <button class="tab" data-view="pipeline">Pipeline</button>
-          <button class="tab" data-view="finalisation">Finalisation</button>
+        <nav class="viewnav" role="tablist" aria-label="Views">
+          <button class="viewnav-tab is-active" role="tab" aria-selected="true" data-view="command">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg><span>Overview</span>
+          </button>
+          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="payouts">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Payouts</span>
+          </button>
+          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="delivery">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Delivery</span>
+          </button>
+          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="pipeline">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 15l4-4 4 3 5-6"/></svg><span>Pipeline</span>
+          </button>
+          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="finalisation">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05M12 22.08V12"/></svg><span>Finalisation</span>
+          </button>
         </nav>
-        <div class="refresh-card">
-          <span>Workbook snapshot</span>
-          <strong id="generatedAt">-</strong>
+        <div class="side-foot">
+          <button class="side-link" id="themeToggle" aria-pressed="false">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            <span id="themeToggleLabel">Light mode</span>
+          </button>
+          <div class="side-card">
+            <p class="side-card-title">Read-only sources</p>
+            <p>Workbook payments, GCS evaluations and GCS finalisation. Nothing here writes to the bucket.</p>
+          </div>
         </div>
-      </header>
+      </aside>
 
-      <main>
-        <div class="filter-bar" id="globalFilters" aria-label="Review filters">
-          <label>Team<select id="teamFilter" aria-label="Filter by team"></select></label>
-          <label>Leader<select id="leaderFilter" aria-label="Filter by leader"></select></label>
-          <label>Manager<select id="managerFilter" aria-label="Filter by manager"></select></label>
-          <label>Trainer<select id="trainerFilter" aria-label="Filter by trainer"></select></label>
-          <button id="resetFilters" class="text-action">Reset filters</button>
-          <span id="filterCount" class="scope-count"></span>
-        </div>
-        <section class="view is-active" id="view-command" aria-labelledby="command-title">
-          <div class="command-hero">
-            <div class="hero-copy">
-              <p class="eyebrow">Shannon / Operations intelligence</p>
+      <div class="content">
+        <header class="topbar">
+          <label class="search">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input id="globalSearch" type="search" placeholder="Search" aria-label="Search this view" />
+          </label>
+          <div class="topbar-actions">
+            <dl class="freshness">
+              <dt>Workbook</dt>
+              <dd id="generatedAt">-</dd>
+              <dt>Bucket scan</dt>
+              <dd id="scanAt">-</dd>
+            </dl>
+          </div>
+        </header>
+
+        <main>
+        <!-- OVERVIEW ------------------------------------------------------ -->
+        <section class="view is-active" id="view-command" role="tabpanel" aria-labelledby="command-title">
+          <header class="view-head">
+            <div>
+              <p class="kicker">Operations</p>
               <h1 id="command-title">Overview</h1>
-              <p>Delivery performance. Financial clarity.</p>
+              <p class="lede">Three sources, counted separately: a workbook that records payments, a bucket that records evaluations, and a bucket that records finalised work. They overlap, so nothing here is added across sources.</p>
             </div>
-            <div class="exposure-card">
-              <span>Estimated pending payout <button class="info" data-info="commandPending" aria-label="About pending payout">i</button></span>
-              <strong id="heroPending">$0</strong>
-              <div class="exposure-meter">
-                <span id="heroPaidMeter"></span>
+          </header>
+
+          <div class="figures">
+            <article class="figure">
+              <h3>Accepted tasks<button class="why" data-info="accepted" aria-label="How accepted tasks are counted">?</button></h3>
+              <strong id="metricAccepted">-</strong>
+              <p>Distinct tasks in the bucket, cross-cohort repeats removed</p>
+            </article>
+            <article class="figure">
+              <h3>Paid out<button class="why" data-info="paid" aria-label="Where paid amounts come from">?</button></h3>
+              <strong id="metricPaid">-</strong>
+              <p>Recorded in the workbook Paid Out tab</p>
+            </article>
+            <article class="figure is-risk">
+              <h3>Pending tasks<button class="why" data-info="pending" aria-label="How pending is calculated">?</button></h3>
+              <strong id="metricPendingTasks">-</strong>
+              <p id="metricPending">-</p>
+            </article>
+            <article class="figure">
+              <h3>Active trainers</h3>
+              <strong id="metricActive">-</strong>
+              <p id="metricRoster">-</p>
+            </article>
+          </div>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Payout exposure</h2>
+                <p class="panel-note">Paid against still-owed, at $300 a task. Both figures come from the workbook, never from the bucket.</p>
               </div>
-              <small id="heroExposureText">-</small>
-            </div>
-          </div>
-
-          <div class="kpi-strip">
-            <article>
-              <span>Unique accepted tasks <button class="info" data-info="accepted" aria-label="About accepted tasks">i</button></span>
-              <strong id="metricAccepted">0</strong>
-              <small>Finalisation + current accepted, deduplicated</small>
-            </article>
-            <article>
-              <span>Paid out <button class="info" data-info="paid" aria-label="About paid amount">i</button></span>
-              <strong id="metricPaid">$0</strong>
-              <small>Paid Out workbook tab</small>
-            </article>
-            <article class="risk">
-              <span>Pending tasks <button class="info" data-info="commandPending" aria-label="About pending tasks">i</button></span>
-              <strong id="metricPendingTasks">0</strong>
-              <small id="metricPending">$0 pending</small>
-            </article>
-            <article>
-              <span>Active trainers <button class="info" data-info="active" aria-label="About active trainers">i</button></span>
-              <strong id="metricActive">0</strong>
-              <small id="metricRoster">0 total records</small>
-            </article>
-          </div>
-
-          <div class="section-head command-source-head"><h2>Acceptance and pipeline <button class="info" data-info="commandSources" aria-label="About Command data sources">i</button></h2><button class="text-action" data-jump="finalisation">Open Finalisation</button></div>
-          <p id="commandSourceStatus" class="muted command-source-status" role="status">Loading pipeline and Finalisation...</p>
-          <div id="commandSummary" class="summary-row"></div>
-          <p id="commandOwnership" class="muted" role="status"></p>
-          <div class="command-grid">
-            <article class="surface wide">
-              <div class="section-head">
-                <div>
-                  <p class="eyebrow">Immediate attention</p>
-                  <h2>Largest pending payout owners</h2>
-                </div>
-                <button class="text-action" data-jump="payouts">Open payout view</button>
+              <button class="ghost" data-jump="payouts">Open Payouts</button>
+            </header>
+            <div class="panel-body exposure">
+              <div class="exposure-headline">
+                <span class="exposure-label">Outstanding</span>
+                <strong id="heroPending">-</strong>
+                <p class="muted" id="heroExposureText">-</p>
+                <figure id="exposureChart" class="exposure-chart"></figure>
               </div>
               <div id="topPendingCards" class="leaderboard"></div>
-            </article>
+            </div>
+          </section>
 
-            <article class="surface">
-              <div class="section-head">
+          <div class="split">
+            <section class="panel">
+              <header class="panel-head">
                 <div>
-                  <p class="eyebrow">Operational mix</p>
-                  <h2>Current pipeline <button class="info" data-info="commandSources" aria-label="About pipeline">i</button></h2>
+                  <h2>Where the work sits<button class="why" data-info="commandSources" aria-label="Why these do not add up">?</button></h2>
+                  <p class="panel-note" id="commandSourceStatus">Loading the bucket scan...</p>
                 </div>
+              </header>
+              <div class="panel-body">
+                <div id="commandSummary" class="summary-row"></div>
+                <p class="muted footnote" id="commandOwnership"></p>
               </div>
-              <div id="pipelineDonut" class="donut-panel"></div>
-            </article>
+            </section>
 
-            <article class="surface bench-comparison">
-              <div class="section-head">
+            <section class="panel">
+              <header class="panel-head">
                 <div>
-                  <p class="eyebrow">Bench / Current scope</p>
-                  <h2>Computer vs company <button class="info" data-info="commandBench" aria-label="About bench totals">i</button></h2>
+                  <h2>Current evaluations</h2>
+                  <p class="panel-note">Latest evaluation of each task family in the bucket.</p>
                 </div>
-              </div>
-              <div id="benchCards" class="bench-stack"></div>
-            </article>
+              </header>
+              <div class="panel-body"><div id="pipelineDonut" class="donut-panel"></div></div>
+            </section>
           </div>
-        </section>
 
-        <section class="view" id="view-payouts" aria-labelledby="payouts-title">
-          <div class="view-head">
-            <div>
-              <p class="eyebrow">Person-level accountability</p>
-              <h1 id="payouts-title">Payouts</h1>
-            </div>
-            <div class="controls">
-              <input id="personSearch" type="search" placeholder="Search person, email, team, manager" />
-              <select id="benchFilter" aria-label="Filter payouts by bench"><option value="">All benches</option><option value="company">Company bench</option><option value="computer">Computer bench</option><option value="unassigned">Unassigned bench</option></select>
-              <button class="info" data-info="bench" aria-label="About bench filtering">i</button>
-              <select id="paymentFilter" aria-label="Filter payment status"><option value="">All payment states</option><option value="pending">Has pending tasks</option><option value="paid">Paid tasks &gt; 0</option><option value="no-paid">No paid tasks</option><option value="zero">No accepted tasks</option></select>
-            </div>
-          </div>
-          <p id="payoutSourceStatus" class="muted" role="status">Loading Finalisation and paid out sources...</p>
-          <div class="surface table-surface">
-            <div class="section-head payout-table-head"><div><p class="eyebrow">Payout reconciliation</p><h2>Trainer payout ledger</h2></div><button class="info" data-info="payoutTotals" aria-label="About payout totals">i</button></div>
-            <div id="payoutSummary" class="summary-row"></div>
-            <div class="table-wrap">
-              <table class="payout-table">
-                <colgroup>
-                  <col style="width:20%" />
-                  <col style="width:11%" />
-                  <col style="width:17%" />
-                  <col style="width:9%" />
-                  <col style="width:9%" />
-                  <col style="width:9%" />
-                  <col style="width:9%" />
-                  <col style="width:9%" />
-                  <col style="width:7%" />
-                </colgroup>
-                <thead>
-                  <tr>
-                    <th>Person</th>
-                    <th>Team</th>
-                    <th>Manager</th>
-                    <th>Accepted <button class="info" data-info="payoutAccepted" aria-label="About payout accepted tasks">i</button></th>
-                    <th>Paid tasks <button class="info" data-info="paid" aria-label="About paid tasks">i</button></th>
-                    <th>Paid <button class="info" data-info="paid" aria-label="About paid">i</button></th>
-                    <th>Pending tasks</th>
-                    <th>Pending <button class="info" data-info="pending" aria-label="About pending">i</button></th>
-                    <th>Last 24h <button class="info" data-info="daily" aria-label="About last 24 hours">i</button></th>
-                  </tr>
-                </thead>
-                <tbody id="trainerRows"></tbody>
-              </table>
-            </div>
-          </div>
-        </section>
-
-        <section class="view" id="view-delivery" aria-labelledby="delivery-title">
-          <div class="view-head">
-            <div>
-              <p class="eyebrow">Delivery ownership</p>
-              <h1 id="delivery-title">Team and manager performance</h1>
-            </div>
-          </div>
-          <div id="teamGrid" class="team-grid"></div>
-          <div class="surface">
-            <div class="section-head">
+          <section class="panel">
+            <header class="panel-head">
               <div>
-                <p class="eyebrow">Daily mining commitment / Workbook-wide</p>
-                <h2>Plan versus actual <button class="info" data-info="workbook" aria-label="About plan scope">i</button></h2>
+                <h2>Company and Computer bench<button class="why" data-info="commandBench" aria-label="How bench totals are assigned">?</button></h2>
+                <p class="panel-note">Split by the roster team of the task owner. Work with no resolved owner sits in neither bench.</p>
+              </div>
+            </header>
+            <div class="panel-body"><div id="benchCards" class="bench-stack"></div></div>
+          </section>
+        </section>
+
+        <!-- PAYOUTS ------------------------------------------------------- -->
+        <section class="view" id="view-payouts" role="tabpanel" aria-labelledby="payouts-title">
+          <header class="view-head">
+            <div>
+              <p class="kicker">Money</p>
+              <h1 id="payouts-title">Payouts</h1>
+              <p class="lede">Accepted work comes from the workbook task list, deduplicated. Payments come from the Paid Out tab and the payment tracker. The bucket is not used here.</p>
+            </div>
+          </header>
+          <p class="provenance" id="payoutSourceStatus">Loading the payout ledger...</p>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>By trainer</h2>
+                <p class="panel-note">One row per person. Pending is what they are owed now, not what they have earned in total.</p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>Trainer<button class="why" data-info="trainerPick" aria-label="What the trainer picker shows">?</button></span><select id="trainerFilter"><option value="">All trainers</option></select></label>
+                <label class="field"><span>Search</span><input id="personSearch" type="search" placeholder="Name, email, team, manager" /></label>
+                <label class="field"><span>Bench<button class="why" data-info="bench" aria-label="How benches are defined">?</button></span><select id="benchFilter"><option value="">All benches</option><option value="company">Company</option><option value="computer">Computer</option><option value="unassigned">Unassigned</option></select></label>
+                <label class="field"><span>Payment</span><select id="paymentFilter"><option value="">Any state</option><option value="pending">Has pending</option><option value="paid">Has been paid</option><option value="no-paid">Never paid</option><option value="zero">No accepted work</option></select></label>
+              </div>
+            </header>
+            <div class="panel-body">
+              <div id="payoutSummary" class="summary-row"></div>
+              <div class="table-wrap">
+                <table class="grid payout-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Person</th>
+                      <th scope="col">Team</th>
+                      <th scope="col">Manager</th>
+                      <th scope="col" class="num">Accepted<button class="why" data-info="payoutAccepted" aria-label="What counts as accepted">?</button></th>
+                      <th scope="col" class="num">Paid</th>
+                      <th scope="col" class="num">Paid $</th>
+                      <th scope="col" class="num">Pending</th>
+                      <th scope="col" class="num">Pending $</th>
+                      <th scope="col" class="num">24h</th>
+                    </tr>
+                  </thead>
+                  <tbody id="trainerRows"></tbody>
+                </table>
+              </div>
+              <div class="pager">
+                <button id="payoutPrevious" class="ghost">Previous</button>
+                <span id="payoutPage" role="status"></span>
+                <button id="payoutNext" class="ghost">Next</button>
               </div>
             </div>
-            <div id="planCharts" class="plan-grid"></div>
-          </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Task ledger</h2>
+                <p class="panel-note">Every task in the workbook task list, one row each. Rows repeating a task for the same trainer are folded in and reported as extra ledger rows.</p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>Search</span><input id="ledgerSearch" type="search" placeholder="Task, trainer, CJ" /></label>
+                <label class="field"><span>Payment<button class="why" data-info="ledgerPayment" aria-label="How payment state is decided">?</button></span><select id="ledgerPayment"><option value="">Any state</option></select></label>
+                <label class="field"><span>Type</span><select id="ledgerType"><option value="">Any type</option></select></label>
+                <label class="field"><span>Valid flag<button class="why" data-info="ledgerAcceptance" aria-label="What the Valid column does">?</button></span><select id="ledgerValidity"><option value="">Any</option><option value="valid">Valid</option><option value="invalid">Valid = 0</option></select></label>
+                <label class="field"><span>Repeats<button class="why" data-info="ledgerDuplicates" aria-label="How repeated rows are handled">?</button></span><select id="ledgerDuplicates"><option value="">All tasks</option><option value="duplicates">Folded rows only</option><option value="unique">Single-row only</option></select></label>
+                <button id="resetLedgerFilters" class="ghost">Clear</button>
+              </div>
+            </header>
+            <div class="panel-body">
+              <p class="provenance" id="ledgerStatus">Loading...</p>
+              <div id="ledgerSummary" class="summary-row"></div>
+              <div class="table-wrap">
+                <table class="grid">
+                  <thead>
+                    <tr>
+                      <th scope="col">Task</th>
+                      <th scope="col">Trainer</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Valid</th>
+                      <th scope="col">Payment</th>
+                      <th scope="col">CJ</th>
+                      <th scope="col" class="num">Rows</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ledgerRows"></tbody>
+                </table>
+              </div>
+              <div class="pager">
+                <button id="ledgerPrevious" class="ghost">Previous</button>
+                <span id="ledgerPage" role="status"></span>
+                <button id="ledgerNext" class="ghost">Next</button>
+              </div>
+            </div>
+          </section>
         </section>
 
-        <section class="view" id="view-pipeline" aria-labelledby="pipeline-title">
-          <div class="view-head">
+        <!-- DELIVERY ------------------------------------------------------ -->
+        <section class="view" id="view-delivery" role="tabpanel" aria-labelledby="delivery-title">
+          <header class="view-head">
             <div>
-              <p class="eyebrow">Task flow</p>
-              <h1 id="pipeline-title">Current and historical pipeline</h1>
+              <p class="kicker">Teams</p>
+              <h1 id="delivery-title">Delivery</h1>
+              <p class="lede">Team and manager rollups from the roster, and the daily mining plan against what was actually delivered.</p>
             </div>
-          </div>
-          <div class="pipeline-controls">
-            <label>View<select id="pipelineMode"><option value="current">Current evaluated tasks</option><option value="historical">Evaluation history</option><option value="legacy">Legacy QC history</option></select></label>
-            <label>Start date<input id="pipelineStart" type="date" aria-describedby="pipelineDateError" /></label>
-            <label>End date<input id="pipelineEnd" type="date" aria-describedby="pipelineDateError" /></label>
-            <label>Status<select id="pipelineFilter" aria-label="Filter pipeline status"></select></label>
-            <button id="clearPipelineDates" class="text-action">Clear dates</button>
-            <button id="refreshGcsPipeline" class="text-action">Refresh from GCS</button>
-            <button class="info" data-info="dates" aria-label="About pipeline date range">i</button>
-          </div>
-          <p id="pipelineDateError" class="negative" role="alert" hidden>Start date must be on or before end date.</p>
-          <p id="pipelineSourceStatus" role="status">Loading GCS export...</p>
-          <div id="pipelineStats" class="status-grid"></div>
-          <div class="surface table-surface">
-            <div class="table-wrap">
-              <table>
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Task</th>
-                    <th>Trainer</th>
-                    <th>Type</th>
-                    <th>Domain</th>
-                    <th>Status</th>
-                  </tr>
-                </thead>
-                <tbody id="pipelineRows"></tbody>
-              </table>
-            </div>
-            <div class="pipeline-controls"><button id="pipelinePrevious" class="text-action">Previous</button><span id="pipelinePage" role="status"></span><button id="pipelineNext" class="text-action">Next</button></div>
-          </div>
+          </header>
+          <section class="panel">
+            <header class="panel-head"><div><h2>Teams and managers</h2><p class="panel-note">Grouped by roster team. Accepted and pending carry the Payouts definitions.</p></div></header>
+            <div class="panel-body"><div id="teamGrid" class="team-grid"></div></div>
+          </section>
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Plan against actual<button class="why" data-info="workbook" aria-label="Scope of the plan figures">?</button></h2>
+                <p class="panel-note">Workbook-wide daily mining commitment. Not person-level, and not affected by filters on other tabs.</p>
+              </div>
+            </header>
+            <div class="panel-body"><div id="planCharts" class="plan-grid"></div></div>
+          </section>
         </section>
 
-        <section class="view" id="view-finalisation" aria-labelledby="finalisation-title">
-          <div class="view-head"><div><p class="eyebrow">Client QC / Accepted iteration 2</p><h1 id="finalisation-title">Finalisation accepted tasks</h1></div><a href="https://rahuls17-cell.github.io/harbor-pipeline-dashboard/" target="_blank" rel="noopener">Harbor source</a></div>
-          <p id="finalisationStatus" role="status">Loading finalisation data...</p>
-          <div class="pipeline-controls">
-            <label>Source<select id="finalisationSourceFilter"><option value="Finalisation">Finalisation folders</option><option value="Current pipeline">Current pipeline accepted</option><option value="">Both accepted sources</option></select></label>
-            <label>Search task or owner<input id="finalisationSearch" type="search" placeholder="Task, folder, name or email" /></label>
-            <label>Bench<select id="finalisationBench"><option value="">All benches</option><option value="company">Company bench</option><option value="computer">Computer bench</option><option value="unassigned">Unassigned</option></select></label>
-            <label>Ownership<select id="finalisationOwnership"><option value="">All ownership states</option><option value="linked">Roster-linked</option><option value="unlinked">Owner recorded, not roster-linked</option><option value="missing">Owner not recorded</option><option value="conflict">Conflicting owners</option></select></label>
-            <label>Type<select id="finalisationType"><option value="">All types</option><option>Connector</option><option>Non-connector</option><option>Not recorded</option></select></label>
-            <label>Domain<select id="finalisationDomain"><option value="">All domains</option></select></label>
-            <label>Start date<input id="finalisationStart" type="date" aria-describedby="finalisationDateError" /></label>
-            <label>End date<input id="finalisationEnd" type="date" aria-describedby="finalisationDateError" /></label>
-            <label>Duplicate status<select id="duplicateFilter" aria-label="Filter duplicate task records"><option value="">All records</option><option value="unique">Representative records only</option><option value="duplicates">Extra duplicate records only</option><option value="groups">Members of duplicate groups</option></select></label>
-            <div class="finalisation-actions"><button id="resetFinalisationFilters" class="text-action">Reset Finalisation filters</button>
-            <button id="refreshFinalisation" class="text-action">Reload Finalisation feed</button><button class="info" data-info="finalisation" aria-label="About Finalisation filters">i</button><button class="info" data-info="duplicates" aria-label="About duplicate task records">i</button></div>
-          </div>
-          <p id="finalisationDateError" class="negative" role="alert" hidden>Start date must be on or before end date.</p>
-          <div id="finalisationSummary" class="summary-row"></div>
-          <p id="finalisationAudit" class="muted finalisation-audit" role="status"></p>
-          <div class="surface table-surface"><div class="table-wrap"><table><thead><tr><th>Accepted task / Folder</th><th>Trainer</th><th>Team</th><th>Ownership evidence</th><th>Type</th><th>Domain</th><th>Record date</th><th>Count status</th></tr></thead><tbody id="finalisationRows"></tbody></table></div></div>
+        <!-- PIPELINE ------------------------------------------------------ -->
+        <section class="view" id="view-pipeline" role="tabpanel" aria-labelledby="pipeline-title">
+          <header class="view-head">
+            <div>
+              <p class="kicker">Evaluations</p>
+              <h1 id="pipeline-title">Pipeline</h1>
+              <p class="lede">Read from the trainer evaluation ledgers in GCS. Current shows the latest attempt per task family; history counts every attempt, so the two must never be added.</p>
+            </div>
+            <button id="refreshGcsPipeline" class="ghost">Refresh from GCS</button>
+          </header>
+          <p class="provenance" id="pipelineSourceStatus">Loading the GCS export...</p>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Status of current work<button class="why" data-info="pipeline" aria-label="How each status is derived">?</button></h2>
+                <p class="panel-note">Done is not an acceptance. Accepted and Rejected each require an explicit verdict on the submission.</p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>Population<button class="why" data-info="population" aria-label="What each population counts">?</button></span><select id="pipelineMode"><option value="current">Current work</option><option value="historical">Every attempt</option><option value="legacy">Legacy QC runs</option></select></label>
+                <label class="field"><span>Status</span><select id="pipelineFilter"></select></label>
+                <label class="field"><span>Type</span><select id="pipelineType"></select></label>
+                <label class="field"><span>Domain</span><select id="pipelineDomainFilter"></select></label>
+                <label class="field"><span>Trainer</span><select id="pipelineTrainer"></select></label>
+                <label class="field"><span>Search</span><input id="pipelineSearch" type="search" placeholder="Task or id" /></label>
+                <label class="field"><span>From<button class="why" data-info="dates" aria-label="How the date range filters">?</button></span><input id="pipelineStart" type="date" aria-describedby="pipelineDateError" /></label>
+                <label class="field"><span>To</span><input id="pipelineEnd" type="date" aria-describedby="pipelineDateError" /></label>
+                <button id="clearPipelineDates" class="ghost">Clear all</button>
+              </div>
+            </header>
+            <div class="panel-body">
+              <p id="pipelineDateError" class="alert" role="alert" hidden>Start date must be on or before end date.</p>
+              <figure id="pipelineTimeline" class="timeline"></figure>
+              <div id="pipelineStats" class="status-grid"></div>
+              <div class="table-wrap">
+                <table class="grid">
+                  <thead>
+                    <tr>
+                      <th scope="col">Date</th>
+                      <th scope="col">Task</th>
+                      <th scope="col">Trainer</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Domain</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="pipelineRows"></tbody>
+                </table>
+              </div>
+              <div class="pager">
+                <button id="pipelinePrevious" class="ghost">Previous</button>
+                <span id="pipelinePage" role="status"></span>
+                <button id="pipelineNext" class="ghost">Next</button>
+              </div>
+            </div>
+          </section>
         </section>
-      </main>
+
+        <!-- FINALISATION -------------------------------------------------- -->
+        <section class="view" id="view-finalisation" role="tabpanel" aria-labelledby="finalisation-title">
+          <header class="view-head">
+            <div>
+              <p class="kicker">Delivered work</p>
+              <h1 id="finalisation-title">Finalisation</h1>
+              <p class="lede">A read-only scan of every finalisation cohort in the bucket. One task can be finalised into several cohorts, so folders and tasks are counted separately.</p>
+            </div>
+            <div class="view-actions">
+              <button id="refreshFinalisation" class="ghost">Reload</button>
+              <a class="ghost" href="https://rahuls17-cell.github.io/harbor-pipeline-dashboard/" target="_blank" rel="noopener">Harbor iteration-2 view</a>
+            </div>
+          </header>
+          <p class="provenance" id="finalisationStatus">Loading the bucket scan...</p>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Accepted folders<button class="why" data-info="duplicates" aria-label="How cross-cohort repeats are counted">?</button></h2>
+                <p class="panel-note">Task names are read from task.toml inside each archive, never from the folder name.</p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>Outcome</span><select id="finalisationOutcome"><option value="accepted">Accepted</option><option value="rejected">Rejected</option><option value="unsubmitted">Unsubmitted</option><option value="">All</option></select></label>
+                <label class="field"><span>Cohort</span><select id="finalisationCohort"><option value="">All cohorts</option></select></label>
+                <label class="field"><span>Search</span><input id="finalisationSearch" type="search" placeholder="Task, folder, owner, digest" /></label>
+                <label class="field"><span>Bench</span><select id="finalisationBench"><option value="">All benches</option><option value="company">Company</option><option value="computer">Computer</option><option value="unassigned">Unassigned</option></select></label>
+                <label class="field"><span>Ownership<button class="why" data-info="ownership" aria-label="How owners are resolved">?</button></span><select id="finalisationOwnership"><option value="">Any</option><option value="linked">Roster-linked</option><option value="unlinked">Named, not on roster</option><option value="missing">No record</option><option value="conflict">Contested</option></select></label>
+                <label class="field"><span>Type</span><select id="finalisationType"><option value="">Any type</option><option>Connector</option><option>Non-connector</option><option>Not recorded</option></select></label>
+                <label class="field"><span>Domain</span><select id="finalisationDomain"><option value="">Any domain</option></select></label>
+                <label class="field"><span>From</span><input id="finalisationStart" type="date" aria-describedby="finalisationDateError" /></label>
+                <label class="field"><span>To</span><input id="finalisationEnd" type="date" aria-describedby="finalisationDateError" /></label>
+                <label class="field"><span>Repeats</span><select id="duplicateFilter"><option value="">All folders</option><option value="unique">Counted once</option><option value="duplicates">Repeats only</option><option value="groups">Everything repeated</option></select></label>
+                <button id="resetFinalisationFilters" class="ghost">Clear</button>
+              </div>
+            </header>
+            <div class="panel-body">
+              <p id="finalisationDateError" class="alert" role="alert" hidden>Start date must be on or before end date.</p>
+              <div id="finalisationSummary" class="summary-row"></div>
+              <p class="muted footnote" id="finalisationAudit"></p>
+              <div class="table-wrap">
+                <table class="grid">
+                  <thead>
+                    <tr>
+                      <th scope="col">Task</th>
+                      <th scope="col">Cohort</th>
+                      <th scope="col">Trainer</th>
+                      <th scope="col">Evidence</th>
+                      <th scope="col">Type</th>
+                      <th scope="col">Domain</th>
+                      <th scope="col">Archived</th>
+                      <th scope="col">Counted</th>
+                    </tr>
+                  </thead>
+                  <tbody id="finalisationRows"></tbody>
+                </table>
+              </div>
+              <p id="finalisationTruncated" class="muted footnote" role="status" hidden></p>
+            </div>
+          </section>
+        </section>
+        </main>
+      </div>
     </div>
-    <div id="infoPopover" class="info-popover" role="tooltip" hidden></div>
+    <div id="infoPopover" class="popover" role="tooltip" hidden></div>
 
     <script src="assets/data.js"></script>
     <script src="finalisation.js"></script>
-    <script src="accepted-tasks.js"></script>
+    <script src="payout-ledger.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

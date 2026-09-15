@@ -30,7 +30,7 @@ jobs:
           printf '%s\n' "$SSH_HOST_KEY" > ~/.ssh/known_hosts
           trap 'rm -f ~/.ssh/shannon' EXIT
           ssh -T -i ~/.ssh/shannon -p 2222 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=30 -o ServerAliveInterval=30 root@35.253.35.165 export | gzip -d > assets/gcs-pipeline.json.new
-          python3 -c 'import json; p=json.load(open("assets/gcs-pipeline.json.new")); assert p["schemaVersion"] == 2; assert all(isinstance(p[k], list) and p[k] for k in ("current", "historical", "legacy")); print(p["generatedAt"], {k:len(p[k]) for k in ("current","historical","legacy")})'
+          python3 -c 'import json; p=json.load(open("assets/gcs-pipeline.json.new")); assert p["schemaVersion"] == 3; assert p["finalisation"]["tasks"]; assert all(isinstance(p[k], list) and p[k] for k in ("current", "historical", "legacy")); print(p["generatedAt"], {k:len(p[k]) for k in ("current","historical","legacy")}, p["finalisation"]["totals"])'
           mv assets/gcs-pipeline.json.new assets/gcs-pipeline.json
           python3 -c 'import json; p=json.load(open("assets/gcs-pipeline.json")); json.dump({"generatedAt":p["generatedAt"]},open("assets/pipeline-version.json","w"))'
       - name: Commit refreshed snapshot
@@ -44,7 +44,7 @@ jobs:
       - name: Prepare published files
         run: |
           mkdir -p _site
-          cp index.html app.js styles.css finalisation.js accepted-tasks.js _site/
+          cp index.html app.js styles.css finalisation.js payout-ledger.js _site/
           cp -r assets _site/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

@@ -6,3 +6,5 @@ __pycache__/
 .env.*
 !.env.example
 node_modules/
+local-server*.log
+NUL

@@ -1,0 +1,1477 @@
+{
+ "generatedAt": "2026-09-15T13:22:15",
+ "payPerTask": 300,
+ "sources": {
+  "tasks": "Shannon PPT - Sep 9.xlsx / task wise",
+  "acceptance": "Shannon PPT - Sep 9.xlsx / task wise, deduplicated",
+  "paid": "Shannon - Ops Review (P0).xlsx / paid out",
+  "tracker": "Shannon PPT - Sep 9.xlsx / Live Import (Turing PPT tracker"
+ },
+ "totals": {
+  "sourceRows": 60,
+  "ledgerTasks": 55,
+  "duplicateRows": 5,
+  "acceptedTasks": 55,
+  "paidTasks": 34,
+  "paidAmount": 10200,
+  "paymentRequests": 20,
+  "itemisedPaidTasks": 31,
+  "unitemisedPaidTasks": 3,
+  "unitemisedPaidAmount": 900,
+  "pendingTasks": 24,
+  "pendingAmount": 7200,
+  "invalidTasks": 2,
+  "trackerMismatches": 0
+ },
+ "people": [
+  {
+   "name": "Michael Gashawtena",
+   "email": "michael.b2@turing.com",
+   "cj": "98777",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 29,
+   "acceptedTasks": 29,
+   "paidTasks": 10,
+   "paidAmount": 3000,
+   "itemisedPaidTasks": 10,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 2,
+   "trackerTasks": 10,
+   "trackerMismatch": false,
+   "pendingTasks": 19,
+   "pendingAmount": 5700
+  },
+  {
+   "name": null,
+   "email": "preet.s@turing.com",
+   "cj": "100179",
+   "paymentModel": "Hourly",
+   "listedTasks": 2,
+   "acceptedTasks": 2,
+   "paidTasks": 0,
+   "paidAmount": 0,
+   "itemisedPaidTasks": 0,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 0,
+   "trackerTasks": 0,
+   "trackerMismatch": false,
+   "pendingTasks": 2,
+   "pendingAmount": 600
+  },
+  {
+   "name": null,
+   "email": "arjun.sikhwal@turing.com",
+   "cj": null,
+   "paymentModel": null,
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 0,
+   "paidAmount": 0,
+   "itemisedPaidTasks": 0,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 0,
+   "trackerTasks": 0,
+   "trackerMismatch": false,
+   "pendingTasks": 1,
+   "pendingAmount": 300
+  },
+  {
+   "name": null,
+   "email": "kashif.m@turing.com",
+   "cj": null,
+   "paymentModel": null,
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 0,
+   "paidAmount": 0,
+   "itemisedPaidTasks": 0,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 0,
+   "trackerTasks": 0,
+   "trackerMismatch": false,
+   "pendingTasks": 1,
+   "pendingAmount": 300
+  },
+  {
+   "name": null,
+   "email": "mritunjay.s1@turing.com",
+   "cj": "100188",
+   "paymentModel": "Hourly",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 0,
+   "paidAmount": 0,
+   "itemisedPaidTasks": 0,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 0,
+   "trackerTasks": 0,
+   "trackerMismatch": false,
+   "pendingTasks": 1,
+   "pendingAmount": 300
+  },
+  {
+   "name": "Bhargav Reddy Kallam",
+   "email": "bhargav.k@turing.com",
+   "cj": "98396",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 3,
+   "acceptedTasks": 3,
+   "paidTasks": 3,
+   "paidAmount": 900,
+   "itemisedPaidTasks": 3,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 3,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Ghosh Megha",
+   "email": "ghosh.m1@turing.com",
+   "cj": "98139",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 2,
+   "acceptedTasks": 2,
+   "paidTasks": 3,
+   "paidAmount": 900,
+   "itemisedPaidTasks": 2,
+   "unitemisedPaidTasks": 1,
+   "paymentRequests": 2,
+   "trackerTasks": 3,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Monty Dimkpa",
+   "email": "monty.d2@turing.com",
+   "cj": "98794",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 2,
+   "acceptedTasks": 2,
+   "paidTasks": 3,
+   "paidAmount": 900,
+   "itemisedPaidTasks": 2,
+   "unitemisedPaidTasks": 1,
+   "paymentRequests": 2,
+   "trackerTasks": 3,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Aviral Kaushik",
+   "email": "aviral.k@turing.com",
+   "cj": "97648",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 2,
+   "acceptedTasks": 2,
+   "paidTasks": 2,
+   "paidAmount": 600,
+   "itemisedPaidTasks": 2,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 2,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Govind Vishwakarma",
+   "email": "govind.v1@turing.com",
+   "cj": "98401",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 2,
+   "acceptedTasks": 2,
+   "paidTasks": 2,
+   "paidAmount": 600,
+   "itemisedPaidTasks": 2,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 2,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Melat Mesele",
+   "email": "melat.m@turing.com",
+   "cj": "98415",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 2,
+   "paidAmount": 600,
+   "itemisedPaidTasks": 1,
+   "unitemisedPaidTasks": 1,
+   "paymentRequests": 2,
+   "trackerTasks": 2,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Abhay Sagar",
+   "email": "abhay.s3@turing.com",
+   "cj": "99241",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 1,
+   "paidAmount": 300,
+   "itemisedPaidTasks": 1,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 1,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "MOHD NOMAAN TALIB",
+   "email": "mohd.t1@turing.com",
+   "cj": "99190",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 1,
+   "paidAmount": 300,
+   "itemisedPaidTasks": 1,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 1,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Najeeb Ahmad",
+   "email": "najeeb.a@turing.com",
+   "cj": "98206",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 1,
+   "paidAmount": 300,
+   "itemisedPaidTasks": 1,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 1,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "PAWAN GHULE",
+   "email": "pawan.g3@turing.com",
+   "cj": "97552",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 1,
+   "paidAmount": 300,
+   "itemisedPaidTasks": 1,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 1,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Rishabh Porwal",
+   "email": "rishabh.p1@turing.com",
+   "cj": "98085",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 1,
+   "paidAmount": 300,
+   "itemisedPaidTasks": 1,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 1,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Segni Desta",
+   "email": "segni.d@turing.com",
+   "cj": "98398",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 1,
+   "paidAmount": 300,
+   "itemisedPaidTasks": 1,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 1,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Shwetank Chandra",
+   "email": "shwetank.c@turing.com",
+   "cj": "99114",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 1,
+   "paidAmount": 300,
+   "itemisedPaidTasks": 1,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 1,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Tnsae Eshetie Molla",
+   "email": "tnsae.m@turing.com",
+   "cj": "98279",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 1,
+   "paidAmount": 300,
+   "itemisedPaidTasks": 1,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 1,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  },
+  {
+   "name": "Wondwoson Kibret",
+   "email": "wondwoson.k@turing.com",
+   "cj": "98211",
+   "paymentModel": "Pay Per Task",
+   "listedTasks": 1,
+   "acceptedTasks": 1,
+   "paidTasks": 1,
+   "paidAmount": 300,
+   "itemisedPaidTasks": 1,
+   "unitemisedPaidTasks": 0,
+   "paymentRequests": 1,
+   "trackerTasks": 1,
+   "trackerMismatch": false,
+   "pendingTasks": 0,
+   "pendingAmount": 0
+  }
+ ],
+ "requests": [
+  {
+   "row": 2,
+   "email": "michael.b2@turing.com",
+   "name": "Michael Gashawtena",
+   "cj": "98777",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 5,
+   "paidAmount": 1500.0,
+   "trackerEmail": "michael.b2@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 3,
+   "email": "bhargav.k@turing.com",
+   "name": "Bhargav Reddy Kallam",
+   "cj": "98396",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 3,
+   "paidAmount": 900.0,
+   "trackerEmail": "bhargav.k@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 4,
+   "email": "govind.v1@turing.com",
+   "name": "Govind Vishwakarma",
+   "cj": "98401",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 2,
+   "paidAmount": 600.0,
+   "trackerEmail": "govind.v1@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 5,
+   "email": "ghosh.m1@turing.com",
+   "name": "Ghosh Megha",
+   "cj": "98139",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 2,
+   "paidAmount": 600.0,
+   "trackerEmail": "ghosh.m1@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 6,
+   "email": "aviral.k@turing.com",
+   "name": "Aviral Kaushik",
+   "cj": "97648",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 2,
+   "paidAmount": 600.0,
+   "trackerEmail": "aviral.k@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 7,
+   "email": "wondwoson.k@turing.com",
+   "name": "Wondwoson Kibret",
+   "cj": "98211",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "wondwoson.k@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 8,
+   "email": "tnsae.m@turing.com",
+   "name": "Tnsae Eshetie Molla",
+   "cj": "98279",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "tnsae.m@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 9,
+   "email": "shwetank.c@turing.com",
+   "name": "Shwetank Chandra",
+   "cj": "99114",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "shwetank.c@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 10,
+   "email": "segni.d@turing.com",
+   "name": "Segni Desta",
+   "cj": "98398",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "segni.d@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 11,
+   "email": "rishabh.p1@turing.com",
+   "name": "Rishabh Porwal",
+   "cj": "98085",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "rishabh.p1@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 12,
+   "email": "pawan.g3@turing.com",
+   "name": "PAWAN GHULE",
+   "cj": "97552",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "pawan.g3@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 13,
+   "email": "monty.d2@turing.com",
+   "name": "Monty Dimkpa",
+   "cj": "98794",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "monty.d@turing.com",
+   "emailMismatch": true
+  },
+  {
+   "row": 14,
+   "email": "mohd.t1@turing.com",
+   "name": "Mohd Nomaan Talib",
+   "cj": "99190",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "mohd.t1@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 15,
+   "email": "melat.m@turing.com",
+   "name": "Melat Mesele",
+   "cj": "98415",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "melat.m@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 16,
+   "email": "abhay.s3@turing.com",
+   "name": "Abhay Sagar",
+   "cj": "99241",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "abhay.s3@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 17,
+   "email": "monty.d2@turing.com",
+   "name": "Monty Dimkpa",
+   "cj": "98794",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 2,
+   "paidAmount": 600.0,
+   "trackerEmail": "monty.d@turing.com",
+   "emailMismatch": true
+  },
+  {
+   "row": 18,
+   "email": "michael.b2@turing.com",
+   "name": "Michael Gashawtena",
+   "cj": "98777",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 5,
+   "paidAmount": 1500.0,
+   "trackerEmail": "michael.b2@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 19,
+   "email": "najeeb.a@turing.com",
+   "name": "Najeeb Ahmad",
+   "cj": "98206",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "najeeb.a@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 20,
+   "email": "ghosh.m1@turing.com",
+   "name": "Ghosh Megha",
+   "cj": "98139",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "ghosh.m1@turing.com",
+   "emailMismatch": false
+  },
+  {
+   "row": 21,
+   "email": "melat.m@turing.com",
+   "name": "Melat Mesele",
+   "cj": "98415",
+   "requestedOn": "2026-09-09",
+   "paidTasks": 1,
+   "paidAmount": 300.0,
+   "trackerEmail": "melat.m@turing.com",
+   "emailMismatch": false
+  }
+ ],
+ "tasks": [
+  {
+   "task": "drive-version-history-retention-review",
+   "email": "abhay.s3@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "99241",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    28
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "opened-files-migration-volume-signoff",
+   "email": "arjun.sikhwal@turing.com",
+   "type": "Connector",
+   "valid": false,
+   "harborLink": null,
+   "cj": "NA",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    12
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not paid"
+  },
+  {
+   "task": "ephyra-trunk-dependency-churn-manifest-audit",
+   "email": "aviral.k@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "97648",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    13
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "stored-version-retention-readout",
+   "email": "aviral.k@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "97648",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    11
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "onboarding-pack-feature-readiness-spread",
+   "email": "bhargav.k@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98396",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    14
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "relay-only-correspondents-cutover-exposure",
+   "email": "bhargav.k@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98396",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    15
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "tag-estate-grade-versus-status-split",
+   "email": "bhargav.k@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98396",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    16
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "how-much-of-my-drive-is-link-only",
+   "email": "ghosh.m1@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98139",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    17,
+    58
+   ],
+   "duplicateRows": 1,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "ideas-board-ranking-and-duplicate-pages",
+   "email": "ghosh.m1@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98139",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    18
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "appointment-backlog-stub-page-sweep",
+   "email": "govind.v1@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98401",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    20
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "rsvp-silence-backlog-among-2026-regulars",
+   "email": "govind.v1@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98401",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    19
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "appointment-backlog-placeholder-and-duplicate-audit",
+   "email": "kashif.m@turing.com",
+   "type": "Connector",
+   "valid": false,
+   "harborLink": null,
+   "cj": "shubham looking into it",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    21
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not paid"
+  },
+  {
+   "task": "outside-voices-in-the-locked-sales-drive",
+   "email": "melat.m@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": "https://harbor-console-713053229214.us-central1.run.app/trainer-tasks/outside-voices-in-the-locked-sales-drive-2026090-87313e-v1-sna-qygt/outside-voices-in-the-locked-sales-drive",
+   "cj": "98415",
+   "secondaryOwner": "preet.s@turing.com",
+   "note": "Converted to PPT",
+   "rows": [
+    10,
+    62
+   ],
+   "duplicateRows": 1,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "code-c347-guest-portal-session-verification-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": "michael.b2@turing.com",
+   "note": null,
+   "rows": [
+    33
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c356-wine-list-print-readiness-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": "najeeb.a@turing.com",
+   "note": null,
+   "rows": [
+    34
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c362-inference-routing-wallet-gate-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": "ghosh.m1@turing.com",
+   "note": null,
+   "rows": [
+    35
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c365-sprint-closeout-verification-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": "melat.m@turing.com",
+   "note": null,
+   "rows": [
+    36
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c387-htgcd-well-permit-compliance-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    38
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c395-cis-subcontractor-deduction-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    39
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c423-multi-campus-account-access-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    3
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c443-plan-list-field-mapping-migration-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    5
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c457-coaching-intake-brief-completeness-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    6
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c460-model-tier-access-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    7,
+    40
+   ],
+   "duplicateRows": 1,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c466-rls-policy-coverage-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    41
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c475-bookkeeping-deadline-escalation-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": "kashif.m@turing.com",
+   "note": "Converted to PPT",
+   "rows": [
+    8,
+    42
+   ],
+   "duplicateRows": 1,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c478-r-package-release-readiness-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    43
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c486-quality-coach-submission-threshold-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    44
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c532-manuscript-catalogue-classification-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    45
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c555-lead-source-attribution-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    46
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "code-c563-site-rebuild-component-acceptance-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    47
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "gen-g1146-specialty-cv-content-inclusion-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    48
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "gen-g1176-application-kit-disclosure-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    49
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "gen-g1263-worship-slide-style-compliance-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    50
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "gen-g1308-brand-name-candidate-screening-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    51
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "gen-g300-nfl-depth-chart-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    53
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "health-h28-screening-interval-recall",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    54
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "health-h66-cme-reference-currency-gap-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    55
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "health-h67-youth-mtb-safety-check-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    56
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "health-h82-pediatric-therapy-goal-note-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    57
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "law-l19-trademark-class-overlap",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    59
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "law-l49-dscsa-trading-partner-verification-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    60
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "law-l89-hcpcs-jcode-assignment-audit",
+   "email": "michael.b2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98777",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    61
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not itemised"
+  },
+  {
+   "task": "unanswered-invitation-silence-audit",
+   "email": "mohd.t1@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "99190",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    22
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "atlanta-itinerary-settlement-standing-ranked",
+   "email": "monty.d2@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98794",
+   "secondaryOwner": "monty.d2@turing.com",
+   "note": null,
+   "rows": [
+    23,
+    32
+   ],
+   "duplicateRows": 1,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "gen-g169-social-disclosure-sponsored-audit",
+   "email": "monty.d2@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98794",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    52
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "one-list-out-of-eleven-tabs",
+   "email": "mritunjay.s1@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "100188",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    24
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not paid"
+  },
+  {
+   "task": "code-c366-agent-orchestration-run-audit",
+   "email": "najeeb.a@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98206",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    37
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "a-fortnight-nobody-was-watching",
+   "email": "pawan.g3@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": "https://harbor-console-713053229214.us-central1.run.app/trainer-tasks/a-fortnight-nobody-was-watching-final-1e2b17-v1-sna-crhl/a-fortnight-nobody-was-watching",
+   "cj": "97552",
+   "secondaryOwner": "mritunjay.s1@turing.com",
+   "note": "Converted to PPT",
+   "rows": [
+    9
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "ephyra-slow-lane-delayed-merge-audit",
+   "email": "preet.s@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "100179",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    30
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not paid"
+  },
+  {
+   "task": "founding-month-thread-first-answer-credit",
+   "email": "preet.s@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "100179",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    29
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Not paid"
+  },
+  {
+   "task": "urgent-label-inflation-2027-audit",
+   "email": "rishabh.p1@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98085",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    25
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "verify-duplicate-825-card-holds-and-300-hold-on-account-before-tp-reve",
+   "email": "segni.d@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98398",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    31
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "code-c439-service-estimate-mobilization-audit",
+   "email": "shwetank.c@turing.com",
+   "type": "Non-connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "99114",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    4
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "unclosed-review-thread-backlog-ownership-split",
+   "email": "tnsae.m@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98279",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    26
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  },
+  {
+   "task": "which-bug-tickets-went-cold",
+   "email": "wondwoson.k@turing.com",
+   "type": "Connector",
+   "valid": true,
+   "harborLink": null,
+   "cj": "98211",
+   "secondaryOwner": null,
+   "note": null,
+   "rows": [
+    27
+   ],
+   "duplicateRows": 0,
+   "accepted": true,
+   "paymentState": "Paid"
+  }
+ ]
+}

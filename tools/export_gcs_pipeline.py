@@ -10,6 +10,22 @@ from pathlib import Path
 SCANNER = '/root/harbor_gce/delivery-candidates-20260908-codex/pipeline-dashboard'
 sys.path.insert(0, SCANNER)
 
+# Every finalisation cohort in the bucket, counted the way it is actually stored.
+# The dashboard used to show only accepted iteration 2, which is one of seven.
+COHORTS = [
+    ('finalisation_client_qc_accepted_iteration_1', 'task_zip', 'accepted', 'Client QC accepted - iteration 1'),
+    ('finalisation_client_qc_accepted_iteration_2', 'task_zip', 'accepted', 'Client QC accepted - iteration 2'),
+    ('finalisation_client_qc_rejected_iteration_2', 'extracted', 'rejected', 'Client QC rejected - iteration 2'),
+    ('finalization_qc_accepted', 'task_zip', 'accepted', 'QC accepted'),
+    ('finalization_qc_rejected', 'run_task', 'rejected', 'QC rejected'),
+    ('finalization_unsubmitted_tasks_company_bench', 'flat_zip', 'unsubmitted', 'Unsubmitted - Company Bench'),
+    ('hs-finalization-20260904', 'extracted', 'promoted', 'Handshake batch - oracle promoted'),
+]
+# Classification is keyed by archive sha256, which is the object name, so an
+# archive is read once ever. Kept apart from the Harbor scanner cache so the two
+# cron jobs never write the same file.
+FINALISATION_CACHE = Path('/root/shannon-refresh/finalisation-cache.json')
+
 
 def iso(value):
     if isinstance(value, (int, float)):
@@ -48,6 +64,160 @@ def latest_families(cycles):
         if key not in latest or rank > latest[key][0]:
             latest[key] = (rank, row)
     return [value[1] for value in latest.values()]
+
+
+def folder_prefixes(S, tok, prefix):
+    """Task folders under a cohort. Delimiter listing returns directories rather
+    than objects, which matters: finalization_qc_rejected holds 2.07M objects
+    behind about 5k tasks."""
+    names, page = [], None
+    while True:
+        params = {'prefix': prefix, 'delimiter': '/', 'maxResults': 1000, 'fields': 'prefixes,nextPageToken'}
+        if page:
+            params['pageToken'] = page
+        payload = json.loads(S.http(S.API + '?' + urllib.parse.urlencode(params), tok))
+        names.extend(payload.get('prefixes', []))
+        page = payload.get('nextPageToken')
+        if not page:
+            return [name[len(prefix):].rstrip('/') for name in names]
+
+
+def cohort_objects(S, tok, prefix, delimiter=None):
+    items, page = [], None
+    while True:
+        params = {'prefix': prefix, 'maxResults': 1000, 'fields': 'items(name,size,updated),nextPageToken'}
+        if delimiter:
+            params['delimiter'] = delimiter
+        if page:
+            params['pageToken'] = page
+        payload = json.loads(S.http(S.API + '?' + urllib.parse.urlencode(params), tok))
+        items.extend(payload.get('items', []))
+        page = payload.get('nextPageToken')
+        if not page:
+            return items
+
+
+def archives_by_folder(prefix, items):
+    """Canonical task archives only: <task>/<sha>.zip, never review_handoff/."""
+    folders = {}
+    for item in items:
+        name = item['name']
+        if not name.endswith('.zip') or '/review_handoff/' in name:
+            continue
+        parts = name[len(prefix):].split('/')
+        if len(parts) != 2 or not parts[0]:
+            continue
+        folders.setdefault(parts[0], []).append({'sha': parts[1][:-4], 'name': name,
+                                                 'size': int(item.get('size') or 0),
+                                                 'updated': item.get('updated') or ''})
+    return folders
+
+
+def classify_archive(S, tok, cache, folder, archive):
+    """Read the zip central directory, then only its task.toml member."""
+    if archive['sha'] in cache:
+        return dict(cache[archive['sha']]), False
+    url = S.media_url(archive['name'])
+    directory = S.central_directory(url, tok, archive['size'])
+    key = next((k for k in directory if k.endswith('/task.toml') and k.count('/') == 1), None)
+    if key is None:
+        key = next((k for k in directory if k.endswith('task.toml')), None)
+    if key is None:
+        raise ValueError('no task.toml in archive')
+    method, compressed, offset = directory[key]
+    return S.classify(S.read_entry(url, tok, method, compressed, offset), folder), True
+
+
+def scan_cohort_tasks(S, tok, cache, prefix, name, label, outcome, errors):
+    folders = folder_prefixes(S, tok, prefix)
+    archives = archives_by_folder(prefix, cohort_objects(S, tok, prefix))
+    work = [(folder, sorted(archives[folder], key=lambda a: a['updated'])[-1])
+            for folder in sorted(folders) if archives.get(folder)]
+
+    def classified(pair):
+        folder, archive = pair
+        try:
+            facts, is_new = classify_archive(S, tok, cache, folder, archive)
+        except Exception as error:
+            return folder, archive, None, str(error)[:160], False
+        return folder, archive, facts, None, is_new
+
+    rows, fetched = [], 0
+    with ThreadPoolExecutor(max_workers=8) as pool:
+        for folder, archive, facts, error, is_new in pool.map(classified, work):
+            if error:
+                errors.append({'cohort': name, 'folder': folder, 'error': error})
+                continue
+            if is_new:
+                cache[archive['sha']] = facts
+                fetched += 1
+            rows.append({**facts, 'folder': folder, 'cohort': name, 'cohortLabel': label,
+                         'outcome': outcome, 'sha256': archive['sha'], 'sizeBytes': archive['size'],
+                         'updated': archive['updated'], 'archives': len(archives[folder])})
+    return folders, archives, rows, fetched
+
+
+def scan_finalisation(S, tok):
+    try:
+        cache = json.loads(FINALISATION_CACHE.read_text(encoding='utf-8'))
+    except Exception:
+        cache = {}
+    cohorts, tasks, errors, fetched = [], [], [], 0
+    for name, layout, outcome, label in COHORTS:
+        prefix = 'tasks/%s/' % name
+        record = {'prefix': name, 'layout': layout, 'outcome': outcome, 'label': label,
+                  'tasks': 0, 'scanned': 0}
+        if layout == 'task_zip':
+            folders, archives, rows, new = scan_cohort_tasks(S, tok, cache, prefix, name, label, outcome, errors)
+            record['tasks'] = len(folders)
+            record['archives'] = sum(len(value) for value in archives.values())
+            record['scanned'] = len(rows)
+            tasks.extend(rows)
+            fetched += new
+        elif layout == 'extracted':
+            record['tasks'] = len(folder_prefixes(S, tok, prefix))
+        elif layout == 'run_task':
+            record['tasks'] = record['runs'] = len(folder_prefixes(S, tok, prefix))
+            record['note'] = 'one task per run, verified on a 25-run sample'
+        elif layout == 'flat_zip':
+            objects = [item for item in cohort_objects(S, tok, prefix, delimiter='/') if item['name'].endswith('.zip')]
+            record['tasks'] = len(objects)
+            record['bytes'] = sum(int(item.get('size') or 0) for item in objects)
+        else:
+            raise SystemExit('Unknown cohort layout: %s' % layout)
+        cohorts.append(record)
+        print('cohort %-46s %-12s %6d' % (name, outcome, record['tasks']), flush=True)
+    try:
+        FINALISATION_CACHE.write_text(json.dumps(cache, sort_keys=True), encoding='utf-8')
+    except Exception as error:
+        print('cache not written: %s' % error, flush=True)
+    # A Handshake batch is promoted through its own oracle gate, not client QC,
+    # so it is counted and listed but never folded into the accepted total.
+    totals = {'accepted': 0, 'rejected': 0, 'unsubmitted': 0, 'promoted': 0}
+    for record in cohorts:
+        if record['outcome'] in totals:
+            totals[record['outcome']] += record['tasks']
+    return {'bucket': 'gs://obi-harbor-pipeline/tasks/', 'cohorts': cohorts, 'totals': totals,
+            'graded': totals['accepted'] + totals['rejected'], 'tasks': tasks,
+            'newArchivesRead': fetched, 'errors': errors[:25]}
+
+
+def attribute(tasks, trainer_records):
+    """Join finalisation tasks to owners by declared task name. Finalisation
+    repackages archives, so a bucket sha never equals the trainer record archive
+    digest - the name is the only join that works, and it is not proof."""
+    owners = {}
+    for record in trainer_records:
+        key = str(record['task'] or '').strip().lower().replace('harbor/', '')
+        if key:
+            owners.setdefault(key, set()).add(record['trainer'])
+    for row in tasks:
+        key = str(row.get('declared_short') or row.get('folder') or '').strip().lower()
+        candidates = sorted(owners.get(key) or ())
+        row['owner'] = candidates[0] if len(candidates) == 1 else None
+        row['ownerContested'] = len(candidates) > 1
+        row['ownerBasis'] = 'name match' if len(candidates) == 1 else 'contested' if candidates else 'unattributed'
+    return tasks
 
 
 def main():
@@ -137,15 +307,18 @@ def main():
             out[key] = row
         return list(out.values())
     cycles, legacy = unique(cycles), unique(legacy)
-    payload = {'schemaVersion': 2, 'generatedAt': datetime.now(timezone.utc).isoformat(), 'source': 'gs://obi-harbor-pipeline/trainer/',
+    finalisation = scan_finalisation(S, tok)
+    attribute(finalisation['tasks'], trainer_records)
+    payload = {'schemaVersion': 3, 'generatedAt': datetime.now(timezone.utc).isoformat(), 'source': 'gs://obi-harbor-pipeline/trainer/',
                'current': latest_families(cycles), 'historical': cycles, 'legacy': legacy,
-               'trainerRecords': trainer_records,
+               'trainerRecords': trainer_records, 'finalisation': finalisation,
                'coverage': {'objectsRead': len(objects), 'trainerRecordsRead': len(owner_objects), 'historySnapshots': snapshots, 'currentScope': 'Latest evaluation cycle per owner and family; unevaluated uploads excluded', 'historyScope': 'Evaluation cycles, not every status transition; legacy QC runs are separate'}}
     output = Path(args.out)
     temporary = output.with_suffix('.tmp')
     temporary.write_text(json.dumps(payload, separators=(',', ':')), encoding='utf-8')
     temporary.replace(output)
-    print(json.dumps({key: len(payload[key]) for key in ['current', 'historical', 'legacy']}), flush=True)
+    print(json.dumps({**{key: len(payload[key]) for key in ['current', 'historical', 'legacy']},
+                      'finalisationTasks': len(finalisation['tasks']), **finalisation['totals']}), flush=True)
 
 
 if __name__ == '__main__':

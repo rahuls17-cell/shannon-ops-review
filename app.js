@@ -1,9 +1,16 @@
 const data = window.OPS_REVIEW_DATA;
 let finalisationSource = null;
 let finalisationRows = [];
+let finalisationCohorts = [];
+const FINALISATION_ROW_CAP = 400;
 let gcsPipeline = null;
+let payoutLedger = null;
+let payoutLedgerTasks = [];
 let pipelinePage = 0;
-const filterKeys = {teamFilter: 'team', leaderFilter: 'em', managerFilter: 'managerName', trainerFilter: 'email'};
+let payoutPage = 0;
+let ledgerPage = 0;
+const PAYOUT_PAGE_SIZE = 25;
+const LEDGER_PAGE_SIZE = 25;
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function taskKey(value) {
   return String(value || '').toLowerCase()
@@ -15,35 +22,6 @@ function acceptedMatchKey(value) {
   return String(value || '').toLowerCase().trim()
     .replace(/^harbor\//, '')
     .replace(/-(?:v|version)[0-9][a-z0-9.-]*$/, '');
-}
-function enrichFinalisationOwners() {
-  if (!gcsPipeline || !finalisationRows.length) return 0;
-  if (finalisationSource) finalisationRows = window.reconcileFinalisation(finalisationSource, data.trainers);
-  const roster = new Map(data.trainers.map(trainer => [trainer.email.toLowerCase(), trainer]));
-  const ownersByTask = new Map();
-  ['current', 'historical', 'legacy'].forEach(scope => (gcsPipeline[scope] || []).forEach(record => {
-    const task = acceptedMatchKey(record.task || record.taskId);
-    const email = String(record.trainer || '').toLowerCase();
-    if (!task || !email) return;
-    if (!ownersByTask.has(task)) ownersByTask.set(task, new Set());
-    ownersByTask.get(task).add(email);
-  }));
-  (gcsPipeline.trainerRecords || []).forEach(record => {
-    const task = acceptedMatchKey(record.task || record.taskName);
-    const email = String(record.trainer || record.ownerEmail || '').toLowerCase();
-    if (!task || !email) return;
-    if (!ownersByTask.has(task)) ownersByTask.set(task, new Set());
-    ownersByTask.get(task).add(email);
-  });
-  let enriched = 0;
-  finalisationRows = finalisationRows.map(row => {
-    if (row.trainer || row.owner_contested || row.owner) return row;
-    const candidates = [...(ownersByTask.get(acceptedMatchKey(row.declared_name || row.folder)) || [])];
-    if (candidates.length !== 1 || !roster.has(candidates[0])) return row;
-    enriched += 1;
-    return {...row, trainer: roster.get(candidates[0]), attribution: 'Name match only', owner_source: 'GCS task-name candidate from evaluation/history/trainer records'};
-  });
-  return enriched;
 }
 const pipelineReference = new Map();
 ['current', 'historical'].forEach(key => (data.pipeline?.[key] || []).forEach(row => {
@@ -66,57 +44,47 @@ function pipelineType(task) {
   return 'Not recorded';
 }
 const infoCopy = {
-  finalisation: 'Source explicitly selects Finalisation folders, current pipeline Accepted records, or both. Every card and audit number uses the displayed filtered rows. Global trainer/team/leader/manager filters combine with these filters. Ownership uses the reconciled group owner; conflicts stay unassigned. Type uses recorded Finalisation flags or the workbook mapping for current records; missing values stay Not recorded. Finalisation domain uses its source field; current domain comes from the pipeline export. Record date is Finalisation updated date or current evaluation submission date, not acceptance date. Date bounds are inclusive; missing dates are excluded. Reload fetches the published Harbor feed; it does not trigger a bucket scan. Reset Finalisation filters retains global people filters.',
-  duplicates: 'Duplicate identity is computed across both accepted sources before filtering. Representative records are the single retained record per task group; extra duplicate records are excluded from accepted totals. Members of duplicate groups includes representatives and extras. Filters never change a representative or switch sources. A representative may be outside your selected source or filters. These matches follow existing name/hash/family reconciliation; conflicting owners remain unassigned.',
-  dates: 'Filters Pipeline records by the workbook Date column, including both start and end dates. Either date can be left blank for an open-ended range. Undated records are excluded when a date is selected. Status counts and rows use the same filters. Payout calculations are unaffected.',
-  bench: 'Company bench includes the Company team. Computer bench includes Computer A and Computer B. Other or missing teams appear under Unassigned bench. This payout-only filter combines with team, leader, manager, trainer, search and payment state. Totals sum the matching person records without changing payment formulas.',
-  accepted: 'Unique accepted task groups across Finalisation folders and current pipeline Accepted records. Uses the same reconciliation as Payouts. All-team totals include unassigned groups; trainer filters include only groups with an unambiguous matching owner. Financial estimates cover roster-linked owners only.',
-  commandSources: 'Current pipeline counts the latest evaluation per owner and task family. Finalisation counts accepted iteration-2 folders. These counts overlap and must not be added. Unique accepted groups use the existing reconciliation; duplicate records are extra records within those groups. Team, leader, manager and trainer filters apply; Pipeline view/date filters do not affect Command.',
-  commandBench: 'Bench counts use current pipeline records and reconciled accepted task groups, assigned through trainer roster emails. Company is the Company team; Computer includes Computer A and Computer B. Other teams, missing owners and ownership conflicts appear under Unassigned. Financial amounts are available only for roster-linked trainers.',
-  commandPending: 'Estimated pending tasks = max(reconciled accepted groups - Paid Out tab approved tasks, 0), calculated per roster-linked trainer; estimated amount = pending tasks x $300. Unassigned and conflicting groups are excluded from financial estimates. Both accepted sources must load before estimates are shown.',
-  payoutAccepted: 'Payouts accepted tasks: the deduplicated union of accepted Finalisation folders and current GCS Accepted records. Matching task names are counted once; unresolved owners are not assigned to trainers.',
-  payoutTotals: 'Paid tasks is the sum of Total Tasks Approved from the Paid Out tab for the people currently shown. Paid amount is the corresponding Total Payment Amount. Accepted and pending tasks come from the reconciled Finalisation/current GCS owner data. Filters update these totals.',
-  paid: 'Paid tasks and amounts come from the Paid Out workbook tab, joined by trainer email. When the amount is absent, the estimate is approved tasks x $300. These are workbook payment records, not live bank transactions.',
-  pending: 'Estimated pending tasks = max(v2 accepted tasks - paid tasks, 0), calculated separately for each person. Estimated pending amount = pending tasks x $300. Totals sum these person-level values; paid tasks can exceed current v2 accepted tasks.',
-  active: 'Count of selected trainer records whose workbook status is Active. The smaller total includes every status.',
-  pipeline: 'GCS trainer evaluation ledgers and legacy history snapshots. Current counts the latest cycle per owner and family; it excludes uploads never evaluated. History counts cycles, including retries. Legacy counts archived QC runs separately. These populations overlap and must not be added. Accepted requires an explicit submission verdict. Trainer filters join owner email to the roster. Type uses the workbook pipeline mapping when available, with conservative task-name inference for newer GCS-only records. Domain is derived from the task-name prefix. The chart follows the selected Pipeline view.',
-  daily: 'Accepted in the last 24 hours as recorded in the workbook snapshot, not a live rolling window.',
-  workbook: 'Workbook-wide snapshot. These source summaries do not contain a reliable person-level allocation and do not change with the review filters.'
+  accepted: 'Distinct tasks found in the finalisation cohorts of the bucket. A task finalised into more than one cohort has a folder in each, so folders are collapsed to task names first - the name is read from task.toml inside the archive, because folder names are sometimes opaque pipeline ids. This is delivered work, not the payout basis.',
+  paid: 'Total Tasks Approved and Total Payment Amount from the Paid Out tab of the Ops Review workbook, cross-checked against the Live Import payment tracker and joined to people by child job number rather than email, because the tracker spells one address differently. These are workbook records, not live bank transactions.',
+  pending: 'Per person: accepted tasks minus tasks already paid, never below zero, priced at $300 each. Accepted comes from the workbook task list after duplicate rows are collapsed. Payments already made stay as recorded, including three made against duplicate rows, so deduplication only prevents a task being paid twice from here on.',
+  commandSources: 'Each number counts a different population and they overlap, so adding them is wrong. Current evaluations is the latest attempt per task family in the evaluation ledgers. Accepted folders is what physically exists in the finalisation cohorts. Most tasks accepted in the pipeline already have a finalisation folder.',
+  commandBench: 'Company is the Company team; Computer covers Computer A and Computer B. A task is assigned through its resolved owner, so anything with a contested or missing owner belongs to neither bench and is excluded from bench money.',
+  bench: 'Company bench is the Company team. Computer bench covers Computer A and Computer B. Everything else, including people with no team recorded, appears under Unassigned. This filter combines with the search and payment state controls and changes only what is shown, never how anything is calculated.',
+  payoutAccepted: 'Tasks listed for this person on the task wise tab of the Shannon PPT workbook, after rows repeating the same task for the same trainer are folded together. Every unique task counts, including the two rows the workbook marks Valid = 0. The Harbor 240 dashboard and the GCS bucket are deliberately not used for this number.',
+  population: 'Three different populations of the same ledgers, never to be added together. Current work keeps only the latest attempt of each task family, so it answers where things stand now. Every attempt keeps the retries as separate records, so it answers how much work was done. Legacy QC runs are archived owner snapshots from before the current pipeline. Switching population rebuilds every filter below from that population.',
+  ledgerPayment: 'Paid means the person was paid for at least as many tasks as this ledger lists for them, so every one of their tasks is covered. Not itemised means they were paid for fewer tasks than they have listed and no workbook column records which ones - Michael is the only such case, paid for 10 of 29. No payment recorded means no payment request exists for them at all.',
+  ledgerAcceptance: 'The workbook Valid column, shown for audit only. Every unique task counts as accepted regardless of this flag, so a Valid = 0 row still carries pending payment. Two rows currently carry it: one whose child job is NA, and one whose child job cell says someone is looking into it.',
+  trainerPick: 'Lists only people who have accepted work or a payment recorded against them, which is why it is short - the rest of the roster has nothing to pay. Picking one narrows both tables on this tab to that person: their payout row, and every task in their ledger. Use the search box instead to look someone up across the whole roster.',
+  ledgerDuplicates: 'How many workbook rows folded into this one task. Above 1 means the same task and trainer were listed more than once. The extra rows are excluded from every accepted and pending count, but they are not hidden - filter to Folded rows only to see them.',
+  duplicates: 'Accepted work lives in three cohorts and the same task can be finalised into several of them. Folders are what the bucket holds; distinct tasks is what was actually done. The newest archive represents the task and the rest are marked as repeats, which is why adding the cohort totals together overstates the work.',
+  ownership: 'Owners are joined to tasks by declared task name against the trainer records in the bucket. Finalisation repackages archives, so an archive digest never matches the trainer record digest and the name is the only join available - it is evidence, not proof. Where two trainer records claim the same name the task is left contested rather than assigned.',
+  pipeline: 'The ledger stores only six raw states and none of them is accepted or rejected; those come from the verdict recorded on the submission, which wins over the raw state. Done means the evaluation finished with no verdict at all, so Done is not an acceptance. Infrastructure Error means the run failed on tooling, not on the work. Current counts the latest attempt per family; All attempts counts retries separately.',
+  dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
+  workbook: 'A workbook-wide snapshot with no reliable person-level allocation, so it does not respond to the filters on the other tabs and cannot be split by trainer.',
 };
 
-function scopedTrainers(exclude) {
-  return data.trainers.filter(row => Object.entries(filterKeys).every(([id,key]) => id === exclude || !byId(id).value || (row[key] || 'Unassigned') === byId(id).value));
-}
-function scopedTasks() {
-  const all = gcsPipeline ? gcsPipeline[byId('pipelineMode').value] : [];
-  if (!Object.keys(filterKeys).some(id => byId(id).value)) return all;
-  const emails = new Set(scopedTrainers().map(row => row.email.toLowerCase()));
-  return all.filter(task => emails.has(task.trainer.toLowerCase()));
-}
-function refreshScope() {
-  populateScopeFilters();
-  setText('filterCount', `${fmt(scopedTrainers().length)} of ${fmt(data.trainers.length)} trainers`);
+function renderEverything() {
   renderHero(); renderTopPendingCards(); renderDonut(); renderTrainerRows(); renderTeams(); renderPipeline();
   renderFinalisation();
   renderBenchCards();
 }
 
 function renderFinalisation() {
-  if (!finalisationSource) return;
-  const hasScope = Object.keys(filterKeys).some(id => byId(id).value);
-  const audit = acceptedReconciliation();
+  if (!finalisationRows.length) return;
   const filters = {
-    source: byId('finalisationSourceFilter').value,
-    bench: byId('finalisationBench').value, ownership: byId('finalisationOwnership').value,
-    duplicates: byId('duplicateFilter').value, type: byId('finalisationType').value,
-    domain: byId('finalisationDomain').value, search: byId('finalisationSearch').value,
-    start: byId('finalisationStart').value, end: byId('finalisationEnd').value,
-    emails: hasScope ? scopedTrainers().map(row => row.email.toLowerCase()) : null
+    outcome: byId('finalisationOutcome').value,
+    cohort: byId('finalisationCohort').value,
+    bench: byId('finalisationBench').value,
+    ownership: byId('finalisationOwnership').value,
+    type: byId('finalisationType').value,
+    domain: byId('finalisationDomain').value,
+    search: byId('finalisationSearch').value,
+    start: byId('finalisationStart').value,
+    end: byId('finalisationEnd').value,
+    duplicates: byId('duplicateFilter').value,
   };
-  const records = audit.rows.map(row => row.source === 'Finalisation' ? row : {...row,
-    taskType: pipelineReference.get(taskKey(row.task)) || row.taskType});
-  const result = window.filterFinalisationRecords(records, filters, data.trainers);
-  const {rows} = result;
+  const result = window.filterFinalisation(finalisationRows, filters);
+  const rows = result.rows;
   const domainSelect = byId('finalisationDomain');
   const domains = [...new Set(result.population.map(row => row.filterDomain))].sort();
   if (filters.domain && !domains.includes(filters.domain)) domains.push(filters.domain);
@@ -124,48 +92,137 @@ function renderFinalisation() {
   domainSelect.value = filters.domain;
   byId('finalisationDateError').hidden = !result.invalidDates;
   ['finalisationStart', 'finalisationEnd'].forEach(id => byId(id).setAttribute('aria-invalid', String(result.invalidDates)));
-  const distinct = new Set(rows.map(row => String(row.name || row.folder || '').toLowerCase().trim().replace(/^harbor\//, ''))).size;
   byId('finalisationSummary').innerHTML = [
-    [filters.source === 'Finalisation' ? 'Finalisation folders shown' : 'Source records shown', rows.length], ['Distinct task names shown', distinct],
-    ['Roster-linked records shown', result.linked], ['Unassigned records shown', rows.length - result.linked]
-  ].map(([label,value])=>`<div class="summary-item"><span>${label}</span><strong>${fmt(value)}</strong></div>`).join('');
-  setText('finalisationAudit', `${fmt(rows.length)} of ${fmt(result.population.length)} source records shown / ${fmt(result.groups)} task groups represented / ${fmt(result.duplicates)} duplicate records shown / ${fmt(result.conflicts)} owner-conflict groups shown${gcsPipeline ? '' : ' / Current pipeline unavailable: cross-source duplicate audit incomplete'}`);
-  const ownerLabels = {linked:'Roster-linked',unlinked:'Owner recorded, not roster-linked',missing:'Owner not recorded',conflict:'Conflicting owners'};
-  byId('finalisationRows').innerHTML = rows.map(row=>`<tr><td><div class="person"><strong>${esc(row.displayName)}</strong><span>${esc(row.source)} / ${esc(row.folder)}</span></div></td><td>${esc(row.resolvedTrainer?.name || 'Unassigned')}<br><small>${esc(row.resolvedTrainer?.email || row.email || row.owner || '')}</small></td><td>${esc(row.resolvedTrainer?.team || 'Unassigned')}</td><td>${ownerLabels[row.ownership]}<br><small>${esc(row.attribution || '')} / ${esc(row.owner_source || '')}</small></td><td>${esc(row.filterType)}</td><td>${esc(row.filterDomain)}</td><td>${esc(row.date || 'Not recorded')}</td><td><span class="pill">${row.duplicate ? 'Extra record - excluded' : 'Representative record'}</span><div class="muted">${fmt(row.groupSize)} records in group</div>${row.duplicate ? `<small>Representative: ${esc(row.countedId)}</small>` : ''}</td></tr>`).join('') || '<tr><td colspan="8" class="empty">No records match this source and filter selection.</td></tr>';
+    ['Folders shown', rows.length], ['Distinct tasks shown', result.tasks],
+    ['Roster-linked folders', result.linked], ['Cross-cohort repeats shown', result.duplicates]
+  ].map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${fmt(value)}</strong></div>`).join('');
+  const cohorts = finalisationCohorts.filter(cohort => !filters.outcome || cohort.outcome === filters.outcome);
+  const counted = cohorts.reduce((total, cohort) => total + cohort.tasks, 0);
+  const unscanned = cohorts.filter(cohort => cohort.tasks && !cohort.scanned);
+  setText('finalisationAudit', `${fmt(rows.length)} of ${fmt(result.population.length)} scanned folders shown / ${fmt(result.tasks)} distinct task names / ${fmt(result.duplicates)} folders repeat a task already counted in another cohort / ${fmt(result.conflicts)} contested owners${unscanned.length ? ` / counted but not itemised: ${unscanned.map(cohort => `${cohort.label} ${fmt(cohort.tasks)}`).join(', ')}` : ''} / cohort totals ${fmt(counted)} tasks`);
+  const shown = rows.slice(0, FINALISATION_ROW_CAP);
+  byId('finalisationRows').innerHTML = shown.map(row => `<tr>
+      <td><div class="person"><strong>${esc(row.displayName)}</strong><span>${esc(row.folder)}${row.archives > 1 ? ` / ${fmt(row.archives)} archives` : ''}</span></div></td>
+      <td data-outcome="${esc(row.outcome)}"><span class="tag">${esc(row.cohortLabel)}</span><small>${esc(row.outcome)}</small></td>
+      <td>${esc(row.trainer?.name || (row.ownership === 'conflict' ? 'Contested' : 'Unassigned'))}<br><small>${esc(row.trainer?.email || row.owner || (row.ownership === 'conflict' ? 'More than one trainer record claims this task' : 'No trainer record'))}</small></td>
+      <td>${esc({linked:'Roster-linked',unlinked:'Owner recorded, not roster-linked',missing:'Owner not recorded',conflict:'Conflicting owners'}[row.ownership])}<br><small>${esc(row.attribution)}</small></td>
+      <td>${esc(row.filterType)}${row.connector_provenance ? `<br><small>${esc(row.connector_provenance)}</small>` : ''}</td>
+      <td><span class="tag" data-domain="${esc(row.filterDomain)}">${esc(row.filterDomain)}</span></td>
+      <td>${esc(row.date || 'Not recorded')}</td>
+      <td><span class="pill ${row.duplicate ? 'is-warn' : 'is-ok'}">${row.duplicate ? 'Repeat' : 'Counted'}</span>${row.groupSize > 1 ? `<div class="muted">${fmt(row.groupSize)} cohorts: ${esc(row.cohortsForTask.join(', '))}</div>` : ''}</td>
+    </tr>`).join('') || '<tr><td colspan="8" class="empty">No folders match this selection.</td></tr>';
+  byId('finalisationTruncated').hidden = shown.length === rows.length;
+  setText('finalisationTruncated', `Showing the first ${fmt(shown.length)} of ${fmt(rows.length)} matching folders. Filter further to narrow the list; every card and audit number above counts all ${fmt(rows.length)}.`);
 }
 
-async function loadFinalisation() {
+function loadFinalisation() {
   const button = byId('refreshFinalisation');
   button.disabled = true;
-  setText('finalisationStatus', 'Refreshing Harbor finalisation...');
-  let source, fallback = false;
-  try {
-    const response = await fetch('https://rahuls17-cell.github.io/harbor-pipeline-dashboard/', {cache:'no-store',signal:AbortSignal.timeout(12000)});
-    if (!response.ok) throw new Error('Source unavailable');
-    const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
-    source = JSON.parse(doc.getElementById('pipeline-data').textContent);
-    finalisationRows = window.reconcileFinalisation(source, data.trainers);
-  } catch {
-    fallback = true;
-    try {
-      const response = await fetch('assets/finalisation.json', {cache:'no-store'});
-      if (!response.ok) throw new Error('Snapshot unavailable');
-      source = await response.json();
-      finalisationRows = window.reconcileFinalisation(source, data.trainers);
-    } catch {
-      setText('finalisationStatus', finalisationSource ? 'Refresh failed. Previous finalisation snapshot remains displayed.' : 'Finalisation data unavailable. Retry refresh.');
-      button.disabled = false;
-      return;
-    }
+  if (!gcsPipeline?.finalisation) {
+    setText('finalisationStatus', 'Finalisation is published inside the GCS export. Refresh the pipeline snapshot to load it.');
+    button.disabled = false;
+    return;
   }
-  finalisationSource = source;
-  enrichFinalisationOwners();
-  setText('finalisationStatus', `${fallback ? 'Saved snapshot (live source unavailable)' : 'Connected to Harbor'} / Scanned ${source.generated_at} / ${fmt(finalisationRows.length)} accepted iteration-2 folders`);
-  setText('payoutSourceStatus', 'Accepted sync is reconciling Finalisation with the current GCS Accepted snapshot / Paid synced from the paid out tab');
+  try {
+    finalisationSource = gcsPipeline.finalisation;
+    finalisationRows = window.prepareFinalisation(finalisationSource, data.trainers);
+    finalisationCohorts = finalisationSource.cohorts;
+  } catch (error) {
+    setText('finalisationStatus', `Finalisation export rejected: ${error.message}`);
+    button.disabled = false;
+    return;
+  }
+  const outcomes = byId('finalisationOutcome'), chosen = outcomes.value || 'accepted';
+  const labels = {accepted: 'Accepted', rejected: 'Rejected', unsubmitted: 'Unsubmitted', promoted: 'Handshake promoted'};
+  const present = [...new Set(finalisationCohorts.map(cohort => cohort.outcome))];
+  outcomes.innerHTML = present.map(value => `<option value="${esc(value)}">${esc(labels[value] || value)}</option>`).join('') + '<option value="">All outcomes</option>';
+  outcomes.value = present.includes(chosen) ? chosen : '';
+  const select = byId('finalisationCohort'), selected = select.value;
+  select.innerHTML = '<option value="">All cohorts</option>' + finalisationCohorts
+    .map(cohort => `<option value="${esc(cohort.prefix)}">${esc(cohort.label)} (${fmt(cohort.tasks)})</option>`).join('');
+  select.value = finalisationCohorts.some(cohort => cohort.prefix === selected) ? selected : '';
+  const totals = finalisationSource.totals;
+  setText('finalisationStatus', `Read-only scan of ${finalisationSource.bucket} at ${gcsPipeline.generatedAt} / ${fmt(finalisationCohorts.length)} cohorts / accepted ${fmt(totals.accepted)}, rejected ${fmt(totals.rejected)}, unsubmitted ${fmt(totals.unsubmitted)} / ${fmt(finalisationSource.tasks.length)} accepted folders opened for task metadata`);
   renderFinalisation();
+  button.disabled = false;
+}
+
+async function loadPayoutLedger() {
+  try {
+    const response = await fetch('assets/payout-ledger.json', {cache: 'no-store'});
+    if (!response.ok) throw new Error('Payout ledger unavailable');
+    const payload = await response.json();
+    payoutLedgerTasks = window.preparePayoutLedger(payload, data.trainers);
+    payoutLedger = payload;
+  } catch {
+    setText('ledgerStatus', 'Payout ledger unavailable. Accepted tasks fall back to the Finalisation reconciliation.');
+    return;
+  }
+  populateLedgerFilters();
+  populateTrainerPicker();
   renderTrainerRows();
   renderHero(); renderTopPendingCards(); renderBenchCards();
-  button.disabled = false;
+}
+
+function populateLedgerFilters() {
+  const options = {
+    ledgerType: ['All task types', [...new Set(payoutLedgerTasks.map(row => row.filterType))].sort()],
+    ledgerPayment: ['All payment states', [...new Set(payoutLedgerTasks.map(row => row.paymentState))].sort()],
+  };
+  Object.entries(options).forEach(([id, [label, values]]) => {
+    const select = byId(id), selected = select.value;
+    select.innerHTML = `<option value="">${label}</option>` + values.map(value => `<option value="${esc(value)}">${esc(value)}</option>`).join('');
+    select.value = values.includes(selected) ? selected : '';
+  });
+}
+
+function renderPayoutLedger() {
+  if (!payoutLedger) return;
+  const picked = byId('trainerFilter').value;
+  const result = window.filterPayoutLedger(payoutLedgerTasks, {
+    emails: picked ? [picked] : null,
+    bench: byId('benchFilter').value,
+    search: byId('ledgerSearch').value,
+    payment: byId('ledgerPayment').value,
+    type: byId('ledgerType').value,
+    validity: byId('ledgerValidity').value,
+    duplicates: byId('ledgerDuplicates').value,
+  });
+  const totals = payoutLedger.totals;
+  setText('ledgerStatus', `${fmt(totals.sourceRows)} workbook rows collapsed to ${fmt(totals.ledgerTasks)} tasks / ${fmt(totals.acceptedTasks)} counted as accepted / ${fmt(totals.paidTasks)} tasks paid across ${fmt(totals.paymentRequests)} payment requests, of which ${fmt(totals.itemisedPaidTasks)} name a task and ${fmt(totals.unitemisedPaidTasks)} (${money(totals.unitemisedPaidAmount)}) exceed the tasks listed for that person`);
+  const people = new Map((payoutLedger.people || []).map(person => [person.email, person]));
+  byId('ledgerSummary').innerHTML = [
+    ['Ledger tasks shown', fmt(result.rows.length)],
+    ['Accepted and payable', fmt(result.accepted)],
+    ['Paid tasks shown', fmt(result.paid)],
+    ['Duplicate rows removed', fmt(result.duplicateRows)],
+    ['Payments not itemised', fmt(result.unitemised)],
+  ].map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${value}</strong></div>`).join('');
+  const ledgerPages = Math.max(1, Math.ceil(result.rows.length / LEDGER_PAGE_SIZE));
+  ledgerPage = Math.min(Math.max(ledgerPage, 0), ledgerPages - 1);
+  const ledgerFrom = ledgerPage * LEDGER_PAGE_SIZE;
+  const ledgerShown = result.rows.slice(ledgerFrom, ledgerFrom + LEDGER_PAGE_SIZE);
+  setText('ledgerPage', result.rows.length
+    ? `${fmt(ledgerFrom + 1)}-${fmt(ledgerFrom + ledgerShown.length)} of ${fmt(result.rows.length)} ${result.rows.length === 1 ? 'task' : 'tasks'} / page ${fmt(ledgerPage + 1)} of ${fmt(ledgerPages)}`
+    : 'No tasks match these filters');
+  byId('ledgerPrevious').disabled = ledgerPage === 0;
+  byId('ledgerNext').disabled = ledgerPage >= ledgerPages - 1;
+  byId('ledgerRows').innerHTML = ledgerShown.map(row => {
+    const person = people.get(row.email);
+    const payment = row.paymentState === 'Not itemised'
+      ? `${fmt(person?.paidTasks)} of ${fmt(person?.listedTasks)} tasks paid`
+      : row.paymentState === 'Paid' ? 'Paid $300' : 'No payment recorded';
+    return `
+        <tr>
+          <td><div class="person"><strong>${esc(row.task)}</strong><span>${row.valid ? 'Valid' : 'Not valid in workbook'}${row.harborLink ? ` / <a href="${esc(row.harborLink)}" target="_blank" rel="noopener">Harbor console</a>` : ''}</span></div></td>
+          <td>${esc(row.trainer?.name || 'Unassigned')}<br><small>${esc(row.email)}</small></td>
+          <td>${esc(row.filterType)}<br><small>${esc(row.trainer?.team || 'Unassigned')}</small></td>
+          <td><span class="pill ${row.valid ? '' : 'is-warn'}">${row.valid ? 'Valid' : 'Valid = 0'}</span><div class="muted">Counted as accepted</div></td>
+          <td><span class="pill ${row.paymentState === 'Paid' ? 'is-ok' : row.paymentState === 'Not itemised' ? 'is-warn' : ''}">${esc(row.paymentState)}</span><div class="muted">${esc(payment)}</div></td>
+          <td>${esc(row.cj || 'Not recorded')}</td>
+          <td class="num">${fmt(row.duplicateRows + 1)}${row.duplicateRows ? `<div class="muted">${fmt(row.duplicateRows)} excluded</div>` : ''}</td>
+        </tr>`;
+  }).join('') || '<tr><td colspan="6" class="empty">No ledger tasks match these filters.</td></tr>';
 }
 
 async function loadGcsPipeline(manual = false) {
@@ -173,11 +230,10 @@ async function loadGcsPipeline(manual = false) {
     const response = await fetch(`assets/gcs-pipeline.json?refresh=${manual ? Date.now() : 'startup'}`, {cache:'no-store'});
     if (!response.ok) throw new Error('GCS export unavailable');
     const payload = await response.json();
-    if (![1, 2].includes(payload.schemaVersion) || !['current','historical','legacy'].every(key=>Array.isArray(payload[key]))) throw new Error('Invalid GCS export');
+    if (payload.schemaVersion !== 3 || !['current','historical','legacy'].every(key=>Array.isArray(payload[key])) || !Array.isArray(payload.finalisation?.tasks)) throw new Error('Invalid GCS export');
     ['current', 'historical', 'legacy'].forEach(key => payload[key].forEach(task => { task.domain = pipelineDomain(task); }));
     gcsPipeline = payload;
-    enrichFinalisationOwners();
-    populateFilters(); renderPipeline(); renderDonut(); renderFinalisation(); renderTrainerRows();
+      populateFilters(); renderPipeline(); renderDonut(); loadFinalisation(); renderTrainerRows();
     renderHero(); renderTopPendingCards(); renderBenchCards();
     if (manual) setText('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
   } catch {
@@ -214,16 +270,6 @@ setInterval(async () => {
     if (version.generatedAt !== gcsPipeline.generatedAt) await loadGcsPipeline(true);
   } catch { /* The current snapshot remains available during a network failure. */ }
 }, 60000);
-function populateScopeFilters() {
-  const labels = {teamFilter:'teams',leaderFilter:'leaders',managerFilter:'managers',trainerFilter:'trainers'};
-  Object.entries(filterKeys).forEach(([id,key]) => {
-    const select = byId(id), selected = select.value;
-    const options = new Map(scopedTrainers(id).map(row => [row[key] || 'Unassigned', id === 'trainerFilter' ? `${row.name || row.email} (${row.email})` : row[key] || 'Unassigned']));
-    select.innerHTML = `<option value="">All ${labels[id]}</option>` + [...options].sort((a,b)=>a[1].localeCompare(b[1])).map(([value,label])=>`<option value="${esc(value)}">${esc(label)}</option>`).join('');
-    select.value = options.has(selected) ? selected : '';
-  });
-}
-
 const currency = new Intl.NumberFormat("en-US", {
   style: "currency",
   currency: "USD",
@@ -254,28 +300,43 @@ function groupBy(items, keyFn) {
   }, {});
 }
 
-function switchView(viewName) {
-  document.querySelectorAll(".tab").forEach((button) => {
-    button.classList.toggle("is-active", button.dataset.view === viewName);
+const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'finalisation'];
+// The same status is the same colour in the donut, the cards and the table.
+const STATUS_TOKENS = {
+  Accepted: '--aqua', Done: '--blue', 'Waiting For Trainer Edit': '--yellow',
+  'Infrastructure Error': '--orange', Rejected: '--red', 'Conflicting verdict': '--magenta',
+  Running: '--violet', Queued: '--magenta', Cancelled: '--slate',
+};
+function statusColor(status) {
+  const token = STATUS_TOKENS[status] || '--slate';
+  return getComputedStyle(document.documentElement).getPropertyValue(token).trim() || '#7c8798';
+}
+
+function switchView(viewName, push = true) {
+  if (!VIEWS.includes(viewName)) return;
+  document.querySelectorAll('.viewnav-tab').forEach(button => {
+    const active = button.dataset.view === viewName;
+    button.classList.toggle('is-active', active);
+    button.setAttribute('aria-selected', String(active));
+    button.tabIndex = active ? 0 : -1;
   });
-  document.querySelectorAll(".view").forEach((view) => {
-    view.classList.toggle("is-active", view.id === `view-${viewName}`);
-  });
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  document.querySelectorAll('.view').forEach(view => view.classList.toggle('is-active', view.id === `view-${viewName}`));
+  if (byId('globalSearch')) syncSearch(viewName);
+  if (push && location.hash.slice(1) !== viewName) history.pushState({viewName}, '', `#${viewName}`);
+  window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function commandSnapshot() {
-  const emails = new Set(scopedTrainers().map(row => row.email.toLowerCase()));
-  const filtered = Object.keys(filterKeys).some(id => byId(id).value);
-  const audit = acceptedReconciliation();
-  const groups = audit.groups.filter(group => !filtered || emails.has(group.email));
+  const folders = finalisationRows;
+  // One task can be finalised into several cohorts; the accepted count is task names, not folders.
+  const tasks = new Set(folders.map(row => row.name));
   return {
-    ready: Boolean(finalisationSource && gcsPipeline),
-    groups,
-    current: (gcsPipeline?.current || []).filter(row => !filtered || emails.has(String(row.trainer || '').toLowerCase())),
-    folders: finalisationRows.filter(row => !filtered || emails.has(row.trainer?.email?.toLowerCase())),
-    duplicates: groups.reduce((total, group) => total + group.members.length - 1, 0),
-    unassigned: groups.filter(group => !data.trainers.some(row => row.email.toLowerCase() === group.email)).length
+    ready: Boolean(finalisationRows.length && gcsPipeline),
+    folders,
+    tasks,
+    current: gcsPipeline?.current || [],
+    duplicates: folders.length - tasks.size,
+    unassigned: folders.filter(row => !row.trainer).length,
   };
 }
 
@@ -290,34 +351,73 @@ function renderHero() {
   const paidPct = Math.round((paid / (totalExposure || 1)) * 100);
 
   setText("generatedAt", generated.toLocaleString([], { dateStyle: "medium", timeStyle: "short" }));
-  setText("sourceName", data.meta.sourceWorkbook.split("\\").pop());
+  setText('scanAt', gcsPipeline ? new Date(gcsPipeline.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'}) : 'not loaded');
   setText("heroPending", money(pending));
   setText("heroExposureText", `${paidPct}% paid / ${fmt(summary.pendingTasks)} tasks pending`);
-  byId("heroPaidMeter").style.width = `${paidPct}%`;
+  renderExposureChart(rows);
 
-  setText("metricAccepted", snapshot.ready ? fmt(snapshot.groups.length) : '-');
+  setText("metricAccepted", snapshot.ready ? fmt(snapshot.tasks.size) : '-');
   setText("metricPaid", money(paid));
   setText("metricPendingTasks", fmt(summary.pendingTasks));
   setText("metricPending", `${money(pending)} pending`);
   setText("metricActive", fmt(summary.activeTrainers));
   setText("metricRoster", `${fmt(summary.totalTrainers)} total trainer records`);
-  setText('commandSourceStatus', `Pipeline: ${gcsPipeline?.generatedAt || 'unavailable / loading'} | Finalisation: ${finalisationSource?.generated_at || 'unavailable / loading'}`);
+  setText('commandSourceStatus', `One read-only GCS scan: ${gcsPipeline?.generatedAt || 'unavailable / loading'} | ${gcsPipeline ? `${fmt(gcsPipeline.current.length)} current evaluations, ${fmt(finalisationRows.length)} accepted finalisation folders` : 'waiting for the export'}`);
   byId('commandSummary').innerHTML = [
     ['Current evaluated tasks', gcsPipeline ? snapshot.current.length : null],
     ['Pipeline accepted', gcsPipeline ? snapshot.current.filter(row => row.status === 'Accepted').length : null],
-    ['Finalisation folders', finalisationSource ? snapshot.folders.length : null],
-    ['Duplicate records excluded', snapshot.ready ? snapshot.duplicates : null]
+    ['Accepted finalisation folders', finalisationRows.length ? snapshot.folders.length : null],
+    ['Cross-cohort repeats excluded', snapshot.ready ? snapshot.duplicates : null]
   ].map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${value == null ? '-' : fmt(value)}</strong></div>`).join('');
-  setText('commandOwnership', snapshot.ready ? `${fmt(snapshot.unassigned)} accepted groups without a roster-linked owner; excluded from financial estimates.` : 'Accepted reconciliation and financial estimates require both sources.');
+  setText('commandOwnership', snapshot.ready ? `${fmt(snapshot.unassigned)} accepted folders without a roster-linked owner; excluded from financial estimates. Payout totals come from the workbook ledger, not from this count.` : 'Accepted reconciliation requires the GCS export.');
   if (!snapshot.ready) {
     ['heroPending', 'metricPendingTasks', 'metricPending'].forEach(id => setText(id, '-'));
     setText('heroExposureText', 'Waiting for both accepted sources');
-    byId('heroPaidMeter').style.width = '0%';
   }
 }
 
+function segment(tone, value, scale, tip) {
+  if (!value) return '';
+  // Label inside the bar only where it fits; the tooltip and the line beneath
+  // carry the number for the slivers.
+  const label = value / scale >= 0.13 ? `<i>${money(value)}</i>` : '';
+  return `<span class="seg ${tone}" style="flex:${value}" data-tip="${esc(tip)}">${label}</span>`;
+}
+
+function renderExposureChart(rows) {
+  // Composition, not trend: where the money already spent and the money still
+  // owed sit across the two benches. One scale for both bars so the lengths
+  // compare; each bench bar is drawn against the largest bench total.
+  const benches = [['Company', 'company'], ['Computer', 'computer'], ['Unassigned', 'unassigned']]
+    .map(([label, key]) => {
+      const members = rows.filter(row => benchOf(row.team) === key);
+      return {label, paid: sum(members, 'paidAmount'), pending: sum(members, 'pendingAmount'),
+              paidTasks: sum(members, 'paidTasks'), pendingTasks: sum(members, 'pendingTasks')};
+    })
+    .filter(bench => bench.paid || bench.pending);
+  const scale = Math.max(...benches.map(bench => bench.paid + bench.pending), 1);
+  const total = benches.reduce((value, bench) => value + bench.paid + bench.pending, 0);
+  byId('exposureChart').innerHTML = benches.length ? `
+    <figcaption>${money(total)} committed, by bench</figcaption>
+    ${benches.map(bench => {
+      const benchTotal = bench.paid + bench.pending;
+      return `<div class="bench-bar">
+        <div class="bench-bar-head"><span>${esc(bench.label)}</span><b>${money(benchTotal)}</b></div>
+        <div class="stack" style="width:${Math.max((benchTotal / scale) * 100, 2)}%">
+          ${segment('is-paid', bench.paid, scale, `${bench.label} bench: ${money(bench.paid)} paid across ${fmt(bench.paidTasks)} tasks`)}
+          ${segment('is-pending', bench.pending, scale, `${bench.label} bench: ${money(bench.pending)} outstanding across ${fmt(bench.pendingTasks)} tasks`)}
+        </div>
+        <div class="bench-bar-foot">${fmt(bench.paidTasks)} paid / ${fmt(bench.pendingTasks)} outstanding tasks</div>
+      </div>`;
+    }).join('')}
+    <div class="chart-key">
+      <span class="key-item is-paid">Paid</span>
+      <span class="key-item is-pending">Outstanding</span>
+    </div>` : '<p class="empty">No payout exposure in this selection.</p>';
+}
+
 function renderTopPendingCards() {
-  if (!finalisationSource || !gcsPipeline) {
+  if (!finalisationRows.length || !gcsPipeline) {
     byId('topPendingCards').innerHTML = '<p class="empty">Pending estimates require Pipeline and Finalisation data.</p>';
     return;
   }
@@ -356,8 +456,7 @@ function renderDonut() {
   }
   const entries = Object.entries(groupBy(commandSnapshot().current, row => row.status)).map(([key,rows])=>[key,rows.length]).sort((a,b)=>b[1]-a[1]);
   const total = entries.reduce((sumValue, [, value]) => sumValue + value, 0);
-  const statusColors = {Accepted:'#16866a',Rejected:'#bd4a50','Infrastructure Error':'#d18a2c','Waiting For Trainer Edit':'#227d87',Done:'#64748b',Cancelled:'#874b66',Running:'#0071e3',Queued:'#8b8b93'};
-  const colors = entries.map(([status]) => statusColors[status] || '#8b8b93');
+  const colors = entries.map(([status]) => statusColor(status));
   let start = 0;
   const stops = entries.map(([, value], index) => {
     const degrees = (value / total) * 360;
@@ -385,11 +484,11 @@ function renderBenchCards() {
   };
   byId('benchCards').innerHTML = ['Computer', 'Company', 'Unassigned'].map(name => {
     const tasks = snapshot.current.filter(row => bench(row.trainer) === name);
-    const groups = snapshot.groups.filter(group => bench(group.email) === name);
+    const groups = [...new Set(snapshot.folders.filter(row => bench(row.trainer?.email) === name).map(row => row.name))];
     return `<div class="bench-card"><h3>${name} bench</h3>${[
       ['Current tasks', gcsPipeline ? tasks.length : null],
       ['Pipeline accepted', gcsPipeline ? tasks.filter(row => row.status === 'Accepted').length : null],
-      ['Unique accepted groups', snapshot.ready ? groups.length : null]
+      ['Unique accepted tasks', snapshot.ready ? groups.length : null]
     ].map(([label, value]) => `<div class="bench-metric"><span>${label}</span><b>${value == null ? '-' : fmt(value)}</b></div>`).join('')}</div>`;
   }).join('');
 }
@@ -399,22 +498,39 @@ function uniqueTeams() {
 }
 
 function populateFilters() {
-  populateScopeFilters();
+  const population = pipelinePopulation();
+  PIPELINE_FILTERS.forEach(filter => {
+    const counts = new Map();
+    population.forEach(task => {
+      const key = filter.of(task);
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+    const select = byId(filter.id), selected = select.value;
+    const options = [...counts].sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0])));
+    select.innerHTML = `<option value="">All ${filter.label} (${fmt(population.length)})</option>` +
+      options.map(([value, count]) => `<option value="${esc(value)}">${esc(value)} (${fmt(count)})</option>`).join('');
+    select.value = counts.has(selected) ? selected : '';
+  });
+}
 
-  const statuses = [
-    ...new Set((gcsPipeline ? gcsPipeline[byId('pipelineMode').value] : []).map((task) => task.status || "Unknown")),
-  ].sort();
-  byId("pipelineFilter").innerHTML =
-    `<option value="">All statuses</option>` +
-    statuses.map((status) => `<option value="${status}">${status}</option>`).join("");
+function populateTrainerPicker() {
+  // Only people the payout data actually knows about; the roster has 597 rows.
+  const active = payoutRows().filter(row => row.acceptedTasks || row.paidTasks)
+    .sort((a, b) => String(a.name || a.email).localeCompare(String(b.name || b.email)));
+  const select = byId('trainerFilter'), selected = select.value;
+  select.innerHTML = '<option value="">All trainers</option>' + active.map(row =>
+    `<option value="${esc(row.email.toLowerCase())}">${esc(row.name || row.email)} — ${fmt(row.acceptedTasks)} accepted, ${fmt(row.paidTasks)} paid</option>`).join('');
+  select.value = active.some(row => row.email.toLowerCase() === selected) ? selected : '';
 }
 
 function filteredTrainers() {
   const search = byId("personSearch").value.trim().toLowerCase();
   const payment = byId('paymentFilter').value;
   const bench = byId('benchFilter').value;
+  const picked = byId('trainerFilter').value;
   return payoutRows()
-    .filter(row => !bench || (row.team === 'Company' ? 'company' : ['Computer A', 'Computer B'].includes(row.team) ? 'computer' : 'unassigned') === bench)
+    .filter(row => !picked || row.email.toLowerCase() === picked)
+    .filter(row => !bench || benchOf(row.team) === bench)
     .filter(row => !payment || (payment === 'pending' ? row.pendingTasks > 0 : payment === 'paid' ? row.paidTasks > 0 : payment === 'no-paid' ? row.paidTasks === 0 : row.acceptedTasks === 0))
     .filter((trainer) => {
       if (!search) return true;
@@ -426,37 +542,23 @@ function filteredTrainers() {
     .sort((a, b) => b.pendingAmount - a.pendingAmount || b.acceptedTasks - a.acceptedTasks);
 }
 
-function acceptedReconciliation() {
-  const acceptedByEmail = new Map();
-  const roster = new Map(data.trainers.map(row => [row.email.toLowerCase(), row]));
-  const records = finalisationRows.map(row => ({...row, id: `finalisation:${row.folder}`,
-    source: 'Finalisation', name: row.declared_name || row.folder,
-    email: row.trainer?.email?.toLowerCase(), contested: row.owner_contested,
-    displayName: row.declared_short || row.folder, date: (row.updated || '').slice(0, 10)}));
-  (gcsPipeline?.current || []).filter(row => row.status === 'Accepted').forEach(row => {
-    const email = String(row.trainer || '').trim().toLowerCase();
-    records.push({...row, id: `current:${row.ownerKey}:${row.id}`, source: 'Current pipeline',
-      name: row.task, displayName: row.task || row.taskId, folder: row.taskId,
-      email, trainer: roster.get(email), attribution: 'GCS evaluation owner'});
-  });
-  const audit = window.reconcileAcceptedTasks(records);
-  audit.groups.forEach(group => {
-    if (roster.has(group.email)) acceptedByEmail.set(group.email, (acceptedByEmail.get(group.email) || 0) + 1);
-  });
-  return {
-    ...audit,
-    acceptedByEmail,
-    unifiedFolders: audit.groups.length,
-    rosterLinked: [...acceptedByEmail.values()].reduce((total, count) => total + count, 0),
-  };
+function ledgerAcceptedByEmail() {
+  // The 240 dashboard acceptance layer is the payout source of truth; one row per collapsed ledger task.
+  const accepted = new Map();
+  payoutLedgerTasks.filter(task => task.payable).forEach(task => accepted.set(task.email, (accepted.get(task.email) || 0) + 1));
+  return accepted;
+}
+
+function benchOf(team) {
+  return team === 'Company' ? 'company' : ['Computer A', 'Computer B'].includes(team) ? 'computer' : 'unassigned';
 }
 
 function payoutRows() {
-  const acceptedByEmail = acceptedReconciliation().acceptedByEmail;
+  const acceptedByEmail = payoutLedger ? ledgerAcceptedByEmail() : new Map();
   const paidByEmail = new Map((data.paidOut || []).map(row => [String(row.email || '').toLowerCase(), row]));
-  return scopedTrainers().map(row => {
+  return data.trainers.map(row => {
     const paid = paidByEmail.get(row.email.toLowerCase());
-    const acceptedTasks = finalisationSource || gcsPipeline ? (acceptedByEmail.get(row.email.toLowerCase()) || 0) : row.acceptedTasks;
+    const acceptedTasks = payoutLedger ? (acceptedByEmail.get(row.email.toLowerCase()) || 0) : row.acceptedTasks;
     const paidTasks = Number(paid?.approvedTasks) || 0;
     const paidAmount = paid?.paidAmount == null ? paidTasks * 300 : Number(paid.paidAmount);
     const pendingTasks = Math.max(acceptedTasks - paidTasks, 0);
@@ -476,14 +578,28 @@ function renderPayoutSummary(rows) {
   ]
     .map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${value}</strong></div>`)
     .join("");
-  const reconciliation = acceptedReconciliation();
-  setText('payoutSourceStatus', `Accepted: ${fmt(reconciliation.unifiedFolders)} unique task groups / ${fmt(reconciliation.duplicateCount)} duplicate records excluded / Paid: paid out tab`);
+  if (payoutLedger) {
+    const totals = payoutLedger.totals;
+    setText('payoutSourceStatus', `Accepted: ${fmt(totals.acceptedTasks)} tasks from the task wise tab across ${fmt(totals.ledgerTasks)} unique tasks / ${fmt(totals.duplicateRows)} duplicate rows excluded, ${fmt(totals.invalidTasks)} rows flagged Valid = 0 still counted / Paid: ${fmt(totals.paidTasks)} tasks (${money(totals.paidAmount)}) across ${fmt(totals.paymentRequests)} payment requests, ${fmt(totals.unitemisedPaidTasks)} of them (${money(totals.unitemisedPaidAmount)}) paid beyond the tasks listed for that person / Pending: ${fmt(totals.pendingTasks)} tasks (${money(totals.pendingAmount)})`);
+    return;
+  }
+  setText('payoutSourceStatus', 'Payout ledger unavailable. Accepted tasks fall back to the workbook snapshot.');
 }
 
 function renderTrainerRows() {
   const rows = filteredTrainers();
   renderPayoutSummary(rows);
-  byId("trainerRows").innerHTML = rows
+  renderPayoutLedger();
+  const pages = Math.max(1, Math.ceil(rows.length / PAYOUT_PAGE_SIZE));
+  payoutPage = Math.min(Math.max(payoutPage, 0), pages - 1);
+  const from = payoutPage * PAYOUT_PAGE_SIZE;
+  const page = rows.slice(from, from + PAYOUT_PAGE_SIZE);
+  setText('payoutPage', rows.length
+    ? `${fmt(from + 1)}-${fmt(from + page.length)} of ${fmt(rows.length)} ${rows.length === 1 ? 'person' : 'people'} / page ${fmt(payoutPage + 1)} of ${fmt(pages)}`
+    : 'No people match these filters');
+  byId('payoutPrevious').disabled = payoutPage === 0;
+  byId('payoutNext').disabled = payoutPage >= pages - 1;
+  byId("trainerRows").innerHTML = page
     .map(
       (row) => `
         <tr>
@@ -508,7 +624,7 @@ function renderTrainerRows() {
 }
 
 function renderTeams() {
-  const teams = Object.entries(groupBy(scopedTrainers(), (trainer) => trainer.team)).sort(
+  const teams = Object.entries(groupBy(data.trainers, (trainer) => trainer.team)).sort(
     (a, b) => sum(b[1], "acceptedTasks") - sum(a[1], "acceptedTasks"),
   );
   byId("teamGrid").innerHTML = teams
@@ -528,13 +644,26 @@ function renderTeams() {
     .join("");
 }
 
+const PIPELINE_FILTERS = [
+  {id: 'pipelineFilter', label: 'statuses', of: task => task.status || 'Unknown'},
+  {id: 'pipelineType', label: 'types', of: task => pipelineType(task)},
+  {id: 'pipelineDomainFilter', label: 'domains', of: task => pipelineDomain(task)},
+  {id: 'pipelineTrainer', label: 'trainers', of: task => task.trainer || 'Unattributed'},
+];
+
+function pipelinePopulation() {
+  return gcsPipeline ? gcsPipeline[byId('pipelineMode').value] || [] : [];
+}
+
 function filteredPipelineTasks() {
   const start = byId('pipelineStart').value;
   const end = byId('pipelineEnd').value;
-  const status = byId('pipelineFilter').value;
+  const search = byId('pipelineSearch').value.trim().toLowerCase();
   if (start && end && start > end) return [];
-  return scopedTasks().filter(task => {
-    if (status && (task.status || 'Unknown') !== status) return false;
+  const chosen = PIPELINE_FILTERS.map(filter => [filter, byId(filter.id).value]).filter(([, value]) => value);
+  return pipelinePopulation().filter(task => {
+    if (!chosen.every(([filter, value]) => filter.of(task) === value)) return false;
+    if (search && ![task.task, task.taskId, task.trainer].join(' ').toLowerCase().includes(search)) return false;
     if (!start && !end) return true;
     return /^\d{4}-\d{2}-\d{2}$/.test(task.date) && (!start || task.date >= start) && (!end || task.date <= end);
   });
@@ -561,9 +690,45 @@ function renderPipeline(resetPage = true) {
   ).sort((a, b) => b[1] - a[1]);
 
   byId("pipelineStats").innerHTML = statuses
-    .map(([status, count]) => `<article class="status-card"><span>${status}</span><strong>${fmt(count)}</strong></article>`)
-    .join("");
+    .map(([status, count]) => `<article class="status-card" data-status="${esc(status)}"><span>${esc(status)}</span><strong>${fmt(count)}</strong></article>`)
+    .join("") || '<p class="empty">No records match these filters.</p>';
+  renderPipelineTimeline(allTasks, statuses);
   renderPipelineRows(allTasks);
+}
+
+function renderPipelineTimeline(rows, statuses) {
+  // Volume per day, split by status: a stacked column, because the question is
+  // how much work landed each day and what happened to it.
+  const dated = rows.filter(row => /^\d{4}-\d{2}-\d{2}$/.test(row.date));
+  const byDate = new Map();
+  dated.forEach(row => {
+    if (!byDate.has(row.date)) byDate.set(row.date, new Map());
+    const day = byDate.get(row.date);
+    const key = row.status || 'Unknown';
+    day.set(key, (day.get(key) || 0) + 1);
+  });
+  const days = [...byDate.keys()].sort();
+  const order = statuses.map(([status]) => status);
+  const tallest = Math.max(...days.map(day => [...byDate.get(day).values()].reduce((total, value) => total + value, 0)), 1);
+  byId('pipelineTimeline').innerHTML = days.length ? `
+    <figcaption>${fmt(dated.length)} dated records across ${fmt(days.length)} days${dated.length === rows.length ? '' : ` / ${fmt(rows.length - dated.length)} undated records not plotted`}</figcaption>
+    <div class="timeline-plot">
+      ${days.map(day => {
+        const counts = byDate.get(day);
+        const total = [...counts.values()].reduce((sum, value) => sum + value, 0);
+        return `<div class="timeline-day">
+          <div class="timeline-total">${fmt(total)}</div>
+          <div class="timeline-column" style="height:${Math.max((total / tallest) * 100, 1.5)}%">
+            ${order.filter(status => counts.get(status)).map(status =>
+              `<span class="timeline-seg" data-status="${esc(status)}" style="flex:${counts.get(status)}" data-tip="${esc(day)} / ${esc(status)}: ${fmt(counts.get(status))} of ${fmt(total)} records"></span>`).join('')}
+          </div>
+          <div class="timeline-date">${esc(day.slice(5))}</div>
+        </div>`;
+      }).join('')}
+    </div>
+    <div class="chart-key">${order.map(status =>
+      `<span class="key-item" data-status="${esc(status)}"><i></i>${esc(status)}</span>`).join('')}</div>` :
+    '<p class="empty">No dated records in this selection.</p>';
 }
 
 function renderPipelineRows(rows) {
@@ -581,97 +746,201 @@ function renderPipelineRows(rows) {
           <td>${esc(task.task)}<div class="muted">${esc(task.taskId || '')}</div></td>
           <td>${esc(task.trainer || "-")}</td>
           <td>${esc(pipelineType(task))}</td>
-          <td>${esc(pipelineDomain(task))}</td>
-          <td><span class="pill">${esc(task.status || "Unknown")}</span></td>
+          <td><span class="tag" data-domain="${esc(pipelineDomain(task))}">${esc(pipelineDomain(task))}</span></td>
+          <td><span class="pill" data-status="${esc(task.status || 'Unknown')}">${esc(task.status || "Unknown")}</span></td>
         </tr>
       `,
     )
     .join("") || '<tr><td colspan="6" class="empty">No pipeline records match these filters.</td></tr>';
 }
 
-function renderPlan() {
-  byId("planCharts").innerHTML = data.plan
-    .map((bench) => {
-      const max = Math.max(...bench.plan, ...bench.actual, 1);
-      const rows = bench.dates
-        .map((day, index) => {
-          const plan = bench.plan[index] || 0;
-          const actual = bench.actual[index] || 0;
-          return `
-            <div class="plan-day">
-              <strong>${day.slice(5) || "-"}</strong>
-              <div class="plan-pair">
-                <div class="thin-bar plan"><span style="width:${safePct(plan, max)}"></span></div>
-                <div class="thin-bar actual"><span style="width:${safePct(actual, max)}"></span></div>
-              </div>
-              <span>${fmt(actual)} / ${fmt(plan)}</span>
-            </div>
-          `;
-        })
-        .join("");
-      return `<div class="plan-chart"><h3>${bench.bench}</h3><div class="chart-bars">${rows}</div></div>`;
-    })
-    .join("");
-}
+// Attainment against the daily commitment. A sequential ramp, because the value
+// is a magnitude; a day with no commitment is not 0% and gets its own neutral.
+const ATTAINMENT_BANDS = [
+  {limit: 0.25, step: 1, label: 'under 25%'},
+  {limit: 0.5, step: 2, label: '25 to 50%'},
+  {limit: 0.75, step: 3, label: '50 to 75%'},
+  {limit: 1, step: 4, label: '75 to 100%'},
+  {limit: Infinity, step: 5, label: 'at or above plan'},
+];
 
+function renderPlan() {
+  const benches = data.plan || [];
+  const dates = benches[0]?.dates || [];
+  if (!benches.length || !dates.length) {
+    byId('planCharts').innerHTML = '<p class="empty">No daily plan recorded in the workbook.</p>';
+    return;
+  }
+  const cells = bench => bench.dates.map((day, index) => {
+    const plan = Number(bench.plan[index]) || 0;
+    const actual = Number(bench.actual[index]) || 0;
+    if (!plan) {
+      return `<td class="heat-cell" data-step="none" data-tip="${esc(bench.bench)} ${esc(day)}: no commitment set"><span>-</span></td>`;
+    }
+    const share = actual / plan;
+    const band = ATTAINMENT_BANDS.find(entry => share < entry.limit) || ATTAINMENT_BANDS.at(-1);
+    return `<td class="heat-cell" data-step="${band.step}" data-tip="${esc(bench.bench)} ${esc(day)}: ${fmt(actual)} of ${fmt(plan)} tasks, ${Math.round(share * 100)}% of plan">
+      <span>${Math.round(share * 100)}%</span><small>${fmt(actual)}/${fmt(plan)}</small></td>`;
+  }).join('');
+  byId('planCharts').innerHTML = `
+    <div class="heatmap-wrap">
+      <table class="heatmap">
+        <thead><tr><th scope="col">Bench</th>${dates.map(day => `<th scope="col">${esc(day.slice(5))}</th>`).join('')}</tr></thead>
+        <tbody>${benches.map(bench => `<tr><th scope="row">${esc(bench.bench)}</th>${cells(bench)}</tr>`).join('')}</tbody>
+      </table>
+    </div>
+    <div class="heat-key">
+      <span class="heat-key-label">Share of the day's commitment delivered</span>
+      <span class="heat-scale">
+        ${ATTAINMENT_BANDS.map(band => `<i data-step="${band.step}" title="${band.label}"></i>`).join('')}
+      </span>
+      <span class="heat-key-ends"><b>0%</b><b>100%+</b></span>
+      <span class="heat-key-none"><i data-step="none"></i>No commitment set</span>
+    </div>
+    <p class="muted footnote">${benches.map(bench => {
+      const planned = bench.plan.reduce((total, value) => total + (Number(value) || 0), 0);
+      const done = bench.actual.reduce((total, value) => total + (Number(value) || 0), 0);
+      return `${esc(bench.bench)}: ${fmt(done)} of ${fmt(planned)} planned tasks delivered (${Math.round((done / (planned || 1)) * 100)}%)`;
+    }).join(' / ')}</p>`;
+}
 
 function wireEvents() {
   byId('pipelinePrevious').addEventListener('click',()=>{pipelinePage--;renderPipeline(false);});
   byId('pipelineNext').addEventListener('click',()=>{pipelinePage++;renderPipeline(false);});
   byId('refreshGcsPipeline').addEventListener('click', refreshGcsPipeline);
   byId('pipelineMode').addEventListener('change', () => { populateFilters(); renderPipeline(); renderDonut(); });
-  const finalisationFilters = ['finalisationBench','finalisationOwnership','duplicateFilter','finalisationType','finalisationDomain','finalisationStart','finalisationEnd'];
-  [...finalisationFilters, 'finalisationSourceFilter'].forEach(id=>byId(id).addEventListener('change',renderFinalisation));
+  const finalisationFilters = ['finalisationBench','finalisationOwnership','duplicateFilter','finalisationType','finalisationDomain','finalisationStart','finalisationEnd','finalisationCohort'];
+  [...finalisationFilters, 'finalisationOutcome'].forEach(id=>byId(id).addEventListener('change',renderFinalisation));
   byId('finalisationSearch').addEventListener('input', renderFinalisation);
   byId('resetFinalisationFilters').addEventListener('click', () => {
     [...finalisationFilters, 'finalisationSearch'].forEach(id => byId(id).value = '');
-    byId('finalisationSourceFilter').value = 'Finalisation';
+    byId('finalisationOutcome').value = 'accepted';
     renderFinalisation();
   });
   byId('refreshFinalisation').addEventListener('click',loadFinalisation);
-  document.querySelectorAll(".tab").forEach((button) => {
-    button.addEventListener("click", () => switchView(button.dataset.view));
+  const ledgerFilters = ['ledgerPayment','ledgerType','ledgerValidity','ledgerDuplicates'];
+  const resetLedgerPage = () => { ledgerPage = 0; renderPayoutLedger(); };
+  ledgerFilters.forEach(id => byId(id).addEventListener('change', resetLedgerPage));
+  byId('ledgerSearch').addEventListener('input', resetLedgerPage);
+  byId('resetLedgerFilters').addEventListener('click', () => {
+    [...ledgerFilters, 'ledgerSearch'].forEach(id => byId(id).value = '');
+    ledgerPage = 0;
+    renderPayoutLedger();
   });
-  document.querySelectorAll("[data-jump]").forEach((button) => {
-    button.addEventListener("click", () => switchView(button.dataset.jump));
+  const navButtons = [...document.querySelectorAll('.viewnav-tab')];
+  navButtons.forEach((button, index) => {
+    button.tabIndex = button.classList.contains('is-active') ? 0 : -1;
+    button.addEventListener('click', () => switchView(button.dataset.view));
+    button.addEventListener('keydown', event => {
+      const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
+      if (!step) return;
+      event.preventDefault();
+      const next = navButtons[(index + step + navButtons.length) % navButtons.length];
+      next.focus();
+      switchView(next.dataset.view);
+    });
   });
-  byId("personSearch").addEventListener("input", renderTrainerRows);
-  Object.keys(filterKeys).forEach(id => byId(id).addEventListener('change', refreshScope));
-  byId('paymentFilter').addEventListener('change', renderTrainerRows);
-  byId('benchFilter').addEventListener('change', renderTrainerRows);
-  byId('resetFilters').addEventListener('click', () => {
-    Object.keys(filterKeys).forEach(id => byId(id).value = '');
-    byId('personSearch').value = ''; byId('paymentFilter').value = ''; byId('benchFilter').value = ''; byId('pipelineFilter').value = '';
-    byId('pipelineStart').value = ''; byId('pipelineEnd').value = '';
-    byId('finalisationBench').value = ''; byId('finalisationOwnership').value = '';
-    byId('duplicateFilter').value = '';
-    [...finalisationFilters, 'finalisationSearch'].forEach(id => byId(id).value = '');
-    byId('finalisationSourceFilter').value = 'Finalisation';
-    refreshScope();
+  document.querySelectorAll('[data-jump]').forEach(button => {
+    button.addEventListener('click', () => switchView(button.dataset.jump));
   });
-  ['pipelineFilter', 'pipelineStart', 'pipelineEnd'].forEach(id => byId(id).addEventListener('change', renderPipeline));
+  window.addEventListener('popstate', () => switchView(location.hash.slice(1) || 'command', false));
+  byId('themeToggle').addEventListener('click', () => {
+    applyTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
+  });
+  byId('globalSearch').addEventListener('input', event => {
+    const active = document.querySelector('.viewnav-tab.is-active')?.dataset.view;
+    const target = VIEW_SEARCH[active];
+    if (!target) return;
+    byId(target).value = event.target.value;
+    byId(target).dispatchEvent(new Event('input'));
+  });
+  const resetPayoutPages = () => { payoutPage = 0; ledgerPage = 0; renderTrainerRows(); };
+  byId('personSearch').addEventListener('input', resetPayoutPages);
+  byId('trainerFilter').addEventListener('change', resetPayoutPages);
+  byId('payoutPrevious').addEventListener('click', () => { payoutPage -= 1; renderTrainerRows(); });
+  byId('payoutNext').addEventListener('click', () => { payoutPage += 1; renderTrainerRows(); });
+  byId('ledgerPrevious').addEventListener('click', () => { ledgerPage -= 1; renderPayoutLedger(); });
+  byId('ledgerNext').addEventListener('click', () => { ledgerPage += 1; renderPayoutLedger(); });
+  byId('paymentFilter').addEventListener('change', resetPayoutPages);
+  byId('benchFilter').addEventListener('change', resetPayoutPages);
+  const pipelineControls = [...PIPELINE_FILTERS.map(filter => filter.id), 'pipelineStart', 'pipelineEnd'];
+  pipelineControls.forEach(id => byId(id).addEventListener('change', () => renderPipeline()));
+  byId('pipelineSearch').addEventListener('input', () => renderPipeline());
   byId('clearPipelineDates').addEventListener('click', () => {
-    byId('pipelineStart').value = ''; byId('pipelineEnd').value = '';
+    [...pipelineControls, 'pipelineSearch'].forEach(id => byId(id).value = '');
+    populateFilters();
     renderPipeline();
   });
   const popover = byId('infoPopover');
-  function showInfo(button) {
-    popover.textContent = infoCopy[button.dataset.info];
-    popover.hidden = false;
-    const rect = button.getBoundingClientRect();
-    popover.style.left = `${Math.max(12, Math.min(rect.left, window.innerWidth - popover.offsetWidth - 12))}px`;
-    popover.style.top = `${Math.max(12, Math.min(rect.bottom + 10, window.innerHeight - popover.offsetHeight - 12))}px`;
+  let openButton = null;
+  function hideInfo() {
+    popover.hidden = true;
+    if (openButton) openButton.setAttribute('aria-expanded', 'false');
+    openButton = null;
   }
-  document.querySelectorAll('.info').forEach(button => {
-    button.addEventListener('mouseenter',()=>showInfo(button));
-    button.addEventListener('mouseleave',()=>popover.hidden=true);
-    button.addEventListener('focus',()=>showInfo(button));
-    button.addEventListener('blur',()=>popover.hidden=true);
-    button.addEventListener('click',event=>{event.stopPropagation();showInfo(button);});
+  function showInfo(button) {
+    const copy = infoCopy[button.dataset.info];
+    if (!copy) return;
+    if (openButton) openButton.setAttribute('aria-expanded', 'false');
+    popover.textContent = copy;
+    popover.hidden = false;
+    button.setAttribute('aria-expanded', 'true');
+    openButton = button;
+    place(button);
+  }
+  function place(element) {
+    const anchor = element.getBoundingClientRect();
+    const box = popover.getBoundingClientRect();
+    const left = Math.min(Math.max(12, anchor.left + anchor.width / 2 - box.width / 2), window.innerWidth - box.width - 12);
+    const below = anchor.bottom + 9;
+    popover.style.left = `${left}px`;
+    popover.style.top = `${below + box.height > window.innerHeight - 12 ? Math.max(12, anchor.top - box.height - 9) : below}px`;
+  }
+  document.querySelectorAll('.why').forEach(button => {
+    button.type = 'button';
+    button.setAttribute('aria-expanded', 'false');
+    button.addEventListener('mouseenter', () => showInfo(button));
+    button.addEventListener('mouseleave', hideInfo);
+    button.addEventListener('focus', () => showInfo(button));
+    button.addEventListener('blur', hideInfo);
+    button.addEventListener('click', event => {
+      event.stopPropagation();
+      if (openButton === button) hideInfo(); else showInfo(button);
+    });
   });
-  document.addEventListener('click',()=>popover.hidden=true);
-  document.addEventListener('keydown',event=>{if(event.key==='Escape')popover.hidden=true;});
-  window.addEventListener('scroll',()=>popover.hidden=true, true);
+  // Chart segments get the same popover, on hover, with their own copy.
+  document.addEventListener('mouseover', event => {
+    const target = event.target.closest('[data-tip]');
+    if (target) { popover.textContent = target.dataset.tip; popover.hidden = false; place(target); }
+  });
+  document.addEventListener('mouseout', event => {
+    if (event.target.closest('[data-tip]') && !openButton) popover.hidden = true;
+  });
+  document.addEventListener('click', hideInfo);
+  document.addEventListener('keydown', event => { if (event.key === 'Escape') hideInfo(); });
+  window.addEventListener('scroll', hideInfo, true);
+}
+
+function applyTheme(theme) {
+  const light = theme === 'light';
+  document.documentElement.dataset.theme = light ? 'light' : 'dark';
+  const button = byId('themeToggle');
+  button.setAttribute('aria-pressed', String(light));
+  setText('themeToggleLabel', light ? 'Dark mode' : 'Light mode');
+  try { localStorage.setItem('shannon-theme', light ? 'light' : 'dark'); } catch { /* private window */ }
+  if (gcsPipeline) renderDonut();
+}
+
+// The topbar search drives whichever view owns a search box.
+const VIEW_SEARCH = {payouts: 'personSearch', finalisation: 'finalisationSearch'};
+
+function syncSearch(viewName) {
+  const target = VIEW_SEARCH[viewName];
+  const box = byId('globalSearch');
+  box.closest('.search').classList.toggle('is-off', !target);
+  box.disabled = !target;
+  box.placeholder = target ? (viewName === 'payouts' ? 'Search a person, team or manager' : 'Search a task, folder or owner') : 'Search is available on Payouts and Finalisation';
+  box.value = target ? byId(target).value : '';
 }
 
 function init() {
@@ -684,9 +953,13 @@ function init() {
   renderTeams();
   renderPipeline();
   renderPlan();
+  let stored = null;
+  try { stored = localStorage.getItem('shannon-theme'); } catch { /* private window */ }
+  applyTheme(stored === 'light' ? 'light' : 'dark');
   wireEvents();
-  refreshScope();
-  loadFinalisation();
+  renderEverything();
+  switchView(location.hash.slice(1) || 'command', false);
+  loadPayoutLedger();
   loadGcsPipeline();
 }
 
