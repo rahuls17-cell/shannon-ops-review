@@ -68,6 +68,19 @@ The current interface follows the Harbor 240 dashboard language: pale blue-gray 
 
 ## Published pipeline refresh
 
+Finalisation defaults to Finalisation folders only. Its explicit source selector
+can include current Accepted records or both sources. Search, bench, resolved
+ownership, recorded type, domain, inclusive record dates and duplicate status
+combine with global people filters. All four summary cards and the audit line
+count the same visible rows. Duplicate identities are computed before filtering;
+filters never pick a different representative. Ownership conflicts are unassigned.
+Missing domain/type values remain Not recorded. Finalisation record dates are
+source update dates; current pipeline dates are submission dates, not acceptance
+dates. Reload Finalisation feed fetches the published Harbor feed.
+
+Run `node tools/test-finalisation-filters.cjs` for filter invariants and
+`tools/check-finalisation-browser.cjs` for UI checks with Playwright/Edge.
+
 Command uses current GCS evaluations and the Finalisation inventory. Its accepted
 headline counts reconciled task groups once, including unassigned groups when no
 person filter is selected. Separate cards show pipeline acceptance, Finalisation

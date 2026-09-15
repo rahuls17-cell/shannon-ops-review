@@ -227,14 +227,22 @@
           <div class="view-head"><div><p class="eyebrow">Client QC / Accepted iteration 2</p><h1 id="finalisation-title">Finalisation accepted tasks</h1></div><a href="https://rahuls17-cell.github.io/harbor-pipeline-dashboard/" target="_blank" rel="noopener">Harbor source</a></div>
           <p id="finalisationStatus" role="status">Loading finalisation data...</p>
           <div class="pipeline-controls">
+            <label>Source<select id="finalisationSourceFilter"><option value="Finalisation">Finalisation folders</option><option value="Current pipeline">Current pipeline accepted</option><option value="">Both accepted sources</option></select></label>
+            <label>Search task or owner<input id="finalisationSearch" type="search" placeholder="Task, folder, name or email" /></label>
             <label>Bench<select id="finalisationBench"><option value="">All benches</option><option value="company">Company bench</option><option value="computer">Computer bench</option><option value="unassigned">Unassigned</option></select></label>
-            <label>Ownership<select id="finalisationOwnership"><option value="">All ownership</option><option>Matched owner</option><option>Name match only</option><option>Contested owner</option><option>Owner missing</option><option>Roster match unresolved</option><option>GCS evaluation owner</option></select></label>
-            <label>Task records<select id="duplicateFilter" aria-label="Filter duplicate task records"><option value="">All task records</option><option value="unique">Unique records only</option><option value="duplicates">Duplicate records only</option><option value="groups">All records in duplicate groups</option></select></label>
-            <button id="refreshFinalisation" class="text-action">Refresh data</button><button class="info" data-info="finalisation" aria-label="About finalisation accepted counts">i</button><button class="info" data-info="duplicates" aria-label="About duplicate task records">i</button>
+            <label>Ownership<select id="finalisationOwnership"><option value="">All ownership states</option><option value="linked">Roster-linked</option><option value="unlinked">Owner recorded, not roster-linked</option><option value="missing">Owner not recorded</option><option value="conflict">Conflicting owners</option></select></label>
+            <label>Type<select id="finalisationType"><option value="">All types</option><option>Connector</option><option>Non-connector</option><option>Not recorded</option></select></label>
+            <label>Domain<select id="finalisationDomain"><option value="">All domains</option></select></label>
+            <label>Start date<input id="finalisationStart" type="date" aria-describedby="finalisationDateError" /></label>
+            <label>End date<input id="finalisationEnd" type="date" aria-describedby="finalisationDateError" /></label>
+            <label>Duplicate status<select id="duplicateFilter" aria-label="Filter duplicate task records"><option value="">All records</option><option value="unique">Representative records only</option><option value="duplicates">Extra duplicate records only</option><option value="groups">Members of duplicate groups</option></select></label>
+            <div class="finalisation-actions"><button id="resetFinalisationFilters" class="text-action">Reset Finalisation filters</button>
+            <button id="refreshFinalisation" class="text-action">Reload Finalisation feed</button><button class="info" data-info="finalisation" aria-label="About Finalisation filters">i</button><button class="info" data-info="duplicates" aria-label="About duplicate task records">i</button></div>
           </div>
+          <p id="finalisationDateError" class="negative" role="alert" hidden>Start date must be on or before end date.</p>
           <div id="finalisationSummary" class="summary-row"></div>
           <p id="finalisationAudit" class="muted finalisation-audit" role="status"></p>
-          <div class="surface table-surface"><div class="table-wrap"><table><thead><tr><th>Accepted task / Folder</th><th>Trainer</th><th>Team</th><th>Ownership evidence</th><th>Type</th><th>Added</th><th>Count status</th></tr></thead><tbody id="finalisationRows"></tbody></table></div></div>
+          <div class="surface table-surface"><div class="table-wrap"><table><thead><tr><th>Accepted task / Folder</th><th>Trainer</th><th>Team</th><th>Ownership evidence</th><th>Type</th><th>Domain</th><th>Record date</th><th>Count status</th></tr></thead><tbody id="finalisationRows"></tbody></table></div></div>
         </section>
       </main>
     </div>

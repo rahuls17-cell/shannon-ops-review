@@ -972,6 +972,14 @@ input:focus, select:focus { outline: 3px solid rgba(15,129,121,.18); border-colo
 #commandSummary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .command-source-head { margin-top: 24px; }
 .command-source-status { overflow-wrap: anywhere; }
+#view-finalisation .pipeline-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: end; }
+#view-finalisation .pipeline-controls label { min-width: 0; display: grid; }
+#view-finalisation .pipeline-controls input,
+#view-finalisation .pipeline-controls select { width: 100%; max-width: none; min-width: 0; }
+.finalisation-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+@media (max-width: 760px) {
+  #view-finalisation .pipeline-controls { grid-template-columns: 1fr; }
+}
 .bench-comparison .bench-stack { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 @media (max-width: 760px) {
   #commandSummary { grid-template-columns: repeat(2, minmax(0, 1fr)); }

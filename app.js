@@ -66,8 +66,8 @@ function pipelineType(task) {
   return 'Not recorded';
 }
 const infoCopy = {
-  finalisation: 'The headline cards show the Harbor Finalisation source only: accepted folders, distinct task names, roster-linked folders, and unresolved owner folders. The duplicate audit below compares that source with current GCS Accepted records. Payouts counts each reconciled task group once.',
-  duplicates: 'Duplicate records are accepted source records that belong to a task group already represented by another Finalisation or current Accepted record. They remain visible for audit, while accepted and payout totals count the group once. Conflicting owner groups are not assigned to a person.',
+  finalisation: 'Source explicitly selects Finalisation folders, current pipeline Accepted records, or both. Every card and audit number uses the displayed filtered rows. Global trainer/team/leader/manager filters combine with these filters. Ownership uses the reconciled group owner; conflicts stay unassigned. Type uses recorded Finalisation flags or the workbook mapping for current records; missing values stay Not recorded. Finalisation domain uses its source field; current domain comes from the pipeline export. Record date is Finalisation updated date or current evaluation submission date, not acceptance date. Date bounds are inclusive; missing dates are excluded. Reload fetches the published Harbor feed; it does not trigger a bucket scan. Reset Finalisation filters retains global people filters.',
+  duplicates: 'Duplicate identity is computed across both accepted sources before filtering. Representative records are the single retained record per task group; extra duplicate records are excluded from accepted totals. Members of duplicate groups includes representatives and extras. Filters never change a representative or switch sources. A representative may be outside your selected source or filters. These matches follow existing name/hash/family reconciliation; conflicting owners remain unassigned.',
   dates: 'Filters Pipeline records by the workbook Date column, including both start and end dates. Either date can be left blank for an open-ended range. Undated records are excluded when a date is selected. Status counts and rows use the same filters. Payout calculations are unaffected.',
   bench: 'Company bench includes the Company team. Computer bench includes Computer A and Computer B. Other or missing teams appear under Unassigned bench. This payout-only filter combines with team, leader, manager, trainer, search and payment state. Totals sum the matching person records without changing payment formulas.',
   accepted: 'Unique accepted task groups across Finalisation folders and current pipeline Accepted records. Uses the same reconciliation as Payouts. All-team totals include unassigned groups; trainer filters include only groups with an unambiguous matching owner. Financial estimates cover roster-linked owners only.',
@@ -103,37 +103,35 @@ function refreshScope() {
 
 function renderFinalisation() {
   if (!finalisationSource) return;
-  const scope = new Set(scopedTrainers().map(row => row.email));
   const hasScope = Object.keys(filterKeys).some(id => byId(id).value);
-  const bench = byId('finalisationBench').value;
-  const ownership = byId('finalisationOwnership').value;
-  const duplicateFilter = byId('duplicateFilter').value;
   const audit = acceptedReconciliation();
-  const sourceRows = audit.rows.filter(row => row.source === 'Finalisation');
-  const scopedSource = sourceRows.filter(row => {
-    const team = row.trainer?.team;
-    const rowBench = team === 'Company' ? 'company' : ['Computer A','Computer B'].includes(team) ? 'computer' : 'unassigned';
-    return (!hasScope || (row.trainer && scope.has(row.trainer.email))) && (!bench || bench === rowBench) && (!ownership || row.attribution === ownership);
-  });
-  const scoped = duplicateFilter === 'duplicates' || duplicateFilter === 'groups'
-    ? audit.rows.filter(row => {
-      const team = row.trainer?.team;
-      const rowBench = team === 'Company' ? 'company' : ['Computer A','Computer B'].includes(team) ? 'computer' : 'unassigned';
-      return (!hasScope || (row.trainer && scope.has(row.trainer.email))) && (!bench || bench === rowBench) && (!ownership || row.attribution === ownership);
-    })
-    : scopedSource;
-  const rows = scoped.filter(row => !duplicateFilter || (duplicateFilter === 'duplicates' ? row.duplicate : duplicateFilter === 'groups' ? row.groupSize > 1 : !row.duplicate));
-  const sourceDistinct = new Set(scopedSource.map(row => String(row.declared_name || row.folder || '').toLowerCase().trim().replace(/^harbor\//, '')));
-  const sourceUnresolved = scopedSource.filter(row => row.domain == null).length;
-  const auditGroups = new Set(scoped.map(row => row.countedId));
+  const filters = {
+    source: byId('finalisationSourceFilter').value,
+    bench: byId('finalisationBench').value, ownership: byId('finalisationOwnership').value,
+    duplicates: byId('duplicateFilter').value, type: byId('finalisationType').value,
+    domain: byId('finalisationDomain').value, search: byId('finalisationSearch').value,
+    start: byId('finalisationStart').value, end: byId('finalisationEnd').value,
+    emails: hasScope ? scopedTrainers().map(row => row.email.toLowerCase()) : null
+  };
+  const records = audit.rows.map(row => row.source === 'Finalisation' ? row : {...row,
+    taskType: pipelineReference.get(taskKey(row.task)) || row.taskType});
+  const result = window.filterFinalisationRecords(records, filters, data.trainers);
+  const {rows} = result;
+  const domainSelect = byId('finalisationDomain');
+  const domains = [...new Set(result.population.map(row => row.filterDomain))].sort();
+  if (filters.domain && !domains.includes(filters.domain)) domains.push(filters.domain);
+  domainSelect.innerHTML = '<option value="">All domains</option>' + domains.map(value => `<option value="${esc(value)}">${esc(value)}</option>`).join('');
+  domainSelect.value = filters.domain;
+  byId('finalisationDateError').hidden = !result.invalidDates;
+  ['finalisationStart', 'finalisationEnd'].forEach(id => byId(id).setAttribute('aria-invalid', String(result.invalidDates)));
+  const distinct = new Set(rows.map(row => String(row.name || row.folder || '').toLowerCase().trim().replace(/^harbor\//, ''))).size;
   byId('finalisationSummary').innerHTML = [
-    ['Accepted folders', scopedSource.length], ['Distinct task names', sourceDistinct.size],
-    ['Roster-linked folders', scopedSource.length - sourceUnresolved], ['Unresolved owner folders', sourceUnresolved]
+    [filters.source === 'Finalisation' ? 'Finalisation folders shown' : 'Source records shown', rows.length], ['Distinct task names shown', distinct],
+    ['Roster-linked records shown', result.linked], ['Unassigned records shown', rows.length - result.linked]
   ].map(([label,value])=>`<div class="summary-item"><span>${label}</span><strong>${fmt(value)}</strong></div>`).join('');
-  const duplicateCount = audit.rows.filter(row => row.duplicate).length;
-  const conflictCount = audit.groups.filter(group => auditGroups.has(group.id) && group.conflict).length;
-  setText('finalisationAudit', `Reconciliation audit: ${fmt(audit.groups.length)} unique task groups / ${fmt(duplicateCount)} duplicate records excluded from counts / ${fmt(conflictCount)} ownership conflicts.`);
-  byId('finalisationRows').innerHTML = rows.map(row=>`<tr><td><div class="person"><strong>${esc(row.displayName)}</strong><span>${esc(row.source)} / ${esc(row.folder)}</span></div></td><td>${esc(row.trainer?.name || row.email || row.owner || 'Not recorded')}</td><td>${esc(row.trainer?.team || 'Unassigned')}</td><td>${esc(row.conflict ? 'Conflicting owners - excluded from person totals' : row.attribution)}<br><small>${esc(row.owner_source || '')}</small></td><td>${esc(row.source === 'Finalisation' ? (row.is_connector ? 'Connector' : 'Non-connector') : pipelineType(row))}</td><td>${esc(row.date)}</td><td><span class="pill">${row.duplicate ? 'Duplicate - excluded' : 'Counted once'}</span><div class="muted">${fmt(row.groupSize)} records in group</div>${row.duplicate ? `<small>Counted record: ${esc(row.countedId)}</small>` : ''}</td></tr>`).join('') || '<tr><td colspan="7" class="empty">No accepted records match these filters.</td></tr>';
+  setText('finalisationAudit', `${fmt(rows.length)} of ${fmt(result.population.length)} source records shown / ${fmt(result.groups)} task groups represented / ${fmt(result.duplicates)} duplicate records shown / ${fmt(result.conflicts)} owner-conflict groups shown${gcsPipeline ? '' : ' / Current pipeline unavailable: cross-source duplicate audit incomplete'}`);
+  const ownerLabels = {linked:'Roster-linked',unlinked:'Owner recorded, not roster-linked',missing:'Owner not recorded',conflict:'Conflicting owners'};
+  byId('finalisationRows').innerHTML = rows.map(row=>`<tr><td><div class="person"><strong>${esc(row.displayName)}</strong><span>${esc(row.source)} / ${esc(row.folder)}</span></div></td><td>${esc(row.resolvedTrainer?.name || 'Unassigned')}<br><small>${esc(row.resolvedTrainer?.email || row.email || row.owner || '')}</small></td><td>${esc(row.resolvedTrainer?.team || 'Unassigned')}</td><td>${ownerLabels[row.ownership]}<br><small>${esc(row.attribution || '')} / ${esc(row.owner_source || '')}</small></td><td>${esc(row.filterType)}</td><td>${esc(row.filterDomain)}</td><td>${esc(row.date || 'Not recorded')}</td><td><span class="pill">${row.duplicate ? 'Extra record - excluded' : 'Representative record'}</span><div class="muted">${fmt(row.groupSize)} records in group</div>${row.duplicate ? `<small>Representative: ${esc(row.countedId)}</small>` : ''}</td></tr>`).join('') || '<tr><td colspan="8" class="empty">No records match this source and filter selection.</td></tr>';
 }
 
 async function loadFinalisation() {
@@ -622,7 +620,14 @@ function wireEvents() {
   byId('pipelineNext').addEventListener('click',()=>{pipelinePage++;renderPipeline(false);});
   byId('refreshGcsPipeline').addEventListener('click', refreshGcsPipeline);
   byId('pipelineMode').addEventListener('change', () => { populateFilters(); renderPipeline(); renderDonut(); });
-  ['finalisationBench','finalisationOwnership','duplicateFilter'].forEach(id=>byId(id).addEventListener('change',renderFinalisation));
+  const finalisationFilters = ['finalisationBench','finalisationOwnership','duplicateFilter','finalisationType','finalisationDomain','finalisationStart','finalisationEnd'];
+  [...finalisationFilters, 'finalisationSourceFilter'].forEach(id=>byId(id).addEventListener('change',renderFinalisation));
+  byId('finalisationSearch').addEventListener('input', renderFinalisation);
+  byId('resetFinalisationFilters').addEventListener('click', () => {
+    [...finalisationFilters, 'finalisationSearch'].forEach(id => byId(id).value = '');
+    byId('finalisationSourceFilter').value = 'Finalisation';
+    renderFinalisation();
+  });
   byId('refreshFinalisation').addEventListener('click',loadFinalisation);
   document.querySelectorAll(".tab").forEach((button) => {
     button.addEventListener("click", () => switchView(button.dataset.view));
@@ -640,6 +645,8 @@ function wireEvents() {
     byId('pipelineStart').value = ''; byId('pipelineEnd').value = '';
     byId('finalisationBench').value = ''; byId('finalisationOwnership').value = '';
     byId('duplicateFilter').value = '';
+    [...finalisationFilters, 'finalisationSearch'].forEach(id => byId(id).value = '');
+    byId('finalisationSourceFilter').value = 'Finalisation';
     refreshScope();
   });
   ['pipelineFilter', 'pipelineStart', 'pipelineEnd'].forEach(id => byId(id).addEventListener('change', renderPipeline));
