@@ -182,6 +182,11 @@ async function loadGcsPipeline(manual = false) {
 }
 
 async function refreshGcsPipeline() {
+  if (!['127.0.0.1', 'localhost'].includes(location.hostname)) {
+    window.open('https://github.com/rahuls17-cell/shannon-ops-review/actions/workflows/refresh-gcs.yml', '_blank', 'noopener,noreferrer');
+    setText('pipelineSourceStatus', 'Start Run workflow in GitHub to fetch GCS. This page checks for the published result every minute.');
+    return;
+  }
   const button = byId('refreshGcsPipeline');
   button.disabled = true;
   button.textContent = 'Refreshing...';
@@ -190,13 +195,21 @@ async function refreshGcsPipeline() {
     if (!response.ok) throw new Error('Manual refresh service unavailable');
     await loadGcsPipeline(true);
   } catch {
-    await loadGcsPipeline(true);
-    setText('pipelineSourceStatus', 'Manual bucket refresh is unavailable on this static server. Latest published GCS export loaded; host the refresh service to fetch the bucket now.');
+    setText('pipelineSourceStatus', 'Bucket refresh failed. Previous snapshot remains displayed.');
   } finally {
     button.disabled = false;
     button.textContent = 'Refresh from GCS';
   }
 }
+setInterval(async () => {
+  if (document.hidden || !gcsPipeline) return;
+  try {
+    const response = await fetch(`assets/pipeline-version.json?t=${Date.now()}`, {cache: 'no-store'});
+    if (!response.ok) return;
+    const version = await response.json();
+    if (version.generatedAt !== gcsPipeline.generatedAt) await loadGcsPipeline(true);
+  } catch { /* The current snapshot remains available during a network failure. */ }
+}, 60000);
 function populateScopeFilters() {
   const labels = {teamFilter:'teams',leaderFilter:'leaders',managerFilter:'managers',trainerFilter:'trainers'};
   Object.entries(filterKeys).forEach(([id,key]) => {

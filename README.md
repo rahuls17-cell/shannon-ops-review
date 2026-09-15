@@ -66,4 +66,17 @@ This draft is static HTML, CSS, and JavaScript. For GitHub Pages, commit this fo
 
 The current interface follows the Harbor 240 dashboard language: pale blue-gray canvas, deep teal active navigation and controls, compact white panels with 8px corners, light shadows, Inter/system typography, and dense analytical layouts designed for leadership review.
 
-Pipeline refresh: `tools/refresh_server.py` serves the dashboard on localhost and exposes the Refresh from GCS button. The endpoint runs the read-only GCS exporter on demand and rewrites only the local derived export. GitHub Pages cannot perform this refresh directly because it has no GCS credentials; it can only load the latest published export.
+## Published pipeline refresh
+
+The Refresh GCS pipeline GitHub workflow reads GCS through the existing Harbor VM,
+commits a validated snapshot, and deploys Pages. It runs every 30 minutes and supports
+Run workflow for an immediate refresh. The dashboard's Refresh from GCS button opens
+that authenticated GitHub control. An open dashboard checks the published version
+every minute and loads new data automatically.
+
+The SSH key stored in repository secrets is restricted on the VM to
+`tools/vm-export.sh`. It cannot run arbitrary commands or forward ports. GCS
+credentials remain on the VM, and the exporter performs only reads.
+
+`tools/refresh_server.py` provides the local endpoint when run in the VM environment.
+The exporter depends on the Harbor scanner installed there.
