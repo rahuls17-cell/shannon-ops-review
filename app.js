@@ -70,10 +70,13 @@ const infoCopy = {
   duplicates: 'Duplicate records are accepted source records that belong to a task group already represented by another Finalisation or current Accepted record. They remain visible for audit, while accepted and payout totals count the group once. Conflicting owner groups are not assigned to a person.',
   dates: 'Filters Pipeline records by the workbook Date column, including both start and end dates. Either date can be left blank for an open-ended range. Undated records are excluded when a date is selected. Status counts and rows use the same filters. Payout calculations are unaffected.',
   bench: 'Company bench includes the Company team. Computer bench includes Computer A and Computer B. Other or missing teams appear under Unassigned bench. This payout-only filter combines with team, leader, manager, trainer, search and payment state. Totals sum the matching person records without changing payment formulas.',
-  accepted: 'Command snapshot accepted tasks: sum of the Trainers tab v2 total accepted column for the selected people. This is separate from the Payouts view.',
+  accepted: 'Unique accepted task groups across Finalisation folders and current pipeline Accepted records. Uses the same reconciliation as Payouts. All-team totals include unassigned groups; trainer filters include only groups with an unambiguous matching owner. Financial estimates cover roster-linked owners only.',
+  commandSources: 'Current pipeline counts the latest evaluation per owner and task family. Finalisation counts accepted iteration-2 folders. These counts overlap and must not be added. Unique accepted groups use the existing reconciliation; duplicate records are extra records within those groups. Team, leader, manager and trainer filters apply; Pipeline view/date filters do not affect Command.',
+  commandBench: 'Bench counts use current pipeline records and reconciled accepted task groups, assigned through trainer roster emails. Company is the Company team; Computer includes Computer A and Computer B. Other teams, missing owners and ownership conflicts appear under Unassigned. Financial amounts are available only for roster-linked trainers.',
+  commandPending: 'Estimated pending tasks = max(reconciled accepted groups - Paid Out tab approved tasks, 0), calculated per roster-linked trainer; estimated amount = pending tasks x $300. Unassigned and conflicting groups are excluded from financial estimates. Both accepted sources must load before estimates are shown.',
   payoutAccepted: 'Payouts accepted tasks: the deduplicated union of accepted Finalisation folders and current GCS Accepted records. Matching task names are counted once; unresolved owners are not assigned to trainers.',
   payoutTotals: 'Paid tasks is the sum of Total Tasks Approved from the Paid Out tab for the people currently shown. Paid amount is the corresponding Total Payment Amount. Accepted and pending tasks come from the reconciled Finalisation/current GCS owner data. Filters update these totals.',
-  paid: 'Paid tasks use the larger of the Trainers paid-out count and the matching paid out tab approved count, joined by email. Displayed paid amount = paid tasks x $300. This is the draft payment model, not a bank-confirmed transaction total.',
+  paid: 'Paid tasks and amounts come from the Paid Out workbook tab, joined by trainer email. When the amount is absent, the estimate is approved tasks x $300. These are workbook payment records, not live bank transactions.',
   pending: 'Estimated pending tasks = max(v2 accepted tasks - paid tasks, 0), calculated separately for each person. Estimated pending amount = pending tasks x $300. Totals sum these person-level values; paid tasks can exceed current v2 accepted tasks.',
   active: 'Count of selected trainer records whose workbook status is Active. The smaller total includes every status.',
   pipeline: 'GCS trainer evaluation ledgers and legacy history snapshots. Current counts the latest cycle per owner and family; it excludes uploads never evaluated. History counts cycles, including retries. Legacy counts archived QC runs separately. These populations overlap and must not be added. Accepted requires an explicit submission verdict. Trainer filters join owner email to the roster. Type uses the workbook pipeline mapping when available, with conservative task-name inference for newer GCS-only records. Domain is derived from the task-name prefix. The chart follows the selected Pipeline view.',
@@ -95,6 +98,7 @@ function refreshScope() {
   setText('filterCount', `${fmt(scopedTrainers().length)} of ${fmt(data.trainers.length)} trainers`);
   renderHero(); renderTopPendingCards(); renderDonut(); renderTrainerRows(); renderTeams(); renderPipeline();
   renderFinalisation();
+  renderBenchCards();
 }
 
 function renderFinalisation() {
@@ -162,6 +166,7 @@ async function loadFinalisation() {
   setText('payoutSourceStatus', 'Accepted sync is reconciling Finalisation with the current GCS Accepted snapshot / Paid synced from the paid out tab');
   renderFinalisation();
   renderTrainerRows();
+  renderHero(); renderTopPendingCards(); renderBenchCards();
   button.disabled = false;
 }
 
@@ -175,6 +180,7 @@ async function loadGcsPipeline(manual = false) {
     gcsPipeline = payload;
     enrichFinalisationOwners();
     populateFilters(); renderPipeline(); renderDonut(); renderFinalisation(); renderTrainerRows();
+    renderHero(); renderTopPendingCards(); renderBenchCards();
     if (manual) setText('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
   } catch {
     setText('pipelineSourceStatus', 'GCS export unavailable. Pipeline counts are not loaded.');
@@ -260,8 +266,24 @@ function switchView(viewName) {
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+function commandSnapshot() {
+  const emails = new Set(scopedTrainers().map(row => row.email.toLowerCase()));
+  const filtered = Object.keys(filterKeys).some(id => byId(id).value);
+  const audit = acceptedReconciliation();
+  const groups = audit.groups.filter(group => !filtered || emails.has(group.email));
+  return {
+    ready: Boolean(finalisationSource && gcsPipeline),
+    groups,
+    current: (gcsPipeline?.current || []).filter(row => !filtered || emails.has(String(row.trainer || '').toLowerCase())),
+    folders: finalisationRows.filter(row => !filtered || emails.has(row.trainer?.email?.toLowerCase())),
+    duplicates: groups.reduce((total, group) => total + group.members.length - 1, 0),
+    unassigned: groups.filter(group => !data.trainers.some(row => row.email.toLowerCase() === group.email)).length
+  };
+}
+
 function renderHero() {
-  const rows = scopedTrainers();
+  const snapshot = commandSnapshot();
+  const rows = payoutRows();
   const summary = {paidAmount:sum(rows,'paidAmount'),pendingAmount:sum(rows,'pendingAmount'),pendingTasks:sum(rows,'pendingTasks'),acceptedTasks:sum(rows,'acceptedTasks'),activeTrainers:rows.filter(r=>r.status.toLowerCase()==='active').length,totalTrainers:rows.length};
   const generated = new Date(data.meta.generatedAt);
   const paid = summary.paidAmount;
@@ -275,16 +297,33 @@ function renderHero() {
   setText("heroExposureText", `${paidPct}% paid / ${fmt(summary.pendingTasks)} tasks pending`);
   byId("heroPaidMeter").style.width = `${paidPct}%`;
 
-  setText("metricAccepted", fmt(summary.acceptedTasks));
+  setText("metricAccepted", snapshot.ready ? fmt(snapshot.groups.length) : '-');
   setText("metricPaid", money(paid));
   setText("metricPendingTasks", fmt(summary.pendingTasks));
   setText("metricPending", `${money(pending)} pending`);
   setText("metricActive", fmt(summary.activeTrainers));
   setText("metricRoster", `${fmt(summary.totalTrainers)} total trainer records`);
+  setText('commandSourceStatus', `Pipeline: ${gcsPipeline?.generatedAt || 'unavailable / loading'} | Finalisation: ${finalisationSource?.generated_at || 'unavailable / loading'}`);
+  byId('commandSummary').innerHTML = [
+    ['Current evaluated tasks', gcsPipeline ? snapshot.current.length : null],
+    ['Pipeline accepted', gcsPipeline ? snapshot.current.filter(row => row.status === 'Accepted').length : null],
+    ['Finalisation folders', finalisationSource ? snapshot.folders.length : null],
+    ['Duplicate records excluded', snapshot.ready ? snapshot.duplicates : null]
+  ].map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${value == null ? '-' : fmt(value)}</strong></div>`).join('');
+  setText('commandOwnership', snapshot.ready ? `${fmt(snapshot.unassigned)} accepted groups without a roster-linked owner; excluded from financial estimates.` : 'Accepted reconciliation and financial estimates require both sources.');
+  if (!snapshot.ready) {
+    ['heroPending', 'metricPendingTasks', 'metricPending'].forEach(id => setText(id, '-'));
+    setText('heroExposureText', 'Waiting for both accepted sources');
+    byId('heroPaidMeter').style.width = '0%';
+  }
 }
 
 function renderTopPendingCards() {
-  const rows = [...scopedTrainers()]
+  if (!finalisationSource || !gcsPipeline) {
+    byId('topPendingCards').innerHTML = '<p class="empty">Pending estimates require Pipeline and Finalisation data.</p>';
+    return;
+  }
+  const rows = payoutRows()
     .filter((row) => row.pendingTasks > 0)
     .sort((a, b) => b.pendingAmount - a.pendingAmount || b.acceptedTasks - a.acceptedTasks)
     .slice(0, 8);
@@ -313,9 +352,13 @@ function renderTopPendingCards() {
 }
 
 function renderDonut() {
-  const entries = Object.entries(groupBy(scopedTasks(), row => row.status)).map(([key,rows])=>[key,rows.length]).sort((a,b)=>b[1]-a[1]);
+  if (!gcsPipeline) {
+    byId('pipelineDonut').innerHTML = '<p class="empty">Current pipeline data unavailable / loading.</p>';
+    return;
+  }
+  const entries = Object.entries(groupBy(commandSnapshot().current, row => row.status)).map(([key,rows])=>[key,rows.length]).sort((a,b)=>b[1]-a[1]);
   const total = entries.reduce((sumValue, [, value]) => sumValue + value, 0);
-  const statusColors = {Accepted:'#16866a',Rejected:'#bd4a50',Error:'#d18a2c',Failed:'#874b66',Running:'#0071e3',Queued:'#8b8b93'};
+  const statusColors = {Accepted:'#16866a',Rejected:'#bd4a50','Infrastructure Error':'#d18a2c','Waiting For Trainer Edit':'#227d87',Done:'#64748b',Cancelled:'#874b66',Running:'#0071e3',Queued:'#8b8b93'};
   const colors = entries.map(([status]) => statusColors[status] || '#8b8b93');
   let start = 0;
   const stops = entries.map(([, value], index) => {
@@ -336,19 +379,21 @@ function renderDonut() {
 }
 
 function renderBenchCards() {
-  byId("benchCards").innerHTML = data.rollup
-    .map(
-      (section) => `
-        <div class="bench-card">
-          <h3>${section.name}</h3>
-          ${section.metrics
-            .slice(0, 4)
-            .map((metric) => `<div class="bench-metric"><span>${metric.label}</span><b>${fmt(metric.value)}</b></div>`)
-            .join("")}
-        </div>
-      `,
-    )
-    .join("");
+  const snapshot = commandSnapshot();
+  const roster = new Map(data.trainers.map(row => [row.email.toLowerCase(), row]));
+  const bench = email => {
+    const team = roster.get(String(email || '').toLowerCase())?.team;
+    return team === 'Company' ? 'Company' : ['Computer A', 'Computer B'].includes(team) ? 'Computer' : 'Unassigned';
+  };
+  byId('benchCards').innerHTML = ['Computer', 'Company', 'Unassigned'].map(name => {
+    const tasks = snapshot.current.filter(row => bench(row.trainer) === name);
+    const groups = snapshot.groups.filter(group => bench(group.email) === name);
+    return `<div class="bench-card"><h3>${name} bench</h3>${[
+      ['Current tasks', gcsPipeline ? tasks.length : null],
+      ['Pipeline accepted', gcsPipeline ? tasks.filter(row => row.status === 'Accepted').length : null],
+      ['Unique accepted groups', snapshot.ready ? groups.length : null]
+    ].map(([label, value]) => `<div class="bench-metric"><span>${label}</span><b>${value == null ? '-' : fmt(value)}</b></div>`).join('')}</div>`;
+  }).join('');
 }
 
 function uniqueTeams() {

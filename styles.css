@@ -969,6 +969,15 @@ input:focus, select:focus { outline: 3px solid rgba(15,129,121,.18); border-colo
 .kpi-strip article { background: #fff; }
 .kpi-strip article:nth-child(2) strong { color: var(--green); }
 .command-grid { grid-template-columns: minmax(0, 1.45fr) minmax(280px, .75fr); gap: 16px; }
+#commandSummary { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.command-source-head { margin-top: 24px; }
+.command-source-status { overflow-wrap: anywhere; }
+.bench-comparison .bench-stack { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+@media (max-width: 760px) {
+  #commandSummary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bench-comparison .bench-stack { grid-template-columns: 1fr; }
+  .command-grid { grid-template-columns: 1fr; }
+}
 .surface, .team-card, .status-card, .people-card, .source-card {
   border: 1px solid var(--line); border-radius: var(--radius); background: #fff; box-shadow: var(--shadow); padding: 15px;
 }

@@ -68,6 +68,20 @@ The current interface follows the Harbor 240 dashboard language: pale blue-gray 
 
 ## Published pipeline refresh
 
+Command uses current GCS evaluations and the Finalisation inventory. Its accepted
+headline counts reconciled task groups once, including unassigned groups when no
+person filter is selected. Separate cards show pipeline acceptance, Finalisation
+folders and duplicate records. Pending estimates and the owner ranking use the
+same roster-linked reconciliation and Paid Out records as Payouts. Both accepted
+sources must be available before these estimates are shown. The current-state
+chart and bench breakdown follow the global people filters, independently of
+the Pipeline tab's history, date and status controls. Active headcount and paid
+records remain workbook snapshots, labelled accordingly.
+
+Run `node tools/test-command.cjs` for focused calculation checks. Browser checks
+are in `tools/check-command-browser.cjs` (Playwright with Microsoft Edge;
+`PLAYWRIGHT_MODULE` and `DASHBOARD_URL` can override local defaults).
+
 The Refresh GCS pipeline GitHub workflow reads GCS through the existing Harbor VM,
 commits a validated snapshot, and deploys Pages. It runs every 30 minutes and supports
 Run workflow for an immediate refresh. The dashboard's Refresh from GCS button opens

@@ -24,7 +24,7 @@
           <button class="tab" data-view="finalisation">Finalisation</button>
         </nav>
         <div class="refresh-card">
-          <span>Source refresh</span>
+          <span>Workbook snapshot</span>
           <strong id="generatedAt">-</strong>
         </div>
       </header>
@@ -46,7 +46,7 @@
               <p>Delivery performance. Financial clarity.</p>
             </div>
             <div class="exposure-card">
-              <span>Estimated pending payout <button class="info" data-info="pending" aria-label="About pending payout">i</button></span>
+              <span>Estimated pending payout <button class="info" data-info="commandPending" aria-label="About pending payout">i</button></span>
               <strong id="heroPending">$0</strong>
               <div class="exposure-meter">
                 <span id="heroPaidMeter"></span>
@@ -57,17 +57,17 @@
 
           <div class="kpi-strip">
             <article>
-              <span>Accepted v2 tasks <button class="info" data-info="accepted" aria-label="About accepted tasks">i</button></span>
+              <span>Unique accepted tasks <button class="info" data-info="accepted" aria-label="About accepted tasks">i</button></span>
               <strong id="metricAccepted">0</strong>
-              <small>Trainer-level accepted total</small>
+              <small>Finalisation + current accepted, deduplicated</small>
             </article>
             <article>
               <span>Paid out <button class="info" data-info="paid" aria-label="About paid amount">i</button></span>
               <strong id="metricPaid">$0</strong>
-              <small>At $300 per paid task</small>
+              <small>Paid Out workbook tab</small>
             </article>
             <article class="risk">
-              <span>Pending tasks <button class="info" data-info="pending" aria-label="About pending tasks">i</button></span>
+              <span>Pending tasks <button class="info" data-info="commandPending" aria-label="About pending tasks">i</button></span>
               <strong id="metricPendingTasks">0</strong>
               <small id="metricPending">$0 pending</small>
             </article>
@@ -78,6 +78,10 @@
             </article>
           </div>
 
+          <div class="section-head command-source-head"><h2>Acceptance and pipeline <button class="info" data-info="commandSources" aria-label="About Command data sources">i</button></h2><button class="text-action" data-jump="finalisation">Open Finalisation</button></div>
+          <p id="commandSourceStatus" class="muted command-source-status" role="status">Loading pipeline and Finalisation...</p>
+          <div id="commandSummary" class="summary-row"></div>
+          <p id="commandOwnership" class="muted" role="status"></p>
           <div class="command-grid">
             <article class="surface wide">
               <div class="section-head">
@@ -94,7 +98,7 @@
               <div class="section-head">
                 <div>
                   <p class="eyebrow">Operational mix</p>
-                  <h2>Pipeline state <button class="info" data-info="pipeline" aria-label="About pipeline">i</button></h2>
+                  <h2>Current pipeline <button class="info" data-info="commandSources" aria-label="About pipeline">i</button></h2>
                 </div>
               </div>
               <div id="pipelineDonut" class="donut-panel"></div>
@@ -103,8 +107,8 @@
             <article class="surface bench-comparison">
               <div class="section-head">
                 <div>
-                  <p class="eyebrow">Bench rollup / Workbook-wide</p>
-                  <h2>Computer vs company <button class="info" data-info="workbook" aria-label="About workbook totals">i</button></h2>
+                  <p class="eyebrow">Bench / Current scope</p>
+                  <h2>Computer vs company <button class="info" data-info="commandBench" aria-label="About bench totals">i</button></h2>
                 </div>
               </div>
               <div id="benchCards" class="bench-stack"></div>
