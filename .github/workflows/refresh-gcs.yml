@@ -1,7 +1,5 @@
 name: Refresh GCS pipeline
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
   schedule:
     - cron: '12,42 * * * *'
