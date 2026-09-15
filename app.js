@@ -844,9 +844,6 @@ function wireEvents() {
     button.addEventListener('click', () => switchView(button.dataset.jump));
   });
   window.addEventListener('popstate', () => switchView(location.hash.slice(1) || 'command', false));
-  byId('themeToggle').addEventListener('click', () => {
-    applyTheme(document.documentElement.dataset.theme === 'light' ? 'dark' : 'light');
-  });
   byId('globalSearch').addEventListener('input', event => {
     const active = document.querySelector('.viewnav-tab.is-active')?.dataset.view;
     const target = VIEW_SEARCH[active];
@@ -921,16 +918,6 @@ function wireEvents() {
   window.addEventListener('scroll', hideInfo, true);
 }
 
-function applyTheme(theme) {
-  const light = theme === 'light';
-  document.documentElement.dataset.theme = light ? 'light' : 'dark';
-  const button = byId('themeToggle');
-  button.setAttribute('aria-pressed', String(light));
-  setText('themeToggleLabel', light ? 'Dark mode' : 'Light mode');
-  try { localStorage.setItem('shannon-theme', light ? 'light' : 'dark'); } catch { /* private window */ }
-  if (gcsPipeline) renderDonut();
-}
-
 // The topbar search drives whichever view owns a search box.
 const VIEW_SEARCH = {payouts: 'personSearch', finalisation: 'finalisationSearch'};
 
@@ -953,9 +940,6 @@ function init() {
   renderTeams();
   renderPipeline();
   renderPlan();
-  let stored = null;
-  try { stored = localStorage.getItem('shannon-theme'); } catch { /* private window */ }
-  applyTheme(stored === 'light' ? 'light' : 'dark');
   wireEvents();
   renderEverything();
   switchView(location.hash.slice(1) || 'command', false);

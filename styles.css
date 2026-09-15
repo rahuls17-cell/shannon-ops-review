@@ -1,53 +1,6 @@
-/* Shannon Ops Review — dark product shell.
-   Sidebar navigation, elevated cards, one violet accent, validated chart hues. */
-
 :root {
-  color-scheme: dark;
-
-  --bg: #0c0e13;
-  --panel: #16181f;
-  --panel-2: #1c1f28;
-  --panel-3: #22262f;
-  --line: #262a35;
-  --line-soft: #1e222b;
-  --ink: #e9edf3;
-  --ink-2: #aab3c1;
-  --muted: #6d798a;
-
-  --accent: #7c5cff;
-  --accent-2: #a78bfa;
-  --accent-soft: rgba(124, 92, 255, 0.14);
-  --accent-line: rgba(124, 92, 255, 0.35);
-
-  /* Chart and status hues: the dataviz dark steps, validated against #16181f. */
-  --blue: #3987e5;    --blue-soft: rgba(57, 135, 229, 0.16);
-  --orange: #d95926;  --orange-soft: rgba(217, 89, 38, 0.16);
-  --aqua: #199e70;    --aqua-soft: rgba(25, 158, 112, 0.16);
-  --yellow: #c98500;  --yellow-soft: rgba(201, 133, 0, 0.16);
-  --magenta: #d55181; --magenta-soft: rgba(213, 81, 129, 0.16);
-  --violet: #9085e9;  --violet-soft: rgba(144, 133, 233, 0.16);
-  --red: #e66767;     --red-soft: rgba(230, 103, 103, 0.16);
-  --slate: #7c8798;   --slate-soft: rgba(124, 135, 152, 0.16);
-
-  /* Sequential ramp for attainment; validated ordinal against #16181f. */
-  --heat-1: #2f5480;
-  --heat-2: #3b6d9c;
-  --heat-3: #4788bd;
-  --heat-4: #549fd8;
-  --heat-5: #77bcf5;
-
-  --ok: var(--aqua);
-  --risk: var(--red);
-  --risk-soft: var(--red-soft);
-
-  --radius: 16px;
-  --radius-sm: 10px;
-  --gap: 18px;
-  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
-}
-
-:root[data-theme="light"] {
   color-scheme: light;
+
   --bg: #eef1f5;
   --panel: #ffffff;
   --panel-2: #f5f7fa;
@@ -56,24 +9,39 @@
   --line-soft: #e8ecf2;
   --ink: #101720;
   --ink-2: #41505f;
-  --muted: #71808f;
+  --muted: #6c7a8a;
+
   --accent: #5b3fd6;
   --accent-2: #5b3fd6;
   --accent-soft: rgba(91, 63, 214, 0.1);
-  --accent-line: rgba(91, 63, 214, 0.28);
-  --blue: #2a78d6;    --blue-soft: rgba(42, 120, 214, 0.12);
-  --orange: #eb6834;  --orange-soft: rgba(235, 104, 52, 0.12);
-  --aqua: #1baf7a;    --aqua-soft: rgba(27, 175, 122, 0.12);
-  --yellow: #eda100;  --yellow-soft: rgba(237, 161, 0, 0.14);
-  --magenta: #e87ba4; --magenta-soft: rgba(232, 123, 164, 0.14);
-  --violet: #4a3aa7;  --violet-soft: rgba(74, 58, 167, 0.12);
-  --red: #e34948;     --red-soft: rgba(227, 73, 72, 0.12);
-  --slate: #64748b;   --slate-soft: rgba(100, 116, 139, 0.12);
+  --accent-line: rgba(91, 63, 214, 0.3);
+
+  /* Chart and status hues: the dataviz light steps, validated against #ffffff.
+     `-ink` is the readable step for text; the plain step is for fills only. */
+  --blue: #2a78d6;    --blue-soft: rgba(42, 120, 214, 0.12);   --blue-ink: #1f5fa8;
+  --orange: #eb6834;  --orange-soft: rgba(235, 104, 52, 0.13); --orange-ink: #b2461f;
+  --aqua: #1baf7a;    --aqua-soft: rgba(27, 175, 122, 0.14);   --aqua-ink: #15795a;
+  --yellow: #eda100;  --yellow-soft: rgba(237, 161, 0, 0.16);  --yellow-ink: #8a6a00;
+  --magenta: #e87ba4; --magenta-soft: rgba(232, 123, 164, 0.16); --magenta-ink: #a83c69;
+  --violet: #4a3aa7;  --violet-soft: rgba(74, 58, 167, 0.12);  --violet-ink: #4a3aa7;
+  --red: #e34948;     --red-soft: rgba(227, 73, 72, 0.12);     --red-ink: #c23b3b;
+  --slate: #64748b;   --slate-soft: rgba(100, 116, 139, 0.12); --slate-ink: #4a5666;
+
+  /* Sequential ramp for attainment; validated ordinal against #ffffff. */
   --heat-1: #8ab6e2;
   --heat-2: #649fda;
   --heat-3: #4586cd;
   --heat-4: #2a6cb5;
   --heat-5: #155293;
+
+  --ok: var(--aqua-ink);
+  --risk: var(--red-ink);
+  --risk-soft: var(--red-soft);
+
+  --radius: 16px;
+  --radius-sm: 10px;
+  --gap: 18px;
+  --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 * { box-sizing: border-box; }
@@ -279,7 +247,7 @@ main { padding: 26px; display: block; }
 .muted { color: var(--muted); }
 
 .alert {
-  color: var(--red);
+  color: var(--red-ink);
   background: var(--red-soft);
   border: 1px solid var(--red);
   border-radius: var(--radius-sm);
@@ -373,12 +341,11 @@ main { padding: 26px; display: block; }
   max-width: 400px;
   padding: 13px 15px;
   border-radius: 12px;
-  background: var(--panel-3);
-  border: 1px solid var(--line);
-  color: var(--ink-2);
+  background: #161c24;
+  color: #e6ebf1;
   font-size: 12px;
   line-height: 1.6;
-  box-shadow: 0 22px 48px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 18px 40px rgba(16, 23, 32, 0.28);
 }
 
 /* ---------- Figures ---------- */
@@ -406,9 +373,9 @@ main { padding: 26px; display: block; }
 .figures .figure:nth-child(3) { --figure: var(--red); }
 .figures .figure:nth-child(4) { --figure: var(--blue); }
 .figures .figure:nth-child(1) strong { color: var(--accent-2); }
-.figures .figure:nth-child(2) strong { color: var(--aqua); }
-.figures .figure:nth-child(3) strong { color: var(--red); }
-.figures .figure:nth-child(4) strong { color: var(--blue); }
+.figures .figure:nth-child(2) strong { color: var(--aqua-ink); }
+.figures .figure:nth-child(3) strong { color: var(--red-ink); }
+.figures .figure:nth-child(4) strong { color: var(--blue-ink); }
 
 /* ---------- Summary strip ---------- */
 
@@ -431,7 +398,7 @@ main { padding: 26px; display: block; }
 .exposure { grid-template-columns: minmax(300px, 400px) minmax(0, 1fr); align-items: start; gap: 26px; }
 .exposure-headline { display: grid; gap: 8px; }
 .exposure-label { font-size: 10px; font-weight: 600; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); }
-.exposure-headline > strong { font-size: 42px; font-weight: 600; letter-spacing: -0.04em; color: var(--red); font-variant-numeric: tabular-nums; line-height: 1; }
+.exposure-headline > strong { font-size: 42px; font-weight: 600; letter-spacing: -0.04em; color: var(--red-ink); font-variant-numeric: tabular-nums; line-height: 1; }
 
 .leaderboard { display: grid; gap: 8px; }
 
@@ -459,7 +426,7 @@ main { padding: 26px; display: block; }
   font-weight: 600;
 }
 
-.leader-row .amount { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--red); }
+.leader-row .amount { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--red-ink); }
 .leader-row .muted { font-size: 11px; }
 
 /* ---------- Status grid ---------- */
@@ -479,7 +446,7 @@ main { padding: 26px; display: block; }
 
 .status-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--tone, var(--slate)); }
 .status-card span { font-size: 11px; color: var(--muted); line-height: 1.35; }
-.status-card strong { font-size: 23px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--tone, var(--ink)); }
+.status-card strong { font-size: 23px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; color: var(--tone-ink, var(--ink)); }
 
 /* ---------- Tables ---------- */
 
@@ -529,12 +496,12 @@ main { padding: 26px; display: block; }
 .pill[data-status], .pill.is-ok, .pill.is-warn {
   border-color: var(--tone);
   background: var(--tone-soft);
-  color: var(--tone);
+  color: var(--tone-ink, var(--tone));
 }
 
-.pill.is-ok { --tone: var(--aqua); --tone-soft: var(--aqua-soft); }
-.pill.is-warn { --tone: var(--red); --tone-soft: var(--red-soft); }
-.negative { color: var(--red); }
+.pill.is-ok { --tone: var(--aqua); --tone-soft: var(--aqua-soft); --tone-ink: var(--aqua-ink); }
+.pill.is-warn { --tone: var(--red); --tone-soft: var(--red-soft); --tone-ink: var(--red-ink); }
+.negative { color: var(--red-ink); }
 
 .pager { display: flex; align-items: center; justify-content: center; gap: 14px; font-size: 12px; color: var(--muted); }
 
@@ -578,15 +545,15 @@ main { padding: 26px; display: block; }
 
 /* ---------- Meaning tones ---------- */
 
-[data-status] { --tone: var(--slate); --tone-soft: var(--slate-soft); }
-[data-status="Accepted"] { --tone: var(--aqua); --tone-soft: var(--aqua-soft); }
-[data-status="Done"] { --tone: var(--blue); --tone-soft: var(--blue-soft); }
-[data-status="Waiting For Trainer Edit"] { --tone: var(--yellow); --tone-soft: var(--yellow-soft); }
-[data-status="Infrastructure Error"] { --tone: var(--orange); --tone-soft: var(--orange-soft); }
-[data-status="Rejected"] { --tone: var(--red); --tone-soft: var(--red-soft); }
-[data-status="Conflicting verdict"] { --tone: var(--magenta); --tone-soft: var(--magenta-soft); }
-[data-status="Running"] { --tone: var(--violet); --tone-soft: var(--violet-soft); }
-[data-status="Queued"] { --tone: var(--magenta); --tone-soft: var(--magenta-soft); }
+[data-status] { --tone: var(--slate); --tone-soft: var(--slate-soft); --tone-ink: var(--slate-ink); }
+[data-status="Accepted"] { --tone: var(--aqua); --tone-soft: var(--aqua-soft); --tone-ink: var(--aqua-ink); }
+[data-status="Done"] { --tone: var(--blue); --tone-soft: var(--blue-soft); --tone-ink: var(--blue-ink); }
+[data-status="Waiting For Trainer Edit"] { --tone: var(--yellow); --tone-soft: var(--yellow-soft); --tone-ink: var(--yellow-ink); }
+[data-status="Infrastructure Error"] { --tone: var(--orange); --tone-soft: var(--orange-soft); --tone-ink: var(--orange-ink); }
+[data-status="Rejected"] { --tone: var(--red); --tone-soft: var(--red-soft); --tone-ink: var(--red-ink); }
+[data-status="Conflicting verdict"] { --tone: var(--magenta); --tone-soft: var(--magenta-soft); --tone-ink: var(--magenta-ink); }
+[data-status="Running"] { --tone: var(--violet); --tone-soft: var(--violet-soft); --tone-ink: var(--violet-ink); }
+[data-status="Queued"] { --tone: var(--magenta); --tone-soft: var(--magenta-soft); --tone-ink: var(--magenta-ink); }
 
 [data-domain] { --tone: var(--slate); --tone-soft: var(--slate-soft); }
 [data-domain="Code"] { --tone: var(--blue); }
@@ -630,16 +597,16 @@ main { padding: 26px; display: block; }
 .seg:first-child { border-radius: 6px 0 0 6px; }
 .seg:last-child { border-radius: 0 6px 6px 0; }
 .seg:only-child { border-radius: 6px; }
-.seg.is-paid { background: var(--aqua); }
-.seg.is-pending { background: var(--red); }
+.seg.is-paid { background: var(--aqua-ink); }
+.seg.is-pending { background: var(--red-ink); }
 .seg i { font-style: normal; font-size: 10.5px; font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .seg:hover { filter: brightness(1.12); }
 
 .chart-key { display: flex; flex-wrap: wrap; gap: 15px; font-size: 11.5px; color: var(--ink-2); }
 .key-item { display: inline-flex; align-items: center; gap: 7px; }
 .key-item::before { content: ""; width: 9px; height: 9px; border-radius: 3px; flex: none; }
-.key-item.is-paid::before { background: var(--aqua); }
-.key-item.is-pending::before { background: var(--red); }
+.key-item.is-paid::before { background: var(--aqua-ink); }
+.key-item.is-pending::before { background: var(--red-ink); }
 
 /* ---------- Responsive ---------- */
 
@@ -713,6 +680,7 @@ main { padding: 26px; display: block; }
 }
 
 .heat-cell span { display: block; font-size: 12.5px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.heat-cell[data-step="1"], .heat-cell[data-step="2"] { color: #0f2c4d; }
 .heat-cell small { display: block; margin-top: 2px; font-size: 10px; opacity: 0.82; font-variant-numeric: tabular-nums; }
 .heat-cell:hover { transform: scale(1.04); }
 
