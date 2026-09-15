@@ -6,6 +6,7 @@ const FINALISATION_ROW_CAP = 400;
 let gcsPipeline = null;
 let payoutLedger = null;
 let payoutLedgerTasks = [];
+let clientAcceptance = null;
 let pipelinePage = 0;
 let payoutPage = 0;
 let ledgerPage = 0;
@@ -45,6 +46,8 @@ function pipelineType(task) {
 }
 const infoCopy = {
   accepted: 'Distinct tasks found in the finalisation cohorts of the bucket. A task finalised into more than one cohort has a folder in each, so folders are collapsed to task names first - the name is read from task.toml inside the archive, because folder names are sometimes opaque pipeline ids. This is delivered work, not the payout basis.',
+  clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
+  v2Accepted: 'Task folders in tasks/finalisation_client_qc_accepted_iteration_2/ in the bucket - the second client QC finalisation round. It is one of three accepted cohorts, so it is smaller than the accepted total on the Finalisation tab, and a task finalised into more than one cohort is counted here once per folder. Read it as the size of the v2 round, not as the total accepted work.',
   paid: 'Total Tasks Approved and Total Payment Amount from the Paid Out tab of the Ops Review workbook, cross-checked against the Live Import payment tracker and joined to people by child job number rather than email, because the tracker spells one address differently. These are workbook records, not live bank transactions.',
   pending: 'Per person: accepted tasks minus tasks already paid, never below zero, priced at $300 each. Accepted comes from the workbook task list after duplicate rows are collapsed. Payments already made stay as recorded, including three made against duplicate rows, so deduplication only prevents a task being paid twice from here on.',
   commandSources: 'Each number counts a different population and they overlap, so adding them is wrong. Current evaluations is the latest attempt per task family in the evaluation ledgers. Accepted folders is what physically exists in the finalisation cohorts. Most tasks accepted in the pipeline already have a finalisation folder.',
@@ -145,6 +148,30 @@ function loadFinalisation() {
   setText('finalisationStatus', `Read-only scan of ${finalisationSource.bucket} at ${gcsPipeline.generatedAt} / ${fmt(finalisationCohorts.length)} cohorts / accepted ${fmt(totals.accepted)}, rejected ${fmt(totals.rejected)}, unsubmitted ${fmt(totals.unsubmitted)} / ${fmt(finalisationSource.tasks.length)} accepted folders opened for task metadata`);
   renderFinalisation();
   button.disabled = false;
+}
+
+async function loadClientAcceptance() {
+  // Same origin on Pages, so the live dashboard is readable; locally it is not,
+  // and the committed snapshot carries the same counts.
+  try {
+    const response = await fetch('../harbor-240-dashboard/', {cache: 'no-store', signal: AbortSignal.timeout(8000)});
+    if (!response.ok) throw new Error('240 dashboard unavailable');
+    const doc = new DOMParser().parseFromString(await response.text(), 'text/html');
+    const rows = JSON.parse(doc.getElementById('dashboard-data').textContent).rows;
+    if (!Array.isArray(rows) || !rows.length) throw new Error('240 dashboard published no rows');
+    clientAcceptance = {live: true, tasks: rows.length,
+      accepted: rows.filter(row => row.priority === 'Low').length};
+  } catch {
+    try {
+      const response = await fetch('assets/client-acceptance.json', {cache: 'no-store'});
+      if (!response.ok) throw new Error('Snapshot unavailable');
+      const snapshot = await response.json();
+      clientAcceptance = {...snapshot, live: false};
+    } catch {
+      clientAcceptance = null;
+    }
+  }
+  renderHero();
 }
 
 async function loadPayoutLedger() {
@@ -357,6 +384,13 @@ function renderHero() {
   renderExposureChart(rows);
 
   setText("metricAccepted", snapshot.ready ? fmt(snapshot.tasks.size) : '-');
+  const v2 = (gcsPipeline?.finalisation?.cohorts || []).find(cohort => cohort.prefix === 'finalisation_client_qc_accepted_iteration_2');
+  setText('metricClientAccepted', clientAcceptance ? fmt(clientAcceptance.accepted) : '-');
+  setText('metricClientAcceptedNote', clientAcceptance
+    ? `Priority Low of ${fmt(clientAcceptance.tasks)} audited tasks${clientAcceptance.live ? '' : ' / saved snapshot'}`
+    : 'Harbor 240 dashboard unavailable');
+  setText('metricV2Accepted', v2 ? fmt(v2.tasks) : '-');
+  setText('metricV2AcceptedNote', v2 ? 'Folders in the client QC accepted iteration 2 cohort' : 'Bucket scan not loaded');
   setText("metricPaid", money(paid));
   setText("metricPendingTasks", fmt(summary.pendingTasks));
   setText("metricPending", `${money(pending)} pending`);
@@ -944,6 +978,7 @@ function init() {
   renderEverything();
   switchView(location.hash.slice(1) || 'command', false);
   loadPayoutLedger();
+  loadClientAcceptance();
   loadGcsPipeline();
 }
 

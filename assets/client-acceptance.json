@@ -1,0 +1,19 @@
+{
+ "generatedAt": "2026-09-15T16:17:00",
+ "source": "https://rahuls17-cell.github.io/harbor-240-dashboard/",
+ "sheetScannedAt": "2026-09-09T19:02:33",
+ "rule": "A task is client accepted when the audit sheet marks it priority Low.",
+ "tasks": 240,
+ "accepted": 31,
+ "priorities": {
+  "High": 138,
+  "Not set": 60,
+  "Low": 31,
+  "Medium": 11
+ },
+ "qcResults": {
+  "Not reviewed": 169,
+  "Not set": 60,
+  "Approved": 11
+ }
+}
