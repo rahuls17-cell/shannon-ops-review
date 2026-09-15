@@ -1,17 +1,82 @@
 const data = window.OPS_REVIEW_DATA;
 let finalisationSource = null;
 let finalisationRows = [];
+let gcsPipeline = null;
+let pipelinePage = 0;
 const filterKeys = {teamFilter: 'team', leaderFilter: 'em', managerFilter: 'managerName', trainerFilter: 'email'};
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function taskKey(value) {
+  return String(value || '').toLowerCase()
+    .replace(/-(?:v|version)[0-9][a-z0-9.-]*$/, '')
+    .replace(/-(?:final|modified|reviewed(?:-[0-9]+)?|hardened|candidate|clean|submit)$/, '')
+    .replace(/-[0-9]{8}t[0-9]{6}z(?:-[0-9]+-?[0-9]*)?$/, '');
+}
+function acceptedMatchKey(value) {
+  return String(value || '').toLowerCase().trim()
+    .replace(/^harbor\//, '')
+    .replace(/-(?:v|version)[0-9][a-z0-9.-]*$/, '');
+}
+function enrichFinalisationOwners() {
+  if (!gcsPipeline || !finalisationRows.length) return 0;
+  if (finalisationSource) finalisationRows = window.reconcileFinalisation(finalisationSource, data.trainers);
+  const roster = new Map(data.trainers.map(trainer => [trainer.email.toLowerCase(), trainer]));
+  const ownersByTask = new Map();
+  ['current', 'historical', 'legacy'].forEach(scope => (gcsPipeline[scope] || []).forEach(record => {
+    const task = acceptedMatchKey(record.task || record.taskId);
+    const email = String(record.trainer || '').toLowerCase();
+    if (!task || !email) return;
+    if (!ownersByTask.has(task)) ownersByTask.set(task, new Set());
+    ownersByTask.get(task).add(email);
+  }));
+  (gcsPipeline.trainerRecords || []).forEach(record => {
+    const task = acceptedMatchKey(record.task || record.taskName);
+    const email = String(record.trainer || record.ownerEmail || '').toLowerCase();
+    if (!task || !email) return;
+    if (!ownersByTask.has(task)) ownersByTask.set(task, new Set());
+    ownersByTask.get(task).add(email);
+  });
+  let enriched = 0;
+  finalisationRows = finalisationRows.map(row => {
+    if (row.trainer || row.owner_contested || row.owner) return row;
+    const candidates = [...(ownersByTask.get(acceptedMatchKey(row.declared_name || row.folder)) || [])];
+    if (candidates.length !== 1 || !roster.has(candidates[0])) return row;
+    enriched += 1;
+    return {...row, trainer: roster.get(candidates[0]), attribution: 'Name match only', owner_source: 'GCS task-name candidate from evaluation/history/trainer records'};
+  });
+  return enriched;
+}
+const pipelineReference = new Map();
+['current', 'historical'].forEach(key => (data.pipeline?.[key] || []).forEach(row => {
+  if (row.taskType === 'Connector' || row.taskType === 'Non-connector') pipelineReference.set(taskKey(row.task), row.taskType);
+}));
+function pipelineDomain(task) {
+  const existing = String(task.domain || task.taskType || '').trim();
+  if (existing && !['Unknown', 'Connector', 'Non-connector'].includes(existing)) return existing;
+  const name = String(task.task || task.taskId || '').toLowerCase();
+  const prefix = name.match(/^(code|fin|health|law|gen|bus)-/i)?.[1]?.toLowerCase();
+  return ({code:'Code', fin:'Finance', health:'Health', law:'Law', gen:'General', bus:'Business'}[prefix] || 'General');
+}
+function pipelineType(task) {
+  const recorded = pipelineReference.get(taskKey(task.task));
+  if (recorded) return recorded;
+  if (task.taskType === 'Connector' || task.taskType === 'Non-connector') return task.taskType;
+  const name = String(task.task || task.taskId || '').toLowerCase();
+  if (/(^|[-_])(ach|plaid|card|wire|check|debit|credit|bank|account|transfer|payment|bill|savings|ofac|kyc|merchant|transaction)([-_]|$)/.test(name)) return 'Connector';
+  if (/^(code|fin|health|law|gen|bus)-/.test(name)) return 'Non-connector';
+  return 'Not recorded';
+}
 const infoCopy = {
-  finalisation: 'Accepted iteration-2 task folders from Harbor finalisation. Each folder counts once, matching Harbor; repeated declared task names may be different versions and are shown separately. Owners match exact normalized roster names or email usernames. Name-only evidence stays flagged; contested owners are not assigned to trainers. Bench comes from the matched roster team, never connector type. Person filters exclude unresolved owners. This feed does not change workbook payout counts or payment amounts.',
+  finalisation: 'The headline cards show the Harbor Finalisation source only: accepted folders, distinct task names, roster-linked folders, and unresolved owner folders. The duplicate audit below compares that source with current GCS Accepted records. Payouts counts each reconciled task group once.',
+  duplicates: 'Duplicate records are accepted source records that belong to a task group already represented by another Finalisation or current Accepted record. They remain visible for audit, while accepted and payout totals count the group once. Conflicting owner groups are not assigned to a person.',
   dates: 'Filters Pipeline records by the workbook Date column, including both start and end dates. Either date can be left blank for an open-ended range. Undated records are excluded when a date is selected. Status counts and rows use the same filters. Payout calculations are unaffected.',
   bench: 'Company bench includes the Company team. Computer bench includes Computer A and Computer B. Other or missing teams appear under Unassigned bench. This payout-only filter combines with team, leader, manager, trainer, search and payment state. Totals sum the matching person records without changing payment formulas.',
-  accepted: 'Accepted tasks: sum of the Trainers tab v2 total accepted column for the selected people. This is separate from historical pipeline acceptance.',
+  accepted: 'Command snapshot accepted tasks: sum of the Trainers tab v2 total accepted column for the selected people. This is separate from the Payouts view.',
+  payoutAccepted: 'Payouts accepted tasks: the deduplicated union of accepted Finalisation folders and current GCS Accepted records. Matching task names are counted once; unresolved owners are not assigned to trainers.',
+  payoutTotals: 'Paid tasks is the sum of Total Tasks Approved from the Paid Out tab for the people currently shown. Paid amount is the corresponding Total Payment Amount. Accepted and pending tasks come from the reconciled Finalisation/current GCS owner data. Filters update these totals.',
   paid: 'Paid tasks use the larger of the Trainers paid-out count and the matching paid out tab approved count, joined by email. Displayed paid amount = paid tasks x $300. This is the draft payment model, not a bank-confirmed transaction total.',
   pending: 'Estimated pending tasks = max(v2 accepted tasks - paid tasks, 0), calculated separately for each person. Estimated pending amount = pending tasks x $300. Totals sum these person-level values; paid tasks can exceed current v2 accepted tasks.',
   active: 'Count of selected trainer records whose workbook status is Active. The smaller total includes every status.',
-  pipeline: 'Records from dump and Sheet9 combined. Historical and current records may overlap; this is a record count, not unique tasks. Filters match trainer email to the Trainers tab. Unmatched records appear only in the unfiltered view.',
+  pipeline: 'GCS trainer evaluation ledgers and legacy history snapshots. Current counts the latest cycle per owner and family; it excludes uploads never evaluated. History counts cycles, including retries. Legacy counts archived QC runs separately. These populations overlap and must not be added. Accepted requires an explicit submission verdict. Trainer filters join owner email to the roster. Type uses the workbook pipeline mapping when available, with conservative task-name inference for newer GCS-only records. Domain is derived from the task-name prefix. The chart follows the selected Pipeline view.',
   daily: 'Accepted in the last 24 hours as recorded in the workbook snapshot, not a live rolling window.',
   workbook: 'Workbook-wide snapshot. These source summaries do not contain a reliable person-level allocation and do not change with the review filters.'
 };
@@ -20,7 +85,7 @@ function scopedTrainers(exclude) {
   return data.trainers.filter(row => Object.entries(filterKeys).every(([id,key]) => id === exclude || !byId(id).value || (row[key] || 'Unassigned') === byId(id).value));
 }
 function scopedTasks() {
-  const all = [...data.pipeline.current, ...data.pipeline.historical];
+  const all = gcsPipeline ? gcsPipeline[byId('pipelineMode').value] : [];
   if (!Object.keys(filterKeys).some(id => byId(id).value)) return all;
   const emails = new Set(scopedTrainers().map(row => row.email.toLowerCase()));
   return all.filter(task => emails.has(task.trainer.toLowerCase()));
@@ -38,16 +103,33 @@ function renderFinalisation() {
   const hasScope = Object.keys(filterKeys).some(id => byId(id).value);
   const bench = byId('finalisationBench').value;
   const ownership = byId('finalisationOwnership').value;
-  const rows = finalisationRows.filter(row => {
+  const duplicateFilter = byId('duplicateFilter').value;
+  const audit = acceptedReconciliation();
+  const sourceRows = audit.rows.filter(row => row.source === 'Finalisation');
+  const scopedSource = sourceRows.filter(row => {
     const team = row.trainer?.team;
     const rowBench = team === 'Company' ? 'company' : ['Computer A','Computer B'].includes(team) ? 'computer' : 'unassigned';
     return (!hasScope || (row.trainer && scope.has(row.trainer.email))) && (!bench || bench === rowBench) && (!ownership || row.attribution === ownership);
   });
+  const scoped = duplicateFilter === 'duplicates' || duplicateFilter === 'groups'
+    ? audit.rows.filter(row => {
+      const team = row.trainer?.team;
+      const rowBench = team === 'Company' ? 'company' : ['Computer A','Computer B'].includes(team) ? 'computer' : 'unassigned';
+      return (!hasScope || (row.trainer && scope.has(row.trainer.email))) && (!bench || bench === rowBench) && (!ownership || row.attribution === ownership);
+    })
+    : scopedSource;
+  const rows = scoped.filter(row => !duplicateFilter || (duplicateFilter === 'duplicates' ? row.duplicate : duplicateFilter === 'groups' ? row.groupSize > 1 : !row.duplicate));
+  const sourceDistinct = new Set(scopedSource.map(row => String(row.declared_name || row.folder || '').toLowerCase().trim().replace(/^harbor\//, '')));
+  const sourceUnresolved = scopedSource.filter(row => row.domain == null).length;
+  const auditGroups = new Set(scoped.map(row => row.countedId));
   byId('finalisationSummary').innerHTML = [
-    ['Accepted folders', rows.length], ['Distinct task names', new Set(rows.map(r=>r.declared_name || r.folder)).size],
-    ['Roster-linked folders', rows.filter(r=>r.trainer).length], ['Unresolved owner folders', rows.filter(r=>!r.trainer).length]
+    ['Accepted folders', scopedSource.length], ['Distinct task names', sourceDistinct.size],
+    ['Roster-linked folders', scopedSource.length - sourceUnresolved], ['Unresolved owner folders', sourceUnresolved]
   ].map(([label,value])=>`<div class="summary-item"><span>${label}</span><strong>${fmt(value)}</strong></div>`).join('');
-  byId('finalisationRows').innerHTML = rows.map(row=>`<tr><td><div class="person"><strong>${esc(row.declared_short || row.folder)}</strong><span>${esc(row.folder)}</span></div></td><td>${esc(row.trainer?.name || row.owner || 'Not recorded')}</td><td>${esc(row.trainer?.team || 'Unassigned')}</td><td>${esc(row.attribution)}<br><small>${esc(row.owner_source || '')}</small></td><td>${row.is_connector ? 'Connector' : 'Non-connector'}</td><td>${esc((row.updated || '').slice(0,10))}</td></tr>`).join('') || '<tr><td colspan="6" class="empty">No accepted folders match these filters.</td></tr>';
+  const duplicateCount = audit.rows.filter(row => row.duplicate).length;
+  const conflictCount = audit.groups.filter(group => auditGroups.has(group.id) && group.conflict).length;
+  setText('finalisationAudit', `Reconciliation audit: ${fmt(audit.groups.length)} unique task groups / ${fmt(duplicateCount)} duplicate records excluded from counts / ${fmt(conflictCount)} ownership conflicts.`);
+  byId('finalisationRows').innerHTML = rows.map(row=>`<tr><td><div class="person"><strong>${esc(row.displayName)}</strong><span>${esc(row.source)} / ${esc(row.folder)}</span></div></td><td>${esc(row.trainer?.name || row.email || row.owner || 'Not recorded')}</td><td>${esc(row.trainer?.team || 'Unassigned')}</td><td>${esc(row.conflict ? 'Conflicting owners - excluded from person totals' : row.attribution)}<br><small>${esc(row.owner_source || '')}</small></td><td>${esc(row.source === 'Finalisation' ? (row.is_connector ? 'Connector' : 'Non-connector') : pipelineType(row))}</td><td>${esc(row.date)}</td><td><span class="pill">${row.duplicate ? 'Duplicate - excluded' : 'Counted once'}</span><div class="muted">${fmt(row.groupSize)} records in group</div>${row.duplicate ? `<small>Counted record: ${esc(row.countedId)}</small>` : ''}</td></tr>`).join('') || '<tr><td colspan="7" class="empty">No accepted records match these filters.</td></tr>';
 }
 
 async function loadFinalisation() {
@@ -75,9 +157,45 @@ async function loadFinalisation() {
     }
   }
   finalisationSource = source;
+  enrichFinalisationOwners();
   setText('finalisationStatus', `${fallback ? 'Saved snapshot (live source unavailable)' : 'Connected to Harbor'} / Scanned ${source.generated_at} / ${fmt(finalisationRows.length)} accepted iteration-2 folders`);
+  setText('payoutSourceStatus', 'Accepted sync is reconciling Finalisation with the current GCS Accepted snapshot / Paid synced from the paid out tab');
   renderFinalisation();
+  renderTrainerRows();
   button.disabled = false;
+}
+
+async function loadGcsPipeline(manual = false) {
+  try {
+    const response = await fetch(`assets/gcs-pipeline.json?refresh=${manual ? Date.now() : 'startup'}`, {cache:'no-store'});
+    if (!response.ok) throw new Error('GCS export unavailable');
+    const payload = await response.json();
+    if (![1, 2].includes(payload.schemaVersion) || !['current','historical','legacy'].every(key=>Array.isArray(payload[key]))) throw new Error('Invalid GCS export');
+    ['current', 'historical', 'legacy'].forEach(key => payload[key].forEach(task => { task.domain = pipelineDomain(task); }));
+    gcsPipeline = payload;
+    enrichFinalisationOwners();
+    populateFilters(); renderPipeline(); renderDonut(); renderFinalisation(); renderTrainerRows();
+    if (manual) setText('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
+  } catch {
+    setText('pipelineSourceStatus', 'GCS export unavailable. Pipeline counts are not loaded.');
+  }
+}
+
+async function refreshGcsPipeline() {
+  const button = byId('refreshGcsPipeline');
+  button.disabled = true;
+  button.textContent = 'Refreshing...';
+  try {
+    const response = await fetch('/api/refresh-gcs', {method: 'POST', cache: 'no-store'});
+    if (!response.ok) throw new Error('Manual refresh service unavailable');
+    await loadGcsPipeline(true);
+  } catch {
+    await loadGcsPipeline(true);
+    setText('pipelineSourceStatus', 'Manual bucket refresh is unavailable on this static server. Latest published GCS export loaded; host the refresh service to fetch the bucket now.');
+  } finally {
+    button.disabled = false;
+    button.textContent = 'Refresh from GCS';
+  }
 }
 function populateScopeFilters() {
   const labels = {teamFilter:'teams',leaderFilter:'leaders',managerFilter:'managers',trainerFilter:'trainers'};
@@ -228,7 +346,7 @@ function populateFilters() {
   populateScopeFilters();
 
   const statuses = [
-    ...new Set([...data.pipeline.current, ...data.pipeline.historical].map((task) => task.status || "Unknown")),
+    ...new Set((gcsPipeline ? gcsPipeline[byId('pipelineMode').value] : []).map((task) => task.status || "Unknown")),
   ].sort();
   byId("pipelineFilter").innerHTML =
     `<option value="">All statuses</option>` +
@@ -239,9 +357,9 @@ function filteredTrainers() {
   const search = byId("personSearch").value.trim().toLowerCase();
   const payment = byId('paymentFilter').value;
   const bench = byId('benchFilter').value;
-  return scopedTrainers()
+  return payoutRows()
     .filter(row => !bench || (row.team === 'Company' ? 'company' : ['Computer A', 'Computer B'].includes(row.team) ? 'computer' : 'unassigned') === bench)
-    .filter(row => !payment || (payment === 'pending' ? row.pendingTasks > 0 : payment === 'paid' ? row.paidTasks > 0 : row.acceptedTasks === 0))
+    .filter(row => !payment || (payment === 'pending' ? row.pendingTasks > 0 : payment === 'paid' ? row.paidTasks > 0 : payment === 'no-paid' ? row.paidTasks === 0 : row.acceptedTasks === 0))
     .filter((trainer) => {
       if (!search) return true;
       return [trainer.name, trainer.email, trainer.team, trainer.managerName, trainer.em]
@@ -252,17 +370,58 @@ function filteredTrainers() {
     .sort((a, b) => b.pendingAmount - a.pendingAmount || b.acceptedTasks - a.acceptedTasks);
 }
 
+function acceptedReconciliation() {
+  const acceptedByEmail = new Map();
+  const roster = new Map(data.trainers.map(row => [row.email.toLowerCase(), row]));
+  const records = finalisationRows.map(row => ({...row, id: `finalisation:${row.folder}`,
+    source: 'Finalisation', name: row.declared_name || row.folder,
+    email: row.trainer?.email?.toLowerCase(), contested: row.owner_contested,
+    displayName: row.declared_short || row.folder, date: (row.updated || '').slice(0, 10)}));
+  (gcsPipeline?.current || []).filter(row => row.status === 'Accepted').forEach(row => {
+    const email = String(row.trainer || '').trim().toLowerCase();
+    records.push({...row, id: `current:${row.ownerKey}:${row.id}`, source: 'Current pipeline',
+      name: row.task, displayName: row.task || row.taskId, folder: row.taskId,
+      email, trainer: roster.get(email), attribution: 'GCS evaluation owner'});
+  });
+  const audit = window.reconcileAcceptedTasks(records);
+  audit.groups.forEach(group => {
+    if (roster.has(group.email)) acceptedByEmail.set(group.email, (acceptedByEmail.get(group.email) || 0) + 1);
+  });
+  return {
+    ...audit,
+    acceptedByEmail,
+    unifiedFolders: audit.groups.length,
+    rosterLinked: [...acceptedByEmail.values()].reduce((total, count) => total + count, 0),
+  };
+}
+
+function payoutRows() {
+  const acceptedByEmail = acceptedReconciliation().acceptedByEmail;
+  const paidByEmail = new Map((data.paidOut || []).map(row => [String(row.email || '').toLowerCase(), row]));
+  return scopedTrainers().map(row => {
+    const paid = paidByEmail.get(row.email.toLowerCase());
+    const acceptedTasks = finalisationSource || gcsPipeline ? (acceptedByEmail.get(row.email.toLowerCase()) || 0) : row.acceptedTasks;
+    const paidTasks = Number(paid?.approvedTasks) || 0;
+    const paidAmount = paid?.paidAmount == null ? paidTasks * 300 : Number(paid.paidAmount);
+    const pendingTasks = Math.max(acceptedTasks - paidTasks, 0);
+    return {...row, acceptedTasks, paidTasks, paidAmount, pendingTasks, pendingAmount: pendingTasks * 300};
+  });
+}
+
 function renderPayoutSummary(rows) {
   const paid = sum(rows, "paidAmount");
   const pending = sum(rows, "pendingAmount");
   byId("payoutSummary").innerHTML = [
     ["People shown", fmt(rows.length)],
     ["Accepted tasks", fmt(sum(rows, "acceptedTasks"))],
+    ["Paid tasks", fmt(sum(rows, "paidTasks"))],
     ["Paid amount", money(paid)],
     ["Pending amount", money(pending)],
   ]
     .map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${value}</strong></div>`)
     .join("");
+  const reconciliation = acceptedReconciliation();
+  setText('payoutSourceStatus', `Accepted: ${fmt(reconciliation.unifiedFolders)} unique task groups / ${fmt(reconciliation.duplicateCount)} duplicate records excluded / Paid: paid out tab`);
 }
 
 function renderTrainerRows() {
@@ -325,7 +484,13 @@ function filteredPipelineTasks() {
   });
 }
 
-function renderPipeline() {
+function renderPipeline(resetPage = true) {
+  if (resetPage) pipelinePage = 0;
+  if (gcsPipeline) {
+    const mode = byId('pipelineMode').value;
+    const description = mode === 'current' ? 'Latest cycle per owner and task family; unevaluated uploads excluded.' : mode === 'historical' ? 'All recorded evaluation cycles; retries count separately.' : 'Legacy QC runs from archived owner snapshots; Done is not an acceptance verdict.';
+    setText('pipelineSourceStatus', `GCS export: ${gcsPipeline.generatedAt} / ${description}`);
+  }
   const invalid = Boolean(byId('pipelineStart').value && byId('pipelineEnd').value && byId('pipelineStart').value > byId('pipelineEnd').value);
   byId('pipelineDateError').hidden = !invalid;
   byId('pipelineStart').setAttribute('aria-invalid', String(invalid));
@@ -346,19 +511,26 @@ function renderPipeline() {
 }
 
 function renderPipelineRows(rows) {
+  const pages = Math.max(1, Math.ceil(rows.length / 100));
+  pipelinePage = Math.min(pipelinePage, pages - 1);
+  setText('pipelinePage', `${fmt(rows.length)} records / Page ${pipelinePage + 1} of ${pages}`);
+  byId('pipelinePrevious').disabled = pipelinePage === 0;
+  byId('pipelineNext').disabled = pipelinePage >= pages - 1;
   byId("pipelineRows").innerHTML = rows
+    .slice(pipelinePage * 100, (pipelinePage + 1) * 100)
     .map(
       (task) => `
         <tr>
-          <td>${task.date || "-"}</td>
-          <td>${task.task}</td>
-          <td>${task.trainer || "-"}</td>
-          <td>${task.taskType || "-"}</td>
-          <td><span class="pill">${task.status || "Unknown"}</span></td>
+          <td>${esc(task.date || "-")}</td>
+          <td>${esc(task.task)}<div class="muted">${esc(task.taskId || '')}</div></td>
+          <td>${esc(task.trainer || "-")}</td>
+          <td>${esc(pipelineType(task))}</td>
+          <td>${esc(pipelineDomain(task))}</td>
+          <td><span class="pill">${esc(task.status || "Unknown")}</span></td>
         </tr>
       `,
     )
-    .join("") || '<tr><td colspan="5" class="empty">No pipeline records match these filters.</td></tr>';
+    .join("") || '<tr><td colspan="6" class="empty">No pipeline records match these filters.</td></tr>';
 }
 
 function renderPlan() {
@@ -388,7 +560,11 @@ function renderPlan() {
 
 
 function wireEvents() {
-  ['finalisationBench','finalisationOwnership'].forEach(id=>byId(id).addEventListener('change',renderFinalisation));
+  byId('pipelinePrevious').addEventListener('click',()=>{pipelinePage--;renderPipeline(false);});
+  byId('pipelineNext').addEventListener('click',()=>{pipelinePage++;renderPipeline(false);});
+  byId('refreshGcsPipeline').addEventListener('click', refreshGcsPipeline);
+  byId('pipelineMode').addEventListener('change', () => { populateFilters(); renderPipeline(); renderDonut(); });
+  ['finalisationBench','finalisationOwnership','duplicateFilter'].forEach(id=>byId(id).addEventListener('change',renderFinalisation));
   byId('refreshFinalisation').addEventListener('click',loadFinalisation);
   document.querySelectorAll(".tab").forEach((button) => {
     button.addEventListener("click", () => switchView(button.dataset.view));
@@ -405,6 +581,7 @@ function wireEvents() {
     byId('personSearch').value = ''; byId('paymentFilter').value = ''; byId('benchFilter').value = ''; byId('pipelineFilter').value = '';
     byId('pipelineStart').value = ''; byId('pipelineEnd').value = '';
     byId('finalisationBench').value = ''; byId('finalisationOwnership').value = '';
+    byId('duplicateFilter').value = '';
     refreshScope();
   });
   ['pipelineFilter', 'pipelineStart', 'pipelineEnd'].forEach(id => byId(id).addEventListener('change', renderPipeline));
@@ -445,6 +622,7 @@ function init() {
   wireEvents();
   refreshScope();
   loadFinalisation();
+  loadGcsPipeline();
 }
 
 init();

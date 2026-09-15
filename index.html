@@ -122,10 +122,12 @@
               <input id="personSearch" type="search" placeholder="Search person, email, team, manager" />
               <select id="benchFilter" aria-label="Filter payouts by bench"><option value="">All benches</option><option value="company">Company bench</option><option value="computer">Computer bench</option><option value="unassigned">Unassigned bench</option></select>
               <button class="info" data-info="bench" aria-label="About bench filtering">i</button>
-              <select id="paymentFilter" aria-label="Filter payment status"><option value="">All payment states</option><option value="pending">Pending payment</option><option value="paid">Has paid tasks</option><option value="zero">No accepted tasks</option></select>
+              <select id="paymentFilter" aria-label="Filter payment status"><option value="">All payment states</option><option value="pending">Has pending tasks</option><option value="paid">Paid tasks &gt; 0</option><option value="no-paid">No paid tasks</option><option value="zero">No accepted tasks</option></select>
             </div>
           </div>
+          <p id="payoutSourceStatus" class="muted" role="status">Loading Finalisation and paid out sources...</p>
           <div class="surface table-surface">
+            <div class="section-head payout-table-head"><div><p class="eyebrow">Payout reconciliation</p><h2>Trainer payout ledger</h2></div><button class="info" data-info="payoutTotals" aria-label="About payout totals">i</button></div>
             <div id="payoutSummary" class="summary-row"></div>
             <div class="table-wrap">
               <table class="payout-table">
@@ -145,7 +147,7 @@
                     <th>Person</th>
                     <th>Team</th>
                     <th>Manager</th>
-                    <th>Accepted <button class="info" data-info="accepted" aria-label="About accepted">i</button></th>
+                    <th>Accepted <button class="info" data-info="payoutAccepted" aria-label="About payout accepted tasks">i</button></th>
                     <th>Paid tasks <button class="info" data-info="paid" aria-label="About paid tasks">i</button></th>
                     <th>Paid <button class="info" data-info="paid" aria-label="About paid">i</button></th>
                     <th>Pending tasks</th>
@@ -186,13 +188,16 @@
             </div>
           </div>
           <div class="pipeline-controls">
+            <label>View<select id="pipelineMode"><option value="current">Current evaluated tasks</option><option value="historical">Evaluation history</option><option value="legacy">Legacy QC history</option></select></label>
             <label>Start date<input id="pipelineStart" type="date" aria-describedby="pipelineDateError" /></label>
             <label>End date<input id="pipelineEnd" type="date" aria-describedby="pipelineDateError" /></label>
             <label>Status<select id="pipelineFilter" aria-label="Filter pipeline status"></select></label>
             <button id="clearPipelineDates" class="text-action">Clear dates</button>
+            <button id="refreshGcsPipeline" class="text-action">Refresh from GCS</button>
             <button class="info" data-info="dates" aria-label="About pipeline date range">i</button>
           </div>
           <p id="pipelineDateError" class="negative" role="alert" hidden>Start date must be on or before end date.</p>
+          <p id="pipelineSourceStatus" role="status">Loading GCS export...</p>
           <div id="pipelineStats" class="status-grid"></div>
           <div class="surface table-surface">
             <div class="table-wrap">
@@ -203,12 +208,14 @@
                     <th>Task</th>
                     <th>Trainer</th>
                     <th>Type</th>
+                    <th>Domain</th>
                     <th>Status</th>
                   </tr>
                 </thead>
                 <tbody id="pipelineRows"></tbody>
               </table>
             </div>
+            <div class="pipeline-controls"><button id="pipelinePrevious" class="text-action">Previous</button><span id="pipelinePage" role="status"></span><button id="pipelineNext" class="text-action">Next</button></div>
           </div>
         </section>
 
@@ -217,11 +224,13 @@
           <p id="finalisationStatus" role="status">Loading finalisation data...</p>
           <div class="pipeline-controls">
             <label>Bench<select id="finalisationBench"><option value="">All benches</option><option value="company">Company bench</option><option value="computer">Computer bench</option><option value="unassigned">Unassigned</option></select></label>
-            <label>Ownership<select id="finalisationOwnership"><option value="">All ownership</option><option>Matched owner</option><option>Name match only</option><option>Contested owner</option><option>Owner missing</option><option>Roster match unresolved</option></select></label>
-            <button id="refreshFinalisation" class="text-action">Refresh data</button><button class="info" data-info="finalisation" aria-label="About finalisation accepted counts">i</button>
+            <label>Ownership<select id="finalisationOwnership"><option value="">All ownership</option><option>Matched owner</option><option>Name match only</option><option>Contested owner</option><option>Owner missing</option><option>Roster match unresolved</option><option>GCS evaluation owner</option></select></label>
+            <label>Task records<select id="duplicateFilter" aria-label="Filter duplicate task records"><option value="">All task records</option><option value="unique">Unique records only</option><option value="duplicates">Duplicate records only</option><option value="groups">All records in duplicate groups</option></select></label>
+            <button id="refreshFinalisation" class="text-action">Refresh data</button><button class="info" data-info="finalisation" aria-label="About finalisation accepted counts">i</button><button class="info" data-info="duplicates" aria-label="About duplicate task records">i</button>
           </div>
           <div id="finalisationSummary" class="summary-row"></div>
-          <div class="surface table-surface"><div class="table-wrap"><table><thead><tr><th>Accepted task / Folder</th><th>Trainer</th><th>Team</th><th>Ownership evidence</th><th>Type</th><th>Added</th></tr></thead><tbody id="finalisationRows"></tbody></table></div></div>
+          <p id="finalisationAudit" class="muted finalisation-audit" role="status"></p>
+          <div class="surface table-surface"><div class="table-wrap"><table><thead><tr><th>Accepted task / Folder</th><th>Trainer</th><th>Team</th><th>Ownership evidence</th><th>Type</th><th>Added</th><th>Count status</th></tr></thead><tbody id="finalisationRows"></tbody></table></div></div>
         </section>
       </main>
     </div>
@@ -229,6 +238,7 @@
 
     <script src="assets/data.js"></script>
     <script src="finalisation.js"></script>
+    <script src="accepted-tasks.js"></script>
     <script src="app.js"></script>
   </body>
 </html>

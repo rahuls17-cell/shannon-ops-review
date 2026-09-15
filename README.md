@@ -61,3 +61,9 @@ python tools/build_data.py
 ## GitHub Pages path
 
 This draft is static HTML, CSS, and JavaScript. For GitHub Pages, commit this folder as the repository root or move these files to `/docs`, then enable Pages from the selected branch and folder.
+
+## Visual system
+
+The current interface follows the Harbor 240 dashboard language: pale blue-gray canvas, deep teal active navigation and controls, compact white panels with 8px corners, light shadows, Inter/system typography, and dense analytical layouts designed for leadership review.
+
+Pipeline refresh: `tools/refresh_server.py` serves the dashboard on localhost and exposes the Refresh from GCS button. The endpoint runs the read-only GCS exporter on demand and rewrites only the local derived export. GitHub Pages cannot perform this refresh directly because it has no GCS credentials; it can only load the latest published export.
