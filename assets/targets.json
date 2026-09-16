@@ -1,0 +1,46 @@
+{
+  "quarterEnd": "2026-09-30",
+  "setOn": "2026-09-16",
+  "source": "Quarter targets set by Yogesh Sahu on 2026-09-16",
+  "forecastWindowDays": 7,
+  "targets": [
+    {
+      "id": "company",
+      "label": "Company Bench",
+      "measure": "company",
+      "min": 900,
+      "max": 1200
+    },
+    {
+      "id": "computer",
+      "label": "Computer Bench, non-connector",
+      "measure": "computer-nonconnector",
+      "min": 1000,
+      "max": 1000
+    },
+    {
+      "id": "connector",
+      "label": "Connector",
+      "measure": "connector",
+      "min": 0,
+      "max": 0,
+      "note": "Deprioritised for the quarter; zero or minimal new volume expected."
+    },
+    {
+      "id": "knowledge",
+      "label": "Knowledge work",
+      "measure": null,
+      "min": 1500,
+      "max": 1500,
+      "note": "About 600 expert tasks (EKWBench, CEOBench) plus 900 Company Bench. No source tags expert tasks yet."
+    },
+    {
+      "id": "aster",
+      "label": "Aster",
+      "measure": null,
+      "min": 50,
+      "max": 50,
+      "note": "Broader pipeline goal up to 400. No source tags Aster tasks yet."
+    }
+  ]
+}

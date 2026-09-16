@@ -504,7 +504,7 @@ main { padding: 26px; display: block; }
   white-space: nowrap;
 }
 
-.pill[data-status], .pill.is-ok, .pill.is-warn {
+.pill[data-status], .pill.is-ok, .pill.is-warn, .pill.is-depends {
   border-color: var(--tone);
   background: var(--tone-soft);
   color: var(--tone-ink, var(--tone));
@@ -512,6 +512,7 @@ main { padding: 26px; display: block; }
 
 .pill.is-ok { --tone: var(--aqua); --tone-soft: var(--aqua-soft); --tone-ink: var(--aqua-ink); }
 .pill.is-warn { --tone: var(--red); --tone-soft: var(--red-soft); --tone-ink: var(--red-ink); }
+.pill.is-depends { --tone: var(--yellow); --tone-soft: var(--yellow-soft); --tone-ink: var(--yellow-ink); }
 .negative { color: var(--red-ink); }
 
 .pager { display: flex; align-items: center; justify-content: center; gap: 14px; font-size: 12px; color: var(--muted); }
@@ -749,3 +750,35 @@ main { padding: 26px; display: block; }
 .chart-key .key-item[data-status] i { width: 9px; height: 9px; border-radius: 3px; background: var(--tone); flex: none; }
 .chart-key .key-item[data-status] { display: inline-flex; align-items: center; gap: 7px; }
 .chart-key .key-item[data-status]::before { content: none; }
+
+/* ---------- Throughput ---------- */
+
+.throughput-table td { vertical-align: top; }
+.throughput-table td.num { font-variant-numeric: tabular-nums; white-space: nowrap; }
+.target-label { font-weight: 600; color: var(--ink); }
+.target-note { display: block; margin-top: 3px; max-width: 44ch; font-size: 11px; font-weight: 400; color: var(--muted); white-space: normal; }
+.target-inputs { display: inline-flex; align-items: center; gap: 6px; font-size: 11.5px; color: var(--muted); }
+.target-inputs input {
+  width: 78px;
+  border: 1px solid var(--line);
+  background: var(--panel-2);
+  border-radius: var(--radius-sm);
+  padding: 6px 8px;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.target-inputs input:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; }
+.target-edited { display: block; margin-top: 4px; font-size: 10.5px; color: var(--yellow-ink); }
+
+.throughput-chart { margin: 0; overflow-x: auto; }
+.throughput-chart svg { display: block; width: 100%; min-width: 640px; height: auto; stroke: none; }
+/* The global svg rule strokes icons; chart marks set their own strokes. */
+.throughput-chart circle { stroke: var(--panel); stroke-width: 1.5; }
+.throughput-chart text { font-size: 11px; fill: var(--muted); font-variant-numeric: tabular-nums; }
+.throughput-chart .grid-line { stroke: var(--line); }
+.throughput-chart .end-label { font-weight: 600; }
+.throughput-key { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 12px; font-size: 11.5px; color: var(--ink-2); }
+.throughput-key i { display: inline-block; width: 16px; height: 3px; margin-right: 7px; vertical-align: middle; border-radius: 2px; background: var(--c); }
+.throughput-key i.dashed { background: repeating-linear-gradient(90deg, var(--muted) 0 4px, transparent 4px 7px); }
+.throughput-key i.band { height: 10px; width: 8px; background: var(--muted); opacity: 0.35; }

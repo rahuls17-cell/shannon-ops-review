@@ -29,6 +29,9 @@
           <button class="viewnav-tab" role="tab" aria-selected="false" data-view="pipeline">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 15l4-4 4 3 5-6"/></svg><span>Finalisation pipeline</span>
           </button>
+          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="throughput">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17l6-6 4 4 8-8M14 7h7v7"/></svg><span>Throughput</span>
+          </button>
         </nav>
         <div class="side-foot">
           <div class="side-card">
@@ -413,6 +416,54 @@
           </section>
           </section>
         </section>
+        <section class="view" id="view-throughput" role="tabpanel" aria-labelledby="throughput-title">
+          <header class="view-head">
+            <div>
+              <p class="kicker">Quarter to 30 September</p>
+              <h1 id="throughput-title">Throughput</h1>
+              <p class="lede">Distinct tasks accepted into finalisation, each dated by its first acceptance, against the quarter targets. The forecast is what has been delivered plus the pace of the last seven complete days, carried to quarter end.</p>
+            </div>
+            <button id="resetTargets" class="ghost" hidden>Reset targets</button>
+          </header>
+          <p class="provenance" id="throughputStatus">Loading the bucket scan...</p>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Targets</h2>
+                <p class="panel-note">Edit a target to test it - edits stay in this browser. Bench is the roster team of the task owner.</p>
+              </div>
+            </header>
+            <div class="panel-body">
+              <div class="table-wrap">
+                <table class="grid throughput-table">
+                  <thead>
+                    <tr>
+                      <th scope="col">Target</th>
+                      <th scope="col">By 30 Sep</th>
+                      <th scope="col">Delivered</th>
+                      <th scope="col">Pace</th>
+                      <th scope="col">Forecast</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="throughputRows"></tbody>
+                </table>
+              </div>
+              <p class="muted footnote" id="throughputAttribution"></p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Trajectory</h2>
+                <p class="panel-note">Cumulative delivery over the last two weeks, and each line's pace carried to quarter end. Hover a point for that day's change.</p>
+              </div>
+            </header>
+            <div class="panel-body"><figure id="throughputChart" class="throughput-chart"></figure></div>
+          </section>
+        </section>
         </main>
       </div>
     </div>
@@ -420,6 +471,7 @@
 
     <script src="assets/data.js"></script>
     <script src="finalisation.js"></script>
+    <script src="throughput.js"></script>
     <script src="payout-ledger.js"></script>
     <script src="app.js"></script>
   </body>
