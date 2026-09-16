@@ -61,7 +61,8 @@ const infoCopy = {
   ledgerDuplicates: 'How many workbook rows folded into this one task. Above 1 means the same task and trainer were listed more than once. The extra rows are excluded from every accepted and pending count, but they are not hidden - filter to Folded rows only to see them.',
   duplicates: 'Accepted work lives in three cohorts and the same task can be finalised into several of them. Folders are what the bucket holds; distinct tasks is what was actually done. The newest archive represents the task and the rest are marked as repeats, which is why adding the cohort totals together overstates the work.',
   ownership: 'Owners are joined to tasks by declared task name against the trainer records in the bucket. Finalisation repackages archives, so an archive digest never matches the trainer record digest and the name is the only join available - it is evidence, not proof. Where two trainer records claim the same name the task is left contested rather than assigned.',
-  pipeline: 'The ledger stores only six raw states and none of them is accepted or rejected; those come from the verdict recorded on the submission, which wins over the raw state. Done means the evaluation finished with no verdict at all, so Done is not an acceptance. Infrastructure Error means the run failed on tooling, not on the work. Current counts the latest attempt per family; All attempts counts retries separately.',
+  pipeline: 'The ledger stores only six raw states and none of them is accepted or rejected; those come from the verdict recorded on the submission, which wins over the raw state. Submitted means the evaluation finished with no verdict at all, so it is awaiting adjudication, not an acceptance. Failed means the run failed on tooling rather than on the work - the trainer is told, but cannot rerun it. Current counts the latest attempt per family; All attempts counts retries separately.',
+  commandDates: 'Slices the evaluation and finalisation figures on this page by record date, inclusive at both ends; either end can be left empty. Records with no date drop out as soon as a bound is set. Payout and workbook figures carry no per-record date, so they do not respond to it.',
   dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
   workbook: 'A workbook-wide snapshot with no reliable person-level allocation, so it does not respond to the filters on the other tabs and cannot be split by trainer.',
 };
@@ -327,19 +328,27 @@ function groupBy(items, keyFn) {
   }, {});
 }
 
-const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'finalisation'];
+const VIEWS = ['command', 'payouts', 'delivery', 'pipeline'];
+// Finalisation merged into the pipeline view - the two were always the same flow.
+// Old links, bookmarks and #finalisation hashes still have to land somewhere.
+const VIEW_ALIASES = {finalisation: 'pipeline'};
+const resolveView = name => VIEW_ALIASES[name] || name;
 // The same status is the same colour in the donut, the cards and the table.
 const STATUS_TOKENS = {
-  Accepted: '--aqua', Done: '--blue', 'Waiting For Trainer Edit': '--yellow',
-  'Infrastructure Error': '--orange', Rejected: '--red', 'Conflicting verdict': '--magenta',
+  Accepted: '--aqua', Submitted: '--blue', 'Waiting For Trainer Edit': '--yellow',
+  Failed: '--orange', Rejected: '--red', 'Conflicting verdict': '--magenta',
   Running: '--violet', Queued: '--magenta', Cancelled: '--slate',
+  // ponytail: the committed snapshot still carries the old ledger spellings until a
+  // refresh runs the new exporter. Drop these two once one has.
+  Done: '--blue', 'Infrastructure Error': '--orange',
 };
 function statusColor(status) {
   const token = STATUS_TOKENS[status] || '--slate';
   return getComputedStyle(document.documentElement).getPropertyValue(token).trim() || '#7c8798';
 }
 
-function switchView(viewName, push = true) {
+function switchView(name, push = true) {
+  const viewName = resolveView(name);
   if (!VIEWS.includes(viewName)) return;
   document.querySelectorAll('.viewnav-tab').forEach(button => {
     const active = button.dataset.view === viewName;
@@ -353,15 +362,35 @@ function switchView(viewName, push = true) {
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
+// Finalisation rows and pipeline cycles both carry a plain YYYY-MM-DD `date`, so
+// one predicate slices both. Rows with no date drop out once a bound is set,
+// rather than being silently kept - the same rule the Pipeline view uses.
+function commandDateRange() {
+  const start = byId('commandStart').value;
+  const end = byId('commandEnd').value;
+  return {start, end, invalid: Boolean(start && end && start > end)};
+}
+
+function withinRange(row, {start, end}) {
+  if (!start && !end) return true;
+  const date = row.date || '';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  return (!start || date >= start) && (!end || date <= end);
+}
+
 function commandSnapshot() {
-  const folders = finalisationRows;
+  const range = commandDateRange();
+  const keep = rows => range.invalid ? [] : rows.filter(row => withinRange(row, range));
+  const folders = keep(finalisationRows);
   // One task can be finalised into several cohorts; the accepted count is task names, not folders.
   const tasks = new Set(folders.map(row => row.name));
   return {
+    // Readiness is about the data having loaded, not about the filter matching.
     ready: Boolean(finalisationRows.length && gcsPipeline),
+    range,
     folders,
     tasks,
-    current: gcsPipeline?.current || [],
+    current: keep(gcsPipeline?.current || []),
     duplicates: folders.length - tasks.size,
     unassigned: folders.filter(row => !row.trainer).length,
   };
@@ -678,6 +707,12 @@ function renderTeams() {
     .join("");
 }
 
+// Legacy is a date rule, but the export splits by record kind: 'legacy' holds
+// old-format run records, and some of those post-date the cutoff. Rather than
+// re-bucket rows of a different shape, the view says so where it shows them.
+const LEGACY_CUTOFF = '2026-09-05';
+const isLegacyEra = row => (row.date || '') < LEGACY_CUTOFF;
+
 const PIPELINE_FILTERS = [
   {id: 'pipelineFilter', label: 'statuses', of: task => task.status || 'Unknown'},
   {id: 'pipelineType', label: 'types', of: task => pipelineType(task)},
@@ -707,8 +742,17 @@ function renderPipeline(resetPage = true) {
   if (resetPage) pipelinePage = 0;
   if (gcsPipeline) {
     const mode = byId('pipelineMode').value;
-    const description = mode === 'current' ? 'Latest cycle per owner and task family; unevaluated uploads excluded.' : mode === 'historical' ? 'All recorded evaluation cycles; retries count separately.' : 'Legacy QC runs from archived owner snapshots; Done is not an acceptance verdict.';
-    setText('pipelineSourceStatus', `GCS export: ${gcsPipeline.generatedAt} / ${description}`);
+    const description = mode === 'current' ? 'Latest cycle per owner and task family; unevaluated uploads excluded.' : mode === 'historical' ? 'All recorded evaluation cycles; retries count separately.' : 'Legacy QC runs from archived owner snapshots; Submitted is not an acceptance verdict.';
+    // Say where the population disagrees with the cutoff, instead of implying it does not.
+    const population = pipelinePopulation();
+    const offCutoff = mode === 'legacy'
+      ? population.filter(row => !isLegacyEra(row)).length
+      : population.filter(isLegacyEra).length;
+    const caveat = !offCutoff ? ''
+      : mode === 'legacy'
+        ? ` / ${fmt(offCutoff)} of ${fmt(population.length)} rows are dated on or after ${LEGACY_CUTOFF} and are old-format run records, not legacy work.`
+        : ` / ${fmt(offCutoff)} rows pre-date ${LEGACY_CUTOFF} and belong to legacy.`;
+    setText('pipelineSourceStatus', `GCS export: ${gcsPipeline.generatedAt} / ${description}${caveat}`);
   }
   const invalid = Boolean(byId('pipelineStart').value && byId('pipelineEnd').value && byId('pipelineStart').value > byId('pipelineEnd').value);
   byId('pipelineDateError').hidden = !invalid;
@@ -880,10 +924,13 @@ function wireEvents() {
   window.addEventListener('popstate', () => switchView(location.hash.slice(1) || 'command', false));
   byId('globalSearch').addEventListener('input', event => {
     const active = document.querySelector('.viewnav-tab.is-active')?.dataset.view;
-    const target = VIEW_SEARCH[active];
-    if (!target) return;
-    byId(target).value = event.target.value;
-    byId(target).dispatchEvent(new Event('input'));
+    const targets = VIEW_SEARCH[active];
+    if (!targets) return;
+    // The merged view has a box per half; one search drives both.
+    targets.forEach(id => {
+      byId(id).value = event.target.value;
+      byId(id).dispatchEvent(new Event('input'));
+    });
   });
   const resetPayoutPages = () => { payoutPage = 0; ledgerPage = 0; renderTrainerRows(); };
   byId('personSearch').addEventListener('input', resetPayoutPages);
@@ -902,6 +949,17 @@ function wireEvents() {
     populateFilters();
     renderPipeline();
   });
+  const commandDates = ['commandStart', 'commandEnd'];
+  commandDates.forEach(id => byId(id).addEventListener('change', () => {
+    byId('commandDateError').hidden = !commandDateRange().invalid;
+    renderHero(); renderDonut(); renderBenchCards();
+  }));
+  byId('clearCommandDates').addEventListener('click', () => {
+    commandDates.forEach(id => byId(id).value = '');
+    byId('commandDateError').hidden = true;
+    renderHero(); renderDonut(); renderBenchCards();
+  });
+
   const popover = byId('infoPopover');
   let openButton = null;
   function hideInfo() {
@@ -953,15 +1011,17 @@ function wireEvents() {
 }
 
 // The topbar search drives whichever view owns a search box.
-const VIEW_SEARCH = {payouts: 'personSearch', finalisation: 'finalisationSearch'};
+const VIEW_SEARCH = {payouts: ['personSearch'], pipeline: ['pipelineSearch', 'finalisationSearch']};
 
 function syncSearch(viewName) {
-  const target = VIEW_SEARCH[viewName];
+  const targets = VIEW_SEARCH[viewName];
   const box = byId('globalSearch');
-  box.closest('.search').classList.toggle('is-off', !target);
-  box.disabled = !target;
-  box.placeholder = target ? (viewName === 'payouts' ? 'Search a person, team or manager' : 'Search a task, folder or owner') : 'Search is available on Payouts and Finalisation';
-  box.value = target ? byId(target).value : '';
+  box.closest('.search').classList.toggle('is-off', !targets);
+  box.disabled = !targets;
+  box.placeholder = targets
+    ? (viewName === 'payouts' ? 'Search a person, team or manager' : 'Search a task, folder or owner')
+    : 'Search is available on Payouts and the Finalisation pipeline';
+  box.value = targets ? byId(targets[0]).value : '';
 }
 
 function init() {

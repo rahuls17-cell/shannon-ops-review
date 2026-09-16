@@ -33,6 +33,23 @@ def iso(value):
     return str(value or '')
 
 
+# The ledger names states for the engine that runs them; the dashboard shows the
+# finalisation vocabulary. 'done' is a run that finished with no verdict attached,
+# which is a submission awaiting adjudication, not an outcome. The two spellings of
+# an infra failure are one state. Cycle rows and legacy rows both label through here,
+# so the two paths cannot drift apart again.
+RAW_STATUS_LABELS = {
+    'done': 'Submitted',
+    'infrastructure_error': 'Failed',
+    'error': 'Failed',
+}
+
+
+def label_status(raw):
+    key = str(raw or 'Unknown').strip().lower()
+    return RAW_STATUS_LABELS.get(key) or key.replace('_', ' ').title()
+
+
 def status_of(cycle):
     submission = cycle.get('submission') or {}
     verdict = submission.get('pipeline_verdict') or {}
@@ -43,7 +60,7 @@ def status_of(cycle):
         return 'Accepted'
     if 'rejected' in explicit:
         return 'Rejected'
-    return str(cycle.get('status') or 'Unknown').replace('_', ' ').title()
+    return label_status(cycle.get('status'))
 
 
 def category_of(task, task_type=''):
@@ -265,7 +282,7 @@ def main():
                 continue
             stamp = iso(record.get('created_at'))
             rows.append({'id': wrapper.get('object_name'), 'taskId': record.get('task_id'), 'task': record.get('task_name') or record.get('task_id') or 'Unknown',
-                         'trainer': email, 'status': str(record.get('status') or 'Unknown').replace('_', ' ').title(),
+                         'trainer': email, 'status': label_status(record.get('status')),
                          'taskType': record.get('mode') or 'Unknown', 'submittedAt': stamp, 'date': stamp[:10],
                          'updatedAt': iso(record.get('finished_at')), 'ownerKey': owner_key})
         return 'legacy', owner_key, email, rows, {'ownerKey': owner_key, 'lastSuccess': document.get('last_success_at'), 'frozenAt': document.get('frozen_at'), 'hasError': bool(document.get('error'))}
