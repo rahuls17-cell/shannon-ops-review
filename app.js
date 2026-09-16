@@ -7,6 +7,7 @@ let gcsPipeline = null;
 let payoutLedger = null;
 let payoutLedgerTasks = [];
 let clientAcceptance = null;
+let throughputConfig = null;
 let pipelinePage = 0;
 let payoutPage = 0;
 let ledgerPage = 0;
@@ -61,7 +62,8 @@ const infoCopy = {
   ledgerDuplicates: 'How many workbook rows folded into this one task. Above 1 means the same task and trainer were listed more than once. The extra rows are excluded from every accepted and pending count, but they are not hidden - filter to Folded rows only to see them.',
   duplicates: 'Accepted work lives in three cohorts and the same task can be finalised into several of them. Folders are what the bucket holds; distinct tasks is what was actually done. The newest archive represents the task and the rest are marked as repeats, which is why adding the cohort totals together overstates the work.',
   ownership: 'Owners are joined to tasks by declared task name against the trainer records in the bucket. Finalisation repackages archives, so an archive digest never matches the trainer record digest and the name is the only join available - it is evidence, not proof. Where two trainer records claim the same name the task is left contested rather than assigned.',
-  pipeline: 'The ledger stores only six raw states and none of them is accepted or rejected; those come from the verdict recorded on the submission, which wins over the raw state. Done means the evaluation finished with no verdict at all, so Done is not an acceptance. Infrastructure Error means the run failed on tooling, not on the work. Current counts the latest attempt per family; All attempts counts retries separately.',
+  pipeline: 'The ledger stores only six raw states and none of them is accepted or rejected; those come from the verdict recorded on the submission, which wins over the raw state. Submitted means the evaluation finished with no verdict at all, so it is awaiting adjudication, not an acceptance. Failed means the run failed on tooling rather than on the work - the trainer is told, but cannot rerun it. Current counts the latest attempt per family; All attempts counts retries separately.',
+  commandDates: 'Slices the evaluation and finalisation figures on this page by record date, inclusive at both ends; either end can be left empty. Records with no date drop out as soon as a bound is set. Payout and workbook figures carry no per-record date, so they do not respond to it.',
   dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
   workbook: 'A workbook-wide snapshot with no reliable person-level allocation, so it does not respond to the filters on the other tabs and cannot be split by trainer.',
 };
@@ -147,6 +149,7 @@ function loadFinalisation() {
   const totals = finalisationSource.totals;
   setText('finalisationStatus', `Read-only scan of ${finalisationSource.bucket} at ${gcsPipeline.generatedAt} / ${fmt(finalisationCohorts.length)} cohorts / accepted ${fmt(totals.accepted)}, rejected ${fmt(totals.rejected)}, unsubmitted ${fmt(totals.unsubmitted)} / ${fmt(finalisationSource.tasks.length)} accepted folders opened for task metadata`);
   renderFinalisation();
+  renderThroughput();
   button.disabled = false;
 }
 
@@ -327,19 +330,27 @@ function groupBy(items, keyFn) {
   }, {});
 }
 
-const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'finalisation'];
+const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'throughput'];
+// Finalisation merged into the pipeline view - the two were always the same flow.
+// Old links, bookmarks and #finalisation hashes still have to land somewhere.
+const VIEW_ALIASES = {finalisation: 'pipeline'};
+const resolveView = name => VIEW_ALIASES[name] || name;
 // The same status is the same colour in the donut, the cards and the table.
 const STATUS_TOKENS = {
-  Accepted: '--aqua', Done: '--blue', 'Waiting For Trainer Edit': '--yellow',
-  'Infrastructure Error': '--orange', Rejected: '--red', 'Conflicting verdict': '--magenta',
+  Accepted: '--aqua', Submitted: '--blue', 'Waiting For Trainer Edit': '--yellow',
+  Failed: '--orange', Rejected: '--red', 'Conflicting verdict': '--magenta',
   Running: '--violet', Queued: '--magenta', Cancelled: '--slate',
+  // ponytail: the committed snapshot still carries the old ledger spellings until a
+  // refresh runs the new exporter. Drop these two once one has.
+  Done: '--blue', 'Infrastructure Error': '--orange',
 };
 function statusColor(status) {
   const token = STATUS_TOKENS[status] || '--slate';
   return getComputedStyle(document.documentElement).getPropertyValue(token).trim() || '#7c8798';
 }
 
-function switchView(viewName, push = true) {
+function switchView(name, push = true) {
+  const viewName = resolveView(name);
   if (!VIEWS.includes(viewName)) return;
   document.querySelectorAll('.viewnav-tab').forEach(button => {
     const active = button.dataset.view === viewName;
@@ -353,15 +364,35 @@ function switchView(viewName, push = true) {
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
+// Finalisation rows and pipeline cycles both carry a plain YYYY-MM-DD `date`, so
+// one predicate slices both. Rows with no date drop out once a bound is set,
+// rather than being silently kept - the same rule the Pipeline view uses.
+function commandDateRange() {
+  const start = byId('commandStart').value;
+  const end = byId('commandEnd').value;
+  return {start, end, invalid: Boolean(start && end && start > end)};
+}
+
+function withinRange(row, {start, end}) {
+  if (!start && !end) return true;
+  const date = row.date || '';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  return (!start || date >= start) && (!end || date <= end);
+}
+
 function commandSnapshot() {
-  const folders = finalisationRows;
+  const range = commandDateRange();
+  const keep = rows => range.invalid ? [] : rows.filter(row => withinRange(row, range));
+  const folders = keep(finalisationRows);
   // One task can be finalised into several cohorts; the accepted count is task names, not folders.
   const tasks = new Set(folders.map(row => row.name));
   return {
+    // Readiness is about the data having loaded, not about the filter matching.
     ready: Boolean(finalisationRows.length && gcsPipeline),
+    range,
     folders,
     tasks,
-    current: gcsPipeline?.current || [],
+    current: keep(gcsPipeline?.current || []),
     duplicates: folders.length - tasks.size,
     unassigned: folders.filter(row => !row.trainer).length,
   };
@@ -678,6 +709,12 @@ function renderTeams() {
     .join("");
 }
 
+// Legacy is a date rule, but the export splits by record kind: 'legacy' holds
+// old-format run records, and some of those post-date the cutoff. Rather than
+// re-bucket rows of a different shape, the view says so where it shows them.
+const LEGACY_CUTOFF = '2026-09-05';
+const isLegacyEra = row => (row.date || '') < LEGACY_CUTOFF;
+
 const PIPELINE_FILTERS = [
   {id: 'pipelineFilter', label: 'statuses', of: task => task.status || 'Unknown'},
   {id: 'pipelineType', label: 'types', of: task => pipelineType(task)},
@@ -707,8 +744,17 @@ function renderPipeline(resetPage = true) {
   if (resetPage) pipelinePage = 0;
   if (gcsPipeline) {
     const mode = byId('pipelineMode').value;
-    const description = mode === 'current' ? 'Latest cycle per owner and task family; unevaluated uploads excluded.' : mode === 'historical' ? 'All recorded evaluation cycles; retries count separately.' : 'Legacy QC runs from archived owner snapshots; Done is not an acceptance verdict.';
-    setText('pipelineSourceStatus', `GCS export: ${gcsPipeline.generatedAt} / ${description}`);
+    const description = mode === 'current' ? 'Latest cycle per owner and task family; unevaluated uploads excluded.' : mode === 'historical' ? 'All recorded evaluation cycles; retries count separately.' : 'Legacy QC runs from archived owner snapshots; Submitted is not an acceptance verdict.';
+    // Say where the population disagrees with the cutoff, instead of implying it does not.
+    const population = pipelinePopulation();
+    const offCutoff = mode === 'legacy'
+      ? population.filter(row => !isLegacyEra(row)).length
+      : population.filter(isLegacyEra).length;
+    const caveat = !offCutoff ? ''
+      : mode === 'legacy'
+        ? ` / ${fmt(offCutoff)} of ${fmt(population.length)} rows are dated on or after ${LEGACY_CUTOFF} and are old-format run records, not legacy work.`
+        : ` / ${fmt(offCutoff)} rows pre-date ${LEGACY_CUTOFF} and belong to legacy.`;
+    setText('pipelineSourceStatus', `GCS export: ${gcsPipeline.generatedAt} / ${description}${caveat}`);
   }
   const invalid = Boolean(byId('pipelineStart').value && byId('pipelineEnd').value && byId('pipelineStart').value > byId('pipelineEnd').value);
   byId('pipelineDateError').hidden = !invalid;
@@ -838,6 +884,129 @@ function renderPlan() {
     }).join(' / ')}</p>`;
 }
 
+// ---------- Throughput ----------
+
+const TARGET_EDITS_KEY = 'ops-review-throughput-targets';
+
+function targetEdits() {
+  try { return JSON.parse(localStorage.getItem(TARGET_EDITS_KEY) || '{}') || {}; } catch { return {}; }
+}
+
+function saveTargetEdits(edits) {
+  try {
+    if (Object.keys(edits).length) localStorage.setItem(TARGET_EDITS_KEY, JSON.stringify(edits));
+    else localStorage.removeItem(TARGET_EDITS_KEY);
+  } catch { /* private window or blocked storage: edits last until reload */ }
+}
+
+async function loadTargets() {
+  try {
+    const response = await fetch('assets/targets.json', {cache: 'no-store'});
+    if (!response.ok) throw new Error(`targets.json ${response.status}`);
+    throughputConfig = await response.json();
+  } catch (error) {
+    setText('throughputStatus', `Targets unavailable: ${error.message}`);
+    return;
+  }
+  renderThroughput();
+}
+
+function renderThroughput() {
+  if (!throughputConfig) return;
+  if (!finalisationRows.length || !gcsPipeline) {
+    setText('throughputStatus', 'Waiting for the bucket scan...');
+    return;
+  }
+  const edits = targetEdits();
+  const model = window.buildThroughput(finalisationRows, throughputConfig, gcsPipeline.generatedAt.slice(0, 10), edits);
+  setText('throughputStatus', `GCS scan ${model.scanDate} / ${fmt(model.total)} distinct accepted tasks / ${model.daysLeft} days to ${model.quarterEnd} / targets: ${throughputConfig.source}`);
+  byId('resetTargets').hidden = !Object.keys(edits).length;
+
+  const pillClass = {ok: 'is-ok', warn: 'is-warn', depends: 'is-depends', none: ''};
+  byId('throughputRows').innerHTML = model.targets.map(target => {
+    const {measured, bestCase} = target;
+    const range = target.min !== target.max;
+    const input = (bound, value) => `<input id="target-${esc(target.id)}-${bound}" type="number" min="0" step="10" inputmode="numeric"
+      value="${esc(value)}" data-target="${esc(target.id)}" data-bound="${range ? bound : 'both'}" aria-label="${esc(target.label)} ${range ? bound : ''} target" />`;
+    return `<tr>
+      <td><span class="target-label">${esc(target.label)}</span>${target.note ? `<span class="target-note">${esc(target.note)}</span>` : ''}</td>
+      <td><span class="target-inputs">${range ? `${input('min', target.min)}<span aria-hidden="true">to</span>${input('max', target.max)}` : input('min', target.min)}</span>
+        ${target.edited ? '<span class="target-edited">Edited in this browser</span>' : ''}</td>
+      <td class="num">${measured ? fmt(measured.delivered) : '-'}</td>
+      <td class="num">${measured ? `${measured.perDay.toFixed(1)} a day` : '-'}</td>
+      <td class="num">${measured ? fmt(measured.forecast) : '-'}${bestCase ? `<span class="target-note">up to ${fmt(bestCase.forecast)} with unattributed work</span>` : ''}</td>
+      <td><span class="pill ${pillClass[target.status.key]}">${esc(target.status.label)}</span></td>
+    </tr>`;
+  }).join('');
+
+  const pool = model.lines.find(line => line.id === 'unattributed');
+  setText('throughputAttribution', `${fmt(pool.points.at(-1).total)} accepted tasks have no roster-linked owner, so no bench can claim them yet. Each bench's "up to" figure assumes that one shared pool is its own, so both cannot be reached that way - attributing owners is what settles it.`);
+  renderThroughputChart(model);
+}
+
+function renderThroughputChart(model) {
+  const W = 940, H = 300, L = 46, R = 250, T = 16, B = 30;
+  const last = model.days.length - 1;
+  const span = last + model.daysLeft;
+  const x = index => L + (index / (span || 1)) * (W - L - R);
+  const benchTargets = model.targets.filter(target => target.id === 'company' || target.id === 'computer');
+  const peak = Math.max(1, ...model.lines.map(line => line.forecast), ...benchTargets.map(target => target.max));
+  const step = Math.pow(10, Math.floor(Math.log10(peak))) / 2;
+  const yMax = Math.ceil((peak * 1.06) / step) * step;
+  const y = value => T + (1 - value / yMax) * (H - T - B);
+  const colour = {company: 'var(--violet)', computer: 'var(--aqua)', unattributed: 'var(--slate)'};
+  const short = iso => new Date(`${iso}T00:00:00Z`).toLocaleDateString('en-GB', {day: 'numeric', month: 'short', timeZone: 'UTC'});
+
+  const ticks = [];
+  for (let value = 0; value <= yMax; value += step) ticks.push(value);
+  const grid = ticks.map(value => `<line class="grid-line" x1="${L}" x2="${x(span)}" y1="${y(value)}" y2="${y(value)}" />
+    <text x="${L - 8}" y="${y(value) + 4}" text-anchor="end">${fmt(value)}</text>`).join('');
+
+  const xLabels = [[0, model.days[0]], [7, model.days[7]], [last, model.days[last]], [span, model.quarterEnd]]
+    .map(([index, day]) => `<text x="${x(index)}" y="${H - 8}" text-anchor="middle">${esc(short(day))}</text>`).join('');
+
+  // Targets sit at quarter end in their bench's colour: a band for a range, a tick for a
+  // figure. Each bench gets its own slot so two targets at similar heights never overlap.
+  const targets = benchTargets.map((target, slot) => {
+    const tone = colour[target.id];
+    const cx = x(span) - 8 + slot * 16;
+    return target.min === target.max
+      ? `<line x1="${cx - 6}" x2="${cx + 6}" y1="${y(target.min)}" y2="${y(target.min)}" stroke="${tone}" stroke-width="3" stroke-linecap="round" />`
+      : `<rect x="${cx - 5}" y="${y(target.max)}" width="10" height="${Math.max(2, y(target.min) - y(target.max))}" rx="2" fill="${tone}" opacity="0.3" />`;
+  }).join('');
+
+  const series = model.lines.map(line => {
+    const tone = colour[line.id];
+    const path = line.points.map((point, index) => `${index ? 'L' : 'M'}${x(index).toFixed(1)},${y(point.total).toFixed(1)}`).join(' ');
+    const end = line.points[last].total;
+    const dots = line.points.map((point, index) => `<circle cx="${x(index).toFixed(1)}" cy="${y(point.total).toFixed(1)}" r="3" fill="${tone}">
+      <title>${esc(short(point.day))} / ${esc(line.label)}: ${fmt(point.total)} (${point.delta ? `+${fmt(point.delta)}` : 'no change'} that day)</title></circle>`).join('');
+    return `<path d="${path}" fill="none" stroke="${tone}" stroke-width="2.25" stroke-linejoin="round" />
+      <path d="M${x(last).toFixed(1)},${y(end).toFixed(1)} L${x(span).toFixed(1)},${y(line.forecast).toFixed(1)}" fill="none" stroke="${tone}" stroke-width="2" stroke-dasharray="5 5" />
+      ${dots}`;
+  }).join('');
+
+  // End labels, nudged apart so close forecasts stay readable.
+  const labels = model.lines.map(line => ({line, at: y(line.forecast)})).sort((a, b) => a.at - b.at);
+  for (let index = 1; index < labels.length; index++) {
+    labels[index].at = Math.max(labels[index].at, labels[index - 1].at + 15);
+  }
+  const ends = labels.map(({line, at}) => `<text class="end-label" x="${x(span) + 22}" y="${at + 4}" style="fill:${colour[line.id]}">${fmt(line.forecast)} ${esc(line.label)}</text>`).join('');
+
+  const scan = `<line x1="${x(last)}" x2="${x(last)}" y1="${T}" y2="${H - B}" stroke="var(--line)" stroke-dasharray="3 4" />
+    <text x="${x(last) + 5}" y="${T + 10}">Scan</text>`;
+
+  byId('throughputChart').innerHTML = `
+    <svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cumulative accepted tasks per bench over the last two weeks, projected to ${esc(model.quarterEnd)}">
+      ${grid}${scan}${targets}${series}${ends}${xLabels}
+    </svg>
+    <figcaption class="throughput-key">
+      ${model.lines.map(line => `<span><i style="--c:${colour[line.id]}"></i>${esc(line.label)}, ${line.perDay.toFixed(1)} a day</span>`).join('')}
+      <span><i class="dashed"></i>Forecast</span>
+      <span><i class="band"></i>Target at 30 Sep</span>
+    </figcaption>`;
+}
+
 function wireEvents() {
   byId('pipelinePrevious').addEventListener('click',()=>{pipelinePage--;renderPipeline(false);});
   byId('pipelineNext').addEventListener('click',()=>{pipelinePage++;renderPipeline(false);});
@@ -880,10 +1049,13 @@ function wireEvents() {
   window.addEventListener('popstate', () => switchView(location.hash.slice(1) || 'command', false));
   byId('globalSearch').addEventListener('input', event => {
     const active = document.querySelector('.viewnav-tab.is-active')?.dataset.view;
-    const target = VIEW_SEARCH[active];
-    if (!target) return;
-    byId(target).value = event.target.value;
-    byId(target).dispatchEvent(new Event('input'));
+    const targets = VIEW_SEARCH[active];
+    if (!targets) return;
+    // The merged view has a box per half; one search drives both.
+    targets.forEach(id => {
+      byId(id).value = event.target.value;
+      byId(id).dispatchEvent(new Event('input'));
+    });
   });
   const resetPayoutPages = () => { payoutPage = 0; ledgerPage = 0; renderTrainerRows(); };
   byId('personSearch').addEventListener('input', resetPayoutPages);
@@ -902,6 +1074,34 @@ function wireEvents() {
     populateFilters();
     renderPipeline();
   });
+  const commandDates = ['commandStart', 'commandEnd'];
+  commandDates.forEach(id => byId(id).addEventListener('change', () => {
+    byId('commandDateError').hidden = !commandDateRange().invalid;
+    renderHero(); renderDonut(); renderBenchCards();
+  }));
+  byId('clearCommandDates').addEventListener('click', () => {
+    commandDates.forEach(id => byId(id).value = '');
+    byId('commandDateError').hidden = true;
+    renderHero(); renderDonut(); renderBenchCards();
+  });
+
+  byId('throughputRows').addEventListener('change', event => {
+    const input = event.target.closest('input[data-target]');
+    if (!input || !throughputConfig || input.value === '' || Number(input.value) < 0) return;
+    const edits = targetEdits();
+    const base = throughputConfig.targets.find(target => target.id === input.dataset.target);
+    const current = edits[base.id] || {min: base.min, max: base.max};
+    const value = Math.round(Number(input.value));
+    if (input.dataset.bound === 'both') { current.min = value; current.max = value; }
+    else current[input.dataset.bound] = value;
+    if (current.min > current.max) current.max = current.min;
+    if (current.min === base.min && current.max === base.max) delete edits[base.id];
+    else edits[base.id] = current;
+    saveTargetEdits(edits);
+    renderThroughput();
+  });
+  byId('resetTargets').addEventListener('click', () => { saveTargetEdits({}); renderThroughput(); });
+
   const popover = byId('infoPopover');
   let openButton = null;
   function hideInfo() {
@@ -953,15 +1153,17 @@ function wireEvents() {
 }
 
 // The topbar search drives whichever view owns a search box.
-const VIEW_SEARCH = {payouts: 'personSearch', finalisation: 'finalisationSearch'};
+const VIEW_SEARCH = {payouts: ['personSearch'], pipeline: ['pipelineSearch', 'finalisationSearch']};
 
 function syncSearch(viewName) {
-  const target = VIEW_SEARCH[viewName];
+  const targets = VIEW_SEARCH[viewName];
   const box = byId('globalSearch');
-  box.closest('.search').classList.toggle('is-off', !target);
-  box.disabled = !target;
-  box.placeholder = target ? (viewName === 'payouts' ? 'Search a person, team or manager' : 'Search a task, folder or owner') : 'Search is available on Payouts and Finalisation';
-  box.value = target ? byId(target).value : '';
+  box.closest('.search').classList.toggle('is-off', !targets);
+  box.disabled = !targets;
+  box.placeholder = targets
+    ? (viewName === 'payouts' ? 'Search a person, team or manager' : 'Search a task, folder or owner')
+    : 'Search is available on Payouts and the Finalisation pipeline';
+  box.value = targets ? byId(targets[0]).value : '';
 }
 
 function init() {
@@ -980,6 +1182,7 @@ function init() {
   loadPayoutLedger();
   loadClientAcceptance();
   loadGcsPipeline();
+  loadTargets();
 }
 
 init();
