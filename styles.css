@@ -222,7 +222,7 @@ main { padding: 26px; display: block; }
 .view-head h1 { font-size: 30px; letter-spacing: -0.03em; }
 .lede { margin-top: 9px; max-width: 76ch; color: var(--ink-2); font-size: 13.5px; }
 .view-actions { display: flex; gap: 8px; align-items: center; }
-.split { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: var(--gap); }
+.split { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: var(--gap); align-items: start; }
 
 /* ---------- Panel ---------- */
 
@@ -350,7 +350,14 @@ main { padding: 26px; display: block; }
 
 /* ---------- Figures ---------- */
 
-.figures { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
+/* Overview is split by source: bucket-counted figures respond to the date range,
+   workbook-counted ones cannot. Cards keep one size across both groups. */
+.group { display: grid; gap: var(--gap); }
+.group-head { display: flex; align-items: baseline; justify-content: space-between; gap: 14px; flex-wrap: wrap; border-bottom: 1px solid var(--line); padding-bottom: 10px; }
+.group-head h2 { font-size: 15px; letter-spacing: -0.01em; }
+.group-head p { font-size: 11.5px; color: var(--muted); max-width: 62ch; }
+
+.figures { display: grid; grid-template-columns: repeat(auto-fit, minmax(178px, 264px)); justify-content: start; gap: 12px; }
 
 .figure {
   position: relative;
@@ -551,6 +558,9 @@ main { padding: 26px; display: block; }
 
 [data-status] { --tone: var(--slate); --tone-soft: var(--slate-soft); --tone-ink: var(--slate-ink); }
 [data-status="Accepted"] { --tone: var(--aqua); --tone-soft: var(--aqua-soft); --tone-ink: var(--aqua-ink); }
+[data-status="Submitted"] { --tone: var(--blue); --tone-soft: var(--blue-soft); --tone-ink: var(--blue-ink); }
+[data-status="Failed"] { --tone: var(--orange); --tone-soft: var(--orange-soft); --tone-ink: var(--orange-ink); }
+/* Old ledger spellings, still in the committed snapshot until the next refresh. */
 [data-status="Done"] { --tone: var(--blue); --tone-soft: var(--blue-soft); --tone-ink: var(--blue-ink); }
 [data-status="Waiting For Trainer Edit"] { --tone: var(--yellow); --tone-soft: var(--yellow-soft); --tone-ink: var(--yellow-ink); }
 [data-status="Infrastructure Error"] { --tone: var(--orange); --tone-soft: var(--orange-soft); --tone-ink: var(--orange-ink); }
