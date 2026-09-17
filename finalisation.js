@@ -2,7 +2,7 @@
   const normalize = value => String(value || '').toLowerCase().replace(/[^a-z0-9]/g, '');
   const nameKey = value => String(value || '').trim().toLowerCase().replace(/^harbor\//, '');
 
-  function prepareFinalisation(source, roster) {
+  function prepareFinalisation(source, roster, consoleData) {
     if (!source || !Array.isArray(source.tasks) || !Array.isArray(source.cohorts)) throw new Error('Unexpected finalisation export');
     const scanned = source.cohorts.reduce((total, cohort) => total + (cohort.scanned || 0), 0);
     if (scanned !== source.tasks.length) throw new Error('Finalisation cohort counts do not match the scanned tasks');
@@ -20,16 +20,26 @@
       const id = `${task.cohort}/${task.folder}`;
       if (seen.has(id)) throw new Error('Duplicate finalisation folder in one cohort');
       seen.add(id);
-      const email = String(task.owner || '').toLowerCase();
-      const byAlias = aliases.get(normalize(task.owner)) || [];
-      const trainer = task.ownerContested ? null : trainers.get(email) || (byAlias.length === 1 ? byAlias[0] : null);
+      // The console is the stronger claim: it records who actually submitted.
+      // The GCS trainer-record name match is evidence, not proof, so it only
+      // fills gaps the console leaves.
+      const owners = consoleData?.owners || {};
+      const fromConsole = owners[nameKey(task.declared_short || task.folder)] || owners[nameKey(task.declared_name)] || null;
+      const email = String(fromConsole || task.owner || '').toLowerCase();
+      const byAlias = fromConsole ? [] : aliases.get(normalize(task.owner)) || [];
+      const contested = task.ownerContested && !fromConsole;
+      const trainer = contested ? null : trainers.get(email) || (byAlias.length === 1 ? byAlias[0] : null);
       const team = trainer?.team;
       return {...task, id,
         name: nameKey(task.declared_short || task.folder),
         displayName: task.declared_short || task.folder,
         trainer,
-        ownership: task.ownerContested ? 'conflict' : trainer ? 'linked' : task.owner ? 'unlinked' : 'missing',
-        attribution: task.ownerContested ? 'Contested owner' : task.owner ? 'Name match only' : 'No trainer record',
+        owner: email || null,
+        ownerSource: fromConsole ? 'console' : task.owner ? 'records' : null,
+        ownership: contested ? 'conflict' : trainer ? 'linked' : email ? 'unlinked' : 'missing',
+        attribution: contested ? 'Contested owner'
+          : fromConsole ? 'Harbor Console submitter'
+          : task.owner ? 'Name match only' : 'No trainer record',
         bench: team === 'Company' ? 'company' : ['Computer A', 'Computer B'].includes(team) ? 'computer' : 'unassigned',
         filterType: task.is_connector === true ? 'Connector' : task.is_connector === false ? 'Non-connector' : 'Not recorded',
         filterDomain: task.domain ? task.domain[0].toUpperCase() + task.domain.slice(1) : 'Not recorded',

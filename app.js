@@ -7,6 +7,14 @@ let gcsPipeline = null;
 let payoutLedger = null;
 let payoutLedgerTasks = [];
 let clientAcceptance = null;
+let explorer = null;
+let explorerPath = '';
+let explorerEntry = null;
+// PRD X1: one range for the whole dashboard except Payouts, which reports what
+// the workbook paid rather than when the work happened.
+const dateRange = {start: '', end: ''};
+let harborConsole = null;
+let consoleLive = null;
 let pipelinePage = 0;
 let payoutPage = 0;
 let ledgerPage = 0;
@@ -46,6 +54,11 @@ function pipelineType(task) {
 }
 const infoCopy = {
   accepted: 'Distinct tasks found in the finalisation cohorts of the bucket. A task finalised into more than one cohort has a folder in each, so folders are collapsed to task names first - the name is read from task.toml inside the archive, because folder names are sometimes opaque pipeline ids. This is delivered work, not the payout basis.',
+  sources: 'Every number on this dashboard comes from one of these, and each entry states what it holds, why we read it and how it reaches the page. Live means the page read it during this visit; snapshot means a committed export, which moves only when the export is re-run; not connected means nothing reads it yet. All access is read-only - the dashboard never writes to a bucket, a sheet or a database.',
+  consoleCounts: 'The Harbor Console is the source of truth for finalisation. Its counts are shown here as pulled, not recomputed. Our bucket scan lists what is physically stored under tasks/, and that prefix is reorganised and pruned - of 194 folders that left the accepted cohorts overnight, 172 were still in the console and 171 still accepted. So a folder count under-reports accepted work and the console figure is the one to quote. Legacy is the console\u2019s own bucket for anything before 5 September. The console sits behind IAP, so this is a pull through an authenticated browser session rather than a live read.',
+  basis: 'The Harbor Console lists one row per submission, and its cards count those rows. This page lists one row per task, taken at its latest submission, because a task resubmitted five times is still one piece of work and counting it five times would overstate delivery and pay. Neither number is wrong: subtract the re-submissions from the console figure and you get this page. The residual few are the console filter starting at a time of day where ours starts at midnight, and anything submitted since the last pull.',
+  explorerScope: 'A metadata-only mirror of the delivery prefixes of the GCS bucket: the seven finalisation cohorts and the trainer evaluation records. It holds names, sizes and timestamps, never object contents, and it never writes to the bucket. The whole bucket is far larger - over 22 million objects and 9 million folders - which cannot be mirrored into a static page, so prefixes outside this scope are deliberately absent rather than silently empty.',
+  slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
   v2Accepted: 'Task folders in tasks/finalisation_client_qc_accepted_iteration_2/ in the bucket - the second client QC finalisation round. It is one of three accepted cohorts, so it is smaller than the accepted total on the Finalisation tab, and a task finalised into more than one cohort is counted here once per folder. Read it as the size of the v2 round, not as the total accepted work.',
   paid: 'Total Tasks Approved and Total Payment Amount from the Paid Out tab of the Ops Review workbook, cross-checked against the Live Import payment tracker and joined to people by child job number rather than email, because the tracker spells one address differently. These are workbook records, not live bank transactions.',
@@ -60,94 +73,73 @@ const infoCopy = {
   trainerPick: 'Lists only people who have accepted work or a payment recorded against them, which is why it is short - the rest of the roster has nothing to pay. Picking one narrows both tables on this tab to that person: their payout row, and every task in their ledger. Use the search box instead to look someone up across the whole roster.',
   ledgerDuplicates: 'How many workbook rows folded into this one task. Above 1 means the same task and trainer were listed more than once. The extra rows are excluded from every accepted and pending count, but they are not hidden - filter to Folded rows only to see them.',
   duplicates: 'Accepted work lives in three cohorts and the same task can be finalised into several of them. Folders are what the bucket holds; distinct tasks is what was actually done. The newest archive represents the task and the rest are marked as repeats, which is why adding the cohort totals together overstates the work.',
-  ownership: 'Owners are joined to tasks by declared task name against the trainer records in the bucket. Finalisation repackages archives, so an archive digest never matches the trainer record digest and the name is the only join available - it is evidence, not proof. Where two trainer records claim the same name the task is left contested rather than assigned.',
-  pipeline: 'The ledger stores only six raw states and none of them is accepted or rejected; those come from the verdict recorded on the submission, which wins over the raw state. Done means the evaluation finished with no verdict at all, so Done is not an acceptance. Infrastructure Error means the run failed on tooling, not on the work. Current counts the latest attempt per family; All attempts counts retries separately.',
+  ownership: 'Three tiers, strongest first. Harbor Console submitter is the console\u2019s own record of who submitted the task and is treated as proof. Name match only is the GCS trainer records joined by declared task name - finalisation repackages archives, so digests never match and the name is the only join available; that is evidence, not proof. Contested means two records claim the same name and the console does not settle it, so the task stays unassigned rather than being given to whoever was found first. The console export is a point-in-time dump, not live.',
+  pipeline: 'The status names are the Harbor Console\u2019s own: its finalisation run state is done, rejected, parked or running, which the spec restates as Accepted, Rejected, Failed and Running. Rejected means harbor checks failed and the trainer reworks it - the largest bucket by far. Failed means an infrastructure error the trainer cannot rerun; it parks for QC or gen engineering. Submitted means the gate passed but no decision is recorded yet, which is what used to be shown as Done - it is not an acceptance. Current counts the latest attempt per family; All attempts counts retries separately.',
   dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
   workbook: 'A workbook-wide snapshot with no reliable person-level allocation, so it does not respond to the filters on the other tabs and cannot be split by trainer.',
 };
 
 function renderEverything() {
-  renderHero(); renderTopPendingCards(); renderDonut(); renderTrainerRows(); renderTeams(); renderPipeline();
-  renderFinalisation();
+  renderSources();
+  buildPipeline();
+  populateFilters();
+  renderHero(); renderTopPendingCards(); renderDonut(); renderTrainerRows(); renderTeams();
+  renderPipeline();
   renderBenchCards();
+  renderPlan();
 }
 
-function renderFinalisation() {
-  if (!finalisationRows.length) return;
-  const filters = {
-    outcome: byId('finalisationOutcome').value,
-    cohort: byId('finalisationCohort').value,
-    bench: byId('finalisationBench').value,
-    ownership: byId('finalisationOwnership').value,
-    type: byId('finalisationType').value,
-    domain: byId('finalisationDomain').value,
-    search: byId('finalisationSearch').value,
-    start: byId('finalisationStart').value,
-    end: byId('finalisationEnd').value,
-    duplicates: byId('duplicateFilter').value,
-  };
-  const result = window.filterFinalisation(finalisationRows, filters);
-  const rows = result.rows;
-  const domainSelect = byId('finalisationDomain');
-  const domains = [...new Set(result.population.map(row => row.filterDomain))].sort();
-  if (filters.domain && !domains.includes(filters.domain)) domains.push(filters.domain);
-  domainSelect.innerHTML = '<option value="">All domains</option>' + domains.map(value => `<option value="${esc(value)}">${esc(value)}</option>`).join('');
-  domainSelect.value = filters.domain;
-  byId('finalisationDateError').hidden = !result.invalidDates;
-  ['finalisationStart', 'finalisationEnd'].forEach(id => byId(id).setAttribute('aria-invalid', String(result.invalidDates)));
-  byId('finalisationSummary').innerHTML = [
-    ['Folders shown', rows.length], ['Distinct tasks shown', result.tasks],
-    ['Roster-linked folders', result.linked], ['Cross-cohort repeats shown', result.duplicates]
-  ].map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${fmt(value)}</strong></div>`).join('');
-  const cohorts = finalisationCohorts.filter(cohort => !filters.outcome || cohort.outcome === filters.outcome);
-  const counted = cohorts.reduce((total, cohort) => total + cohort.tasks, 0);
-  const unscanned = cohorts.filter(cohort => cohort.tasks && !cohort.scanned);
-  setText('finalisationAudit', `${fmt(rows.length)} of ${fmt(result.population.length)} scanned folders shown / ${fmt(result.tasks)} distinct task names / ${fmt(result.duplicates)} folders repeat a task already counted in another cohort / ${fmt(result.conflicts)} contested owners${unscanned.length ? ` / counted but not itemised: ${unscanned.map(cohort => `${cohort.label} ${fmt(cohort.tasks)}`).join(', ')}` : ''} / cohort totals ${fmt(counted)} tasks`);
-  const shown = rows.slice(0, FINALISATION_ROW_CAP);
-  byId('finalisationRows').innerHTML = shown.map(row => `<tr>
-      <td><div class="person"><strong>${esc(row.displayName)}</strong><span>${esc(row.folder)}${row.archives > 1 ? ` / ${fmt(row.archives)} archives` : ''}</span></div></td>
-      <td data-outcome="${esc(row.outcome)}"><span class="tag">${esc(row.cohortLabel)}</span><small>${esc(row.outcome)}</small></td>
-      <td>${esc(row.trainer?.name || (row.ownership === 'conflict' ? 'Contested' : 'Unassigned'))}<br><small>${esc(row.trainer?.email || row.owner || (row.ownership === 'conflict' ? 'More than one trainer record claims this task' : 'No trainer record'))}</small></td>
-      <td>${esc({linked:'Roster-linked',unlinked:'Owner recorded, not roster-linked',missing:'Owner not recorded',conflict:'Conflicting owners'}[row.ownership])}<br><small>${esc(row.attribution)}</small></td>
-      <td>${esc(row.filterType)}${row.connector_provenance ? `<br><small>${esc(row.connector_provenance)}</small>` : ''}</td>
-      <td><span class="tag" data-domain="${esc(row.filterDomain)}">${esc(row.filterDomain)}</span></td>
-      <td>${esc(row.date || 'Not recorded')}</td>
-      <td><span class="pill ${row.duplicate ? 'is-warn' : 'is-ok'}">${row.duplicate ? 'Repeat' : 'Counted'}</span>${row.groupSize > 1 ? `<div class="muted">${fmt(row.groupSize)} cohorts: ${esc(row.cohortsForTask.join(', '))}</div>` : ''}</td>
-    </tr>`).join('') || '<tr><td colspan="8" class="empty">No folders match this selection.</td></tr>';
-  byId('finalisationTruncated').hidden = shown.length === rows.length;
-  setText('finalisationTruncated', `Showing the first ${fmt(shown.length)} of ${fmt(rows.length)} matching folders. Filter further to narrow the list; every card and audit number above counts all ${fmt(rows.length)}.`);
-}
-
+// The bucket is no longer a view of its own - it is the delivery evidence
+// hanging off each pipeline row - so this only prepares data.
 function loadFinalisation() {
-  const button = byId('refreshFinalisation');
-  button.disabled = true;
-  if (!gcsPipeline?.finalisation) {
-    setText('finalisationStatus', 'Finalisation is published inside the GCS export. Refresh the pipeline snapshot to load it.');
-    button.disabled = false;
-    return;
-  }
+  if (!gcsPipeline?.finalisation) return;
   try {
     finalisationSource = gcsPipeline.finalisation;
-    finalisationRows = window.prepareFinalisation(finalisationSource, data.trainers);
     finalisationCohorts = finalisationSource.cohorts;
+    finalisationRows = window.prepareFinalisation(finalisationSource, data.trainers,
+      {owners: {...(harborConsole?.owners || {}), ...(consoleLive?.owners || {})}});
   } catch (error) {
-    setText('finalisationStatus', `Finalisation export rejected: ${error.message}`);
-    button.disabled = false;
-    return;
+    finalisationRows = [];
+    setText('pipelineSourceStatus', `Bucket evidence rejected: ${error.message}`);
   }
-  const outcomes = byId('finalisationOutcome'), chosen = outcomes.value || 'accepted';
-  const labels = {accepted: 'Accepted', rejected: 'Rejected', unsubmitted: 'Unsubmitted', promoted: 'Handshake promoted'};
-  const present = [...new Set(finalisationCohorts.map(cohort => cohort.outcome))];
-  outcomes.innerHTML = present.map(value => `<option value="${esc(value)}">${esc(labels[value] || value)}</option>`).join('') + '<option value="">All outcomes</option>';
-  outcomes.value = present.includes(chosen) ? chosen : '';
-  const select = byId('finalisationCohort'), selected = select.value;
-  select.innerHTML = '<option value="">All cohorts</option>' + finalisationCohorts
-    .map(cohort => `<option value="${esc(cohort.prefix)}">${esc(cohort.label)} (${fmt(cohort.tasks)})</option>`).join('');
-  select.value = finalisationCohorts.some(cohort => cohort.prefix === selected) ? selected : '';
-  const totals = finalisationSource.totals;
-  setText('finalisationStatus', `Read-only scan of ${finalisationSource.bucket} at ${gcsPipeline.generatedAt} / ${fmt(finalisationCohorts.length)} cohorts / accepted ${fmt(totals.accepted)}, rejected ${fmt(totals.rejected)}, unsubmitted ${fmt(totals.unsubmitted)} / ${fmt(finalisationSource.tasks.length)} accepted folders opened for task metadata`);
-  renderFinalisation();
-  button.disabled = false;
+}
+
+async function loadConsoleLive() {
+  try {
+    const response = await fetch(`assets/harbor-console-live.json?t=${Date.now()}`, {cache: 'no-store'});
+    if (!response.ok) throw new Error('No console pull available');
+    consoleLive = await response.json();
+  } catch {
+    consoleLive = null;
+  }
+  buildPipeline();
+  populateFilters();
+  renderPipeline();
+  renderSources();
+}
+
+function ageOf(stamp) {
+  const hours = (Date.now() - new Date(stamp).getTime()) / 3600000;
+  if (!isFinite(hours)) return 'unknown age';
+  if (hours < 1) return 'pulled in the last hour';
+  if (hours < 48) return `pulled ${Math.round(hours)} hours ago`;
+  return `pulled ${Math.round(hours / 24)} days ago`;
+}
+
+async function loadHarborConsole() {
+  // PRD C5. The console itself is behind IAP; this is its exported dump, so it
+  // is a point-in-time record and the page says how stale it is.
+  try {
+    const response = await fetch('assets/harbor-console.json', {cache: 'no-store'});
+    if (!response.ok) throw new Error('Console export unavailable');
+    harborConsole = await response.json();
+  } catch {
+    harborConsole = null;
+  }
+  buildPipeline();
+  populateFilters();
+  renderPipeline();
+  renderSources();
 }
 
 async function loadClientAcceptance() {
@@ -171,7 +163,7 @@ async function loadClientAcceptance() {
       clientAcceptance = null;
     }
   }
-  renderHero();
+  renderSources(); renderHero();
 }
 
 async function loadPayoutLedger() {
@@ -188,7 +180,7 @@ async function loadPayoutLedger() {
   populateLedgerFilters();
   populateTrainerPicker();
   renderTrainerRows();
-  renderHero(); renderTopPendingCards(); renderBenchCards();
+  renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
 }
 
 function populateLedgerFilters() {
@@ -260,8 +252,8 @@ async function loadGcsPipeline(manual = false) {
     if (payload.schemaVersion !== 3 || !['current','historical','legacy'].every(key=>Array.isArray(payload[key])) || !Array.isArray(payload.finalisation?.tasks)) throw new Error('Invalid GCS export');
     ['current', 'historical', 'legacy'].forEach(key => payload[key].forEach(task => { task.domain = pipelineDomain(task); }));
     gcsPipeline = payload;
-      populateFilters(); renderPipeline(); renderDonut(); loadFinalisation(); renderTrainerRows();
-    renderHero(); renderTopPendingCards(); renderBenchCards();
+      loadFinalisation(); buildPipeline(); populateFilters(); renderPipeline(); renderDonut(); renderTrainerRows();
+    renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
     if (manual) setText('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
   } catch {
     setText('pipelineSourceStatus', 'GCS export unavailable. Pipeline counts are not loaded.');
@@ -327,11 +319,12 @@ function groupBy(items, keyFn) {
   }, {});
 }
 
-const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'finalisation'];
+const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'explorer'];
 // The same status is the same colour in the donut, the cards and the table.
+// PRD F3: the Harbor Console vocabulary. `Done` is gone.
 const STATUS_TOKENS = {
-  Accepted: '--aqua', Done: '--blue', 'Waiting For Trainer Edit': '--yellow',
-  'Infrastructure Error': '--orange', Rejected: '--red', 'Conflicting verdict': '--magenta',
+  Accepted: '--aqua', Submitted: '--blue', Rejected: '--yellow',
+  Failed: '--orange', 'Conflicting verdict': '--magenta',
   Running: '--violet', Queued: '--magenta', Cancelled: '--slate',
 };
 function statusColor(status) {
@@ -348,20 +341,21 @@ function switchView(viewName, push = true) {
     button.tabIndex = active ? 0 : -1;
   });
   document.querySelectorAll('.view').forEach(view => view.classList.toggle('is-active', view.id === `view-${viewName}`));
+  if (viewName === 'explorer') loadExplorer();
   if (byId('globalSearch')) syncSearch(viewName);
   if (push && location.hash.slice(1) !== viewName) history.pushState({viewName}, '', `#${viewName}`);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function commandSnapshot() {
-  const folders = finalisationRows;
+  const folders = finalisationRows.filter(row => inRange(row.date));
   // One task can be finalised into several cohorts; the accepted count is task names, not folders.
   const tasks = new Set(folders.map(row => row.name));
   return {
     ready: Boolean(finalisationRows.length && gcsPipeline),
     folders,
     tasks,
-    current: gcsPipeline?.current || [],
+    current: (gcsPipeline?.current || []).filter(row => inRange(row.date)),
     duplicates: folders.length - tasks.size,
     unassigned: folders.filter(row => !row.trainer).length,
   };
@@ -383,14 +377,20 @@ function renderHero() {
   setText("heroExposureText", `${paidPct}% paid / ${fmt(summary.pendingTasks)} tasks pending`);
   renderExposureChart(rows);
 
+  const dated = Boolean(dateRange.start || dateRange.end);
   setText("metricAccepted", snapshot.ready ? fmt(snapshot.tasks.size) : '-');
-  const v2 = (gcsPipeline?.finalisation?.cohorts || []).find(cohort => cohort.prefix === 'finalisation_client_qc_accepted_iteration_2');
+  // The iteration-2 count is rebuilt from the folder rows so it follows the date
+  // range, rather than reading the cohort's static all-time total.
+  const v2Folders = snapshot.folders.filter(row => row.cohort === 'finalisation_client_qc_accepted_iteration_2');
+  const v2 = snapshot.ready ? {tasks: v2Folders.length} : null;
   setText('metricClientAccepted', clientAcceptance ? fmt(clientAcceptance.accepted) : '-');
   setText('metricClientAcceptedNote', clientAcceptance
-    ? `Priority Low of ${fmt(clientAcceptance.tasks)} audited tasks${clientAcceptance.live ? '' : ' / saved snapshot'}`
+    ? `Priority Low of ${fmt(clientAcceptance.tasks)} audited tasks${clientAcceptance.live ? '' : ' / saved snapshot'}${dated ? ' / all dates: the 240 dashboard snapshot carries counts only' : ''}`
     : 'Harbor 240 dashboard unavailable');
   setText('metricV2Accepted', v2 ? fmt(v2.tasks) : '-');
-  setText('metricV2AcceptedNote', v2 ? 'Folders in the client QC accepted iteration 2 cohort' : 'Bucket scan not loaded');
+  setText('metricV2AcceptedNote', v2
+    ? `Folders in the client QC accepted iteration 2 cohort${dated ? ` / ${rangeLabel()}` : ''}`
+    : 'Bucket scan not loaded');
   setText("metricPaid", money(paid));
   setText("metricPendingTasks", fmt(summary.pendingTasks));
   setText("metricPending", `${money(pending)} pending`);
@@ -416,6 +416,89 @@ function segment(tone, value, scale, tip) {
   // carry the number for the slivers.
   const label = value / scale >= 0.13 ? `<i>${money(value)}</i>` : '';
   return `<span class="seg ${tone}" style="flex:${value}" data-tip="${esc(tip)}">${label}</span>`;
+}
+
+function sourceState(source) {
+  // What the page can actually say about this source right now, not what we
+  // hope it is doing.
+  if (source.id === 'gcs-evaluations' || source.id === 'gcs-finalisation') {
+    return gcsPipeline
+      ? {tone: 'ok', label: 'Loaded', detail: `Bucket scan ${new Date(gcsPipeline.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}`}
+      : {tone: 'warn', label: 'Not loaded', detail: 'The GCS export did not load in this visit.'};
+  }
+  if (source.id === 'ops-workbook') {
+    return {tone: 'snapshot', label: 'Snapshot', detail: `Workbook exported ${new Date(data.meta.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}`};
+  }
+  if (source.id === 'ppt-workbook') {
+    return payoutLedger
+      ? {tone: 'snapshot', label: 'Snapshot', detail: `Ledger built ${new Date(payoutLedger.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}`}
+      : {tone: 'warn', label: 'Not loaded', detail: 'The payout ledger did not load in this visit.'};
+  }
+  if (source.id === 'harbor-240') {
+    if (!clientAcceptance) return {tone: 'warn', label: 'Not loaded', detail: 'The 240 dashboard could not be read and no snapshot was available.'};
+    return clientAcceptance.live
+      ? {tone: 'ok', label: 'Live', detail: `Read during this visit / ${fmt(clientAcceptance.accepted)} accepted of ${fmt(clientAcceptance.tasks)}`}
+      : {tone: 'snapshot', label: 'Snapshot', detail: 'The live dashboard was unreachable; the committed counts are shown.'};
+  }
+  if (source.id === 'postgres') return {tone: 'pending', label: 'Not connected', detail: 'PRD C3 - no host or credentials issued.'};
+  if (source.id === 'harbor-console') return {tone: 'pending', label: 'Reference only', detail: 'PRD F2 - finalisation numbers are held until this reconciliation is done.'};
+  return {tone: 'ok', label: 'Reference', detail: 'Linked for comparison; not read for any figure here.'};
+}
+
+// A workbook is a stack of tabs, and only some of them feed this page. Deep-link
+// each one at the gid it actually lives at, and say which feed it serves - so
+// "where does this number come from" lands on the tab, not just the document.
+function sourceTabs(source) {
+  const tabs = source.tabs || [];
+  if (!tabs.length || !source.href) return '';
+  const used = tabs.filter(tab => tab.feeds !== 'Not read by this page');
+  const unused = tabs.length - used.length;
+  const link = tab => `<a class="tab-chip" target="_blank" rel="noopener"
+      href="${esc(source.href)}?gid=${esc(tab.gid)}#gid=${esc(tab.gid)}"
+      data-tip="${esc(tab.feeds)}">${esc(tab.name)}</a>`;
+  return `<div class="source-tabs">
+    <span class="source-tabs-label">Tabs this page reads</span>
+    ${used.map(link).join('')}
+    ${unused ? `<span class="tab-chip is-flat" data-tip="Present in the workbook but not read by this dashboard">+${unused} not read</span>` : ''}
+    ${source.export ? `<span class="tab-chip is-flat" data-tip="The export the build actually parses">via ${esc(source.export)}</span>` : ''}
+  </div>`;
+}
+
+function renderSources() {
+  const list = byId('sourceList');
+  if (list) {
+    list.innerHTML = window.DASHBOARD_SOURCES.map(source => {
+      const state = sourceState(source);
+      const title = source.href
+        ? `<a href="${esc(source.href)}" target="_blank" rel="noopener">${esc(source.name)}</a>`
+        : esc(source.name);
+      return `<article class="source-card" data-tone="${state.tone}">
+        <header>
+          <div><span class="source-kind">${esc(source.kind)}</span><h3>${title}</h3></div>
+          <span class="pill" data-tone="${state.tone}">${esc(state.label)}</span>
+        </header>
+        <p class="source-loc">${esc(source.location)}${source.liveTitle ? ` <span class="source-alias">opens as &ldquo;${esc(source.liveTitle)}&rdquo;</span>` : ''}</p>
+        <dl class="source-detail">
+          <dt>What</dt><dd>${esc(source.what)}</dd>
+          <dt>Why</dt><dd>${esc(source.why)}</dd>
+          <dt>How</dt><dd>${esc(source.how)}</dd>
+        </dl>
+        ${sourceTabs(source)}
+        <p class="source-state">${esc(state.detail)}${source.hrefNote ? ` / ${esc(source.hrefNote)}` : ''}</p>
+      </article>`;
+    }).join('');
+  }
+  document.querySelectorAll('.sourcestrip').forEach(strip => {
+    strip.innerHTML = '<span class="sourcestrip-label">Reading from</span>' +
+      window.sourcesFor(strip.dataset.sources).map(source => {
+        const state = sourceState(source);
+        const body = `<span class="source-kind">${esc(source.kind)}</span>${esc(source.name)}<span class="chip-state" data-tone="${state.tone}">${esc(state.label)}</span>`;
+        return source.href
+          ? `<a class="source-chip" href="${esc(source.href)}" target="_blank" rel="noopener" data-tip="${esc(source.what)} / ${esc(state.detail)}">${body}</a>`
+          : `<span class="source-chip is-flat" data-tip="${esc(source.hrefNote || source.what)}">${body}</span>`;
+      }).join('') +
+      `<button class="ghost source-more" data-jump="command">All sources</button>`;
+  });
 }
 
 function renderExposureChart(rows) {
@@ -583,6 +666,32 @@ function ledgerAcceptedByEmail() {
   return accepted;
 }
 
+function inRange(value) {
+  if (!dateRange.start && !dateRange.end) return true;
+  const date = String(value || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return false;
+  return (!dateRange.start || date >= dateRange.start) && (!dateRange.end || date <= dateRange.end);
+}
+
+function rangeLabel() {
+  if (!dateRange.start && !dateRange.end) return 'All dates';
+  if (dateRange.start && dateRange.end) return `${dateRange.start} to ${dateRange.end}`;
+  return dateRange.start ? `From ${dateRange.start}` : `Up to ${dateRange.end}`;
+}
+
+function applyRange() {
+  const invalid = Boolean(dateRange.start && dateRange.end && dateRange.start > dateRange.end);
+  byId('dateError').hidden = !invalid;
+  ['dateStart', 'dateEnd'].forEach(id => byId(id).setAttribute('aria-invalid', String(invalid)));
+  setText('dateScope', invalid ? 'No records match: the start date is after the end date.'
+    : `${rangeLabel()} / Overview, Delivery and Pipeline follow this range. Payouts does not.`);
+  document.querySelectorAll('.rangeecho').forEach(node => {
+    node.innerHTML = `<span class="rangeecho-label">Date range</span>${esc(rangeLabel())}` +
+      ((dateRange.start || dateRange.end) ? ' <button class="linky" data-jump="command">change</button>' : '');
+  });
+  renderEverything();
+}
+
 function benchOf(team) {
   return team === 'Company' ? 'company' : ['Computer A', 'Computer B'].includes(team) ? 'computer' : 'unassigned';
 }
@@ -678,74 +787,70 @@ function renderTeams() {
     .join("");
 }
 
-const PIPELINE_FILTERS = [
-  {id: 'pipelineFilter', label: 'statuses', of: task => task.status || 'Unknown'},
-  {id: 'pipelineType', label: 'types', of: task => pipelineType(task)},
-  {id: 'pipelineDomainFilter', label: 'domains', of: task => pipelineDomain(task)},
-  {id: 'pipelineTrainer', label: 'trainers', of: task => task.trainer || 'Unattributed'},
-];
+const PIPELINE_CONTROLS = ['pipelineFilter', 'pipelineLegacy', 'pipelineType', 'pipelineTrainer', 'pipelineEvidence'];
+let pipelineRowsModel = [];
+const expandedRows = new Set();
 
-function pipelinePopulation() {
-  return gcsPipeline ? gcsPipeline[byId('pipelineMode').value] || [] : [];
-}
-
-function filteredPipelineTasks() {
-  const start = byId('pipelineStart').value;
-  const end = byId('pipelineEnd').value;
-  const search = byId('pipelineSearch').value.trim().toLowerCase();
-  if (start && end && start > end) return [];
-  const chosen = PIPELINE_FILTERS.map(filter => [filter, byId(filter.id).value]).filter(([, value]) => value);
-  return pipelinePopulation().filter(task => {
-    if (!chosen.every(([filter, value]) => filter.of(task) === value)) return false;
-    if (search && ![task.task, task.taskId, task.trainer].join(' ').toLowerCase().includes(search)) return false;
-    if (!start && !end) return true;
-    return /^\d{4}-\d{2}-\d{2}$/.test(task.date) && (!start || task.date >= start) && (!end || task.date <= end);
-  });
-}
-
-function renderPipeline(resetPage = true) {
-  if (resetPage) pipelinePage = 0;
-  if (gcsPipeline) {
-    const mode = byId('pipelineMode').value;
-    const description = mode === 'current' ? 'Latest cycle per owner and task family; unevaluated uploads excluded.' : mode === 'historical' ? 'All recorded evaluation cycles; retries count separately.' : 'Legacy QC runs from archived owner snapshots; Done is not an acceptance verdict.';
-    setText('pipelineSourceStatus', `GCS export: ${gcsPipeline.generatedAt} / ${description}`);
+function buildPipeline() {
+  if (!consoleLive) { pipelineRowsModel = []; return; }
+  try {
+    pipelineRowsModel = window.preparePipeline(consoleLive, gcsPipeline, finalisationRows, data.trainers);
+  } catch (error) {
+    pipelineRowsModel = [];
+    setText('pipelineSourceStatus', `Pipeline could not be built: ${error.message}`);
   }
-  const invalid = Boolean(byId('pipelineStart').value && byId('pipelineEnd').value && byId('pipelineStart').value > byId('pipelineEnd').value);
-  byId('pipelineDateError').hidden = !invalid;
-  byId('pipelineStart').setAttribute('aria-invalid', String(invalid));
-  byId('pipelineEnd').setAttribute('aria-invalid', String(invalid));
-  const allTasks = filteredPipelineTasks();
-  const statuses = Object.entries(
-    allTasks.reduce((acc, task) => {
-      const key = task.status || "Unknown";
-      acc[key] = (acc[key] || 0) + 1;
-      return acc;
-    }, {}),
-  ).sort((a, b) => b[1] - a[1]);
+}
 
-  byId("pipelineStats").innerHTML = statuses
-    .map(([status, count]) => `<article class="status-card" data-status="${esc(status)}"><span>${esc(status)}</span><strong>${fmt(count)}</strong></article>`)
-    .join("") || '<p class="empty">No records match these filters.</p>';
-  renderPipelineTimeline(allTasks, statuses);
-  renderPipelineRows(allTasks);
+function pipelineFilters() {
+  return {
+    status: byId('pipelineFilter').value,
+    legacy: byId('pipelineLegacy').value,
+    type: byId('pipelineType').value,
+    trainer: byId('pipelineTrainer').value,
+    evidence: byId('pipelineEvidence').value,
+    search: byId('pipelineSearch').value,
+    start: dateRange.start,
+    end: dateRange.end,
+  };
+}
+
+function populateFilters() {
+  const scope = byId('pipelineLegacy').value;
+  const population = scope === 'only' ? pipelineRowsModel.filter(row => row.legacy)
+    : scope === 'all' ? pipelineRowsModel
+    : pipelineRowsModel.filter(row => !row.legacy);
+  const specs = [
+    ['pipelineFilter', 'statuses', row => row.status],
+    ['pipelineType', 'types', row => row.taskType],
+    ['pipelineTrainer', 'trainers', row => row.owner || 'No owner recorded'],
+  ];
+  for (const [id, label, of] of specs) {
+    const counts = new Map();
+    population.forEach(row => {
+      const key = of(row);
+      counts.set(key, (counts.get(key) || 0) + 1);
+    });
+    const select = byId(id), chosen = select.value;
+    const options = [...counts].sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0])));
+    select.innerHTML = `<option value="">All ${label} (${fmt(population.length)})</option>` +
+      options.map(([value, count]) => `<option value="${esc(value)}">${esc(value)} (${fmt(count)})</option>`).join('');
+    select.value = counts.has(chosen) ? chosen : '';
+  }
 }
 
 function renderPipelineTimeline(rows, statuses) {
-  // Volume per day, split by status: a stacked column, because the question is
-  // how much work landed each day and what happened to it.
   const dated = rows.filter(row => /^\d{4}-\d{2}-\d{2}$/.test(row.date));
   const byDate = new Map();
   dated.forEach(row => {
     if (!byDate.has(row.date)) byDate.set(row.date, new Map());
     const day = byDate.get(row.date);
-    const key = row.status || 'Unknown';
-    day.set(key, (day.get(key) || 0) + 1);
+    day.set(row.status, (day.get(row.status) || 0) + 1);
   });
   const days = [...byDate.keys()].sort();
   const order = statuses.map(([status]) => status);
   const tallest = Math.max(...days.map(day => [...byDate.get(day).values()].reduce((total, value) => total + value, 0)), 1);
   byId('pipelineTimeline').innerHTML = days.length ? `
-    <figcaption>${fmt(dated.length)} dated records across ${fmt(days.length)} days${dated.length === rows.length ? '' : ` / ${fmt(rows.length - dated.length)} undated records not plotted`}</figcaption>
+    <figcaption>${fmt(dated.length)} tasks across ${fmt(days.length)} days, by the day the task was last submitted</figcaption>
     <div class="timeline-plot">
       ${days.map(day => {
         const counts = byDate.get(day);
@@ -754,7 +859,7 @@ function renderPipelineTimeline(rows, statuses) {
           <div class="timeline-total">${fmt(total)}</div>
           <div class="timeline-column" style="height:${Math.max((total / tallest) * 100, 1.5)}%">
             ${order.filter(status => counts.get(status)).map(status =>
-              `<span class="timeline-seg" data-status="${esc(status)}" style="flex:${counts.get(status)}" data-tip="${esc(day)} / ${esc(status)}: ${fmt(counts.get(status))} of ${fmt(total)} records"></span>`).join('')}
+              `<span class="timeline-seg" data-status="${esc(status)}" style="flex:${counts.get(status)}" data-tip="${esc(day)} / ${esc(status)}: ${fmt(counts.get(status))} of ${fmt(total)} tasks"></span>`).join('')}
           </div>
           <div class="timeline-date">${esc(day.slice(5))}</div>
         </div>`;
@@ -762,30 +867,192 @@ function renderPipelineTimeline(rows, statuses) {
     </div>
     <div class="chart-key">${order.map(status =>
       `<span class="key-item" data-status="${esc(status)}"><i></i>${esc(status)}</span>`).join('')}</div>` :
-    '<p class="empty">No dated records in this selection.</p>';
+    '<p class="empty">No dated tasks in this selection.</p>';
+}
+
+function drilldown(row) {
+  const ledger = row.ledger, bucket = row.bucket;
+  const cells = [
+    ['Console', `${row.status} at the latest of ${fmt(row.submissions)} submission${row.submissions === 1 ? '' : 's'}` +
+      (row.failedStage ? ` / failed at ${esc(row.failedStage)}` : '')],
+    ['Evaluation ledger', ledger.cycles
+      ? `${fmt(ledger.cycles)} cycle${ledger.cycles === 1 ? '' : 's'}, up to attempt ${fmt(ledger.attempts)} / ledger says ${esc(ledger.statuses.join(', ') || 'nothing')}` +
+        (ledger.disagrees ? ' <strong class="negative">— disagrees with the console</strong>' : '')
+      : 'No evaluation cycles recorded for this task'],
+    ['Delivered', bucket.folders
+      ? `${fmt(bucket.folders)} folder${bucket.folders === 1 ? '' : 's'} in ${esc(bucket.cohorts.join(', '))} / ${fmt(bucket.archives)} archive${bucket.archives === 1 ? '' : 's'} / ${esc(bucket.domain)}${bucket.connector ? ' / connector' : ''}`
+      : 'Nothing in the accepted cohorts of the bucket'],
+    ['Owner', row.owner
+      ? `${esc(row.owner)}${row.onRoster ? ` / ${esc(row.trainer.team || 'no team')}` : ' <strong class="negative">— not on the roster</strong>'}`
+      : 'The console records no submitter'],
+  ];
+  return `<tr class="drill"><td colspan="8"><dl class="drill-grid">` +
+    cells.map(([term, detail]) => `<dt>${esc(term)}</dt><dd>${detail}</dd>`).join('') +
+    `</dl></td></tr>`;
 }
 
 function renderPipelineRows(rows) {
-  const pages = Math.max(1, Math.ceil(rows.length / 100));
-  pipelinePage = Math.min(pipelinePage, pages - 1);
-  setText('pipelinePage', `${fmt(rows.length)} records / Page ${pipelinePage + 1} of ${pages}`);
+  const pages = Math.max(1, Math.ceil(rows.length / 50));
+  pipelinePage = Math.min(Math.max(pipelinePage, 0), pages - 1);
+  const from = pipelinePage * 50;
+  const page = rows.slice(from, from + 50);
+  setText('pipelinePage', rows.length
+    ? `${fmt(from + 1)}-${fmt(from + page.length)} of ${fmt(rows.length)} tasks / page ${fmt(pipelinePage + 1)} of ${fmt(pages)}`
+    : 'No tasks match these filters');
   byId('pipelinePrevious').disabled = pipelinePage === 0;
   byId('pipelineNext').disabled = pipelinePage >= pages - 1;
-  byId("pipelineRows").innerHTML = rows
-    .slice(pipelinePage * 100, (pipelinePage + 1) * 100)
-    .map(
-      (task) => `
-        <tr>
-          <td>${esc(task.date || "-")}</td>
-          <td>${esc(task.task)}<div class="muted">${esc(task.taskId || '')}</div></td>
-          <td>${esc(task.trainer || "-")}</td>
-          <td>${esc(pipelineType(task))}</td>
-          <td><span class="tag" data-domain="${esc(pipelineDomain(task))}">${esc(pipelineDomain(task))}</span></td>
-          <td><span class="pill" data-status="${esc(task.status || 'Unknown')}">${esc(task.status || "Unknown")}</span></td>
-        </tr>
-      `,
-    )
-    .join("") || '<tr><td colspan="6" class="empty">No pipeline records match these filters.</td></tr>';
+  byId('pipelineRows').innerHTML = page.map(row => {
+    const open = expandedRows.has(row.key);
+    return `<tr class="drill-head${open ? ' is-open' : ''}" data-key="${esc(row.key)}">
+        <td><button class="drill-toggle" aria-expanded="${open}" aria-label="Evidence for ${esc(row.name)}">${open ? '\u2212' : '+'}</button></td>
+        <td><div class="person"><strong>${esc(row.name)}</strong><span>${row.legacy ? 'Legacy' : 'Live'}${row.ledger.disagrees ? ' / ledger disagrees' : ''}</span></div></td>
+        <td><span class="pill" data-status="${esc(row.status)}">${esc(row.status)}</span></td>
+        <td>${esc(row.trainer?.name || row.owner || 'No owner')}${row.owner && !row.onRoster ? '<small>not on roster</small>' : ''}</td>
+        <td>${esc(row.taskType.replace(' tasks', ''))}</td>
+        <td>${esc(row.date || 'Not recorded')}</td>
+        <td class="num">${fmt(row.ledger.attempts || row.submissions)}</td>
+        <td class="num">${fmt(row.bucket.folders)}</td>
+      </tr>` + (open ? drilldown(row) : '');
+  }).join('') || '<tr><td colspan="8" class="empty">No tasks match these filters.</td></tr>';
+}
+
+// The Harbor Console's own counters count individual submissions; this page
+// counts tasks, at their latest submission. Both are correct and they differ by
+// the re-submissions, so show the arithmetic rather than leave people to find it.
+function bytes(value) {
+  const n = Number(value) || 0;
+  if (n < 1024) return `${n} B`;
+  const units = ['KB', 'MB', 'GB', 'TB'];
+  let size = n / 1024;
+  let unit = 0;
+  while (size >= 1024 && unit < units.length - 1) { size /= 1024; unit += 1; }
+  return `${size < 10 ? size.toFixed(1) : Math.round(size)} ${units[unit]}`;
+}
+
+function renderExplorerCrumbs() {
+  const parts = explorer ? explorer.crumbs(explorerPath) : [];
+  byId('explorerCrumbs').innerHTML =
+    `<button class="crumb" data-path="">gs://obi-harbor-pipeline</button>` +
+    parts.map(part => `<span class="crumb-sep">/</span><button class="crumb" data-path="${esc(part.path)}">${esc(part.name)}</button>`).join('');
+}
+
+function renderExplorerBody() {
+  const dirs = byId('explorerDirs');
+  const files = byId('explorerFiles');
+  if (!explorerEntry) {
+    dirs.innerHTML = '';
+    files.innerHTML = '<tr><td colspan="3" class="empty">Nothing loaded.</td></tr>';
+    return;
+  }
+  if (explorerEntry.missing) {
+    dirs.innerHTML = '';
+    files.innerHTML = `<tr><td colspan="3" class="empty">${explorerEntry.inScope
+      ? 'This folder is in scope but not in the current index - it may have been pruned since the last walk.'
+      : 'Outside the indexed scope. Only the finalisation cohorts and trainer records are mirrored.'}</td></tr>`;
+    return;
+  }
+  dirs.innerHTML = explorerEntry.dirs.length
+    ? explorerEntry.dirs.map(dir => `<li><button class="explorer-dir" data-path="${esc(dir.path)}">${esc(dir.name)}</button></li>`).join('')
+    : '<li class="empty">No subfolders</li>';
+
+  const needle = byId('explorerFilter').value.trim().toLowerCase();
+  const sort = byId('explorerSort').value;
+  let rows = explorerEntry.files.filter(file => !needle || file.name.toLowerCase().includes(needle));
+  rows = rows.slice().sort((a, b) => sort === 'size' ? b.size - a.size
+    : sort === 'updated' ? String(b.updated).localeCompare(String(a.updated))
+    : a.name.localeCompare(b.name));
+
+  files.innerHTML = rows.length
+    ? rows.map(file => `<tr><td class="mono">${esc(file.name)}</td><td class="num">${bytes(file.size)}</td><td>${esc(String(file.updated).replace('T', ' ').replace(/\..*$/, ''))}</td></tr>`).join('')
+    : `<tr><td colspan="3" class="empty">${explorerEntry.files.length ? 'No file matches that filter.' : 'No files directly in this folder.'}</td></tr>`;
+
+  setText('explorerFoot', `${fmt(explorerEntry.dirs.length)} folder${explorerEntry.dirs.length === 1 ? '' : 's'} / ` +
+    `${fmt(rows.length)} of ${fmt(explorerEntry.files.length)} file${explorerEntry.files.length === 1 ? '' : 's'} shown / ` +
+    `${bytes(explorerEntry.bytes)} in this folder. Sizes and dates come from the object metadata; contents are never read.`);
+}
+
+async function openExplorer(path) {
+  if (!explorer) return;
+  try {
+    explorerPath = String(path || '');
+    explorerEntry = await explorer.open(explorerPath);
+    renderExplorerCrumbs();
+    renderExplorerBody();
+  } catch (error) {
+    setText('explorerStatus', `Could not open that folder: ${error.message}`);
+  }
+}
+
+async function loadExplorer(force = false) {
+  if (explorer && !force) return;
+  explorer = window.createExplorer({base: 'gcs-index'});
+  try {
+    const meta = await explorer.load();
+    const walked = meta.walkSeconds ? `${Math.round(meta.walkSeconds / 60)} min walk` : '';
+    setText('explorerStatus', `Indexed ${fmt(meta.objects)} objects in ${fmt(meta.folders)} folders / ` +
+      `${bytes(meta.bytes)} stored / index built ${new Date(meta.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}${walked ? ` / ${walked}` : ''}`);
+    setText('explorerScopeNote', `Scope: ${meta.scope.length} prefixes - the finalisation cohorts and trainer records. ` +
+      'The rest of the bucket is not mirrored; it is far too large for a static index.');
+    await openExplorer('');
+    renderSources();
+  } catch (error) {
+    setText('explorerStatus', `The bucket index is not published yet (${error.message}). ` +
+      'Run tools/index_bucket.py on the Harbor VM and publish gcs-index/.');
+    setText('explorerScopeNote', 'No index available.');
+  }
+}
+
+function renderConsoleBasis(result) {
+  const node = byId('consoleBasis');
+  if (!node) return;
+  const repeats = result.repeatTasks;
+  const order = ['Accepted', 'Rejected', 'Failed', 'Running', 'Queued', 'Legacy accepted'];
+  const names = [...new Set([...order, ...Object.keys(result.submissionStatuses), ...Object.keys(result.statuses)])]
+    .filter(name => result.submissionStatuses[name] || result.statuses[name]);
+  node.innerHTML = `
+    <p class="basis-lede">The console counts <b>submissions</b>. This page counts <b>tasks</b>, each at its latest
+      submission. ${fmt(result.submissions)} submissions collapse to ${fmt(result.rows.length)} tasks:
+      ${fmt(repeats)} task${repeats === 1 ? ' was' : 's were'} submitted more than once, adding
+      ${fmt(result.submissions - result.rows.length)} extra rows the console shows and this page does not.</p>
+    <div class="table-wrap">
+      <table class="grid basis-table">
+        <thead><tr><th scope="col">Status</th><th scope="col" class="num">Submissions (console)</th><th scope="col" class="num">Tasks (this page)</th></tr></thead>
+        <tbody>${names.map(name => `<tr><th scope="row">${esc(name)}</th>
+          <td class="num">${fmt(result.submissionStatuses[name] || 0)}</td>
+          <td class="num">${fmt(result.statuses[name] || 0)}</td></tr>`).join('')}
+        <tr class="basis-total"><th scope="row">All</th><td class="num">${fmt(result.submissions)}</td><td class="num">${fmt(result.rows.length)}</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="muted footnote">Compare the left column against the console's cards. Its filter starts at a time of
+      day where ours starts at midnight, so the console reads slightly lower for the same period.${
+        (dateRange.start || dateRange.end || pipelineFilters().status || pipelineFilters().trainer)
+          ? ' While a date range or filter is applied these two columns are indicative only: a task is selected on its latest submission, so earlier submissions of a task that has since moved on are not counted here.'
+          : ''}</p>`;
+}
+
+function renderPipeline(resetPage = true) {
+  if (resetPage) pipelinePage = 0;
+  if (!pipelineRowsModel.length) {
+    setText('pipelineSourceStatus', consoleLive ? 'Building...' : 'No console pull found. Run tools/console-pull.js on the signed-in console tab and drop harbor-console-live.json into assets/.');
+    byId('pipelineStats').innerHTML = '';
+    byId('pipelineRows').innerHTML = '<tr><td colspan="8" class="empty">Waiting for the console pull.</td></tr>';
+    return;
+  }
+  const filters = pipelineFilters();
+  const result = window.filterPipeline(pipelineRowsModel, filters);
+  const statuses = Object.entries(result.statuses).sort((a, b) => b[1] - a[1]);
+  byId('pipelineStats').innerHTML = statuses
+    .map(([status, count]) => `<article class="status-card" data-status="${esc(status)}"><span>${esc(status)}</span><strong>${fmt(count)}</strong></article>`)
+    .join('') || '<p class="empty">No tasks match these filters.</p>';
+  const cover = consoleLive.coverage || {};
+  setText('pipelineSourceStatus', `Console pull ${ageOf(consoleLive.pulledAt)} / ${fmt(cover.tasks)} submissions covering ${cover.from} to ${cover.to} / GCS scan ${gcsPipeline ? gcsPipeline.generatedAt.slice(0, 16).replace('T', ' ') : 'not loaded'}`);
+  setText('consoleNote', `Status comes from the Harbor Console. ${fmt(result.population.length)} task${result.population.length === 1 ? '' : 's'} in scope, ${fmt(pipelineRowsModel.length - result.population.length)} out of scope.`);
+  renderConsoleBasis(result);
+  setText('pipelineAudit', `${fmt(result.rows.length)} of ${fmt(result.population.length)} tasks shown / ${fmt(result.delivered)} have a folder in the bucket / ${fmt(result.disagreements)} where the evaluation ledger disagrees with the console / ${fmt(result.offRoster)} owners not on the roster / ${fmt(result.unowned)} with no owner recorded.`);
+  setText('consoleReconcile', `The console is the source of truth for status. Our bucket scan holds ${fmt(finalisationRows.length)} accepted folders, which is a count of what is stored rather than what was accepted - the prefix is pruned while the console keeps the record.`);
+  renderPipelineTimeline(result.rows, statuses);
+  renderPipelineRows(result.rows);
 }
 
 // Attainment against the daily commitment. A sequential ramp, because the value
@@ -801,11 +1068,13 @@ const ATTAINMENT_BANDS = [
 function renderPlan() {
   const benches = data.plan || [];
   const dates = benches[0]?.dates || [];
-  if (!benches.length || !dates.length) {
-    byId('planCharts').innerHTML = '<p class="empty">No daily plan recorded in the workbook.</p>';
+  if (!benches.length || !dates.length || !dates.some((day) => inRange(day))) {
+    byId('planCharts').innerHTML = `<p class="empty">No daily plan ${dates.length ? 'falls inside this date range' : 'recorded in the workbook'}.</p>`;
     return;
   }
+  const within = (benches[0]?.dates || []).map(day => inRange(day));
   const cells = bench => bench.dates.map((day, index) => {
+    if (!within[index]) return '';
     const plan = Number(bench.plan[index]) || 0;
     const actual = Number(bench.actual[index]) || 0;
     if (!plan) {
@@ -819,7 +1088,7 @@ function renderPlan() {
   byId('planCharts').innerHTML = `
     <div class="heatmap-wrap">
       <table class="heatmap">
-        <thead><tr><th scope="col">Bench</th>${dates.map(day => `<th scope="col">${esc(day.slice(5))}</th>`).join('')}</tr></thead>
+        <thead><tr><th scope="col">Bench</th>${dates.filter((day, index) => within[index]).map(day => `<th scope="col">${esc(day.slice(5))}</th>`).join('')}</tr></thead>
         <tbody>${benches.map(bench => `<tr><th scope="row">${esc(bench.bench)}</th>${cells(bench)}</tr>`).join('')}</tbody>
       </table>
     </div>
@@ -832,8 +1101,8 @@ function renderPlan() {
       <span class="heat-key-none"><i data-step="none"></i>No commitment set</span>
     </div>
     <p class="muted footnote">${benches.map(bench => {
-      const planned = bench.plan.reduce((total, value) => total + (Number(value) || 0), 0);
-      const done = bench.actual.reduce((total, value) => total + (Number(value) || 0), 0);
+      const planned = bench.plan.reduce((total, value, index) => total + (within[index] ? Number(value) || 0 : 0), 0);
+      const done = bench.actual.reduce((total, value, index) => total + (within[index] ? Number(value) || 0 : 0), 0);
       return `${esc(bench.bench)}: ${fmt(done)} of ${fmt(planned)} planned tasks delivered (${Math.round((done / (planned || 1)) * 100)}%)`;
     }).join(' / ')}</p>`;
 }
@@ -842,16 +1111,20 @@ function wireEvents() {
   byId('pipelinePrevious').addEventListener('click',()=>{pipelinePage--;renderPipeline(false);});
   byId('pipelineNext').addEventListener('click',()=>{pipelinePage++;renderPipeline(false);});
   byId('refreshGcsPipeline').addEventListener('click', refreshGcsPipeline);
-  byId('pipelineMode').addEventListener('change', () => { populateFilters(); renderPipeline(); renderDonut(); });
-  const finalisationFilters = ['finalisationBench','finalisationOwnership','duplicateFilter','finalisationType','finalisationDomain','finalisationStart','finalisationEnd','finalisationCohort'];
-  [...finalisationFilters, 'finalisationOutcome'].forEach(id=>byId(id).addEventListener('change',renderFinalisation));
-  byId('finalisationSearch').addEventListener('input', renderFinalisation);
-  byId('resetFinalisationFilters').addEventListener('click', () => {
-    [...finalisationFilters, 'finalisationSearch'].forEach(id => byId(id).value = '');
-    byId('finalisationOutcome').value = 'accepted';
-    renderFinalisation();
+  byId('refreshConsole').addEventListener('click', async () => {
+    const button = byId('refreshConsole');
+    button.disabled = true;
+    const before = consoleLive?.pulledAt || null;
+    await loadConsoleLive();
+    if (finalisationSource) loadFinalisation();
+    const fresh = consoleLive?.pulledAt && consoleLive.pulledAt !== before;
+    setText('consoleNote', (consoleLive
+      ? (fresh ? 'Loaded a newer console pull. ' : 'Re-read the console pull; it has not changed. ')
+      : 'No console pull found. ') +
+      'The console is behind IAP, so the page cannot fetch it directly: run tools/console-pull.js on the signed-in console tab, then drop harbor-console-live.json into assets/.');
+    setTimeout(renderPipeline, 4000);
+    button.disabled = false;
   });
-  byId('refreshFinalisation').addEventListener('click',loadFinalisation);
   const ledgerFilters = ['ledgerPayment','ledgerType','ledgerValidity','ledgerDuplicates'];
   const resetLedgerPage = () => { ledgerPage = 0; renderPayoutLedger(); };
   ledgerFilters.forEach(id => byId(id).addEventListener('change', resetLedgerPage));
@@ -894,13 +1167,67 @@ function wireEvents() {
   byId('ledgerNext').addEventListener('click', () => { ledgerPage += 1; renderPayoutLedger(); });
   byId('paymentFilter').addEventListener('change', resetPayoutPages);
   byId('benchFilter').addEventListener('change', resetPayoutPages);
-  const pipelineControls = [...PIPELINE_FILTERS.map(filter => filter.id), 'pipelineStart', 'pipelineEnd'];
-  pipelineControls.forEach(id => byId(id).addEventListener('change', () => renderPipeline()));
+  const presets = {'7': 7, '14': 14, '30': 30};
+  byId('datePreset').addEventListener('change', event => {
+    const value = event.target.value;
+    if (!value) { dateRange.start = dateRange.end = ''; }
+    else if (value === 'live') { dateRange.start = window.PIPELINE_LEGACY_BEFORE; dateRange.end = ''; }
+    else {
+      const end = new Date();
+      const start = new Date(end.getTime() - (presets[value] - 1) * 86400000);
+      dateRange.start = start.toISOString().slice(0, 10);
+      dateRange.end = end.toISOString().slice(0, 10);
+    }
+    byId('dateStart').value = dateRange.start;
+    byId('dateEnd').value = dateRange.end;
+    applyRange();
+  });
+  ['dateStart', 'dateEnd'].forEach(id => byId(id).addEventListener('change', () => {
+    dateRange.start = byId('dateStart').value;
+    dateRange.end = byId('dateEnd').value;
+    byId('datePreset').value = '';
+    applyRange();
+  }));
+  byId('explorerRefresh').addEventListener('click', () => loadExplorer(true));
+  byId('explorerFilter').addEventListener('input', renderExplorerBody);
+  byId('explorerSort').addEventListener('change', renderExplorerBody);
+  byId('explorerCrumbs').addEventListener('click', event => {
+    const crumb = event.target.closest('.crumb');
+    if (crumb) openExplorer(crumb.dataset.path);
+  });
+  byId('explorerDirs').addEventListener('click', event => {
+    const dir = event.target.closest('.explorer-dir');
+    if (dir) openExplorer(dir.dataset.path);
+  });
+  byId('explorerSearch').addEventListener('input', async event => {
+    if (!explorer) return;
+    const {rows, reason} = await explorer.findFolders(event.target.value, 60);
+    if (reason && !rows.length) { setText('explorerFoot', reason); return; }
+    byId('explorerDirs').innerHTML = rows.map(path =>
+      `<li><button class="explorer-dir" data-path="${esc(path)}">${esc(path)}</button></li>`).join('');
+    setText('explorerFoot', `${fmt(rows.length)} folder${rows.length === 1 ? '' : 's'} match. Open one to see its files.`);
+  });
+  byId('clearDates').addEventListener('click', () => {
+    dateRange.start = dateRange.end = '';
+    byId('dateStart').value = byId('dateEnd').value = byId('datePreset').value = '';
+    applyRange();
+  });
+  PIPELINE_CONTROLS.forEach(id => byId(id).addEventListener('change', () => {
+    if (id === 'pipelineLegacy') populateFilters();
+    renderPipeline();
+  }));
   byId('pipelineSearch').addEventListener('input', () => renderPipeline());
   byId('clearPipelineDates').addEventListener('click', () => {
-    [...pipelineControls, 'pipelineSearch'].forEach(id => byId(id).value = '');
+    [...PIPELINE_CONTROLS, 'pipelineSearch'].forEach(id => byId(id).value = '');
     populateFilters();
     renderPipeline();
+  });
+  byId('pipelineRows').addEventListener('click', event => {
+    const row = event.target.closest('.drill-head');
+    if (!row) return;
+    const key = row.dataset.key;
+    if (expandedRows.has(key)) expandedRows.delete(key); else expandedRows.add(key);
+    renderPipeline(false);
   });
   const popover = byId('infoPopover');
   let openButton = null;
@@ -953,14 +1280,14 @@ function wireEvents() {
 }
 
 // The topbar search drives whichever view owns a search box.
-const VIEW_SEARCH = {payouts: 'personSearch', finalisation: 'finalisationSearch'};
+const VIEW_SEARCH = {payouts: 'personSearch', pipeline: 'pipelineSearch'};
 
 function syncSearch(viewName) {
   const target = VIEW_SEARCH[viewName];
   const box = byId('globalSearch');
   box.closest('.search').classList.toggle('is-off', !target);
   box.disabled = !target;
-  box.placeholder = target ? (viewName === 'payouts' ? 'Search a person, team or manager' : 'Search a task, folder or owner') : 'Search is available on Payouts and Finalisation';
+  box.placeholder = target ? (viewName === 'payouts' ? 'Search a person, team or manager' : 'Search a task, owner or failed stage') : 'Search is available on Payouts and Pipeline';
   box.value = target ? byId(target).value : '';
 }
 
@@ -975,10 +1302,12 @@ function init() {
   renderPipeline();
   renderPlan();
   wireEvents();
-  renderEverything();
+  applyRange();
   switchView(location.hash.slice(1) || 'command', false);
   loadPayoutLedger();
   loadClientAcceptance();
+  loadHarborConsole();
+  loadConsoleLive();
   loadGcsPipeline();
 }
 

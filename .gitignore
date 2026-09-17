@@ -8,3 +8,6 @@ __pycache__/
 node_modules/
 local-server*.log
 NUL
+
+# Bucket index is built on the VM and published separately; never commit it here.
+gcs-index/

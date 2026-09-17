@@ -33,6 +33,28 @@ def iso(value):
     return str(value or '')
 
 
+# PRD F3. The taxonomy is the Harbor Console's own vocabulary, not ours:
+# finalisation.run_state is done / rejected / parked / running, which the PRD
+# glossary restates as Accepted / Rejected / Failed / Running.
+#
+#   waiting_for_trainer_edit -> Rejected   harbor checks failed, trainer reworks
+#   infrastructure_error     -> Failed     trainer cannot rerun; parking lot
+#   done, no verdict         -> Submitted  passed the gate, awaiting a decision
+#
+# `Done` is deliberately gone. It was never a workflow state: every such cycle
+# passed Harbor but carried no decision, so it is Submitted, not Accepted -
+# folding it into Accepted would have claimed ~170 deliveries that nobody
+# approved.
+RAW_STATUS = {
+    'waiting_for_trainer_edit': 'Rejected',
+    'infrastructure_error': 'Failed',
+    'done': 'Submitted',
+    'running': 'Running',
+    'queued': 'Queued',
+    'cancelled': 'Cancelled',
+}
+
+
 def status_of(cycle):
     submission = cycle.get('submission') or {}
     verdict = submission.get('pipeline_verdict') or {}
@@ -43,7 +65,8 @@ def status_of(cycle):
         return 'Accepted'
     if 'rejected' in explicit:
         return 'Rejected'
-    return str(cycle.get('status') or 'Unknown').replace('_', ' ').title()
+    raw = str(cycle.get('status') or '').lower()
+    return RAW_STATUS.get(raw, raw.replace('_', ' ').title() or 'Unknown')
 
 
 def category_of(task, task_type=''):
@@ -265,7 +288,7 @@ def main():
                 continue
             stamp = iso(record.get('created_at'))
             rows.append({'id': wrapper.get('object_name'), 'taskId': record.get('task_id'), 'task': record.get('task_name') or record.get('task_id') or 'Unknown',
-                         'trainer': email, 'status': str(record.get('status') or 'Unknown').replace('_', ' ').title(),
+                         'trainer': email, 'status': RAW_STATUS.get(str(record.get('status') or '').lower(), str(record.get('status') or 'Unknown').replace('_', ' ').title()),
                          'taskType': record.get('mode') or 'Unknown', 'submittedAt': stamp, 'date': stamp[:10],
                          'updatedAt': iso(record.get('finished_at')), 'ownerKey': owner_key})
         return 'legacy', owner_key, email, rows, {'ownerKey': owner_key, 'lastSuccess': document.get('last_success_at'), 'frozenAt': document.get('frozen_at'), 'hasError': bool(document.get('error'))}

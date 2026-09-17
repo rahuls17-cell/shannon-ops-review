@@ -29,8 +29,8 @@
           <button class="viewnav-tab" role="tab" aria-selected="false" data-view="pipeline">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 15l4-4 4 3 5-6"/></svg><span>Pipeline</span>
           </button>
-          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="finalisation">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><path d="M3.27 6.96 12 12.01l8.73-5.05M12 22.08V12"/></svg><span>Finalisation</span>
+          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="explorer">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Bucket</span>
           </button>
         </nav>
         <div class="side-foot">
@@ -67,6 +67,28 @@
               <p class="lede">Three sources, counted separately: a workbook that records payments, a bucket that records evaluations, and a bucket that records finalised work. They overlap, so nothing here is added across sources.</p>
             </div>
           </header>
+
+          <section class="panel slicer">
+            <header class="panel-head">
+              <div>
+                <h2>Date range<button class="why" data-info="slicer" aria-label="What the date range covers">?</button></h2>
+                <p class="panel-note" id="slicerNote">Applies to Overview, Delivery and Pipeline. Payouts is unaffected: the workbook records what was paid, not when the work happened.</p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>Preset</span><select id="datePreset">
+                  <option value="">All dates</option>
+                  <option value="7">Last 7 days</option>
+                  <option value="14">Last 14 days</option>
+                  <option value="30">Last 30 days</option>
+                  <option value="live">Since 5 Sept (live)</option>
+                </select></label>
+                <label class="field"><span>From</span><input id="dateStart" type="date" aria-describedby="dateError" /></label>
+                <label class="field"><span>To</span><input id="dateEnd" type="date" aria-describedby="dateError" /></label>
+                <button id="clearDates" class="ghost">Clear</button>
+              </div>
+            </header>
+            <div class="panel-body"><p id="dateError" class="alert" role="alert" hidden>Start date must be on or before end date.</p><p class="muted footnote" id="dateScope"></p></div>
+          </section>
 
           <div class="figures">
             <article class="figure">
@@ -154,6 +176,16 @@
             </header>
             <div class="panel-body"><div id="benchCards" class="bench-stack"></div></div>
           </section>
+
+          <section class="panel" id="sourcePanel">
+            <header class="panel-head">
+              <div>
+                <h2>Where this data comes from<button class="why" data-info="sources" aria-label="How to read the source panel">?</button></h2>
+                <p class="panel-note">Every figure on this dashboard traces to one of these. Each says what it holds, why we read it, and how it reaches the page. Nothing here writes to any source.</p>
+              </div>
+            </header>
+            <div class="panel-body"><div id="sourceList" class="source-list"></div></div>
+          </section>
         </section>
 
         <!-- PAYOUTS ------------------------------------------------------- -->
@@ -165,6 +197,7 @@
               <p class="lede">Accepted work comes from the workbook task list, deduplicated. Payments come from the Paid Out tab and the payment tracker. The bucket is not used here.</p>
             </div>
           </header>
+          <div class="sourcestrip" data-sources="payouts"></div>
           <p class="provenance" id="payoutSourceStatus">Loading the payout ledger...</p>
 
           <section class="panel">
@@ -260,6 +293,8 @@
               <p class="lede">Team and manager rollups from the roster, and the daily mining plan against what was actually delivered.</p>
             </div>
           </header>
+          <div class="sourcestrip" data-sources="delivery"></div>
+          <p class="rangeecho" data-range="delivery"></p>
           <section class="panel">
             <header class="panel-head"><div><h2>Teams and managers</h2><p class="panel-note">Grouped by roster team. Accepted and pending carry the Payouts definitions.</p></div></header>
             <div class="panel-body"><div id="teamGrid" class="team-grid"></div></div>
@@ -275,50 +310,79 @@
           </section>
         </section>
 
-        <!-- PIPELINE ------------------------------------------------------ -->
+        <!-- PIPELINE (Finalisation merged in) ---------------------------- -->
         <section class="view" id="view-pipeline" role="tabpanel" aria-labelledby="pipeline-title">
           <header class="view-head">
             <div>
-              <p class="kicker">Evaluations</p>
+              <p class="kicker">Delivery pipeline</p>
               <h1 id="pipeline-title">Pipeline</h1>
-              <p class="lede">Read from the trainer evaluation ledgers in GCS. Current shows the latest attempt per task family; history counts every attempt, so the two must never be added.</p>
+              <p class="lede">One view: the Harbor Console decides a task&rsquo;s status, the GCS evaluation ledger explains why it got there, and the bucket shows what was delivered for it. Anything submitted before 5 September is Legacy and sits out of the live figures.</p>
             </div>
-            <button id="refreshGcsPipeline" class="ghost">Refresh from GCS</button>
+            <div class="view-actions">
+              <button id="refreshConsole" class="ghost">Refresh from Console</button>
+              <button id="refreshGcsPipeline" class="ghost">Refresh from GCS</button>
+            </div>
           </header>
-          <p class="provenance" id="pipelineSourceStatus">Loading the GCS export...</p>
+          <div class="sourcestrip" data-sources="pipeline"></div>
+          <p class="rangeecho" data-range="pipeline"></p>
+          <p class="provenance" id="pipelineSourceStatus">Loading...</p>
+
+          <div id="pipelineStats" class="status-grid"></div>
 
           <section class="panel">
             <header class="panel-head">
               <div>
-                <h2>Status of current work<button class="why" data-info="pipeline" aria-label="How each status is derived">?</button></h2>
-                <p class="panel-note">Done is not an acceptance. Accepted and Rejected each require an explicit verdict on the submission.</p>
-              </div>
-              <div class="toolbar" data-toolbar>
-                <label class="field"><span>Population<button class="why" data-info="population" aria-label="What each population counts">?</button></span><select id="pipelineMode"><option value="current">Current work</option><option value="historical">Every attempt</option><option value="legacy">Legacy QC runs</option></select></label>
-                <label class="field"><span>Status</span><select id="pipelineFilter"></select></label>
-                <label class="field"><span>Type</span><select id="pipelineType"></select></label>
-                <label class="field"><span>Domain</span><select id="pipelineDomainFilter"></select></label>
-                <label class="field"><span>Trainer</span><select id="pipelineTrainer"></select></label>
-                <label class="field"><span>Search</span><input id="pipelineSearch" type="search" placeholder="Task or id" /></label>
-                <label class="field"><span>From<button class="why" data-info="dates" aria-label="How the date range filters">?</button></span><input id="pipelineStart" type="date" aria-describedby="pipelineDateError" /></label>
-                <label class="field"><span>To</span><input id="pipelineEnd" type="date" aria-describedby="pipelineDateError" /></label>
-                <button id="clearPipelineDates" class="ghost">Clear all</button>
+                <h2>Work by day<button class="why" data-info="pipeline" aria-label="How each status is decided">?</button></h2>
+                <p class="panel-note" id="consoleNote">Loading the console pull...</p>
               </div>
             </header>
             <div class="panel-body">
-              <p id="pipelineDateError" class="alert" role="alert" hidden>Start date must be on or before end date.</p>
               <figure id="pipelineTimeline" class="timeline"></figure>
-              <div id="pipelineStats" class="status-grid"></div>
+              <p class="muted footnote" id="consoleReconcile"></p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Reconciling against the console<button class="why" data-info="basis" aria-label="Why the console shows a bigger number">?</button></h2>
+                <p class="panel-note">Why the Harbor Console&rsquo;s cards read higher than this page. Both are right; they count different things.</p>
+              </div>
+            </header>
+            <div class="panel-body" id="consoleBasis">
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Tasks</h2>
+                <p class="panel-note">One row per task, at its latest submission. Open a row for the evaluation attempts behind the status and the folders delivered for it.</p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>Status</span><select id="pipelineFilter"></select></label>
+                <label class="field"><span>Scope<button class="why" data-info="legacy" aria-label="What Legacy means">?</button></span><select id="pipelineLegacy"><option value="">Live only</option><option value="all">Live and legacy</option><option value="only">Legacy only</option></select></label>
+                <label class="field"><span>Type</span><select id="pipelineType"></select></label>
+                <label class="field"><span>Trainer</span><select id="pipelineTrainer"></select></label>
+                <label class="field"><span>Evidence<button class="why" data-info="evidence" aria-label="What the evidence filter selects">?</button></span><select id="pipelineEvidence"><option value="">Any</option><option value="delivered">Delivered to the bucket</option><option value="undelivered">No folder yet</option><option value="disagree">Ledger disagrees</option><option value="offroster">Owner not on the roster</option></select></label>
+                <label class="field"><span>Search</span><input id="pipelineSearch" type="search" placeholder="Task, owner, failed stage" /></label>
+                <button id="clearPipelineDates" class="ghost">Clear filters</button>
+              </div>
+            </header>
+            <div class="panel-body">
+              <p class="muted footnote" id="pipelineAudit"></p>
               <div class="table-wrap">
                 <table class="grid">
                   <thead>
                     <tr>
-                      <th scope="col">Date</th>
+                      <th scope="col"></th>
                       <th scope="col">Task</th>
+                      <th scope="col">Status</th>
                       <th scope="col">Trainer</th>
                       <th scope="col">Type</th>
-                      <th scope="col">Domain</th>
-                      <th scope="col">Status</th>
+                      <th scope="col">Submitted</th>
+                      <th scope="col" class="num">Attempts</th>
+                      <th scope="col" class="num">Folders</th>
                     </tr>
                   </thead>
                   <tbody id="pipelineRows"></tbody>
@@ -333,63 +397,55 @@
           </section>
         </section>
 
-        <!-- FINALISATION -------------------------------------------------- -->
-        <section class="view" id="view-finalisation" role="tabpanel" aria-labelledby="finalisation-title">
+        <!-- BUCKET EXPLORER ------------------------------------------------ -->
+        <section class="view" id="view-explorer" role="tabpanel" aria-labelledby="explorer-title">
           <header class="view-head">
             <div>
-              <p class="kicker">Delivered work</p>
-              <h1 id="finalisation-title">Finalisation</h1>
-              <p class="lede">A read-only scan of every finalisation cohort in the bucket. One task can be finalised into several cohorts, so folders and tasks are counted separately.</p>
+              <p class="kicker">Storage</p>
+              <h1 id="explorer-title">Bucket</h1>
+              <p class="lede">A file explorer over <code>gs://obi-harbor-pipeline</code>. Metadata only &mdash; names, sizes and timestamps. No object contents are ever fetched, and nothing here writes to the bucket.</p>
             </div>
             <div class="view-actions">
-              <button id="refreshFinalisation" class="ghost">Reload</button>
-              <a class="ghost" href="https://rahuls17-cell.github.io/harbor-pipeline-dashboard/" target="_blank" rel="noopener">Harbor iteration-2 view</a>
+              <button id="explorerRefresh" class="ghost">Reload index</button>
             </div>
           </header>
-          <p class="provenance" id="finalisationStatus">Loading the bucket scan...</p>
+          <div class="sourcestrip" data-sources="explorer"></div>
+          <p class="provenance" id="explorerStatus">Loading the index&hellip;</p>
 
           <section class="panel">
             <header class="panel-head">
               <div>
-                <h2>Accepted folders<button class="why" data-info="duplicates" aria-label="How cross-cohort repeats are counted">?</button></h2>
-                <p class="panel-note">Task names are read from task.toml inside each archive, never from the folder name.</p>
+                <h2>Browse<button class="why" data-info="explorerScope" aria-label="What this index covers">?</button></h2>
+                <p class="panel-note" id="explorerScopeNote"></p>
               </div>
               <div class="toolbar" data-toolbar>
-                <label class="field"><span>Outcome</span><select id="finalisationOutcome"><option value="accepted">Accepted</option><option value="rejected">Rejected</option><option value="unsubmitted">Unsubmitted</option><option value="">All</option></select></label>
-                <label class="field"><span>Cohort</span><select id="finalisationCohort"><option value="">All cohorts</option></select></label>
-                <label class="field"><span>Search</span><input id="finalisationSearch" type="search" placeholder="Task, folder, owner, digest" /></label>
-                <label class="field"><span>Bench</span><select id="finalisationBench"><option value="">All benches</option><option value="company">Company</option><option value="computer">Computer</option><option value="unassigned">Unassigned</option></select></label>
-                <label class="field"><span>Ownership<button class="why" data-info="ownership" aria-label="How owners are resolved">?</button></span><select id="finalisationOwnership"><option value="">Any</option><option value="linked">Roster-linked</option><option value="unlinked">Named, not on roster</option><option value="missing">No record</option><option value="conflict">Contested</option></select></label>
-                <label class="field"><span>Type</span><select id="finalisationType"><option value="">Any type</option><option>Connector</option><option>Non-connector</option><option>Not recorded</option></select></label>
-                <label class="field"><span>Domain</span><select id="finalisationDomain"><option value="">Any domain</option></select></label>
-                <label class="field"><span>From</span><input id="finalisationStart" type="date" aria-describedby="finalisationDateError" /></label>
-                <label class="field"><span>To</span><input id="finalisationEnd" type="date" aria-describedby="finalisationDateError" /></label>
-                <label class="field"><span>Repeats</span><select id="duplicateFilter"><option value="">All folders</option><option value="unique">Counted once</option><option value="duplicates">Repeats only</option><option value="groups">Everything repeated</option></select></label>
-                <button id="resetFinalisationFilters" class="ghost">Clear</button>
+                <label class="field"><span>Find a folder</span><input id="explorerSearch" type="search" placeholder="Three characters or more" /></label>
+                <label class="field"><span>Filter files</span><input id="explorerFilter" type="search" placeholder="Name contains" /></label>
+                <label class="field"><span>Sort</span><select id="explorerSort">
+                  <option value="name">Name</option>
+                  <option value="size">Largest first</option>
+                  <option value="updated">Newest first</option>
+                </select></label>
               </div>
             </header>
             <div class="panel-body">
-              <p id="finalisationDateError" class="alert" role="alert" hidden>Start date must be on or before end date.</p>
-              <div id="finalisationSummary" class="summary-row"></div>
-              <p class="muted footnote" id="finalisationAudit"></p>
-              <div class="table-wrap">
-                <table class="grid">
-                  <thead>
-                    <tr>
-                      <th scope="col">Task</th>
-                      <th scope="col">Cohort</th>
-                      <th scope="col">Trainer</th>
-                      <th scope="col">Evidence</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Domain</th>
-                      <th scope="col">Archived</th>
-                      <th scope="col">Counted</th>
-                    </tr>
-                  </thead>
-                  <tbody id="finalisationRows"></tbody>
-                </table>
+              <nav class="crumbs" id="explorerCrumbs" aria-label="Folder path"></nav>
+              <div class="explorer-grid">
+                <div class="explorer-dirs">
+                  <p class="explorer-heading">Folders</p>
+                  <ul id="explorerDirs" class="explorer-list"></ul>
+                </div>
+                <div class="explorer-files">
+                  <p class="explorer-heading">Files</p>
+                  <div class="table-wrap">
+                    <table class="grid">
+                      <thead><tr><th scope="col">Name</th><th scope="col" class="num">Size</th><th scope="col">Updated</th></tr></thead>
+                      <tbody id="explorerFiles"></tbody>
+                    </table>
+                  </div>
+                </div>
               </div>
-              <p id="finalisationTruncated" class="muted footnote" role="status" hidden></p>
+              <p class="muted footnote" id="explorerFoot"></p>
             </div>
           </section>
         </section>
@@ -399,8 +455,11 @@
     <div id="infoPopover" class="popover" role="tooltip" hidden></div>
 
     <script src="assets/data.js"></script>
+    <script src="sources.js"></script>
     <script src="finalisation.js"></script>
+    <script src="pipeline-view.js"></script>
     <script src="payout-ledger.js"></script>
+    <script src="explorer.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
