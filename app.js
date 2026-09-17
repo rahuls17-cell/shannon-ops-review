@@ -76,6 +76,10 @@ const infoCopy = {
   ownership: 'Three tiers, strongest first. Harbor Console submitter is the console\u2019s own record of who submitted the task and is treated as proof. Name match only is the GCS trainer records joined by declared task name - finalisation repackages archives, so digests never match and the name is the only join available; that is evidence, not proof. Contested means two records claim the same name and the console does not settle it, so the task stays unassigned rather than being given to whoever was found first. The console export is a point-in-time dump, not live.',
   pipeline: 'The status names are the Harbor Console\u2019s own: its finalisation run state is done, rejected, parked or running, which the spec restates as Accepted, Rejected, Failed and Running. Rejected means harbor checks failed and the trainer reworks it - the largest bucket by far. Failed means an infrastructure error the trainer cannot rerun; it parks for QC or gen engineering. Submitted means the gate passed but no decision is recorded yet, which is what used to be shown as Done - it is not an acceptance. Current counts the latest attempt per family; All attempts counts retries separately.',
   dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
+  throughputMining: 'Tasks submitted per day, against the workbook\u2019s daily commitment. The commitment comes from the New Task Mining Daily Plan tab, which counts tasks mined - submissions - not tasks accepted, so the actual series counts console submissions to match it. A task submitted three times counts three times here, because the plan commits to submissions. The workbook also carries its own actual column; it is not used, because it stops being filled after 12 September.',
+  throughputAcceptance: 'Tasks accepted per day, one point per task at its FIRST acceptance however many attempts it took. Timing comes from the GCS evaluation ledger, whose updatedAt carries a full timestamp where the console\u2019s submittedAt is date-only. The ledger supplies only the date here; it never overrides the console on whether a task was accepted. This is a different event from mining, so it gets its own chart rather than a second line on the one above.',
+  throughputType: 'Connector and non-connector come from the Harbor Console, which records them cleanly; the GCS taskType is a domain (Code, Health, Law) and is not used for this. 97 task names carry both labels in the console, because a normalised task name is not a task identity - it collides across families. Those are shown as Contested rather than resolved to whichever record was read first. The workbook commitment is not split by type, so choosing a type withdraws the plan line instead of comparing against a plan that does not apply.',
+  throughputSplit: 'Company is the Company team; Computer covers Computer A and Computer B. Unassigned is everything else - 178 roster rows carry no team and some task owners are not on the roster at all (PRD C5). It is shown rather than dropped, so these totals reconcile against the Pipeline tab and the gap stays visible.',
   workbook: 'A workbook-wide snapshot with no reliable person-level allocation, so it does not respond to the filters on the other tabs and cannot be split by trainer.',
 };
 
@@ -87,6 +91,7 @@ function renderEverything() {
   renderPipeline();
   renderBenchCards();
   renderPlan();
+  renderThroughput();
 }
 
 // The bucket is no longer a view of its own - it is the delivery evidence
@@ -113,8 +118,10 @@ async function loadConsoleLive() {
     consoleLive = null;
   }
   buildPipeline();
+  buildThroughput();
   populateFilters();
   renderPipeline();
+  renderThroughput();
   renderSources();
 }
 
@@ -137,8 +144,10 @@ async function loadHarborConsole() {
     harborConsole = null;
   }
   buildPipeline();
+  buildThroughput();
   populateFilters();
   renderPipeline();
+  renderThroughput();
   renderSources();
 }
 
@@ -252,7 +261,7 @@ async function loadGcsPipeline(manual = false) {
     if (payload.schemaVersion !== 3 || !['current','historical','legacy'].every(key=>Array.isArray(payload[key])) || !Array.isArray(payload.finalisation?.tasks)) throw new Error('Invalid GCS export');
     ['current', 'historical', 'legacy'].forEach(key => payload[key].forEach(task => { task.domain = pipelineDomain(task); }));
     gcsPipeline = payload;
-      loadFinalisation(); buildPipeline(); populateFilters(); renderPipeline(); renderDonut(); renderTrainerRows();
+      loadFinalisation(); buildPipeline(); buildThroughput(); populateFilters(); renderPipeline(); renderThroughput(); renderDonut(); renderTrainerRows();
     renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
     if (manual) setText('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
   } catch {
@@ -319,7 +328,7 @@ function groupBy(items, keyFn) {
   }, {});
 }
 
-const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'explorer'];
+const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'throughput', 'explorer'];
 // The same status is the same colour in the donut, the cards and the table.
 // PRD F3: the Harbor Console vocabulary. `Done` is gone.
 const STATUS_TOKENS = {
@@ -791,6 +800,21 @@ const PIPELINE_CONTROLS = ['pipelineFilter', 'pipelineLegacy', 'pipelineType', '
 let pipelineRowsModel = [];
 const expandedRows = new Set();
 
+let throughputModel = null;
+
+function buildThroughput() {
+  // Needs the console (mining + the connector label) and the GCS ledger
+  // (acceptance timing). Either missing and the view says so rather than
+  // drawing half a picture.
+  if (!consoleLive) { throughputModel = null; return; }
+  try {
+    throughputModel = window.prepareThroughput(data.plan, gcsPipeline, consoleLive, data.trainers);
+  } catch (error) {
+    throughputModel = null;
+    setText('throughputStatus', `Throughput could not be built: ${error.message}`);
+  }
+}
+
 function buildPipeline() {
   if (!consoleLive) { pipelineRowsModel = []; return; }
   try {
@@ -836,6 +860,7 @@ function populateFilters() {
       options.map(([value, count]) => `<option value="${esc(value)}">${esc(value)} (${fmt(count)})</option>`).join('');
     select.value = counts.has(chosen) ? chosen : '';
   }
+  populateThroughputFilters();
 }
 
 function renderPipelineTimeline(rows, statuses) {
@@ -1107,7 +1132,119 @@ function renderPlan() {
     }).join(' / ')}</p>`;
 }
 
+
+// A small inline line chart. SVG rather than a div stack because these are
+// trends over a date axis, and a trend needs a shared y scale to be readable.
+const BENCH_TOKENS = {Company: '--blue', Computer: '--aqua', Unassigned: '--slate'};
+function lineChart(days, series, options) {
+  const settings = options || {};
+  if (!days.length || !series.length) return `<p class="empty">${esc(settings.empty || 'No data in this selection.')}</p>`;
+  const W = 760, H = 230, left = 46, right = 14, top = 16, bottom = 30;
+  const peak = Math.max(1, ...series.flatMap(line => line.values));
+  const x = index => left + (days.length === 1 ? (W - left - right) / 2
+    : (index / (days.length - 1)) * (W - left - right));
+  const y = value => top + (1 - value / peak) * (H - top - bottom);
+  const ticks = [0, Math.round(peak / 2), peak];
+  // Label every day when there is room, otherwise thin them out.
+  const step = Math.max(1, Math.ceil(days.length / 9));
+  return `
+    <svg class="linechart-svg" viewBox="0 0 ${W} ${H}" role="img"
+         aria-label="${esc(settings.label || 'Trend')}" preserveAspectRatio="xMidYMid meet">
+      <title>${esc(settings.label || 'Trend')}</title>
+      ${ticks.map(tick => `<g>
+        <line class="grid" x1="${left}" x2="${W - right}" y1="${y(tick)}" y2="${y(tick)}"/>
+        <text class="axis" x="${left - 8}" y="${y(tick) + 4}" text-anchor="end">${fmt(tick)}</text>
+      </g>`).join('')}
+      ${days.map((day, index) => index % step ? '' :
+        `<text class="axis" x="${x(index)}" y="${H - 10}" text-anchor="middle">${esc(day.slice(5))}</text>`).join('')}
+      ${series.map(line => `<polyline class="spark ${line.dashed ? 'is-dashed' : ''}" fill="none"
+          stroke="var(${line.token || '--slate'})"
+          points="${line.values.map((value, index) => `${x(index)},${y(value)}`).join(' ')}"/>`).join('')}
+      ${series.map(line => line.values.map((value, index) =>
+        `<circle class="spark-dot" cx="${x(index)}" cy="${y(value)}" r="2.5" fill="var(${line.token || '--slate'})"
+           data-tip="${esc(line.label)} / ${esc(days[index])}: ${fmt(value)}"/>`).join('')).join('')}
+    </svg>
+    <div class="chart-key">${series.map(line =>
+      `<span class="key-item${line.dashed ? ' is-dashed' : ''}" data-series
+        style="--tone: var(${line.token || '--slate'})">${esc(line.label)}</span>`).join('')}</div>`;
+}
+
+function renderThroughput() {
+  if (!byId('throughputMining')) return;
+  if (!throughputModel) {
+    setText('throughputStatus', consoleLive
+      ? 'Throughput needs the console pull and the GCS export.'
+      : 'No console pull loaded, so throughput cannot be built.');
+    ['throughputMining', 'throughputAcceptance'].forEach(id =>
+      byId(id).innerHTML = '<p class="empty">Waiting for the console pull.</p>');
+    byId('throughputStats').innerHTML = '';
+    byId('throughputSplit').innerHTML = '';
+    return;
+  }
+  const bench = byId('throughputBench').value;
+  const type = byId('throughputType').value;
+  const result = window.filterThroughput(throughputModel, {
+    start: dateRange.start, end: dateRange.end, bench: bench || '', type: type || '',
+  });
+  const benches = bench ? [bench] : window.THROUGHPUT_BENCHES;
+  const at = map => result.days.map(day => map[day] || 0);
+
+  const planSeries = result.planApplies
+    ? benches.filter(name => name !== 'Unassigned').map(name => ({
+        label: `${name} plan`, token: '--violet', dashed: true, values: at(result.mining.plan[name])}))
+    : [];
+  byId('throughputMining').innerHTML = lineChart(result.days, [
+    ...planSeries,
+    ...benches.map(name => ({label: `${name} submitted`, token: BENCH_TOKENS[name], values: at(result.mining.actual[name])})),
+  ], {label: 'Tasks submitted per day against the daily commitment',
+      empty: result.invalidDates ? 'The start date is after the end date.' : 'No submissions in this selection.'});
+
+  byId('throughputAcceptance').innerHTML = lineChart(result.days,
+    benches.map(name => ({label: `${name} accepted`, token: BENCH_TOKENS[name], values: at(result.acceptance.actual[name])})),
+    {label: 'Tasks accepted per day', empty: 'No acceptances in this selection.'});
+
+  const attainment = result.totals.attainment;
+  byId('throughputStats').innerHTML = [
+    ['Submitted', fmt(result.totals.mined), 'Console rows in this range'],
+    ['Daily commitment', result.planApplies ? fmt(result.totals.target) : 'n/a', result.planApplies ? 'Workbook mining plan' : 'Plan is not split by type'],
+    ['Attainment', attainment == null ? '-' : `${Math.round(attainment * 100)}%`, 'Submitted against commitment'],
+    ['Accepted', fmt(result.totals.accepted), 'Distinct tasks, first acceptance'],
+    ['Accepted per submission', result.totals.acceptanceRate == null ? '-' : `${Math.round(result.totals.acceptanceRate * 100)}%`, 'Not a per-task acceptance rate'],
+  ].map(([label, value, note]) =>
+    `<article class="status-card"><h3>${esc(label)}</h3><strong>${esc(value)}</strong><p>${esc(note)}</p></article>`).join('');
+
+  setText('throughputPlanNote', result.planApplies
+    ? 'Plan is the workbook’s New Task Mining Daily Plan, which commits to tasks submitted. Days with no commitment recorded read zero.'
+    : 'The workbook commitment is not split by connector type, so no plan line is drawn for this filter. Clear the Type filter to compare against plan.');
+  setText('throughputAcceptanceNote', `${fmt(result.totals.accepted)} distinct task${result.totals.accepted === 1 ? '' : 's'} accepted in this range, dated by the GCS ledger. A task accepted after several attempts is counted once, on its first acceptance.`);
+
+  byId('throughputSplit').innerHTML = [
+    ...window.THROUGHPUT_BENCHES.map(name => [`${name} bench`, `${fmt(result.byBench[name].mined)} submitted / ${fmt(result.byBench[name].accepted)} accepted`]),
+    ...throughputModel.types.map(name => [name, `${fmt(result.byType[name].mined)} submitted / ${fmt(result.byType[name].accepted)} accepted`]),
+  ].map(([label, value]) => `<div class="summary-item"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join('');
+
+  setText('throughputStatus', `Mining from the Harbor Console pull (${consoleLive?.pulledAt ? ageOf(consoleLive.pulledAt) : 'unknown age'}); acceptance dated from the GCS ledger scan ${gcsPipeline?.generatedAt ? `of ${new Date(gcsPipeline.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}` : '(not loaded)'}.`);
+}
+
+function populateThroughputFilters() {
+  if (!byId('throughputBench') || !throughputModel) return;
+  const specs = [
+    ['throughputBench', 'benches', window.THROUGHPUT_BENCHES, event => event.bench],
+    ['throughputType', 'types', throughputModel.types, event => event.type],
+  ];
+  for (const [id, label, values, of] of specs) {
+    const counts = new Map(values.map(value => [value, 0]));
+    throughputModel.events.forEach(event => counts.set(of(event), (counts.get(of(event)) || 0) + 1));
+    const select = byId(id), chosen = select.value;
+    select.innerHTML = `<option value="">All ${label}</option>` + values.map(value =>
+      `<option value="${esc(value)}">${esc(value)} (${fmt(counts.get(value) || 0)})</option>`).join('');
+    select.value = values.includes(chosen) ? chosen : '';
+  }
+}
+
 function wireEvents() {
+  ['throughputBench', 'throughputType'].forEach(id =>
+    byId(id).addEventListener('change', renderThroughput));
   byId('pipelinePrevious').addEventListener('click',()=>{pipelinePage--;renderPipeline(false);});
   byId('pipelineNext').addEventListener('click',()=>{pipelinePage++;renderPipeline(false);});
   byId('refreshGcsPipeline').addEventListener('click', refreshGcsPipeline);
@@ -1301,6 +1438,7 @@ function init() {
   renderTeams();
   renderPipeline();
   renderPlan();
+  renderThroughput();
   wireEvents();
   applyRange();
   switchView(location.hash.slice(1) || 'command', false);

@@ -29,6 +29,9 @@
           <button class="viewnav-tab" role="tab" aria-selected="false" data-view="pipeline">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 15l4-4 4 3 5-6"/></svg><span>Pipeline</span>
           </button>
+          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="throughput">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 14l4-5 3 3 6-7"/></svg><span>Throughput</span>
+          </button>
           <button class="viewnav-tab" role="tab" aria-selected="false" data-view="explorer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Bucket</span>
           </button>
@@ -397,6 +400,62 @@
           </section>
         </section>
 
+        <!-- THROUGHPUT (PRD T1-T4) ---------------------------------------- -->
+        <section class="view" id="view-throughput" role="tabpanel" aria-labelledby="throughput-title">
+          <header class="view-head">
+            <div>
+              <p class="kicker">Rate of work</p>
+              <h1 id="throughput-title">Throughput</h1>
+              <p class="lede">Two different questions, kept apart. <strong>Mining</strong> asks whether tasks are being submitted at the rate the workbook committed to. <strong>Acceptance</strong> asks how many tasks finalisation actually accepted per day. They count different events, so they are never drawn on the same axes.</p>
+            </div>
+          </header>
+          <div class="sourcestrip" data-sources="throughput"></div>
+          <p class="rangeecho" data-range="throughput"></p>
+          <p class="provenance" id="throughputStatus">Loading...</p>
+
+          <div id="throughputStats" class="status-grid"></div>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Mining: plan against actual<button class="why" data-info="throughputMining" aria-label="What the mining series counts">?</button></h2>
+                <p class="panel-note" id="throughputMiningNote">Tasks submitted per day against the workbook&rsquo;s daily commitment.</p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>Bench</span><select id="throughputBench"><option value="">All benches</option></select></label>
+                <label class="field"><span>Type<button class="why" data-info="throughputType" aria-label="How connector tasks are labelled">?</button></span><select id="throughputType"><option value="">All types</option></select></label>
+              </div>
+            </header>
+            <div class="panel-body">
+              <figure id="throughputMining" class="linechart"></figure>
+              <p class="muted footnote" id="throughputPlanNote"></p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Acceptance: tasks accepted per day<button class="why" data-info="throughputAcceptance" aria-label="What the acceptance series counts">?</button></h2>
+                <p class="panel-note">A separate story from mining, so it gets its own chart. One point per task at its first acceptance, never per retry.</p>
+              </div>
+            </header>
+            <div class="panel-body">
+              <figure id="throughputAcceptance" class="linechart"></figure>
+              <p class="muted footnote" id="throughputAcceptanceNote"></p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Split by bench and type<button class="why" data-info="throughputSplit" aria-label="Why unassigned and contested appear">?</button></h2>
+                <p class="panel-note">PRD T2. Company and Computer are the roster benches; everything else is carried explicitly rather than dropped.</p>
+              </div>
+            </header>
+            <div class="panel-body"><div id="throughputSplit" class="summary-row"></div></div>
+          </section>
+        </section>
+
         <!-- BUCKET EXPLORER ------------------------------------------------ -->
         <section class="view" id="view-explorer" role="tabpanel" aria-labelledby="explorer-title">
           <header class="view-head">
@@ -458,6 +517,7 @@
     <script src="sources.js"></script>
     <script src="finalisation.js"></script>
     <script src="pipeline-view.js"></script>
+    <script src="throughput.js"></script>
     <script src="payout-ledger.js"></script>
     <script src="explorer.js"></script>
     <script src="app.js"></script>
