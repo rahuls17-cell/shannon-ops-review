@@ -116,3 +116,32 @@ console.log('pipeline view checks passed: console spine, ledger drill-down, buck
   assert.ok(base.submissions >= base.rows.length);
 }
 console.log('basis checks passed: submissions and tasks reconcile on the same scope');
+
+// submitted_at is a full ISO timestamp. Every day-granularity consumer must use
+// `day`, not `date` - an anchored YYYY-MM-DD test against a timestamp silently
+// matches nothing, which once emptied the Work-by-day chart and, worse, made
+// any date range return zero rows.
+{
+  const stamped = {
+    coverage: {tasks: 3},
+    tasks: [
+      {name: 'one', state: 'accepted', submittedAt: '2026-09-09T14:22:01+00:00', trainer: 'a@example.com', acceptedFolders: 1, taskType: 'Non-connector tasks', failedStage: ''},
+      {name: 'two', state: 'rejected', submittedAt: '2026-09-09T23:59:59+00:00', trainer: 'b@example.com', acceptedFolders: 0, taskType: 'Non-connector tasks', failedStage: ''},
+      {name: 'three', state: 'accepted', submittedAt: '2026-09-11T00:00:01+00:00', trainer: 'a@example.com', acceptedFolders: 1, taskType: 'Non-connector tasks', failedStage: ''},
+    ],
+  };
+  const built = preparePipeline(stamped, {historical: []}, [], []);
+  for (const row of built) {
+    assert.match(row.day, /^\d{4}-\d{2}-\d{2}$/, 'day must be a bare calendar day');
+    assert.ok(row.date.includes('T'), 'date must keep its time component');
+    assert.equal(row.day, row.date.slice(0, 10));
+  }
+  // An inclusive end date must include work done later that same day.
+  const sameDay = filterPipeline(built, {start: '2026-09-09', end: '2026-09-09'});
+  assert.equal(sameDay.rows.length, 2, 'end date must include the whole day, 23:59 included');
+  assert.equal(sameDay.submissions, 2);
+  // And grouping by day must not collapse to nothing.
+  const days = new Set(built.map(r => r.day));
+  assert.equal(days.size, 2);
+}
+console.log('timestamp checks passed: day is day-granular, date keeps its time, ranges are inclusive');

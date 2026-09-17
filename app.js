@@ -839,11 +839,11 @@ function populateFilters() {
 }
 
 function renderPipelineTimeline(rows, statuses) {
-  const dated = rows.filter(row => /^\d{4}-\d{2}-\d{2}$/.test(row.date));
+  const dated = rows.filter(row => /^\d{4}-\d{2}-\d{2}$/.test(row.day));
   const byDate = new Map();
   dated.forEach(row => {
-    if (!byDate.has(row.date)) byDate.set(row.date, new Map());
-    const day = byDate.get(row.date);
+    if (!byDate.has(row.day)) byDate.set(row.day, new Map());
+    const day = byDate.get(row.day);
     day.set(row.status, (day.get(row.status) || 0) + 1);
   });
   const days = [...byDate.keys()].sort();
@@ -909,7 +909,7 @@ function renderPipelineRows(rows) {
         <td><span class="pill" data-status="${esc(row.status)}">${esc(row.status)}</span></td>
         <td>${esc(row.trainer?.name || row.owner || 'No owner')}${row.owner && !row.onRoster ? '<small>not on roster</small>' : ''}</td>
         <td>${esc(row.taskType.replace(' tasks', ''))}</td>
-        <td>${esc(row.date || 'Not recorded')}</td>
+        <td>${esc(row.day || 'Not recorded')}</td>
         <td class="num">${fmt(row.ledger.attempts || row.submissions)}</td>
         <td class="num">${fmt(row.bucket.folders)}</td>
       </tr>` + (open ? drilldown(row) : '');

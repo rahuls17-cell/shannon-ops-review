@@ -73,6 +73,10 @@
         status,
         state: task.state || '',
         date: task.submittedAt || '',
+        // The calendar day. `date` is a full timestamp so same-day
+        // submissions order correctly; day-granularity work (grouping,
+        // range filters, display) must use this instead.
+        day: String(task.submittedAt || '').slice(0, 10),
         legacy: !task.submittedAt || task.submittedAt < LEGACY_BEFORE,
         owner: email || null,
         trainer,
@@ -87,6 +91,7 @@
           state: row.state || '',
           status: STATUS[row.state] || 'Unknown',
           date: row.submittedAt || '',
+          day: String(row.submittedAt || '').slice(0, 10),
         })),
         acceptedFolders: task.acceptedFolders || 0,
         ledger: {
@@ -126,13 +131,13 @@
           : filters.evidence === 'offroster' ? Boolean(row.owner) && !row.onRoster
           : true)) &&
         (!filters.search || text.includes(filters.search.trim().toLowerCase())) &&
-        (!(filters.start || filters.end) || (/^\d{4}-\d{2}-\d{2}$/.test(row.date) &&
-          (!filters.start || row.date >= filters.start) && (!filters.end || row.date <= filters.end)));
+        (!(filters.start || filters.end) || (/^\d{4}-\d{2}-\d{2}$/.test(row.day) &&
+          (!filters.start || row.day >= filters.start) && (!filters.end || row.day <= filters.end)));
     });
     // The console's own counters count submissions, not tasks. Tally them on the
     // same scope the rows were selected on, so the two can be reconciled.
     const submissionsInScope = matched.flatMap(row => (row.submissionRows || []).map(sub => ({...sub, key: row.key})).filter(sub => {
-      const date = String(sub.date || '');
+      const date = String(sub.day || '');
       if (filters.legacy === 'only') return Boolean(date) && date < LEGACY_BEFORE;
       if (filters.legacy !== 'all' && (!date || date < LEGACY_BEFORE)) return false;
       if (filters.start && date < filters.start) return false;
