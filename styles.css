@@ -933,3 +933,10 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 @media (prefers-reduced-motion: reduce) {
   .linechart-svg .spark-dot { transition: none; }
 }
+
+/* Three counting bases, side by side (PRD F2) */
+.basis-bases { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 12px; margin-top: 14px; }
+.basis-basis { border: 1px solid var(--line-soft); border-radius: var(--radius-sm); padding: 11px 13px; }
+.basis-basis > span { display: block; font-size: 11.5px; color: var(--muted); }
+.basis-basis > strong { display: block; font-size: 22px; line-height: 1.25; letter-spacing: -0.01em; }
+.basis-basis > p { margin: 4px 0 0; font-size: 11.5px; }

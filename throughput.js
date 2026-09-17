@@ -8,27 +8,23 @@
   //                 charting it against the mining plan would compare two
   //                 things that were never meant to meet.
   //
-  // Feeds follow the repo rule. The console is the spine for what was
-  // submitted and for connector/non-connector, which it records cleanly. The
-  // GCS ledger supplies acceptance TIMING only - its updatedAt carries a full
-  // timestamp where the console's submittedAt is date-only - and never a
-  // verdict the console did not already give.
+  // This builds on the rows preparePipeline already produced rather than
+  // regrouping the console a second time. That matters: those rows carry the
+  // canonical `identity`, so acceptance counts distinct TASKS - including the
+  // ones delivered under two different names, which no amount of name matching
+  // can see. Nothing here is derived twice.
   const BENCHES = ['Company', 'Computer', 'Unassigned'];
+  const BENCH_LABEL = {company: 'Company', computer: 'Computer', unassigned: 'Unassigned'};
   const day = value => String(value || '').slice(0, 10);
   const isDay = value => /^\d{4}-\d{2}-\d{2}$/.test(value);
   const nameKey = value => String(value || '').trim().toLowerCase().replace(/^(harbor|obi)\//, '');
 
-  // Company | Computer | Unassigned, from the roster team of the task owner.
-  // Unassigned is a real bucket, not a rounding error: 178 roster rows carry no
-  // team and some owners are off-roster entirely (PRD C5). Dropping them would
-  // stop these totals reconciling against the Pipeline tab.
-  function benchOf(email, trainers) {
-    const team = trainers.get(String(email || '').toLowerCase())?.team;
-    return team === 'Company' ? 'Company'
-      : ['Computer A', 'Computer B'].includes(team) ? 'Computer'
-      : 'Unassigned';
-  }
-
+  // The console records connector/non-connector properly; the GCS taskType is a
+  // domain (Code, Health, Law), so it is never used for this. 97 task names
+  // carry BOTH labels in the console - a normalised name is not a task identity
+  // and collides across families - and content fingerprinting does not fix that,
+  // because it groups delivered packages rather than splitting a console row.
+  // So the clash is reported, not resolved.
   const connectorOf = value => {
     const text = String(value || '').toLowerCase();
     if (text.startsWith('connector')) return 'Connector';
@@ -36,51 +32,54 @@
     return 'Not recorded';
   };
 
-  function prepareThroughput(plan, gcs, consoleLive, roster) {
-    if (!consoleLive || !Array.isArray(consoleLive.tasks)) throw new Error('No console pull to build throughput from');
-    if (consoleLive.tasks.length !== consoleLive.coverage?.tasks) throw new Error('Console pull is truncated');
-    const trainers = new Map((roster || []).map(row => [String(row.email || '').toLowerCase(), row]));
+  // `consoleLive` is optional and is read for ONE thing: how many task names
+  // carry conflicting connector labels across their submissions. The type shown
+  // for a task is its representative submission's, decided by the same rule that
+  // decides its status - but that rule quietly settles 97 disagreements, and a
+  // settled disagreement that nobody can see is worse than a visible one.
+  function prepareThroughput(plan, gcs, pipelineRows, consoleLive) {
+    const rows = Array.isArray(pipelineRows) ? pipelineRows : [];
+    if (!rows.length) throw new Error('No pipeline rows to build throughput from');
 
-    // The console records connector/non-connector properly; the GCS taskType is
-    // a domain (Code, Health, Law...), so acceptance borrows the console's label
-    // by task name rather than guessing from the name a second time.
-    const typeByTask = new Map();
-    for (const task of consoleLive.tasks) {
-      const key = nameKey(task.name);
-      if (!key) continue;
-      const label = connectorOf(task.taskType);
-      const seen = typeByTask.get(key);
-      // 97 names carry BOTH labels, because the normalised name is not a task
-      // identity - it collides across families. Letting whichever row came
-      // first decide silently mislabels them, so flag the clash instead. Of the
-      // accepted tasks this affects 57: none are unambiguously Connector.
-      typeByTask.set(key, seen === undefined || seen === label ? label : 'Contested');
-    }
-
-    // Mining: one console row per submission, which is what the plan commits to.
     const events = [];
-    for (const task of consoleLive.tasks) {
-      const date = day(task.submittedAt);
-      if (!isDay(date)) continue;
-      events.push({date, kind: 'mined', bench: benchOf(task.trainer, trainers),
-                   type: connectorOf(task.taskType)});
+    // Mining counts every submission, because that is what the plan commits to.
+    // The type is the task's, taken from its representative submission, so a
+    // task reads the same here as it does on the Pipeline tab.
+    for (const row of rows) {
+      const bench = BENCH_LABEL[row.bench] || 'Unassigned';
+      const type = connectorOf(row.taskType);
+      for (const submission of (row.submissionRows || [])) {
+        const date = day(submission.date);
+        if (isDay(date)) events.push({date, kind: 'mined', bench, type, identity: row.identity?.key});
+      }
     }
 
-    // Acceptance: a task is accepted once, however many attempts it took, so
-    // collapse to the task and keep the FIRST acceptance. Counting ledger rows
-    // instead would double-count retries of the same accepted work.
-    const acceptedAt = new Map();
-    for (const row of [...(gcs?.current || []), ...(gcs?.historical || [])]) {
-      if (row.status !== 'Accepted') continue;
-      const key = nameKey(row.task || row.taskId);
-      const date = day(row.updatedAt);
-      if (!key || !isDay(date)) continue;
-      const seen = acceptedAt.get(key);
-      if (!seen || date < seen.date) acceptedAt.set(key, {date, trainer: row.trainer});
+    // Acceptance needs a date the console cannot give: its submittedAt is the
+    // submission, and older pulls carry no time at all. The GCS ledger's
+    // updatedAt is a full timestamp, so it supplies the WHEN - never the
+    // whether, which stays the console's to decide.
+    const identityOfName = new Map();
+    for (const row of rows) {
+      if (row.key) identityOfName.set(row.key, row);
     }
-    for (const [key, hit] of acceptedAt) {
-      events.push({date: hit.date, kind: 'accepted', bench: benchOf(hit.trainer, trainers),
-                   type: typeByTask.get(key) || 'Not recorded'});
+    const acceptedAt = new Map();
+    for (const record of [...(gcs?.current || []), ...(gcs?.historical || [])]) {
+      if (record.status !== 'Accepted') continue;
+      const key = nameKey(record.task || record.taskId);
+      const date = day(record.updatedAt);
+      if (!key || !isDay(date)) continue;
+      const row = identityOfName.get(key);
+      // Two names delivering identical content collapse here, which is the whole
+      // point of the fingerprint: the task was done once.
+      const identity = row?.identity?.key || `name:${key}`;
+      const seen = acceptedAt.get(identity);
+      if (!seen || date < seen.date) {
+        acceptedAt.set(identity, {date, bench: BENCH_LABEL[row?.bench] || 'Unassigned',
+                                  type: row ? connectorOf(row.taskType) : 'Not recorded'});
+      }
+    }
+    for (const [identity, hit] of acceptedAt) {
+      events.push({date: hit.date, kind: 'accepted', bench: hit.bench, type: hit.type, identity});
     }
 
     // The workbook names them "Company Bench" / "Computer Bench".
@@ -93,8 +92,19 @@
       });
     }
 
+    const labels = new Map();
+    for (const task of (consoleLive?.tasks || [])) {
+      const key = nameKey(task.name);
+      if (!key) continue;
+      if (!labels.has(key)) labels.set(key, new Set());
+      labels.get(key).add(connectorOf(task.taskType));
+    }
+
     return {events, plan: targets, benches: BENCHES,
-            types: ['Connector', 'Non-connector', 'Contested', 'Not recorded']};
+            types: ['Connector', 'Non-connector', 'Not recorded'],
+            identifiedByContent: rows.filter(row => row.identity?.basis === 'content').length,
+            sharedIdentity: rows.filter(row => row.identity?.alsoKnownAs?.length).length,
+            typeConflicts: [...labels.values()].filter(set => set.size > 1).length};
   }
 
   function filterThroughput(prepared, filters) {
@@ -130,15 +140,21 @@
     }
 
     const mined = events.filter(e => e.kind === 'mined').length;
-    const accepted = events.filter(e => e.kind === 'accepted').length;
+    const acceptedEvents = events.filter(e => e.kind === 'accepted');
     const target = plan.reduce((total, row) => total + row.target, 0);
     return {
       days, invalidDates, planApplies,
       mining: {plan: planned, actual: series('mined')},
       acceptance: {actual: series('accepted')},
-      totals: {target, mined, accepted,
+      totals: {target, mined,
+               accepted: acceptedEvents.length,
+               // Distinct tasks, not events. Equal to `accepted` by construction
+               // - acceptance is already one event per identity - and asserted
+               // in the tests so a regrouping regression cannot pass silently.
+               acceptedTasks: new Set(acceptedEvents.map(e => e.identity)).size,
+               minedTasks: new Set(events.filter(e => e.kind === 'mined').map(e => e.identity)).size,
                attainment: target ? mined / target : null,
-               acceptanceRate: mined ? accepted / mined : null},
+               acceptanceRate: mined ? acceptedEvents.length / mined : null},
       byBench: Object.fromEntries(prepared.benches.map(bench => [bench, {
         mined: events.filter(e => e.kind === 'mined' && e.bench === bench).length,
         accepted: events.filter(e => e.kind === 'accepted' && e.bench === bench).length,
@@ -153,5 +169,5 @@
   root.prepareThroughput = prepareThroughput;
   root.filterThroughput = filterThroughput;
   root.THROUGHPUT_BENCHES = BENCHES;
-  if (typeof module !== 'undefined') module.exports = {prepareThroughput, filterThroughput, benchOf, connectorOf, BENCHES};
+  if (typeof module !== 'undefined') module.exports = {prepareThroughput, filterThroughput, connectorOf, BENCHES};
 })(typeof window === 'undefined' ? globalThis : window);

@@ -59,7 +59,7 @@ const infoCopy = {
   accepted: 'Distinct tasks found in the finalisation cohorts of the bucket. A task finalised into more than one cohort has a folder in each, so folders are collapsed to task names first - the name is read from task.toml inside the archive, because folder names are sometimes opaque pipeline ids. This is delivered work, not the payout basis.',
   sources: 'Every number on this dashboard comes from one of these, and each entry states what it holds, why we read it and how it reaches the page. Live means the page read it during this visit; snapshot means a committed export, which moves only when the export is re-run; not connected means nothing reads it yet. All access is read-only - the dashboard never writes to a bucket, a sheet or a database.',
   consoleCounts: 'The Harbor Console is the source of truth for finalisation. Its counts are shown here as pulled, not recomputed. Our bucket scan lists what is physically stored under tasks/, and that prefix is reorganised and pruned - of 194 folders that left the accepted cohorts overnight, 172 were still in the console and 171 still accepted. So a folder count under-reports accepted work and the console figure is the one to quote. Legacy is the console\u2019s own bucket for anything before 5 September. The console sits behind IAP, so this is a pull through an authenticated browser session rather than a live read.',
-  basis: 'The Harbor Console lists one row per submission, and its cards count those rows. This page lists one row per task, taken at its latest submission, because a task resubmitted five times is still one piece of work and counting it five times would overstate delivery and pay. Neither number is wrong: subtract the re-submissions from the console figure and you get this page. The residual few are the console filter starting at a time of day where ours starts at midnight, and anything submitted since the last pull.',
+  basis: 'Three counts of the same work, none of them wrong, because they count different things. Submissions is every attempt, which is what the Harbor Console\u2019s cards show. Tasks by name is one row per task name at its latest submission, because a task resubmitted five times is still one piece of work. Tasks by content goes further: a task delivered under two different folder names hashes to the same content fingerprint and is counted once, which no amount of name matching can see. Subtract the re-submissions from the console figure and you get the second; fold the duplicate names and you get the third. The residual few are the console filter starting at a time of day where ours starts at midnight, and anything submitted since the last pull.',
   explorerScope: 'A metadata-only mirror of the delivery prefixes of the GCS bucket: the seven finalisation cohorts and the trainer evaluation records. It holds names, sizes and timestamps, never object contents, and it never writes to the bucket. The whole bucket is far larger - over 22 million objects and 9 million folders - which cannot be mirrored into a static page, so prefixes outside this scope are deliberately absent rather than silently empty.',
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
@@ -812,12 +812,12 @@ const expandedRows = new Set();
 let throughputModel = null;
 
 function buildThroughput() {
-  // Needs the console (mining + the connector label) and the GCS ledger
-  // (acceptance timing). Either missing and the view says so rather than
-  // drawing half a picture.
-  if (!consoleLive) { throughputModel = null; return; }
+  // Built from the rows preparePipeline already produced, so acceptance counts
+  // distinct tasks on the canonical identity rather than regrouping the console
+  // by name a second time. Must therefore run after buildPipeline().
+  if (!pipelineRowsModel.length) { throughputModel = null; return; }
   try {
-    throughputModel = window.prepareThroughput(data.plan, gcsPipeline, consoleLive, data.trainers);
+    throughputModel = window.prepareThroughput(data.plan, gcsPipeline, pipelineRowsModel, consoleLive);
   } catch (error) {
     throughputModel = null;
     setText('throughputStatus', `Throughput could not be built: ${error.message}`);
@@ -1059,6 +1059,15 @@ function renderConsoleBasis(result) {
         </tbody>
       </table>
     </div>
+    <div class="basis-bases">
+      ${[['Submissions', result.submissions, 'Every attempt. What the console\u2019s own cards count.'],
+         ['Tasks by name', result.rows.length, 'One per task name, at its latest submission.'],
+         ['Tasks by content', result.identities, `One per distinct task. ${fmt(result.identifiedByContent)} identified by a content fingerprint; the rest fall back to the name because nothing was delivered for them.`],
+        ].map(([label, value, note]) => `<div class="basis-basis">
+          <span>${esc(label)}</span><strong>${fmt(value)}</strong><p class="muted">${note}</p>
+        </div>`).join('')}
+    </div>
+    ${result.sharedIdentity ? `<p class="muted footnote">${fmt(result.sharedIdentity)} task${result.sharedIdentity === 1 ? ' is' : 's are'} delivered under more than one name - identical content, different folder. Counting by name sees those as separate work; counting by content does not. This is the whole of the gap between the second and third figures.</p>` : ''}
     <p class="muted footnote">Compare the left column against the console's cards. Its filter starts at a time of
       day where ours starts at midnight, so the console reads slightly lower for the same period.${
         (dateRange.start || dateRange.end || pipelineFilters().status || pipelineFilters().trainer)
@@ -1183,7 +1192,7 @@ function renderThroughput() {
   if (!byId('throughputMining')) return;
   if (!throughputModel) {
     setText('throughputStatus', consoleLive
-      ? 'Throughput needs the console pull and the GCS export.'
+      ? 'Throughput needs the pipeline rows and the GCS export.'
       : 'No console pull loaded, so throughput cannot be built.');
     ['throughputMining', 'throughputAcceptance'].forEach(id =>
       byId(id).innerHTML = '<p class="empty">Waiting for the console pull.</p>');
@@ -1231,7 +1240,10 @@ function renderThroughput() {
   byId('throughputSplit').innerHTML = [
     ...window.THROUGHPUT_BENCHES.map(name => [`${name} bench`, `${fmt(result.byBench[name].mined)} submitted / ${fmt(result.byBench[name].accepted)} accepted`]),
     ...throughputModel.types.map(name => [name, `${fmt(result.byType[name].mined)} submitted / ${fmt(result.byType[name].accepted)} accepted`]),
-  ].map(([label, value]) => `<div class="summary-item"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join('');
+  ].map(([label, value]) => `<div class="summary-item"><span>${esc(label)}</span><strong>${esc(value)}</strong></div>`).join('') +
+    (throughputModel.typeConflicts
+      ? `<p class="muted footnote">A task&rsquo;s connector label is its representative submission&rsquo;s, decided by the same rule that decides its status. ${fmt(throughputModel.typeConflicts)} task names carry conflicting labels across their submissions, so for those the rule is choosing rather than reading. Content fingerprinting does not settle it: it groups delivered packages and cannot split one console record in two.</p>`
+      : '');
 
   setText('throughputStatus', `Mining from the Harbor Console pull (${consoleLive?.pulledAt ? ageOf(consoleLive.pulledAt) : 'unknown age'}); acceptance dated from the GCS ledger scan ${gcsPipeline?.generatedAt ? `of ${new Date(gcsPipeline.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}` : '(not loaded)'}.`);
 }
