@@ -116,3 +116,108 @@ console.log('pipeline view checks passed: console spine, ledger drill-down, buck
   assert.ok(base.submissions >= base.rows.length);
 }
 console.log('basis checks passed: submissions and tasks reconcile on the same scope');
+
+// Same-day resubmissions: the console used to arrive with submitted_at sliced to
+// a date, so two submissions on one day are indistinguishable by timestamp and
+// "latest wins" fell through to array order. That decided the displayed status of
+// 99 real tasks. The tie now goes to the submission that got further.
+{
+  const consoleAt = order => ({
+    coverage: {tasks: 2},
+    tasks: order.map(state => ({
+      name: 'tied', state, submittedAt: '2026-09-10', trainer: 'a@example.com',
+      acceptedFolders: 0, taskType: 'Non-connector tasks', failedStage: '',
+    })),
+  });
+  const statusOf = order => preparePipeline(consoleAt(order), {historical: []}, [], [])[0].status;
+
+  assert.equal(statusOf(['rejected', 'accepted']), 'Accepted');
+  // The same pair listed the other way round must not change the answer.
+  assert.equal(statusOf(['accepted', 'rejected']), 'Accepted');
+  assert.equal(statusOf(['error', 'rejected']), 'Rejected');
+  assert.equal(statusOf(['running', 'error']), 'Failed');
+
+  // A genuinely later submission still wins, whatever it reached.
+  const later = preparePipeline({
+    coverage: {tasks: 2},
+    tasks: [
+      {name: 'seq', state: 'accepted', submittedAt: '2026-09-10', trainer: 'a@example.com', acceptedFolders: 0, taskType: 'x', failedStage: ''},
+      {name: 'seq', state: 'rejected', submittedAt: '2026-09-11', trainer: 'a@example.com', acceptedFolders: 0, taskType: 'x', failedStage: ''},
+    ],
+  }, {historical: []}, [], [])[0];
+  assert.equal(later.status, 'Rejected');
+
+  // A full timestamp separates same-day submissions properly, and the row's own
+  // date stays a plain day so the date filters keep working.
+  const stamped = preparePipeline({
+    coverage: {tasks: 2},
+    tasks: [
+      {name: 'ts', state: 'accepted', submittedAt: '2026-09-10T09:00:00+00:00', trainer: 'a@example.com', acceptedFolders: 0, taskType: 'x', failedStage: ''},
+      {name: 'ts', state: 'rejected', submittedAt: '2026-09-10T17:30:00+00:00', trainer: 'a@example.com', acceptedFolders: 0, taskType: 'x', failedStage: ''},
+    ],
+  }, {historical: []}, [], [])[0];
+  assert.equal(stamped.status, 'Rejected');
+  assert.equal(stamped.date, '2026-09-10');
+}
+console.log('tie-break checks passed: same-timestamp submissions resolve by how far they got');
+
+// Task identity. A name is what a task is called; the fingerprint is what it is.
+// 150 names are shared by more than one trainer and one is literally `task`, so
+// the name alone both merges unrelated work and splits the same task delivered
+// under two names.
+{
+  const consoleOf = names => ({
+    coverage: {tasks: names.length},
+    tasks: names.map(name => ({
+      name, state: 'accepted', submittedAt: '2026-09-10', trainer: 'a@example.com',
+      acceptedFolders: 1, taskType: 'Non-connector tasks', failedStage: '',
+    })),
+  });
+  const build = (names, tasks) =>
+    preparePipeline(consoleOf(names), {historical: []}, [], [], tasks ? {tasks} : null);
+
+  // No fingerprint data at all: behave exactly as before, grouping by name.
+  const plain = build(['solo']);
+  assert.equal(plain[0].identity.basis, 'name');
+  assert.equal(plain[0].identity.key, 'name:solo');
+  assert.equal(plain[0].identity.packages, 0);
+
+  // A delivered package identifies the task by its content.
+  const [one] = build(['solo'], [{folder: 'solo', fingerprint: 'abc123', updated: '2026-09-09T00:00:00Z'}]);
+  assert.equal(one.identity.basis, 'content');
+  assert.equal(one.identity.key, 'abc123');
+  assert.deepEqual(one.identity.alsoKnownAs, []);
+
+  // The same content delivered under two names is one task, and each row says so.
+  const shared = build(['alpha-name', 'beta-name'], [
+    {folder: 'alpha-name', fingerprint: 'same', updated: '2026-09-09T00:00:00Z'},
+    {folder: 'beta-name', fingerprint: 'same', updated: '2026-09-09T00:00:00Z'},
+  ]);
+  const byKey = Object.fromEntries(shared.map(row => [row.key, row]));
+  assert.deepEqual(byKey['alpha-name'].identity.alsoKnownAs, ['beta-name']);
+  assert.deepEqual(byKey['beta-name'].identity.alsoKnownAs, ['alpha-name']);
+
+  const counts = filterPipeline(shared, {legacy: 'all'});
+  assert.equal(counts.rows.length, 2);      // two names
+  assert.equal(counts.identities, 1);       // one task
+  assert.equal(counts.sharedIdentity, 2);
+  assert.equal(counts.identifiedByContent, 2);
+
+  // Repeat deliveries of one task are one version; the newest represents it.
+  const versions = build(['edited'], [
+    {folder: 'edited', fingerprint: 'v1', updated: '2026-09-01T00:00:00Z'},
+    {folder: 'edited', fingerprint: 'v1', updated: '2026-09-04T00:00:00Z'},
+    {folder: 'edited', fingerprint: 'v2', updated: '2026-09-08T00:00:00Z'},
+  ]);
+  assert.equal(versions[0].identity.packages, 3);
+  assert.equal(versions[0].identity.versions, 2);
+  assert.equal(versions[0].identity.key, 'v2'); // newest delivery represents it
+
+  // Unreadable packages carry no fingerprint and must never fold together.
+  const broken = build(['x-one', 'x-two'], [
+    {folder: 'x-one', fingerprint: null, updated: '2026-09-09T00:00:00Z'},
+    {folder: 'x-two', fingerprint: null, updated: '2026-09-09T00:00:00Z'},
+  ]);
+  assert.equal(filterPipeline(broken, {legacy: 'all'}).identities, 2);
+}
+console.log('identity checks passed: content groups tasks, name is only the label');

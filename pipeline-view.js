@@ -20,10 +20,75 @@
   };
   const nameKey = value => String(value || '').trim().toLowerCase().replace(/^(harbor|obi)\//, '');
 
-  function preparePipeline(consoleLive, gcs, finalisationRows, roster) {
+  // How far a submission actually got. Used only to break ties between
+  // submissions with the same timestamp - it never overrides a later one.
+  const REACHED = {accepted: 6, legacy_accepted: 5, rejected: 4, error: 3, running: 2, queued: 1};
+  const reached = task => REACHED[task.state] || 0;
+
+  // The console sends a full timestamp; older pulls carry only the date because
+  // it used to be sliced on the way in. Both are accepted, and `day` is what the
+  // date filters compare against.
+  const stamp = task => String(task.submittedAt || '');
+  const day = task => String(task.date || task.submittedAt || '').slice(0, 10);
+
+  // A task's representative submission is its most recent one. Where two share a
+  // timestamp - which every same-day pair does once the time has been sliced off
+  // - the one that got further wins. Without this the winner is whichever the
+  // console happened to list first, which decided the displayed status of 99
+  // tasks, some reading Accepted where the other submission was Rejected.
+  function outranks(candidate, holder) {
+    if (!holder) return true;
+    const [a, b] = [stamp(candidate), stamp(holder)];
+    if (a !== b) return a > b;
+    return reached(candidate) > reached(holder);
+  }
+
+  // Delivered packages indexed by task name, newest first. A name can hold
+  // several packages: repeat deliveries of the same task, and genuine later
+  // versions of it. The fingerprint tells those two apart - identical content
+  // hashes the same however often it is redelivered.
+  function deliveredIdentities(fingerprints) {
+    const byName = new Map();
+    const byFingerprint = new Map();
+    for (const row of (fingerprints?.tasks || [])) {
+      const key = nameKey(row.folder);
+      if (!key || !row.fingerprint) continue;
+      if (!byName.has(key)) byName.set(key, []);
+      byName.get(key).push(row);
+      if (!byFingerprint.has(row.fingerprint)) byFingerprint.set(row.fingerprint, new Set());
+      byFingerprint.get(row.fingerprint).add(key);
+    }
+    for (const packages of byName.values()) {
+      packages.sort((a, b) => String(b.updated || '').localeCompare(String(a.updated || '')));
+    }
+    return {byName, byFingerprint};
+  }
+
+  // What this task is, as distinct from what it is called. Falls back to the
+  // name when nothing was delivered for it - most submitted work never reaches
+  // delivery - and says which of the two it used, so no count is reported
+  // without being able to state what produced it.
+  function identityOf(key, delivered) {
+    const packages = delivered.byName.get(key) || [];
+    const newest = packages[0] || null;
+    const shared = newest ? delivered.byFingerprint.get(newest.fingerprint) : null;
+    return {
+      key: newest ? newest.fingerprint : 'name:' + key,
+      basis: newest ? 'content' : 'name',
+      packages: packages.length,
+      versions: new Set(packages.map(row => row.fingerprint)).size,
+      // Other task names delivering this exact content. Non-empty means the same
+      // task was delivered under more than one name, which grouping by name
+      // cannot see.
+      alsoKnownAs: shared ? [...shared].filter(name => name !== key).sort() : [],
+    };
+  }
+
+  function preparePipeline(consoleLive, gcs, finalisationRows, roster, fingerprints) {
     if (!consoleLive || !Array.isArray(consoleLive.tasks)) throw new Error('No console pull to build the pipeline from');
     if (consoleLive.tasks.length !== consoleLive.coverage?.tasks) throw new Error('Console pull is truncated');
     const trainers = new Map((roster || []).map(row => [String(row.email || '').toLowerCase(), row]));
+    const delivered = deliveredIdentities(fingerprints);
 
     // Evidence indexes, both keyed on the declared task name.
     const cycles = new Map();
@@ -45,8 +110,7 @@
     for (const task of consoleLive.tasks) {
       const key = nameKey(task.name);
       if (!key) continue;
-      const seen = latest.get(key);
-      if (!seen || String(task.submittedAt || '') > String(seen.submittedAt || '')) latest.set(key, task);
+      if (outranks(task, latest.get(key))) latest.set(key, task);
     }
 
     const submissionsByKey = new Map();
@@ -61,7 +125,7 @@
       const submissionRows = submissionsByKey.get(key) || [];
       const attempts = submissionRows.length;
       const evidence = cycles.get(key) || [];
-      const delivered = folders.get(key) || [];
+      const deliveredFolders = folders.get(key) || [];
       const email = String(task.trainer || '').toLowerCase();
       const trainer = trainers.get(email) || null;
       const team = trainer?.team;
@@ -72,8 +136,8 @@
         name: task.name,
         status,
         state: task.state || '',
-        date: task.submittedAt || '',
-        legacy: !task.submittedAt || task.submittedAt < LEGACY_BEFORE,
+        date: day(task),
+        legacy: !day(task) || day(task) < LEGACY_BEFORE,
         owner: email || null,
         trainer,
         onRoster: Boolean(trainer),
@@ -86,9 +150,10 @@
         submissionRows: submissionRows.map(row => ({
           state: row.state || '',
           status: STATUS[row.state] || 'Unknown',
-          date: row.submittedAt || '',
+          date: day(row),
         })),
         acceptedFolders: task.acceptedFolders || 0,
+        identity: identityOf(key, delivered),
         ledger: {
           cycles: evidence.length,
           attempts: evidence.reduce((most, cycle) => Math.max(most, Number(cycle.attempt) || 0), 0),
@@ -98,12 +163,12 @@
           latest: evidence.slice().sort((a, b) => String(b.submittedAt || '').localeCompare(String(a.submittedAt || '')))[0] || null,
         },
         bucket: {
-          folders: delivered.length,
-          cohorts: [...new Set(delivered.map(folder => folder.cohortLabel).filter(Boolean))],
-          archives: delivered.reduce((total, folder) => total + (folder.archives || 0), 0),
-          domain: delivered.find(folder => folder.filterDomain && folder.filterDomain !== 'Not recorded')?.filterDomain || 'Not recorded',
-          connector: delivered.some(folder => folder.is_connector === true),
-          sha: delivered[0]?.sha256 || null,
+          folders: deliveredFolders.length,
+          cohorts: [...new Set(deliveredFolders.map(folder => folder.cohortLabel).filter(Boolean))],
+          archives: deliveredFolders.reduce((total, folder) => total + (folder.archives || 0), 0),
+          domain: deliveredFolders.find(folder => folder.filterDomain && folder.filterDomain !== 'Not recorded')?.filterDomain || 'Not recorded',
+          connector: deliveredFolders.some(folder => folder.is_connector === true),
+          sha: deliveredFolders[0]?.sha256 || null,
         },
       };
     }).sort((a, b) => String(b.date).localeCompare(String(a.date)) || a.name.localeCompare(b.name));
@@ -160,6 +225,16 @@
         counts[sub.status] = (counts[sub.status] || 0) + 1;
         return counts;
       }, {}),
+      // Three bases for the same population, reported together so the page can
+      // show them side by side rather than picking one and hiding the rest:
+      //   submissions - every attempt, which is what the console counts
+      //   rows        - one per task name
+      //   identities  - one per distinct task, names sharing content folded
+      identities: new Set(matched.map(row => row.identity.key)).size,
+      identifiedByContent: matched.filter(row => row.identity.basis === 'content').length,
+      // Rows whose content is also delivered under another name. Invisible to
+      // any amount of name matching.
+      sharedIdentity: matched.filter(row => row.identity.alsoKnownAs.length > 0).length,
       delivered: matched.filter(row => row.bucket.folders > 0).length,
       disagreements: matched.filter(row => row.ledger.disagrees).length,
       offRoster: matched.filter(row => row.owner && !row.onRoster).length,
