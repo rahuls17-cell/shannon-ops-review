@@ -750,6 +750,7 @@ function applyRange() {
   ['dateStart', 'dateEnd'].forEach(id => byId(id).setAttribute('aria-invalid', String(invalid)));
   setText('dateScope', invalid ? 'No records match: the start date is after the end date.'
     : `${rangeLabel()} / Overview, Delivery and Pipeline follow this range. Payouts does not.`);
+  renderSlicerBars();
   document.querySelectorAll('.rangeecho').forEach(node => {
     if (node.classList.contains('is-exempt')) {
       // PRD X1 names every page, but the workbook records what was PAID, not
@@ -762,6 +763,58 @@ function applyRange() {
       ((dateRange.start || dateRange.end) ? ' <button class="linky" data-jump="command">change</button>' : '');
   });
   renderEverything();
+}
+
+
+// PRD X1. One range, one set of rules, rendered wherever a view needs to change
+// it - so a date can be adjusted on the page being read rather than only on
+// Overview. Every instance writes to the same dateRange and redraws them all.
+const RANGE_PRESETS = {'7': 7, '14': 14, '30': 30};
+function setRangeFromPreset(value) {
+  if (!value) { dateRange.start = dateRange.end = ''; return; }
+  if (value === 'live') { dateRange.start = window.PIPELINE_LEGACY_BEFORE; dateRange.end = ''; return; }
+  const end = new Date();
+  const start = new Date(end.getTime() - (RANGE_PRESETS[value] - 1) * 86400000);
+  dateRange.start = start.toISOString().slice(0, 10);
+  dateRange.end = end.toISOString().slice(0, 10);
+}
+
+function renderSlicerBars() {
+  document.querySelectorAll('[data-slicer]').forEach(node => {
+    if (!node.firstChild) {
+      node.innerHTML = `
+        <span class="slicerbar-label">Date range</span>
+        <label class="field"><span>Preset</span><select data-field="preset">
+          <option value="">All dates</option>
+          <option value="7">Last 7 days</option>
+          <option value="14">Last 14 days</option>
+          <option value="30">Last 30 days</option>
+          <option value="live">Since 5 Sept (live)</option>
+        </select></label>
+        <label class="field"><span>From</span><input data-field="start" type="date" /></label>
+        <label class="field"><span>To</span><input data-field="end" type="date" /></label>
+        <button class="ghost" data-field="clear">Clear</button>
+        <span class="slicerbar-state"></span>`;
+    }
+    const preset = node.querySelector('[data-field="preset"]');
+    const start = node.querySelector('[data-field="start"]');
+    const end = node.querySelector('[data-field="end"]');
+    // A field being edited is left alone, or typing a date fights the redraw.
+    if (document.activeElement !== start) start.value = dateRange.start;
+    if (document.activeElement !== end) end.value = dateRange.end;
+    if (document.activeElement !== preset) preset.value = dateRange.preset || '';
+    const invalid = Boolean(dateRange.start && dateRange.end && dateRange.start > dateRange.end);
+    [start, end].forEach(field => field.setAttribute('aria-invalid', String(invalid)));
+    node.querySelector('.slicerbar-state').textContent = invalid
+      ? 'Start date is after the end date.' : rangeLabel();
+    node.classList.toggle('is-invalid', invalid);
+  });
+}
+
+function syncOverviewSlicer() {
+  byId('dateStart').value = dateRange.start;
+  byId('dateEnd').value = dateRange.end;
+  byId('datePreset').value = dateRange.preset || '';
 }
 
 function benchOf(team) {
@@ -1508,17 +1561,9 @@ function wireEvents() {
   byId('ledgerNext').addEventListener('click', () => { ledgerPage += 1; renderPayoutLedger(); });
   byId('paymentFilter').addEventListener('change', resetPayoutPages);
   byId('benchFilter').addEventListener('change', resetPayoutPages);
-  const presets = {'7': 7, '14': 14, '30': 30};
   byId('datePreset').addEventListener('change', event => {
-    const value = event.target.value;
-    if (!value) { dateRange.start = dateRange.end = ''; }
-    else if (value === 'live') { dateRange.start = window.PIPELINE_LEGACY_BEFORE; dateRange.end = ''; }
-    else {
-      const end = new Date();
-      const start = new Date(end.getTime() - (presets[value] - 1) * 86400000);
-      dateRange.start = start.toISOString().slice(0, 10);
-      dateRange.end = end.toISOString().slice(0, 10);
-    }
+    dateRange.preset = event.target.value;
+    setRangeFromPreset(event.target.value);
     byId('dateStart').value = dateRange.start;
     byId('dateEnd').value = dateRange.end;
     applyRange();
@@ -1526,9 +1571,31 @@ function wireEvents() {
   ['dateStart', 'dateEnd'].forEach(id => byId(id).addEventListener('change', () => {
     dateRange.start = byId('dateStart').value;
     dateRange.end = byId('dateEnd').value;
+    dateRange.preset = '';
     byId('datePreset').value = '';
     applyRange();
   }));
+
+  // Every in-view slicer, by delegation, so they need no per-instance wiring.
+  document.addEventListener('change', event => {
+    const field = event.target.closest('[data-slicer] [data-field]');
+    if (!field) return;
+    const kind = field.dataset.field;
+    if (kind === 'preset') { dateRange.preset = field.value; setRangeFromPreset(field.value); }
+    else if (kind === 'start' || kind === 'end') {
+      dateRange[kind] = field.value;
+      dateRange.preset = '';
+    } else return;
+    syncOverviewSlicer();
+    applyRange();
+  });
+  document.addEventListener('click', event => {
+    if (!event.target.closest('[data-slicer] [data-field="clear"]')) return;
+    dateRange.start = dateRange.end = '';
+    dateRange.preset = '';
+    syncOverviewSlicer();
+    applyRange();
+  });
   byId('explorerRefresh').addEventListener('click', () => loadExplorer(true));
   byId('explorerFilter').addEventListener('input', renderExplorerBody);
   byId('explorerSort').addEventListener('change', renderExplorerBody);
@@ -1550,6 +1617,7 @@ function wireEvents() {
   });
   byId('clearDates').addEventListener('click', () => {
     dateRange.start = dateRange.end = '';
+    dateRange.preset = '';
     byId('dateStart').value = byId('dateEnd').value = byId('datePreset').value = '';
     applyRange();
   });

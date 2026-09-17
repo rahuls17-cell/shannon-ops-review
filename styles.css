@@ -1039,3 +1039,19 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 /* Panel source lines sit under the description, quieter than it. */
 .figure-src.is-panel { margin-top: 7px; }
 .figure-src-label { font-weight: 500; }
+
+/* ---------- In-view date slicer (PRD X1) ---------- */
+
+.slicerbar {
+  display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px 14px;
+  padding: 11px 14px; border: 1px solid var(--line); border-radius: var(--radius-sm);
+  background: var(--panel);
+}
+.slicerbar-label {
+  font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--muted); align-self: center;
+}
+.slicerbar .field { margin: 0; }
+.slicerbar-state { font-size: 11.5px; color: var(--muted); align-self: center; margin-left: auto; }
+.slicerbar.is-invalid { border-color: var(--red); }
+.slicerbar.is-invalid .slicerbar-state { color: var(--risk); }
