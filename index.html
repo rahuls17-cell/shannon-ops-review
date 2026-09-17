@@ -18,10 +18,7 @@
         </div>
         <nav class="viewnav" role="tablist" aria-label="Views">
           <button class="viewnav-tab is-active" role="tab" aria-selected="true" data-view="command">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg><span>Finalisation</span>
-          </button>
-          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="acceptance">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Acceptance</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg><span>Overview</span>
           </button>
           <button class="viewnav-tab" role="tab" aria-selected="false" data-view="payouts">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Payouts</span>
@@ -66,8 +63,8 @@
           <header class="view-head">
             <div>
               <p class="kicker">Operations</p>
-              <h1 id="command-title">Finalisation pipeline</h1>
-              <p class="lede">What the pipeline has finalised, from the console and the bucket. Money and client acceptance are on their own page.</p>
+              <h1 id="command-title">Overview</h1>
+              <p class="lede">Two scopes, kept apart: what the pipeline finalised, and what the client accepted and it owes. They read different sources and nothing is added across them.</p>
             </div>
           </header>
 
@@ -92,6 +89,12 @@
             </header>
             <div class="panel-body"><p id="dateError" class="alert" role="alert" hidden>Start date must be on or before end date.</p><p class="muted footnote" id="dateScope"></p></div>
           </section>
+
+          <section class="band" aria-labelledby="band-finalisation">
+            <header class="band-head">
+              <h2 id="band-finalisation">Finalisation pipeline</h2>
+              <p>What the pipeline finalised &mdash; Harbor Console and the GCS bucket. <b>Follows the date range above.</b></p>
+            </header>
 
           <section class="panel" id="taskBasisPanel">
             <header class="panel-head">
@@ -192,19 +195,13 @@
             </header>
             <div class="panel-body"><div id="sourceList" class="source-list" data-sourcelist="command"></div></div>
           </section>
-        </section>
+          </section>
 
-        <!-- CLIENT ACCEPTANCE + PAYOUTS (PRD C1) ------------------------ -->
-        <section class="view" id="view-acceptance" role="tabpanel" aria-labelledby="acceptance-title">
-          <header class="view-head">
-            <div>
-              <p class="kicker">Money</p>
-              <h1 id="acceptance-title">Client acceptance &amp; payouts</h1>
-              <p class="lede">What the client accepted, and what that owes. Every figure here comes from the audit sheet or the workbook &mdash; never from the bucket.</p>
-            </div>
-          </header>
-          <div class="slicerbar" data-slicer="acceptance" data-slicer-disabled="true"
-               data-slicer-reason="Not available here &mdash; the audit sheet carries counts only, and the workbook records no date for accepted work."></div>
+          <section class="band" aria-labelledby="band-acceptance">
+            <header class="band-head">
+              <h2 id="band-acceptance">Client acceptance &amp; payouts</h2>
+              <p>What the client accepted and what that owes &mdash; the 240 audit sheet and the workbook. <b>The date range is not applied here:</b> the audit sheet carries counts only, and the workbook records no date for accepted work, so filtering would cut what was paid while what was accepted stayed whole.</p>
+            </header>
 
           <div class="figures">
 <article class="figure">
@@ -265,6 +262,7 @@
               </div>
             </header>
             <div class="panel-body"><div class="source-list" data-sourcelist="acceptance"></div></div>
+          </section>
           </section>
         </section>
 

@@ -1050,3 +1050,12 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .slicerbar.is-disabled select,
 .slicerbar.is-disabled input,
 .slicerbar.is-disabled button { opacity: 0.5; cursor: not-allowed; }
+
+/* ---------- Overview scopes (PRD C1) ---------- */
+/* One page, two scopes. They read different sources and the date range
+   reaches only the first, so the seam is stated rather than implied. */
+.band { display: grid; gap: var(--gap); }
+.band + .band { margin-top: 10px; padding-top: var(--gap); border-top: 2px solid var(--line); }
+.band-head h2 { font-size: 17px; letter-spacing: -0.01em; }
+.band-head p { margin-top: 5px; max-width: 86ch; color: var(--muted); font-size: 12px; line-height: 1.55; }
+.band-head p b { color: var(--ink-2); font-weight: 600; }

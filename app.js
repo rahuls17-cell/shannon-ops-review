@@ -344,7 +344,7 @@ function groupBy(items, keyFn) {
   }, {});
 }
 
-const VIEWS = ['command', 'acceptance', 'payouts', 'delivery', 'pipeline', 'explorer'];
+const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'explorer'];
 // The same status is the same colour in the donut, the cards and the table.
 // PRD F3: the Harbor Console vocabulary. `Done` is gone.
 const STATUS_TOKENS = {
