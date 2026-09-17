@@ -15,6 +15,9 @@ let explorerEntry = null;
 const dateRange = {start: '', end: ''};
 let harborConsole = null;
 let consoleLive = null;
+// Content fingerprints for delivered packages, built by tools/build_fingerprints.py.
+// Optional: without it the pipeline groups by name, exactly as it did before.
+let taskFingerprints = null;
 let pipelinePage = 0;
 let payoutPage = 0;
 let ledgerPage = 0;
@@ -111,6 +114,12 @@ async function loadConsoleLive() {
     consoleLive = await response.json();
   } catch {
     consoleLive = null;
+  }
+  try {
+    const response = await fetch(`assets/task-fingerprints.json?t=${Date.now()}`, {cache: 'no-store'});
+    taskFingerprints = response.ok ? await response.json() : null;
+  } catch {
+    taskFingerprints = null;
   }
   buildPipeline();
   populateFilters();
@@ -794,7 +803,8 @@ const expandedRows = new Set();
 function buildPipeline() {
   if (!consoleLive) { pipelineRowsModel = []; return; }
   try {
-    pipelineRowsModel = window.preparePipeline(consoleLive, gcsPipeline, finalisationRows, data.trainers);
+    pipelineRowsModel = window.preparePipeline(consoleLive, gcsPipeline, finalisationRows, data.trainers,
+      taskFingerprints);
   } catch (error) {
     pipelineRowsModel = [];
     setText('pipelineSourceStatus', `Pipeline could not be built: ${error.message}`);
