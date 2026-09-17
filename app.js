@@ -79,6 +79,7 @@ const infoCopy = {
   ownership: 'Three tiers, strongest first. Harbor Console submitter is the console\u2019s own record of who submitted the task and is treated as proof. Name match only is the GCS trainer records joined by declared task name - finalisation repackages archives, so digests never match and the name is the only join available; that is evidence, not proof. Contested means two records claim the same name and the console does not settle it, so the task stays unassigned rather than being given to whoever was found first. The console export is a point-in-time dump, not live.',
   pipeline: 'The status names are the Harbor Console\u2019s own: its finalisation run state is done, rejected, parked or running, which the spec restates as Accepted, Rejected, Failed and Running. Rejected means harbor checks failed and the trainer reworks it - the largest bucket by far. Failed means an infrastructure error the trainer cannot rerun; it parks for QC or gen engineering. Submitted means the gate passed but no decision is recorded yet, which is what used to be shown as Done - it is not an acceptance. Current counts the latest attempt per family; All attempts counts retries separately.',
   dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
+  taskBasis: 'Three counts of the same work, none of them wrong, because they count different things. Submissions is every attempt, which is what the Harbor Console\u2019s own cards show. Re-submitted is the attempts beyond the first: a task submitted five times is still one piece of work, and counting it five times would overstate both delivery and pay. Tasks is what is left once those are removed and once work delivered under two different folder names is recognised as one task by its content fingerprint, which no amount of name matching can see. The figures add up exactly, which is why they are shown together rather than one being picked as the headline.',
   throughputMining: 'Tasks submitted per day, against the workbook\u2019s daily commitment. The commitment comes from the New Task Mining Daily Plan tab, which counts tasks mined - submissions - not tasks accepted, so the actual series counts console submissions to match it. A task submitted three times counts three times here, because the plan commits to submissions. The workbook also carries its own actual column; it is not used, because it stops being filled after 12 September.',
   throughputAcceptance: 'Tasks accepted per day, one point per task at its FIRST acceptance however many attempts it took. Timing comes from the GCS evaluation ledger, whose updatedAt carries a full timestamp where the console\u2019s submittedAt is date-only. The ledger supplies only the date here; it never overrides the console on whether a task was accepted. This is a different event from mining, so it gets its own chart rather than a second line on the one above.',
   throughputType: 'Connector and non-connector come from the Harbor Console, which records them cleanly; the GCS taskType is a domain (Code, Health, Law) and is not used for this. 97 task names carry both labels in the console, because a normalised task name is not a task identity - it collides across families. Those are shown as Contested rather than resolved to whichever record was read first. The workbook commitment is not split by type, so choosing a type withdraws the plan line instead of comparing against a plan that does not apply.',
@@ -95,6 +96,7 @@ function renderEverything() {
   renderBenchCards();
   renderPlan();
   renderThroughput();
+  renderTaskBasis();
 }
 
 // The bucket is no longer a view of its own - it is the delivery evidence
@@ -131,6 +133,8 @@ async function loadConsoleLive() {
   populateFilters();
   renderPipeline();
   renderThroughput();
+  renderTaskBasis();
+  renderBenchCards();
   renderSources();
 }
 
@@ -157,6 +161,8 @@ async function loadHarborConsole() {
   populateFilters();
   renderPipeline();
   renderThroughput();
+  renderTaskBasis();
+  renderBenchCards();
   renderSources();
 }
 
@@ -392,7 +398,9 @@ function renderHero() {
   setText("generatedAt", generated.toLocaleString([], { dateStyle: "medium", timeStyle: "short" }));
   setText('scanAt', gcsPipeline ? new Date(gcsPipeline.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'}) : 'not loaded');
   setText("heroPending", money(pending));
-  setText("heroExposureText", `${paidPct}% paid / ${fmt(summary.pendingTasks)} tasks pending`);
+  // PRD X3: the pending count and amount are the KPI tile's story. This
+  // headline carries the split only, so the same number is not read twice.
+  setText("heroExposureText", `${paidPct}% of committed payout already made`);
   renderExposureChart(rows);
 
   const dated = Boolean(dateRange.start || dateRange.end);
@@ -482,7 +490,23 @@ function sourceTabs(source) {
   </div>`;
 }
 
+// PRD X2: a figure that cannot be traced is not a finished figure. Each KPI
+// tile names its source and links to it, matching the per-view sourcestrip.
+function renderFigureSources() {
+  document.querySelectorAll('.figure-src[data-source]').forEach(slot => {
+    const source = window.DASHBOARD_SOURCES.find(entry => entry.id === slot.dataset.source);
+    if (!source) { slot.innerHTML = ''; return; }
+    const state = sourceState(source);
+    const label = `${esc(source.name)}`;
+    slot.innerHTML = source.href
+      ? `<a href="${esc(source.href)}" target="_blank" rel="noopener" class="figure-srclink"
+           data-tip="${esc(source.what)} / ${esc(state.detail)}">${label}</a>`
+      : `<span class="figure-srclink is-flat" data-tip="${esc(source.hrefNote || source.what)}">${label}</span>`;
+  });
+}
+
 function renderSources() {
+  renderFigureSources();
   const list = byId('sourceList');
   if (list) {
     list.innerHTML = window.DASHBOARD_SOURCES.map(source => {
@@ -610,6 +634,7 @@ function renderDonut() {
   `;
 }
 
+const BENCH_OF_LABEL = {company: 'Company', computer: 'Computer', unassigned: 'Unassigned'};
 function renderBenchCards() {
   const snapshot = commandSnapshot();
   const roster = new Map(data.trainers.map(row => [row.email.toLowerCase(), row]));
@@ -617,13 +642,17 @@ function renderBenchCards() {
     const team = roster.get(String(email || '').toLowerCase())?.team;
     return team === 'Company' ? 'Company' : ['Computer A', 'Computer B'].includes(team) ? 'Computer' : 'Unassigned';
   };
+  // Status comes from the console, never the GCS ledger. This panel used to
+  // count gcsPipeline.current, which is evidence - the repo's own rule makes
+  // the console authoritative for status, and the two disagree materially.
+  const live = pipelineRowsModel.filter(row => !row.legacy && inRange(row.date));
   byId('benchCards').innerHTML = ['Computer', 'Company', 'Unassigned'].map(name => {
-    const tasks = snapshot.current.filter(row => bench(row.trainer) === name);
+    const tasks = live.filter(row => BENCH_OF_LABEL[row.bench] === name);
     const groups = [...new Set(snapshot.folders.filter(row => bench(row.trainer?.email) === name).map(row => row.name))];
     return `<div class="bench-card"><h3>${name} bench</h3>${[
-      ['Current tasks', gcsPipeline ? tasks.length : null],
-      ['Pipeline accepted', gcsPipeline ? tasks.filter(row => row.status === 'Accepted').length : null],
-      ['Unique accepted tasks', snapshot.ready ? groups.length : null]
+      ['Tasks', pipelineRowsModel.length ? tasks.length : null],
+      ['Accepted', pipelineRowsModel.length ? tasks.filter(row => row.status === 'Accepted').length : null],
+      ['Delivered to the bucket', snapshot.ready ? groups.length : null]
     ].map(([label, value]) => `<div class="bench-metric"><span>${label}</span><b>${value == null ? '-' : fmt(value)}</b></div>`).join('')}</div>`;
   }).join('');
 }
@@ -926,6 +955,21 @@ function drilldown(row) {
     `</dl></td></tr>`;
 }
 
+
+// An audit detail, not a headline: a task whose identity came from a content
+// fingerprint rather than its name is marked, and says what else it was called.
+// Deliberately quiet - most rows carry it, so anything louder would be noise.
+function identityBadge(row) {
+  const identity = row.identity;
+  if (!identity || identity.basis !== 'content') return '';
+  const aka = identity.alsoKnownAs || [];
+  const tip = aka.length
+    ? `Identified by content fingerprint. The same content is also delivered under ${aka.length === 1 ? 'another name' : `${aka.length} other names`}: ${aka.join(', ')}. Counting by name would treat ${aka.length === 1 ? 'it' : 'them'} as separate work.`
+    : 'Identified by the content of what was delivered, not by its name. No other name delivers this content.';
+  return `<span class="idbadge${aka.length ? ' is-shared' : ''}" data-tip="${esc(tip)}"
+    role="img" aria-label="${esc(tip)}">${aka.length ? '◈' : '◇'}</span>`;
+}
+
 function renderPipelineRows(rows) {
   const pages = Math.max(1, Math.ceil(rows.length / 50));
   pipelinePage = Math.min(Math.max(pipelinePage, 0), pages - 1);
@@ -940,7 +984,7 @@ function renderPipelineRows(rows) {
     const open = expandedRows.has(row.key);
     return `<tr class="drill-head${open ? ' is-open' : ''}" data-key="${esc(row.key)}">
         <td><button class="drill-toggle" aria-expanded="${open}" aria-label="Evidence for ${esc(row.name)}">${open ? '\u2212' : '+'}</button></td>
-        <td><div class="person"><strong>${esc(row.name)}</strong><span>${row.legacy ? 'Legacy' : 'Live'}${row.ledger.disagrees ? ' / ledger disagrees' : ''}</span></div></td>
+        <td><div class="person"><strong>${esc(row.name)}${identityBadge(row)}</strong><span>${row.legacy ? 'Legacy' : 'Live'}${row.ledger.disagrees ? ' / ledger disagrees' : ''}</span></div></td>
         <td><span class="pill" data-status="${esc(row.status)}">${esc(row.status)}</span></td>
         <td>${esc(row.trainer?.name || row.owner || 'No owner')}${row.owner && !row.onRoster ? '<small>not on roster</small>' : ''}</td>
         <td>${esc(row.taskType.replace(' tasks', ''))}</td>
@@ -1037,6 +1081,43 @@ async function loadExplorer(force = false) {
   }
 }
 
+
+// PRD F2. Three counts of the same work. Deliberately not collapsed to one:
+// each is the previous count with a specific kind of repeat removed, and the
+// arithmetic is shown closing so nobody reads them as competing figures.
+function renderTaskBasis() {
+  const tiles = byId('taskBasisTiles');
+  if (!tiles) return;
+  if (!pipelineRowsModel.length) {
+    tiles.innerHTML = '<p class="empty">Waiting for the console pull.</p>';
+    setText('taskBasisEquation', '');
+    setText('taskBasisNote', '');
+    return;
+  }
+  // Live scope, following the shared date range. Pipeline's own status and
+  // trainer filters are deliberately not applied: this is the Overview.
+  const result = window.filterPipeline(pipelineRowsModel,
+    {legacy: '', start: dateRange.start, end: dateRange.end});
+  const tasks = result.identities;
+  const resubmitted = result.submissions - result.rows.length;
+  const folded = result.rows.length - result.identities;
+
+  tiles.innerHTML = [
+    ['Tasks', tasks, 'Distinct pieces of work', 'is-headline'],
+    ['Submissions', result.submissions, 'Every attempt, as the console counts', ''],
+    ['Re-submitted', resubmitted, 'Attempts beyond the first', ''],
+  ].map(([label, value, note, tone]) => `<article class="basis-tile ${tone}">
+      <h3>${esc(label)}</h3><strong>${fmt(value)}</strong><p>${esc(note)}</p>
+    </article>`).join('');
+
+  // Four terms, not three: folding two names onto one task is a different
+  // correction from a re-submission, and collapsing them would hide it.
+  setText('taskBasisEquation', folded
+    ? `${fmt(tasks)} tasks  +  ${fmt(resubmitted)} re-submitted  +  ${fmt(folded)} same task under another name  =  ${fmt(result.submissions)} submissions`
+    : `${fmt(tasks)} tasks  +  ${fmt(resubmitted)} re-submitted  =  ${fmt(result.submissions)} submissions`);
+  setText('taskBasisNote', `${fmt(result.identifiedByContent)} of ${fmt(result.rows.length)} tasks were identified by a content fingerprint; the rest fall back to their name because nothing was delivered for them. ${folded ? `${fmt(result.sharedIdentity)} rows deliver identical content under different names, folding to ${fmt(folded)} fewer task${folded === 1 ? '' : 's'}.` : 'No task in this range was delivered under more than one name.'} ${rangeLabel()}.`);
+}
+
 function renderConsoleBasis(result) {
   const node = byId('consoleBasis');
   if (!node) return;
@@ -1059,15 +1140,6 @@ function renderConsoleBasis(result) {
         </tbody>
       </table>
     </div>
-    <div class="basis-bases">
-      ${[['Submissions', result.submissions, 'Every attempt. What the console\u2019s own cards count.'],
-         ['Tasks by name', result.rows.length, 'One per task name, at its latest submission.'],
-         ['Tasks by content', result.identities, `One per distinct task. ${fmt(result.identifiedByContent)} identified by a content fingerprint; the rest fall back to the name because nothing was delivered for them.`],
-        ].map(([label, value, note]) => `<div class="basis-basis">
-          <span>${esc(label)}</span><strong>${fmt(value)}</strong><p class="muted">${note}</p>
-        </div>`).join('')}
-    </div>
-    ${result.sharedIdentity ? `<p class="muted footnote">${fmt(result.sharedIdentity)} task${result.sharedIdentity === 1 ? ' is' : 's are'} delivered under more than one name - identical content, different folder. Counting by name sees those as separate work; counting by content does not. This is the whole of the gap between the second and third figures.</p>` : ''}
     <p class="muted footnote">Compare the left column against the console's cards. Its filter starts at a time of
       day where ours starts at midnight, so the console reads slightly lower for the same period.${
         (dateRange.start || dateRange.end || pipelineFilters().status || pipelineFilters().trainer)
