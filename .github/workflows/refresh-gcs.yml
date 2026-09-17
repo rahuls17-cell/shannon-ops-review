@@ -44,8 +44,21 @@ jobs:
       - name: Prepare published files
         run: |
           mkdir -p _site
-          cp index.html app.js styles.css finalisation.js payout-ledger.js _site/
+          # Every script index.html loads. Keep this in step with the
+          # <script src> tags or the published page 404s on load.
+          cp index.html app.js styles.css _site/
+          cp sources.js finalisation.js pipeline-view.js payout-ledger.js explorer.js _site/
           cp -r assets _site/
+          # Fail the deploy rather than publish a page whose scripts 404.
+          python3 - <<'CHECK'
+          import re, sys, pathlib
+          html = pathlib.Path('index.html').read_text(encoding='utf-8')
+          missing = [src for src in re.findall(r'<script src="([^"]+)"', html)
+                     if not (pathlib.Path('_site') / src).exists()]
+          if missing:
+              sys.exit('not published but referenced by index.html: ' + ', '.join(missing))
+          print('all scripts referenced by index.html are present in _site')
+          CHECK
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
