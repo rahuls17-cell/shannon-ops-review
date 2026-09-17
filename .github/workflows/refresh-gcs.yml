@@ -74,6 +74,25 @@ jobs:
           cp index.html app.js styles.css _site/
           cp sources.js finalisation.js pipeline-view.js payout-ledger.js explorer.js _site/
           cp -r assets _site/
+          # Pages serves these with a long cache, so a returning visitor keeps
+          # running the previous build's JS against the new data - which is how
+          # an already-fixed chart still rendered empty. Stamp every local asset
+          # URL with the commit so each deploy is a new URL.
+          python3 - <<'STAMP'
+          import os, pathlib, re
+          version = os.environ.get('GITHUB_SHA', 'dev')[:12]
+          page = pathlib.Path('_site/index.html')
+          html = page.read_text(encoding='utf-8')
+          def bust(match):
+              attr, url = match.group(1), match.group(2)
+              if url.startswith(('http://', 'https://', '//', 'data:')) or '?' in url:
+                  return match.group(0)
+              return attr + '="' + url + '?v=' + version + '"'
+          pattern = re.compile(r'(src|href)="([^"]+\.(?:js|css))"')
+          html, n = pattern.subn(bust, html)
+          page.write_text(html, encoding='utf-8')
+          print('stamped ' + str(n) + ' local asset URLs with v=' + version)
+          STAMP
           # Fail the deploy rather than publish a page whose scripts 404.
           python3 - <<'CHECK'
           import re, sys, pathlib
