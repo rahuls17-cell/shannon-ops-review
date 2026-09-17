@@ -18,6 +18,9 @@ let consoleLive = null;
 // Content fingerprints for delivered packages, built by tools/build_fingerprints.py.
 // Optional: without it the pipeline groups by name, exactly as it did before.
 let taskFingerprints = null;
+// The same submissions as harbor-console-live.json but with full timestamps,
+// which is what decides a task's representative submission.
+let consoleRich = null;
 let pipelinePage = 0;
 let payoutPage = 0;
 let ledgerPage = 0;
@@ -120,6 +123,12 @@ async function loadConsoleLive() {
     taskFingerprints = response.ok ? await response.json() : null;
   } catch {
     taskFingerprints = null;
+  }
+  try {
+    const response = await fetch(`assets/harbor-console-rich.json?t=${Date.now()}`, {cache: 'no-store'});
+    consoleRich = response.ok ? await response.json() : null;
+  } catch {
+    consoleRich = null;
   }
   buildPipeline();
   populateFilters();
@@ -804,7 +813,7 @@ function buildPipeline() {
   if (!consoleLive) { pipelineRowsModel = []; return; }
   try {
     pipelineRowsModel = window.preparePipeline(consoleLive, gcsPipeline, finalisationRows, data.trainers,
-      taskFingerprints);
+      taskFingerprints, consoleRich);
   } catch (error) {
     pipelineRowsModel = [];
     setText('pipelineSourceStatus', `Pipeline could not be built: ${error.message}`);

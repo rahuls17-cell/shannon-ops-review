@@ -31,16 +31,32 @@
   const stamp = task => String(task.submittedAt || '');
   const day = task => String(task.date || task.submittedAt || '').slice(0, 10);
 
-  // A task's representative submission is its most recent one. Where two share a
-  // timestamp - which every same-day pair does once the time has been sliced off
-  // - the one that got further wins. Without this the winner is whichever the
-  // console happened to list first, which decided the displayed status of 99
-  // tasks, some reading Accepted where the other submission was Rejected.
+  // A task's representative submission is its most recent one, by time.
+  //
+  // Only where two submissions carry the SAME timestamp does anything else
+  // decide, and then the one that got further wins. That fallback must never
+  // stand in for a missing time: a date-only feed makes every same-day pair look
+  // tied, and ranking those by outcome overrides real chronology - measured
+  // against the full timestamps it picked the wrong submission every time,
+  // promoting an earlier acceptance over the later rejection that followed it.
+  // Hence the full timestamps are sourced before this is ever consulted.
   function outranks(candidate, holder) {
     if (!holder) return true;
     const [a, b] = [stamp(candidate), stamp(holder)];
     if (a !== b) return a > b;
     return reached(candidate) > reached(holder);
+  }
+
+  // The console pull carries dates only; the rich pull carries the full
+  // timestamp for the same submissions. Prefer the rich rows when present, since
+  // ordering submissions is the whole job here.
+  function submissionSource(consoleLive, consoleRich) {
+    const rich = consoleRich?.rows;
+    if (Array.isArray(rich) && rich.length) {
+      const dated = rich.filter(row => String(row.submittedAt || '').includes('T'));
+      if (dated.length) return {rows: rich, timing: 'timestamp'};
+    }
+    return {rows: consoleLive.tasks, timing: 'date'};
   }
 
   // Delivered packages indexed by task name, newest first. A name can hold
@@ -84,11 +100,12 @@
     };
   }
 
-  function preparePipeline(consoleLive, gcs, finalisationRows, roster, fingerprints) {
+  function preparePipeline(consoleLive, gcs, finalisationRows, roster, fingerprints, consoleRich) {
     if (!consoleLive || !Array.isArray(consoleLive.tasks)) throw new Error('No console pull to build the pipeline from');
     if (consoleLive.tasks.length !== consoleLive.coverage?.tasks) throw new Error('Console pull is truncated');
     const trainers = new Map((roster || []).map(row => [String(row.email || '').toLowerCase(), row]));
     const delivered = deliveredIdentities(fingerprints);
+    const source = submissionSource(consoleLive, consoleRich);
 
     // Evidence indexes, both keyed on the declared task name.
     const cycles = new Map();
@@ -107,14 +124,14 @@
 
     // One row per task; the console lists a row per submission.
     const latest = new Map();
-    for (const task of consoleLive.tasks) {
+    for (const task of source.rows) {
       const key = nameKey(task.name);
       if (!key) continue;
       if (outranks(task, latest.get(key))) latest.set(key, task);
     }
 
     const submissionsByKey = new Map();
-    for (const task of consoleLive.tasks) {
+    for (const task of source.rows) {
       const key = nameKey(task.name);
       if (!key) continue;
       if (!submissionsByKey.has(key)) submissionsByKey.set(key, []);
