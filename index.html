@@ -18,7 +18,10 @@
         </div>
         <nav class="viewnav" role="tablist" aria-label="Views">
           <button class="viewnav-tab is-active" role="tab" aria-selected="true" data-view="command">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg><span>Overview</span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h7v7H3zM14 3h7v7h-7zM14 14h7v7h-7zM3 14h7v7H3z"/></svg><span>Finalisation</span>
+          </button>
+          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="acceptance">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>Acceptance</span>
           </button>
           <button class="viewnav-tab" role="tab" aria-selected="false" data-view="payouts">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span>Payouts</span>
@@ -28,9 +31,6 @@
           </button>
           <button class="viewnav-tab" role="tab" aria-selected="false" data-view="pipeline">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 15l4-4 4 3 5-6"/></svg><span>Pipeline</span>
-          </button>
-          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="throughput">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 14l4-5 3 3 6-7"/></svg><span>Throughput</span>
           </button>
           <button class="viewnav-tab" role="tab" aria-selected="false" data-view="explorer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Bucket</span>
@@ -66,8 +66,8 @@
           <header class="view-head">
             <div>
               <p class="kicker">Operations</p>
-              <h1 id="command-title">Overview</h1>
-              <p class="lede">Three sources, counted separately &mdash; they overlap, so nothing here is added across them.</p>
+              <h1 id="command-title">Finalisation pipeline</h1>
+              <p class="lede">What the pipeline has finalised, from the console and the bucket. Money and client acceptance are on their own page.</p>
             </div>
           </header>
 
@@ -117,62 +117,15 @@
             
               <p class="figure-src" data-source="gcs-finalisation"></p>
             </article>
-            <article class="figure">
-              <h3>Client accepted<button class="why" data-info="clientAccepted" aria-label="How client acceptance is decided">?</button></h3>
-              <strong id="metricClientAccepted">-</strong>
-              <p id="metricClientAcceptedNote">-</p>
-            
-              <p class="figure-src" data-source="harbor-240"></p>
-            </article>
-            <article class="figure">
+                        <article class="figure">
               <h3>Finalisation v2<button class="why" data-info="v2Accepted" aria-label="What the v2 cohort holds">?</button></h3>
               <strong id="metricV2Accepted">-</strong>
               <p id="metricV2AcceptedNote">-</p>
             
               <p class="figure-src" data-source="gcs-finalisation"></p>
             </article>
-            <article class="figure">
-              <h3>Paid out<button class="why" data-info="paid" aria-label="Where paid amounts come from">?</button></h3>
-              <strong id="metricPaid">-</strong>
-              <p>Recorded in the workbook Paid Out tab</p>
-            
-              <p class="figure-src" data-source="ops-workbook"></p>
-            </article>
-            <article class="figure is-risk">
-              <h3>Pending tasks<button class="why" data-info="pending" aria-label="How pending is calculated">?</button></h3>
-              <strong id="metricPendingTasks">-</strong>
-              <p id="metricPending">-</p>
-            
-              <p class="figure-src" data-source="ops-workbook"></p>
-            </article>
-            <article class="figure">
-              <h3>Active trainers</h3>
-              <strong id="metricActive">-</strong>
-              <p id="metricRoster">-</p>
-            
-              <p class="figure-src" data-source="ops-workbook"></p>
-            </article>
-          </div>
+                                              </div>
 
-          <section class="panel">
-            <header class="panel-head">
-              <div>
-                <h2>Payout exposure</h2>
-                <p class="panel-note">Paid against still-owed, at $300 a task.</p>
-                <p class="figure-src is-panel" data-source="ops-workbook"></p>
-              </div>
-              <button class="ghost" data-jump="payouts">Open Payouts</button>
-            </header>
-            <div class="panel-body exposure">
-              <div class="exposure-headline">
-                <span class="exposure-label">Outstanding</span>
-                <strong id="heroPending">-</strong>
-                <p class="muted" id="heroExposureText">-</p>
-                <figure id="exposureChart" class="exposure-chart"></figure>
-              </div>
-              <div id="topPendingCards" class="leaderboard"></div>
-            </div>
-          </section>
 
           <div class="split">
             <section class="panel">
@@ -237,7 +190,81 @@
                 <p class="panel-note">Every figure on this dashboard traces to one of these. Each says what it holds, why we read it, and how it reaches the page. Nothing here writes to any source.</p>
               </div>
             </header>
-            <div class="panel-body"><div id="sourceList" class="source-list"></div></div>
+            <div class="panel-body"><div id="sourceList" class="source-list" data-sourcelist="command"></div></div>
+          </section>
+        </section>
+
+        <!-- CLIENT ACCEPTANCE + PAYOUTS (PRD C1) ------------------------ -->
+        <section class="view" id="view-acceptance" role="tabpanel" aria-labelledby="acceptance-title">
+          <header class="view-head">
+            <div>
+              <p class="kicker">Money</p>
+              <h1 id="acceptance-title">Client acceptance &amp; payouts</h1>
+              <p class="lede">What the client accepted, and what that owes. Every figure here comes from the audit sheet or the workbook &mdash; never from the bucket.</p>
+            </div>
+          </header>
+          <div class="slicerbar" data-slicer="acceptance" data-slicer-disabled="true"
+               data-slicer-reason="Not available here &mdash; the audit sheet carries counts only, and the workbook records no date for accepted work."></div>
+
+          <div class="figures">
+<article class="figure">
+              <h3>Client accepted<button class="why" data-info="clientAccepted" aria-label="How client acceptance is decided">?</button></h3>
+              <strong id="metricClientAccepted">-</strong>
+              <p id="metricClientAcceptedNote">-</p>
+            
+              <p class="figure-src" data-source="harbor-240"></p>
+            </article>
+<article class="figure">
+              <h3>Paid out<button class="why" data-info="paid" aria-label="Where paid amounts come from">?</button></h3>
+              <strong id="metricPaid">-</strong>
+              <p>Recorded in the workbook Paid Out tab</p>
+            
+              <p class="figure-src" data-source="ops-workbook"></p>
+            </article>
+<article class="figure is-risk">
+              <h3>Pending tasks<button class="why" data-info="pending" aria-label="How pending is calculated">?</button></h3>
+              <strong id="metricPendingTasks">-</strong>
+              <p id="metricPending">-</p>
+            
+              <p class="figure-src" data-source="ops-workbook"></p>
+            </article>
+<article class="figure">
+              <h3>Active trainers</h3>
+              <strong id="metricActive">-</strong>
+              <p id="metricRoster">-</p>
+            
+              <p class="figure-src" data-source="ops-workbook"></p>
+            </article>
+          </div>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Payout exposure</h2>
+                <p class="panel-note">Paid against still-owed, at $300 a task.</p>
+                <p class="figure-src is-panel" data-source="ops-workbook"></p>
+              </div>
+              <button class="ghost" data-jump="payouts">Open Payouts</button>
+            </header>
+            <div class="panel-body exposure">
+              <div class="exposure-headline">
+                <span class="exposure-label">Outstanding</span>
+                <strong id="heroPending">-</strong>
+                <p class="muted" id="heroExposureText">-</p>
+                <figure id="exposureChart" class="exposure-chart"></figure>
+              </div>
+              <div id="topPendingCards" class="leaderboard"></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Where this data comes from<button class="why" data-info="sources" aria-label="How to read the source panel">?</button></h2>
+                <p class="panel-note">Every figure on this page traces to one of these.</p>
+              </div>
+            </header>
+            <div class="panel-body"><div class="source-list" data-sourcelist="acceptance"></div></div>
           </section>
         </section>
 
@@ -451,62 +478,6 @@
           </section>
         </section>
 
-        <!-- THROUGHPUT (PRD T1-T4) ---------------------------------------- -->
-        <section class="view" id="view-throughput" role="tabpanel" aria-labelledby="throughput-title">
-          <header class="view-head">
-            <div>
-              <p class="kicker">Rate of work</p>
-              <h1 id="throughput-title">Throughput</h1>
-              <p class="lede">Two different questions, kept apart. <strong>Mining</strong> asks whether tasks are being submitted at the rate the workbook committed to. <strong>Acceptance</strong> asks how many tasks finalisation actually accepted per day. They count different events, so they are never drawn on the same axes.</p>
-            </div>
-          </header>
-          <div class="sourcestrip" data-sources="throughput"></div>
-          <div class="slicerbar" data-slicer="throughput"></div>
-          <p class="provenance" id="throughputStatus">Loading...</p>
-
-          <div id="throughputStats" class="status-grid"></div>
-
-          <section class="panel">
-            <header class="panel-head">
-              <div>
-                <h2>Mining: plan against actual<button class="why" data-info="throughputMining" aria-label="What the mining series counts">?</button></h2>
-                <p class="panel-note" id="throughputMiningNote">Tasks submitted per day against the workbook&rsquo;s daily commitment.</p>
-              </div>
-              <div class="toolbar" data-toolbar>
-                <label class="field"><span>Bench</span><select id="throughputBench"><option value="">All benches</option></select></label>
-                <label class="field"><span>Type<button class="why" data-info="throughputType" aria-label="How connector tasks are labelled">?</button></span><select id="throughputType"><option value="">All types</option></select></label>
-              </div>
-            </header>
-            <div class="panel-body">
-              <figure id="throughputMining" class="linechart"></figure>
-              <p class="muted footnote" id="throughputPlanNote"></p>
-            </div>
-          </section>
-
-          <section class="panel">
-            <header class="panel-head">
-              <div>
-                <h2>Acceptance: tasks accepted per day<button class="why" data-info="throughputAcceptance" aria-label="What the acceptance series counts">?</button></h2>
-                <p class="panel-note">A separate story from mining, so it gets its own chart. One point per task at its first acceptance, never per retry.</p>
-              </div>
-            </header>
-            <div class="panel-body">
-              <figure id="throughputAcceptance" class="linechart"></figure>
-              <p class="muted footnote" id="throughputAcceptanceNote"></p>
-            </div>
-          </section>
-
-          <section class="panel">
-            <header class="panel-head">
-              <div>
-                <h2>Split by bench and type<button class="why" data-info="throughputSplit" aria-label="Why unassigned and contested appear">?</button></h2>
-                <p class="panel-note">PRD T2. Company and Computer are the roster benches; everything else is carried explicitly rather than dropped.</p>
-              </div>
-            </header>
-            <div class="panel-body"><div id="throughputSplit" class="summary-row"></div></div>
-          </section>
-        </section>
-
         <!-- BUCKET EXPLORER ------------------------------------------------ -->
         <section class="view" id="view-explorer" role="tabpanel" aria-labelledby="explorer-title">
           <header class="view-head">
@@ -570,7 +541,6 @@
     <script src="finalisation.js"></script>
     <script src="pipeline-view.js"></script>
     <script src="daily-delta.js"></script>
-    <script src="throughput.js"></script>
     <script src="payout-ledger.js"></script>
     <script src="explorer.js"></script>
     <script src="app.js"></script>

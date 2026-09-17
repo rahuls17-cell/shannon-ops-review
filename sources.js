@@ -29,7 +29,7 @@
       what: 'One ledger per trainer holding every evaluation cycle, plus history snapshots and per-task owner records.',
       why: 'It is the only record of what the pipeline did to a task: status, verdict, retries and who owns it.',
       how: 'A read-only scanner on the Harbor VM walks the prefix and writes assets/gcs-pipeline.json; GitHub Actions pulls it over a restricted SSH command and commits the snapshot.',
-      views: ['command', 'pipeline', 'throughput'],
+      views: ['command', 'pipeline'],
     },
     {
       id: 'gcs-finalisation',
@@ -64,7 +64,7 @@
       what: 'The operations workbook: who was paid and how much, the trainer roster and reporting lines, and the daily mining plan.',
       why: 'Payments and the roster exist nowhere else - the bucket has no concept of money or of who reports to whom.',
       how: 'Exported to xlsx and built into assets/data.js by tools/build_data.py. Not a live read: the figures move only when the export is re-run.',
-      views: ['command', 'payouts', 'delivery', 'throughput'],
+      views: ['acceptance', 'payouts', 'delivery'],
     },
     {
       id: 'ppt-workbook',
@@ -86,7 +86,7 @@
       what: 'The task-level payout list, the payment request tracker, the child job to person mapping, and the console dump behind per-task owners.',
       why: 'It is the only place a payment is tied to a named task and a child job number.',
       how: 'Read by tools/build_payout_ledger.py into assets/payout-ledger.json, which collapses repeated rows so no task can be paid twice, and by tools/build_harbor_console.py for the harbor dump tab.',
-      views: ['payouts', 'pipeline'],
+      views: ['acceptance', 'payouts', 'pipeline'],
     },
     {
       id: 'harbor-autosync-sheet',
@@ -121,7 +121,7 @@
       what: 'Harbor’s own view of each task and its finalisation run.',
       why: 'The source of truth for finalisation. The bucket prefix is pruned while the console keeps the record, so a folder count under-reports accepted work.',
       how: 'Behind Google IAP, so nothing server-side can read it. Pulled through an authenticated browser session with tools/console-pull.js into assets/harbor-console-live.json.',
-      views: ['command', 'pipeline', 'finalisation', 'throughput'],
+      views: ['command', 'pipeline', 'finalisation'],
     },
     {
       id: 'harbor-pipeline-dashboard',
@@ -143,7 +143,7 @@
       what: 'The audited 240 tasks with the client review layer from the audit tracker sheet.',
       why: 'It carries the client acceptance verdict: priority Low means the client accepted the task.',
       how: 'Fetched live at page load - it is same origin on Pages - and falls back to assets/client-acceptance.json, a counts-only snapshot.',
-      views: ['command'],
+      views: ['acceptance'],
     },
   ];
 
