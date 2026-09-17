@@ -44,8 +44,17 @@ jobs:
       - name: Prepare published files
         run: |
           mkdir -p _site
-          cp index.html app.js styles.css finalisation.js payout-ledger.js _site/
+          # Every top-level module, not a hand-listed subset: pipeline-view.js,
+          # sources.js and explorer.js were added to index.html but never to this
+          # list, so the published page asked for three scripts that returned 404
+          # and the Pipeline view could not build at all.
+          cp index.html styles.css *.js _site/
           cp -r assets _site/
+          # The page is only as published as the scripts it loads.
+          for script in $(grep -o 'src="[^"]*\.js"' index.html | cut -d'"' -f2); do
+            case "$script" in assets/*) continue;; esac
+            test -f "_site/$script" || { echo "index.html loads $script but it was not published"; exit 1; }
+          done
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
