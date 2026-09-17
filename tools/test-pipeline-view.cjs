@@ -117,10 +117,15 @@ console.log('pipeline view checks passed: console spine, ledger drill-down, buck
 }
 console.log('basis checks passed: submissions and tasks reconcile on the same scope');
 
-// Same-day resubmissions: the console used to arrive with submitted_at sliced to
-// a date, so two submissions on one day are indistinguishable by timestamp and
-// "latest wins" fell through to array order. That decided the displayed status of
-// 99 real tasks. The tie now goes to the submission that got further.
+// Ordering is by time. Where two submissions carry genuinely identical
+// timestamps - one task in the corpus does, with matching family_id and run_id
+// but conflicting states - the one that got further wins.
+//
+// This fallback must never substitute for a missing time. A date-only feed makes
+// every same-day pair look tied, and 99 pairs in the corpus do; ranking those by
+// outcome was measured against the full timestamps and picked the earlier
+// submission every time it changed one. Hence preparePipeline sources the full
+// timestamps first, and these cases only arise when the times are truly equal.
 {
   const consoleAt = order => ({
     coverage: {tasks: 2},
