@@ -79,6 +79,7 @@ const infoCopy = {
   ownership: 'Three tiers, strongest first. Harbor Console submitter is the console\u2019s own record of who submitted the task and is treated as proof. Name match only is the GCS trainer records joined by declared task name - finalisation repackages archives, so digests never match and the name is the only join available; that is evidence, not proof. Contested means two records claim the same name and the console does not settle it, so the task stays unassigned rather than being given to whoever was found first. The console export is a point-in-time dump, not live.',
   pipeline: 'The status names are the Harbor Console\u2019s own: its finalisation run state is done, rejected, parked or running, which the spec restates as Accepted, Rejected, Failed and Running. Rejected means harbor checks failed and the trainer reworks it - the largest bucket by far. Failed means an infrastructure error the trainer cannot rerun; it parks for QC or gen engineering. Submitted means the gate passed but no decision is recorded yet, which is what used to be shown as Done - it is not an acceptance. Current counts the latest attempt per family; All attempts counts retries separately.',
   dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
+  dailyDelta: 'How many tasks reached each status on each day - the movement, not the standing total, so a quiet day and a busy day look different rather than both looking like a large total. Status is the Harbor Console\u2019s, always. The day comes from the GCS evaluation ledger\u2019s record of that task reaching that status, because the console carries only the submission date and older pulls carry no time at all; the ledger supplies the when, never the whether. Where the ledger holds no record of a task at the status it now has, the submission date stands in and the count of those is stated beneath the chart. Each task counts once however many names it was delivered under. Throughput splits the same work by bench instead, which is a different question.',
   taskBasis: 'Three counts of the same work, none of them wrong, because they count different things. Submissions is every attempt, which is what the Harbor Console\u2019s own cards show. Re-submitted is the attempts beyond the first: a task submitted five times is still one piece of work, and counting it five times would overstate both delivery and pay. Tasks is what is left once those are removed and once work delivered under two different folder names is recognised as one task by its content fingerprint, which no amount of name matching can see. The figures add up exactly, which is why they are shown together rather than one being picked as the headline.',
   throughputMining: 'Tasks submitted per day, against the workbook\u2019s daily commitment. The commitment comes from the New Task Mining Daily Plan tab, which counts tasks mined - submissions - not tasks accepted, so the actual series counts console submissions to match it. A task submitted three times counts three times here, because the plan commits to submissions. The workbook also carries its own actual column; it is not used, because it stops being filled after 12 September.',
   throughputAcceptance: 'Tasks accepted per day, one point per task at its FIRST acceptance however many attempts it took. Timing comes from the GCS evaluation ledger, whose updatedAt carries a full timestamp where the console\u2019s submittedAt is date-only. The ledger supplies only the date here; it never overrides the console on whether a task was accepted. This is a different event from mining, so it gets its own chart rather than a second line on the one above.',
@@ -97,6 +98,9 @@ function renderEverything() {
   renderPlan();
   renderThroughput();
   renderTaskBasis();
+  populateDeltaFilter();
+  renderDailyDelta();
+  renderExplorerBody();
 }
 
 // The bucket is no longer a view of its own - it is the delivery evidence
@@ -130,10 +134,13 @@ async function loadConsoleLive() {
   }
   buildPipeline();
   buildThroughput();
+  buildDelta();
   populateFilters();
   renderPipeline();
   renderThroughput();
   renderTaskBasis();
+  populateDeltaFilter();
+  renderDailyDelta();
   renderBenchCards();
   renderSources();
 }
@@ -158,10 +165,13 @@ async function loadHarborConsole() {
   }
   buildPipeline();
   buildThroughput();
+  buildDelta();
   populateFilters();
   renderPipeline();
   renderThroughput();
   renderTaskBasis();
+  populateDeltaFilter();
+  renderDailyDelta();
   renderBenchCards();
   renderSources();
 }
@@ -276,7 +286,7 @@ async function loadGcsPipeline(manual = false) {
     if (payload.schemaVersion !== 3 || !['current','historical','legacy'].every(key=>Array.isArray(payload[key])) || !Array.isArray(payload.finalisation?.tasks)) throw new Error('Invalid GCS export');
     ['current', 'historical', 'legacy'].forEach(key => payload[key].forEach(task => { task.domain = pipelineDomain(task); }));
     gcsPipeline = payload;
-      loadFinalisation(); buildPipeline(); buildThroughput(); populateFilters(); renderPipeline(); renderThroughput(); renderDonut(); renderTrainerRows();
+      loadFinalisation(); buildPipeline(); buildThroughput(); buildDelta(); populateFilters(); renderPipeline(); renderThroughput(); renderDonut(); renderTrainerRows();
     renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
     if (manual) setText('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
   } catch {
@@ -494,14 +504,18 @@ function sourceTabs(source) {
 // tile names its source and links to it, matching the per-view sourcestrip.
 function renderFigureSources() {
   document.querySelectorAll('.figure-src[data-source]').forEach(slot => {
-    const source = window.DASHBOARD_SOURCES.find(entry => entry.id === slot.dataset.source);
-    if (!source) { slot.innerHTML = ''; return; }
-    const state = sourceState(source);
-    const label = `${esc(source.name)}`;
-    slot.innerHTML = source.href
-      ? `<a href="${esc(source.href)}" target="_blank" rel="noopener" class="figure-srclink"
-           data-tip="${esc(source.what)} / ${esc(state.detail)}">${label}</a>`
-      : `<span class="figure-srclink is-flat" data-tip="${esc(source.hrefNote || source.what)}">${label}</span>`;
+    // A figure can rest on more than one source - status from the console,
+    // timing from the ledger - and naming only the first would misattribute it.
+    const links = slot.dataset.source.split(',').map(id => id.trim()).map(id => {
+      const source = window.DASHBOARD_SOURCES.find(entry => entry.id === id);
+      if (!source) return '';
+      const state = sourceState(source);
+      return source.href
+        ? `<a href="${esc(source.href)}" target="_blank" rel="noopener" class="figure-srclink"
+             data-tip="${esc(source.what)} / ${esc(state.detail)}">${esc(source.name)}</a>`
+        : `<span class="figure-srclink is-flat" data-tip="${esc(source.hrefNote || source.what)}">${esc(source.name)}</span>`;
+    }).filter(Boolean);
+    slot.innerHTML = links.length ? `<span class="figure-src-label">Source</span>${links.join('<span class="figure-src-sep">/</span>')}` : '';
   });
 }
 
@@ -733,6 +747,13 @@ function applyRange() {
   setText('dateScope', invalid ? 'No records match: the start date is after the end date.'
     : `${rangeLabel()} / Overview, Delivery and Pipeline follow this range. Payouts does not.`);
   document.querySelectorAll('.rangeecho').forEach(node => {
+    if (node.classList.contains('is-exempt')) {
+      // PRD X1 names every page, but the workbook records what was PAID, not
+      // when the work happened - filtering it would silently drop people paid
+      // for older work. Stating the exemption is the honest way to meet X1.
+      node.innerHTML = '<span class="rangeecho-label">Date range</span>Not applied here &mdash; the workbook records when payment was made, not when the work was done.';
+      return;
+    }
     node.innerHTML = `<span class="rangeecho-label">Date range</span>${esc(rangeLabel())}` +
       ((dateRange.start || dateRange.end) ? ' <button class="linky" data-jump="command">change</button>' : '');
   });
@@ -1036,7 +1057,11 @@ function renderExplorerBody() {
 
   const needle = byId('explorerFilter').value.trim().toLowerCase();
   const sort = byId('explorerSort').value;
-  let rows = explorerEntry.files.filter(file => !needle || file.name.toLowerCase().includes(needle));
+  // PRD X1: the shared range reaches this view too, applied to the object's
+  // last-modified date. Folders are not filtered - a folder has no date of its
+  // own, and hiding the path to a file would make the range look like data loss.
+  let rows = explorerEntry.files.filter(file =>
+    (!needle || file.name.toLowerCase().includes(needle)) && inRange(file.updated));
   rows = rows.slice().sort((a, b) => sort === 'size' ? b.size - a.size
     : sort === 'updated' ? String(b.updated).localeCompare(String(a.updated))
     : a.name.localeCompare(b.name));
@@ -1047,7 +1072,9 @@ function renderExplorerBody() {
 
   setText('explorerFoot', `${fmt(explorerEntry.dirs.length)} folder${explorerEntry.dirs.length === 1 ? '' : 's'} / ` +
     `${fmt(rows.length)} of ${fmt(explorerEntry.files.length)} file${explorerEntry.files.length === 1 ? '' : 's'} shown / ` +
-    `${bytes(explorerEntry.bytes)} in this folder. Sizes and dates come from the object metadata; contents are never read.`);
+    `${bytes(explorerEntry.bytes)} in this folder. ` +
+    ((dateRange.start || dateRange.end) ? `Files are limited to ${rangeLabel().toLowerCase()} by last-modified date; folders are not filtered. ` : '') +
+    `Sizes and dates come from the object metadata; contents are never read.`);
 }
 
 async function openExplorer(path) {
@@ -1079,6 +1106,71 @@ async function loadExplorer(force = false) {
       'Run tools/index_bucket.py on the Harbor VM and publish gcs-index/.');
     setText('explorerScopeNote', 'No index available.');
   }
+}
+
+
+let deltaModel = null;
+
+function buildDelta() {
+  if (!pipelineRowsModel.length) { deltaModel = null; return; }
+  try {
+    deltaModel = window.prepareDelta(pipelineRowsModel.filter(row => !row.legacy), gcsPipeline);
+  } catch (error) {
+    deltaModel = null;
+    setText('deltaNote', `Daily delta could not be built: ${error.message}`);
+  }
+}
+
+// PRD C6. One line per status, so the shape of a day is readable at a glance:
+// a spike in Accepted and a spike in Rejected are the same height on the same
+// axis and can be compared directly.
+function renderDailyDelta() {
+  const figure = byId('deltaChart');
+  if (!figure) return;
+  if (!deltaModel) {
+    figure.innerHTML = '<p class="empty">Waiting for the console pull.</p>';
+    byId('deltaPeaks').innerHTML = '';
+    setText('deltaNote', '');
+    return;
+  }
+  const picked = byId('deltaStatus').value;
+  const result = window.filterDelta(deltaModel,
+    {start: dateRange.start, end: dateRange.end, status: picked});
+
+  figure.innerHTML = lineChart(result.days, result.statuses.map(status => ({
+    label: status,
+    token: STATUS_TOKENS[status] || '--slate',
+    values: result.days.map(day => result.series[status][day] || 0),
+  })), {label: 'Tasks reaching each status per day',
+        empty: result.invalidDates ? 'The start date is after the end date.'
+                                   : 'No status changes in this selection.'});
+
+  byId('deltaPeaks').innerHTML = result.statuses.map(status => {
+    const peak = result.peak[status];
+    return `<div class="summary-item"><span>${esc(status)} &mdash; busiest day</span><strong>${
+      peak.count ? `${fmt(peak.count)} on ${esc(peak.date.slice(5))}` : 'none'}</strong></div>`;
+  }).join('');
+
+  // A date that had to be inferred is not a date that was observed, and the
+  // page says which is which rather than presenting one as the other.
+  const inferred = result.dated.submission;
+  setText('deltaNote', `${fmt(result.tasks)} task${result.tasks === 1 ? '' : 's'} in ${rangeLabel().toLowerCase()}. ` +
+    `Status is the Harbor Console's; the day comes from the GCS ledger's record of the task reaching that status. ` +
+    (inferred
+      ? `${fmt(inferred)} of them have no such ledger record, so their submission date stands in - those sit earlier than they truly moved.`
+      : 'Every task here is dated by the ledger.'));
+}
+
+function populateDeltaFilter() {
+  const select = byId('deltaStatus');
+  if (!select || !deltaModel) return;
+  const counts = new Map();
+  deltaModel.events.forEach(event => counts.set(event.status, (counts.get(event.status) || 0) + 1));
+  const chosen = select.value;
+  select.innerHTML = '<option value="">All statuses</option>' +
+    [...counts].sort((a, b) => b[1] - a[1]).map(([status, count]) =>
+      `<option value="${esc(status)}">${esc(status)} (${fmt(count)})</option>`).join('');
+  select.value = counts.has(chosen) ? chosen : '';
 }
 
 
@@ -1339,6 +1431,7 @@ function populateThroughputFilters() {
 function wireEvents() {
   ['throughputBench', 'throughputType'].forEach(id =>
     byId(id).addEventListener('change', renderThroughput));
+  byId('deltaStatus').addEventListener('change', renderDailyDelta);
   byId('pipelinePrevious').addEventListener('click',()=>{pipelinePage--;renderPipeline(false);});
   byId('pipelineNext').addEventListener('click',()=>{pipelinePage++;renderPipeline(false);});
   byId('refreshGcsPipeline').addEventListener('click', refreshGcsPipeline);
@@ -1533,6 +1626,7 @@ function init() {
   renderPipeline();
   renderPlan();
   renderThroughput();
+  renderDailyDelta();
   wireEvents();
   applyRange();
   switchView(location.hash.slice(1) || 'command', false);

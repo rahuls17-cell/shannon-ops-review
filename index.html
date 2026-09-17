@@ -98,6 +98,7 @@
               <div>
                 <h2>How many tasks<button class="why" data-info="taskBasis" aria-label="Why there are three numbers">?</button></h2>
                 <p class="panel-note">Three counts of the same work. They are not competing figures &mdash; each is the one before it with a specific kind of repeat removed.</p>
+                <p class="figure-src is-panel" data-source="harbor-console,gcs-finalisation"></p>
               </div>
               <button class="ghost" data-jump="pipeline">Open Pipeline</button>
             </header>
@@ -152,6 +153,7 @@
               <div>
                 <h2>Payout exposure</h2>
                 <p class="panel-note">Paid against still-owed, at $300 a task. Both figures come from the workbook, never from the bucket.</p>
+                <p class="figure-src is-panel" data-source="ops-workbook"></p>
               </div>
               <button class="ghost" data-jump="payouts">Open Payouts</button>
             </header>
@@ -172,6 +174,7 @@
                 <div>
                   <h2>Where the work sits<button class="why" data-info="commandSources" aria-label="Why these do not add up">?</button></h2>
                   <p class="panel-note" id="commandSourceStatus">Loading the bucket scan...</p>
+                <p class="figure-src is-panel" data-source="gcs-evaluations"></p>
                 </div>
               </header>
               <div class="panel-body">
@@ -185,6 +188,7 @@
                 <div>
                   <h2>Current evaluations</h2>
                   <p class="panel-note">Latest evaluation of each task family in the bucket.</p>
+                <p class="figure-src is-panel" data-source="gcs-evaluations"></p>
                 </div>
               </header>
               <div class="panel-body"><div id="pipelineDonut" class="donut-panel"></div></div>
@@ -194,8 +198,27 @@
           <section class="panel">
             <header class="panel-head">
               <div>
+                <h2>Daily delta<button class="why" data-info="dailyDelta" aria-label="What the daily delta counts">?</button></h2>
+                <p class="panel-note">How many tasks reached each status on each day &mdash; the movement, not the standing total. Split by status; Throughput splits the same work by bench.</p>
+                <p class="figure-src is-panel" data-source="harbor-console,gcs-evaluations"></p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>Status</span><select id="deltaStatus"><option value="">All statuses</option></select></label>
+              </div>
+            </header>
+            <div class="panel-body">
+              <figure id="deltaChart" class="linechart"></figure>
+              <div id="deltaPeaks" class="summary-row"></div>
+              <p class="muted footnote" id="deltaNote"></p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
                 <h2>Company and Computer bench<button class="why" data-info="commandBench" aria-label="How bench totals are assigned">?</button></h2>
                 <p class="panel-note">Split by the roster team of the task owner. Work with no resolved owner sits in neither bench.</p>
+                <p class="figure-src is-panel" data-source="harbor-console"></p>
               </div>
             </header>
             <div class="panel-body"><div id="benchCards" class="bench-stack"></div></div>
@@ -222,6 +245,7 @@
             </div>
           </header>
           <div class="sourcestrip" data-sources="payouts"></div>
+          <p class="rangeecho is-exempt" data-range="payouts"></p>
           <p class="provenance" id="payoutSourceStatus">Loading the payout ledger...</p>
 
           <section class="panel">
@@ -490,6 +514,7 @@
             </div>
           </header>
           <div class="sourcestrip" data-sources="explorer"></div>
+          <p class="rangeecho" data-range="explorer"></p>
           <p class="provenance" id="explorerStatus">Loading the index&hellip;</p>
 
           <section class="panel">
@@ -538,6 +563,7 @@
     <script src="sources.js"></script>
     <script src="finalisation.js"></script>
     <script src="pipeline-view.js"></script>
+    <script src="daily-delta.js"></script>
     <script src="throughput.js"></script>
     <script src="payout-ledger.js"></script>
     <script src="explorer.js"></script>

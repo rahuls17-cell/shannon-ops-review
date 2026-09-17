@@ -972,3 +972,10 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .figure-srclink { color: var(--muted); text-decoration: none; border-bottom: 1px dotted var(--line); }
 .figure-srclink:hover { color: var(--accent); border-bottom-color: var(--accent-line); }
 .figure-srclink.is-flat { border-bottom-style: none; cursor: help; }
+
+/* ---------- Source attribution on a panel (PRD X2) ---------- */
+
+.figure-src.is-panel { margin: 6px 0 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px; }
+.figure-src-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+.figure-src-sep { color: var(--line); }
+.rangeecho.is-exempt { color: var(--muted); }
