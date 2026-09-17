@@ -30,7 +30,12 @@
       rows.push({
         name: task.name,
         state: task.pipeline_state || '',
-        submittedAt: (task.submitted_at || '').slice(0, 10),
+        // Keep the full timestamp. Slicing it to a date makes same-day
+        // resubmissions unorderable, and "latest wins" then resolves by array
+        // order - which decided the displayed status of 99 tasks. `date` is
+        // carried separately for the filters that want a plain day.
+        submittedAt: task.submitted_at || '',
+        date: (task.submitted_at || '').slice(0, 10),
         trainer: (task.submitted_by || '').toLowerCase(),
         acceptedFolders: Array.isArray(task.accepted_folders) ? task.accepted_folders.length : (task.accepted_folders || 0),
         failedStage: task.pipeline_failed_stage || '',
@@ -48,7 +53,7 @@
     counts[key] = (counts[key] || 0) + 1;
     return counts;
   }, {});
-  const since = rows.filter(row => row.submittedAt >= SINCE);
+  const since = rows.filter(row => row.date >= SINCE);
   // Only unambiguous owners: where the console shows a task under two
   // trainers, leave it contested rather than picking one.
   const claims = {};
@@ -61,7 +66,7 @@
   for (const [key, set] of Object.entries(claims)) {
     if (set.size === 1) owners[key] = [...set][0]; else contested.push(key);
   }
-  const dates = rows.map(row => row.submittedAt).filter(Boolean).sort();
+  const dates = rows.map(row => row.date).filter(Boolean).sort();
 
   const payload = {
     pulledAt: new Date().toISOString(),
