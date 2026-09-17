@@ -116,3 +116,47 @@ console.log('pipeline view checks passed: console spine, ledger drill-down, buck
   assert.ok(base.submissions >= base.rows.length);
 }
 console.log('basis checks passed: submissions and tasks reconcile on the same scope');
+
+// Same-day resubmissions: the console used to arrive with submitted_at sliced to
+// a date, so two submissions on one day are indistinguishable by timestamp and
+// "latest wins" fell through to array order. That decided the displayed status of
+// 99 real tasks. The tie now goes to the submission that got further.
+{
+  const consoleAt = order => ({
+    coverage: {tasks: 2},
+    tasks: order.map(state => ({
+      name: 'tied', state, submittedAt: '2026-09-10', trainer: 'a@example.com',
+      acceptedFolders: 0, taskType: 'Non-connector tasks', failedStage: '',
+    })),
+  });
+  const statusOf = order => preparePipeline(consoleAt(order), {historical: []}, [], [])[0].status;
+
+  assert.equal(statusOf(['rejected', 'accepted']), 'Accepted');
+  // The same pair listed the other way round must not change the answer.
+  assert.equal(statusOf(['accepted', 'rejected']), 'Accepted');
+  assert.equal(statusOf(['error', 'rejected']), 'Rejected');
+  assert.equal(statusOf(['running', 'error']), 'Failed');
+
+  // A genuinely later submission still wins, whatever it reached.
+  const later = preparePipeline({
+    coverage: {tasks: 2},
+    tasks: [
+      {name: 'seq', state: 'accepted', submittedAt: '2026-09-10', trainer: 'a@example.com', acceptedFolders: 0, taskType: 'x', failedStage: ''},
+      {name: 'seq', state: 'rejected', submittedAt: '2026-09-11', trainer: 'a@example.com', acceptedFolders: 0, taskType: 'x', failedStage: ''},
+    ],
+  }, {historical: []}, [], [])[0];
+  assert.equal(later.status, 'Rejected');
+
+  // A full timestamp separates same-day submissions properly, and the row's own
+  // date stays a plain day so the date filters keep working.
+  const stamped = preparePipeline({
+    coverage: {tasks: 2},
+    tasks: [
+      {name: 'ts', state: 'accepted', submittedAt: '2026-09-10T09:00:00+00:00', trainer: 'a@example.com', acceptedFolders: 0, taskType: 'x', failedStage: ''},
+      {name: 'ts', state: 'rejected', submittedAt: '2026-09-10T17:30:00+00:00', trainer: 'a@example.com', acceptedFolders: 0, taskType: 'x', failedStage: ''},
+    ],
+  }, {historical: []}, [], [])[0];
+  assert.equal(stamped.status, 'Rejected');
+  assert.equal(stamped.date, '2026-09-10');
+}
+console.log('tie-break checks passed: same-timestamp submissions resolve by how far they got');

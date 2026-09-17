@@ -20,6 +20,29 @@
   };
   const nameKey = value => String(value || '').trim().toLowerCase().replace(/^(harbor|obi)\//, '');
 
+  // How far a submission actually got. Used only to break ties between
+  // submissions with the same timestamp - it never overrides a later one.
+  const REACHED = {accepted: 6, legacy_accepted: 5, rejected: 4, error: 3, running: 2, queued: 1};
+  const reached = task => REACHED[task.state] || 0;
+
+  // The console sends a full timestamp; older pulls carry only the date because
+  // it used to be sliced on the way in. Both are accepted, and `day` is what the
+  // date filters compare against.
+  const stamp = task => String(task.submittedAt || '');
+  const day = task => String(task.date || task.submittedAt || '').slice(0, 10);
+
+  // A task's representative submission is its most recent one. Where two share a
+  // timestamp - which every same-day pair does once the time has been sliced off
+  // - the one that got further wins. Without this the winner is whichever the
+  // console happened to list first, which decided the displayed status of 99
+  // tasks, some reading Accepted where the other submission was Rejected.
+  function outranks(candidate, holder) {
+    if (!holder) return true;
+    const [a, b] = [stamp(candidate), stamp(holder)];
+    if (a !== b) return a > b;
+    return reached(candidate) > reached(holder);
+  }
+
   function preparePipeline(consoleLive, gcs, finalisationRows, roster) {
     if (!consoleLive || !Array.isArray(consoleLive.tasks)) throw new Error('No console pull to build the pipeline from');
     if (consoleLive.tasks.length !== consoleLive.coverage?.tasks) throw new Error('Console pull is truncated');
@@ -45,8 +68,7 @@
     for (const task of consoleLive.tasks) {
       const key = nameKey(task.name);
       if (!key) continue;
-      const seen = latest.get(key);
-      if (!seen || String(task.submittedAt || '') > String(seen.submittedAt || '')) latest.set(key, task);
+      if (outranks(task, latest.get(key))) latest.set(key, task);
     }
 
     const submissionsByKey = new Map();
@@ -72,8 +94,8 @@
         name: task.name,
         status,
         state: task.state || '',
-        date: task.submittedAt || '',
-        legacy: !task.submittedAt || task.submittedAt < LEGACY_BEFORE,
+        date: day(task),
+        legacy: !day(task) || day(task) < LEGACY_BEFORE,
         owner: email || null,
         trainer,
         onRoster: Boolean(trainer),
@@ -86,7 +108,7 @@
         submissionRows: submissionRows.map(row => ({
           state: row.state || '',
           status: STATUS[row.state] || 'Unknown',
-          date: row.submittedAt || '',
+          date: day(row),
         })),
         acceptedFolders: task.acceptedFolders || 0,
         ledger: {
