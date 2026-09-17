@@ -37,10 +37,35 @@ jobs:
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
-          git add assets/gcs-pipeline.json assets/pipeline-version.json
-          git diff --cached --quiet || git commit -m "Refresh GCS pipeline snapshot"
-          git pull --rebase origin main
-          git push origin HEAD:main
+          # The snapshot is regenerated wholesale each run, so there is nothing
+          # to merge - rebasing it onto a main that moved during the walk just
+          # conflicts on every line. Re-apply it on top of origin/main instead,
+          # and retry if someone pushes while we are pushing.
+          cp assets/gcs-pipeline.json "$RUNNER_TEMP/gcs-pipeline.json"
+          cp assets/pipeline-version.json "$RUNNER_TEMP/pipeline-version.json"
+          pushed=0
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp "$RUNNER_TEMP/gcs-pipeline.json" assets/gcs-pipeline.json
+            cp "$RUNNER_TEMP/pipeline-version.json" assets/pipeline-version.json
+            git add assets/gcs-pipeline.json assets/pipeline-version.json
+            if git diff --cached --quiet; then
+              echo "snapshot is identical to main; nothing to commit"
+              pushed=1
+              break
+            fi
+            git commit -m "Refresh GCS pipeline snapshot"
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            echo "push raced with another commit; retrying ($attempt/3)"
+          done
+          if [ "$pushed" != 1 ]; then
+            echo "could not push the snapshot after 3 attempts"
+            exit 1
+          fi
       - name: Prepare published files
         run: |
           mkdir -p _site
