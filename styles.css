@@ -916,10 +916,13 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 /* ---------- Throughput line charts (PRD T1-T4) ---------- */
 
 .linechart { margin: 0; display: grid; gap: 10px; }
-.linechart-svg { width: 100%; height: auto; display: block; overflow: visible; }
+.linechart-svg { width: 100%; max-width: 1200px; height: auto; display: block; overflow: visible; }
 .linechart-svg .grid { stroke: var(--line-soft); stroke-width: 1; }
-.linechart-svg .axis { fill: var(--muted); font-size: 10.5px; font-family: var(--sans); }
-.linechart-svg .spark { stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+/* Subordinate to the lines and the panel title, never competing with them. */
+.linechart-svg .axis { fill: var(--muted); font-size: 10px; font-family: var(--sans); font-weight: 400; }
+.linechart-svg .spark { stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
+/* Near-zero against the others: readable on hover, not claiming a colour. */
+.linechart-svg .spark.is-quiet { stroke-width: 1; opacity: 0.7; }
 /* The plan is a commitment, not an observation - dash it so it never reads as measured. */
 .linechart-svg .spark.is-dashed { stroke-dasharray: 5 4; stroke-width: 1.75; opacity: 0.85; }
 .linechart-svg .spark-dot { opacity: 0; transition: opacity 0.12s ease; }
@@ -945,17 +948,16 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 
 .basis-tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
 .basis-tile { border: 1px solid var(--line-soft); border-radius: var(--radius-sm); padding: 12px 14px; }
-.basis-tile h3 { margin: 0; font-size: 11.5px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
-.basis-tile strong { display: block; font-size: 30px; line-height: 1.15; letter-spacing: -0.02em; margin-top: 3px; }
+.basis-tile h3 { margin: 0; font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.basis-tile strong { display: block; font-size: 28px; font-weight: 600; line-height: 1.15; letter-spacing: -0.035em; margin-top: 3px; font-variant-numeric: tabular-nums; }
 .basis-tile p { margin: 2px 0 0; font-size: 11.5px; color: var(--muted); }
 /* The corrected count is the one to read first; the others explain it. */
 .basis-tile.is-headline { border-color: var(--accent-line); background: var(--accent-soft); }
 
 .basis-equation {
-  margin: 14px 0 0; padding: 10px 13px; border-radius: var(--radius-sm);
-  background: var(--bg); border: 1px solid var(--line-soft);
-  font-size: 12.5px; color: var(--ink-2); text-align: center;
-  font-variant-numeric: tabular-nums; line-height: 1.7;
+  margin: 12px 0 0; padding: 0; background: none; border: 0;
+  font-size: 11.5px; color: var(--muted); text-align: center;
+  font-variant-numeric: tabular-nums; line-height: 1.6;
 }
 
 /* ---------- Identity trust signal (audit detail, kept quiet) ---------- */
@@ -968,10 +970,10 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 
 /* ---------- Source link on a KPI tile (PRD X2) ---------- */
 
-.figure-src { margin: 6px 0 0; font-size: 11px; line-height: 1.3; }
-.figure-srclink { color: var(--muted); text-decoration: none; border-bottom: 1px dotted var(--line); }
-.figure-srclink:hover { color: var(--accent); border-bottom-color: var(--accent-line); }
-.figure-srclink.is-flat { border-bottom-style: none; cursor: help; }
+.figure-src { margin: 7px 0 0; font-size: 10px; line-height: 1.35; color: var(--muted); opacity: 0.85; }
+.figure-srclink { color: inherit; text-decoration: none; }
+.figure-srclink:hover { color: var(--accent); text-decoration: underline; }
+.figure-srclink.is-flat { cursor: help; }
 
 /* ---------- Source attribution on a panel (PRD X2) ---------- */
 
@@ -979,3 +981,30 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .figure-src-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
 .figure-src-sep { color: var(--line); }
 .rangeecho.is-exempt { color: var(--muted); }
+
+
+/* ---------- Overview hierarchy pass (presentation only) ---------- */
+
+/* The corrected task count is the page's headline, so the six KPI tiles
+   beneath it step down rather than tying with it. */
+.figure strong { font-size: 24px; }
+.figure p { font-size: 11px; }
+
+/* Quiet series: present in the legend, not competing for a colour slot. */
+.chart-key .key-item.is-quiet { color: var(--muted); opacity: 0.75; }
+.chart-key .key-item.is-quiet::before { background: var(--line); }
+
+/* Busiest day, as one line rather than five equal-weight cards. */
+.peakstrip {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px;
+  font-size: 11.5px; color: var(--ink-2);
+}
+.peakstrip-label { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.peakstrip-item { display: inline-flex; align-items: baseline; gap: 6px; }
+.peakstrip-item i { width: 7px; height: 7px; border-radius: 2px; align-self: center; flex: none; }
+.peakstrip-item b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.peakstrip-item small { color: var(--muted); font-size: 10.5px; }
+
+/* Panel source lines sit under the description, quieter than it. */
+.figure-src.is-panel { margin-top: 7px; }
+.figure-src-label { font-weight: 500; }

@@ -429,17 +429,21 @@ function renderHero() {
     : 'Bucket scan not loaded');
   setText("metricPaid", money(paid));
   setText("metricPendingTasks", fmt(summary.pendingTasks));
-  setText("metricPending", `${money(pending)} pending`);
+  setText("metricPending", money(pending));
   setText("metricActive", fmt(summary.activeTrainers));
   setText("metricRoster", `${fmt(summary.totalTrainers)} total trainer records`);
-  setText('commandSourceStatus', `One read-only GCS scan: ${gcsPipeline?.generatedAt || 'unavailable / loading'} | ${gcsPipeline ? `${fmt(gcsPipeline.current.length)} current evaluations, ${fmt(finalisationRows.length)} accepted finalisation folders` : 'waiting for the export'}`);
+  setText('commandSourceStatus', gcsPipeline
+    ? `${fmt(gcsPipeline.current.length)} current evaluations \u00b7 ${fmt(finalisationRows.length)} accepted folders`
+    : 'Waiting for the bucket scan.');
   byId('commandSummary').innerHTML = [
     ['Current evaluated tasks', gcsPipeline ? snapshot.current.length : null],
     ['Pipeline accepted', gcsPipeline ? snapshot.current.filter(row => row.status === 'Accepted').length : null],
     ['Accepted finalisation folders', finalisationRows.length ? snapshot.folders.length : null],
     ['Cross-cohort repeats excluded', snapshot.ready ? snapshot.duplicates : null]
   ].map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${value == null ? '-' : fmt(value)}</strong></div>`).join('');
-  setText('commandOwnership', snapshot.ready ? `${fmt(snapshot.unassigned)} accepted folders without a roster-linked owner; excluded from financial estimates. Payout totals come from the workbook ledger, not from this count.` : 'Accepted reconciliation requires the GCS export.');
+  setText('commandOwnership', snapshot.ready
+    ? `${fmt(snapshot.unassigned)} accepted folders have no roster-linked owner \u2014 excluded from financial estimates.`
+    : 'Needs the GCS export.');
   if (!snapshot.ready) {
     ['heroPending', 'metricPendingTasks', 'metricPending'].forEach(id => setText(id, '-'));
     setText('heroExposureText', 'Waiting for both accepted sources');
@@ -1145,20 +1149,19 @@ function renderDailyDelta() {
         empty: result.invalidDates ? 'The start date is after the end date.'
                                    : 'No status changes in this selection.'});
 
-  byId('deltaPeaks').innerHTML = result.statuses.map(status => {
-    const peak = result.peak[status];
-    return `<div class="summary-item"><span>${esc(status)} &mdash; busiest day</span><strong>${
-      peak.count ? `${fmt(peak.count)} on ${esc(peak.date.slice(5))}` : 'none'}</strong></div>`;
-  }).join('');
+  byId('deltaPeaks').innerHTML = `<span class="peakstrip-label">Busiest day</span>` +
+    result.statuses.filter(status => result.peak[status].count).map(status => {
+      const peak = result.peak[status];
+      return `<span class="peakstrip-item"><i style="background:var(${STATUS_TOKENS[status] || '--slate'})"></i>${
+        esc(status)} <b>${fmt(peak.count)}</b> <small>${esc(peak.date.slice(5))}</small></span>`;
+    }).join('');
 
   // A date that had to be inferred is not a date that was observed, and the
   // page says which is which rather than presenting one as the other.
   const inferred = result.dated.submission;
-  setText('deltaNote', `${fmt(result.tasks)} task${result.tasks === 1 ? '' : 's'} in ${rangeLabel().toLowerCase()}. ` +
-    `Status is the Harbor Console's; the day comes from the GCS ledger's record of the task reaching that status. ` +
-    (inferred
-      ? `${fmt(inferred)} of them have no such ledger record, so their submission date stands in - those sit earlier than they truly moved.`
-      : 'Every task here is dated by the ledger.'));
+  setText('deltaNote', `${fmt(result.tasks)} tasks, ${rangeLabel().toLowerCase()}. ` + (inferred
+    ? `${fmt(inferred)} dated by submission, not the ledger \u2014 those sit earlier than they moved.`
+    : 'All dated by the ledger.'));
 }
 
 function populateDeltaFilter() {
@@ -1207,7 +1210,9 @@ function renderTaskBasis() {
   setText('taskBasisEquation', folded
     ? `${fmt(tasks)} tasks  +  ${fmt(resubmitted)} re-submitted  +  ${fmt(folded)} same task under another name  =  ${fmt(result.submissions)} submissions`
     : `${fmt(tasks)} tasks  +  ${fmt(resubmitted)} re-submitted  =  ${fmt(result.submissions)} submissions`);
-  setText('taskBasisNote', `${fmt(result.identifiedByContent)} of ${fmt(result.rows.length)} tasks were identified by a content fingerprint; the rest fall back to their name because nothing was delivered for them. ${folded ? `${fmt(result.sharedIdentity)} rows deliver identical content under different names, folding to ${fmt(folded)} fewer task${folded === 1 ? '' : 's'}.` : 'No task in this range was delivered under more than one name.'} ${rangeLabel()}.`);
+  setText('taskBasisNote', `${fmt(result.identifiedByContent)} of ${fmt(result.rows.length)} identified by content. ` +
+    (folded ? `${fmt(result.sharedIdentity)} rows share content under different names.` : 'No shared names.') +
+    ` ${rangeLabel()}.`);
 }
 
 function renderConsoleBasis(result) {
@@ -1322,34 +1327,41 @@ const BENCH_TOKENS = {Company: '--blue', Computer: '--aqua', Unassigned: '--slat
 function lineChart(days, series, options) {
   const settings = options || {};
   if (!days.length || !series.length) return `<p class="empty">${esc(settings.empty || 'No data in this selection.')}</p>`;
-  const W = 760, H = 230, left = 46, right = 14, top = 16, bottom = 30;
+  // The viewBox is sized close to the width this actually renders at. It used
+  // to be 760 wide inside a ~1190px panel, so every length inside was scaled
+  // 1.56x and the axis labels painted larger than the panel title.
+  const W = 1200, H = 300, left = 52, right = 16, top = 18, bottom = 34;
   const peak = Math.max(1, ...series.flatMap(line => line.values));
+  // A series that never gets near the others cannot be read off a shared scale
+  // anyway. It keeps its place and its tooltip, but stops claiming a colour.
+  const quiet = line => Math.max(0, ...line.values) < peak * 0.05;
+  const ordered = [...series.filter(line => !quiet(line)), ...series.filter(quiet)];
   const x = index => left + (days.length === 1 ? (W - left - right) / 2
     : (index / (days.length - 1)) * (W - left - right));
   const y = value => top + (1 - value / peak) * (H - top - bottom);
   const ticks = [0, Math.round(peak / 2), peak];
-  // Label every day when there is room, otherwise thin them out.
-  const step = Math.max(1, Math.ceil(days.length / 9));
+  const step = Math.max(1, Math.ceil(days.length / 12));
+  const stroke = line => quiet(line) ? '--line' : (line.token || '--slate');
   return `
     <svg class="linechart-svg" viewBox="0 0 ${W} ${H}" role="img"
          aria-label="${esc(settings.label || 'Trend')}" preserveAspectRatio="xMidYMid meet">
       <title>${esc(settings.label || 'Trend')}</title>
       ${ticks.map(tick => `<g>
         <line class="grid" x1="${left}" x2="${W - right}" y1="${y(tick)}" y2="${y(tick)}"/>
-        <text class="axis" x="${left - 8}" y="${y(tick) + 4}" text-anchor="end">${fmt(tick)}</text>
+        <text class="axis" x="${left - 10}" y="${y(tick) + 4}" text-anchor="end">${fmt(tick)}</text>
       </g>`).join('')}
       ${days.map((day, index) => index % step ? '' :
-        `<text class="axis" x="${x(index)}" y="${H - 10}" text-anchor="middle">${esc(day.slice(5))}</text>`).join('')}
-      ${series.map(line => `<polyline class="spark ${line.dashed ? 'is-dashed' : ''}" fill="none"
-          stroke="var(${line.token || '--slate'})"
+        `<text class="axis" x="${x(index)}" y="${H - 12}" text-anchor="middle">${esc(day.slice(5))}</text>`).join('')}
+      ${ordered.map(line => `<polyline class="spark${line.dashed ? ' is-dashed' : ''}${quiet(line) ? ' is-quiet' : ''}" fill="none"
+          stroke="var(${stroke(line)})"
           points="${line.values.map((value, index) => `${x(index)},${y(value)}`).join(' ')}"/>`).join('')}
-      ${series.map(line => line.values.map((value, index) =>
-        `<circle class="spark-dot" cx="${x(index)}" cy="${y(value)}" r="2.5" fill="var(${line.token || '--slate'})"
+      ${ordered.map(line => line.values.map((value, index) =>
+        `<circle class="spark-dot" cx="${x(index)}" cy="${y(value)}" r="3" fill="var(${stroke(line)})"
            data-tip="${esc(line.label)} / ${esc(days[index])}: ${fmt(value)}"/>`).join('')).join('')}
     </svg>
-    <div class="chart-key">${series.map(line =>
-      `<span class="key-item${line.dashed ? ' is-dashed' : ''}" data-series
-        style="--tone: var(${line.token || '--slate'})">${esc(line.label)}</span>`).join('')}</div>`;
+    <div class="chart-key">${ordered.map(line =>
+      `<span class="key-item${line.dashed ? ' is-dashed' : ''}${quiet(line) ? ' is-quiet' : ''}" data-series
+        style="--tone: var(${stroke(line)})">${esc(line.label)}</span>`).join('')}</div>`;
 }
 
 function renderThroughput() {
@@ -1574,9 +1586,16 @@ function wireEvents() {
     const anchor = element.getBoundingClientRect();
     const box = popover.getBoundingClientRect();
     const left = Math.min(Math.max(12, anchor.left + anchor.width / 2 - box.width / 2), window.innerWidth - box.width - 12);
+    // Below a chart point is the axis row and then the legend, so points
+    // prefer to open upwards; everything else keeps the old preference.
+    const inChart = Boolean(element.closest && element.closest('.linechart-svg'));
     const below = anchor.bottom + 9;
+    const above = anchor.top - box.height - 9;
+    const fitsAbove = above >= 12;
+    const fitsBelow = below + box.height <= window.innerHeight - 12;
     popover.style.left = `${left}px`;
-    popover.style.top = `${below + box.height > window.innerHeight - 12 ? Math.max(12, anchor.top - box.height - 9) : below}px`;
+    popover.style.top = `${(inChart && fitsAbove) || !fitsBelow
+      ? Math.max(12, above) : below}px`;
   }
   document.querySelectorAll('.why').forEach(button => {
     button.type = 'button';
