@@ -1327,42 +1327,43 @@ const BENCH_TOKENS = {Company: '--blue', Computer: '--aqua', Unassigned: '--slat
 function lineChart(days, series, options) {
   const settings = options || {};
   if (!days.length || !series.length) return `<p class="empty">${esc(settings.empty || 'No data in this selection.')}</p>`;
-  // The viewBox is sized close to the width this actually renders at. It used
-  // to be 760 wide inside a ~1190px panel, so every length inside was scaled
-  // 1.56x and the axis labels painted larger than the panel title.
-  const W = 1200, H = 300, left = 52, right = 16, top = 18, bottom = 34;
+  // Axis labels are HTML, not SVG. Text inside a scaling viewBox is painted at
+  // whatever the scale factor happens to be - at a 1280px window a 10px label
+  // painted at 8px, and at 1024px at 5.8px, which smears into something that
+  // reads as bold and cannot be read at all. Only the lines scale now, and they
+  // hold their stroke width through vector-effect.
   const peak = Math.max(1, ...series.flatMap(line => line.values));
-  // A series that never gets near the others cannot be read off a shared scale
-  // anyway. It keeps its place and its tooltip, but stops claiming a colour.
   const quiet = line => Math.max(0, ...line.values) < peak * 0.05;
   const ordered = [...series.filter(line => !quiet(line)), ...series.filter(quiet)];
-  const x = index => left + (days.length === 1 ? (W - left - right) / 2
-    : (index / (days.length - 1)) * (W - left - right));
-  const y = value => top + (1 - value / peak) * (H - top - bottom);
-  const ticks = [0, Math.round(peak / 2), peak];
-  // Thin the date labels only when they would actually collide, not on a count.
-  // A "MM-DD" label at 10px needs roughly 34 units; thinning on an arbitrary
-  // count dropped every other date while 94 units of clear space sat between.
-  const gap = days.length > 1 ? (W - left - right) / (days.length - 1) : W;
-  const step = Math.max(1, Math.ceil(34 / gap));
   const stroke = line => quiet(line) ? '--line' : (line.token || '--slate');
+  // Percentages, so the plot is resolution-independent and the labels can sit
+  // outside it at a real font size.
+  const px = index => days.length === 1 ? 50 : (index / (days.length - 1)) * 100;
+  const py = value => (1 - value / peak) * 100;
+  const ticks = [peak, Math.round(peak / 2), 0];
+
+  const points = line => line.values.map((value, index) => `${px(index)},${py(value)}`).join(' ');
   return `
-    <svg class="linechart-svg" viewBox="0 0 ${W} ${H}" role="img"
-         aria-label="${esc(settings.label || 'Trend')}" preserveAspectRatio="xMidYMid meet">
-      <title>${esc(settings.label || 'Trend')}</title>
-      ${ticks.map(tick => `<g>
-        <line class="grid" x1="${left}" x2="${W - right}" y1="${y(tick)}" y2="${y(tick)}"/>
-        <text class="axis" x="${left - 10}" y="${y(tick) + 4}" text-anchor="end">${fmt(tick)}</text>
-      </g>`).join('')}
-      ${days.map((day, index) => index % step ? '' :
-        `<text class="axis" x="${x(index)}" y="${H - 12}" text-anchor="middle">${esc(day.slice(5))}</text>`).join('')}
-      ${ordered.map(line => `<polyline class="spark${line.dashed ? ' is-dashed' : ''}${quiet(line) ? ' is-quiet' : ''}" fill="none"
-          stroke="var(${stroke(line)})"
-          points="${line.values.map((value, index) => `${x(index)},${y(value)}`).join(' ')}"/>`).join('')}
-      ${ordered.map(line => line.values.map((value, index) =>
-        `<circle class="spark-dot" cx="${x(index)}" cy="${y(value)}" r="3" fill="var(${stroke(line)})"
-           data-tip="${esc(line.label)} / ${esc(days[index])}: ${fmt(value)}"/>`).join('')).join('')}
-    </svg>
+    <div class="linechart-frame">
+      <div class="linechart-yaxis" aria-hidden="true">${ticks.map(tick =>
+        `<span style="top:${py(tick)}%">${fmt(tick)}</span>`).join('')}</div>
+      <div class="linechart-plot">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" role="img"
+             aria-label="${esc(settings.label || 'Trend')}">
+          <title>${esc(settings.label || 'Trend')}</title>
+          ${ticks.map(tick => `<line class="grid" vector-effect="non-scaling-stroke"
+            x1="0" x2="100" y1="${py(tick)}" y2="${py(tick)}"/>`).join('')}
+          ${ordered.map(line => `<polyline vector-effect="non-scaling-stroke"
+            class="spark${line.dashed ? ' is-dashed' : ''}${quiet(line) ? ' is-quiet' : ''}"
+            fill="none" stroke="var(${stroke(line)})" points="${points(line)}"/>`).join('')}
+        </svg>
+        ${ordered.map(line => line.values.map((value, index) =>
+          `<span class="spark-dot" style="left:${px(index)}%;top:${py(value)}%;background:var(${stroke(line)})"
+             data-tip="${esc(line.label)} / ${esc(days[index])}: ${fmt(value)}"></span>`).join('')).join('')}
+      </div>
+      <div class="linechart-xaxis">${days.map((day, index) =>
+        `<span style="left:${px(index)}%">${esc(day.slice(5))}</span>`).join('')}</div>
+    </div>
     <div class="chart-key">${ordered.map(line =>
       `<span class="key-item${line.dashed ? ' is-dashed' : ''}${quiet(line) ? ' is-quiet' : ''}" data-series
         style="--tone: var(${stroke(line)})">${esc(line.label)}</span>`).join('')}</div>`;
@@ -1592,7 +1593,7 @@ function wireEvents() {
     const left = Math.min(Math.max(12, anchor.left + anchor.width / 2 - box.width / 2), window.innerWidth - box.width - 12);
     // Below a chart point is the axis row and then the legend, so points
     // prefer to open upwards; everything else keeps the old preference.
-    const inChart = Boolean(element.closest && element.closest('.linechart-svg'));
+    const inChart = Boolean(element.closest && element.closest('.linechart-plot'));
     const below = anchor.bottom + 9;
     const above = anchor.top - box.height - 9;
     const fitsAbove = above >= 12;

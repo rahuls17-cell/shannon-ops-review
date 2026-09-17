@@ -913,20 +913,50 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .explorer-files .mono { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11.5px; word-break: break-all; }
 
 
-/* ---------- Throughput line charts (PRD T1-T4) ---------- */
+/* ---------- Line charts (PRD T1-T4, C6) ---------- */
 
-.linechart { margin: 0; display: grid; gap: 10px; }
-.linechart-svg { width: 100%; max-width: 1200px; height: auto; display: block; overflow: visible; }
-.linechart-svg .grid { stroke: var(--line-soft); stroke-width: 1; }
-/* Subordinate to the lines and the panel title, never competing with them. */
-.linechart-svg .axis { fill: var(--muted); font-size: 10px; font-family: var(--sans); font-weight: 400; }
-.linechart-svg .spark { stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
-/* Near-zero against the others: readable on hover, not claiming a colour. */
-.linechart-svg .spark.is-quiet { stroke-width: 1; opacity: 0.7; }
+.linechart { margin: 0; display: grid; gap: 12px; }
+
+/* Labels live OUTSIDE the scaling plot, so they are painted at the size they
+   are declared at whatever the window width. Only the lines stretch. */
+.linechart-frame {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: 210px auto;
+  column-gap: 10px;
+}
+
+.linechart-yaxis { grid-column: 1; grid-row: 1; position: relative; min-width: 34px; }
+.linechart-yaxis span {
+  position: absolute; right: 0; transform: translateY(-50%);
+  font-size: 11px; font-weight: 400; color: var(--muted);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+
+.linechart-plot { grid-column: 2; grid-row: 1; position: relative; }
+.linechart-plot svg { width: 100%; height: 100%; display: block; overflow: visible; }
+
+.linechart-xaxis { grid-column: 2; grid-row: 2; position: relative; height: 20px; margin-top: 6px; }
+.linechart-xaxis span {
+  position: absolute; top: 0; transform: translateX(-50%);
+  font-size: 11px; font-weight: 400; color: var(--muted);
+  font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+
+.linechart .grid { stroke: var(--line-soft); stroke-width: 1; }
+.linechart .spark { stroke-width: 1.5; stroke-linejoin: round; stroke-linecap: round; }
 /* The plan is a commitment, not an observation - dash it so it never reads as measured. */
-.linechart-svg .spark.is-dashed { stroke-dasharray: 5 4; stroke-width: 1.75; opacity: 0.85; }
-.linechart-svg .spark-dot { opacity: 0; transition: opacity 0.12s ease; }
-.linechart-svg:hover .spark-dot { opacity: 1; }
+.linechart .spark.is-dashed { stroke-dasharray: 5 4; stroke-width: 1.5; opacity: 0.85; }
+/* Near-zero against the others: readable on hover, not claiming a colour. */
+.linechart .spark.is-quiet { stroke-width: 1; opacity: 0.7; }
+
+.spark-dot {
+  position: absolute; width: 7px; height: 7px; border-radius: 50%;
+  transform: translate(-50%, -50%); opacity: 0; cursor: help;
+  transition: opacity 0.12s ease;
+}
+.linechart-plot:hover .spark-dot { opacity: 1; }
+
 .chart-key .key-item[data-series]::before { background: var(--tone); }
 .chart-key .key-item[data-series].is-dashed::before {
   background: repeating-linear-gradient(90deg, var(--tone) 0 3px, transparent 3px 5px);
@@ -934,7 +964,7 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .linechart-svg .spark-dot { transition: none; }
+  .spark-dot { transition: none; }
 }
 
 /* Three counting bases, side by side (PRD F2) */
