@@ -1002,7 +1002,8 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .peakstrip-label { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
 .peakstrip-item { display: inline-flex; align-items: baseline; gap: 6px; }
 .peakstrip-item i { width: 7px; height: 7px; border-radius: 2px; align-self: center; flex: none; }
-.peakstrip-item b { font-weight: 600; font-variant-numeric: tabular-nums; }
+/* A figure beside a chart should not shout louder than the chart. */
+.peakstrip-item b { font-weight: 400; font-variant-numeric: tabular-nums; }
 .peakstrip-item small { color: var(--muted); font-size: 10.5px; }
 
 /* Panel source lines sit under the description, quieter than it. */

@@ -1340,7 +1340,11 @@ function lineChart(days, series, options) {
     : (index / (days.length - 1)) * (W - left - right));
   const y = value => top + (1 - value / peak) * (H - top - bottom);
   const ticks = [0, Math.round(peak / 2), peak];
-  const step = Math.max(1, Math.ceil(days.length / 12));
+  // Thin the date labels only when they would actually collide, not on a count.
+  // A "MM-DD" label at 10px needs roughly 34 units; thinning on an arbitrary
+  // count dropped every other date while 94 units of clear space sat between.
+  const gap = days.length > 1 ? (W - left - right) / (days.length - 1) : W;
+  const step = Math.max(1, Math.ceil(34 / gap));
   const stroke = line => quiet(line) ? '--line' : (line.token || '--slate');
   return `
     <svg class="linechart-svg" viewBox="0 0 ${W} ${H}" role="img"
