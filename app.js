@@ -751,17 +751,6 @@ function applyRange() {
   setText('dateScope', invalid ? 'No records match: the start date is after the end date.'
     : `${rangeLabel()} / Overview, Delivery and Pipeline follow this range. Payouts does not.`);
   renderSlicerBars();
-  document.querySelectorAll('.rangeecho').forEach(node => {
-    if (node.classList.contains('is-exempt')) {
-      // PRD X1 names every page, but the workbook records what was PAID, not
-      // when the work happened - filtering it would silently drop people paid
-      // for older work. Stating the exemption is the honest way to meet X1.
-      node.innerHTML = '<span class="rangeecho-label">Date range</span>Not applied here &mdash; the workbook records when payment was made, not when the work was done.';
-      return;
-    }
-    node.innerHTML = `<span class="rangeecho-label">Date range</span>${esc(rangeLabel())}` +
-      ((dateRange.start || dateRange.end) ? ' <button class="linky" data-jump="command">change</button>' : '');
-  });
   renderEverything();
 }
 
@@ -799,6 +788,21 @@ function renderSlicerBars() {
     const preset = node.querySelector('[data-field="preset"]');
     const start = node.querySelector('[data-field="start"]');
     const end = node.querySelector('[data-field="end"]');
+    // Payouts carries the control so the page is not the odd one out, but it is
+    // inert: the workbook holds one payment date for every request and no date
+    // at all on a task row. Filtering would cut the paid side while accepted
+    // stayed whole, and pending is accepted minus paid - so every balance on
+    // the page would silently rise. Disabled and explained beats wrong.
+    if (node.dataset.slicerDisabled === 'true') {
+      node.classList.add('is-disabled');
+      [preset, start, end, node.querySelector('[data-field="clear"]')].forEach(field => {
+        field.disabled = true;
+        field.value = field.tagName === 'SELECT' ? '' : '';
+      });
+      node.querySelector('.slicerbar-state').textContent =
+        'Not available here \u2014 the workbook records no date for accepted work, only a running total.';
+      return;
+    }
     // A field being edited is left alone, or typing a date fights the redraw.
     if (document.activeElement !== start) start.value = dateRange.start;
     if (document.activeElement !== end) end.value = dateRange.end;
