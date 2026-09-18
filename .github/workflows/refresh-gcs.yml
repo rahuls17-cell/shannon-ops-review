@@ -72,7 +72,7 @@ jobs:
           # Every script index.html loads. Keep this in step with the
           # <script src> tags or the published page 404s on load.
           cp index.html app.js styles.css _site/
-          cp sources.js finalisation.js pipeline-view.js payout-ledger.js explorer.js _site/
+          cp sources.js finalisation.js pipeline-view.js truth.js payout-ledger.js explorer.js _site/
           cp -r assets _site/
           # Pages serves these with a long cache, so a returning visitor keeps
           # running the previous build's JS against the new data - which is how

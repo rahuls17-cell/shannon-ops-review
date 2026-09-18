@@ -29,6 +29,9 @@
           <button class="viewnav-tab" role="tab" aria-selected="false" data-view="pipeline">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3v18h18M7 15l4-4 4 3 5-6"/></svg><span>Pipeline</span>
           </button>
+          <button class="viewnav-tab" role="tab" aria-selected="false" data-view="carried">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h13M13 6l6 6-6 6M3 6v12"/></svg><span>Carried over</span>
+          </button>
           <button class="viewnav-tab" role="tab" aria-selected="false" data-view="explorer">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Bucket</span>
           </button>
@@ -310,88 +313,137 @@
           </section>
         </section>
 
-        <!-- PIPELINE (Finalisation merged in) ---------------------------- -->
+        <!-- PIPELINE (derived from the GCS bucket) ---------------------- -->
         <section class="view" id="view-pipeline" role="tabpanel" aria-labelledby="pipeline-title">
           <header class="view-head">
             <div>
               <p class="kicker">Delivery pipeline</p>
               <h1 id="pipeline-title">Pipeline</h1>
-              <p class="lede">One view: the Harbor Console decides a task&rsquo;s status, the GCS evaluation ledger explains why it got there, and the bucket shows what was delivered for it. Anything submitted before 5 September is Legacy and sits out of the live figures.</p>
+              <p class="lede">Every figure here is derived from <code>gs://obi-harbor-pipeline</code> and nothing else. Click any number to see the chain that produced it, down to the verdict objects it was read from.</p>
             </div>
             <div class="view-actions">
-              <button id="refreshConsole" class="ghost">Refresh from Console</button>
-              <button id="refreshGcsPipeline" class="ghost">Refresh from GCS</button>
+              <button id="truthRefresh" class="ghost">Rebuild from the bucket</button>
             </div>
           </header>
           <div class="sourcestrip" data-sources="pipeline"></div>
+          <p class="provenance" id="truthStatus">Loading the derived pipeline&hellip;</p>
           <p class="rangeecho" data-range="pipeline"></p>
-          <p class="provenance" id="pipelineSourceStatus">Loading...</p>
 
-          <div id="pipelineStats" class="status-grid"></div>
-
-          <section class="panel">
+          <div id="truthFigures" class="status-grid"></div>
+          <section class="panel" id="scopePanel">
             <header class="panel-head">
               <div>
-                <h2>Work by day<button class="why" data-info="pipeline" aria-label="How each status is decided">?</button></h2>
-                <p class="panel-note" id="consoleNote">Loading the console pull...</p>
+                <h2>What is counted<button class="why" data-info="scope" aria-label="How the 5 September cut is applied">?</button></h2>
+                <p class="panel-note" id="scopeNote"></p>
               </div>
             </header>
             <div class="panel-body">
-              <figure id="pipelineTimeline" class="timeline"></figure>
-              <p class="muted footnote" id="consoleReconcile"></p>
+              <figure class="daybars" id="scopeChart"></figure>
+              <p class="muted footnote" id="scopeCaveats"></p>
             </div>
           </section>
 
-          <section class="panel">
+
+          <section class="panel" id="truthChainPanel" hidden>
             <header class="panel-head">
               <div>
-                <h2>Reconciling against the console<button class="why" data-info="basis" aria-label="Why the console shows a bigger number">?</button></h2>
-                <p class="panel-note">Why the Harbor Console&rsquo;s cards read higher than this page. Both are right; they count different things.</p>
+                <h2 id="truthChainTitle">Derivation</h2>
+                <p class="panel-note" id="truthChainNote"></p>
               </div>
+              <div class="toolbar"><button id="truthChainClose" class="ghost">Close</button></div>
             </header>
-            <div class="panel-body" id="consoleBasis">
-            </div>
+            <div class="panel-body"><ol class="chain" id="truthChain"></ol></div>
           </section>
 
           <section class="panel">
             <header class="panel-head">
               <div>
-                <h2>Tasks</h2>
-                <p class="panel-note">One row per task, at its latest submission. Open a row for the evaluation attempts behind the status and the folders delivered for it.</p>
+                <h2>Tasks<button class="why" data-info="truthTasks" aria-label="What one row means">?</button></h2>
+                <p class="panel-note" id="truthCaveats"></p>
               </div>
               <div class="toolbar" data-toolbar>
-                <label class="field"><span>Status</span><select id="pipelineFilter"></select></label>
-                <label class="field"><span>Scope<button class="why" data-info="legacy" aria-label="What Legacy means">?</button></span><select id="pipelineLegacy"><option value="">Live only</option><option value="all">Live and legacy</option><option value="only">Legacy only</option></select></label>
-                <label class="field"><span>Type</span><select id="pipelineType"></select></label>
-                <label class="field"><span>Trainer</span><select id="pipelineTrainer"></select></label>
-                <label class="field"><span>Evidence<button class="why" data-info="evidence" aria-label="What the evidence filter selects">?</button></span><select id="pipelineEvidence"><option value="">Any</option><option value="delivered">Delivered to the bucket</option><option value="undelivered">No folder yet</option><option value="disagree">Ledger disagrees</option><option value="offroster">Owner not on the roster</option></select></label>
-                <label class="field"><span>Search</span><input id="pipelineSearch" type="search" placeholder="Task, owner, failed stage" /></label>
-                <button id="clearPipelineDates" class="ghost">Clear filters</button>
+                <label class="field"><span>State</span><select id="tState"></select></label>
+                <label class="field"><span>Gate era<button class="why" data-info="gateEra" aria-label="What the gate eras are">?</button></span><select id="tGate"></select></label>
+                <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What the finding filter searches">?</button></span><select id="tFinding"></select></label>
+                <label class="field"><span>Delivery</span><select id="tDelivery"><option value="">Any</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting KESTREL re-gate</option><option value="none">No package</option></select></label>
+                <label class="field"><span>Carried over</span><select id="tCarried"><option value="">Any</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
+                <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">Any</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
+                <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">Any</option><option value="yes">Flagged as duplicate</option><option value="likely">Likely duplicate</option><option value="no">Not flagged</option></select></label>
+                <label class="field"><span>Domain</span><select id="tDomain"></select></label>
+                <label class="field"><span>Trainer</span><select id="tOwner"></select></label>
+                <label class="field"><span>Search</span><input id="tSearch" type="search" placeholder="Task, trainer, reason" /></label>
+                <button id="tReset" class="ghost">Clear filters</button>
               </div>
             </header>
             <div class="panel-body">
-              <p class="muted footnote" id="pipelineAudit"></p>
+              <p class="muted footnote" id="truthAudit"></p>
               <div class="table-wrap">
                 <table class="grid">
                   <thead>
                     <tr>
                       <th scope="col"></th>
                       <th scope="col">Task</th>
-                      <th scope="col">Status</th>
+                      <th scope="col">State</th>
                       <th scope="col">Trainer</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Submitted</th>
-                      <th scope="col" class="num">Attempts</th>
-                      <th scope="col" class="num">Folders</th>
+                      <th scope="col">Decided</th>
+                      <th scope="col">Gate era</th>
+                      <th scope="col" class="num">Runs</th>
                     </tr>
                   </thead>
-                  <tbody id="pipelineRows"></tbody>
+                  <tbody id="truthRows"></tbody>
                 </table>
               </div>
               <div class="pager">
-                <button id="pipelinePrevious" class="ghost">Previous</button>
-                <span id="pipelinePage" role="status"></span>
-                <button id="pipelineNext" class="ghost">Next</button>
+                <button id="truthPrev" class="ghost">Previous</button>
+                <span id="truthPage" role="status"></span>
+                <button id="truthNext" class="ghost">Next</button>
+              </div>
+            </div>
+          </section>
+        </section>
+
+        <!-- CARRIED OVER ------------------------------------------------- -->
+        <section class="view" id="view-carried" role="tabpanel" aria-labelledby="carried-title">
+          <header class="view-head">
+            <div>
+              <p class="kicker">Backlog</p>
+              <h1 id="carried-title">Carried over</h1>
+              <p class="lede">Tasks first decided before 5 September that the pipeline running today has since settled. Not new work, and not closed history &mdash; they are counted inside the Pipeline figures, and this is a lens on that population rather than a separate universe.</p>
+            </div>
+          </header>
+          <div class="sourcestrip" data-sources="pipeline"></div>
+          <p class="provenance" id="carriedStatus"></p>
+          <div id="carriedFigures" class="status-grid"></div>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Settled by the current pipeline</h2>
+                <p class="panel-note">Ordered by how long the task waited between its first decision and the one that settled it.</p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>State</span><select id="cState"></select></label>
+                <label class="field"><span>Trainer</span><select id="cOwner"></select></label>
+                <label class="field"><span>Search</span><input id="cSearch" type="search" placeholder="Task or trainer" /></label>
+                <button id="cReset" class="ghost">Clear filters</button>
+              </div>
+            </header>
+            <div class="panel-body">
+              <p class="muted footnote" id="carriedAudit"></p>
+              <div class="table-wrap">
+                <table class="grid">
+                  <thead>
+                    <tr>
+                      <th scope="col">Task</th>
+                      <th scope="col">State</th>
+                      <th scope="col">Trainer</th>
+                      <th scope="col">Settled</th>
+                      <th scope="col">Gate era</th>
+                      <th scope="col" class="num">Runs</th>
+                    </tr>
+                  </thead>
+                  <tbody id="carriedRows"></tbody>
+                </table>
               </div>
             </div>
           </section>
@@ -458,6 +510,7 @@
     <script src="sources.js"></script>
     <script src="finalisation.js"></script>
     <script src="pipeline-view.js"></script>
+    <script src="truth.js"></script>
     <script src="payout-ledger.js"></script>
     <script src="explorer.js"></script>
     <script src="app.js"></script>

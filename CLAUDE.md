@@ -15,14 +15,21 @@ and this file over it.
 ## Commands
 
 ```bash
-# Serve locally (there is no dev server or watch step)
-python -m http.server 8787 --bind 127.0.0.1
+# Serve locally. Use truth_server.py, not http.server: it serves the same files
+# AND exposes the rebuild endpoint the Pipeline tab's button calls. A plain
+# static server answers that POST with 501 and the button cannot work.
+python tools/truth_server.py --port 8787
+
+# Rebuild the derived pipeline by hand (the button does this over SSH)
+ssh <harbor-vm> 'cd <pipeline-dashboard> && ./refresh_truth.sh'
 
 # Tests - plain node, no runner, no deps
 node tools/test-pipeline-view.cjs          # merged pipeline: spine, ledger, evidence, legacy, dual-basis counts
 node tools/test-payout-ledger.cjs
 node tools/test-finalisation-filters.cjs
 node tools/test-explorer.cjs               # bucket explorer: JS/Python shard agreement, sha1, path resolution
+node tools/test-truth.cjs                  # derived pipeline: partition, filters, chains, unreconciled refusal
+node tools/test-views.cjs                  # nav / .view sections / VIEWS whitelist must agree
 python tools/test_duplicate_sample.py      # duplicate-collapse checks + seeded 100-task sample
 python tools/test_duplicate_sample.py --live-only --seed 123 --sample 50
 
@@ -53,20 +60,46 @@ Two known-red checks, neither a regression you introduced:
 **Browser caching bites constantly.** Edits to `app.js` and the other modules are served
 stale on a port you have already loaded. Start a *new* port rather than hard-reloading.
 
+## The derived pipeline (GCS as the source of truth)
+
+Pipeline, Carried over and their figures come from `assets/pipeline-truth.json`,
+built by an eight-step chain on the Harbor VM. **The Harbor Console is not read.**
+
+```
+ingest_verdicts -> index_delivery -> assign_identity -> select_canonical
+   -> derive_state -> build_tags -> build_provenance -> reconcile
+```
+
+Each step is a separate process writing a JSON file, so any one can be re-run
+alone while chasing a number. `refresh_truth.sh` runs the lot in ~35s.
+
+`reconcile.py` is a **gate, not a report**: non-zero exit leaves the previously
+published asset in place. A figure that cannot explain itself is never shipped.
+
+Every published figure carries a computed derivation chain, and every row cites
+the verdict object it came from. `GLOSSARY.md` holds the predicates; nothing may
+redefine a term locally.
+
+Two counts are deliberately flagged rather than fixed: identities with no
+`family_id` are `unmerged`, and unmerged identities sharing a task name are
+`possible duplicate`. Both are shown, neither is silently merged - a task name
+in this bucket can cover 36 unrelated tasks.
+
 ## Architecture
 
 ### Three feeds, three trust levels
 
 | Feed | Asset | Authority |
 |---|---|---|
-| Harbor Console | `assets/harbor-console-live.json`, `harbor-console-rich.json` | **Source of truth for status and task ownership** |
-| GCS bucket scan | `assets/gcs-pipeline.json` (~36 MB) | Evidence: evaluation ledger + delivered folders |
+| GCS verdicts + delivery | `assets/pipeline-truth.json` | **Source of truth for the pipeline**: state, identity, tags |
+| GCS bucket scan | `assets/gcs-pipeline.json` (~36 MB) | Overview's finalisation counts; connector status |
 | Workbook | `assets/data.js`, `payout-ledger.json` | Source of truth for **payouts only** |
+| Harbor Console | `assets/harbor-console-*.json` | **Retired from Pipeline.** Kept only to supply owner attribution to Overview's finalisation join |
 
-`pipeline-view.js` merges them (PRD F1). The console is the spine — one row per task at
-its latest submission. The GCS ledger explains *why* a task reached that status; the
-bucket shows what was physically delivered. **Evidence never overrides the console**:
-`row.ledger.disagrees` flags a clash rather than resolving it.
+The console was the spine until 2026-09-17. It is not any more: the console itself
+answers from a GCS assembler, so reading the bucket directly removes a proxy that
+needed a human signed into IAP. `pipeline-view.js` still exists for the Overview
+join; the Pipeline view uses `truth.js`.
 
 Nothing is derived twice. If a number can come from two feeds, the code picks one and
 the page says which.
@@ -84,7 +117,7 @@ Every module is an IIFE assigning to `window` and, when present, `module.exports
 
 This is what lets `.cjs` tests require the same file the browser loads. Keep it.
 Load order in `index.html` matters: `data.js` → `sources.js` → `finalisation.js` →
-`pipeline-view.js` → `payout-ledger.js` → `app.js`.
+`pipeline-view.js` → `truth.js` → `payout-ledger.js` → `explorer.js` → `app.js`.
 
 Each module splits into a pure `prepareX(source, …)` (shape the data) and `filterX(rows, filters)`
 (select and tally). `app.js` holds all DOM rendering and never recomputes what a
@@ -92,9 +125,14 @@ Each module splits into a pure `prepareX(source, …)` (shape the data) and `fil
 
 ### Views
 
-Four: **Overview** (`command`), **Payouts**, **Delivery**, **Pipeline**. Finalisation is
-no longer a tab — it is the *Delivered* line of evidence on each Pipeline row, filterable
-through the `Evidence` control.
+Six: **Overview** (`command`), **Payouts**, **Delivery**, **Pipeline**, **Carried over**
+(`carried`), **Bucket** (`explorer`). Finalisation is no longer a tab — delivery is the
+`Delivered` evidence line on each Pipeline row.
+
+A view exists in **three** places that must agree: the nav button, the `.view` section,
+and the `VIEWS` whitelist in `app.js`. Miss the whitelist and the tab renders its data
+but `switchView` refuses to open it — silently. `tools/test-views.cjs` asserts all three
+agree and that every script `index.html` loads exists on disk.
 
 `sources.js` is the provenance registry (PRD C2/X2): every figure traces to one of nine
 sources, each with what/why/how and the views it feeds. A source with no URL carries an

@@ -7,6 +7,15 @@ let gcsPipeline = null;
 let payoutLedger = null;
 let payoutLedgerTasks = [];
 let clientAcceptance = null;
+// The GCS-derived pipeline (tools/ingest_verdicts.py -> build_provenance.py).
+// Every state and predicate on these rows was decided by that chain, so the
+// browser only selects and tallies - it never re-derives a status.
+let truth = null;
+let truthPage = 0;
+let openChain = null;
+const TRUTH_PAGE_SIZE = 40;
+const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tCarried',
+  'tConfidence', 'tDuplicate', 'tDomain', 'tOwner'];
 let explorer = null;
 let explorerPath = '';
 let explorerEntry = null;
@@ -58,6 +67,12 @@ const infoCopy = {
   consoleCounts: 'The Harbor Console is the source of truth for finalisation. Its counts are shown here as pulled, not recomputed. Our bucket scan lists what is physically stored under tasks/, and that prefix is reorganised and pruned - of 194 folders that left the accepted cohorts overnight, 172 were still in the console and 171 still accepted. So a folder count under-reports accepted work and the console figure is the one to quote. Legacy is the console\u2019s own bucket for anything before 5 September. The console sits behind IAP, so this is a pull through an authenticated browser session rather than a live read.',
   basis: 'The Harbor Console lists one row per submission, and its cards count those rows. This page lists one row per task, taken at its latest submission, because a task resubmitted five times is still one piece of work and counting it five times would overstate delivery and pay. Neither number is wrong: subtract the re-submissions from the console figure and you get this page. The residual few are the console filter starting at a time of day where ours starts at midnight, and anything submitted since the last pull.',
   explorerScope: 'A metadata-only mirror of the delivery prefixes of the GCS bucket: the seven finalisation cohorts and the trainer evaluation records. It holds names, sizes and timestamps, never object contents, and it never writes to the bucket. The whole bucket is far larger - over 22 million objects and 9 million folders - which cannot be mirrored into a static page, so prefixes outside this scope are deliberately absent rather than silently empty.',
+  truthTasks: 'One row is one task, not one submission. Runs of the same task are grouped by the family the pipeline assigned them, and the row shows the canonical run: the one that got furthest, breaking ties on outcome and then on decision time. Every other run stays attached under the row. The State column carries the predicate that decided it, and the source is the verdict object it was read from.',
+  finding: 'What the gate objected to. The filter searches every run of a task, so a task that tripped a check, was fixed and then accepted is still findable under that check. The row itself separates the two: the Findings line shows what the run behind the current verdict found, and names anything that came from an earlier run of the same task. An accepted task showing HARBOR-CHECK from an earlier run was not accepted despite failing - it failed, was fixed, and passed.',
+  gateEra: 'Which gate judged the deciding run, taken from the bucket\'s own sentinel files rather than inferred. The gate switched from Opus to GLM-5.2 at 2026-09-13T20:05:59Z, KESTREL came on at 2026-09-15T03:40:49Z, and KESTREL was fully operating on both gates from 2026-09-16T05:06:54Z. Acceptances made by GLM-5.2 without KESTREL review were withdrawn on 16 September and are being re-gated.',
+  scope: 'The cut is applied to the date a task was DECIDED, not the date it was submitted. A task uploaded in August but judged by the pipeline running today belongs to today, because the bar running today is what judged it. Cutting on submission instead would hide exactly the re-gated work that matters most. Tasks whose last decision falls before 5 September are excluded entirely and are not shown anywhere on this page. About a fifth of verdicts carry no decision timestamp - those are the runs that errored or never finished, so there was never a ruling to time - and they are placed by when the verdict was last updated and marked approx.',
+  duplicates: 'A task is flagged when another task in scope carries the same name AND the same trainer. Likely means it also shares the decision day and the outcome. Most flagged rows do have a family id: that key is clean, in that no family spans two trainers, but it is not complete, because a task can be given a fresh family id when it is resubmitted - so the same work can appear two or three times under different families. Nothing is merged, because a task name can legitimately cover unrelated work: one name in this bucket carries 36 genuinely different tasks. Treat this as a review queue, not a correction.',
+  confidence: 'How confidently runs were grouped into one task. Keyed by family is the pipeline\'s own lineage id and is reliable - no family in this data spans two trainers. Unmerged means no family id was present, so the task is keyed on its submission id and repeat runs of it may still be counted separately. Task name was never used as a key: one literal name in this bucket carries 36 unrelated tasks.',
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
   v2Accepted: 'Task folders in tasks/finalisation_client_qc_accepted_iteration_2/ in the bucket - the second client QC finalisation round. It is one of three accepted cohorts, so it is smaller than the accepted total on the Finalisation tab, and a task finalised into more than one cohort is counted here once per folder. Read it as the size of the v2 round, not as the total accepted work.',
@@ -81,12 +96,10 @@ const infoCopy = {
 
 function renderEverything() {
   renderSources();
-  buildPipeline();
-  populateFilters();
   renderHero(); renderTopPendingCards(); renderDonut(); renderTrainerRows(); renderTeams();
-  renderPipeline();
   renderBenchCards();
   renderPlan();
+  if (truth) { renderTruth(); renderCarried(); }
 }
 
 // The bucket is no longer a view of its own - it is the delivery evidence
@@ -100,7 +113,7 @@ function loadFinalisation() {
       {owners: {...(harborConsole?.owners || {}), ...(consoleLive?.owners || {})}});
   } catch (error) {
     finalisationRows = [];
-    setText('pipelineSourceStatus', `Bucket evidence rejected: ${error.message}`);
+    setTextIfPresent('pipelineSourceStatus', `Bucket evidence rejected: ${error.message}`);
   }
 }
 
@@ -112,9 +125,6 @@ async function loadConsoleLive() {
   } catch {
     consoleLive = null;
   }
-  buildPipeline();
-  populateFilters();
-  renderPipeline();
   renderSources();
 }
 
@@ -136,9 +146,6 @@ async function loadHarborConsole() {
   } catch {
     harborConsole = null;
   }
-  buildPipeline();
-  populateFilters();
-  renderPipeline();
   renderSources();
 }
 
@@ -244,6 +251,298 @@ function renderPayoutLedger() {
   }).join('') || '<tr><td colspan="6" class="empty">No ledger tasks match these filters.</td></tr>';
 }
 
+async function loadTruth() {
+  try {
+    const response = await fetch(`assets/pipeline-truth.json?t=${Date.now()}`, {cache: 'no-store'});
+    if (!response.ok) throw new Error(`asset returned ${response.status}`);
+    truth = window.prepareTruth(await response.json());
+    populateTruthFilters();
+    renderTruth();
+    renderCarried();
+  } catch (error) {
+    truth = null;
+    setText('truthStatus', `The derived pipeline could not be loaded: ${error.message}. ` +
+      'Run tools/ingest_verdicts.py through build_provenance.py on the Harbor VM and publish assets/pipeline-truth.json.');
+    setText('carriedStatus', 'Waiting for the derived pipeline.');
+  }
+  renderSources();
+}
+
+// Rebuild from the bucket on demand. The page cannot read GCS itself, so this
+// asks the local helper to run the chain on the Harbor VM and fetch the result.
+// Published builds have no helper, so there the button re-reads the asset.
+async function rebuildTruth() {
+  const button = byId('truthRefresh');
+  const local = ['127.0.0.1', 'localhost'].includes(location.hostname);
+  if (!local) {
+    setText('truthStatus', 'Re-reading the published asset. A live rebuild needs the local helper (tools/truth_server.py), which reads GCS through the Harbor VM.');
+    await loadTruth();
+    return;
+  }
+  const label = button.textContent;
+  button.disabled = true;
+  button.textContent = 'Rebuilding…';
+  setText('truthStatus', 'Running the eight-step chain on the Harbor VM: verdicts, delivery, identity, canonical run, state, tags, provenance, reconcile. This takes about half a minute.');
+  try {
+    const response = await fetch('/api/refresh-truth', {method: 'POST', cache: 'no-store'});
+    const body = await response.json().catch(() => ({}));
+    if (response.status === 409) {
+      // The chain refused to publish itself. Keep showing the old data and say why.
+      setText('truthStatus', `${body.error} Nothing on this page has changed. ${String(body.detail || '').split('BUILD BLOCKED:').pop().trim().slice(0, 300)}`);
+      return;
+    }
+    if (response.status === 501 || response.status === 404) {
+      // python -m http.server answers POST with 501. That is not a failure of
+      // the rebuild, it means the page is being served without the helper.
+      throw new Error('this page is served by a plain static server, which has no rebuild endpoint. ' +
+        'Serve it with `python tools/truth_server.py` instead and the button will rebuild from the bucket');
+    }
+    if (!response.ok || !body.ok) throw new Error(body.error || `helper returned ${response.status}`);
+    await loadTruth();
+    setText('truthStatus', `Rebuilt from gs://obi-harbor-pipeline in ${body.seconds}s / ` +
+      `${new Date(body.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})} / ` +
+      Object.entries(body.figures || {}).slice(0, 4).map(([k, v]) => `${k} ${fmt(v)}`).join(' / '));
+  } catch (error) {
+    setText('truthStatus', `Rebuild failed: ${error.message}. The previously loaded data is still shown and is unchanged.`);
+  } finally {
+    button.disabled = false;
+    button.textContent = label;
+  }
+}
+
+function truthFilters() {
+  return {
+    state: byId('tState').value, gateEra: byId('tGate').value,
+    finding: byId('tFinding').value, delivery: byId('tDelivery').value,
+    carriedOver: byId('tCarried').value, confidence: byId('tConfidence').value,
+    domain: byId('tDomain').value, owner: byId('tOwner').value,
+    duplicate: byId('tDuplicate').value,
+    search: byId('tSearch').value,
+    start: dateRange.start, end: dateRange.end,
+  };
+}
+
+function fillSelect(id, counts, allLabel) {
+  const node = byId(id);
+  if (!node) return;
+  const keep = node.value;
+  const entries = Object.entries(counts || {})
+    .filter(([value]) => value && value !== '(none)')
+    .sort((a, b) => b[1] - a[1]);
+  node.innerHTML = `<option value="">${esc(allLabel)}</option>` +
+    entries.map(([value, n]) => `<option value="${esc(value)}">${esc(value)} (${fmt(n)})</option>`).join('');
+  if ([...node.options].some(o => o.value === keep)) node.value = keep;
+}
+
+function populateTruthFilters() {
+  if (!truth) return;
+  const v = truth.vocabulary;
+  fillSelect('tState', v.finalState, 'Any state');
+  fillSelect('tGate', v.gateEra, 'Any gate');
+  fillSelect('tFinding', v.findingFamilies, 'Any finding');
+  fillSelect('tDomain', v.domain, 'Any domain');
+  fillSelect('tOwner', v.owner, 'Any trainer');
+  fillSelect('cState', v.finalState, 'Any state');
+  fillSelect('cOwner', v.owner, 'Any trainer');
+}
+
+// A figure is a value plus the chain that produced it. Clicking one opens the
+// chain rather than sending anyone to ask how it was computed.
+// Decisions per day, broken out by outcome. A heatmap rather than bars because
+// the question is not only "how many that day" but "of what kind" - the column
+// still carries the daily volume, and the row now carries the composition.
+//
+// Sequential ramp: one hue, light to dark, validated against the page surface.
+// Deliberately violet, not the blue used by the Delivery heatmap, so two
+// different measures are never mistaken for the same scale.
+const SCOPE_BANDS = [
+  {limit: 0.10, step: 1},
+  {limit: 0.25, step: 2},
+  {limit: 0.50, step: 3},
+  {limit: 0.75, step: 4},
+  {limit: Infinity, step: 5},
+];
+const SCOPE_ROWS = ['accepted', 'legacy accepted', 'rejected', 'no QC decision', 'error', 'running'];
+
+function renderScope(result) {
+  if (!truth) return;
+  const days = [...new Set(result.rows.map(row => row.decided).filter(Boolean))].sort();
+  if (!days.length) {
+    byId('scopeChart').innerHTML = '<p class="empty">No decisions in this selection.</p>';
+    setText('scopeNote', '');
+    return;
+  }
+  // error and "no QC decision" are the same bucket to a reader; merge the label.
+  const label = state => (state === 'error' ? 'no QC decision' : state);
+  const states = [...new Set(result.rows.map(row => label(row.state)))]
+    .sort((a, b) => SCOPE_ROWS.indexOf(a) - SCOPE_ROWS.indexOf(b));
+  const grid = new Map();
+  const perDay = new Map();
+  for (const row of result.rows) {
+    if (!row.decided) continue;
+    const key = `${label(row.state)}|${row.decided}`;
+    grid.set(key, (grid.get(key) || 0) + 1);
+    perDay.set(row.decided, (perDay.get(row.decided) || 0) + 1);
+  }
+  const busiest = Math.max(...grid.values());
+
+  const legacy = (truth.figures.get('Accepted')?.steps || [])
+    .find(step => step.step.startsWith('one canonical run'))?.count;
+  const excluded = legacy ? legacy - truth.rows.length : null;
+  setText('scopeNote', `Every task on this page was decided between ${days[0]} and ${days.at(-1)}. ` +
+    'The cut is on the decision date, not the submission date' +
+    (excluded ? `, and ${fmt(excluded)} tasks whose last decision predates ${truth.cut} are excluded entirely.` : '.'));
+
+  const cells = state => days.map(day => {
+    const n = grid.get(`${state}|${day}`) || 0;
+    if (!n) return `<td class="scope-cell" data-step="none" data-tip="${esc(day)}: no ${esc(state)} decisions"><span>&middot;</span></td>`;
+    const band = SCOPE_BANDS.find(entry => n / busiest < entry.limit) || SCOPE_BANDS.at(-1);
+    const share = Math.round((n / (perDay.get(day) || n)) * 100);
+    return `<td class="scope-cell" data-step="${band.step}" data-tip="${esc(day)} / ${esc(state)}: ${fmt(n)} task${n === 1 ? '' : 's'}, ${share}% of that day">
+      <span>${fmt(n)}</span></td>`;
+  }).join('');
+
+  byId('scopeChart').innerHTML = `
+    <div class="scopeheat-wrap">
+      <table class="scopeheat">
+        <thead><tr><th scope="col">Outcome</th>${days.map(day => `<th scope="col">${esc(day.slice(5))}</th>`).join('')}</tr></thead>
+        <tbody>${states.map(state => `<tr><th scope="row">${esc(state)}</th>${cells(state)}</tr>`).join('')}</tbody>
+        <tfoot><tr><th scope="row">All</th>${days.map(day => `<td class="scope-total">${fmt(perDay.get(day) || 0)}</td>`).join('')}</tr></tfoot>
+      </table>
+    </div>
+    <div class="scope-key">
+      <span class="scope-key-label">Tasks decided, against the busiest cell (${fmt(busiest)})</span>
+      <span class="scope-scale">${SCOPE_BANDS.map(b => `<i data-step="${b.step}"></i>`).join('')}</span>
+      <span class="scope-key-ends"><b>few</b><b>many</b></span>
+      <span class="scope-key-none"><i data-step="none"></i>none that day</span>
+    </div>
+    <figcaption>${fmt(result.rows.length)} tasks across ${fmt(days.length)} days, by the day the deciding run was ruled on</figcaption>`;
+
+  setText('scopeCaveats',
+    `${fmt(result.carriedOver)} were first decided before ${truth.cut} and settled after it, so they are carried over rather than new work. ` +
+    `${fmt(result.inferredDates)} carry no decision timestamp and are placed by when their verdict was last updated - shown as approx, and near the boundary a few could sit on the wrong side of it.`);
+}
+
+function renderTruthFigures(result, filtered) {
+  const cards = [
+    ['Accepted', result.accepted, 'package at the current bar'],
+    ['Legacy accepted', result.legacyAccepted, 'accepted, package not at the current bar'],
+    ['Rejected', result.rejected, 'failed a QC decision'],
+    ['No QC decision', result.undecided, 'parked, crashed or never decided'],
+    ['Running', result.running, 'in a stage'],
+    ['Carried over', result.carriedOver, 'first decided before 5 Sept'],
+  ];
+  byId('truthFigures').innerHTML = cards.map(([label, value, hint]) => `
+    <button class="status-card figure-card" data-chain="${esc(label)}">
+      <span class="status-card-label">${esc(label)}</span>
+      <span class="status-card-value">${fmt(value)}</span>
+      <span class="status-card-note">${esc(hint)}</span>
+      <span class="status-card-cue">${filtered ? 'filtered' : 'how was this counted?'}</span>
+    </button>`).join('');
+}
+
+function renderChain(label, filtered) {
+  const chain = window.chainFor(truth, label, filtered);
+  const panel = byId('truthChainPanel');
+  if (!chain) { panel.hidden = true; return; }
+  openChain = label;
+  panel.hidden = false;
+  setText('truthChainTitle', `${chain.label} = ${fmt(chain.value)}`);
+  setText('truthChainNote', (chain.note || '') +
+    (chain.stale ? ' This chain describes the unfiltered population; the cards above are showing your current filters.' : ''));
+  byId('truthChain').innerHTML = chain.steps.map(step => `
+    <li><span class="chain-count">${fmt(step.count)}</span>
+      <span class="chain-step">${esc(step.step)}</span>
+      <span class="chain-source">${esc(step.source || '')}</span></li>`).join('');
+}
+
+function renderTruthRows(rows) {
+  const pages = Math.max(Math.ceil(rows.length / TRUTH_PAGE_SIZE), 1);
+  truthPage = Math.min(truthPage, pages - 1);
+  const slice = rows.slice(truthPage * TRUTH_PAGE_SIZE, (truthPage + 1) * TRUTH_PAGE_SIZE);
+  byId('truthRows').innerHTML = slice.length ? slice.map((row, index) => {
+    const id = `truth-${truthPage}-${index}`;
+    return `<tr class="drill-head">
+      <td><button class="drill-toggle" aria-expanded="false" aria-controls="${id}" aria-label="Evidence for ${esc(row.name)}">+</button></td>
+      <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span>${row.possibleDuplicate ? `<span class="chip ${row.duplicateTier === 'likely' ? 'chip-alert' : 'chip-warn'}" title="Same task name and trainer as ${fmt(row.duplicateSiblings)} other task${row.duplicateSiblings === 1 ? '' : 's'}${row.duplicateSameDay && row.duplicateSameState ? ', decided the same day with the same outcome' : ''}">${row.duplicateTier === 'likely' ? 'likely' : 'possible'} duplicate</span>` : row.unmerged ? '<span class="chip chip-warn" title="This submission carried no family id, so it is keyed on its own submission id. Repeat runs of the same task may be counted separately. No other task in scope shares its name and trainer.">unmerged</span>' : ''}${row.carriedOver ? `<span class="chip" title="First decided before ${esc(truth.cut)} and settled after it, so this is backlog cleared by the current pipeline rather than new work.">carried over</span>` : ''}</div></td>
+      <td><span class="state state-${esc(row.state.replace(/\s+/g, '-'))}">${esc(row.state)}</span></td>
+      <td>${esc(row.owner || 'Not recorded')}</td>
+      <td>${esc(row.decided || '-')}${row.decidedInferred ? '<span class="chip chip-warn" title="No decision timestamp on the verdict; dated from when it was last updated">approx</span>' : ''}</td>
+      <td>${esc(row.gateEra)}</td>
+      <td class="num">${fmt(row.runs)}</td>
+    </tr>
+    <tr class="drill" id="${id}" hidden><td colspan="7">
+      <dl class="evidence">
+        <dt>Why this state</dt><dd>${esc(row.why)}</dd>
+        <dt>Canonical run</dt><dd>${esc(row.canonicalReason)}${row.runs > 1 ? ` of ${fmt(row.runs)} runs` : ''}</dd>
+        <dt>Identity</dt><dd>${row.unmerged ? 'Keyed on the submission id: no family id was present, so repeat runs may still be counted separately.' : 'Keyed by the pipeline family id.'}${row.possibleDuplicate ? ` Shares its task name and trainer with ${fmt(row.duplicateSiblings)} other task${row.duplicateSiblings === 1 ? '' : 's'} in scope${row.duplicateSameDay && row.duplicateSameState ? ', decided the same day with the same outcome' : ''} - so this is very likely one task counted more than once. Flagged rather than merged, because a task name can legitimately cover unrelated work.` : ''}</dd>
+        <dt>Delivered</dt><dd>${(row.cohorts || []).length ? esc(row.cohorts.join(', ')) : 'No package in any accepted folder'}</dd>
+        <dt>Findings</dt><dd>${(row.findings || []).length
+          ? esc(row.findings.join(', ')) + ' <span class="muted">on this run</span>'
+          : 'None on this run'}${(row.findingsPrior || []).length
+          ? ` &middot; ${esc(row.findingsPrior.join(', '))} <span class="muted">on an earlier run of the same task</span>`
+          : ''}</dd>
+        <dt>Read from</dt><dd><code>${esc(row.source)}</code></dd>
+      </dl>
+    </td></tr>`;
+  }).join('') : '<tr><td colspan="7" class="empty">No tasks match these filters.</td></tr>';
+  setText('truthPage', `Page ${truthPage + 1} of ${pages} / ${fmt(rows.length)} tasks`);
+  byId('truthPrev').disabled = truthPage === 0;
+  byId('truthNext').disabled = truthPage >= pages - 1;
+}
+
+function renderTruth() {
+  if (!truth) return;
+  const filters = truthFilters();
+  const filtered = Object.entries(filters).some(([, v]) => v);
+  const result = window.filterTruth(truth.rows, filters);
+  renderTruthFigures(result, filtered);
+  renderScope(result);
+  if (openChain) renderChain(openChain, filtered);
+  setText('truthStatus', `Derived from ${truth.bucket} at ${new Date(truth.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})} / ` +
+    `${fmt(truth.rows.length)} tasks decided on or after ${truth.cut}. The Harbor Console is not read.`);
+  setText('truthCaveats', `${fmt(result.unmerged)} of ${fmt(result.rows.length)} shown are unmerged, so repeat runs of them may still count separately. ` +
+    `${fmt(result.inferredDates)} carry no decision timestamp and are dated from when the verdict was last updated.`);
+  setText('truthAudit', `${fmt(result.rows.length)} of ${fmt(truth.rows.length)} tasks shown / ` +
+    `${fmt(result.atCurrentBar)} have a package at the current bar / ${fmt(result.gateOnly)} await a KESTREL re-gate / ` +
+    `${fmt(result.owners)} trainers.`);
+  renderTruthRows(result.rows);
+}
+
+function renderCarried() {
+  if (!truth) return;
+  const rows = truth.rows.filter(row => row.carriedOver);
+  const filters = {
+    state: byId('cState').value, owner: byId('cOwner').value,
+    search: byId('cSearch').value, carriedOver: 'yes',
+  };
+  const result = window.filterTruth(truth.rows, filters);
+  const settled = result.rows.filter(row => row.state === 'accepted' || row.state === 'legacy accepted');
+  byId('carriedFigures').innerHTML = [
+    ['Carried over', rows.length, 'first decided before 5 Sept, settled after'],
+    ['Now accepted', rows.filter(r => r.state === 'accepted').length, 'package at the current bar'],
+    ['Legacy accepted', rows.filter(r => r.state === 'legacy accepted').length, 'accepted, not at the current bar'],
+    ['Still unresolved', rows.filter(r => !['accepted', 'legacy accepted', 'rejected'].includes(r.state)).length, 'no decision yet'],
+  ].map(([label, value, hint]) => `
+    <div class="status-card">
+      <span class="status-card-label">${esc(label)}</span>
+      <span class="status-card-value">${fmt(value)}</span>
+      <span class="status-card-note">${esc(hint)}</span>
+    </div>`).join('');
+  setText('carriedStatus', `${fmt(rows.length)} tasks of the ${fmt(truth.rows.length)} in scope were first decided before ${truth.cut}. ` +
+    'They are included in the Pipeline figures, not added to them.');
+  setText('carriedAudit', `${fmt(result.rows.length)} shown / ${fmt(settled.length)} reached an acceptance.`);
+  byId('carriedRows').innerHTML = result.rows.length ? result.rows.map(row => `
+    <tr>
+      <td><span class="taskname">${esc(row.name)}</span></td>
+      <td><span class="state state-${esc(row.state.replace(/\s+/g, '-'))}">${esc(row.state)}</span></td>
+      <td>${esc(row.owner || 'Not recorded')}</td>
+      <td>${esc(row.decided || '-')}</td>
+      <td>${esc(row.gateEra)}</td>
+      <td class="num">${fmt(row.runs)}</td>
+    </tr>`).join('') : '<tr><td colspan="6" class="empty">No carried-over tasks match these filters.</td></tr>';
+}
+
 async function loadGcsPipeline(manual = false) {
   try {
     const response = await fetch(`assets/gcs-pipeline.json?refresh=${manual ? Date.now() : 'startup'}`, {cache:'no-store'});
@@ -254,32 +553,12 @@ async function loadGcsPipeline(manual = false) {
     gcsPipeline = payload;
       loadFinalisation(); buildPipeline(); populateFilters(); renderPipeline(); renderDonut(); renderTrainerRows();
     renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
-    if (manual) setText('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
+    if (manual) setTextIfPresent('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
   } catch {
-    setText('pipelineSourceStatus', 'GCS export unavailable. Pipeline counts are not loaded.');
+    setTextIfPresent('pipelineSourceStatus', 'GCS export unavailable. Pipeline counts are not loaded.');
   }
 }
 
-async function refreshGcsPipeline() {
-  if (!['127.0.0.1', 'localhost'].includes(location.hostname)) {
-    window.open('https://github.com/rahuls17-cell/shannon-ops-review/actions/workflows/refresh-gcs.yml', '_blank', 'noopener,noreferrer');
-    setText('pipelineSourceStatus', 'Start Run workflow in GitHub to fetch GCS. This page checks for the published result every minute.');
-    return;
-  }
-  const button = byId('refreshGcsPipeline');
-  button.disabled = true;
-  button.textContent = 'Refreshing...';
-  try {
-    const response = await fetch('/api/refresh-gcs', {method: 'POST', cache: 'no-store'});
-    if (!response.ok) throw new Error('Manual refresh service unavailable');
-    await loadGcsPipeline(true);
-  } catch {
-    setText('pipelineSourceStatus', 'Bucket refresh failed. Previous snapshot remains displayed.');
-  } finally {
-    button.disabled = false;
-    button.textContent = 'Refresh from GCS';
-  }
-}
 setInterval(async () => {
   if (document.hidden || !gcsPipeline) return;
   try {
@@ -301,6 +580,13 @@ const fmt = (value) => number.format(Math.round(Number(value) || 0));
 const money = (value) => currency.format(Math.round(Number(value) || 0));
 const safePct = (value, max) => `${Math.max(0, Math.min(100, Math.round(((Number(value) || 0) / (max || 1)) * 100)))}%`;
 
+function setTextIfPresent(id, value) {
+  // The console-era Pipeline nodes are gone; loaders that still report status
+  // must not throw when their target no longer exists.
+  const node = byId(id);
+  if (node) node.textContent = value;
+}
+
 function setText(id, value) {
   const el = byId(id);
   if (el) el.textContent = value;
@@ -319,7 +605,10 @@ function groupBy(items, keyFn) {
   }, {});
 }
 
-const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'explorer'];
+// Must match the nav and the .view sections in index.html. switchView returns
+// early on anything not listed here, so a tab missing from this list renders
+// its data but can never be opened.
+const VIEWS = ['command', 'payouts', 'delivery', 'pipeline', 'carried', 'explorer'];
 // The same status is the same colour in the donut, the cards and the table.
 // PRD F3: the Harbor Console vocabulary. `Done` is gone.
 const STATUS_TOKENS = {
@@ -614,22 +903,6 @@ function uniqueTeams() {
   return [...new Set(data.trainers.map((trainer) => trainer.team || "Unassigned"))].sort();
 }
 
-function populateFilters() {
-  const population = pipelinePopulation();
-  PIPELINE_FILTERS.forEach(filter => {
-    const counts = new Map();
-    population.forEach(task => {
-      const key = filter.of(task);
-      counts.set(key, (counts.get(key) || 0) + 1);
-    });
-    const select = byId(filter.id), selected = select.value;
-    const options = [...counts].sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0])));
-    select.innerHTML = `<option value="">All ${filter.label} (${fmt(population.length)})</option>` +
-      options.map(([value, count]) => `<option value="${esc(value)}">${esc(value)} (${fmt(count)})</option>`).join('');
-    select.value = counts.has(selected) ? selected : '';
-  });
-}
-
 function populateTrainerPicker() {
   // Only people the payout data actually knows about; the roster has 597 rows.
   const active = payoutRows().filter(row => row.acceptedTasks || row.paidTasks)
@@ -787,134 +1060,6 @@ function renderTeams() {
     .join("");
 }
 
-const PIPELINE_CONTROLS = ['pipelineFilter', 'pipelineLegacy', 'pipelineType', 'pipelineTrainer', 'pipelineEvidence'];
-let pipelineRowsModel = [];
-const expandedRows = new Set();
-
-function buildPipeline() {
-  if (!consoleLive) { pipelineRowsModel = []; return; }
-  try {
-    pipelineRowsModel = window.preparePipeline(consoleLive, gcsPipeline, finalisationRows, data.trainers);
-  } catch (error) {
-    pipelineRowsModel = [];
-    setText('pipelineSourceStatus', `Pipeline could not be built: ${error.message}`);
-  }
-}
-
-function pipelineFilters() {
-  return {
-    status: byId('pipelineFilter').value,
-    legacy: byId('pipelineLegacy').value,
-    type: byId('pipelineType').value,
-    trainer: byId('pipelineTrainer').value,
-    evidence: byId('pipelineEvidence').value,
-    search: byId('pipelineSearch').value,
-    start: dateRange.start,
-    end: dateRange.end,
-  };
-}
-
-function populateFilters() {
-  const scope = byId('pipelineLegacy').value;
-  const population = scope === 'only' ? pipelineRowsModel.filter(row => row.legacy)
-    : scope === 'all' ? pipelineRowsModel
-    : pipelineRowsModel.filter(row => !row.legacy);
-  const specs = [
-    ['pipelineFilter', 'statuses', row => row.status],
-    ['pipelineType', 'types', row => row.taskType],
-    ['pipelineTrainer', 'trainers', row => row.owner || 'No owner recorded'],
-  ];
-  for (const [id, label, of] of specs) {
-    const counts = new Map();
-    population.forEach(row => {
-      const key = of(row);
-      counts.set(key, (counts.get(key) || 0) + 1);
-    });
-    const select = byId(id), chosen = select.value;
-    const options = [...counts].sort((a, b) => b[1] - a[1] || String(a[0]).localeCompare(String(b[0])));
-    select.innerHTML = `<option value="">All ${label} (${fmt(population.length)})</option>` +
-      options.map(([value, count]) => `<option value="${esc(value)}">${esc(value)} (${fmt(count)})</option>`).join('');
-    select.value = counts.has(chosen) ? chosen : '';
-  }
-}
-
-function renderPipelineTimeline(rows, statuses) {
-  const dated = rows.filter(row => /^\d{4}-\d{2}-\d{2}$/.test(row.day));
-  const byDate = new Map();
-  dated.forEach(row => {
-    if (!byDate.has(row.day)) byDate.set(row.day, new Map());
-    const day = byDate.get(row.day);
-    day.set(row.status, (day.get(row.status) || 0) + 1);
-  });
-  const days = [...byDate.keys()].sort();
-  const order = statuses.map(([status]) => status);
-  const tallest = Math.max(...days.map(day => [...byDate.get(day).values()].reduce((total, value) => total + value, 0)), 1);
-  byId('pipelineTimeline').innerHTML = days.length ? `
-    <figcaption>${fmt(dated.length)} tasks across ${fmt(days.length)} days, by the day the task was last submitted</figcaption>
-    <div class="timeline-plot">
-      ${days.map(day => {
-        const counts = byDate.get(day);
-        const total = [...counts.values()].reduce((sum, value) => sum + value, 0);
-        return `<div class="timeline-day">
-          <div class="timeline-total">${fmt(total)}</div>
-          <div class="timeline-column" style="height:${Math.max((total / tallest) * 100, 1.5)}%">
-            ${order.filter(status => counts.get(status)).map(status =>
-              `<span class="timeline-seg" data-status="${esc(status)}" style="flex:${counts.get(status)}" data-tip="${esc(day)} / ${esc(status)}: ${fmt(counts.get(status))} of ${fmt(total)} tasks"></span>`).join('')}
-          </div>
-          <div class="timeline-date">${esc(day.slice(5))}</div>
-        </div>`;
-      }).join('')}
-    </div>
-    <div class="chart-key">${order.map(status =>
-      `<span class="key-item" data-status="${esc(status)}"><i></i>${esc(status)}</span>`).join('')}</div>` :
-    '<p class="empty">No dated tasks in this selection.</p>';
-}
-
-function drilldown(row) {
-  const ledger = row.ledger, bucket = row.bucket;
-  const cells = [
-    ['Console', `${row.status} at the latest of ${fmt(row.submissions)} submission${row.submissions === 1 ? '' : 's'}` +
-      (row.failedStage ? ` / failed at ${esc(row.failedStage)}` : '')],
-    ['Evaluation ledger', ledger.cycles
-      ? `${fmt(ledger.cycles)} cycle${ledger.cycles === 1 ? '' : 's'}, up to attempt ${fmt(ledger.attempts)} / ledger says ${esc(ledger.statuses.join(', ') || 'nothing')}` +
-        (ledger.disagrees ? ' <strong class="negative">— disagrees with the console</strong>' : '')
-      : 'No evaluation cycles recorded for this task'],
-    ['Delivered', bucket.folders
-      ? `${fmt(bucket.folders)} folder${bucket.folders === 1 ? '' : 's'} in ${esc(bucket.cohorts.join(', '))} / ${fmt(bucket.archives)} archive${bucket.archives === 1 ? '' : 's'} / ${esc(bucket.domain)}${bucket.connector ? ' / connector' : ''}`
-      : 'Nothing in the accepted cohorts of the bucket'],
-    ['Owner', row.owner
-      ? `${esc(row.owner)}${row.onRoster ? ` / ${esc(row.trainer.team || 'no team')}` : ' <strong class="negative">— not on the roster</strong>'}`
-      : 'The console records no submitter'],
-  ];
-  return `<tr class="drill"><td colspan="8"><dl class="drill-grid">` +
-    cells.map(([term, detail]) => `<dt>${esc(term)}</dt><dd>${detail}</dd>`).join('') +
-    `</dl></td></tr>`;
-}
-
-function renderPipelineRows(rows) {
-  const pages = Math.max(1, Math.ceil(rows.length / 50));
-  pipelinePage = Math.min(Math.max(pipelinePage, 0), pages - 1);
-  const from = pipelinePage * 50;
-  const page = rows.slice(from, from + 50);
-  setText('pipelinePage', rows.length
-    ? `${fmt(from + 1)}-${fmt(from + page.length)} of ${fmt(rows.length)} tasks / page ${fmt(pipelinePage + 1)} of ${fmt(pages)}`
-    : 'No tasks match these filters');
-  byId('pipelinePrevious').disabled = pipelinePage === 0;
-  byId('pipelineNext').disabled = pipelinePage >= pages - 1;
-  byId('pipelineRows').innerHTML = page.map(row => {
-    const open = expandedRows.has(row.key);
-    return `<tr class="drill-head${open ? ' is-open' : ''}" data-key="${esc(row.key)}">
-        <td><button class="drill-toggle" aria-expanded="${open}" aria-label="Evidence for ${esc(row.name)}">${open ? '\u2212' : '+'}</button></td>
-        <td><div class="person"><strong>${esc(row.name)}</strong><span>${row.legacy ? 'Legacy' : 'Live'}${row.ledger.disagrees ? ' / ledger disagrees' : ''}</span></div></td>
-        <td><span class="pill" data-status="${esc(row.status)}">${esc(row.status)}</span></td>
-        <td>${esc(row.trainer?.name || row.owner || 'No owner')}${row.owner && !row.onRoster ? '<small>not on roster</small>' : ''}</td>
-        <td>${esc(row.taskType.replace(' tasks', ''))}</td>
-        <td>${esc(row.day || 'Not recorded')}</td>
-        <td class="num">${fmt(row.ledger.attempts || row.submissions)}</td>
-        <td class="num">${fmt(row.bucket.folders)}</td>
-      </tr>` + (open ? drilldown(row) : '');
-  }).join('') || '<tr><td colspan="8" class="empty">No tasks match these filters.</td></tr>';
-}
 
 // The Harbor Console's own counters count individual submissions; this page
 // counts tasks, at their latest submission. Both are correct and they differ by
@@ -1002,59 +1147,6 @@ async function loadExplorer(force = false) {
   }
 }
 
-function renderConsoleBasis(result) {
-  const node = byId('consoleBasis');
-  if (!node) return;
-  const repeats = result.repeatTasks;
-  const order = ['Accepted', 'Rejected', 'Failed', 'Running', 'Queued', 'Legacy accepted'];
-  const names = [...new Set([...order, ...Object.keys(result.submissionStatuses), ...Object.keys(result.statuses)])]
-    .filter(name => result.submissionStatuses[name] || result.statuses[name]);
-  node.innerHTML = `
-    <p class="basis-lede">The console counts <b>submissions</b>. This page counts <b>tasks</b>, each at its latest
-      submission. ${fmt(result.submissions)} submissions collapse to ${fmt(result.rows.length)} tasks:
-      ${fmt(repeats)} task${repeats === 1 ? ' was' : 's were'} submitted more than once, adding
-      ${fmt(result.submissions - result.rows.length)} extra rows the console shows and this page does not.</p>
-    <div class="table-wrap">
-      <table class="grid basis-table">
-        <thead><tr><th scope="col">Status</th><th scope="col" class="num">Submissions (console)</th><th scope="col" class="num">Tasks (this page)</th></tr></thead>
-        <tbody>${names.map(name => `<tr><th scope="row">${esc(name)}</th>
-          <td class="num">${fmt(result.submissionStatuses[name] || 0)}</td>
-          <td class="num">${fmt(result.statuses[name] || 0)}</td></tr>`).join('')}
-        <tr class="basis-total"><th scope="row">All</th><td class="num">${fmt(result.submissions)}</td><td class="num">${fmt(result.rows.length)}</td></tr>
-        </tbody>
-      </table>
-    </div>
-    <p class="muted footnote">Compare the left column against the console's cards. Its filter starts at a time of
-      day where ours starts at midnight, so the console reads slightly lower for the same period.${
-        (dateRange.start || dateRange.end || pipelineFilters().status || pipelineFilters().trainer)
-          ? ' While a date range or filter is applied these two columns are indicative only: a task is selected on its latest submission, so earlier submissions of a task that has since moved on are not counted here.'
-          : ''}</p>`;
-}
-
-function renderPipeline(resetPage = true) {
-  if (resetPage) pipelinePage = 0;
-  if (!pipelineRowsModel.length) {
-    setText('pipelineSourceStatus', consoleLive ? 'Building...' : 'No console pull found. Run tools/console-pull.js on the signed-in console tab and drop harbor-console-live.json into assets/.');
-    byId('pipelineStats').innerHTML = '';
-    byId('pipelineRows').innerHTML = '<tr><td colspan="8" class="empty">Waiting for the console pull.</td></tr>';
-    return;
-  }
-  const filters = pipelineFilters();
-  const result = window.filterPipeline(pipelineRowsModel, filters);
-  const statuses = Object.entries(result.statuses).sort((a, b) => b[1] - a[1]);
-  byId('pipelineStats').innerHTML = statuses
-    .map(([status, count]) => `<article class="status-card" data-status="${esc(status)}"><span>${esc(status)}</span><strong>${fmt(count)}</strong></article>`)
-    .join('') || '<p class="empty">No tasks match these filters.</p>';
-  const cover = consoleLive.coverage || {};
-  setText('pipelineSourceStatus', `Console pull ${ageOf(consoleLive.pulledAt)} / ${fmt(cover.tasks)} submissions covering ${cover.from} to ${cover.to} / GCS scan ${gcsPipeline ? gcsPipeline.generatedAt.slice(0, 16).replace('T', ' ') : 'not loaded'}`);
-  setText('consoleNote', `Status comes from the Harbor Console. ${fmt(result.population.length)} task${result.population.length === 1 ? '' : 's'} in scope, ${fmt(pipelineRowsModel.length - result.population.length)} out of scope.`);
-  renderConsoleBasis(result);
-  setText('pipelineAudit', `${fmt(result.rows.length)} of ${fmt(result.population.length)} tasks shown / ${fmt(result.delivered)} have a folder in the bucket / ${fmt(result.disagreements)} where the evaluation ledger disagrees with the console / ${fmt(result.offRoster)} owners not on the roster / ${fmt(result.unowned)} with no owner recorded.`);
-  setText('consoleReconcile', `The console is the source of truth for status. Our bucket scan holds ${fmt(finalisationRows.length)} accepted folders, which is a count of what is stored rather than what was accepted - the prefix is pruned while the console keeps the record.`);
-  renderPipelineTimeline(result.rows, statuses);
-  renderPipelineRows(result.rows);
-}
-
 // Attainment against the daily commitment. A sequential ramp, because the value
 // is a magnitude; a day with no commitment is not 0% and gets its own neutral.
 const ATTAINMENT_BANDS = [
@@ -1108,22 +1200,40 @@ function renderPlan() {
 }
 
 function wireEvents() {
-  byId('pipelinePrevious').addEventListener('click',()=>{pipelinePage--;renderPipeline(false);});
-  byId('pipelineNext').addEventListener('click',()=>{pipelinePage++;renderPipeline(false);});
-  byId('refreshGcsPipeline').addEventListener('click', refreshGcsPipeline);
-  byId('refreshConsole').addEventListener('click', async () => {
-    const button = byId('refreshConsole');
-    button.disabled = true;
-    const before = consoleLive?.pulledAt || null;
-    await loadConsoleLive();
-    if (finalisationSource) loadFinalisation();
-    const fresh = consoleLive?.pulledAt && consoleLive.pulledAt !== before;
-    setText('consoleNote', (consoleLive
-      ? (fresh ? 'Loaded a newer console pull. ' : 'Re-read the console pull; it has not changed. ')
-      : 'No console pull found. ') +
-      'The console is behind IAP, so the page cannot fetch it directly: run tools/console-pull.js on the signed-in console tab, then drop harbor-console-live.json into assets/.');
-    setTimeout(renderPipeline, 4000);
-    button.disabled = false;
+  byId('truthRefresh')?.addEventListener('click', rebuildTruth);
+  TRUTH_FILTERS.forEach(id => byId(id)?.addEventListener('change', () => { truthPage = 0; renderTruth(); }));
+  byId('tSearch')?.addEventListener('input', () => { truthPage = 0; renderTruth(); });
+  byId('tReset')?.addEventListener('click', () => {
+    [...TRUTH_FILTERS, 'tSearch'].forEach(id => { if (byId(id)) byId(id).value = ''; });
+    truthPage = 0; renderTruth();
+  });
+  byId('truthPrev')?.addEventListener('click', () => { truthPage -= 1; renderTruth(); });
+  byId('truthNext')?.addEventListener('click', () => { truthPage += 1; renderTruth(); });
+  byId('truthChainClose')?.addEventListener('click', () => {
+    openChain = null; byId('truthChainPanel').hidden = true;
+  });
+  byId('truthFigures')?.addEventListener('click', event => {
+    const card = event.target.closest('[data-chain]');
+    if (!card) return;
+    const label = card.dataset.chain;
+    if (openChain === label) { openChain = null; byId('truthChainPanel').hidden = true; return; }
+    renderChain(label, Object.values(truthFilters()).some(Boolean));
+    byId('truthChainPanel').scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  });
+  byId('truthRows')?.addEventListener('click', event => {
+    const button = event.target.closest('.drill-toggle');
+    if (!button) return;
+    const panel = byId(button.getAttribute('aria-controls'));
+    const open = button.getAttribute('aria-expanded') === 'true';
+    button.setAttribute('aria-expanded', String(!open));
+    button.textContent = open ? '+' : '\u2212';
+    if (panel) panel.hidden = open;
+  });
+  ['cState', 'cOwner'].forEach(id => byId(id)?.addEventListener('change', renderCarried));
+  byId('cSearch')?.addEventListener('input', renderCarried);
+  byId('cReset')?.addEventListener('click', () => {
+    ['cState', 'cOwner', 'cSearch'].forEach(id => { if (byId(id)) byId(id).value = ''; });
+    renderCarried();
   });
   const ledgerFilters = ['ledgerPayment','ledgerType','ledgerValidity','ledgerDuplicates'];
   const resetLedgerPage = () => { ledgerPage = 0; renderPayoutLedger(); };
@@ -1154,7 +1264,7 @@ function wireEvents() {
   byId('globalSearch').addEventListener('input', event => {
     const active = document.querySelector('.viewnav-tab.is-active')?.dataset.view;
     const target = VIEW_SEARCH[active];
-    if (!target) return;
+    if (!target || !byId(target)) return;
     byId(target).value = event.target.value;
     byId(target).dispatchEvent(new Event('input'));
   });
@@ -1212,23 +1322,6 @@ function wireEvents() {
     byId('dateStart').value = byId('dateEnd').value = byId('datePreset').value = '';
     applyRange();
   });
-  PIPELINE_CONTROLS.forEach(id => byId(id).addEventListener('change', () => {
-    if (id === 'pipelineLegacy') populateFilters();
-    renderPipeline();
-  }));
-  byId('pipelineSearch').addEventListener('input', () => renderPipeline());
-  byId('clearPipelineDates').addEventListener('click', () => {
-    [...PIPELINE_CONTROLS, 'pipelineSearch'].forEach(id => byId(id).value = '');
-    populateFilters();
-    renderPipeline();
-  });
-  byId('pipelineRows').addEventListener('click', event => {
-    const row = event.target.closest('.drill-head');
-    if (!row) return;
-    const key = row.dataset.key;
-    if (expandedRows.has(key)) expandedRows.delete(key); else expandedRows.add(key);
-    renderPipeline(false);
-  });
   const popover = byId('infoPopover');
   let openButton = null;
   function hideInfo() {
@@ -1280,15 +1373,16 @@ function wireEvents() {
 }
 
 // The topbar search drives whichever view owns a search box.
-const VIEW_SEARCH = {payouts: 'personSearch', pipeline: 'pipelineSearch'};
+const VIEW_SEARCH = {payouts: 'personSearch', pipeline: 'tSearch', carried: 'cSearch'};
 
 function syncSearch(viewName) {
   const target = VIEW_SEARCH[viewName];
   const box = byId('globalSearch');
   box.closest('.search').classList.toggle('is-off', !target);
   box.disabled = !target;
-  box.placeholder = target ? (viewName === 'payouts' ? 'Search a person, team or manager' : 'Search a task, owner or failed stage') : 'Search is available on Payouts and Pipeline';
-  box.value = target ? byId(target).value : '';
+  box.placeholder = target ? (viewName === 'payouts' ? 'Search a person, team or manager' : 'Search a task, trainer or reason') : 'Search is available on Payouts and Pipeline';
+  // A view's search box may not exist yet while its data is still loading.
+  box.value = target && byId(target) ? byId(target).value : '';
 }
 
 function init() {
@@ -1296,10 +1390,8 @@ function init() {
   renderTopPendingCards();
   renderDonut();
   renderBenchCards();
-  populateFilters();
   renderTrainerRows();
   renderTeams();
-  renderPipeline();
   renderPlan();
   wireEvents();
   applyRange();
@@ -1309,6 +1401,7 @@ function init() {
   loadHarborConsole();
   loadConsoleLive();
   loadGcsPipeline();
+  loadTruth();
 }
 
 init();
