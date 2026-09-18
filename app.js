@@ -271,12 +271,44 @@ async function loadTruth() {
 // Rebuild from the bucket on demand. The page cannot read GCS itself, so this
 // asks the local helper to run the chain on the Harbor VM and fetch the result.
 // Published builds have no helper, so there the button re-reads the asset.
+// After dispatching the workflow, poll for a newer asset rather than making
+// anyone reload. Gives up after ten minutes so it cannot poll forever.
+let rebuildWatcher = null;
+function watchForRebuild() {
+  if (rebuildWatcher) clearInterval(rebuildWatcher);
+  const started = truth?.generatedAt || '';
+  const until = Date.now() + 10 * 60 * 1000;
+  rebuildWatcher = setInterval(async () => {
+    if (Date.now() > until) { clearInterval(rebuildWatcher); rebuildWatcher = null; return; }
+    try {
+      const response = await fetch(`assets/pipeline-truth.json?t=${Date.now()}`, {cache: 'no-store'});
+      if (!response.ok) return;
+      const payload = await response.json();
+      if (payload.generatedAt && payload.generatedAt !== started) {
+        clearInterval(rebuildWatcher);
+        rebuildWatcher = null;
+        truth = window.prepareTruth(payload);
+        populateTruthFilters();
+        renderTruth();
+        renderCarried();
+        setText('truthStatus', `New data published ${new Date(payload.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}.`);
+      }
+    } catch { /* keep waiting; a deploy in flight can serve a partial response */ }
+  }, 30000);
+}
+
 async function rebuildTruth() {
   const button = byId('truthRefresh');
   const local = ['127.0.0.1', 'localhost'].includes(location.hostname);
   if (!local) {
-    setText('truthStatus', 'Re-reading the published asset. A live rebuild needs the local helper (tools/truth_server.py), which reads GCS through the Harbor VM.');
-    await loadTruth();
+    // A published page has no helper and cannot hold a credential, so the
+    // rebuild runs as a GitHub Action that asks the Harbor VM for the result.
+    // The page opens that control, then watches for the new asset to land.
+    window.open('https://github.com/rahuls17-cell/shannon-ops-review/actions/workflows/refresh-truth.yml',
+      '_blank', 'noopener,noreferrer');
+    setText('truthStatus', 'Choose Run workflow in the tab that just opened. The rebuild takes about a minute; ' +
+      'this page checks for the new data every 30 seconds and loads it automatically.');
+    watchForRebuild();
     return;
   }
   const label = button.textContent;

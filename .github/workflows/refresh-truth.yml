@@ -1,0 +1,140 @@
+name: Refresh derived pipeline
+# Rebuilds assets/pipeline-truth.json from gs://obi-harbor-pipeline and deploys.
+#
+# The dashboard cannot read GCS itself, and the credentials live only on the
+# Harbor VM, so the work happens there. This job asks the VM for the result over
+# a key that is pinned to one script (tools/vm-export.sh) and can do nothing
+# else - no shell, no forwarding, no arbitrary commands.
+#
+# The chain gates itself: if reconcile.py fails an invariant the VM exits
+# non-zero and sends nothing, so this job cannot publish unreconciled figures.
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: shannon-gcs-refresh      # shared with refresh-gcs so the two never overlap
+  cancel-in-progress: false
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Rebuild on the VM and fetch the result
+        env:
+          SSH_KEY: ${{ secrets.SHANNON_REFRESH_KEY }}
+          SSH_HOST_KEY: ${{ secrets.SHANNON_REFRESH_HOST_KEY }}
+        run: |
+          umask 077
+          mkdir -p ~/.ssh
+          printf '%s\n' "$SSH_KEY" > ~/.ssh/shannon
+          printf '%s\n' "$SSH_HOST_KEY" > ~/.ssh/known_hosts
+          trap 'rm -f ~/.ssh/shannon' EXIT
+          ssh -T -i ~/.ssh/shannon -p 2222 -o BatchMode=yes -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=30 -o ServerAliveInterval=30 \
+              root@35.253.35.165 truth | gzip -d > assets/pipeline-truth.json.new
+
+          # Refuse anything that does not carry its own passing reconciliation,
+          # a partition over the states, and a chain on every figure.
+          python3 - <<'CHECK'
+          import json, pathlib, sys
+          p = json.loads(pathlib.Path('assets/pipeline-truth.json.new').read_text(encoding='utf-8'))
+          rows = p['tasks']
+          if not p.get('reconciles'):
+              sys.exit('asset did not pass its own reconciliation')
+          if not rows:
+              sys.exit('asset carries no rows')
+          states = {}
+          for r in rows:
+              states[r['state']] = states.get(r['state'], 0) + 1
+          if sum(states.values()) != len(rows):
+              sys.exit('states do not partition the population')
+          for f in p['figures']:
+              counts = [s['count'] for s in f['steps']]
+              if not counts or counts[-1] != f['value']:
+                  sys.exit(f"figure {f['label']!r} has no chain ending at its value")
+              if any(a < b for a, b in zip(counts, counts[1:])):
+                  sys.exit(f"figure {f['label']!r} has a chain that grows")
+          print(p['generatedAt'], len(rows), 'rows',
+                {f['label']: f['value'] for f in p['figures'][:5]})
+          CHECK
+          mv assets/pipeline-truth.json.new assets/pipeline-truth.json
+
+      - name: Commit the rebuilt asset
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          # Regenerated wholesale, so there is nothing to merge: re-apply it on
+          # top of origin/main rather than rebasing it onto a moved branch.
+          cp assets/pipeline-truth.json "$RUNNER_TEMP/pipeline-truth.json"
+          pushed=0
+          for attempt in 1 2 3; do
+            git fetch origin main
+            git reset --hard origin/main
+            cp "$RUNNER_TEMP/pipeline-truth.json" assets/pipeline-truth.json
+            git add assets/pipeline-truth.json
+            if git diff --cached --quiet; then
+              echo "asset is identical to main; nothing to commit"
+              pushed=1
+              break
+            fi
+            git commit -m "Refresh derived pipeline"
+            if git push origin HEAD:main; then
+              pushed=1
+              break
+            fi
+            echo "push raced with another commit; retrying ($attempt/3)"
+          done
+          if [ "$pushed" != 1 ]; then
+            echo "could not push the rebuilt asset after 3 attempts"
+            exit 1
+          fi
+
+      - name: Prepare published files
+        run: |
+          mkdir -p _site
+          cp index.html app.js styles.css _site/
+          cp sources.js finalisation.js pipeline-view.js truth.js payout-ledger.js explorer.js _site/
+          cp -r assets _site/
+          # Pages caches these, so a returning visitor would keep running the
+          # previous build's JavaScript against the new data. Stamp every local
+          # asset URL with the commit so each deploy is a fresh URL.
+          python3 - <<'STAMP'
+          import os, pathlib, re
+          version = os.environ.get('GITHUB_SHA', 'dev')[:12]
+          page = pathlib.Path('_site/index.html')
+          html = page.read_text(encoding='utf-8')
+          def bust(match):
+              attr, url = match.group(1), match.group(2)
+              if url.startswith(('http://', 'https://', '//', 'data:')) or '?' in url:
+                  return match.group(0)
+              return attr + '="' + url + '?v=' + version + '"'
+          pattern = re.compile(r'(src|href)="([^"]+\.(?:js|css))"')
+          html, n = pattern.subn(bust, html)
+          page.write_text(html, encoding='utf-8')
+          print('stamped ' + str(n) + ' local asset URLs with v=' + version)
+          STAMP
+          # Fail the deploy rather than publish a page whose scripts 404.
+          python3 - <<'GUARD'
+          import re, sys, pathlib
+          html = pathlib.Path('index.html').read_text(encoding='utf-8')
+          missing = [src for src in re.findall(r'<script src="([^"]+)"', html)
+                     if not (pathlib.Path('_site') / src).exists()]
+          if missing:
+              sys.exit('not published but referenced by index.html: ' + ', '.join(missing))
+          print('all scripts referenced by index.html are present in _site')
+          GUARD
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
