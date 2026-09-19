@@ -476,6 +476,13 @@ async function rebuildTruth() {
   try {
     const response = await fetch('/api/refresh-truth', {method: 'POST', cache: 'no-store'});
     const body = await response.json().catch(() => ({}));
+    if (response.status === 409 && body.busy) {
+      // Someone else is already rebuilding - another tab, or a second click.
+      // Not a failure, so do not dress it as one; wait for the result instead.
+      setText('truthStatus', `${body.error} This page will load the new data when it lands.`);
+      watchForRebuild();
+      return;
+    }
     if (response.status === 409) {
       // The chain refused to publish itself. Keep showing the old data and say why.
       setText('truthStatus', `${body.error} Nothing on this page has changed. ${String(body.detail || '').split('BUILD BLOCKED:').pop().trim().slice(0, 300)}`);

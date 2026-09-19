@@ -23,6 +23,7 @@ import json
 import shlex
 import subprocess
 import sys
+import threading
 import time
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -33,6 +34,14 @@ VM_KEY = '~/.ssh/id_ed25519_gcp_taskmining'
 VM_DIR = '/root/harbor_gce/delivery-candidates-20260908-codex/pipeline-dashboard'
 TOOLS = Path(__file__).resolve().parent
 TIMEOUT = 600
+
+# Requests are served on threads, so two rebuilds can be in flight at once -
+# two tabs, or a double-click that beats the button disabling itself. They would
+# share one working directory on the VM and overwrite each other's step files,
+# then race to scp onto the same asset, and the result would fail its own
+# reconciliation for no visible reason. One at a time; the second caller is told
+# so rather than being queued behind a job it cannot see.
+REBUILDING = threading.Lock()
 
 
 def ssh(command, *, capture=True):
@@ -59,6 +68,14 @@ class Handler(SimpleHTTPRequestHandler):
         host = (self.headers.get('Host') or '').split(':')[0]
         if host not in ('127.0.0.1', 'localhost'):
             self._json(403, {'ok': False, 'error': 'This endpoint is localhost only.'})
+            return
+
+        # Refuse rather than wait: a queued caller would hold its request open
+        # for the length of someone else's rebuild and then start its own.
+        if not REBUILDING.acquire(blocking=False):
+            self._json(409, {'ok': False, 'busy': True,
+                             'error': 'A rebuild is already running. Wait for it to '
+                                      'finish, then try again.'})
             return
 
         root = Path(self.server.root).resolve()
@@ -111,6 +128,10 @@ class Handler(SimpleHTTPRequestHandler):
             self._json(504, {'ok': False, 'error': f'The rebuild ran past {TIMEOUT}s.'})
         except Exception as exc:                                  # noqa: BLE001
             self._json(500, {'ok': False, 'error': str(exc)[:400]})
+        finally:
+            # Every path above returns or raises inside the try, so the release
+            # belongs here: a rebuild that fails must not lock out the next one.
+            REBUILDING.release()
 
     # Everything served here is a working file being edited under the page.
     # Data was already exempt from caching; the source was not, so a reload
