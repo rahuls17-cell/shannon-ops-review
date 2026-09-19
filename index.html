@@ -298,18 +298,72 @@
           </header>
           <div class="sourcestrip" data-sources="delivery"></div>
           <p class="rangeecho" data-range="delivery"></p>
-          <section class="panel">
-            <header class="panel-head"><div><h2>Teams and managers</h2><p class="panel-note">Grouped by roster team. Accepted and pending carry the Payouts definitions.</p></div></header>
-            <div class="panel-body"><div id="teamGrid" class="team-grid"></div></div>
-          </section>
+          <p class="provenance" id="auditStatus">Loading the task audit&hellip;</p>
+
+          <div id="auditFigures" class="status-grid"></div>
+
           <section class="panel">
             <header class="panel-head">
               <div>
-                <h2>Plan against actual<button class="why" data-info="workbook" aria-label="Scope of the plan figures">?</button></h2>
-                <p class="panel-note">Workbook-wide daily mining commitment. Not person-level, and not affected by filters on other tabs.</p>
+                <h2>Composition<button class="why" data-info="auditComposition" aria-label="How these are grouped">?</button></h2>
+                <p class="panel-note">Every breakdown follows the filters below.</p>
               </div>
             </header>
-            <div class="panel-body"><div id="planCharts" class="plan-grid"></div></div>
+            <div class="panel-body">
+              <div class="breakdowns">
+                <figure class="breakdown"><figcaption>Category</figcaption><div id="auditCategory"></div></figure>
+                <figure class="breakdown"><figcaption>GLM across four trials<button class="why" data-info="auditGlm" aria-label="What the GLM bucket means">?</button></figcaption><div id="auditGlm"></div></figure>
+                <figure class="breakdown"><figcaption>Batch</figcaption><div id="auditBatch"></div></figure>
+                <figure class="breakdown"><figcaption>Attribution source<button class="why" data-info="auditSource" aria-label="How a trainer was attributed">?</button></figcaption><div id="auditSource"></div></figure>
+              </div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Task inventory</h2>
+                <p class="panel-note" id="auditCaveats"></p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>Batch</span><select id="aBatch"></select></label>
+                <label class="field"><span>Category</span><select id="aCategory"></select></label>
+                <label class="field"><span>Type</span><select id="aType"></select></label>
+                <label class="field"><span>Difficulty<button class="why" data-info="auditDifficulty" aria-label="What difficulty means here">?</button></span><select id="aDifficulty"></select></label>
+                <label class="field"><span>GLM</span><select id="aGlm"></select></label>
+                <label class="field"><span>Acceptance<button class="why" data-info="auditAcceptance" aria-label="Where acceptance comes from">?</button></span><select id="aAcceptance"></select></label>
+                <label class="field"><span>Priority</span><select id="aPriority"></select></label>
+                <label class="field"><span>Trainer</span><select id="aTrainer"></select></label>
+                <label class="field"><span>Flagged<button class="why" data-info="auditFlags" aria-label="What the flags mean">?</button></span><select id="aFlagged"><option value="">Any</option><option value="yes">Flagged</option><option value="no">Not flagged</option></select></label>
+                <label class="field"><span>Search</span><input id="aSearch" type="search" placeholder="Task, SHA or trainer" /></label>
+                <button id="aReset" class="ghost">Clear filters</button>
+              </div>
+            </header>
+            <div class="panel-body">
+              <p class="muted footnote" id="auditAudit"></p>
+              <div class="table-wrap">
+                <table class="grid">
+                  <thead>
+                    <tr>
+                      <th scope="col">Task</th>
+                      <th scope="col">Batch</th>
+                      <th scope="col">Category</th>
+                      <th scope="col">GLM</th>
+                      <th scope="col">Difficulty</th>
+                      <th scope="col">Trainer</th>
+                      <th scope="col">Acceptance</th>
+                      <th scope="col" class="num">MB</th>
+                    </tr>
+                  </thead>
+                  <tbody id="auditRows"></tbody>
+                </table>
+              </div>
+              <div class="pager">
+                <button id="auditPrev" class="ghost">Previous</button>
+                <span id="auditPage" role="status"></span>
+                <button id="auditNext" class="ghost">Next</button>
+              </div>
+            </div>
           </section>
         </section>
 
@@ -366,6 +420,7 @@
                 <label class="field"><span>Gate era<button class="why" data-info="gateEra" aria-label="What the gate eras are">?</button></span><select id="tGate"></select></label>
                 <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What the finding filter searches">?</button></span><select id="tFinding"></select></label>
                 <label class="field"><span>Delivery</span><select id="tDelivery"><option value="">Any</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting KESTREL re-gate</option><option value="none">No package</option></select></label>
+                <label class="field"><span>Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><button class="why" data-info="truthVersions" aria-label="Why versions are counted once">1x</button></span><select id="tDelivered"><option value="">Any</option><option value="yes">Already delivered</option><option value="ready">Ready for delivery</option><option value="no">Not delivered</option></select></label>
                 <label class="field"><span>Carried over</span><select id="tCarried"><option value="">Any</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
                 <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">Any</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
                 <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">Any</option><option value="yes">Flagged as duplicate</option><option value="likely">Likely duplicate</option><option value="no">Not flagged</option></select></label>
@@ -376,13 +431,59 @@
               </div>
             </header>
             <div class="panel-body">
+              <!-- Only shown under the Ready for delivery filter: a manifest cut
+                   from any other selection would claim tasks that are rejected,
+                   have no collectable package, or have already gone out. -->
+              <div id="manifestBar" class="manifest-bar" hidden>
+                <div class="manifest-head">
+                  <h3>Create a delivery manifest<button class="why" data-info="manifest" aria-label="How the manifest is built">?</button></h3>
+                  <p id="manifestNote" class="panel-note"></p>
+                </div>
+                <div class="manifest-controls">
+                  <div class="manifest-sizes" role="group" aria-label="Manifest size">
+                    <button class="ghost size-chip" data-size="60">60</button>
+                    <button class="ghost size-chip" data-size="120">120</button>
+                    <button class="ghost size-chip" data-size="240">240</button>
+                    <button class="ghost size-chip" data-size="0">All</button>
+                  </div>
+                  <label class="field"><span>Tasks</span><input id="manifestSize" type="number" min="1" step="1" value="60" /></label>
+                  <label class="field"><span>Exclude a previous manifest</span><input id="manifestExclude" type="file" accept="application/json,.json" /></label>
+                  <button id="manifestClear" class="ghost" hidden>Drop exclusions</button>
+                  <button id="manifestBuild" class="primary">Create manifest.json</button>
+                </div>
+                <p id="manifestSummary" class="muted footnote" role="status"></p>
+              </div>
               <p class="muted footnote" id="truthAudit"></p>
+              <!-- Shown only while the Delivered filter is on: what the join
+                   could not account for, so the gap between the Delivery tab's
+                   412 and what appears here is never left unexplained. -->
+              <p class="muted footnote" id="truthJoinNote" hidden>
+                <span id="truthJoinText"></span>
+                <button id="unmatchedShow" class="linkish" aria-expanded="false" aria-controls="unmatchedPanel"></button>
+              </p>
+              <section id="unmatchedPanel" class="unmatched" hidden aria-label="Audited tasks not found in the bucket">
+                <p class="panel-note" id="unmatchedNote"></p>
+                <div class="table-wrap">
+                  <table class="grid">
+                    <thead>
+                      <tr>
+                        <th scope="col">Audited task</th>
+                        <th scope="col">Batch</th>
+                        <th scope="col">Audit verdict</th>
+                        <th scope="col">Why it could not be found</th>
+                      </tr>
+                    </thead>
+                    <tbody id="unmatchedRows"></tbody>
+                  </table>
+                </div>
+              </section>
               <div class="table-wrap">
                 <table class="grid">
                   <thead>
                     <tr>
                       <th scope="col"></th>
                       <th scope="col">Task</th>
+                      <th scope="col">Flags<button class="why" data-info="truthFlags" aria-label="What the flag codes mean">?</button></th>
                       <th scope="col">State</th>
                       <th scope="col">Trainer</th>
                       <th scope="col">Decided</th>
@@ -393,6 +494,11 @@
                   <tbody id="truthRows"></tbody>
                 </table>
               </div>
+              <!-- The flags used to sit next to the task name and pushed it out
+                   of the column; several rows showed no name at all. They have a
+                   column of their own now, and this says what the codes mean so
+                   the badges do not have to spell it out on every row. -->
+              <p class="flag-legend" id="truthFlagLegend"></p>
               <div class="pager">
                 <button id="truthPrev" class="ghost">Previous</button>
                 <span id="truthPage" role="status"></span>
@@ -511,6 +617,8 @@
     <script src="finalisation.js"></script>
     <script src="pipeline-view.js"></script>
     <script src="truth.js"></script>
+    <script src="manifest.js"></script>
+    <script src="delivery-audit.js"></script>
     <script src="payout-ledger.js"></script>
     <script src="explorer.js"></script>
     <script src="app.js"></script>

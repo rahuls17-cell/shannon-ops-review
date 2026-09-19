@@ -14,7 +14,13 @@ let truth = null;
 let truthPage = 0;
 let openChain = null;
 const TRUTH_PAGE_SIZE = 40;
-const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tCarried',
+let audit = null;
+let auditPage = 0;
+const AUDIT_PAGE_SIZE = 40;
+const AUDIT_FILTERS = ['aBatch', 'aCategory', 'aType', 'aDifficulty', 'aGlm',
+  'aAcceptance', 'aPriority', 'aTrainer', 'aFlagged'];
+
+const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tCarried',
   'tConfidence', 'tDuplicate', 'tDomain', 'tOwner'];
 let explorer = null;
 let explorerPath = '';
@@ -67,6 +73,16 @@ const infoCopy = {
   consoleCounts: 'The Harbor Console is the source of truth for finalisation. Its counts are shown here as pulled, not recomputed. Our bucket scan lists what is physically stored under tasks/, and that prefix is reorganised and pruned - of 194 folders that left the accepted cohorts overnight, 172 were still in the console and 171 still accepted. So a folder count under-reports accepted work and the console figure is the one to quote. Legacy is the console\u2019s own bucket for anything before 5 September. The console sits behind IAP, so this is a pull through an authenticated browser session rather than a live read.',
   basis: 'The Harbor Console lists one row per submission, and its cards count those rows. This page lists one row per task, taken at its latest submission, because a task resubmitted five times is still one piece of work and counting it five times would overstate delivery and pay. Neither number is wrong: subtract the re-submissions from the console figure and you get this page. The residual few are the console filter starting at a time of day where ours starts at midnight, and anything submitted since the last pull.',
   explorerScope: 'A metadata-only mirror of the delivery prefixes of the GCS bucket: the seven finalisation cohorts and the trainer evaluation records. It holds names, sizes and timestamps, never object contents, and it never writes to the bucket. The whole bucket is far larger - over 22 million objects and 9 million folders - which cannot be mirrored into a static page, so prefixes outside this scope are deliberately absent rather than silently empty.',
+  auditComposition: 'The audited batches broken down four ways. These are the 412 tasks the Computer Bench audit covered - batches 1 to 4.1 - not the whole bucket, so this is a different population from the Pipeline tab and the two will not add up to each other.',
+  auditGlm: 'How many of four OpenCode GLM trials solved the task. 0/4 means no trial solved it and 4/4 means every trial did; a task is a useful benchmark when some trials succeed and some fail, so the middle buckets are the valuable ones. This score exists only for audited tasks - the pipeline itself records no difficulty score.',
+  auditDifficulty: 'The audit workbook rating of Harder or Easier. It comes from the audit, not from Harbor: the pipeline records no difficulty field at all, which is why this rating exists nowhere else on this dashboard.',
+  auditAcceptance: 'Accepted, Rejected or Pending as recorded by the audit workbook, not by the GCS verdicts the Pipeline tab reads. The two are different sources judged at different times, so a task can read Accepted here and Rejected there. The status line above gives the date this snapshot was built.',
+  auditSource: 'How the task was attributed to a trainer. Accepted portal and Trainer records are direct. QC run owner is inferred from who ran the QC, and unverified means that inference was not confirmed. Contested means more than one trainer claims it, and Unattributed means nobody could be identified.',
+  auditFlags: 'Three quality caveats carried per task: contested owner - more than one trainer claims it; unverified - the attribution was inferred and not confirmed; version dependent - the result changes between task versions.',
+  manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. To cut a second round, load the first manifest back in and its tasks are left out.',
+  truthFlags: 'Short codes so the task name is never squeezed out of its column. DL - already delivered, covered by the Delivery tab. Times-N - the same task appears N times in the pipeline and is counted once while the Delivered filter is on. CK - check before shipping: the identifier names a task the audit already covers although the name does not match. DUP - another task shares its name and trainer, so it is probably the same work counted twice; red when the date and outcome match too. UM - unmerged: it arrived with no family id, so repeat runs of it may be counted separately. CO - carried over: first decided before the cut and settled after it. Hover any code for the full explanation for that row, and open the row with + for its evidence.',
+  truthVersions: 'The pipeline records one row per submission, not per task. 152 of the delivered rows arrived without a family id, so the pipeline never merged their repeat runs, and another 30 are recorded under an alias or a placeholder name - 534 rows for 367 real tasks. Setting this filter therefore counts tasks rather than rows: a task with several versions appears once, tagged with how many it has, which one is being shown and why. Nothing is dropped - the tag lists the other versions, and clearing the filter brings every row back.',
+  truthDelivered: 'Whether this task is one of the 412 already covered by the delivery audit on the Delivery tab. The two datasets share only the task name, so they are joined on it - exactly first, then with version and status suffixes such as -final or -v5 stripped, and never when that would pull in more than one task. The join was checked against the package hash on the 66 tasks that carry one, and agreed on all 66. Ready for delivery means accepted, package collectable at the current bar, and no match to anything already delivered. 93 audited tasks have no counterpart here at all, but only 2 of them are accepted, so the split is reliable for accepted work.',
   truthTasks: 'One row is one task, not one submission. Runs of the same task are grouped by the family the pipeline assigned them, and the row shows the canonical run: the one that got furthest, breaking ties on outcome and then on decision time. Every other run stays attached under the row. The State column carries the predicate that decided it, and the source is the verdict object it was read from.',
   finding: 'What the gate objected to. The filter searches every run of a task, so a task that tripped a check, was fixed and then accepted is still findable under that check. The row itself separates the two: the Findings line shows what the run behind the current verdict found, and names anything that came from an earlier run of the same task. An accepted task showing HARBOR-CHECK from an earlier run was not accepted despite failing - it failed, was fixed, and passed.',
   gateEra: 'Which gate judged the deciding run, taken from the bucket\'s own sentinel files rather than inferred. The gate switched from Opus to GLM-5.2 at 2026-09-13T20:05:59Z, KESTREL came on at 2026-09-15T03:40:49Z, and KESTREL was fully operating on both gates from 2026-09-16T05:06:54Z. Acceptances made by GLM-5.2 without KESTREL review were withdrawn on 16 September and are being re-gated.',
@@ -100,6 +116,7 @@ function renderEverything() {
   renderBenchCards();
   renderPlan();
   if (truth) { renderTruth(); renderCarried(); }
+  if (audit) renderAudit();
 }
 
 // The bucket is no longer a view of its own - it is the delivery evidence
@@ -251,11 +268,139 @@ function renderPayoutLedger() {
   }).join('') || '<tr><td colspan="6" class="empty">No ledger tasks match these filters.</td></tr>';
 }
 
+async function loadDeliveryAudit() {
+  try {
+    const response = await fetch(`assets/delivery-audit.json?t=${Date.now()}`, {cache: 'no-store'});
+    if (!response.ok) throw new Error(`asset returned ${response.status}`);
+    audit = window.prepareDeliveryAudit(await response.json());
+    populateAuditFilters();
+    renderAudit();
+  } catch (error) {
+    audit = null;
+    setText('auditStatus', `The task audit could not be loaded: ${error.message}. ` +
+      'Rebuild it with tools/build_delivery_audit.py.');
+  }
+  renderSources();
+}
+
+function auditFilters() {
+  return {
+    batch: byId('aBatch').value, category: byId('aCategory').value,
+    type: byId('aType').value, difficulty: byId('aDifficulty').value,
+    glm: byId('aGlm').value, acceptance: byId('aAcceptance').value,
+    priority: byId('aPriority').value, trainer: byId('aTrainer').value,
+    flagged: byId('aFlagged').value, search: byId('aSearch').value,
+  };
+}
+
+function populateAuditFilters() {
+  if (!audit) return;
+  const all = window.filterDeliveryAudit(audit.rows, {});
+  fillSelect('aBatch', all.byBatch, 'Any batch');
+  fillSelect('aCategory', all.byCategory, 'Any category');
+  fillSelect('aType', all.byType, 'Any type');
+  fillSelect('aDifficulty', all.byDifficulty, 'Any difficulty');
+  fillSelect('aGlm', all.byGlm, 'Any score');
+  fillSelect('aAcceptance', all.byAcceptance, 'Any acceptance');
+  fillSelect('aPriority', all.byPriority, 'Any priority');
+  fillSelect('aTrainer', all.byTrainer, 'Any trainer');
+}
+
+// A share-of-total bar per value, biggest first. Same shape for all four
+// breakdowns so they read as one family rather than four charts.
+function renderBreakdown(id, counts, total) {
+  const entries = Object.entries(counts || {}).sort((a, b) => b[1] - a[1]);
+  const top = entries[0]?.[1] || 1;
+  byId(id).innerHTML = entries.length ? entries.map(([label, n]) => `
+    <div class="bd-row" data-tip="${esc(label)}: ${fmt(n)} of ${fmt(total)} shown (${Math.round((n / (total || 1)) * 100)}%)">
+      <span class="bd-label">${esc(label)}</span>
+      <span class="bd-track"><span class="bd-fill" style="width:${Math.max((n / top) * 100, 2)}%"></span></span>
+      <span class="bd-value">${fmt(n)}</span>
+    </div>`).join('') : '<p class="empty">Nothing in this selection.</p>';
+}
+
+function renderAuditRows(rows) {
+  const pages = Math.max(Math.ceil(rows.length / AUDIT_PAGE_SIZE), 1);
+  auditPage = Math.min(auditPage, pages - 1);
+  const slice = rows.slice(auditPage * AUDIT_PAGE_SIZE, (auditPage + 1) * AUDIT_PAGE_SIZE);
+  byId('auditRows').innerHTML = slice.length ? slice.map(row => `
+    <tr>
+      <td><div class="taskcell">
+        <span class="taskname" title="${esc(row.task)}">${esc(row.task)}</span>
+        ${row.flags.map(f => `<span class="chip chip-warn" title="${esc(f)}">${esc(f)}</span>`).join('')}
+      </div></td>
+      <td>${esc(row.batch || '-')}</td>
+      <td>${esc(row.category || '-')}</td>
+      <td>${esc(row.glmBucket)}</td>
+      <td>${esc(row.difficulty || '-')}</td>
+      <td>${row.trainer
+        ? esc(row.trainer) + (row.resolvedFromPipeline
+            ? ` <span class="chip" title="The audit workbook left this ${esc(String(row.trainerFromWorkbook || 'unattributed').toLowerCase())}. This owner is the one the GCS verdicts record for the task, used only because the pipeline names exactly one.">from verdicts</span>`
+            : '')
+        : '<span class="muted">Unattributed</span>'}</td>
+      <td><span class="state state-${esc(String(row.acceptance || '').toLowerCase())}">${esc(row.acceptance || '-')}</span></td>
+      <td class="num">${row.size_mb ? Number(row.size_mb).toFixed(1) : '-'}</td>
+    </tr>`).join('') : '<tr><td colspan="8" class="empty">No tasks match these filters.</td></tr>';
+  setText('auditPage', `Page ${auditPage + 1} of ${pages} / ${fmt(rows.length)} tasks`);
+  byId('auditPrev').disabled = auditPage === 0;
+  byId('auditNext').disabled = auditPage >= pages - 1;
+}
+
+function renderAudit() {
+  if (!audit) return;
+  const result = window.filterDeliveryAudit(audit.rows, auditFilters());
+  const shown = result.rows.length;
+
+  byId('auditFigures').innerHTML = [
+    ['Audited tasks', fmt(shown), `of ${fmt(audit.rows.length)} in the audit`],
+    ['Accepted', fmt(result.accepted), 'by the audit workbook'],
+    ['Rejected', fmt(result.rejected), 'by the audit workbook'],
+    ['Pending', fmt(result.pending), 'no decision recorded'],
+    ['Connector tasks', fmt(result.connectors), `${Math.round((result.connectors / (shown || 1)) * 100)}% of those shown`],
+    ['Trainers', fmt(result.trainers), `${fmt(shown - result.attributed)} unattributed`],
+  ].map(([label, value, note]) => `
+    <div class="status-card">
+      <span class="status-card-label">${esc(label)}</span>
+      <span class="status-card-value">${value}</span>
+      <span class="status-card-note">${esc(note)}</span>
+    </div>`).join('');
+
+  renderBreakdown('auditCategory', result.byCategory, shown);
+  renderBreakdown('auditGlm', result.byGlm, shown);
+  renderBreakdown('auditBatch', result.byBatch, shown);
+  renderBreakdown('auditSource', result.bySource, shown);
+
+  const built = audit.dataGeneratedAt
+    ? new Date(audit.dataGeneratedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})
+    : 'unknown';
+  setText('auditStatus', `The Computer Bench task audit: ${fmt(audit.rows.length)} tasks across batches 1 to 4.1, built ${built}. ` +
+    'A different population from Pipeline, judged by the audit workbook rather than by the GCS verdicts, so the two will not agree task for task.');
+  setText('auditCaveats',
+    `${fmt(result.flagged)} of ${fmt(shown)} shown carry a quality flag. ` +
+    (result.resolvedFromPipeline
+      ? `${fmt(result.resolvedFromPipeline)} had no usable owner in the workbook and take one from `
+        + 'the GCS verdicts instead, marked on the row. '
+      : '') +
+    `Acceptance here is the workbook figure, recorded ${audit.statusGeneratedAt ? audit.statusGeneratedAt.slice(0, 10) : 'an unknown date'}; `
+    + 'the Pipeline tab reads the bucket instead.');
+  setText('auditAudit', `${fmt(shown)} of ${fmt(audit.rows.length)} tasks shown / ` +
+    `${fmt(result.harder)} rated Harder / ${fmt(result.trainers)} trainers / ${result.megabytes.toFixed(0)} MB.`);
+  renderAuditRows(result.rows);
+}
+
 async function loadTruth() {
   try {
     const response = await fetch(`assets/pipeline-truth.json?t=${Date.now()}`, {cache: 'no-store'});
     if (!response.ok) throw new Error(`asset returned ${response.status}`);
-    truth = window.prepareTruth(await response.json());
+    // The delivered index is optional: it needs a second dataset, and the
+    // pipeline is still worth reading without it. A missing index leaves the
+    // rows with no `delivered` attribute at all rather than a false one.
+    let deliveredIndex = null;
+    try {
+      const idx = await fetch(`assets/delivered-index.json?t=${Date.now()}`, {cache: 'no-store'});
+      if (idx.ok) deliveredIndex = await idx.json();
+    } catch (ignored) { deliveredIndex = null; }
+    truth = window.prepareTruth(await response.json(), deliveredIndex);
     populateTruthFilters();
     renderTruth();
     renderCarried();
@@ -346,6 +491,7 @@ function truthFilters() {
   return {
     state: byId('tState').value, gateEra: byId('tGate').value,
     finding: byId('tFinding').value, delivery: byId('tDelivery').value,
+    delivered: byId('tDelivered') ? byId('tDelivered').value : '',
     carriedOver: byId('tCarried').value, confidence: byId('tConfidence').value,
     domain: byId('tDomain').value, owner: byId('tOwner').value,
     duplicate: byId('tDuplicate').value,
@@ -464,13 +610,36 @@ function renderTruthFigures(result, filtered) {
     ['Running', result.running, 'in a stage'],
     ['Carried over', result.carriedOver, 'first decided before 5 Sept'],
   ];
+  // These two are the only figures on this tab without a published chain: they
+  // depend on the delivery audit, which the ingest chain never sees. They are
+  // rendered as plain cards rather than chain buttons so nothing offers an
+  // explanation it cannot actually produce; the derivation is in the tooltip.
+  const idx = truth?.deliveredIndex;
+  const extra = !idx ? '' : [
+    ['Already delivered', result.delivered,
+      result.collapsed ? `${fmt(result.delivered)} tasks, not submissions` : `${fmt(result.deliveredNames)} distinct names`,
+      `Matched against the ${fmt(idx.counts.auditedTasks)} tasks on the Delivery tab by name. ` +
+      `${fmt(idx.counts.auditedMatched)} of them were found in the pipeline; ` +
+      `${fmt(idx.counts.auditedUnmatched)} were not, of which only ${fmt(idx.counts.unmatchedAccepted)} are Accepted.`],
+    ['Ready for delivery', result.readyForDelivery,
+      result.collapsed ? `${fmt(result.readyForDelivery)} new unique tasks` : `${fmt(result.readyNames)} new unique tasks`,
+      'Accepted, package collectable at the current bar, and not matched to anything already delivered. ' +
+      'Counted by distinct name as well, because a task submitted twice is still one thing to deliver.'],
+  ].map(([label, value, hint, tip]) => `
+    <div class="status-card" data-tip="${esc(tip)}">
+      <span class="status-card-label">${esc(label)}</span>
+      <span class="status-card-value">${fmt(value)}</span>
+      <span class="status-card-note">${esc(hint)}</span>
+      <span class="status-card-cue">${filtered ? 'filtered' : 'joined from the Delivery tab'}</span>
+    </div>`).join('');
+
   byId('truthFigures').innerHTML = cards.map(([label, value, hint]) => `
     <button class="status-card figure-card" data-chain="${esc(label)}">
       <span class="status-card-label">${esc(label)}</span>
       <span class="status-card-value">${fmt(value)}</span>
       <span class="status-card-note">${esc(hint)}</span>
       <span class="status-card-cue">${filtered ? 'filtered' : 'how was this counted?'}</span>
-    </button>`).join('');
+    </button>`).join('') + extra;
 }
 
 function renderChain(label, filtered) {
@@ -488,6 +657,73 @@ function renderChain(label, filtered) {
       <span class="chain-source">${esc(step.source || '')}</span></li>`).join('');
 }
 
+// The flags a task row can carry.
+//
+// They used to sit beside the task name and crowded it out - at eight rows on a
+// page the name was truncated to "ho..." and on a few rows it disappeared
+// entirely. They have a column of their own now, shown as short codes with the
+// full explanation on hover and a legend under the table, so the name always
+// has the space.
+const FLAGS = [
+  {code: 'DL', tone: 'good', when: row => row.delivered,
+   label: 'delivered',
+   tip: row => 'Already covered by the delivery audit on the Delivery tab, matched by ' +
+     (row.deliveredVia === 'normalised name'
+       ? 'name once version and status suffixes were stripped'
+       : row.deliveredVia === 'embedded in the verdict identifier'
+         ? 'the task name recorded inside its verdict identifier'
+         : 'an exact name match') + '.'},
+  {code: row => `×${fmt(row.versions)}`, tone: 'info', when: row => row.versions > 1,
+   label: '×N  N versions, counted once',
+   tip: row => `This task has ${fmt(row.versions)} versions in the pipeline and is counted once ` +
+     `while the Delivered filter is on. Showing the one ${row.chosenBecause}. The others: ` +
+     row.otherVersions.map(v => `${v.name} (${v.state}${v.decided ? `, ${v.decided}` : ''})`).join('; ') + '.'},
+  {code: 'CK', tone: 'alert', when: row => row.maybeDelivered,
+   label: 'check before shipping',
+   tip: row => `This task's identifier names "${row.maybeDelivered}", which the delivery audit ` +
+     'already covers, but its own name does not match it. It may be a second copy of work that has already gone out.'},
+  {code: 'DUP', tone: row => (row.duplicateTier === 'likely' ? 'alert' : 'warn'),
+   when: row => row.possibleDuplicate,
+   label: 'possible duplicate',
+   tip: row => `Same task name and trainer as ${fmt(row.duplicateSiblings)} other task` +
+     `${row.duplicateSiblings === 1 ? '' : 's'}` +
+     `${row.duplicateSameDay && row.duplicateSameState ? ', decided the same day with the same outcome' : ''}.`},
+  {code: 'UM', tone: 'warn', when: row => row.unmerged && !row.possibleDuplicate,
+   label: 'unmerged',
+   tip: () => 'This submission carried no family id, so it is keyed on its own submission id. ' +
+     'Repeat runs of the same task may be counted separately. No other task in scope shares its name and trainer.'},
+  {code: 'CO', tone: 'flat', when: row => row.carriedOver,
+   label: 'carried over',
+   tip: () => `First decided before ${truth.cut} and settled after it, so this is backlog cleared ` +
+     'by the current pipeline rather than new work.'},
+];
+
+function flagBadges(row) {
+  const shown = FLAGS.filter(flag => flag.when(row));
+  if (!shown.length) return '<span class="flag-none">-</span>';
+  return shown.map(flag => {
+    const tone = typeof flag.tone === 'function' ? flag.tone(row) : flag.tone;
+    const code = typeof flag.code === 'function' ? flag.code(row) : flag.code;
+    return `<span class="flag flag-${esc(tone)}" title="${esc(flag.tip(row))}">${esc(code)}</span>`;
+  }).join('');
+}
+
+// Only the codes actually present are explained, so the legend stays short and
+// never describes something that is not on screen.
+function renderFlagLegend(rows) {
+  const node = byId('truthFlagLegend');
+  if (!node) return;
+  const used = FLAGS.filter(flag => rows.some(row => flag.when(row)));
+  node.hidden = used.length === 0;
+  node.innerHTML = used.map(flag => {
+    const code = typeof flag.code === 'function' ? '×N' : flag.code;
+    const tone = typeof flag.tone === 'function' ? 'warn' : flag.tone;
+    const [head, ...rest] = flag.label.split('  ');
+    return `<span class="legend-item"><span class="flag flag-${esc(tone)}">${esc(code)}</span>` +
+      `${esc(rest.length ? rest.join(' ') : head)}</span>`;
+  }).join('');
+}
+
 function renderTruthRows(rows) {
   const pages = Math.max(Math.ceil(rows.length / TRUTH_PAGE_SIZE), 1);
   truthPage = Math.min(truthPage, pages - 1);
@@ -496,14 +732,15 @@ function renderTruthRows(rows) {
     const id = `truth-${truthPage}-${index}`;
     return `<tr class="drill-head">
       <td><button class="drill-toggle" aria-expanded="false" aria-controls="${id}" aria-label="Evidence for ${esc(row.name)}">+</button></td>
-      <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span>${row.possibleDuplicate ? `<span class="chip ${row.duplicateTier === 'likely' ? 'chip-alert' : 'chip-warn'}" title="Same task name and trainer as ${fmt(row.duplicateSiblings)} other task${row.duplicateSiblings === 1 ? '' : 's'}${row.duplicateSameDay && row.duplicateSameState ? ', decided the same day with the same outcome' : ''}">${row.duplicateTier === 'likely' ? 'likely' : 'possible'} duplicate</span>` : row.unmerged ? '<span class="chip chip-warn" title="This submission carried no family id, so it is keyed on its own submission id. Repeat runs of the same task may be counted separately. No other task in scope shares its name and trainer.">unmerged</span>' : ''}${row.carriedOver ? `<span class="chip" title="First decided before ${esc(truth.cut)} and settled after it, so this is backlog cleared by the current pipeline rather than new work.">carried over</span>` : ''}</div></td>
+      <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span></div></td>
+      <td class="flagcell">${flagBadges(row)}</td>
       <td><span class="state state-${esc(row.state.replace(/\s+/g, '-'))}">${esc(row.state)}</span></td>
       <td>${esc(row.owner || 'Not recorded')}</td>
       <td>${esc(row.decided || '-')}${row.decidedInferred ? '<span class="chip chip-warn" title="No decision timestamp on the verdict; dated from when it was last updated">approx</span>' : ''}</td>
       <td>${esc(row.gateEra)}</td>
       <td class="num">${fmt(row.runs)}</td>
     </tr>
-    <tr class="drill" id="${id}" hidden><td colspan="7">
+    <tr class="drill" id="${id}" hidden><td colspan="8">
       <dl class="evidence">
         <dt>Why this state</dt><dd>${esc(row.why)}</dd>
         <dt>Canonical run</dt><dd>${esc(row.canonicalReason)}${row.runs > 1 ? ` of ${fmt(row.runs)} runs` : ''}</dd>
@@ -517,10 +754,56 @@ function renderTruthRows(rows) {
         <dt>Read from</dt><dd><code>${esc(row.source)}</code></dd>
       </dl>
     </td></tr>`;
-  }).join('') : '<tr><td colspan="7" class="empty">No tasks match these filters.</td></tr>';
+  }).join('') : '<tr><td colspan="8" class="empty">No tasks match these filters.</td></tr>';
   setText('truthPage', `Page ${truthPage + 1} of ${pages} / ${fmt(rows.length)} tasks`);
   byId('truthPrev').disabled = truthPage === 0;
   byId('truthNext').disabled = truthPage >= pages - 1;
+}
+
+// What the delivered join could not account for.
+//
+// The Delivery tab lists 412 audited tasks and the Pipeline shows fewer, which
+// reads as data missing unless the difference is stated. It is two separate
+// things - tasks folded because they are the same work, and tasks with no
+// counterpart in the bucket at all - so both are named rather than netted off.
+function renderJoinGap(result) {
+  const note = byId('truthJoinNote');
+  if (!note) return;
+  const idx = truth?.deliveredIndex;
+  if (!idx || !result.collapsed) {
+    note.hidden = true;
+    byId('unmatchedPanel').hidden = true;
+    byId('unmatchedShow').setAttribute('aria-expanded', 'false');
+    return;
+  }
+  const c = idx.counts;
+  note.hidden = false;
+  setText('truthJoinText',
+    `The Delivery tab lists ${fmt(c.auditedTasks)} audited tasks. ` +
+    `${fmt(c.auditedMatched)} of them were found in this bucket and are shown above, ` +
+    `folded where one task had several versions. ` +
+    `${fmt(c.auditedUnmatched)} could not be found at all` +
+    (c.unmatchedAccepted
+      ? ` - ${fmt(c.unmatchedAccepted)} of those ${c.unmatchedAccepted === 1 ? 'is' : 'are'} recorded as accepted.` : '.'));
+  const open = byId('unmatchedPanel').hidden === false;
+  setText('unmatchedShow', open ? 'Hide them' : `Show the ${fmt(c.auditedUnmatched)} that could not be found`);
+}
+
+function renderUnmatched() {
+  const idx = truth?.deliveredIndex;
+  const rows = (idx && idx.unmatchedAudit) || [];
+  setText('unmatchedNote',
+    `These ${fmt(rows.length)} tasks appear on the Delivery tab but no task in ` +
+    `${esc(truth.bucket)} carries their name, so the Pipeline has nothing to show for them. ` +
+    'They are listed rather than netted off: a task missing from the bucket is a ' +
+    'different problem from a task counted twice, and only one of them is ours to fix here.');
+  byId('unmatchedRows').innerHTML = rows.length ? rows.map(row => `
+    <tr>
+      <td><div class="taskcell"><span class="taskname" title="${esc(row.task)}">${esc(row.task)}</span></div></td>
+      <td>${esc(row.batch || '-')}</td>
+      <td><span class="state state-${esc(String(row.acceptance || '').toLowerCase())}">${esc(row.acceptance || '-')}</span></td>
+      <td class="muted">${esc(row.reason || '')}</td>
+    </tr>`).join('') : '<tr><td colspan="4" class="empty">Every audited task was found.</td></tr>';
 }
 
 function renderTruth() {
@@ -533,12 +816,119 @@ function renderTruth() {
   if (openChain) renderChain(openChain, filtered);
   setText('truthStatus', `Derived from ${truth.bucket} at ${new Date(truth.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})} / ` +
     `${fmt(truth.rows.length)} tasks decided on or after ${truth.cut}. The Harbor Console is not read.`);
+  const idx = truth.deliveredIndex;
   setText('truthCaveats', `${fmt(result.unmerged)} of ${fmt(result.rows.length)} shown are unmerged, so repeat runs of them may still count separately. ` +
-    `${fmt(result.inferredDates)} carry no decision timestamp and are dated from when the verdict was last updated.`);
-  setText('truthAudit', `${fmt(result.rows.length)} of ${fmt(truth.rows.length)} tasks shown / ` +
+    `${fmt(result.inferredDates)} carry no decision timestamp and are dated from when the verdict was last updated.` +
+    (idx ? ` Delivered is joined from the ${fmt(idx.counts.auditedTasks)} tasks on the Delivery tab by name; ` +
+      `${fmt(idx.counts.auditedUnmatched)} of those found no task here, ${fmt(idx.counts.unmatchedAccepted)} of them accepted.` : '') +
+    (truth.deliveredStale ? ' The delivered join was built against an earlier pipeline than the one shown, so treat those two figures as out of date until it is rebuilt.' : ''));
+  renderJoinGap(result);
+  setText('truthAudit', (result.collapsed
+      ? `${fmt(result.rows.length)} tasks shown, folded from ${fmt(result.submissions)} pipeline rows ` +
+        `(${fmt(result.versionsFolded)} repeat versions counted once) / `
+      : `${fmt(result.rows.length)} of ${fmt(truth.rows.length)} tasks shown / `) +
     `${fmt(result.atCurrentBar)} have a package at the current bar / ${fmt(result.gateOnly)} await a KESTREL re-gate / ` +
     `${fmt(result.owners)} trainers.`);
+  renderManifestBar(result);
   renderTruthRows(result.rows);
+  renderFlagLegend(result.rows);
+}
+
+// --- delivery manifest -----------------------------------------------------
+// Names claimed by a manifest the user has already issued. Held only for this
+// visit: it is a convenience for cutting a second round, not a record. The
+// authoritative record of what went out is the delivery audit itself.
+let manifestExclusions = [];
+let manifestExcludedFrom = '';
+
+function manifestCandidates(result) {
+  // Whatever the table is showing, which is already the ready population plus
+  // any further filters the user set. The manifest never widens that.
+  return result.rows;
+}
+
+function renderManifestBar(result) {
+  const bar = byId('manifestBar');
+  if (!bar) return;
+  const ready = byId('tDelivered')?.value === 'ready';
+  bar.hidden = !ready;
+  if (!ready) return;
+
+  const preview = window.buildManifest(manifestCandidates(result), {
+    size: Number(byId('manifestSize').value),
+    exclude: manifestExclusions,
+  });
+  const s = preview.selection;
+  setText('manifestNote',
+    `${fmt(s.distinctTasks)} distinct tasks in ${fmt(s.rowsConsidered)} rows currently shown. ` +
+    'One entry per task, so a task submitted twice is delivered once.');
+  setText('manifestSummary',
+    `Would write ${fmt(preview.counts.tasks)} tasks` +
+    (preview.counts.supersededRows
+      ? `, standing for ${fmt(preview.counts.rowsRepresented)} rows ` +
+        `(${fmt(preview.counts.supersededRows)} repeat submission${preview.counts.supersededRows === 1 ? '' : 's'} left out)` : '') +
+    ` / ${fmt(preview.counts.owners)} trainers` +
+    (s.excludedByPreviousManifest
+      ? ` / ${fmt(s.excludedByPreviousManifest)} excluded by ${esc(manifestExcludedFrom || 'a previous manifest')}` : '') +
+    (preview.counts.possiblyAlreadyDelivered
+      ? ` / ${fmt(preview.counts.possiblyAlreadyDelivered)} flagged to check - their identifier names a task the audit already covers` : '') +
+    (preview.counts.namesDerived
+      ? ` / ${fmt(preview.counts.namesDerived)} carry a placeholder name and take a readable one from their verdict identifier` : '') +
+    (s.shortBy ? ` / ${fmt(s.shortBy)} short of the ${fmt(s.requested)} asked for - only ${fmt(s.availableAfterExclusions)} are available.` : '.'));
+  byId('manifestBuild').disabled = preview.counts.tasks === 0;
+  byId('manifestClear').hidden = manifestExclusions.length === 0;
+  [...bar.querySelectorAll('.size-chip')].forEach(chip => {
+    const same = String(Number(chip.dataset.size)) === String(Number(byId('manifestSize').value) || 0);
+    chip.setAttribute('aria-pressed', same ? 'true' : 'false');
+  });
+}
+
+function downloadManifest() {
+  if (!truth) return;
+  const result = window.filterTruth(truth.rows, truthFilters());
+  const manifest = window.buildManifest(manifestCandidates(result), {
+    size: Number(byId('manifestSize').value),
+    exclude: manifestExclusions,
+    pipelineGeneratedAt: truth.generatedAt,
+    deliveredIndexGeneratedAt: truth.deliveredIndex?.generatedAt || null,
+    // The filters are recorded so the manifest says what it was cut from.
+    // A manifest that cannot explain its own selection is not checkable.
+    filters: Object.fromEntries(Object.entries(truthFilters()).filter(([, v]) => v)),
+  });
+  // 2026-09-19-103519: date and time stay separated, so the name sorts and
+  // still reads as a date.
+  const [day, time] = manifest.generatedAt.slice(0, 19).split('T');
+  const stamp = `${day}-${time.replace(/:/g, '')}`;
+  const blob = new Blob([JSON.stringify(manifest, null, 2)], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `manifest-${manifest.counts.tasks}-${stamp}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+
+  // Carry it forward so the next cut in this visit does not reissue the same
+  // work, and say so rather than doing it invisibly.
+  manifestExclusions = [...new Set([...manifestExclusions,
+    ...window.namesFromManifest(manifest)])];
+  manifestExcludedFrom = `${link.download} and anything loaded before it`;
+  renderTruth();
+}
+
+async function loadManifestExclusions(file) {
+  if (!file) return;
+  try {
+    const names = window.namesFromManifest(JSON.parse(await file.text()));
+    if (!names.length) throw new Error('no tasks in that file');
+    manifestExclusions = [...new Set([...manifestExclusions, ...names])];
+    manifestExcludedFrom = file.name;
+  } catch (error) {
+    setText('manifestSummary', `That file could not be read as a manifest: ${error.message}`);
+    return;
+  }
+  renderTruth();
 }
 
 function renderCarried() {
@@ -1072,6 +1462,9 @@ function renderTrainerRows() {
 }
 
 function renderTeams() {
+  // The Delivery tab's workbook panels were removed; this renderer
+  // has no target until they come back.
+  if (!byId('teamGrid')) return;
   const teams = Object.entries(groupBy(data.trainers, (trainer) => trainer.team)).sort(
     (a, b) => sum(b[1], "acceptedTasks") - sum(a[1], "acceptedTasks"),
   );
@@ -1190,6 +1583,9 @@ const ATTAINMENT_BANDS = [
 ];
 
 function renderPlan() {
+  // The Delivery tab's workbook panels were removed; this renderer
+  // has no target until they come back.
+  if (!byId('planCharts')) return;
   const benches = data.plan || [];
   const dates = benches[0]?.dates || [];
   if (!benches.length || !dates.length || !dates.some((day) => inRange(day))) {
@@ -1233,6 +1629,39 @@ function renderPlan() {
 
 function wireEvents() {
   byId('truthRefresh')?.addEventListener('click', rebuildTruth);
+  byId('unmatchedShow')?.addEventListener('click', () => {
+    const panel = byId('unmatchedPanel');
+    const opening = panel.hidden;
+    panel.hidden = !opening;
+    byId('unmatchedShow').setAttribute('aria-expanded', String(opening));
+    if (opening) renderUnmatched();
+    renderJoinGap(window.filterTruth(truth.rows, truthFilters()));
+  });
+  byId('manifestSize')?.addEventListener('input', () => renderTruth());
+  byId('manifestBuild')?.addEventListener('click', downloadManifest);
+  byId('manifestExclude')?.addEventListener('change', event => loadManifestExclusions(event.target.files[0]));
+  byId('manifestClear')?.addEventListener('click', () => {
+    manifestExclusions = []; manifestExcludedFrom = '';
+    if (byId('manifestExclude')) byId('manifestExclude').value = '';
+    renderTruth();
+  });
+  byId('manifestBar')?.addEventListener('click', event => {
+    const chip = event.target.closest('.size-chip');
+    if (!chip) return;
+    const size = Number(chip.dataset.size);
+    // "All" is stored as an empty box rather than a zero, so the number input
+    // never shows a size nobody asked for.
+    byId('manifestSize').value = size > 0 ? String(size) : '';
+    renderTruth();
+  });
+  AUDIT_FILTERS.forEach(id => byId(id)?.addEventListener('change', () => { auditPage = 0; renderAudit(); }));
+  byId('aSearch')?.addEventListener('input', () => { auditPage = 0; renderAudit(); });
+  byId('aReset')?.addEventListener('click', () => {
+    [...AUDIT_FILTERS, 'aSearch'].forEach(id => { if (byId(id)) byId(id).value = ''; });
+    auditPage = 0; renderAudit();
+  });
+  byId('auditPrev')?.addEventListener('click', () => { auditPage -= 1; renderAudit(); });
+  byId('auditNext')?.addEventListener('click', () => { auditPage += 1; renderAudit(); });
   TRUTH_FILTERS.forEach(id => byId(id)?.addEventListener('change', () => { truthPage = 0; renderTruth(); }));
   byId('tSearch')?.addEventListener('input', () => { truthPage = 0; renderTruth(); });
   byId('tReset')?.addEventListener('click', () => {
@@ -1434,6 +1863,7 @@ function init() {
   loadConsoleLive();
   loadGcsPipeline();
   loadTruth();
+  loadDeliveryAudit();
 }
 
 init();

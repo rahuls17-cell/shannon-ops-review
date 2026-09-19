@@ -132,6 +132,33 @@ weight a figure carries:
 - **approx** (1,137) — no decision timestamp on the verdict, so the row is dated
   from when the verdict was last updated.
 
+### Delivered, and what is left to deliver
+
+The Pipeline tab carries a **Delivered** filter, joining the 412 audited tasks
+on the Delivery tab onto the pipeline. The two datasets share only the task
+name, so that is the key: matched exactly first, then with version and status
+suffixes stripped, and never when that would pull in more than one task.
+
+The audit also carries the first 16 hex of each package's sha256. It reaches
+only 66 of the 412 — that scan covers what sits at the current bar — so it
+cannot be the join, but it can check it. On all 66 rows where both keys exist
+they agree, so a name match does not invent a delivery.
+
+| | |
+|---|---:|
+| Audited tasks matched into the pipeline | 319 of 412 |
+| Unmatched, of which accepted | 93, **2** |
+| Pipeline rows marked delivered | 452 (319 names) |
+| **New unique tasks ready for delivery** | **369** |
+
+*Ready* means accepted, package collectable at the current bar, and not matched
+to anything already delivered. The 93 unmatched are reported on the page rather
+than hidden; they barely touch accepted work, which is what makes the split
+usable. `tools/build_delivered_index.py` does the join once, outside the
+browser, and the workflow re-runs it whenever the pipeline is rebuilt — the
+index resolves to pipeline task ids, and the page says so if the two ever drift
+apart.
+
 ---
 
 ## What the tooltips mean, in plain words
@@ -219,6 +246,7 @@ and exits non-zero on failure.
 
 ```bash
 node tools/test-truth.cjs        # partition, filters, chains
+node tools/test-delivered.cjs    # the delivered / ready-for-delivery join
 node tools/test-views.cjs        # nav, sections and the view whitelist must agree
 node tools/test-pipeline-view.cjs
 node tools/test-payout-ledger.cjs

@@ -96,11 +96,25 @@ class Handler(SimpleHTTPRequestHandler):
         except Exception as exc:                                  # noqa: BLE001
             self._json(500, {'ok': False, 'error': str(exc)[:400]})
 
+    # Everything served here is a working file being edited under the page.
+    # Data was already exempt from caching; the source was not, so a reload
+    # could re-run the previous build's JavaScript against the current data and
+    # look like a feature that silently does nothing. Verification has to see
+    # what is on disk, so nothing is cached and nothing is revalidated.
+    NO_STORE = ('.json', '.js', '.cjs', '.css', '.html', '.map', '/')
+
     def end_headers(self):
-        # The working files change under the page; never serve them from cache.
-        if self.path.endswith('.json'):
-            self.send_header('Cache-Control', 'no-store')
+        if self.path.split('?')[0].endswith(self.NO_STORE):
+            self.send_header('Cache-Control', 'no-store, must-revalidate')
         super().end_headers()
+
+    def send_header(self, keyword, value):
+        # A Last-Modified alongside no-store still invites an If-Modified-Since
+        # on the next load, which this handler answers with a 304 and the stale
+        # body stays. Dropping it keeps the two from contradicting each other.
+        if keyword == 'Last-Modified' and self.path.split('?')[0].endswith(self.NO_STORE):
+            return
+        super().send_header(keyword, value)
 
     def log_message(self, fmt, *args):
         sys.stderr.write('%s - %s\n' % (self.address_string(), fmt % args))

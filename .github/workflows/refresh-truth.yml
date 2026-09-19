@@ -67,6 +67,16 @@ jobs:
           CHECK
           mv assets/pipeline-truth.json.new assets/pipeline-truth.json
 
+      - name: Rejoin the delivered index
+        # The index maps delivered tasks onto pipeline task ids, so it has to be
+        # rebuilt against the pipeline that was just produced. Reads two files
+        # already in the repo; touches neither the bucket nor any credential.
+        run: |
+          python3 tools/build_delivered_index.py
+          python3 tools/test_delivered_join.py
+          node tools/test-delivered.cjs
+          node tools/test-manifest.cjs
+
       - name: Commit the rebuilt asset
         run: |
           git config user.name github-actions[bot]
@@ -74,18 +84,20 @@ jobs:
           # Regenerated wholesale, so there is nothing to merge: re-apply it on
           # top of origin/main rather than rebasing it onto a moved branch.
           cp assets/pipeline-truth.json "$RUNNER_TEMP/pipeline-truth.json"
+          cp assets/delivered-index.json "$RUNNER_TEMP/delivered-index.json"
           pushed=0
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
             cp "$RUNNER_TEMP/pipeline-truth.json" assets/pipeline-truth.json
-            git add assets/pipeline-truth.json
+            cp "$RUNNER_TEMP/delivered-index.json" assets/delivered-index.json
+            git add assets/pipeline-truth.json assets/delivered-index.json
             if git diff --cached --quiet; then
               echo "asset is identical to main; nothing to commit"
               pushed=1
               break
             fi
-            git commit -m "Refresh derived pipeline"
+            git commit -m "Refresh derived pipeline and delivered index"
             if git push origin HEAD:main; then
               pushed=1
               break
@@ -101,7 +113,7 @@ jobs:
         run: |
           mkdir -p _site
           cp index.html app.js styles.css _site/
-          cp sources.js finalisation.js pipeline-view.js truth.js payout-ledger.js explorer.js _site/
+          cp sources.js finalisation.js pipeline-view.js truth.js manifest.js delivery-audit.js payout-ledger.js explorer.js _site/
           cp -r assets _site/
           # Pages caches these, so a returning visitor would keep running the
           # previous build's JavaScript against the new data. Stamp every local
