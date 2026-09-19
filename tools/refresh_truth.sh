@@ -19,7 +19,6 @@ set -euo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 WORK="${TRUTH_WORK:-$HERE/truth-work}"
 PUBLISH="${TRUTH_PUBLISH:-$HERE/repo/assets}"
-STATS="${TRUTH_STATS:-$HERE/pipeline-stats.json}"
 LOG="$WORK/refresh.log"
 PUBLISH_ENABLED=1
 [ "${1:-}" = "--no-publish" ] && PUBLISH_ENABLED=0
@@ -49,7 +48,7 @@ say "step 5  state"
 python3 "$HERE/derive_state.py"         --canonical canonical.json --delivery delivery.json \
                                         --out tasks.json       >>"$LOG" 2>&1
 say "step 6  tags"
-python3 "$HERE/build_tags.py"           --tasks tasks.json --gcs "$STATS" \
+python3 "$HERE/build_tags.py"           --tasks tasks.json --gcs "$HERE/pipeline-stats.json" \
                                         --out tagged.json      >>"$LOG" 2>&1
 say "step 7  provenance"
 python3 "$HERE/build_provenance.py"     --tagged tagged.json --delivery delivery.json \

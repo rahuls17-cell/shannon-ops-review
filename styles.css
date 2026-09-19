@@ -1872,3 +1872,5 @@ button.stat[aria-pressed="true"] { border-color: var(--accent-line); background:
 #payoutSummary .kpi, #auditFigures .kpi, #carriedFigures .kpi, #truthFigures .kpi { position: relative; padding-bottom: 30px; }
 #payoutSummary .kpi-cue, #auditFigures .kpi-cue, #carriedFigures .kpi-cue, #truthFigures .kpi-cue { position: absolute; left: 16px; bottom: 11px; }
 #auditFigures .tile-share, #carriedFigures .tile-share { margin-bottom: 2px; }
+
+.provenance.is-warn { color: var(--red-ink); padding: 8px 12px; border-radius: var(--radius-sm); background: var(--red-soft); }

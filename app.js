@@ -6,6 +6,7 @@ const FINALISATION_ROW_CAP = 400;
 let gcsPipeline = null;
 let payoutLedger = null;
 let payoutLedgerTasks = [];
+let payoutLedgerError = null;
 let clientAcceptance = null;
 // The GCS-derived pipeline (tools/ingest_verdicts.py -> build_provenance.py).
 // Every state and predicate on these rows was decided by that chain, so the
@@ -338,9 +339,18 @@ async function loadPayoutLedger() {
     const payload = await response.json();
     payoutLedgerTasks = window.preparePayoutLedger(payload, data.trainers);
     payoutLedger = payload;
-  } catch {
+    payoutLedgerError = null;
+  } catch (error) {
+    // Without the ledger the accepted and pending figures fall back to the
+    // workbook, which is a different source; say so rather than switch quietly.
+    payoutLedgerError = error.message;
+    const note = byId('payoutSourceNote');
+    if (note) { note.hidden = false; note.textContent = `The payout ledger did not load (${error.message}). Accepted and pending figures below are the workbook's, not the ledger's.`; }
+    renderTrainerRows(); renderHero(); renderTopPendingCards();
     return;
   }
+  const note = byId('payoutSourceNote');
+  if (note) note.hidden = true;
   populateLedgerFilters();
   renderTrainerRows();
   renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
@@ -982,10 +992,10 @@ function renderTruthFigures(result, filtered) {
     </${chain ? 'button' : 'div'}>`;
   const idx = truth?.deliveredIndex;
   byId('truthJoin').innerHTML = idx
-    ? stat('already delivered', result.delivered, result.accepted,
-        `${fmt(result.delivered)} delivered${result.collapsed ? ' tasks' : ` rows, ${fmt(result.deliveredNames)} distinct names`} · matched by name against the ${fmt(idx.counts.auditedTasks)} tasks on the Delivery tab; ${fmt(idx.counts.auditedMatched)} found in the pipeline, ${fmt(idx.counts.auditedUnmatched)} not (${fmt(idx.counts.unmatchedAccepted)} of those accepted). Share of the accepted tasks shown.`, null, 'aqua') +
-      stat('ready for delivery', result.readyForDelivery, result.accepted,
-        `${fmt(result.readyForDelivery)} accepted, collectable at the current bar and not yet delivered${result.collapsed ? '' : ` · ${fmt(result.readyNames)} distinct names`}. Share of the accepted tasks shown.`, null, 'blue')
+    ? stat('already delivered', result.delivered, result.rows.length,
+        `${fmt(result.delivered)} delivered${result.collapsed ? ' tasks' : ` rows, ${fmt(result.deliveredNames)} distinct names`} · matched by name against the ${fmt(idx.counts.auditedTasks)} tasks on the Delivery tab; ${fmt(idx.counts.auditedMatched)} found in the pipeline, ${fmt(idx.counts.auditedUnmatched)} not (${fmt(idx.counts.unmatchedAccepted)} of those accepted). Share of the tasks shown.`, null, 'aqua') +
+      stat('ready for delivery', result.readyForDelivery, result.rows.length,
+        `${fmt(result.readyForDelivery)} accepted, collectable at the current bar and not yet delivered${result.collapsed ? '' : ` · ${fmt(result.readyNames)} distinct names`}. Share of the tasks shown.`, null, 'blue')
     : '<p class="empty">The delivered index is not loaded.</p>';
   byId('truthFlags').innerHTML = [
     ['carried over', result.carriedOver, 'Carried over', 'First decided before the cut and settled by the current pipeline.'],
@@ -1937,9 +1947,9 @@ function renderExposureChart(rows) {
   const paid = benches.reduce((value, bench) => value + bench.paid, 0);
   const owed = benches.reduce((value, bench) => value + bench.pending, 0);
   const settled = paid + owed ? Math.round((paid / (paid + owed)) * 100) : 0;
-  setTextIfPresent('payoutBalanceNote', benches.length
+  setTextIfPresent('payoutBalanceNote', (benches.length
     ? `${money(paid + owed)} earned · ${money(paid)} paid · ${money(owed)} owed`
-    : '');
+    : '') + (payoutLedgerError ? ' · ledger unavailable, workbook figures shown' : ''));
   const host = byId('exposureChart');
   host.innerHTML = benches.length ? `
     <div class="settle" data-tip="${money(paid)} paid of ${money(paid + owed)} earned">
