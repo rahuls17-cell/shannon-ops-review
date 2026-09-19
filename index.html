@@ -221,82 +221,95 @@
             <div class="sourcestrip" data-sources="payouts"></div>
           </header>
 
-          <div id="payoutSummary" class="kpirow"></div>
+          <div id="payoutSummary" class="kpirow kpirow-5"></div>
 
           <section class="panel">
             <header class="panel-head">
-              <div><h2>By trainer<button class="why" data-info="payoutAccepted" aria-label="What counts as accepted">?</button></h2></div>
+              <div><h2>Settlement by bench<button class="why" data-info="bench" aria-label="How benches are defined">?</button></h2><p class="panel-note" id="payoutBenchNote"></p></div>
+            </header>
+            <div class="panel-body settle-body">
+              <div id="payoutBenches" class="benchrings"></div>
+              <div id="payoutTeams" class="teamstack"></div>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>By trainer<button class="why" data-info="payoutAccepted" aria-label="What counts as accepted">?</button></h2><p class="panel-note" id="payoutPeopleNote"></p></div>
               <div class="toolbar" data-toolbar>
                 <label class="field"><span>Search</span><input id="personSearch" type="search" placeholder="Name, team or manager" /></label>
                 <label class="field"><span>Bench<button class="why" data-info="bench" aria-label="How benches are defined">?</button></span><select id="benchFilter"><option value="">All</option><option value="company">Company</option><option value="computer">Computer</option><option value="unassigned">Unassigned</option></select></label>
                 <label class="field"><span>Payment</span><select id="paymentFilter"><option value="">All</option><option value="pending">Owed</option><option value="paid">Paid</option><option value="no-paid">Never paid</option><option value="zero">No accepted work</option></select></label>
+                <button id="payoutReset" class="ghost">Clear</button>
               </div>
             </header>
             <div class="panel-body">
+              <div class="chips-row"><div id="payoutChips" class="chips"></div></div>
               <div class="table-wrap">
-                <table class="grid payout-table">
+                <table class="grid inv" id="payoutTable">
                   <thead>
                     <tr>
+                      <th scope="col"></th>
                       <th scope="col" class="num">#</th>
-                      <th scope="col">Person</th>
-                      <th scope="col">Team</th>
-                      <th scope="col">Manager</th>
-                      <th scope="col" class="num">Accepted</th>
-                      <th scope="col" class="num">Paid</th>
-                      <th scope="col" class="num">Paid $</th>
-                      <th scope="col" class="num">Owed</th>
-                      <th scope="col" class="num">Owed $</th>
-                      <th scope="col" class="num">24h</th>
+                      <th scope="col"><button type="button" class="sort" data-sort="name">Person</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="team">Team</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="managerName">Manager</button></th>
+                      <th scope="col" class="num"><button type="button" class="sort" data-sort="acceptedTasks">Accepted</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="paidAmount">Paid vs owed</button></th>
+                      <th scope="col" class="num"><button type="button" class="sort" data-sort="pendingAmount">Owed $</button></th>
+                      <th scope="col" class="num"><button type="button" class="sort" data-sort="last24Accepted">24h</button></th>
                     </tr>
                   </thead>
                   <tbody id="trainerRows"></tbody>
                 </table>
               </div>
-              <div class="pager">
+              <div class="pager pager-split">
                 <label class="pagesize"><span>Show</span><select id="payoutPageSize"><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select></label>
-                <button id="payoutPrevious" class="ghost">Previous</button>
-                <span id="payoutPage" role="status"></span>
-                <button id="payoutNext" class="ghost">Next</button>
+                <div class="pager"><button id="payoutPrevious" class="ghost">Previous</button><span id="payoutPage" role="status"></span><button id="payoutNext" class="ghost">Next</button></div>
               </div>
             </div>
           </section>
 
           <section class="panel">
             <header class="panel-head">
-              <div><h2>Tasks<button class="why" data-info="ledgerPayment" aria-label="How payment state is decided">?</button></h2></div>
+              <div><h2>Tasks<button class="why" data-info="ledgerPayment" aria-label="How payment state is decided">?</button></h2><p class="panel-note">Every accepted task in the ledger and where its payment stands. Click a cell above the table to filter.</p></div>
               <div class="toolbar" data-toolbar>
                 <label class="field"><span>Search</span><input id="ledgerSearch" type="search" placeholder="Task, trainer or CJ" /></label>
                 <label class="field"><span>Payment</span><select id="ledgerPayment"><option value="">All</option></select></label>
                 <label class="field"><span>Type</span><select id="ledgerType"><option value="">All</option></select></label>
-                <label class="field"><span>Valid<button class="why" data-info="ledgerAcceptance" aria-label="What the Valid column means">?</button></span><select id="ledgerValidity"><option value="">All</option><option value="valid">Valid</option><option value="invalid">Valid = 0</option></select></label>
-                <label class="field"><span>Repeats<button class="why" data-info="ledgerDuplicates" aria-label="How repeated rows are handled">?</button></span><select id="ledgerDuplicates"><option value="">All</option><option value="duplicates">Folded only</option><option value="unique">Single-row only</option></select></label>
+                <details class="morefilters">
+                  <summary class="ghost">More</summary>
+                  <div class="morefilters-body">
+                    <label class="field"><span>Valid<button class="why" data-info="ledgerAcceptance" aria-label="What the Valid column means">?</button></span><select id="ledgerValidity"><option value="">All</option><option value="valid">Valid</option><option value="invalid">Valid = 0</option></select></label>
+                    <label class="field"><span>Repeats<button class="why" data-info="ledgerDuplicates" aria-label="How repeated rows are handled">?</button></span><select id="ledgerDuplicates"><option value="">All</option><option value="duplicates">Folded only</option><option value="unique">Single-row only</option></select></label>
+                  </div>
+                </details>
                 <button id="resetLedgerFilters" class="ghost">Clear</button>
               </div>
             </header>
             <div class="panel-body">
-              <div id="ledgerSummary" class="summary-row"></div>
+              <div id="ledgerStrip" class="stats stats-6"></div>
+              <div class="chips-row"><div id="ledgerChips" class="chips"></div></div>
               <div class="table-wrap">
-                <table class="grid">
+                <table class="grid inv" id="ledgerTable">
                   <thead>
                     <tr>
                       <th scope="col" class="num">#</th>
-                      <th scope="col">Task</th>
-                      <th scope="col">Trainer</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Valid</th>
-                      <th scope="col">Payment</th>
-                      <th scope="col">CJ</th>
-                      <th scope="col" class="num">Rows</th>
+                      <th scope="col"><button type="button" class="sort" data-sort="task">Task</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="trainerName">Trainer</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="filterType">Type</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="valid">Valid</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="paymentState">Payment</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="cj">CJ</button></th>
+                      <th scope="col" class="num"><button type="button" class="sort" data-sort="duplicateRows">Rows</button></th>
                     </tr>
                   </thead>
                   <tbody id="ledgerRows"></tbody>
                 </table>
               </div>
-              <div class="pager">
+              <div class="pager pager-split">
                 <label class="pagesize"><span>Show</span><select id="ledgerPageSize"><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select></label>
-                <button id="ledgerPrevious" class="ghost">Previous</button>
-                <span id="ledgerPage" role="status"></span>
-                <button id="ledgerNext" class="ghost">Next</button>
+                <div class="pager"><button id="ledgerPrevious" class="ghost">Previous</button><span id="ledgerPage" role="status"></span><button id="ledgerNext" class="ghost">Next</button></div>
               </div>
             </div>
           </section>
@@ -312,73 +325,6 @@
             <div class="sourcestrip" data-sources="delivery"></div>
           </header>
           <p class="rangeecho" data-range="delivery"></p>
-          <p class="provenance" id="auditStatus">Loading the task audit&hellip;</p>
-
-          <div id="auditFigures" class="status-grid"></div>
-
-          <section class="panel">
-            <header class="panel-head">
-              <div>
-                <h2>Composition<button class="why" data-info="auditComposition" aria-label="How these are grouped">?</button></h2>
-                <p class="panel-note">Every breakdown follows the filters below.</p>
-              </div>
-            </header>
-            <div class="panel-body">
-              <div class="breakdowns">
-                <figure class="breakdown"><figcaption>Category</figcaption><div id="auditCategory"></div></figure>
-                <figure class="breakdown"><figcaption>GLM across four trials<button class="why" data-info="auditGlm" aria-label="What the GLM bucket means">?</button></figcaption><div id="auditGlm"></div></figure>
-                <figure class="breakdown"><figcaption>Batch</figcaption><div id="auditBatch"></div></figure>
-                <figure class="breakdown"><figcaption>Attribution source<button class="why" data-info="auditSource" aria-label="How a trainer was attributed">?</button></figcaption><div id="auditSource"></div></figure>
-              </div>
-            </div>
-          </section>
-
-          <section class="panel">
-            <header class="panel-head">
-              <div>
-                <h2>Task inventory</h2>
-                <p class="panel-note" id="auditCaveats"></p>
-              </div>
-              <div class="toolbar" data-toolbar>
-                <label class="field"><span>Batch</span><select id="aBatch"></select></label>
-                <label class="field"><span>Category</span><select id="aCategory"></select></label>
-                <label class="field"><span>Type</span><select id="aType"></select></label>
-                <label class="field"><span>Difficulty<button class="why" data-info="auditDifficulty" aria-label="What difficulty means here">?</button></span><select id="aDifficulty"></select></label>
-                <label class="field"><span>GLM</span><select id="aGlm"></select></label>
-                <label class="field"><span>Acceptance<button class="why" data-info="auditAcceptance" aria-label="Where acceptance comes from">?</button></span><select id="aAcceptance"></select></label>
-                <label class="field"><span>Priority</span><select id="aPriority"></select></label>
-                <label class="field"><span>Trainer</span><select id="aTrainer"></select></label>
-                <label class="field"><span>Flagged<button class="why" data-info="auditFlags" aria-label="What the flags mean">?</button></span><select id="aFlagged"><option value="">Any</option><option value="yes">Flagged</option><option value="no">Not flagged</option></select></label>
-                <label class="field"><span>Search</span><input id="aSearch" type="search" placeholder="Task, SHA or trainer" /></label>
-                <button id="aReset" class="ghost">Clear filters</button>
-              </div>
-            </header>
-            <div class="panel-body">
-              <p class="muted footnote" id="auditAudit"></p>
-              <div class="table-wrap">
-                <table class="grid">
-                  <thead>
-                    <tr>
-                      <th scope="col">Task</th>
-                      <th scope="col">Batch</th>
-                      <th scope="col">Category</th>
-                      <th scope="col">GLM</th>
-                      <th scope="col">Difficulty</th>
-                      <th scope="col">Trainer</th>
-                      <th scope="col">Acceptance</th>
-                      <th scope="col" class="num">MB</th>
-                    </tr>
-                  </thead>
-                  <tbody id="auditRows"></tbody>
-                </table>
-              </div>
-              <div class="pager">
-                <button id="auditPrev" class="ghost">Previous</button>
-                <span id="auditPage" role="status"></span>
-                <button id="auditNext" class="ghost">Next</button>
-              </div>
-            </div>
-          </section>
 
           <div id="planSummary" class="kpirow"></div>
 
@@ -390,10 +336,101 @@
             <div class="panel-body"><div id="planCharts" class="plan-grid"></div></div>
           </section>
 
+          <p class="provenance" id="auditStatus">Loading the task audit&hellip;</p>
+
+          <div id="auditFigures" class="status-grid"></div>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Composition<button class="why" data-info="auditComposition" aria-label="How these are grouped">?</button></h2>
+                <p class="panel-note">One dimension at a time. Pick a lens, then click a row or a square to filter the inventory.</p>
+              </div>
+              <div class="segmented lens" id="auditLens" role="group" aria-label="Dimension">
+                <button type="button" class="segbtn is-on" data-lens="category">Category</button>
+                <button type="button" class="segbtn" data-lens="acceptance">Verdict</button>
+                <button type="button" class="segbtn" data-lens="batch">Batch</button>
+                <button type="button" class="segbtn" data-lens="glm">GLM</button>
+                <button type="button" class="segbtn" data-lens="difficulty">Difficulty</button>
+                <button type="button" class="segbtn" data-lens="type">Type</button>
+                <button type="button" class="segbtn" data-lens="source">Attribution</button>
+              </div>
+            </header>
+            <div class="panel-body comp">
+              <div class="comp-list">
+                <p class="subhead" id="auditListTitle"></p>
+                <div id="auditList" class="dimlist"></div>
+                <p class="comp-insight" id="auditInsight"></p>
+              </div>
+              <div class="comp-map">
+                <p class="subhead">Every audited task<em id="auditMapNote"></em></p>
+                <div id="auditWaffle" class="waffle" aria-label="One square per audited task"></div>
+              </div>
+            </div>
+          </section>
+
           <section class="panel">
             <header class="panel-head"><div><h2>Teams</h2></div></header>
             <div class="panel-body"><div id="teamGrid" class="team-grid"></div></div>
           </section>
+
+
+
+          <section class="panel">
+            <header class="panel-head">
+              <div>
+                <h2>Task inventory<button class="why" data-info="auditFlags" aria-label="What the flags mean">?</button></h2>
+                <p class="panel-note" id="auditCaveats"></p>
+              </div>
+              <div class="toolbar" data-toolbar>
+                <label class="field"><span>Search</span><input id="aSearch" type="search" placeholder="Task, SHA or trainer" /></label>
+                <label class="field"><span>Batch</span><select id="aBatch"></select></label>
+                <label class="field"><span>Category</span><select id="aCategory"></select></label>
+                <label class="field"><span>Acceptance<button class="why" data-info="auditAcceptance" aria-label="Where acceptance comes from">?</button></span><select id="aAcceptance"></select></label>
+                <label class="field"><span>GLM</span><select id="aGlm"></select></label>
+                <details class="morefilters">
+                  <summary class="ghost">More</summary>
+                  <div class="morefilters-body">
+                    <label class="field"><span>Type</span><select id="aType"></select></label>
+                    <label class="field"><span>Difficulty<button class="why" data-info="auditDifficulty" aria-label="What difficulty means here">?</button></span><select id="aDifficulty"></select></label>
+                    <label class="field"><span>Priority</span><select id="aPriority"></select></label>
+                    <label class="field"><span>Trainer</span><select id="aTrainer"></select></label>
+                    <label class="field"><span>Source</span><select id="aSource"></select></label>
+                    <label class="field"><span>Flagged</span><select id="aFlagged"><option value="">Any</option><option value="yes">Flagged</option><option value="no">Not flagged</option></select></label>
+                  </div>
+                </details>
+                <button id="aReset" class="ghost">Clear</button>
+              </div>
+            </header>
+            <div class="panel-body">
+              <div class="chips-row"><div id="auditChips" class="chips"></div><p class="muted footnote" id="auditAudit"></p></div>
+              <div class="table-wrap">
+                <table class="grid inv">
+                  <thead>
+                    <tr>
+                      <th scope="col"></th>
+                      <th scope="col" class="num">#</th>
+                      <th scope="col"><button type="button" class="sort" data-sort="task">Task</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="batch">Batch</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="category">Category</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="glm">GLM</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="difficulty">Difficulty</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="trainer">Trainer</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="acceptance">Acceptance</button></th>
+                      <th scope="col" class="num"><button type="button" class="sort" data-sort="size_mb">MB</button></th>
+                    </tr>
+                  </thead>
+                  <tbody id="auditRows"></tbody>
+                </table>
+              </div>
+              <div class="pager pager-split">
+                <label class="pagesize"><span>Show</span><select id="auditPageSize"><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select></label>
+                <div class="pager"><button id="auditPrev" class="ghost">Previous</button><span id="auditPage" role="status"></span><button id="auditNext" class="ghost">Next</button></div>
+              </div>
+            </div>
+          </section>
+
+
         </section>
 
         <!-- PIPELINE (derived from the GCS bucket) ---------------------- -->
@@ -410,8 +447,18 @@
           </header>
           <p class="statusline" id="truthStatus"></p>
 
+          <div id="truthPartition" class="partition" aria-label="How the in-scope tasks split by state"></div>
           <div id="truthFigures" class="kpirow kpirow-5"></div>
-          <div id="truthFlags" class="flagrow"></div>
+          <div class="statstrip">
+            <div class="statgroup">
+              <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>of the accepted tasks</em></p>
+              <div id="truthJoin" class="stats stats-2"></div>
+            </div>
+            <div class="statgroup">
+              <p class="eyebrow">Flags on the shown tasks<em>overlapping, not a split</em></p>
+              <div id="truthFlags" class="stats stats-4"></div>
+            </div>
+          </div>
 
           <section class="panel" id="truthChainPanel" hidden>
             <header class="panel-head">
@@ -540,40 +587,86 @@
               <h1 id="carried-title">Carried over</h1>
               <p class="lede">Tasks first decided before 5 September that the pipeline running today has since settled. Not new work, and not closed history &mdash; they are counted inside the Pipeline figures, and this is a lens on that population rather than a separate universe.</p>
             </div>
+            <div class="sourcestrip" data-sources="pipeline"></div>
           </header>
-          <div class="sourcestrip" data-sources="pipeline"></div>
+          <p class="rangeecho" data-range="carried"></p>
           <p class="provenance" id="carriedStatus"></p>
-          <div id="carriedFigures" class="status-grid"></div>
+          <div id="carriedFigures" class="kpirow kpirow-5"></div>
+
+          <div class="split">
+            <section class="panel">
+              <header class="panel-head">
+                <div><h2>When the backlog settled</h2><p class="panel-note" id="carriedDaysNote">By the day the current pipeline decided each task. Click a day to filter.</p></div>
+              </header>
+              <div class="panel-body"><div id="carriedDays" class="daychart"></div><div id="carriedDaysKey" class="chart-key"></div></div>
+            </section>
+            <section class="panel">
+              <header class="panel-head">
+                <div><h2>Attempts it took</h2><p class="panel-note" id="carriedRunsNote">Runs recorded per task before it settled. Click a bar to filter.</p></div>
+              </header>
+              <div class="panel-body"><div id="carriedRuns" class="hist"></div><p class="comp-insight" id="carriedRunsInsight"></p></div>
+            </section>
+          </div>
+
+          <div class="split split-wide">
+            <section class="panel">
+              <header class="panel-head">
+                <div><h2>Who cleared it</h2><p class="panel-note" id="carriedOwnersNote"></p></div>
+              </header>
+              <div class="panel-body"><div id="carriedOwners" class="leaderboard"></div></div>
+            </section>
+            <section class="panel">
+              <header class="panel-head">
+                <div><h2>Where it sits</h2><p class="panel-note">Gate, domain and duplicate flags across the carried-over set. Click a segment to filter.</p></div>
+              </header>
+              <div class="panel-body"><div id="carriedSplits" class="splits"></div></div>
+            </section>
+          </div>
 
           <section class="panel">
             <header class="panel-head">
               <div>
                 <h2>Settled by the current pipeline</h2>
-                <p class="panel-note">Ordered by how long the task waited between its first decision and the one that settled it.</p>
+                <p class="panel-note" id="carriedAudit"></p>
               </div>
               <div class="toolbar" data-toolbar>
+                <label class="field"><span>Search</span><input id="cSearch" type="search" placeholder="Task, trainer or reason" /></label>
                 <label class="field"><span>State</span><select id="cState"></select></label>
                 <label class="field"><span>Trainer</span><select id="cOwner"></select></label>
-                <label class="field"><span>Search</span><input id="cSearch" type="search" placeholder="Task or trainer" /></label>
-                <button id="cReset" class="ghost">Clear filters</button>
+                <details class="morefilters">
+                  <summary class="ghost">More</summary>
+                  <div class="morefilters-body">
+                    <label class="field"><span>Gate</span><select id="cGate"></select></label>
+                    <label class="field"><span>Domain</span><select id="cDomain"></select></label>
+                    <label class="field"><span>Duplicates</span><select id="cDuplicate"><option value="">All</option><option value="yes">Flagged</option><option value="likely">Likely</option><option value="no">Not flagged</option></select></label>
+                  </div>
+                </details>
+                <button id="cReset" class="ghost">Clear</button>
               </div>
             </header>
             <div class="panel-body">
-              <p class="muted footnote" id="carriedAudit"></p>
+              <div class="chips-row"><div id="carriedChips" class="chips"></div></div>
               <div class="table-wrap">
-                <table class="grid">
+                <table class="grid inv" id="carriedTable">
                   <thead>
                     <tr>
-                      <th scope="col">Task</th>
-                      <th scope="col">State</th>
-                      <th scope="col">Trainer</th>
-                      <th scope="col">Settled</th>
-                      <th scope="col">Gate era</th>
-                      <th scope="col" class="num">Runs</th>
+                      <th scope="col"></th>
+                      <th scope="col" class="num">#</th>
+                      <th scope="col"><button type="button" class="sort" data-sort="name">Task</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="state">State</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="owner">Trainer</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="decided">Settled</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="gateEra">Gate</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="domain">Domain</button></th>
+                      <th scope="col" class="num"><button type="button" class="sort" data-sort="runs">Runs</button></th>
                     </tr>
                   </thead>
                   <tbody id="carriedRows"></tbody>
                 </table>
+              </div>
+              <div class="pager pager-split">
+                <label class="pagesize"><span>Show</span><select id="carriedPageSize"><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select></label>
+                <div class="pager"><button id="carriedPrev" class="ghost">Previous</button><span id="carriedPage" role="status"></span><button id="carriedNext" class="ghost">Next</button></div>
               </div>
             </div>
           </section>
