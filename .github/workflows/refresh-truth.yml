@@ -10,6 +10,14 @@ name: Refresh derived pipeline
 # non-zero and sends nothing, so this job cannot publish unreconciled figures.
 on:
   workflow_dispatch:
+  # The published page is static and cannot hold a credential, so it has no way
+  # to start this job itself - the button used to hand the visitor a GitHub
+  # Actions page to press Run on. Running on a schedule removes the need: the
+  # derived pipeline refreshes itself and the button only has to look for newer
+  # data. The concurrency group is shared with refresh-gcs, so the two still
+  # never overlap, and the commit step is a no-op when nothing changed.
+  schedule:
+    - cron: '*/15 * * * *'
 permissions:
   contents: write
   pages: write

@@ -445,18 +445,31 @@ function watchForRebuild() {
 async function rebuildTruth() {
   const button = byId('truthRefresh');
   const local = ['127.0.0.1', 'localhost'].includes(location.hostname);
+  const label = button.textContent;
   if (!local) {
-    // A published page has no helper and cannot hold a credential, so the
-    // rebuild runs as a GitHub Action that asks the Harbor VM for the result.
-    // The page opens that control, then watches for the new asset to land.
-    window.open('https://github.com/rahuls17-cell/shannon-ops-review/actions/workflows/refresh-truth.yml',
-      '_blank', 'noopener,noreferrer');
-    setText('truthStatus', 'Choose Run workflow in the tab that just opened. The rebuild takes about a minute; ' +
-      'this page checks for the new data every 30 seconds and loads it automatically.');
-    watchForRebuild();
+    // A published page is static and cannot hold a credential, so it has no way
+    // to start the rebuild itself. It does not need to: the chain runs on a
+    // schedule and pushes its result here, so this button looks for newer data
+    // rather than handing the visitor a GitHub page to press Run on.
+    const before = truth?.generatedAt || '';
+    button.disabled = true;
+    button.textContent = 'Checking…';
+    setText('truthStatus', 'Looking for a newer build…');
+    try {
+      await loadTruth();
+      const changed = (truth?.generatedAt || '') !== before;
+      setText('truthStatus', changed
+        ? `Loaded the build from ${new Date(truth.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}.`
+        : 'Already showing the newest published build. The pipeline rebuilds itself every 15 minutes; ' +
+          'this page will pick the next one up on its own.');
+      // Nothing newer yet, so keep watching rather than making anyone press again.
+      if (!changed) watchForRebuild();
+    } finally {
+      button.disabled = false;
+      button.textContent = label;
+    }
     return;
   }
-  const label = button.textContent;
   button.disabled = true;
   button.textContent = 'Rebuilding…';
   setText('truthStatus', 'Running the eight-step chain on the Harbor VM: verdicts, delivery, identity, canonical run, state, tags, provenance, reconcile. This takes about half a minute.');
