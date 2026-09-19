@@ -120,9 +120,27 @@ jobs:
       - name: Prepare published files
         run: |
           mkdir -p _site
-          cp index.html app.js styles.css _site/
-          cp sources.js finalisation.js pipeline-view.js truth.js manifest.js delivery-audit.js payout-ledger.js explorer.js _site/
+          cp index.html _site/
           cp -r assets _site/
+          # The list of scripts and stylesheets is read off index.html rather
+          # than written out here. Two workflows each kept their own copy of it
+          # and they drifted: manifest.js and delivery-audit.js were added to
+          # one and not the other, so every run of the other one failed at the
+          # check below. Deriving it means a new module is published because
+          # the page references it, not because someone remembered.
+          python3 - <<'COPY'
+          import pathlib, re, shutil
+          html = pathlib.Path('index.html').read_text(encoding='utf-8')
+          site = pathlib.Path('_site')
+          refs = re.findall(r'(?:src|href)="([^"]+\.(?:js|css))"', html)
+          local = [r for r in dict.fromkeys(refs)
+                   if not r.startswith(('http://', 'https://', '//', 'data:'))]
+          for ref in local:
+              target = site / ref
+              target.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy2(ref, target)
+          print('published ' + str(len(local)) + ' referenced files: ' + ', '.join(local))
+          COPY
           # Pages caches these, so a returning visitor would keep running the
           # previous build's JavaScript against the new data. Stamp every local
           # asset URL with the commit so each deploy is a fresh URL.
