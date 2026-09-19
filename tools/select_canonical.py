@@ -62,11 +62,27 @@ def wave_depth(row):
 
 
 def rank(row):
+    """Progress, then recency, then outcome.
+
+    Outcome used to sit ahead of the date, on the reasoning that a better result
+    should win. It cannot: any run that reached a decision takes MAX_WAVE, so two
+    decided runs always tie on depth and the comparison falls straight to outcome.
+    An acceptance from any date then beats a rejection from any later date, which
+    is the wrong answer twice over - the task reports accepted when its newest
+    verdict rejected it, and it inherits the old run's date, which can drop it out
+    of scope and hide the recent work entirely.
+
+    Recency second fixes both. Progress still leads, so a run that got further
+    still wins and an errored or still-running rerun cannot displace a decided
+    one - undecided runs are placed by their stage and lose on depth. Only a
+    newer decided run can now outrank a decided run, which is precisely the case
+    where the newer verdict is the current truth.
+    """
     depth, why = wave_depth(row)
     state = (row.get('state') or '').lower()
     outcome = OUTCOME_RANK.get(state, 0)
     when = str(row.get('decidedAt') or row.get('updatedAt') or '')
-    return (depth, outcome, when), why
+    return (depth, when, outcome), why
 
 
 def main():
@@ -89,7 +105,7 @@ def main():
             key, why = rank(run)
             scored.append((key, why, run))
         scored.sort(key=lambda s: s[0], reverse=True)
-        (depth, outcome, when), why, winner = scored[0]
+        (depth, when, outcome), why, winner = scored[0]
 
         # Which axis actually decided it - that is what the drill-down shows.
         if len(scored) == 1:
@@ -97,8 +113,8 @@ def main():
         else:
             runner_up = scored[1][0]
             reason = ('further through the plan' if depth > runner_up[0]
-                      else 'better outcome at the same depth' if outcome > runner_up[1]
-                      else 'later decision, tied on progress and outcome' if when > runner_up[2]
+                      else 'later decision at the same depth' if when > runner_up[1]
+                      else 'better outcome, tied on progress and date' if outcome > runner_up[2]
                       else 'tied on every axis; first by sort order')
         reasons[reason] += 1
 
