@@ -5,7 +5,12 @@ const path = require('node:path');
 const root = path.join(__dirname, '..');
 const elements = new Map();
 const context = vm.createContext({
-  window: {}, Intl, console, setInterval() {},
+  // The page registers a resize listener and asks about reduced motion at
+  // load; with reduced motion on, the animated counters write their final
+  // value at once, which is what the assertions below read.
+  window: {addEventListener() {}, matchMedia: () => ({matches: true})},
+  Intl, console, setInterval() {}, performance,
+  requestAnimationFrame: fn => fn(performance.now()),
   // The page reads its palette off the stylesheet at render time. There is no
   // stylesheet here, so this returns nothing and statusColor falls back to its
   // own default - which is what the fallback is for. The test is about counts,
@@ -13,8 +18,14 @@ const context = vm.createContext({
   getComputedStyle: () => ({getPropertyValue: () => ''}),
   document: {
     documentElement: {},
+    hidden: false,
+    addEventListener() {},
+    querySelectorAll: () => [],
     getElementById(id) {
-      if (!elements.has(id)) elements.set(id, {value: '', style: {}, textContent: '', innerHTML: ''});
+      if (!elements.has(id)) {
+        elements.set(id, {value: '', style: {setProperty() {}}, textContent: '', innerHTML: '', dataset: {},
+          classList: {toggle() {}, add() {}, remove() {}, contains: () => false}, querySelectorAll: () => []});
+      }
       return elements.get(id);
     },
   },
@@ -60,8 +71,10 @@ assert.equal(elements.get('metricAccepted').textContent, '2');
 // derived from it proves the payout side reads the workbook and not GCS.
 assert.equal(elements.get('metricPendingTasks').textContent, '998');
 assert.equal(elements.get('metricPaid').textContent, '$300');
-run("byId('pipelineMode').value='historical'; renderDonut();");
-assert.match(elements.get('pipelineDonut').innerHTML, /<strong>3<\/strong>/);
+// The status panel ranks the current population; the historical toggle went
+// with the redesign, so the total and the leading row are what is checked.
+assert.match(elements.get('pipelineDonut').innerHTML, /data-key="rank:total">3</);
+assert.match(elements.get('pipelineDonut').innerHTML, /data-key="rank:Accepted">2</);
 // The Overview's own team filter was removed in the 15 Sept redesign; the date
 // range is what scopes this page now, so that is what is checked.
 assert.equal(run('commandSnapshot().current.length'), 3);
@@ -78,5 +91,5 @@ run('finalisationSource=null; finalisationRows=[]; renderHero(); renderTopPendin
 assert.equal(run('commandSnapshot().ready'), false);
 assert.equal(elements.get('metricAccepted').textContent, '-');
 assert.equal(elements.get('metricPendingTasks').textContent, '-');
-assert.match(elements.get('topPendingCards').innerHTML, /require Pipeline/);
+assert.match(elements.get('topPendingCards').innerHTML, /Waiting for pipeline and finalisation data/);
 console.log('Command checks passed: deduplication, date scope, payout source, history independence, missing source.');

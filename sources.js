@@ -10,7 +10,7 @@
     {
       id: 'gcs-index',
       name: 'GCS bucket index',
-      kind: 'Object storage metadata',
+      kind: 'GCS',
       location: 'gs://obi-harbor-pipeline/ (delivery prefixes)',
       href: '',
       hrefNote: 'The bucket has no browsable web URL; it is read through the Harbor VM with a read-only listing.',
@@ -64,7 +64,7 @@
       what: 'The operations workbook: who was paid and how much, the trainer roster and reporting lines, and the daily mining plan.',
       why: 'Payments and the roster exist nowhere else - the bucket has no concept of money or of who reports to whom.',
       how: 'Exported to xlsx and built into assets/data.js by tools/build_data.py. Not a live read: the figures move only when the export is re-run.',
-      views: ['command', 'payouts', 'delivery'],
+      views: ['acceptance', 'payouts', 'delivery'],
     },
     {
       id: 'ppt-workbook',
@@ -86,7 +86,7 @@
       what: 'The task-level payout list, the payment request tracker, the child job to person mapping, and the console dump behind per-task owners.',
       why: 'It is the only place a payment is tied to a named task and a child job number.',
       how: 'Read by tools/build_payout_ledger.py into assets/payout-ledger.json, which collapses repeated rows so no task can be paid twice, and by tools/build_harbor_console.py for the harbor dump tab.',
-      views: ['payouts', 'pipeline'],
+      views: ['acceptance', 'payouts', 'pipeline'],
     },
     {
       id: 'harbor-autosync-sheet',
@@ -98,30 +98,6 @@
       why: 'It is the PRD live (cron) Gsheet, and the closest thing to a server-readable copy of the console.',
       how: 'Nothing on this dashboard reads it yet. It is listed so the source is on the record; the console pull is used instead because it is the authoritative feed.',
       views: [],
-    },
-    {
-      id: 'postgres',
-      name: 'Postgres',
-      kind: 'Postgres',
-      location: 'Not connected',
-      href: null,
-      hrefNote: 'PRD C3 - connection not yet established; no host or credentials issued.',
-      what: 'The intended live store for pipeline and finalisation records.',
-      why: 'It would replace the exported snapshots with a live read and remove the lag between a bucket scan and the page.',
-      how: 'Nothing reads it yet. Every figure on this dashboard comes from the bucket or a workbook export.',
-      views: ['command'],
-      pending: true,
-    },
-    {
-      id: 'harbor-console',
-      name: 'Harbor Console trainer tasks',
-      kind: 'Harbor',
-      location: '/trainer-tasks',
-      href: 'https://harbor-console-713053229214.us-central1.run.app/trainer-tasks',
-      what: 'Harbor’s own view of each task and its finalisation run.',
-      why: 'The source of truth for finalisation. The bucket prefix is pruned while the console keeps the record, so a folder count under-reports accepted work.',
-      how: 'Behind Google IAP, so nothing server-side can read it. Pulled through an authenticated browser session with tools/console-pull.js into assets/harbor-console-live.json.',
-      views: ['command', 'pipeline', 'finalisation'],
     },
     {
       id: 'harbor-pipeline-dashboard',
@@ -143,7 +119,7 @@
       what: 'The audited 240 tasks with the client review layer from the audit tracker sheet.',
       why: 'It carries the client acceptance verdict: priority Low means the client accepted the task.',
       how: 'Fetched live at page load - it is same origin on Pages - and falls back to assets/client-acceptance.json, a counts-only snapshot.',
-      views: ['command'],
+      views: ['acceptance'],
     },
   ];
 
