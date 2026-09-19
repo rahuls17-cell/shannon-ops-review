@@ -491,7 +491,13 @@ async function rebuildTruth() {
     await loadTruth();
     setText('truthStatus', `Rebuilt from gs://obi-harbor-pipeline in ${body.seconds}s / ` +
       `${new Date(body.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})} / ` +
-      Object.entries(body.figures || {}).slice(0, 4).map(([k, v]) => `${k} ${fmt(v)}`).join(' / '));
+      Object.entries(body.figures || {}).slice(0, 4).map(([k, v]) => `${k} ${fmt(v)}`).join(' / ') +
+      // The delivered join is rebuilt with the pipeline. If only that half
+      // failed the pipeline figures are still good, so name the stale half
+      // rather than calling the whole rebuild a failure.
+      (body.rejoinError
+        ? ` / the delivered join could not be rebuilt (${body.rejoinError}), so the delivered and ready figures are from the previous pipeline`
+        : ''));
   } catch (error) {
     setText('truthStatus', `Rebuild failed: ${error.message}. The previously loaded data is still shown and is unchanged.`);
   } finally {

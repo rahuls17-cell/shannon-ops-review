@@ -3,8 +3,9 @@
 The page is static, so it cannot read GCS itself. This runs beside it on
 localhost and exposes one endpoint:
 
-    POST /api/refresh-truth   run the eight-step chain on the Harbor VM,
-                              then copy the rebuilt asset back here
+    POST /api/refresh-truth   run the eight-step chain on the Harbor VM, copy
+                              the rebuilt asset back here, and rejoin the
+                              delivered index against it
 
 The VM does the work because that is where the GCS credentials live; they never
 come to this machine. The chain is read-only against the bucket, and its own
@@ -30,6 +31,7 @@ VM = 'root@35.253.35.165'
 VM_PORT = '2222'
 VM_KEY = '~/.ssh/id_ed25519_gcp_taskmining'
 VM_DIR = '/root/harbor_gce/delivery-candidates-20260908-codex/pipeline-dashboard'
+TOOLS = Path(__file__).resolve().parent
 TIMEOUT = 600
 
 
@@ -84,9 +86,23 @@ class Handler(SimpleHTTPRequestHandler):
                 raise RuntimeError(fetch.stderr.strip()[:400] or 'scp failed')
 
             payload = json.loads(target.read_text(encoding='utf-8'))
+
+            # The delivered index resolves to pipeline task ids, so a rebuilt
+            # pipeline leaves it describing the wrong rows. The page detects
+            # that and says so, but a local rebuild should not leave it stale
+            # in the first place. A failure here is reported beside the result
+            # rather than failing the rebuild: the pipeline is already good.
+            index = subprocess.run(
+                [sys.executable, str(TOOLS / 'build_delivered_index.py')],
+                capture_output=True, text=True, timeout=300, cwd=str(root))
+            rejoin = None if index.returncode == 0 else (
+                (index.stderr or index.stdout or '').strip()[-300:]
+                or 'build_delivered_index.py failed')
+
             self._json(200, {
                 'ok': True,
                 'generatedAt': payload.get('generatedAt'),
+                'rejoinError': rejoin,
                 'seconds': round(time.time() - started, 1),
                 'figures': {f['label']: f['value'] for f in payload.get('figures', [])},
                 'log': (run.stdout or '')[-1500:],
