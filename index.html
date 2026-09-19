@@ -4,6 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Shannon Ops Review</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -46,10 +47,6 @@
 
       <div class="content">
         <header class="topbar">
-          <label class="search">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-            <input id="globalSearch" type="search" placeholder="Search" aria-label="Search this view" />
-          </label>
           <div class="topbar-actions">
             <dl class="freshness">
               <dt>Workbook</dt>
@@ -67,127 +64,150 @@
             <div>
               <p class="kicker">Operations</p>
               <h1 id="command-title">Overview</h1>
-              <p class="lede">Three sources, counted separately: a workbook that records payments, a bucket that records evaluations, and a bucket that records finalised work. They overlap, so nothing here is added across sources.</p>
+            </div>
+            <div class="rangectl" data-toolbar>
+              <span class="rangectl-label">Range<button class="why" data-info="slicer" aria-label="What the date range covers">?</button></span>
+              <div class="segmented" role="group" aria-label="Date range presets">
+                <button type="button" class="segbtn is-on" data-preset="">All</button>
+                <button type="button" class="segbtn" data-preset="7">7d</button>
+                <button type="button" class="segbtn" data-preset="14">14d</button>
+                <button type="button" class="segbtn" data-preset="30">30d</button>
+                <button type="button" class="segbtn" data-preset="live">Since cut</button>
+              </div>
+              <details class="rangepop">
+                <summary class="segbtn segbtn-custom"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"/><path d="M3 10h18M8 3v4M16 3v4"/></svg><span id="dateChip">Custom</span></summary>
+                <div class="rangepop-body">
+                  <label class="field"><span>From</span><input id="dateStart" type="date" aria-describedby="dateError" /></label>
+                  <label class="field"><span>To</span><input id="dateEnd" type="date" aria-describedby="dateError" /></label>
+                  <button id="clearDates" class="ghost">Clear</button>
+                </div>
+              </details>
+              <select id="datePreset" class="sr-only" aria-hidden="true" tabindex="-1">
+                <option value="">All dates</option><option value="7">Last 7 days</option><option value="14">Last 14 days</option><option value="30">Last 30 days</option><option value="live">Since the cut</option>
+              </select>
             </div>
           </header>
+          <p id="dateError" class="alert" role="alert" hidden>Start date must be on or before end date.</p>
 
-          <section class="panel slicer">
-            <header class="panel-head">
-              <div>
-                <h2>Date range<button class="why" data-info="slicer" aria-label="What the date range covers">?</button></h2>
-                <p class="panel-note" id="slicerNote">Applies to Overview, Delivery and Pipeline. Payouts is unaffected: the workbook records what was paid, not when the work happened.</p>
-              </div>
-              <div class="toolbar" data-toolbar>
-                <label class="field"><span>Preset</span><select id="datePreset">
-                  <option value="">All dates</option>
-                  <option value="7">Last 7 days</option>
-                  <option value="14">Last 14 days</option>
-                  <option value="30">Last 30 days</option>
-                  <option value="live">Since 5 Sept (live)</option>
-                </select></label>
-                <label class="field"><span>From</span><input id="dateStart" type="date" aria-describedby="dateError" /></label>
-                <label class="field"><span>To</span><input id="dateEnd" type="date" aria-describedby="dateError" /></label>
-                <button id="clearDates" class="ghost">Clear</button>
-              </div>
-            </header>
-            <div class="panel-body"><p id="dateError" class="alert" role="alert" hidden>Start date must be on or before end date.</p><p class="muted footnote" id="dateScope"></p></div>
-          </section>
-
-          <div class="figures">
-            <article class="figure">
-              <h3>Accepted tasks<button class="why" data-info="accepted" aria-label="How accepted tasks are counted">?</button></h3>
+          <p class="eyebrow">Delivery<span id="commandScopeNote"></span></p>
+          <div class="kpirow">
+            <article class="kpi" data-tone="violet" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>In scope<button class="why" data-info="scopeFunnel" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></i></div>
+              <strong id="countFunnel">-</strong>
+              <p class="kpi-note">tasks</p>
+              <div class="kpi-more"><div class="kpi-detail" id="detailScope"></div></div>
+              <p class="figure-src" data-source="gcs-evaluations"></p>
+              <span class="kpi-caret" aria-hidden="true"></span>
+            </article>
+            <article class="kpi" data-tone="aqua" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Accepted tasks<button class="why" data-info="accepted" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 5-5"/></svg></i></div>
               <strong id="metricAccepted">-</strong>
-              <p>Distinct tasks in the bucket, cross-cohort repeats removed</p>
+              <p class="kpi-note">distinct tasks</p>
+              <div class="kpi-more"><div class="kpi-detail" id="detailAccepted"></div></div>
+              <p class="figure-src" data-source="gcs-finalisation"></p>
+              <span class="kpi-caret" aria-hidden="true"></span>
             </article>
-            <article class="figure">
-              <h3>Client accepted<button class="why" data-info="clientAccepted" aria-label="How client acceptance is decided">?</button></h3>
+            <article class="kpi" data-tone="blue" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Client accepted<button class="why" data-info="clientAccepted" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4 7.2 16.9l.9-5.4L4.2 7.7l5.4-.8z"/></svg></i></div>
               <strong id="metricClientAccepted">-</strong>
-              <p id="metricClientAcceptedNote">-</p>
+              <p class="kpi-note" id="metricClientAcceptedNote">-</p>
+              <div class="kpi-more"><div class="kpi-detail" id="detailClient"></div></div>
+              <p class="figure-src" data-source="harbor-240"></p>
+              <span class="kpi-caret" aria-hidden="true"></span>
             </article>
-            <article class="figure">
-              <h3>Finalisation v2<button class="why" data-info="v2Accepted" aria-label="What the v2 cohort holds">?</button></h3>
+            <article class="kpi" data-tone="magenta" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Finalisation v2<button class="why" data-info="v2Accepted" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></i></div>
               <strong id="metricV2Accepted">-</strong>
-              <p id="metricV2AcceptedNote">-</p>
-            </article>
-            <article class="figure">
-              <h3>Paid out<button class="why" data-info="paid" aria-label="Where paid amounts come from">?</button></h3>
-              <strong id="metricPaid">-</strong>
-              <p>Recorded in the workbook Paid Out tab</p>
-            </article>
-            <article class="figure is-risk">
-              <h3>Pending tasks<button class="why" data-info="pending" aria-label="How pending is calculated">?</button></h3>
-              <strong id="metricPendingTasks">-</strong>
-              <p id="metricPending">-</p>
-            </article>
-            <article class="figure">
-              <h3>Active trainers</h3>
-              <strong id="metricActive">-</strong>
-              <p id="metricRoster">-</p>
+              <p class="kpi-note" id="metricV2AcceptedNote">-</p>
+              <div class="kpi-more"><div class="kpi-detail" id="detailV2"></div></div>
+              <p class="figure-src" data-source="gcs-finalisation"></p>
+              <span class="kpi-caret" aria-hidden="true"></span>
             </article>
           </div>
 
-          <section class="panel">
-            <header class="panel-head">
-              <div>
-                <h2>Payout exposure</h2>
-                <p class="panel-note">Paid against still-owed, at $300 a task. Both figures come from the workbook, never from the bucket.</p>
-              </div>
-              <button class="ghost" data-jump="payouts">Open Payouts</button>
-            </header>
-            <div class="panel-body exposure">
-              <div class="exposure-headline">
-                <span class="exposure-label">Outstanding</span>
-                <strong id="heroPending">-</strong>
-                <p class="muted" id="heroExposureText">-</p>
-                <figure id="exposureChart" class="exposure-chart"></figure>
-              </div>
-              <div id="topPendingCards" class="leaderboard"></div>
-            </div>
-          </section>
+          <p class="eyebrow">Payouts<span>all dates &mdash; the date range is not applied</span><button class="why" data-info="acceptanceScope" aria-label="Why the date range is not applied here">?</button></p>
+          <div class="kpirow">
+            <article class="kpi" data-tone="slate" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Active trainers</h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></i></div>
+              <strong id="metricActive">-</strong>
+              <p class="kpi-note" id="metricRoster">-</p>
+              <div class="kpi-more"><div class="kpi-detail" id="detailTrainers"></div></div>
+              <p class="figure-src" data-source="ops-workbook"></p>
+              <span class="kpi-caret" aria-hidden="true"></span>
+            </article>
+            <article class="kpi" data-tone="aqua" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Paid out<button class="why" data-info="paid" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2.5"/><path d="M2 10h20M16 15h2"/></svg></i></div>
+              <strong id="metricPaid">-</strong>
+              <p class="kpi-note">at $300 a task</p>
+              <div class="kpi-more"><div class="kpi-detail" id="detailPaid"></div></div>
+              <p class="figure-src" data-source="ops-workbook"></p>
+              <span class="kpi-caret" aria-hidden="true"></span>
+            </article>
+            <article class="kpi" data-tone="yellow" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Pending tasks<button class="why" data-info="pending" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i></div>
+              <strong id="metricPendingTasks">-</strong>
+              <p class="kpi-note" id="metricPending">-</p>
+              <div class="kpi-more"><div class="kpi-detail" id="detailPending"></div></div>
+              <p class="figure-src" data-source="ops-workbook"></p>
+              <span class="kpi-caret" aria-hidden="true"></span>
+            </article>
+            <article class="kpi" data-tone="red" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Owed<button class="why" data-info="pending" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></i></div>
+              <strong id="heroPending">-</strong>
+              <p class="kpi-note" id="heroExposureText">-</p>
+              <div class="kpi-more"><div class="kpi-detail" id="detailOwed"></div></div>
+              <p class="figure-src" data-source="ops-workbook"></p>
+              <span class="kpi-caret" aria-hidden="true"></span>
+            </article>
+          </div>
 
           <div class="split">
             <section class="panel">
               <header class="panel-head">
-                <div>
-                  <h2>Where the work sits<button class="why" data-info="commandSources" aria-label="Why these do not add up">?</button></h2>
-                  <p class="panel-note" id="commandSourceStatus">Loading the bucket scan...</p>
-                </div>
+                <div><h2>Current evaluations<button class="why" data-info="currentEvaluations" aria-label="What this counts">?</button></h2><p class="panel-note" id="commandSourceStatus"></p></div>
+              </header>
+              <div class="panel-body"><div id="pipelineDonut" class="rankbars"></div></div>
+            </section>
+            <section class="panel">
+              <header class="panel-head">
+                <div><h2>Where the work sits<button class="why" data-info="commandSources" aria-label="Why these do not add up">?</button></h2><p class="panel-note" id="commandOwnership"></p></div>
               </header>
               <div class="panel-body">
                 <div id="commandSummary" class="summary-row"></div>
-                <p class="muted footnote" id="commandOwnership"></p>
+                <p class="subhead">By bench<button class="why" data-info="commandBench" aria-label="How bench totals are assigned">?</button></p>
+                <div id="benchCards" class="bench-stack"></div>
               </div>
-            </section>
-
-            <section class="panel">
-              <header class="panel-head">
-                <div>
-                  <h2>Current evaluations</h2>
-                  <p class="panel-note">Latest evaluation of each task family in the bucket.</p>
-                </div>
-              </header>
-              <div class="panel-body"><div id="pipelineDonut" class="donut-panel"></div></div>
             </section>
           </div>
 
           <section class="panel">
             <header class="panel-head">
-              <div>
-                <h2>Company and Computer bench<button class="why" data-info="commandBench" aria-label="How bench totals are assigned">?</button></h2>
-                <p class="panel-note">Split by the roster team of the task owner. Work with no resolved owner sits in neither bench.</p>
-              </div>
+              <div><h2>Payout balance<button class="why" data-info="pending" aria-label="How paid and owed are calculated">?</button></h2><p class="panel-note" id="payoutBalanceNote"></p></div>
+              <button class="ghost" data-jump="payouts">Open Payouts</button>
             </header>
-            <div class="panel-body"><div id="benchCards" class="bench-stack"></div></div>
+            <div class="panel-body exposure">
+              <div><p class="subhead">By bench</p><figure id="exposureChart" class="exposure-chart"></figure></div>
+              <div><p class="subhead">Largest amounts owed</p><div id="topPendingCards" class="leaderboard"></div></div>
+            </div>
           </section>
 
-          <section class="panel" id="sourcePanel">
+          <section class="panel">
             <header class="panel-head">
-              <div>
-                <h2>Where this data comes from<button class="why" data-info="sources" aria-label="How to read the source panel">?</button></h2>
-                <p class="panel-note">Every figure on this dashboard traces to one of these. Each says what it holds, why we read it, and how it reaches the page. Nothing here writes to any source.</p>
-              </div>
+              <div><h2>Daily delta<button class="why" data-info="dailyDelta" aria-label="What the daily delta counts">?</button></h2><p class="figure-src is-panel" data-source="gcs-evaluations"></p></div>
+              <div class="toolbar" data-toolbar><label class="field"><span>State</span><select id="deltaState"><option value="">All states</option></select></label></div>
             </header>
-            <div class="panel-body"><div id="sourceList" class="source-list"></div></div>
+            <div class="panel-body">
+              <figure id="deltaChart" class="linechart"></figure>
+              <div id="deltaPeaks" class="peakstrip"></div>
+              <p class="muted footnote" id="deltaNote"></p>
+            </div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>Where this data comes from<button class="why" data-info="sources" aria-label="How to read the source panel">?</button></h2><p class="panel-note" id="sourceNote"></p></div>
+            </header>
+            <div class="panel-body"><div id="sourceList" class="srcrows" data-sourcelist="all"></div></div>
           </section>
         </section>
 
@@ -197,39 +217,35 @@
             <div>
               <p class="kicker">Money</p>
               <h1 id="payouts-title">Payouts</h1>
-              <p class="lede">Accepted work comes from the workbook task list, deduplicated. Payments come from the Paid Out tab and the payment tracker. The bucket is not used here.</p>
             </div>
+            <div class="sourcestrip" data-sources="payouts"></div>
           </header>
-          <div class="sourcestrip" data-sources="payouts"></div>
-          <p class="provenance" id="payoutSourceStatus">Loading the payout ledger...</p>
+
+          <div id="payoutSummary" class="kpirow"></div>
 
           <section class="panel">
             <header class="panel-head">
-              <div>
-                <h2>By trainer</h2>
-                <p class="panel-note">One row per person. Pending is what they are owed now, not what they have earned in total.</p>
-              </div>
+              <div><h2>By trainer<button class="why" data-info="payoutAccepted" aria-label="What counts as accepted">?</button></h2></div>
               <div class="toolbar" data-toolbar>
-                <label class="field"><span>Trainer<button class="why" data-info="trainerPick" aria-label="What the trainer picker shows">?</button></span><select id="trainerFilter"><option value="">All trainers</option></select></label>
-                <label class="field"><span>Search</span><input id="personSearch" type="search" placeholder="Name, email, team, manager" /></label>
-                <label class="field"><span>Bench<button class="why" data-info="bench" aria-label="How benches are defined">?</button></span><select id="benchFilter"><option value="">All benches</option><option value="company">Company</option><option value="computer">Computer</option><option value="unassigned">Unassigned</option></select></label>
-                <label class="field"><span>Payment</span><select id="paymentFilter"><option value="">Any state</option><option value="pending">Has pending</option><option value="paid">Has been paid</option><option value="no-paid">Never paid</option><option value="zero">No accepted work</option></select></label>
+                <label class="field"><span>Search</span><input id="personSearch" type="search" placeholder="Name, team or manager" /></label>
+                <label class="field"><span>Bench<button class="why" data-info="bench" aria-label="How benches are defined">?</button></span><select id="benchFilter"><option value="">All</option><option value="company">Company</option><option value="computer">Computer</option><option value="unassigned">Unassigned</option></select></label>
+                <label class="field"><span>Payment</span><select id="paymentFilter"><option value="">All</option><option value="pending">Owed</option><option value="paid">Paid</option><option value="no-paid">Never paid</option><option value="zero">No accepted work</option></select></label>
               </div>
             </header>
             <div class="panel-body">
-              <div id="payoutSummary" class="summary-row"></div>
               <div class="table-wrap">
                 <table class="grid payout-table">
                   <thead>
                     <tr>
+                      <th scope="col" class="num">#</th>
                       <th scope="col">Person</th>
                       <th scope="col">Team</th>
                       <th scope="col">Manager</th>
-                      <th scope="col" class="num">Accepted<button class="why" data-info="payoutAccepted" aria-label="What counts as accepted">?</button></th>
+                      <th scope="col" class="num">Accepted</th>
                       <th scope="col" class="num">Paid</th>
                       <th scope="col" class="num">Paid $</th>
-                      <th scope="col" class="num">Pending</th>
-                      <th scope="col" class="num">Pending $</th>
+                      <th scope="col" class="num">Owed</th>
+                      <th scope="col" class="num">Owed $</th>
                       <th scope="col" class="num">24h</th>
                     </tr>
                   </thead>
@@ -237,6 +253,7 @@
                 </table>
               </div>
               <div class="pager">
+                <label class="pagesize"><span>Show</span><select id="payoutPageSize"><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select></label>
                 <button id="payoutPrevious" class="ghost">Previous</button>
                 <span id="payoutPage" role="status"></span>
                 <button id="payoutNext" class="ghost">Next</button>
@@ -246,26 +263,23 @@
 
           <section class="panel">
             <header class="panel-head">
-              <div>
-                <h2>Task ledger</h2>
-                <p class="panel-note">Every task in the workbook task list, one row each. Rows repeating a task for the same trainer are folded in and reported as extra ledger rows.</p>
-              </div>
+              <div><h2>Tasks<button class="why" data-info="ledgerPayment" aria-label="How payment state is decided">?</button></h2></div>
               <div class="toolbar" data-toolbar>
-                <label class="field"><span>Search</span><input id="ledgerSearch" type="search" placeholder="Task, trainer, CJ" /></label>
-                <label class="field"><span>Payment<button class="why" data-info="ledgerPayment" aria-label="How payment state is decided">?</button></span><select id="ledgerPayment"><option value="">Any state</option></select></label>
-                <label class="field"><span>Type</span><select id="ledgerType"><option value="">Any type</option></select></label>
-                <label class="field"><span>Valid flag<button class="why" data-info="ledgerAcceptance" aria-label="What the Valid column does">?</button></span><select id="ledgerValidity"><option value="">Any</option><option value="valid">Valid</option><option value="invalid">Valid = 0</option></select></label>
-                <label class="field"><span>Repeats<button class="why" data-info="ledgerDuplicates" aria-label="How repeated rows are handled">?</button></span><select id="ledgerDuplicates"><option value="">All tasks</option><option value="duplicates">Folded rows only</option><option value="unique">Single-row only</option></select></label>
+                <label class="field"><span>Search</span><input id="ledgerSearch" type="search" placeholder="Task, trainer or CJ" /></label>
+                <label class="field"><span>Payment</span><select id="ledgerPayment"><option value="">All</option></select></label>
+                <label class="field"><span>Type</span><select id="ledgerType"><option value="">All</option></select></label>
+                <label class="field"><span>Valid<button class="why" data-info="ledgerAcceptance" aria-label="What the Valid column means">?</button></span><select id="ledgerValidity"><option value="">All</option><option value="valid">Valid</option><option value="invalid">Valid = 0</option></select></label>
+                <label class="field"><span>Repeats<button class="why" data-info="ledgerDuplicates" aria-label="How repeated rows are handled">?</button></span><select id="ledgerDuplicates"><option value="">All</option><option value="duplicates">Folded only</option><option value="unique">Single-row only</option></select></label>
                 <button id="resetLedgerFilters" class="ghost">Clear</button>
               </div>
             </header>
             <div class="panel-body">
-              <p class="provenance" id="ledgerStatus">Loading...</p>
               <div id="ledgerSummary" class="summary-row"></div>
               <div class="table-wrap">
                 <table class="grid">
                   <thead>
                     <tr>
+                      <th scope="col" class="num">#</th>
                       <th scope="col">Task</th>
                       <th scope="col">Trainer</th>
                       <th scope="col">Type</th>
@@ -279,6 +293,7 @@
                 </table>
               </div>
               <div class="pager">
+                <label class="pagesize"><span>Show</span><select id="ledgerPageSize"><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select></label>
                 <button id="ledgerPrevious" class="ghost">Previous</button>
                 <span id="ledgerPage" role="status"></span>
                 <button id="ledgerNext" class="ghost">Next</button>
@@ -291,12 +306,11 @@
         <section class="view" id="view-delivery" role="tabpanel" aria-labelledby="delivery-title">
           <header class="view-head">
             <div>
-              <p class="kicker">Teams</p>
+              <p class="kicker">Task audit</p>
               <h1 id="delivery-title">Delivery</h1>
-              <p class="lede">Team and manager rollups from the roster, and the daily mining plan against what was actually delivered.</p>
             </div>
+            <div class="sourcestrip" data-sources="delivery"></div>
           </header>
-          <div class="sourcestrip" data-sources="delivery"></div>
           <p class="rangeecho" data-range="delivery"></p>
           <p class="provenance" id="auditStatus">Loading the task audit&hellip;</p>
 
@@ -365,6 +379,21 @@
               </div>
             </div>
           </section>
+
+          <div id="planSummary" class="kpirow"></div>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>Plan against actual<button class="why" data-info="workbook" aria-label="Scope of the plan figures">?</button></h2></div>
+              <div class="chart-key"><span class="key-item is-plan">Planned</span><span class="key-item is-actual">Delivered</span></div>
+            </header>
+            <div class="panel-body"><div id="planCharts" class="plan-grid"></div></div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head"><div><h2>Teams</h2></div></header>
+            <div class="panel-body"><div id="teamGrid" class="team-grid"></div></div>
+          </section>
         </section>
 
         <!-- PIPELINE (derived from the GCS bucket) ---------------------- -->
@@ -372,62 +401,55 @@
           <header class="view-head">
             <div>
               <p class="kicker">Delivery pipeline</p>
-              <h1 id="pipeline-title">Pipeline</h1>
-              <p class="lede">Every figure here is derived from <code>gs://obi-harbor-pipeline</code> and nothing else. Click any number to see the chain that produced it, down to the verdict objects it was read from.</p>
+              <h1 id="pipeline-title">Pipeline<button class="why" data-info="scope" aria-label="What is counted here">?</button></h1>
             </div>
             <div class="view-actions">
-              <button id="truthRefresh" class="ghost">Rebuild from the bucket</button>
+              <div class="sourcestrip" data-sources="pipeline"></div>
+              <button id="truthRefresh" class="ghost">Rebuild from bucket</button>
             </div>
           </header>
-          <div class="sourcestrip" data-sources="pipeline"></div>
-          <p class="provenance" id="truthStatus">Loading the derived pipeline&hellip;</p>
-          <p class="rangeecho" data-range="pipeline"></p>
+          <p class="statusline" id="truthStatus"></p>
 
-          <div id="truthFigures" class="status-grid"></div>
-          <section class="panel" id="scopePanel">
-            <header class="panel-head">
-              <div>
-                <h2>What is counted<button class="why" data-info="scope" aria-label="How the 5 September cut is applied">?</button></h2>
-                <p class="panel-note" id="scopeNote"></p>
-              </div>
-            </header>
-            <div class="panel-body">
-              <figure class="daybars" id="scopeChart"></figure>
-              <p class="muted footnote" id="scopeCaveats"></p>
-            </div>
-          </section>
-
+          <div id="truthFigures" class="kpirow kpirow-5"></div>
+          <div id="truthFlags" class="flagrow"></div>
 
           <section class="panel" id="truthChainPanel" hidden>
             <header class="panel-head">
-              <div>
-                <h2 id="truthChainTitle">Derivation</h2>
-                <p class="panel-note" id="truthChainNote"></p>
-              </div>
-              <div class="toolbar"><button id="truthChainClose" class="ghost">Close</button></div>
+              <div><h2 id="truthChainTitle">How this is counted</h2><p class="panel-note" id="truthChainNote"></p></div>
+              <button id="truthChainClose" class="ghost">Close</button>
             </header>
             <div class="panel-body"><ol class="chain" id="truthChain"></ol></div>
           </section>
 
           <section class="panel">
             <header class="panel-head">
-              <div>
-                <h2>Tasks<button class="why" data-info="truthTasks" aria-label="What one row means">?</button></h2>
-                <p class="panel-note" id="truthCaveats"></p>
-              </div>
+              <div><h2>Outcomes by day</h2><p class="panel-note" id="scopeNote"></p></div>
+              <div class="chart-key" id="scopeKey"></div>
+            </header>
+            <div class="panel-body"><figure class="daybars" id="scopeChart"></figure></div>
+          </section>
+
+          <section class="panel">
+            <header class="panel-head">
+              <div><h2>Tasks<button class="why" data-info="truthTasks" aria-label="What one row means">?</button></h2><p class="panel-note" id="truthCaveats"></p></div>
               <div class="toolbar" data-toolbar>
+                <label class="field"><span>Search</span><input id="tSearch" type="search" placeholder="Task, trainer or reason" /></label>
                 <label class="field"><span>State</span><select id="tState"></select></label>
-                <label class="field"><span>Gate era<button class="why" data-info="gateEra" aria-label="What the gate eras are">?</button></span><select id="tGate"></select></label>
-                <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What the finding filter searches">?</button></span><select id="tFinding"></select></label>
-                <label class="field"><span>Delivery</span><select id="tDelivery"><option value="">Any</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting KESTREL re-gate</option><option value="none">No package</option></select></label>
-                <label class="field"><span>Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><button class="why" data-info="truthVersions" aria-label="Why versions are counted once">1x</button></span><select id="tDelivered"><option value="">Any</option><option value="yes">Already delivered</option><option value="ready">Ready for delivery</option><option value="no">Not delivered</option></select></label>
-                <label class="field"><span>Carried over</span><select id="tCarried"><option value="">Any</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
-                <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">Any</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
-                <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">Any</option><option value="yes">Flagged as duplicate</option><option value="likely">Likely duplicate</option><option value="no">Not flagged</option></select></label>
-                <label class="field"><span>Domain</span><select id="tDomain"></select></label>
-                <label class="field"><span>Trainer</span><select id="tOwner"></select></label>
-                <label class="field"><span>Search</span><input id="tSearch" type="search" placeholder="Task, trainer, reason" /></label>
-                <button id="tReset" class="ghost">Clear filters</button>
+                <label class="field"><span>Gate<button class="why" data-info="gateEra" aria-label="What the gates are">?</button></span><select id="tGate"></select></label>
+                <label class="field"><span>Delivery</span><select id="tDelivery"><option value="">All</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting re-gate</option><option value="none">No package</option></select></label>
+                                <label class="field"><span>Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><button class="why" data-info="truthVersions" aria-label="Why versions are counted once">1x</button></span><select id="tDelivered"><option value="">Any</option><option value="yes">Already delivered</option><option value="ready">Ready for delivery</option><option value="no">Not delivered</option></select></label>
+                <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What a finding is">?</button></span><select id="tFinding"></select></label>
+                <details class="morefilters">
+                  <summary class="ghost">More</summary>
+                  <div class="morefilters-body">
+                    <label class="field"><span>Domain</span><select id="tDomain"></select></label>
+                    <label class="field"><span>Trainer</span><select id="tOwner"></select></label>
+                    <label class="field"><span>Carried over</span><select id="tCarried"><option value="">All</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
+                    <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">All</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
+                    <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">All</option><option value="yes">Flagged</option><option value="likely">Likely</option><option value="no">Not flagged</option></select></label>
+                  </div>
+                </details>
+                <button id="tReset" class="ghost">Clear</button>
               </div>
             </header>
             <div class="panel-body">
@@ -482,12 +504,13 @@
                   <thead>
                     <tr>
                       <th scope="col"></th>
+                      <th scope="col" class="num">#</th>
                       <th scope="col">Task</th>
                       <th scope="col">Flags<button class="why" data-info="truthFlags" aria-label="What the flag codes mean">?</button></th>
                       <th scope="col">State</th>
                       <th scope="col">Trainer</th>
                       <th scope="col">Decided</th>
-                      <th scope="col">Gate era</th>
+                      <th scope="col">Gate</th>
                       <th scope="col" class="num">Runs</th>
                     </tr>
                   </thead>
@@ -500,6 +523,7 @@
                    the badges do not have to spell it out on every row. -->
               <p class="flag-legend" id="truthFlagLegend"></p>
               <div class="pager">
+                <label class="pagesize"><span>Show</span><select id="truthPageSize"><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select></label>
                 <button id="truthPrev" class="ghost">Previous</button>
                 <span id="truthPage" role="status"></span>
                 <button id="truthNext" class="ghost">Next</button>
@@ -619,6 +643,7 @@
     <script src="truth.js"></script>
     <script src="manifest.js"></script>
     <script src="delivery-audit.js"></script>
+    <script src="daily-delta.js"></script>
     <script src="payout-ledger.js"></script>
     <script src="explorer.js"></script>
     <script src="app.js"></script>

@@ -27,14 +27,12 @@ let explorerPath = '';
 let explorerEntry = null;
 // PRD X1: one range for the whole dashboard except Payouts, which reports what
 // the workbook paid rather than when the work happened.
-const dateRange = {start: '', end: ''};
+const dateRange = {start: '', end: '', preset: ''};
 let harborConsole = null;
 let consoleLive = null;
 let pipelinePage = 0;
 let payoutPage = 0;
 let ledgerPage = 0;
-const PAYOUT_PAGE_SIZE = 25;
-const LEDGER_PAGE_SIZE = 25;
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 function taskKey(value) {
   return String(value || '').toLowerCase()
@@ -67,6 +65,19 @@ function pipelineType(task) {
   if (/^(code|fin|health|law|gen|bus)-/.test(name)) return 'Non-connector';
   return 'Not recorded';
 }
+// Shared derivation chain, rendered as popover text.
+let scopeChain = [];
+let scopeCaveats = null;
+function scopeChainCopy() {
+  const chain = scopeChain.length
+    ? scopeChain.map(step => `${fmt(step.count)} ${step.step}`).join(' \u2192 ') + '. '
+    : '';
+  const caveats = scopeCaveats
+    ? `Of those ${fmt(scopeCaveats.total)}, ${fmt(scopeCaveats.inferred)} have a decision date the chain inferred rather than read from a verdict, ${fmt(scopeCaveats.duplicates)} may be duplicates of another task, and ${fmt(scopeCaveats.lowConfidence)} were identified with low confidence. They are all counted; the flags are an audit trail, not a deduction. `
+    : '';
+  return chain + caveats + 'Every figure on this dashboard is that same population narrowed by one more step. None of it is recomputed in the browser: these are the counts the ingest chain published alongside the data, so the page and the harness cannot disagree about what a number means. Open a figure on Pipeline to see the step it adds on the end.';
+}
+
 const infoCopy = {
   accepted: 'Distinct tasks found in the finalisation cohorts of the bucket. A task finalised into more than one cohort has a folder in each, so folders are collapsed to task names first - the name is read from task.toml inside the archive, because folder names are sometimes opaque pipeline ids. This is delivered work, not the payout basis.',
   sources: 'Every number on this dashboard comes from one of these, and each entry states what it holds, why we read it and how it reaches the page. Live means the page read it during this visit; snapshot means a committed export, which moves only when the export is re-run; not connected means nothing reads it yet. All access is read-only - the dashboard never writes to a bucket, a sheet or a database.',
@@ -107,8 +118,135 @@ const infoCopy = {
   ownership: 'Three tiers, strongest first. Harbor Console submitter is the console\u2019s own record of who submitted the task and is treated as proof. Name match only is the GCS trainer records joined by declared task name - finalisation repackages archives, so digests never match and the name is the only join available; that is evidence, not proof. Contested means two records claim the same name and the console does not settle it, so the task stays unassigned rather than being given to whoever was found first. The console export is a point-in-time dump, not live.',
   pipeline: 'The status names are the Harbor Console\u2019s own: its finalisation run state is done, rejected, parked or running, which the spec restates as Accepted, Rejected, Failed and Running. Rejected means harbor checks failed and the trainer reworks it - the largest bucket by far. Failed means an infrastructure error the trainer cannot rerun; it parks for QC or gen engineering. Submitted means the gate passed but no decision is recorded yet, which is what used to be shown as Done - it is not an acceptance. Current counts the latest attempt per family; All attempts counts retries separately.',
   dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
+  scopeFunnel: scopeChainCopy,
+  currentEvaluations: 'The latest evaluation of each task family in the GCS bucket, by status. It is the evidence feed rather than the console, so it answers what the pipeline last recorded about a family rather than what the task\u2019s decided state is - the Pipeline view carries that.',
+  acceptanceScope: 'The date range is not applied to this half. The 240 audit sheet publishes counts only, with no per-task date to filter on, and the workbook records when a payment was made rather than when the work was done. Filtering would therefore cut what was paid while what was accepted stayed whole - and pending is accepted minus paid, so every outstanding balance on the page would quietly rise. The figures here are all-time, whatever range is set on the pipeline half.',
+  dailyDelta: 'How many tasks reached each state on each day - the movement, not the standing total, so a quiet day and a busy day look different rather than both reading as a large total. The Pipeline figures are the standing total; this is the change. One row is one task: the chain has already grouped submissions into identities and chosen a canonical run for each, so a task resubmitted five times moves the line once. Where the chain could not read a decision date from a verdict it inferred the day, and the count of those is stated beneath the chart, because an inferred date should not be presented as an observed one.',
   workbook: 'A workbook-wide snapshot with no reliable person-level allocation, so it does not respond to the filters on the other tabs and cannot be split by trainer.',
 };
+
+
+// Inline line chart. Axis labels are HTML so they render at a fixed size;
+// only the plot scales.
+function lineChart(days, series, options) {
+  const settings = options || {};
+  if (!days.length || !series.length) return `<p class="empty">${esc(settings.empty || 'No data in this selection.')}</p>`;
+  const peak = Math.max(1, ...series.flatMap(line => line.values));
+  // A series that never gets near the others cannot be read off a shared scale
+  // anyway. It keeps its place and its tooltip, but stops claiming a colour.
+  const quiet = line => Math.max(0, ...line.values) < peak * 0.05;
+  const ordered = [...series.filter(line => !quiet(line)), ...series.filter(quiet)];
+  const stroke = line => quiet(line) ? '--line' : (line.token || '--slate');
+  const px = index => days.length === 1 ? 50 : (index / (days.length - 1)) * 100;
+  const py = value => (1 - value / peak) * 100;
+  const ticks = [peak, Math.round(peak / 2), 0];
+  return `
+    <div class="linechart-frame">
+      <div class="linechart-yaxis" aria-hidden="true">${ticks.map(tick =>
+        `<span style="top:${py(tick)}%">${fmt(tick)}</span>`).join('')}</div>
+      <div class="linechart-plot">
+        <svg viewBox="0 0 100 100" preserveAspectRatio="none" role="img"
+             aria-label="${esc(settings.label || 'Trend')}">
+          <title>${esc(settings.label || 'Trend')}</title>
+          ${ticks.map(tick => `<line class="grid" vector-effect="non-scaling-stroke"
+            x1="0" x2="100" y1="${py(tick)}" y2="${py(tick)}"/>`).join('')}
+          ${ordered.length && !quiet(ordered[0]) ? `<polygon class="spark-area" fill="var(${stroke(ordered[0])})"
+            points="0,100 ${ordered[0].values.map((value, index) => `${px(index)},${py(value)}`).join(' ')} 100,100"/>` : ''}
+          ${ordered.map(line => `<polyline vector-effect="non-scaling-stroke"
+            class="spark${quiet(line) ? ' is-quiet' : ''}" fill="none" stroke="var(${stroke(line)})"
+            points="${line.values.map((value, index) => `${px(index)},${py(value)}`).join(' ')}"/>`).join('')}
+        </svg>
+        ${ordered.map(line => line.values.map((value, index) =>
+          `<span class="spark-dot" style="left:${px(index)}%;top:${py(value)}%;background:var(${stroke(line)})"
+             data-tip="${esc(line.label)} / ${esc(days[index])}: ${fmt(value)}"></span>`).join('')).join('')}
+      </div>
+      <div class="linechart-xaxis">${days.map((day, index) =>
+        `<span style="left:${px(index)}%">${esc(day.slice(5))}</span>`).join('')}</div>
+    </div>
+    <div class="chart-key">${ordered.map(line =>
+      `<span class="key-item${quiet(line) ? ' is-quiet' : ''}" data-series
+        style="--tone: var(${stroke(line)})">${esc(line.label)}</span>`).join('')}</div>`;
+}
+
+function renderScopeFunnel() {
+  const value = byId('countFunnel');
+  if (!value) return;
+  if (!truth) { value.textContent = '-'; return; }
+  const rows = truth.rows;
+  // The scope chain is the longest published chain, cut at the step that
+  // produced the in-scope count; later steps are figure-specific.
+  const longest = [...truth.figures.values()].map(figure => figure.steps || [])
+    .sort((a, b) => b.length - a.length)[0] || [];
+  const cut = longest.findIndex(step => step.count === rows.length);
+  const shared = cut >= 0 ? longest.slice(0, cut + 1) : [];
+  scopeChain = shared;
+  // Caveat counts feed the tooltip only.
+  scopeCaveats = {
+    total: rows.length,
+    inferred: rows.filter(row => row.decidedInferred).length,
+    duplicates: rows.filter(row => row.possibleDuplicate).length,
+    lowConfidence: rows.filter(row => row.confidence === 'low').length,
+  };
+  value.textContent = fmt(truth.counts?.inScope ?? rows.length);
+  setTextIfPresent('commandScopeNote', `since ${truth.cut}`);
+  const node = byId('detailScope');
+  if (node) node.innerHTML = shared.map(step => `<div><span>${esc(step.step)}</span><b>${fmt(step.count)}</b></div>`).join('');
+}
+
+let deltaModel = null;
+
+function buildDelta() {
+  if (!truth) { deltaModel = null; return; }
+  try {
+    deltaModel = window.prepareDelta(truth);
+  } catch (error) {
+    deltaModel = null;
+    setText('deltaNote', `Daily delta could not be built: ${error.message}`);
+  }
+}
+
+// Daily delta: one line per state, tasks reaching that state per day.
+function renderDailyDelta() {
+  const figure = byId('deltaChart');
+  if (!figure) return;
+  if (!deltaModel) {
+    figure.innerHTML = '<p class="empty">Waiting for the derived pipeline.</p>';
+    byId('deltaPeaks').innerHTML = '';
+    setText('deltaNote', '');
+    return;
+  }
+  const picked = byId('deltaState').value;
+  const result = window.filterDelta(deltaModel,
+    {start: dateRange.start, end: dateRange.end, state: picked});
+
+  figure.innerHTML = lineChart(result.days, result.states.map(state => ({
+    label: state,
+    token: STATE_TOKENS[state] || '--slate',
+    values: result.days.map(day => result.series[state][day] || 0),
+  })), {label: 'Tasks reaching each state per day',
+        empty: result.invalidDates ? 'The start date is after the end date.'
+                                   : 'No decisions in this selection.'});
+
+  byId('deltaPeaks').innerHTML = `<span class="peakstrip-label">Busiest day</span>` +
+    result.states.filter(state => result.peak[state].count).map(state =>
+      `<span class="peakstrip-item"><span class="peakstrip-top"><i style="background:var(${
+        STATE_TOKENS[state] || '--slate'})"></i>${esc(state)} <b>${fmt(result.peak[state].count)}</b></span>` +
+       `<small>(${esc(result.peak[state].date.slice(5))})</small></span>`).join('');
+
+  setText('deltaNote', '');
+}
+
+function populateDeltaFilter() {
+  const select = byId('deltaState');
+  if (!select || !deltaModel) return;
+  const counts = new Map();
+  deltaModel.events.forEach(event => counts.set(event.state, (counts.get(event.state) || 0) + 1));
+  const chosen = select.value;
+  select.innerHTML = '<option value="">All states</option>' +
+    deltaModel.states.map(state =>
+      `<option value="${esc(state)}">${esc(state)} (${fmt(counts.get(state) || 0)})</option>`).join('');
+  select.value = counts.has(chosen) ? chosen : '';
+}
 
 function renderEverything() {
   renderSources();
@@ -117,6 +255,9 @@ function renderEverything() {
   renderPlan();
   if (truth) { renderTruth(); renderCarried(); }
   if (audit) renderAudit();
+  renderScopeFunnel();
+  populateDeltaFilter();
+  renderDailyDelta();
 }
 
 // The bucket is no longer a view of its own - it is the delivery evidence
@@ -198,11 +339,9 @@ async function loadPayoutLedger() {
     payoutLedgerTasks = window.preparePayoutLedger(payload, data.trainers);
     payoutLedger = payload;
   } catch {
-    setText('ledgerStatus', 'Payout ledger unavailable. Accepted tasks fall back to the Finalisation reconciliation.');
     return;
   }
   populateLedgerFilters();
-  populateTrainerPicker();
   renderTrainerRows();
   renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
 }
@@ -221,9 +360,7 @@ function populateLedgerFilters() {
 
 function renderPayoutLedger() {
   if (!payoutLedger) return;
-  const picked = byId('trainerFilter').value;
   const result = window.filterPayoutLedger(payoutLedgerTasks, {
-    emails: picked ? [picked] : null,
     bench: byId('benchFilter').value,
     search: byId('ledgerSearch').value,
     payment: byId('ledgerPayment').value,
@@ -231,41 +368,40 @@ function renderPayoutLedger() {
     validity: byId('ledgerValidity').value,
     duplicates: byId('ledgerDuplicates').value,
   });
-  const totals = payoutLedger.totals;
-  setText('ledgerStatus', `${fmt(totals.sourceRows)} workbook rows collapsed to ${fmt(totals.ledgerTasks)} tasks / ${fmt(totals.acceptedTasks)} counted as accepted / ${fmt(totals.paidTasks)} tasks paid across ${fmt(totals.paymentRequests)} payment requests, of which ${fmt(totals.itemisedPaidTasks)} name a task and ${fmt(totals.unitemisedPaidTasks)} (${money(totals.unitemisedPaidAmount)}) exceed the tasks listed for that person`);
   const people = new Map((payoutLedger.people || []).map(person => [person.email, person]));
   byId('ledgerSummary').innerHTML = [
-    ['Ledger tasks shown', fmt(result.rows.length)],
-    ['Accepted and payable', fmt(result.accepted)],
-    ['Paid tasks shown', fmt(result.paid)],
-    ['Duplicate rows removed', fmt(result.duplicateRows)],
-    ['Payments not itemised', fmt(result.unitemised)],
+    ['Tasks', fmt(result.rows.length)],
+    ['Accepted', fmt(result.accepted)],
+    ['Paid', fmt(result.paid)],
+    ['Folded rows', fmt(result.duplicateRows)],
+    ['Not itemised', fmt(result.unitemised)],
   ].map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${value}</strong></div>`).join('');
-  const ledgerPages = Math.max(1, Math.ceil(result.rows.length / LEDGER_PAGE_SIZE));
+  const ledgerSize = pageSize('ledgerPageSize');
+  const ledgerPages = Math.max(1, Math.ceil(result.rows.length / ledgerSize));
   ledgerPage = Math.min(Math.max(ledgerPage, 0), ledgerPages - 1);
-  const ledgerFrom = ledgerPage * LEDGER_PAGE_SIZE;
-  const ledgerShown = result.rows.slice(ledgerFrom, ledgerFrom + LEDGER_PAGE_SIZE);
+  const ledgerFrom = ledgerPage * ledgerSize;
+  const ledgerShown = result.rows.slice(ledgerFrom, ledgerFrom + ledgerSize);
   setText('ledgerPage', result.rows.length
-    ? `${fmt(ledgerFrom + 1)}-${fmt(ledgerFrom + ledgerShown.length)} of ${fmt(result.rows.length)} ${result.rows.length === 1 ? 'task' : 'tasks'} / page ${fmt(ledgerPage + 1)} of ${fmt(ledgerPages)}`
-    : 'No tasks match these filters');
+    ? `${fmt(ledgerFrom + 1)}–${fmt(ledgerFrom + ledgerShown.length)} of ${fmt(result.rows.length)}`
+    : 'No matches');
   byId('ledgerPrevious').disabled = ledgerPage === 0;
   byId('ledgerNext').disabled = ledgerPage >= ledgerPages - 1;
-  byId('ledgerRows').innerHTML = ledgerShown.map(row => {
+  byId('ledgerRows').innerHTML = ledgerShown.map((row, index) => {
     const person = people.get(row.email);
     const payment = row.paymentState === 'Not itemised'
-      ? `${fmt(person?.paidTasks)} of ${fmt(person?.listedTasks)} tasks paid`
-      : row.paymentState === 'Paid' ? 'Paid $300' : 'No payment recorded';
+      ? `${fmt(person?.paidTasks)} of ${fmt(person?.listedTasks)} paid` : '';
     return `
         <tr>
-          <td><div class="person"><strong>${esc(row.task)}</strong><span>${row.valid ? 'Valid' : 'Not valid in workbook'}${row.harborLink ? ` / <a href="${esc(row.harborLink)}" target="_blank" rel="noopener">Harbor console</a>` : ''}</span></div></td>
+          <td class="num serial">${fmt(ledgerFrom + index + 1)}</td>
+          <td><div class="person"><strong>${esc(row.task)}</strong>${row.harborLink ? `<span><a href="${esc(row.harborLink)}" target="_blank" rel="noopener">Harbor console</a></span>` : ''}</div></td>
           <td>${esc(row.trainer?.name || 'Unassigned')}<br><small>${esc(row.email)}</small></td>
           <td>${esc(row.filterType)}<br><small>${esc(row.trainer?.team || 'Unassigned')}</small></td>
-          <td><span class="pill ${row.valid ? '' : 'is-warn'}">${row.valid ? 'Valid' : 'Valid = 0'}</span><div class="muted">Counted as accepted</div></td>
-          <td><span class="pill ${row.paymentState === 'Paid' ? 'is-ok' : row.paymentState === 'Not itemised' ? 'is-warn' : ''}">${esc(row.paymentState)}</span><div class="muted">${esc(payment)}</div></td>
-          <td>${esc(row.cj || 'Not recorded')}</td>
-          <td class="num">${fmt(row.duplicateRows + 1)}${row.duplicateRows ? `<div class="muted">${fmt(row.duplicateRows)} excluded</div>` : ''}</td>
+          <td><span class="pill ${row.valid ? 'is-ok' : 'is-warn'}">${row.valid ? 'Valid' : 'Valid = 0'}</span></td>
+          <td><span class="pill ${row.paymentState === 'Paid' ? 'is-ok' : row.paymentState === 'Not itemised' ? 'is-warn' : ''}">${esc(row.paymentState)}</span>${payment ? `<div class="muted">${esc(payment)}</div>` : ''}</td>
+          <td>${esc(row.cj || '–')}</td>
+          <td class="num">${fmt(row.duplicateRows + 1)}</td>
         </tr>`;
-  }).join('') || '<tr><td colspan="6" class="empty">No ledger tasks match these filters.</td></tr>';
+  }).join('') || '<tr><td colspan="9" class="empty">No matches.</td></tr>';
 }
 
 async function loadDeliveryAudit() {
@@ -340,7 +476,7 @@ function renderAuditRows(rows) {
         : '<span class="muted">Unattributed</span>'}</td>
       <td><span class="state state-${esc(String(row.acceptance || '').toLowerCase())}">${esc(row.acceptance || '-')}</span></td>
       <td class="num">${row.size_mb ? Number(row.size_mb).toFixed(1) : '-'}</td>
-    </tr>`).join('') : '<tr><td colspan="8" class="empty">No tasks match these filters.</td></tr>';
+    </tr>`).join('') : '<tr><td colspan="9" class="empty">No tasks match these filters.</td></tr>';
   setText('auditPage', `Page ${auditPage + 1} of ${pages} / ${fmt(rows.length)} tasks`);
   byId('auditPrev').disabled = auditPage === 0;
   byId('auditNext').disabled = auditPage >= pages - 1;
@@ -400,10 +536,16 @@ async function loadTruth() {
       const idx = await fetch(`assets/delivered-index.json?t=${Date.now()}`, {cache: 'no-store'});
       if (idx.ok) deliveredIndex = await idx.json();
     } catch (ignored) { deliveredIndex = null; }
-    truth = window.prepareTruth(await response.json(), deliveredIndex);
+    const payload = await response.json();
+    truth = window.prepareTruth(payload, deliveredIndex);
+    truth.counts = payload.counts || null;
     populateTruthFilters();
     renderTruth();
     renderCarried();
+    buildDelta();
+    renderScopeFunnel();
+    populateDeltaFilter();
+    renderDailyDelta();
   } catch (error) {
     truth = null;
     setText('truthStatus', `The derived pipeline could not be loaded: ${error.message}. ` +
@@ -559,82 +701,57 @@ function populateTruthFilters() {
 // Sequential ramp: one hue, light to dark, validated against the page surface.
 // Deliberately violet, not the blue used by the Delivery heatmap, so two
 // different measures are never mistaken for the same scale.
-const SCOPE_BANDS = [
-  {limit: 0.10, step: 1},
-  {limit: 0.25, step: 2},
-  {limit: 0.50, step: 3},
-  {limit: 0.75, step: 4},
-  {limit: Infinity, step: 5},
-];
-const SCOPE_ROWS = ['accepted', 'legacy accepted', 'rejected', 'no QC decision', 'error', 'running'];
 
 function renderScope(result) {
   if (!truth) return;
   const days = [...new Set(result.rows.map(row => row.decided).filter(Boolean))].sort();
+  const chart = byId('scopeChart');
   if (!days.length) {
-    byId('scopeChart').innerHTML = '<p class="empty">No decisions in this selection.</p>';
+    chart.innerHTML = '<p class="empty">No decisions in this selection.</p>';
+    byId('scopeKey').innerHTML = '';
     setText('scopeNote', '');
     return;
   }
-  // error and "no QC decision" are the same bucket to a reader; merge the label.
+  const order = ['accepted', 'legacy accepted', 'rejected', 'error', 'running'];
   const label = state => (state === 'error' ? 'no QC decision' : state);
-  const states = [...new Set(result.rows.map(row => label(row.state)))]
-    .sort((a, b) => SCOPE_ROWS.indexOf(a) - SCOPE_ROWS.indexOf(b));
+  const states = order.filter(state => result.rows.some(row => row.state === state));
   const grid = new Map();
   const perDay = new Map();
   for (const row of result.rows) {
     if (!row.decided) continue;
-    const key = `${label(row.state)}|${row.decided}`;
-    grid.set(key, (grid.get(key) || 0) + 1);
+    grid.set(`${row.state}|${row.decided}`, (grid.get(`${row.state}|${row.decided}`) || 0) + 1);
     perDay.set(row.decided, (perDay.get(row.decided) || 0) + 1);
   }
-  const busiest = Math.max(...grid.values());
+  const max = Math.max(...perDay.values(), 1);
+  setText('scopeNote', `${fmt(result.rows.length)} tasks decided ${days[0]} to ${days.at(-1)}, by decision day`);
 
-  const legacy = (truth.figures.get('Accepted')?.steps || [])
-    .find(step => step.step.startsWith('one canonical run'))?.count;
-  const excluded = legacy ? legacy - truth.rows.length : null;
-  setText('scopeNote', `Every task on this page was decided between ${days[0]} and ${days.at(-1)}. ` +
-    'The cut is on the decision date, not the submission date' +
-    (excluded ? `, and ${fmt(excluded)} tasks whose last decision predates ${truth.cut} are excluded entirely.` : '.'));
+  const active = byId('tState').value;
+  byId('scopeKey').innerHTML = states.map(state =>
+    `<button class="key-item key-button${active === state ? ' is-on' : ''}" data-series data-state="${esc(state)}"
+       style="--tone: var(${STATE_TOKENS[state] || '--slate'})">${esc(label(state))}</button>`).join('');
 
-  const cells = state => days.map(day => {
-    const n = grid.get(`${state}|${day}`) || 0;
-    if (!n) return `<td class="scope-cell" data-step="none" data-tip="${esc(day)}: no ${esc(state)} decisions"><span>&middot;</span></td>`;
-    const band = SCOPE_BANDS.find(entry => n / busiest < entry.limit) || SCOPE_BANDS.at(-1);
-    const share = Math.round((n / (perDay.get(day) || n)) * 100);
-    return `<td class="scope-cell" data-step="${band.step}" data-tip="${esc(day)} / ${esc(state)}: ${fmt(n)} task${n === 1 ? '' : 's'}, ${share}% of that day">
-      <span>${fmt(n)}</span></td>`;
-  }).join('');
-
-  byId('scopeChart').innerHTML = `
-    <div class="scopeheat-wrap">
-      <table class="scopeheat">
-        <thead><tr><th scope="col">Outcome</th>${days.map(day => `<th scope="col">${esc(day.slice(5))}</th>`).join('')}</tr></thead>
-        <tbody>${states.map(state => `<tr><th scope="row">${esc(state)}</th>${cells(state)}</tr>`).join('')}</tbody>
-        <tfoot><tr><th scope="row">All</th>${days.map(day => `<td class="scope-total">${fmt(perDay.get(day) || 0)}</td>`).join('')}</tr></tfoot>
-      </table>
-    </div>
-    <div class="scope-key">
-      <span class="scope-key-label">Tasks decided, against the busiest cell (${fmt(busiest)})</span>
-      <span class="scope-scale">${SCOPE_BANDS.map(b => `<i data-step="${b.step}"></i>`).join('')}</span>
-      <span class="scope-key-ends"><b>few</b><b>many</b></span>
-      <span class="scope-key-none"><i data-step="none"></i>none that day</span>
-    </div>
-    <figcaption>${fmt(result.rows.length)} tasks across ${fmt(days.length)} days, by the day the deciding run was ruled on</figcaption>`;
-
-  setText('scopeCaveats',
-    `${fmt(result.carriedOver)} were first decided before ${truth.cut} and settled after it, so they are carried over rather than new work. ` +
-    `${fmt(result.inferredDates)} carry no decision timestamp and are placed by when their verdict was last updated - shown as approx, and near the boundary a few could sit on the wrong side of it.`);
+  chart.innerHTML = `
+    <div class="daybars-axis"><span>${fmt(max)}</span><span>${fmt(Math.round(max / 2))}</span><span>0</span></div>
+    <div class="daybars-track">${days.map(day => {
+      const total = perDay.get(day) || 0;
+      return `<div class="daybar" style="--h:${(total / max) * 100}%">
+        <div class="daybar-stack" data-tip="${esc(day)}: ${fmt(total)} tasks">${states.map(state => {
+          const n = grid.get(`${state}|${day}`) || 0;
+          return n ? `<i style="flex:${n};background:var(${STATE_TOKENS[state] || '--slate'})" data-tip="${esc(day)} \u00b7 ${esc(label(state))}: ${fmt(n)} of ${fmt(total)}"></i>` : '';
+        }).join('')}</div>
+        <span class="daybar-x">${esc(day.slice(5))}</span>
+      </div>`;
+    }).join('')}</div>`;
 }
 
 function renderTruthFigures(result, filtered) {
+  const cue = filtered ? 'filtered' : 'how is this counted?';
   const cards = [
-    ['Accepted', result.accepted, 'package at the current bar'],
-    ['Legacy accepted', result.legacyAccepted, 'accepted, package not at the current bar'],
-    ['Rejected', result.rejected, 'failed a QC decision'],
-    ['No QC decision', result.undecided, 'parked, crashed or never decided'],
-    ['Running', result.running, 'in a stage'],
-    ['Carried over', result.carriedOver, 'first decided before 5 Sept'],
+    ['Accepted', result.accepted, 'package at the current bar', 'aqua'],
+    ['Rejected', result.rejected, 'failed a QC decision', 'yellow'],
+    ['No QC decision', result.undecided, 'parked, crashed or never decided', 'orange'],
+    ['Running', result.running, 'in a stage', 'violet'],
+    ['Legacy accepted', result.legacyAccepted, 'accepted before the current bar', 'blue'],
   ];
   // These two are the only figures on this tab without a published chain: they
   // depend on the delivery audit, which the ingest chain never sees. They are
@@ -652,20 +769,25 @@ function renderTruthFigures(result, filtered) {
       'Accepted, package collectable at the current bar, and not matched to anything already delivered. ' +
       'Counted by distinct name as well, because a task submitted twice is still one thing to deliver.'],
   ].map(([label, value, hint, tip]) => `
-    <div class="status-card" data-tip="${esc(tip)}">
-      <span class="status-card-label">${esc(label)}</span>
-      <span class="status-card-value">${fmt(value)}</span>
-      <span class="status-card-note">${esc(hint)}</span>
-      <span class="status-card-cue">${filtered ? 'filtered' : 'joined from the Delivery tab'}</span>
+    <div class="kpi kpi-static" data-tone="slate" data-tip="${esc(tip)}">
+      <div class="kpi-top"><h3>${esc(label)}</h3></div>
+      <strong>${fmt(value)}</strong>
+      <p class="kpi-note">${esc(hint)}</p>
+      <span class="kpi-cue">${filtered ? 'filtered' : 'joined from the Delivery tab'}</span>
     </div>`).join('');
-
-  byId('truthFigures').innerHTML = cards.map(([label, value, hint]) => `
-    <button class="status-card figure-card" data-chain="${esc(label)}">
-      <span class="status-card-label">${esc(label)}</span>
-      <span class="status-card-value">${fmt(value)}</span>
-      <span class="status-card-note">${esc(hint)}</span>
-      <span class="status-card-cue">${filtered ? 'filtered' : 'how was this counted?'}</span>
+  byId('truthFigures').innerHTML = cards.map(([label, value, hint, tone]) => `
+    <button class="kpi kpi-button" data-tone="${tone}" data-chain="${esc(label)}" aria-pressed="${openChain === label}">
+      <div class="kpi-top"><h3>${esc(label)}</h3></div>
+      <strong>${fmt(value)}</strong>
+      <p class="kpi-note">${esc(hint)}</p>
+      <span class="kpi-cue">${cue}</span>
     </button>`).join('') + extra;
+  const flags = [
+    ['Carried over', result.carriedOver], ['Awaiting KESTREL re-gate', result.gateOnly],
+    ['Possible duplicates', result.possibleDuplicates], ['Packages at the current bar', result.atCurrentBar],
+  ];
+  byId('truthFlags').innerHTML = flags.map(([label, value]) =>
+    `<button class="flagbtn" data-chain="${esc(label)}" aria-pressed="${openChain === label}"><b>${fmt(value)}</b>${esc(label.replace('Packages at the current bar', 'packages at the bar').replace('Awaiting KESTREL re-gate', 'awaiting re-gate').toLowerCase())}</button>`).join('');
 }
 
 function renderChain(label, filtered) {
@@ -674,13 +796,18 @@ function renderChain(label, filtered) {
   if (!chain) { panel.hidden = true; return; }
   openChain = label;
   panel.hidden = false;
-  setText('truthChainTitle', `${chain.label} = ${fmt(chain.value)}`);
+  setText('truthChainTitle', `${chain.label}: ${fmt(chain.value)}`);
   setText('truthChainNote', (chain.note || '') +
-    (chain.stale ? ' This chain describes the unfiltered population; the cards above are showing your current filters.' : ''));
-  byId('truthChain').innerHTML = chain.steps.map(step => `
-    <li><span class="chain-count">${fmt(step.count)}</span>
-      <span class="chain-step">${esc(step.step)}</span>
-      <span class="chain-source">${esc(step.source || '')}</span></li>`).join('');
+    (chain.stale ? ' Shown for the whole population; the cards reflect your filters.' : ''));
+  const base = Math.max(1, ...chain.steps.map(step => step.count));
+  byId('truthChain').innerHTML = chain.steps.map((step, index) => `
+    <li${index === chain.steps.length - 1 ? ' class="is-final"' : ''}>
+      <span class="chain-count">${fmt(step.count)}</span>
+      <span class="chain-body"><span class="chain-step">${esc(step.step)}</span>
+        <span class="chain-bar"><i style="width:${Math.max(1, (step.count / base) * 100)}%"></i></span></span>
+    </li>`).join('');
+  document.querySelectorAll('[data-chain]').forEach(node =>
+    node.setAttribute('aria-pressed', String(node.dataset.chain === label)));
 }
 
 // The flags a task row can carry.
@@ -751,22 +878,25 @@ function renderFlagLegend(rows) {
 }
 
 function renderTruthRows(rows) {
-  const pages = Math.max(Math.ceil(rows.length / TRUTH_PAGE_SIZE), 1);
+  const size = pageSize('truthPageSize');
+  const pages = Math.max(Math.ceil(rows.length / size), 1);
   truthPage = Math.min(truthPage, pages - 1);
-  const slice = rows.slice(truthPage * TRUTH_PAGE_SIZE, (truthPage + 1) * TRUTH_PAGE_SIZE);
+  const from = truthPage * size;
+  const slice = rows.slice(from, from + size);
   byId('truthRows').innerHTML = slice.length ? slice.map((row, index) => {
     const id = `truth-${truthPage}-${index}`;
     return `<tr class="drill-head">
       <td><button class="drill-toggle" aria-expanded="false" aria-controls="${id}" aria-label="Evidence for ${esc(row.name)}">+</button></td>
+      <td class="num serial">${fmt(from + index + 1)}</td>
       <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span></div></td>
       <td class="flagcell">${flagBadges(row)}</td>
       <td><span class="state state-${esc(row.state.replace(/\s+/g, '-'))}">${esc(row.state)}</span></td>
-      <td>${esc(row.owner || 'Not recorded')}</td>
-      <td>${esc(row.decided || '-')}${row.decidedInferred ? '<span class="chip chip-warn" title="No decision timestamp on the verdict; dated from when it was last updated">approx</span>' : ''}</td>
+      <td>${esc(row.owner || '\u2013')}</td>
+      <td>${esc(row.decided || '\u2013')}${row.decidedInferred ? '<span class="chip chip-warn" title="No decision timestamp on the verdict; dated from when it was last updated">approx</span>' : ''}</td>
       <td>${esc(row.gateEra)}</td>
       <td class="num">${fmt(row.runs)}</td>
     </tr>
-    <tr class="drill" id="${id}" hidden><td colspan="8">
+    <tr class="drill" id="${id}" hidden><td colspan="9">
       <dl class="evidence">
         <dt>Why this state</dt><dd>${esc(row.why)}</dd>
         <dt>Canonical run</dt><dd>${esc(row.canonicalReason)}${row.runs > 1 ? ` of ${fmt(row.runs)} runs` : ''}</dd>
@@ -780,8 +910,8 @@ function renderTruthRows(rows) {
         <dt>Read from</dt><dd><code>${esc(row.source)}</code></dd>
       </dl>
     </td></tr>`;
-  }).join('') : '<tr><td colspan="8" class="empty">No tasks match these filters.</td></tr>';
-  setText('truthPage', `Page ${truthPage + 1} of ${pages} / ${fmt(rows.length)} tasks`);
+  }).join('') : '<tr><td colspan="9" class="empty">No tasks match these filters.</td></tr>';
+  setText('truthPage', `${fmt(from + 1)}\u2013${fmt(from + slice.length)} of ${fmt(rows.length)}`);
   byId('truthPrev').disabled = truthPage === 0;
   byId('truthNext').disabled = truthPage >= pages - 1;
 }
@@ -963,6 +1093,8 @@ function renderCarried() {
   const filters = {
     state: byId('cState').value, owner: byId('cOwner').value,
     search: byId('cSearch').value, carriedOver: 'yes',
+    // PRD X1: this view now follows the shared range like the others.
+    start: dateRange.start, end: dateRange.end,
   };
   const result = window.filterTruth(truth.rows, filters);
   const settled = result.rows.filter(row => row.state === 'accepted' || row.state === 'legacy accepted');
@@ -999,11 +1131,11 @@ async function loadGcsPipeline(manual = false) {
     if (payload.schemaVersion !== 3 || !['current','historical','legacy'].every(key=>Array.isArray(payload[key])) || !Array.isArray(payload.finalisation?.tasks)) throw new Error('Invalid GCS export');
     ['current', 'historical', 'legacy'].forEach(key => payload[key].forEach(task => { task.domain = pipelineDomain(task); }));
     gcsPipeline = payload;
-      loadFinalisation(); buildPipeline(); populateFilters(); renderPipeline(); renderDonut(); renderTrainerRows();
+    loadFinalisation(); renderDonut(); renderTrainerRows();
     renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
     if (manual) setTextIfPresent('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
-  } catch {
-    setTextIfPresent('pipelineSourceStatus', 'GCS export unavailable. Pipeline counts are not loaded.');
+  } catch (error) {
+    setTextIfPresent('pipelineSourceStatus', `GCS export not loaded: ${error.message}`);
   }
 }
 
@@ -1035,6 +1167,12 @@ function setTextIfPresent(id, value) {
   if (node) node.textContent = value;
 }
 
+// Rows per page, from the table's own control.
+function pageSize(id) {
+  const value = Number(byId(id)?.value);
+  return value > 0 ? value : 10;
+}
+
 function setText(id, value) {
   const el = byId(id);
   if (el) el.textContent = value;
@@ -1064,6 +1202,12 @@ const STATUS_TOKENS = {
   Failed: '--orange', 'Conflicting verdict': '--magenta',
   Running: '--violet', Queued: '--magenta', Cancelled: '--slate',
 };
+// The same state is the same colour in the delta chart as in the status pills.
+const STATE_TOKENS = {
+  accepted: '--aqua', 'legacy accepted': '--blue', rejected: '--yellow',
+  error: '--orange', running: '--violet', queued: '--magenta',
+};
+
 function statusColor(status) {
   const token = STATUS_TOKENS[status] || '--slate';
   return getComputedStyle(document.documentElement).getPropertyValue(token).trim() || '#7c8798';
@@ -1079,7 +1223,6 @@ function switchView(viewName, push = true) {
   });
   document.querySelectorAll('.view').forEach(view => view.classList.toggle('is-active', view.id === `view-${viewName}`));
   if (viewName === 'explorer') loadExplorer();
-  if (byId('globalSearch')) syncSearch(viewName);
   if (push && location.hash.slice(1) !== viewName) history.pushState({viewName}, '', `#${viewName}`);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
@@ -1101,7 +1244,17 @@ function commandSnapshot() {
 function renderHero() {
   const snapshot = commandSnapshot();
   const rows = payoutRows();
-  const summary = {paidAmount:sum(rows,'paidAmount'),pendingAmount:sum(rows,'pendingAmount'),pendingTasks:sum(rows,'pendingTasks'),acceptedTasks:sum(rows,'acceptedTasks'),activeTrainers:rows.filter(r=>r.status.toLowerCase()==='active').length,totalTrainers:rows.length};
+  // Published totals are displayed as published; per-row sums are the fallback.
+  const totals = payoutLedger?.totals;
+  const summary = {
+    paidAmount: totals ? totals.paidAmount : sum(rows, 'paidAmount'),
+    pendingAmount: totals ? totals.pendingAmount : sum(rows, 'pendingAmount'),
+    pendingTasks: totals ? totals.pendingTasks : sum(rows, 'pendingTasks'),
+    paidTasks: totals ? totals.paidTasks : sum(rows, 'paidTasks'),
+    acceptedTasks: totals ? totals.acceptedTasks : sum(rows, 'acceptedTasks'),
+    activeTrainers: data.summary?.activeTrainers ?? rows.filter(r => String(r.status).toLowerCase() === 'active').length,
+    totalTrainers: data.summary?.totalTrainers ?? rows.length,
+  };
   const generated = new Date(data.meta.generatedAt);
   const paid = summary.paidAmount;
   const pending = summary.pendingAmount;
@@ -1125,22 +1278,68 @@ function renderHero() {
     ? `Priority Low of ${fmt(clientAcceptance.tasks)} audited tasks${clientAcceptance.live ? '' : ' / saved snapshot'}${dated ? ' / all dates: the 240 dashboard snapshot carries counts only' : ''}`
     : 'Harbor 240 dashboard unavailable');
   setText('metricV2Accepted', v2 ? fmt(v2.tasks) : '-');
-  setText('metricV2AcceptedNote', v2
-    ? `Folders in the client QC accepted iteration 2 cohort${dated ? ` / ${rangeLabel()}` : ''}`
-    : 'Bucket scan not loaded');
+  setText('metricV2AcceptedNote', v2 ? `of ${fmt(finalisationRows.length)} accepted folders` : '');
   setText("metricPaid", money(paid));
   setText("metricPendingTasks", fmt(summary.pendingTasks));
   setText("metricPending", `${money(pending)} pending`);
   setText("metricActive", fmt(summary.activeTrainers));
   setText("metricRoster", `${fmt(summary.totalTrainers)} total trainer records`);
-  setText('commandSourceStatus', `One read-only GCS scan: ${gcsPipeline?.generatedAt || 'unavailable / loading'} | ${gcsPipeline ? `${fmt(gcsPipeline.current.length)} current evaluations, ${fmt(finalisationRows.length)} accepted finalisation folders` : 'waiting for the export'}`);
+  setText('commandSourceStatus', gcsPipeline
+    ? `${fmt(snapshot.current.length)} evaluations \u00b7 ${fmt(snapshot.folders.length)} folders${(dateRange.start || dateRange.end) ? ` \u00b7 ${rangeLabel().toLowerCase()}` : ''}`
+    : 'Waiting for the bucket scan.');
   byId('commandSummary').innerHTML = [
     ['Current evaluated tasks', gcsPipeline ? snapshot.current.length : null],
     ['Pipeline accepted', gcsPipeline ? snapshot.current.filter(row => row.status === 'Accepted').length : null],
     ['Accepted finalisation folders', finalisationRows.length ? snapshot.folders.length : null],
     ['Cross-cohort repeats excluded', snapshot.ready ? snapshot.duplicates : null]
   ].map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${value == null ? '-' : fmt(value)}</strong></div>`).join('');
-  setText('commandOwnership', snapshot.ready ? `${fmt(snapshot.unassigned)} accepted folders without a roster-linked owner; excluded from financial estimates. Payout totals come from the workbook ledger, not from this count.` : 'Accepted reconciliation requires the GCS export.');
+  setText('commandOwnership', snapshot.ready
+    ? `${fmt(snapshot.unassigned)} without a roster-linked owner`
+    : '');
+
+  const detail = (id, items) => { const node = byId(id); if (node) node.innerHTML = items.filter(Boolean).map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join(''); };
+  const cohorts = Object.entries(groupBy(snapshot.folders, row => row.cohortLabel || 'Unlabelled')).map(([k, r]) => [k, r.length]).sort((a, b) => b[1] - a[1]);
+  detail('detailAccepted', snapshot.ready ? [
+    ['Folders in accepted cohorts', fmt(snapshot.folders.length)],
+    ['Same task in more than one cohort', fmt(snapshot.duplicates)],
+    ...cohorts.map(([k, v]) => [k, fmt(v)]),
+  ] : []);
+  detail('detailClient', clientAcceptance ? [
+    ['Audited tasks', fmt(clientAcceptance.tasks)],
+    ['Accepted = priority Low', fmt(clientAcceptance.accepted)],
+    ...Object.entries(clientAcceptance.priorities || {}).sort((a, b) => b[1] - a[1]).map(([k, v]) => [`Priority ${k}`, fmt(v)]),
+    [clientAcceptance.live ? 'Read live from the 240 dashboard' : 'Saved snapshot', clientAcceptance.live ? 'yes' : (clientAcceptance.generatedAt || '').slice(0, 10)],
+  ] : []);
+  detail('detailV2', v2 ? [
+    ['Folders in this cohort', fmt(v2.tasks)],
+    ['All accepted folders', fmt(finalisationRows.length)],
+    ['Share of accepted folders', `${Math.round((v2.tasks / (finalisationRows.length || 1)) * 100)}%`],
+  ] : []);
+  const teams = Object.entries(groupBy(rows, r => r.team || 'Unassigned')).map(([k, r]) => [k, r.length]).sort((a, b) => b[1] - a[1]);
+  detail('detailTrainers', [
+    ['Roster records', fmt(summary.totalTrainers)],
+    ['Marked active', fmt(summary.activeTrainers)],
+    ...teams.map(([k, v]) => [k, fmt(v)]),
+  ]);
+  detail('detailPaid', [
+    ['Tasks paid', fmt(summary.paidTasks)],
+    ['Rate', '$300 per task'],
+    payoutLedger ? ['Payment requests', fmt(payoutLedger.totals.paymentRequests)] : null,
+    payoutLedger ? ['Ledger built', String(payoutLedger.generatedAt || '').slice(0, 10)] : null,
+  ]);
+  detail('detailPending', [
+    ['Accepted tasks', fmt(summary.acceptedTasks)],
+    ['Already paid', fmt(summary.paidTasks)],
+    ['Pending = accepted \u2212 paid, never below 0', fmt(summary.pendingTasks)],
+    ['Amount', money(pending)],
+  ]);
+  const owedBy = ['Company', 'Computer', 'Unassigned'].map(b => [b, rows.filter(r => benchOf(r.team) === b.toLowerCase()).reduce((n, r) => n + r.pendingAmount, 0)]).filter(([, v]) => v);
+  detail('detailOwed', [
+    ['Earned (paid + owed)', money(totalExposure)],
+    ['Paid', money(paid)],
+    ['Owed', money(pending)],
+    ...owedBy.map(([k, v]) => [`Owed \u2014 ${k}`, money(v)]),
+  ]);
   if (!snapshot.ready) {
     ['heroPending', 'metricPendingTasks', 'metricPending'].forEach(id => setText(id, '-'));
     setText('heroExposureText', 'Waiting for both accepted sources');
@@ -1177,8 +1376,6 @@ function sourceState(source) {
       ? {tone: 'ok', label: 'Live', detail: `Read during this visit / ${fmt(clientAcceptance.accepted)} accepted of ${fmt(clientAcceptance.tasks)}`}
       : {tone: 'snapshot', label: 'Snapshot', detail: 'The live dashboard was unreachable; the committed counts are shown.'};
   }
-  if (source.id === 'postgres') return {tone: 'pending', label: 'Not connected', detail: 'PRD C3 - no host or credentials issued.'};
-  if (source.id === 'harbor-console') return {tone: 'pending', label: 'Reference only', detail: 'PRD F2 - finalisation numbers are held until this reconciliation is done.'};
   return {tone: 'ok', label: 'Reference', detail: 'Linked for comparison; not read for any figure here.'};
 }
 
@@ -1201,30 +1398,54 @@ function sourceTabs(source) {
   </div>`;
 }
 
-function renderSources() {
-  const list = byId('sourceList');
-  if (list) {
-    list.innerHTML = window.DASHBOARD_SOURCES.map(source => {
+// Each tile and panel names and links its sources.
+function renderFigureSources() {
+  document.querySelectorAll('.figure-src[data-source]').forEach(slot => {
+    const links = slot.dataset.source.split(',').map(id => id.trim()).map(id => {
+      const source = window.DASHBOARD_SOURCES.find(entry => entry.id === id);
+      if (!source) return '';
       const state = sourceState(source);
-      const title = source.href
+      return source.href
+        ? `<a href="${esc(source.href)}" target="_blank" rel="noopener" class="figure-srclink"
+             data-tip="${esc(source.what)} / ${esc(state.detail)}">${esc(source.name)}</a>`
+        : `<span class="figure-srclink is-flat" data-tip="${esc(source.hrefNote || source.what)}">${esc(source.name)}</span>`;
+    }).filter(Boolean);
+    slot.innerHTML = links.length
+      ? `<span class="figure-src-label">Source</span>${links.join('<span class="figure-src-sep">/</span>')}`
+      : '';
+  });
+}
+
+function renderSources() {
+  renderFigureSources();
+  document.querySelectorAll('[data-sourcelist]').forEach(list => {
+    const scope = list.dataset.sourcelist;
+    const sources = scope === 'all' ? window.DASHBOARD_SOURCES : window.sourcesFor(scope);
+    list.innerHTML = sources.map(source => {
+      const state = sourceState(source);
+      const name = source.href
         ? `<a href="${esc(source.href)}" target="_blank" rel="noopener">${esc(source.name)}</a>`
         : esc(source.name);
-      return `<article class="source-card" data-tone="${state.tone}">
-        <header>
-          <div><span class="source-kind">${esc(source.kind)}</span><h3>${title}</h3></div>
+      return `<article class="srcrow" data-tone="${state.tone}" data-expand aria-expanded="false" tabindex="0">
+        <div class="srcrow-head">
+          <span class="srcrow-kind">${esc(source.kind)}</span>
+          <span class="srcrow-name">${name}</span>
+          <span class="srcrow-loc">${esc(source.location)}</span>
           <span class="pill" data-tone="${state.tone}">${esc(state.label)}</span>
-        </header>
-        <p class="source-loc">${esc(source.location)}${source.liveTitle ? ` <span class="source-alias">opens as &ldquo;${esc(source.liveTitle)}&rdquo;</span>` : ''}</p>
-        <dl class="source-detail">
-          <dt>What</dt><dd>${esc(source.what)}</dd>
-          <dt>Why</dt><dd>${esc(source.why)}</dd>
-          <dt>How</dt><dd>${esc(source.how)}</dd>
-        </dl>
-        ${sourceTabs(source)}
-        <p class="source-state">${esc(state.detail)}${source.hrefNote ? ` / ${esc(source.hrefNote)}` : ''}</p>
+          <span class="kpi-caret" aria-hidden="true"></span>
+        </div>
+        <div class="kpi-more"><div class="kpi-detail srcrow-detail">
+          <div><span>What</span><b>${esc(source.what)}</b></div>
+          <div><span>Why</span><b>${esc(source.why)}</b></div>
+          <div><span>How</span><b>${esc(source.how)}</b></div>
+          <div><span>Status</span><b>${esc(state.detail)}${source.hrefNote ? ` \u00b7 ${esc(source.hrefNote)}` : ''}</b></div>
+          ${sourceTabs(source)}
+        </div></div>
       </article>`;
     }).join('');
-  }
+    const loaded = sources.filter(source => sourceState(source).tone === 'ok').length;
+    setTextIfPresent('sourceNote', `${fmt(sources.length)} sources \u00b7 ${fmt(loaded)} read live this visit \u00b7 click a row for what, why and how`);
+  });
   document.querySelectorAll('.sourcestrip').forEach(strip => {
     strip.innerHTML = '<span class="sourcestrip-label">Reading from</span>' +
       window.sourcesFor(strip.dataset.sources).map(source => {
@@ -1233,15 +1454,12 @@ function renderSources() {
         return source.href
           ? `<a class="source-chip" href="${esc(source.href)}" target="_blank" rel="noopener" data-tip="${esc(source.what)} / ${esc(state.detail)}">${body}</a>`
           : `<span class="source-chip is-flat" data-tip="${esc(source.hrefNote || source.what)}">${body}</span>`;
-      }).join('') +
-      `<button class="ghost source-more" data-jump="command">All sources</button>`;
+      }).join('');
   });
 }
 
 function renderExposureChart(rows) {
-  // Composition, not trend: where the money already spent and the money still
-  // owed sit across the two benches. One scale for both bars so the lengths
-  // compare; each bench bar is drawn against the largest bench total.
+  // Paid against owed per bench, all bars on one scale.
   const benches = [['Company', 'company'], ['Computer', 'computer'], ['Unassigned', 'unassigned']]
     .map(([label, key]) => {
       const members = rows.filter(row => benchOf(row.team) === key);
@@ -1250,29 +1468,32 @@ function renderExposureChart(rows) {
     })
     .filter(bench => bench.paid || bench.pending);
   const scale = Math.max(...benches.map(bench => bench.paid + bench.pending), 1);
-  const total = benches.reduce((value, bench) => value + bench.paid + bench.pending, 0);
+  const paid = benches.reduce((value, bench) => value + bench.paid, 0);
+  const owed = benches.reduce((value, bench) => value + bench.pending, 0);
+  setTextIfPresent('payoutBalanceNote', benches.length
+    ? `${money(paid + owed)} earned \u00b7 ${money(paid)} paid \u00b7 ${money(owed)} owed`
+    : '');
   byId('exposureChart').innerHTML = benches.length ? `
-    <figcaption>${money(total)} committed, by bench</figcaption>
     ${benches.map(bench => {
       const benchTotal = bench.paid + bench.pending;
       return `<div class="bench-bar">
         <div class="bench-bar-head"><span>${esc(bench.label)}</span><b>${money(benchTotal)}</b></div>
         <div class="stack" style="width:${Math.max((benchTotal / scale) * 100, 2)}%">
-          ${segment('is-paid', bench.paid, scale, `${bench.label} bench: ${money(bench.paid)} paid across ${fmt(bench.paidTasks)} tasks`)}
-          ${segment('is-pending', bench.pending, scale, `${bench.label} bench: ${money(bench.pending)} outstanding across ${fmt(bench.pendingTasks)} tasks`)}
+          ${segment('is-paid', bench.paid, scale, `${bench.label}: ${money(bench.paid)} paid for ${fmt(bench.paidTasks)} tasks`)}
+          ${segment('is-pending', bench.pending, scale, `${bench.label}: ${money(bench.pending)} owed for ${fmt(bench.pendingTasks)} tasks`)}
         </div>
-        <div class="bench-bar-foot">${fmt(bench.paidTasks)} paid / ${fmt(bench.pendingTasks)} outstanding tasks</div>
+        <div class="bench-bar-foot">${fmt(bench.paidTasks)} of ${fmt(bench.paidTasks + bench.pendingTasks)} tasks paid</div>
       </div>`;
     }).join('')}
     <div class="chart-key">
       <span class="key-item is-paid">Paid</span>
-      <span class="key-item is-pending">Outstanding</span>
-    </div>` : '<p class="empty">No payout exposure in this selection.</p>';
+      <span class="key-item is-pending">Owed</span>
+    </div>` : '<p class="empty">No payouts in this selection.</p>';
 }
 
 function renderTopPendingCards() {
   if (!finalisationRows.length || !gcsPipeline) {
-    byId('topPendingCards').innerHTML = '<p class="empty">Pending estimates require Pipeline and Finalisation data.</p>';
+    byId('topPendingCards').innerHTML = '<p class="empty">Waiting for pipeline and finalisation data.</p>';
     return;
   }
   const rows = payoutRows()
@@ -1281,52 +1502,33 @@ function renderTopPendingCards() {
     .slice(0, 8);
   const max = Math.max(...rows.map((row) => row.pendingAmount), 1);
 
-  byId("topPendingCards").innerHTML = rows
-    .map(
-      (row, index) => `
+  byId('topPendingCards').innerHTML = rows.map((row, index) => `
         <div class="leader-row">
           <div class="rank">${index + 1}</div>
           <div class="person">
-            <strong>${row.name || "Unknown"}</strong>
-            <span>${row.email}</span>
+            <strong data-tip="${esc(row.email)}">${esc(row.name || row.email || 'Unknown')}</strong>
+            <span>${fmt(row.pendingTasks)} of ${fmt(row.acceptedTasks)} tasks unpaid</span>
           </div>
-          <div>
-            <div class="bar-track">
-              <div class="bar-fill" style="width:${safePct(row.pendingAmount, max)}"></div>
-            </div>
-            <span class="muted">${fmt(row.pendingTasks)} pending of ${fmt(row.acceptedTasks)} accepted</span>
-          </div>
+          <div class="bar-track"><div class="bar-fill" style="width:${safePct(row.pendingAmount, max)}"></div></div>
           <div class="amount">${money(row.pendingAmount)}</div>
-        </div>
-      `,
-    )
-    .join("") || '<p class="empty">No pending payouts in this selection.</p>';
+        </div>`).join('') || '<p class="empty">Nothing owed in this selection.</p>';
 }
 
 function renderDonut() {
-  if (!gcsPipeline) {
-    byId('pipelineDonut').innerHTML = '<p class="empty">Current pipeline data unavailable / loading.</p>';
-    return;
-  }
-  const entries = Object.entries(groupBy(commandSnapshot().current, row => row.status)).map(([key,rows])=>[key,rows.length]).sort((a,b)=>b[1]-a[1]);
-  const total = entries.reduce((sumValue, [, value]) => sumValue + value, 0);
-  const colors = entries.map(([status]) => statusColor(status));
-  let start = 0;
-  const stops = entries.map(([, value], index) => {
-    const degrees = (value / total) * 360;
-    const segment = `${colors[index % colors.length]} ${start}deg ${start + degrees}deg`;
-    start += degrees;
-    return segment;
-  });
-
-  byId("pipelineDonut").innerHTML = `
-    <div class="donut" style="background: ${total ? `conic-gradient(${stops.join(', ')})` : '#e5e5ea'}">
-      <div class="donut-label">
-        <strong>${fmt(total)}</strong>
-        <span class="muted">records tracked</span>
-      </div>
-    </div><div class="chart-legend">${entries.map(([label,count],i)=>`<div><span class="legend-dot" style="background:${colors[i%colors.length]}"></span><span>${esc(label)}</span><b>${fmt(count)}</b></div>`).join('')}</div>
-  `;
+  const host = byId('pipelineDonut');
+  if (!gcsPipeline) { host.innerHTML = '<p class="empty">Waiting for the bucket scan.</p>'; return; }
+  const entries = Object.entries(groupBy(commandSnapshot().current, row => row.status))
+    .map(([key, rows]) => [key, rows.length]).sort((a, b) => b[1] - a[1]);
+  const total = entries.reduce((n, [, v]) => n + v, 0);
+  const max = Math.max(1, ...entries.map(([, v]) => v));
+  host.innerHTML = `<p class="rankbars-total"><b>${fmt(total)}</b> records, latest evaluation per task family</p>` +
+    entries.map(([label, count]) => `
+    <div class="rankbar" data-tip="${esc(label)}: ${fmt(count)} of ${fmt(total)} (${Math.round((count / (total || 1)) * 100)}%)">
+      <span class="rankbar-label">${esc(label)}</span>
+      <span class="rankbar-track"><i style="width:${(count / max) * 100}%;background:${statusColor(label)}"></i></span>
+      <b class="rankbar-count">${fmt(count)}</b>
+      <span class="rankbar-pct">${Math.round((count / (total || 1)) * 100)}%</span>
+    </div>`).join('');
 }
 
 function renderBenchCards() {
@@ -1351,23 +1553,12 @@ function uniqueTeams() {
   return [...new Set(data.trainers.map((trainer) => trainer.team || "Unassigned"))].sort();
 }
 
-function populateTrainerPicker() {
-  // Only people the payout data actually knows about; the roster has 597 rows.
-  const active = payoutRows().filter(row => row.acceptedTasks || row.paidTasks)
-    .sort((a, b) => String(a.name || a.email).localeCompare(String(b.name || b.email)));
-  const select = byId('trainerFilter'), selected = select.value;
-  select.innerHTML = '<option value="">All trainers</option>' + active.map(row =>
-    `<option value="${esc(row.email.toLowerCase())}">${esc(row.name || row.email)} — ${fmt(row.acceptedTasks)} accepted, ${fmt(row.paidTasks)} paid</option>`).join('');
-  select.value = active.some(row => row.email.toLowerCase() === selected) ? selected : '';
-}
 
 function filteredTrainers() {
   const search = byId("personSearch").value.trim().toLowerCase();
   const payment = byId('paymentFilter').value;
   const bench = byId('benchFilter').value;
-  const picked = byId('trainerFilter').value;
   return payoutRows()
-    .filter(row => !picked || row.email.toLowerCase() === picked)
     .filter(row => !bench || benchOf(row.team) === bench)
     .filter(row => !payment || (payment === 'pending' ? row.pendingTasks > 0 : payment === 'paid' ? row.paidTasks > 0 : payment === 'no-paid' ? row.paidTasks === 0 : row.acceptedTasks === 0))
     .filter((trainer) => {
@@ -1404,14 +1595,37 @@ function applyRange() {
   const invalid = Boolean(dateRange.start && dateRange.end && dateRange.start > dateRange.end);
   byId('dateError').hidden = !invalid;
   ['dateStart', 'dateEnd'].forEach(id => byId(id).setAttribute('aria-invalid', String(invalid)));
-  setText('dateScope', invalid ? 'No records match: the start date is after the end date.'
-    : `${rangeLabel()} / Overview, Delivery and Pipeline follow this range. Payouts does not.`);
-  document.querySelectorAll('.rangeecho').forEach(node => {
-    node.innerHTML = `<span class="rangeecho-label">Date range</span>${esc(rangeLabel())}` +
-      ((dateRange.start || dateRange.end) ? ' <button class="linky" data-jump="command">change</button>' : '');
-  });
+  syncPresetPills();
   renderEverything();
 }
+
+
+// Shared date range presets.
+const RANGE_PRESETS = {'7': 7, '14': 14, '30': 30};
+function setRangeFromPreset(value) {
+  if (!value) { dateRange.start = dateRange.end = ''; return; }
+  if (value === 'live') { dateRange.start = (truth && truth.cut) || ''; dateRange.end = ''; return; }
+  const end = new Date();
+  const start = new Date(end.getTime() - (RANGE_PRESETS[value] - 1) * 86400000);
+  dateRange.start = start.toISOString().slice(0, 10);
+  dateRange.end = end.toISOString().slice(0, 10);
+}
+
+function syncPresetPills() {
+  document.querySelectorAll('.segmented .segbtn[data-preset]').forEach(pill =>
+    pill.classList.toggle('is-on', pill.dataset.preset === (dateRange.preset || '')));
+  const chip = byId('dateChip');
+  if (chip) chip.textContent = (dateRange.start || dateRange.end) && !dateRange.preset ? rangeLabel() : 'Custom';
+  const pop = document.querySelector('.rangepop');
+  if (pop) pop.classList.toggle('is-set', Boolean((dateRange.start || dateRange.end) && !dateRange.preset));
+}
+
+function syncOverviewSlicer() {
+  byId('dateStart').value = dateRange.start;
+  byId('dateEnd').value = dateRange.end;
+  byId('datePreset').value = dateRange.preset || '';
+}
+
 
 function benchOf(team) {
   return team === 'Company' ? 'company' : ['Computer A', 'Computer B'].includes(team) ? 'computer' : 'unassigned';
@@ -1431,46 +1645,43 @@ function payoutRows() {
 }
 
 function renderPayoutSummary(rows) {
-  const paid = sum(rows, "paidAmount");
-  const pending = sum(rows, "pendingAmount");
-  byId("payoutSummary").innerHTML = [
-    ["People shown", fmt(rows.length)],
-    ["Accepted tasks", fmt(sum(rows, "acceptedTasks"))],
-    ["Paid tasks", fmt(sum(rows, "paidTasks"))],
-    ["Paid amount", money(paid)],
-    ["Pending amount", money(pending)],
-  ]
-    .map(([label, value]) => `<div class="summary-item"><span>${label}</span><strong>${value}</strong></div>`)
-    .join("");
-  if (payoutLedger) {
-    const totals = payoutLedger.totals;
-    setText('payoutSourceStatus', `Accepted: ${fmt(totals.acceptedTasks)} tasks from the task wise tab across ${fmt(totals.ledgerTasks)} unique tasks / ${fmt(totals.duplicateRows)} duplicate rows excluded, ${fmt(totals.invalidTasks)} rows flagged Valid = 0 still counted / Paid: ${fmt(totals.paidTasks)} tasks (${money(totals.paidAmount)}) across ${fmt(totals.paymentRequests)} payment requests, ${fmt(totals.unitemisedPaidTasks)} of them (${money(totals.unitemisedPaidAmount)}) paid beyond the tasks listed for that person / Pending: ${fmt(totals.pendingTasks)} tasks (${money(totals.pendingAmount)})`);
-    return;
-  }
-  setText('payoutSourceStatus', 'Payout ledger unavailable. Accepted tasks fall back to the workbook snapshot.');
+  const paid = sum(rows, 'paidAmount');
+  const pending = sum(rows, 'pendingAmount');
+  const card = (label, value, note, tone) => `<article class="kpi" data-tone="${tone}">
+      <div class="kpi-top"><h3>${label}</h3></div><strong>${value}</strong><p class="kpi-note">${note}</p></article>`;
+  byId('payoutSummary').innerHTML =
+    card('Accepted tasks', fmt(sum(rows, 'acceptedTasks')), (() => {
+      const people = rows.filter(row => row.acceptedTasks || row.paidTasks).length;
+      return `${fmt(people)} ${people === 1 ? 'person' : 'people'}`;
+    })(), 'aqua') +
+    card('Paid tasks', fmt(sum(rows, 'paidTasks')), 'at $300 a task', 'blue') +
+    card('Paid', money(paid), `${Math.round((paid / ((paid + pending) || 1)) * 100)}% of earned`, 'aqua') +
+    card('Owed', money(pending), `${fmt(sum(rows, 'pendingTasks'))} tasks`, 'red');
 }
 
 function renderTrainerRows() {
   const rows = filteredTrainers();
   renderPayoutSummary(rows);
   renderPayoutLedger();
-  const pages = Math.max(1, Math.ceil(rows.length / PAYOUT_PAGE_SIZE));
+  const size = pageSize('payoutPageSize');
+  const pages = Math.max(1, Math.ceil(rows.length / size));
   payoutPage = Math.min(Math.max(payoutPage, 0), pages - 1);
-  const from = payoutPage * PAYOUT_PAGE_SIZE;
-  const page = rows.slice(from, from + PAYOUT_PAGE_SIZE);
+  const from = payoutPage * size;
+  const page = rows.slice(from, from + size);
   setText('payoutPage', rows.length
-    ? `${fmt(from + 1)}-${fmt(from + page.length)} of ${fmt(rows.length)} ${rows.length === 1 ? 'person' : 'people'} / page ${fmt(payoutPage + 1)} of ${fmt(pages)}`
-    : 'No people match these filters');
+    ? `${fmt(from + 1)}–${fmt(from + page.length)} of ${fmt(rows.length)}`
+    : 'No matches');
   byId('payoutPrevious').disabled = payoutPage === 0;
   byId('payoutNext').disabled = payoutPage >= pages - 1;
   byId("trainerRows").innerHTML = page
     .map(
-      (row) => `
+      (row, index) => `
         <tr>
+          <td class="num serial">${fmt(from + index + 1)}</td>
           <td>
             <div class="person">
-              <strong>${row.name || "Unknown"}</strong>
-              <span>${row.email}</span>
+              <strong>${esc(row.name || 'Unknown')}</strong>
+              <span>${esc(row.email)}</span>
             </div>
           </td>
           <td>${row.team || "Unassigned"}</td>
@@ -1484,31 +1695,30 @@ function renderTrainerRows() {
         </tr>
       `,
     )
-    .join("") || '<tr><td colspan="9" class="empty">No trainers match these filters.</td></tr>';
+    .join("") || '<tr><td colspan="10" class="empty">No matches.</td></tr>';
 }
 
 function renderTeams() {
   // The Delivery tab's workbook panels were removed; this renderer
   // has no target until they come back.
   if (!byId('teamGrid')) return;
-  const teams = Object.entries(groupBy(data.trainers, (trainer) => trainer.team)).sort(
+  const teams = Object.entries(groupBy(data.trainers, (trainer) => trainer.team || 'Unassigned')).sort(
     (a, b) => sum(b[1], "acceptedTasks") - sum(a[1], "acceptedTasks"),
   );
-  byId("teamGrid").innerHTML = teams
-    .map(([team, rows]) => {
-      const managerCount = new Set(rows.map((row) => row.managerName).filter(Boolean)).size;
-      return `
+  byId('teamGrid').innerHTML = teams.map(([team, rows]) => {
+    const managers = new Set(rows.map((row) => row.managerName).filter(Boolean)).size;
+    const owed = sum(rows, 'pendingAmount');
+    return `
         <article class="team-card">
-          <h3>${team}</h3>
-          <strong class="hero-number">${fmt(sum(rows, "acceptedTasks"))}</strong>
+          <h3>${esc(team)}</h3>
+          <strong class="hero-number">${fmt(sum(rows, 'acceptedTasks'))}</strong>
+          <span class="team-sub">accepted tasks</span>
           <div class="team-line"><span>Trainers</span><b>${fmt(rows.length)}</b></div>
-          <div class="team-line"><span>Managers</span><b>${fmt(managerCount)}</b></div>
-          <div class="team-line"><span>Paid</span><b>${money(sum(rows, "paidAmount"))}</b></div>
-          <div class="team-line"><span>Pending</span><b>${money(sum(rows, "pendingAmount"))}</b></div>
-        </article>
-      `;
-    })
-    .join("");
+          <div class="team-line"><span>Managers</span><b>${fmt(managers)}</b></div>
+          <div class="team-line"><span>Paid</span><b>${money(sum(rows, 'paidAmount'))}</b></div>
+          <div class="team-line"><span>Owed</span><b class="${owed ? 'is-owed' : ''}">${money(owed)}</b></div>
+        </article>`;
+  }).join('');
 }
 
 
@@ -1553,7 +1763,11 @@ function renderExplorerBody() {
 
   const needle = byId('explorerFilter').value.trim().toLowerCase();
   const sort = byId('explorerSort').value;
-  let rows = explorerEntry.files.filter(file => !needle || file.name.toLowerCase().includes(needle));
+  // PRD X1: the shared range reaches this view too, on the object's
+  // last-modified date. Folders are not filtered - a folder has no date of its
+  // own, and hiding the path to a file would read as data loss.
+  let rows = explorerEntry.files.filter(file =>
+    (!needle || file.name.toLowerCase().includes(needle)) && inRange(file.updated));
   rows = rows.slice().sort((a, b) => sort === 'size' ? b.size - a.size
     : sort === 'updated' ? String(b.updated).localeCompare(String(a.updated))
     : a.name.localeCompare(b.name));
@@ -1600,60 +1814,94 @@ async function loadExplorer(force = false) {
 
 // Attainment against the daily commitment. A sequential ramp, because the value
 // is a magnitude; a day with no commitment is not 0% and gets its own neutral.
-const ATTAINMENT_BANDS = [
-  {limit: 0.25, step: 1, label: 'under 25%'},
-  {limit: 0.5, step: 2, label: '25 to 50%'},
-  {limit: 0.75, step: 3, label: '50 to 75%'},
-  {limit: 1, step: 4, label: '75 to 100%'},
-  {limit: Infinity, step: 5, label: 'at or above plan'},
-];
-
 function renderPlan() {
   // The Delivery tab's workbook panels were removed; this renderer
   // has no target until they come back.
   if (!byId('planCharts')) return;
   const benches = data.plan || [];
   const dates = benches[0]?.dates || [];
-  if (!benches.length || !dates.length || !dates.some((day) => inRange(day))) {
-    byId('planCharts').innerHTML = `<p class="empty">No daily plan ${dates.length ? 'falls inside this date range' : 'recorded in the workbook'}.</p>`;
+  const within = dates.map(day => inRange(day));
+  const shown = dates.filter((day, index) => within[index]);
+  const summary = byId('planSummary');
+  if (!benches.length || !shown.length) {
+    byId('planCharts').innerHTML = `<p class="empty">No daily plan ${dates.length ? 'in this date range' : 'recorded'}.</p>`;
+    if (summary) summary.innerHTML = '';
     return;
   }
-  const within = (benches[0]?.dates || []).map(day => inRange(day));
-  const cells = bench => bench.dates.map((day, index) => {
-    if (!within[index]) return '';
-    const plan = Number(bench.plan[index]) || 0;
-    const actual = Number(bench.actual[index]) || 0;
-    if (!plan) {
-      return `<td class="heat-cell" data-step="none" data-tip="${esc(bench.bench)} ${esc(day)}: no commitment set"><span>-</span></td>`;
-    }
-    const share = actual / plan;
-    const band = ATTAINMENT_BANDS.find(entry => share < entry.limit) || ATTAINMENT_BANDS.at(-1);
-    return `<td class="heat-cell" data-step="${band.step}" data-tip="${esc(bench.bench)} ${esc(day)}: ${fmt(actual)} of ${fmt(plan)} tasks, ${Math.round(share * 100)}% of plan">
-      <span>${Math.round(share * 100)}%</span><small>${fmt(actual)}/${fmt(plan)}</small></td>`;
+  const max = Math.max(1, ...benches.flatMap(bench => bench.dates.map((day, index) =>
+    within[index] ? Math.max(Number(bench.plan[index]) || 0, Number(bench.actual[index]) || 0) : 0)));
+  const totals = benches.map(bench => {
+    const planned = bench.plan.reduce((total, value, index) => total + (within[index] ? Number(value) || 0 : 0), 0);
+    const done = bench.actual.reduce((total, value, index) => total + (within[index] ? Number(value) || 0 : 0), 0);
+    return {bench: bench.bench, planned, done, share: planned ? done / planned : null};
+  });
+
+  if (summary) {
+    const planned = totals.reduce((total, row) => total + row.planned, 0);
+    const done = totals.reduce((total, row) => total + row.done, 0);
+    const card = (label, value, note, tone) => `<article class="kpi" data-tone="${tone}">
+      <div class="kpi-top"><h3>${label}</h3></div><strong>${value}</strong><p class="kpi-note">${note}</p></article>`;
+    summary.innerHTML =
+      card('Planned', fmt(planned), `${fmt(shown.length)} days`, 'violet') +
+      card('Delivered', fmt(done), planned ? `${Math.round((done / planned) * 100)}% of plan` : 'no plan set', done >= planned ? 'aqua' : 'yellow') +
+      totals.map(row => card(row.bench.replace(/\s*bench$/i, ''), fmt(row.done),
+        row.planned ? `of ${fmt(row.planned)} planned` : 'no plan set', 'blue')).join('');
+  }
+
+  byId('planCharts').innerHTML = benches.map(bench => {
+    const total = totals.find(row => row.bench === bench.bench);
+    const bars = bench.dates.map((day, index) => {
+      if (!within[index]) return '';
+      const plan = Number(bench.plan[index]) || 0;
+      const actual = Number(bench.actual[index]) || 0;
+      const tip = plan
+        ? `${bench.bench} ${day}: ${fmt(actual)} of ${fmt(plan)} planned`
+        : `${bench.bench} ${day}: no plan set`;
+      return `<div class="plan-day" data-tip="${esc(tip)}">
+        <div class="plan-bars">
+          ${plan ? `<i class="plan-planned" style="height:${(plan / max) * 100}%"></i>` : ''}
+          ${actual ? `<i class="plan-actual" style="height:${(actual / max) * 100}%"></i>` : ''}
+        </div>
+        <span class="plan-x">${esc(day.slice(5))}</span>
+      </div>`;
+    }).join('');
+    return `<div class="plan-bench">
+      <div class="plan-head">
+        <h3>${esc(bench.bench)}</h3>
+        <span>${fmt(total.done)} of ${fmt(total.planned)}${total.share == null ? '' : ` \u00b7 ${Math.round(total.share * 100)}%`}</span>
+      </div>
+      <div class="plan-axis"><span>${fmt(max)}</span><span>${fmt(Math.round(max / 2))}</span><span>0</span></div>
+      <div class="plan-track">${bars}</div>
+    </div>`;
   }).join('');
-  byId('planCharts').innerHTML = `
-    <div class="heatmap-wrap">
-      <table class="heatmap">
-        <thead><tr><th scope="col">Bench</th>${dates.filter((day, index) => within[index]).map(day => `<th scope="col">${esc(day.slice(5))}</th>`).join('')}</tr></thead>
-        <tbody>${benches.map(bench => `<tr><th scope="row">${esc(bench.bench)}</th>${cells(bench)}</tr>`).join('')}</tbody>
-      </table>
-    </div>
-    <div class="heat-key">
-      <span class="heat-key-label">Share of the day's commitment delivered</span>
-      <span class="heat-scale">
-        ${ATTAINMENT_BANDS.map(band => `<i data-step="${band.step}" title="${band.label}"></i>`).join('')}
-      </span>
-      <span class="heat-key-ends"><b>0%</b><b>100%+</b></span>
-      <span class="heat-key-none"><i data-step="none"></i>No commitment set</span>
-    </div>
-    <p class="muted footnote">${benches.map(bench => {
-      const planned = bench.plan.reduce((total, value, index) => total + (within[index] ? Number(value) || 0 : 0), 0);
-      const done = bench.actual.reduce((total, value, index) => total + (within[index] ? Number(value) || 0 : 0), 0);
-      return `${esc(bench.bench)}: ${fmt(done)} of ${fmt(planned)} planned tasks delivered (${Math.round((done / (planned || 1)) * 100)}%)`;
-    }).join(' / ')}</p>`;
 }
 
 function wireEvents() {
+  byId('deltaState').addEventListener('change', renderDailyDelta);
+  document.addEventListener('click', event => {
+    const pill = event.target.closest('.segmented .segbtn[data-preset]');
+    if (!pill) return;
+    const select = byId('datePreset');
+    select.value = pill.dataset.preset;
+    select.dispatchEvent(new Event('change'));
+    const pop = document.querySelector('.rangepop'); if (pop) pop.open = false;
+  });
+  const toggleCard = card => {
+    const open = card.getAttribute('aria-expanded') === 'true';
+    document.querySelectorAll('[data-expand][aria-expanded="true"]').forEach(other => { if (other.className.split(' ')[0] === card.className.split(' ')[0]) other.setAttribute('aria-expanded', 'false'); });
+    card.setAttribute('aria-expanded', String(!open));
+  };
+  document.addEventListener('click', event => {
+    const card = event.target.closest('[data-expand]');
+    if (!card || event.target.closest('a, button')) return;
+    toggleCard(card);
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    const card = event.target.closest && event.target.closest('[data-expand]');
+    if (!card || event.target !== card) return;
+    event.preventDefault(); toggleCard(card);
+  });
   byId('truthRefresh')?.addEventListener('click', rebuildTruth);
   byId('unmatchedShow')?.addEventListener('click', () => {
     const panel = byId('unmatchedPanel');
@@ -1694,16 +1942,28 @@ function wireEvents() {
     [...TRUTH_FILTERS, 'tSearch'].forEach(id => { if (byId(id)) byId(id).value = ''; });
     truthPage = 0; renderTruth();
   });
+  byId('truthPageSize')?.addEventListener('change', () => { truthPage = 0; renderTruth(); });
   byId('truthPrev')?.addEventListener('click', () => { truthPage -= 1; renderTruth(); });
   byId('truthNext')?.addEventListener('click', () => { truthPage += 1; renderTruth(); });
   byId('truthChainClose')?.addEventListener('click', () => {
     openChain = null; byId('truthChainPanel').hidden = true;
+    document.querySelectorAll('[data-chain]').forEach(node => node.setAttribute('aria-pressed', 'false'));
   });
-  byId('truthFigures')?.addEventListener('click', event => {
-    const card = event.target.closest('[data-chain]');
+  byId('scopeKey')?.addEventListener('click', event => {
+    const key = event.target.closest('[data-state]');
+    if (!key) return;
+    byId('tState').value = byId('tState').value === key.dataset.state ? '' : key.dataset.state;
+    truthPage = 0; renderTruth();
+  });
+  document.addEventListener('click', event => {
+    const card = event.target.closest('#truthFigures [data-chain], #truthFlags [data-chain]');
     if (!card) return;
     const label = card.dataset.chain;
-    if (openChain === label) { openChain = null; byId('truthChainPanel').hidden = true; return; }
+    if (openChain === label) {
+      openChain = null; byId('truthChainPanel').hidden = true;
+      document.querySelectorAll('[data-chain]').forEach(node => node.setAttribute('aria-pressed', 'false'));
+      return;
+    }
     renderChain(label, Object.values(truthFilters()).some(Boolean));
     byId('truthChainPanel').scrollIntoView({behavior: 'smooth', block: 'nearest'});
   });
@@ -1744,20 +2004,16 @@ function wireEvents() {
       switchView(next.dataset.view);
     });
   });
-  document.querySelectorAll('[data-jump]').forEach(button => {
-    button.addEventListener('click', () => switchView(button.dataset.jump));
+  // Delegated so jump buttons rendered later still work.
+  document.addEventListener('click', event => {
+    const jump = event.target.closest('[data-jump]');
+    if (jump) switchView(jump.dataset.jump);
   });
   window.addEventListener('popstate', () => switchView(location.hash.slice(1) || 'command', false));
-  byId('globalSearch').addEventListener('input', event => {
-    const active = document.querySelector('.viewnav-tab.is-active')?.dataset.view;
-    const target = VIEW_SEARCH[active];
-    if (!target || !byId(target)) return;
-    byId(target).value = event.target.value;
-    byId(target).dispatchEvent(new Event('input'));
-  });
   const resetPayoutPages = () => { payoutPage = 0; ledgerPage = 0; renderTrainerRows(); };
   byId('personSearch').addEventListener('input', resetPayoutPages);
-  byId('trainerFilter').addEventListener('change', resetPayoutPages);
+  byId('payoutPageSize').addEventListener('change', () => { payoutPage = 0; renderTrainerRows(); });
+  byId('ledgerPageSize').addEventListener('change', () => { ledgerPage = 0; renderPayoutLedger(); });
   byId('payoutPrevious').addEventListener('click', () => { payoutPage -= 1; renderTrainerRows(); });
   byId('payoutNext').addEventListener('click', () => { payoutPage += 1; renderTrainerRows(); });
   byId('ledgerPrevious').addEventListener('click', () => { ledgerPage -= 1; renderPayoutLedger(); });
@@ -1766,25 +2022,19 @@ function wireEvents() {
   byId('benchFilter').addEventListener('change', resetPayoutPages);
   const presets = {'7': 7, '14': 14, '30': 30};
   byId('datePreset').addEventListener('change', event => {
-    const value = event.target.value;
-    if (!value) { dateRange.start = dateRange.end = ''; }
-    else if (value === 'live') { dateRange.start = window.PIPELINE_LEGACY_BEFORE; dateRange.end = ''; }
-    else {
-      const end = new Date();
-      const start = new Date(end.getTime() - (presets[value] - 1) * 86400000);
-      dateRange.start = start.toISOString().slice(0, 10);
-      dateRange.end = end.toISOString().slice(0, 10);
-    }
-    byId('dateStart').value = dateRange.start;
-    byId('dateEnd').value = dateRange.end;
+    dateRange.preset = event.target.value;
+    setRangeFromPreset(event.target.value);
+    syncOverviewSlicer();
     applyRange();
   });
   ['dateStart', 'dateEnd'].forEach(id => byId(id).addEventListener('change', () => {
     dateRange.start = byId('dateStart').value;
     dateRange.end = byId('dateEnd').value;
+    dateRange.preset = '';
     byId('datePreset').value = '';
     applyRange();
   }));
+
   byId('explorerRefresh').addEventListener('click', () => loadExplorer(true));
   byId('explorerFilter').addEventListener('input', renderExplorerBody);
   byId('explorerSort').addEventListener('change', renderExplorerBody);
@@ -1817,7 +2067,9 @@ function wireEvents() {
     openButton = null;
   }
   function showInfo(button) {
-    const copy = infoCopy[button.dataset.info];
+    // Entries may be functions when the text depends on loaded data.
+    const entry = infoCopy[button.dataset.info];
+    const copy = typeof entry === 'function' ? entry() : entry;
     if (!copy) return;
     if (openButton) openButton.setAttribute('aria-expanded', 'false');
     popover.textContent = copy;
@@ -1860,17 +2112,6 @@ function wireEvents() {
 }
 
 // The topbar search drives whichever view owns a search box.
-const VIEW_SEARCH = {payouts: 'personSearch', pipeline: 'tSearch', carried: 'cSearch'};
-
-function syncSearch(viewName) {
-  const target = VIEW_SEARCH[viewName];
-  const box = byId('globalSearch');
-  box.closest('.search').classList.toggle('is-off', !target);
-  box.disabled = !target;
-  box.placeholder = target ? (viewName === 'payouts' ? 'Search a person, team or manager' : 'Search a task, trainer or reason') : 'Search is available on Payouts and Pipeline';
-  // A view's search box may not exist yet while its data is still loading.
-  box.value = target && byId(target) ? byId(target).value : '';
-}
 
 function init() {
   renderHero();
