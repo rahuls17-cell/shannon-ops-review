@@ -6,12 +6,20 @@ const root = path.join(__dirname, '..');
 const elements = new Map();
 const context = vm.createContext({
   window: {}, Intl, console, setInterval() {},
-  document: {getElementById(id) {
-    if (!elements.has(id)) elements.set(id, {value: '', style: {}, textContent: '', innerHTML: ''});
-    return elements.get(id);
-  }}
+  // The page reads its palette off the stylesheet at render time. There is no
+  // stylesheet here, so this returns nothing and statusColor falls back to its
+  // own default - which is what the fallback is for. The test is about counts,
+  // not colours.
+  getComputedStyle: () => ({getPropertyValue: () => ''}),
+  document: {
+    documentElement: {},
+    getElementById(id) {
+      if (!elements.has(id)) elements.set(id, {value: '', style: {}, textContent: '', innerHTML: ''});
+      return elements.get(id);
+    },
+  },
 });
-for (const name of ['assets/data.js', 'accepted-tasks.js', 'finalisation.js']) {
+for (const name of ['assets/data.js', 'finalisation.js']) {
   vm.runInContext(fs.readFileSync(path.join(root, name), 'utf8'), context);
 }
 vm.runInContext(fs.readFileSync(path.join(root, 'app.js'), 'utf8').replace(/init\(\);\s*$/, ''), context);
@@ -28,25 +36,47 @@ run(`
     {id:'3',task:'waiting',trainer:'b@example.com',status:'Running'}
   ],historical:[{status:'Done'}]};
   finalisationSource = {generated_at:'2026-09-15'};
+  // As prepareFinalisation emits them: a task is keyed by 'name', and the same
+  // task finalised into two cohorts is two folders with one name. That is what
+  // the duplicate count is counting.
   finalisationRows = [
-    {folder:'shared',declared_name:'shared',trainer:data.trainers[0]},
-    {folder:'unknown',declared_name:'unknown'}
+    {folder:'shared-v2',name:'shared',displayName:'shared',trainer:data.trainers[0],date:'2026-09-15'},
+    {folder:'shared',name:'shared',displayName:'shared',trainer:data.trainers[0],date:'2026-09-14'},
+    {folder:'unknown',name:'unknown',displayName:'unknown',trainer:null,date:'2026-09-15'}
   ];
   renderHero(); renderDonut(); renderBenchCards(); renderTopPendingCards();
 `);
-assert.equal(run('commandSnapshot().groups.length'), 3);
+// Three folders, two distinct task names: the accepted figure counts tasks, so
+// the repeat cohort is one duplicate rather than a second accepted task.
+assert.equal(run('commandSnapshot().folders.length'), 3);
+assert.equal(run('commandSnapshot().tasks.size'), 2);
 assert.equal(run('commandSnapshot().duplicates'), 1);
 assert.equal(run('commandSnapshot().unassigned'), 1);
-assert.equal(elements.get('metricAccepted').textContent, '3');
-assert.equal(elements.get('metricPendingTasks').textContent, '1');
+// Two distinct tasks across three folders. This is the figure the redesign
+// changed: it counts task names, so a task finalised twice is not two.
+assert.equal(elements.get('metricAccepted').textContent, '2');
+// 999 accepted in the trainer record minus 1 approved in Paid Out. The 999 is
+// a sentinel: it appears nowhere in the bucket fixture, so a pending figure
+// derived from it proves the payout side reads the workbook and not GCS.
+assert.equal(elements.get('metricPendingTasks').textContent, '998');
 assert.equal(elements.get('metricPaid').textContent, '$300');
 run("byId('pipelineMode').value='historical'; renderDonut();");
 assert.match(elements.get('pipelineDonut').innerHTML, /<strong>3<\/strong>/);
-run("byId('teamFilter').value='Company'; renderHero(); renderBenchCards();");
-assert.equal(elements.get('metricAccepted').textContent, '2');
-assert.equal(run('commandSnapshot().current.length'), 2);
-run('finalisationSource=null; renderHero(); renderTopPendingCards();');
+// The Overview's own team filter was removed in the 15 Sept redesign; the date
+// range is what scopes this page now, so that is what is checked.
+assert.equal(run('commandSnapshot().current.length'), 3);
+run("dateRange.start='2026-09-15'; dateRange.end='2026-09-15'; renderHero();");
+assert.equal(run('commandSnapshot().folders.length'), 2,
+  'the date range must scope the finalisation folders');
+run("dateRange.start=null; dateRange.end=null; renderHero();");
+assert.equal(run('commandSnapshot().folders.length'), 3, 'and clearing it must restore them');
+// With no bucket data the page must show a dash, not a number built from half
+// its sources. The snapshot is ready only when both the finalisation rows and
+// the pipeline are loaded, so emptying the rows is what stands for a missing
+// source now.
+run('finalisationSource=null; finalisationRows=[]; renderHero(); renderTopPendingCards();');
+assert.equal(run('commandSnapshot().ready'), false);
 assert.equal(elements.get('metricAccepted').textContent, '-');
 assert.equal(elements.get('metricPendingTasks').textContent, '-');
 assert.match(elements.get('topPendingCards').innerHTML, /require Pipeline/);
-console.log('Command checks passed: deduplication, owner scope, payout source, history independence, missing source.');
+console.log('Command checks passed: deduplication, date scope, payout source, history independence, missing source.');
