@@ -11,3 +11,6 @@ NUL
 
 # Bucket index is built on the VM and published separately; never commit it here.
 gcs-index/
+
+# Working files of a local Rebuild from bucket; only the published asset is committed.
+.truth-work/
