@@ -801,6 +801,20 @@ function watchForRebuild() {
   }, 30000);
 }
 
+// How old a build is, in words. The refresh cadence is not something this page
+// can promise - GitHub throttles scheduled runs - so it reports what it can
+// actually measure.
+function ageOf(stamp) {
+  const when = Date.parse(stamp || '');
+  if (!Number.isFinite(when)) return 'built at an unknown time';
+  const minutes = Math.max(0, Math.round((Date.now() - when) / 60000));
+  if (minutes < 2) return 'built just now';
+  if (minutes < 90) return `built ${minutes} minutes ago`;
+  const hours = Math.round(minutes / 60);
+  if (hours < 36) return `built ${hours} hour${hours === 1 ? '' : 's'} ago`;
+  return `built ${Math.round(hours / 24)} days ago`;
+}
+
 async function rebuildTruth() {
   const button = byId('truthRefresh');
   const local = ['127.0.0.1', 'localhost'].includes(location.hostname);
@@ -819,8 +833,12 @@ async function rebuildTruth() {
       const changed = (truth?.generatedAt || '') !== before;
       setText('truthStatus', changed
         ? `Loaded the build from ${new Date(truth.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}.`
-        : 'Already showing the newest published build. The pipeline rebuilds itself every 15 minutes; ' +
-          'this page will pick the next one up on its own.');
+        // Do not name an interval. The workflow asks for every 15 minutes and
+        // GitHub delivers a scheduled run roughly every two hours, so the
+        // number was simply untrue. The age of the data is measurable and
+        // self-correcting, so say that instead.
+        : `Already showing the newest published build, ${ageOf(truth?.generatedAt)}. ` +
+          'It refreshes on its own and this page will pick the next one up.');
       // Nothing newer yet, so keep watching rather than making anyone press again.
       if (!changed) watchForRebuild();
     } finally {

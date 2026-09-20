@@ -1,0 +1,90 @@
+name: Tests
+# Runs the suite on every push and every pull request.
+#
+# Four breakages in two days reached main with a green suite on someone's
+# machine, because nothing ran it at the moment that mattered: a publish list
+# that drifted between two workflows, a refresh that silently dropped the
+# delivered index, an assertion of mine that stopped the pipeline overnight, and
+# an Overview test that had been dead for four days. Every one would have shown
+# here within a minute.
+#
+# Deliberately separate from the refresh workflows. Those publish data and are
+# gated on whether the data reconciles; this is gated on whether the code is
+# right. Mixing them is what let a wrong test stop a good refresh.
+on:
+  push:
+    branches: ['**']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # A newer push supersedes an older one on the same ref; no point finishing a
+  # run for a commit nobody will look at again.
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Every module test
+        # Plain node, no dependencies, no install step. Each file exits non-zero
+        # on failure, so the shell stops at the first one that does.
+        run: |
+          for test in tools/test-*.cjs; do
+            echo "::group::$test"
+            node "$test"
+            echo "::endgroup::"
+          done
+
+      - name: The delivered join
+        run: python3 tools/test_delivered_join.py
+
+      - name: Known data defects have not spread
+        # test_duplicate_sample.py exits 1 by design: it reports a genuine
+        # contradiction upstream - two records for one task sharing the newest
+        # timestamp and disagreeing on the outcome - that cannot be fixed here.
+        # Running it for its exit code would make this check permanently red,
+        # and a check that can never be green is one everybody stops reading.
+        # So the number is asserted instead: the known defect passes, a second
+        # one fails.
+        run: |
+          python3 tools/test_duplicate_sample.py > duplicate-report.txt 2>&1 || true
+          cat duplicate-report.txt
+          python3 - <<'CHECK'
+          import pathlib, re, sys
+          report = pathlib.Path('duplicate-report.txt').read_text(encoding='utf-8')
+          found = re.search(r'(\d+) groups tie on the exact latest timestamp, (\d+) of those disagree', report)
+          if not found:
+              sys.exit('the duplicate report no longer states its tie counts; the check cannot read it')
+          ties, disagree = int(found.group(1)), int(found.group(2))
+          print(f'{ties} groups tie on the newest timestamp, {disagree} of them disagree on the outcome')
+          if disagree > 1:
+              sys.exit(f'{disagree} tasks now resolve arbitrarily, up from the 1 known contradiction')
+          CHECK
+
+      - name: Every script index.html loads is present
+        # The same check the deploy makes, run here so a missing module is
+        # caught on the push that introduced it rather than on the next deploy.
+        run: |
+          python3 - <<'CHECK'
+          import pathlib, re, sys
+          html = pathlib.Path('index.html').read_text(encoding='utf-8')
+          refs = re.findall(r'(?:src|href)="([^"]+\.(?:js|css))"', html)
+          local = [r for r in dict.fromkeys(refs)
+                   if not r.startswith(('http://', 'https://', '//', 'data:'))]
+          missing = [r for r in local if not pathlib.Path(r).exists()]
+          if missing:
+              sys.exit('index.html references files that do not exist: ' + ', '.join(missing))
+          print(f'all {len(local)} referenced files exist')
+          CHECK

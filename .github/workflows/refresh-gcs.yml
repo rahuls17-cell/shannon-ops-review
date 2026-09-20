@@ -29,7 +29,24 @@ jobs:
           printf '%s\n' "$SSH_KEY" > ~/.ssh/shannon
           printf '%s\n' "$SSH_HOST_KEY" > ~/.ssh/known_hosts
           trap 'rm -f ~/.ssh/shannon' EXIT
-          ssh -T -i ~/.ssh/shannon -p 2222 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=30 -o ServerAliveInterval=30 root@35.253.35.165 export | gzip -d > assets/gcs-pipeline.json.new
+          set -o pipefail
+          # The runner reaches the VM over the open internet and that hop
+          # drops occasionally - twice in two days, each time costing a whole
+          # refresh. The VM was healthy both times: 32 cores at 14% load. So
+          # three attempts with a backoff, which absorbs a blip while a real
+          # outage still fails the run.
+          fetch() {
+            out=$1; arg=$2
+            for attempt in 1 2 3; do
+              if ssh -T -i ~/.ssh/shannon -p 2222 -o BatchMode=yes -o StrictHostKeyChecking=yes -o ConnectTimeout=30 -o ServerAliveInterval=30 root@35.253.35.165 "$arg" | gzip -d > "$out" && [ -s "$out" ]; then
+                return 0
+              fi
+              echo "attempt $attempt: the VM could not be reached, or sent nothing"
+              [ "$attempt" = 3 ] && return 1
+              sleep $((attempt * 20))
+            done
+          }
+          fetch assets/gcs-pipeline.json.new export
           python3 -c 'import json; p=json.load(open("assets/gcs-pipeline.json.new")); assert p["schemaVersion"] == 3; assert p["finalisation"]["tasks"]; assert all(isinstance(p[k], list) and p[k] for k in ("current", "historical", "legacy")); print(p["generatedAt"], {k:len(p[k]) for k in ("current","historical","legacy")}, p["finalisation"]["totals"])'
           mv assets/gcs-pipeline.json.new assets/gcs-pipeline.json
           python3 -c 'import json; p=json.load(open("assets/gcs-pipeline.json")); json.dump({"generatedAt":p["generatedAt"]},open("assets/pipeline-version.json","w"))'
