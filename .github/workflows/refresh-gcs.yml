@@ -5,6 +5,7 @@ on:
     - cron: '*/5 * * * *'
 permissions:
   contents: write
+  issues: write
   pages: write
   id-token: write
 concurrency:
@@ -142,3 +143,42 @@ jobs:
           path: _site
       - uses: actions/deploy-pages@v4
         id: deployment
+
+      # A failed refresh used to be silent - the ones this week were found only
+      # because someone went looking. This raises one issue and keeps commenting
+      # on it, so a run of failures is a single thread rather than a stack of
+      # duplicates, and closes it when a refresh next works.
+      - name: Say so if the refresh failed
+        if: failure()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          LABEL: refresh-broken
+        run: |
+          gh label create "$LABEL" --color B60205 --description "A scheduled data refresh is failing" || true
+          open_issue=$(gh issue list --label "$LABEL" --state open --limit 1 --json number --jq '.[0].number // empty')
+          if [ -n "$open_issue" ]; then
+            gh issue comment "$open_issue" --body "Failed again: [Refresh GCS pipeline]($RUN_URL)"
+            echo "commented on issue #$open_issue"
+          else
+            body=$(printf '%s\n' \
+              "The scheduled refresh failed, so the published data is no longer being updated." \
+              "" \
+              "Latest run: $RUN_URL" \
+              "" \
+              "This issue collects a comment per failure and closes itself when a refresh succeeds." \
+              "The dashboard states the age of the data it is showing, so a stale page says so too.")
+            gh issue create --label "$LABEL" --title "Refresh GCS pipeline is failing" --body "$body"
+          fi
+
+      - name: Close the failure notice once it works again
+        if: success()
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          LABEL: refresh-broken
+        run: |
+          for number in $(gh issue list --label "$LABEL" --state open --json number --jq '.[].number'); do
+            gh issue close "$number" --comment "Refreshing again: [this run]($RUN_URL) succeeded."
+            echo "closed issue #$number"
+          done
