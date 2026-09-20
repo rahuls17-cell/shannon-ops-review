@@ -93,10 +93,36 @@ live.tasks.forEach(t => {
   assert.ok(t.id && t.name, 'every entry is identifiable');
 });
 
-// Nothing already delivered can appear in a manifest.
-const deliveredKeys = new Set(model.rows.filter(r => r.delivered).map(r => normaliseName(r.name)));
+// Nothing already delivered can appear in a manifest. Keyed on rows matched by
+// an exact name, not on every delivered row: task names repeat across unrelated
+// tasks here, so a normalised name shared with a row delivered via its
+// identifier is a coincidence, not a double-ship. The row-level guarantee is
+// that a manifest entry is never itself a delivered row, checked below.
+const deliveredKeys = new Set(model.rows
+  .filter(r => r.delivered && r.deliveredVia === 'name')
+  .map(r => normaliseName(r.name)));
 live.tasks.forEach(t => assert.ok(!deliveredKeys.has(t.key),
   `${t.name} has already been delivered but appears in a manifest`));
+const deliveredIds = new Set(model.rows.filter(r => r.delivered).map(r => r.id));
+live.tasks.forEach(t => t.standsFor.forEach(id => assert.ok(!deliveredIds.has(id),
+  `${t.name} stands for ${id}, which is already delivered`)));
+
+// Checked over every ready task, not just the first 60: a manifest cut later,
+// or with a different size, draws from the same pool, so a delivered task
+// hiding at position 300 is the same defect as one at position 3.
+const everything = buildManifest(ready.rows, {size: 0});
+everything.tasks.forEach(t => {
+  // A task whose name is a version of a delivered one - ...-hand-over-v7 while
+  // ...-hand-over went out - is a rework after a rejection. It may be new work
+  // or the same thing again, and only a person can tell, so it is allowed into
+  // the manifest carrying the flag rather than being dropped or ignored.
+  if (deliveredKeys.has(t.key)) {
+    assert.ok(t.possiblyAlreadyDelivered,
+      `${t.name} shares a delivered task's name but carries no warning`);
+  }
+  t.standsFor.forEach(id => assert.ok(!deliveredIds.has(id),
+    `${t.name} stands for ${id}, which is already delivered`));
+});
 
 // The full manifest accounts for every ready row exactly once.
 const all = buildManifest(ready.rows, {size: 0});
@@ -180,7 +206,12 @@ assert.equal(liveAll.counts.possiblyAlreadyDelivered, flagged.length);
 flagged.forEach(t => {
   assert.equal(typeof t.possiblyAlreadyDelivered, 'string',
     'the flag names the audited task it may duplicate');
-  assert.ok(!deliveredKeys.has(t.key), 'a flagged task is still not a confirmed delivery');
+  // By row, not by name: the flag now covers the case where the name IS a
+  // delivered one - a rework of it - so asserting on the name would
+  // contradict the thing being flagged. What must hold is that the rows it
+  // stands for were never delivered themselves.
+  t.standsFor.forEach(id => assert.ok(!deliveredIds.has(id),
+    'a flagged task is still not a confirmed delivery'));
 });
 
 // Every suspect row that survives deduplication must be flagged; none may be

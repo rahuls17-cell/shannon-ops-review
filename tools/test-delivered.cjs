@@ -71,11 +71,21 @@ assert.equal(no.submissions + yes.submissions, model.rows.length,
   'delivered and not-delivered must partition the population');
 assert.ok(ready.rows.length <= no.rows.length, 'ready is a subset of not-delivered');
 
-// Ready must not overlap delivered, by name as well as by row: a name that has
-// already gone out must never be offered as new work.
-const deliveredNames = new Set(marked.map(r => (r.name || '').trim().toLowerCase()));
-ready.rows.forEach(r => assert.ok(!deliveredNames.has((r.name || '').trim().toLowerCase()),
-  `${r.name} is offered as ready but a task of that name was already delivered`));
+// Ready must not overlap delivered. By row is exact and always holds.
+//
+// By name it does not: 5,844 rows carry 4,364 distinct names - "task" alone
+// appears 13 times - so two unrelated tasks can share one. A row delivered via
+// its identifier or a normalised name can therefore sit next to a genuinely
+// different ready row of the same name, which is what turned this red in CI
+// against a pipeline that happened to contain one.
+//
+// Where the name IS the identity - the row was matched by an exact name match -
+// the index marks every row carrying it, so a ready row with that name would
+// mean the join missed one. That is the version worth asserting.
+const nameOf = row => (row.name || '').trim().toLowerCase();
+const deliveredByName = new Set(marked.filter(r => r.deliveredVia === 'name').map(nameOf));
+ready.rows.forEach(r => assert.ok(!deliveredByName.has(nameOf(r)),
+  `${r.name} is offered as ready but the join marked that exact name delivered`));
 
 // --- the join stays honest about what it missed ----------------------------
 // This is the figure that decides whether the split can be trusted. If a lot of

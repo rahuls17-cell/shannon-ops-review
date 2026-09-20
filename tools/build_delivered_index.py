@@ -102,6 +102,7 @@ def build(audit, truth):
     haystacks = [(r, key(r['id']) + '/' + key(r.get('source'))) for r in rows]
 
     delivered = {}          # pipeline id -> how it was matched
+    rows_by_id = {r['id']: r for r in rows}
     delivered_task = {}     # pipeline id -> the audited task it belongs to
     matched_audit = []
     unmatched_audit = []
@@ -186,6 +187,24 @@ def build(audit, truth):
             if embeds(hay, name):
                 suspect[row['id']] = name
                 break
+
+    # The same warning for a second shape: a ready row whose name is a version
+    # of one already delivered - lookalike-...-hand-over-v7 sitting accepted and
+    # at the bar while lookalike-...-hand-over is delivered and rejected. That is
+    # a rework after a rejection, so it may be new work worth shipping or the
+    # same thing handed over again, and only a person can say. Marked, not
+    # decided, and not merged: the two rows are genuinely different runs.
+    delivered_stems = {}
+    for task_id, method in delivered.items():
+        if method == 'name':
+            delivered_stems.setdefault(norm(rows_by_id[task_id]['name']), task_id)
+    for row in ready:
+        if row['id'] in suspect:
+            continue
+        stem = norm(row['name'])
+        twin = delivered_stems.get(stem)
+        if twin and key(row['name']) != key(rows_by_id[twin]['name']):
+            suspect[row['id']] = rows_by_id[twin]['name']
 
     return {
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
