@@ -432,11 +432,17 @@ function watchForRebuild() {
       if (payload.generatedAt && payload.generatedAt !== started) {
         clearInterval(rebuildWatcher);
         rebuildWatcher = null;
-        truth = window.prepareTruth(payload);
-        populateTruthFilters();
-        renderTruth();
-        renderCarried();
-        setText('truthStatus', `New data published ${new Date(payload.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}.`);
+        // Go through loadTruth rather than preparing the payload here: it also
+        // fetches the delivered index. Preparing without it left every row
+        // unmarked, so Already delivered fell to 0 and Ready rose to include
+        // work that had already gone out - and the stale guard cannot fire on
+        // an index that is absent rather than old, so nothing said a word.
+        await loadTruth();
+        // And only call it published if it actually loaded; loadTruth writes
+        // its own message when it fails, which this would otherwise bury.
+        if (truth && truth.generatedAt === payload.generatedAt) {
+          setText('truthStatus', `New data published ${new Date(payload.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}.`);
+        }
       }
     } catch { /* keep waiting; a deploy in flight can serve a partial response */ }
   }, 30000);

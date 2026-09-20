@@ -167,3 +167,26 @@ console.log('collapse :', `${colYes.submissions} delivered rows shown as ${colYe
   `(${colYes.versionsFolded} repeat versions counted once);`,
   `ready ${colReady.submissions} rows -> ${colReady.rows.length} tasks`);
 console.log('all collapse assertions passed');
+
+// --- a refresh must not drop the delivered index ----------------------------
+// prepareTruth without the index leaves every row unmarked, which is not the
+// same as "nothing is delivered": Already delivered falls to 0 and Ready rises
+// to include work that has already gone out, which is the exact double-delivery
+// this feature exists to prevent. The stale guard cannot catch it either - it
+// compares timestamps, and an absent index has none. So the page must never
+// prepare a refreshed payload without also fetching the index.
+const withIndex = filterTruth(prepareTruth(truthAsset, index).rows, {});
+const without = filterTruth(prepareTruth(truthAsset).rows, {});
+assert.ok(without.readyForDelivery > withIndex.readyForDelivery,
+  'sanity: dropping the index must inflate ready, or this test proves nothing');
+assert.equal(without.delivered, 0, 'sanity: dropping the index unmarks every row');
+
+const app = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+const watcher = app.slice(app.indexOf('function watchForRebuild'),
+                          app.indexOf('async function rebuildTruth'));
+assert.ok(watcher.includes('loadTruth()'),
+  'watchForRebuild must reload through loadTruth so the delivered index comes with it');
+assert.ok(!/prepareTruth\(payload\)/.test(watcher),
+  'watchForRebuild must not prepare a payload without the delivered index');
+console.log('refresh keeps the delivered index:',
+  `${withIndex.readyForDelivery} ready with it, ${without.readyForDelivery} without`);
