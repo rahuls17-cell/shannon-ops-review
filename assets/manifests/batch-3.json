@@ -1,0 +1,1943 @@
+{
+  "generated_at_ist": "20260908-180944",
+  "summary": {
+    "task_count": 60,
+    "connector_count": 1,
+    "non_connector_count": 59,
+    "difficulty_counts": {
+      "harder": 54,
+      "easier": 6
+    },
+    "category_counts": {
+      "connector": 1,
+      "engineering": 22,
+      "other": 37
+    }
+  },
+  "tasks": [
+    {
+      "task_id": "code-c347-guest-portal-session-verification-audit",
+      "task_name": "code-c347-guest-portal-session-verification-audit",
+      "original_filename": "99619e71059c7c29e0d23e73d9931bacb787701dc06892c759c50adf2a9f3c71.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c347-guest-portal-session-verification-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.13",
+          "0.13",
+          "0.13",
+          "0.13"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c347-guest-portal-session-verification-audit/99619e71059c7c29e0d23e73d9931bacb787701dc06892c759c50adf2a9f3c71.zip",
+      "source_version": "2026-09-06T20:05:32Z",
+      "sha256": "99619e71059c7c29e0d23e73d9931bacb787701dc06892c759c50adf2a9f3c71",
+      "size_bytes": 5151643,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c347-guest-portal-session-verification-audi-a0c748-v1-sna-xjwn"
+    },
+    {
+      "task_id": "code-c362-inference-routing-wallet-gate-audit",
+      "task_name": "code-c362-inference-routing-wallet-gate-audit",
+      "original_filename": "80a404bb438856ab30e63d9d1318ea908a8ca5875be97ad37fda31ceb5dd5068.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c362-inference-routing-wallet-gate-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.340625",
+          "0.340625",
+          "0.340625",
+          "0.340625"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c362-inference-routing-wallet-gate-audit/80a404bb438856ab30e63d9d1318ea908a8ca5875be97ad37fda31ceb5dd5068.zip",
+      "source_version": "2026-09-06T20:26:05Z",
+      "sha256": "80a404bb438856ab30e63d9d1318ea908a8ca5875be97ad37fda31ceb5dd5068",
+      "size_bytes": 9082386,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c362-inference-routing-wallet-gate-audit-d3b22c-v4-sna-wsju"
+    },
+    {
+      "task_id": "code-c365-sprint-closeout-verification-audit",
+      "task_name": "code-c365-sprint-closeout-verification-audit",
+      "original_filename": "f83fa3f357c26f4eb1cfff3b58fafb4c304acc3d6d5a87681afcb4d0ed7ad0af.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c365-sprint-closeout-verification-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.15",
+          "0.15",
+          "0.15",
+          "0.15"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c365-sprint-closeout-verification-audit/f83fa3f357c26f4eb1cfff3b58fafb4c304acc3d6d5a87681afcb4d0ed7ad0af.zip",
+      "source_version": "2026-09-06T13:23:12Z",
+      "sha256": "f83fa3f357c26f4eb1cfff3b58fafb4c304acc3d6d5a87681afcb4d0ed7ad0af",
+      "size_bytes": 6082363,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c365-sprint-closeout-verification-audit-a605c2-v1-sna-qbuq"
+    },
+    {
+      "task_id": "code-c430-uae-corporate-tax-threshold-audit",
+      "task_name": "code-c430-uae-corporate-tax-threshold-audit",
+      "original_filename": "3a5168a48b939a7a43e61bba9d53dce9a491df1737cc8feb7baecc69b0368deb.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c430-uae-corporate-tax-threshold-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.95",
+          "0.25",
+          "0.25",
+          "0.25"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c430-uae-corporate-tax-threshold-audit/3a5168a48b939a7a43e61bba9d53dce9a491df1737cc8feb7baecc69b0368deb.zip",
+      "source_version": "2026-09-06T16:28:31Z",
+      "sha256": "3a5168a48b939a7a43e61bba9d53dce9a491df1737cc8feb7baecc69b0368deb",
+      "size_bytes": 4622656,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c430-uae-corporate-tax-threshold-audit-Fina-e955fe-v1-sna-rlsc"
+    },
+    {
+      "task_id": "code-c457-coaching-intake-brief-completeness-audit",
+      "task_name": "code-c457-coaching-intake-brief-completeness-audit",
+      "original_filename": "2ca6360763746f29b23865fedb7317342a364885c344767e0ffe77a9ae0286a5.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c457-coaching-intake-brief-completeness-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.216667",
+          "0.216667",
+          "0.216667",
+          "1"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c457-coaching-intake-brief-completeness-audit/2ca6360763746f29b23865fedb7317342a364885c344767e0ffe77a9ae0286a5.zip",
+      "source_version": "2026-09-06T16:49:35Z",
+      "sha256": "2ca6360763746f29b23865fedb7317342a364885c344767e0ffe77a9ae0286a5",
+      "size_bytes": 5720492,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c457-coaching-intake-brief-completeness-audit-66ccc2-v9-sna-asqu"
+    },
+    {
+      "task_id": "code-c460-model-tier-access-audit",
+      "task_name": "code-c460-model-tier-access-audit",
+      "original_filename": "e99494c8a65039b4321bd9e24f9c76fc339452ea3e889fcfdf3fae27c30f5a38.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c460-model-tier-access-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.263889",
+          "0.263889",
+          "0.263889",
+          "0.263889"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c460-model-tier-access-audit/e99494c8a65039b4321bd9e24f9c76fc339452ea3e889fcfdf3fae27c30f5a38.zip",
+      "source_version": "2026-09-06T16:28:42Z",
+      "sha256": "e99494c8a65039b4321bd9e24f9c76fc339452ea3e889fcfdf3fae27c30f5a38",
+      "size_bytes": 6049411,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c460-model-tier-access-audit-ccb3ea-v1-sna-vcbs"
+    },
+    {
+      "task_id": "code-c466-rls-policy-coverage-audit",
+      "task_name": "code-c466-rls-policy-coverage-audit",
+      "original_filename": "87df1dbaa64beba88019e77fc8b3fe1d753ba4c1da573e4a5b195e04bcfc6fc4.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c466-rls-policy-coverage-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1",
+          "0.263889",
+          "0.263889",
+          "0.263889"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c466-rls-policy-coverage-audit/87df1dbaa64beba88019e77fc8b3fe1d753ba4c1da573e4a5b195e04bcfc6fc4.zip",
+      "source_version": "2026-09-06T17:25:32Z",
+      "sha256": "87df1dbaa64beba88019e77fc8b3fe1d753ba4c1da573e4a5b195e04bcfc6fc4",
+      "size_bytes": 6492422,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c466-rls-policy-coverage-audit-2e7ba5-v1-sna-nsip"
+    },
+    {
+      "task_id": "code-c475-bookkeeping-deadline-escalation-audit",
+      "task_name": "code-c475-bookkeeping-deadline-escalation-audit",
+      "original_filename": "5f25d91643d978f96936b6cc347f1d4d2c177a4ddd180fabc2cfc75d31e01afa.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c475-bookkeeping-deadline-escalation-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.145",
+          "0.145",
+          "0.145",
+          "0.145"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c475-bookkeeping-deadline-escalation-audit/5f25d91643d978f96936b6cc347f1d4d2c177a4ddd180fabc2cfc75d31e01afa.zip",
+      "source_version": "2026-09-06T17:00:39Z",
+      "sha256": "5f25d91643d978f96936b6cc347f1d4d2c177a4ddd180fabc2cfc75d31e01afa",
+      "size_bytes": 5177947,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c475-bookkeeping-deadline-escalation-audit-b0bf48-v1-sna-zzun"
+    },
+    {
+      "task_id": "code-c478-r-package-release-readiness-audit",
+      "task_name": "code-c478-r-package-release-readiness-audit",
+      "original_filename": "6371a3fd07b364fdf589f7d6de40aa77cfdfb794c8d4b63e85e34571aac813b7.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c478-r-package-release-readiness-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.216667",
+          "0.216667",
+          "1",
+          "0.216667"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c478-r-package-release-readiness-audit/6371a3fd07b364fdf589f7d6de40aa77cfdfb794c8d4b63e85e34571aac813b7.zip",
+      "source_version": "2026-09-06T17:45:25Z",
+      "sha256": "6371a3fd07b364fdf589f7d6de40aa77cfdfb794c8d4b63e85e34571aac813b7",
+      "size_bytes": 6195546,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c478-r-package-release-readiness-audit-773abb-v1-sna-wgak"
+    },
+    {
+      "task_id": "code-c48-secret-rotation-scheduler-repair",
+      "task_name": "code-c48-secret-rotation-scheduler-repair",
+      "original_filename": "eab7a96cda5824ce36e34c6925a44918bb4b40f18b699c50e3908287f332d28b.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c48-secret-rotation-scheduler-repair.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.469231",
+          "0.484615",
+          "0.453846",
+          "1.0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c48-secret-rotation-scheduler-repair/eab7a96cda5824ce36e34c6925a44918bb4b40f18b699c50e3908287f332d28b.zip",
+      "source_version": "2026-09-07T09:37:18Z",
+      "sha256": "eab7a96cda5824ce36e34c6925a44918bb4b40f18b699c50e3908287f332d28b",
+      "size_bytes": 5308703,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c48g2j2-secret-rotation-scheduler-repair-1aed95-v1-sna-edcw"
+    },
+    {
+      "task_id": "code-c486-quality-coach-submission-threshold-audit",
+      "task_name": "code-c486-quality-coach-submission-threshold-audit",
+      "original_filename": "3e131f35e3a53046ec16e2d5e6153d502618ffd3ccf23804d431a1b072bd9e0b.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c486-quality-coach-submission-threshold-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.234375",
+          "0.234375",
+          "0.234375",
+          "0.234375"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c486-quality-coach-submission-threshold-audit/3e131f35e3a53046ec16e2d5e6153d502618ffd3ccf23804d431a1b072bd9e0b.zip",
+      "source_version": "2026-09-07T20:35:21Z",
+      "sha256": "3e131f35e3a53046ec16e2d5e6153d502618ffd3ccf23804d431a1b072bd9e0b",
+      "size_bytes": 5825661,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c486-quality-coach-submission-threshold-aud-46187b-v1-sna-ukdq"
+    },
+    {
+      "task_id": "code-c506-code-walk-annotation-completion-audit",
+      "task_name": "code-c506-code-walk-annotation-completion-audit",
+      "original_filename": "1866230cab295b54562ac68602434d0a0878c2bb3e21f23028c3c491ac0513a9.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c506-code-walk-annotation-completion-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.471181",
+          "1.0",
+          "0.471181",
+          "0.471181"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c506-code-walk-annotation-completion-audit/1866230cab295b54562ac68602434d0a0878c2bb3e21f23028c3c491ac0513a9.zip",
+      "source_version": "2026-09-05T18:34:44Z",
+      "sha256": "1866230cab295b54562ac68602434d0a0878c2bb3e21f23028c3c491ac0513a9",
+      "size_bytes": 3860294,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "hc2-d7819463137a"
+    },
+    {
+      "task_id": "code-c510-prd-feature-launch-readiness-audit",
+      "task_name": "code-c510-prd-feature-launch-readiness-audit",
+      "original_filename": "2f1f5c5486a95defb2405ef8090bccdb362fc5914267e64a773dd3bdd87534d0.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c510-prd-feature-launch-readiness-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.000000",
+          "0.000000",
+          "1.000000",
+          "0.000000"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c510-prd-feature-launch-readiness-audit/2f1f5c5486a95defb2405ef8090bccdb362fc5914267e64a773dd3bdd87534d0.zip",
+      "source_version": "2026-09-05T20:57:17Z",
+      "sha256": "2f1f5c5486a95defb2405ef8090bccdb362fc5914267e64a773dd3bdd87534d0",
+      "size_bytes": 2905867,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-57f01c41611d"
+    },
+    {
+      "task_id": "code-c532-manuscript-catalogue-classification-audit",
+      "task_name": "code-c532-manuscript-catalogue-classification-audit",
+      "original_filename": "c4fb99b5364dfca8b9d9ed0c23d9928b45d9a2eb42348c379b1ad6cd207e1ca5.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c532-manuscript-catalogue-classification-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.234375",
+          "0.234375",
+          "0.234375",
+          "0.234375"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c532-manuscript-catalogue-classification-audit/c4fb99b5364dfca8b9d9ed0c23d9928b45d9a2eb42348c379b1ad6cd207e1ca5.zip",
+      "source_version": "2026-09-06T19:05:23Z",
+      "sha256": "c4fb99b5364dfca8b9d9ed0c23d9928b45d9a2eb42348c379b1ad6cd207e1ca5",
+      "size_bytes": 5595871,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c532-manuscript-catalogue-classification-audit-8e5457-v6-sna-pkwk"
+    },
+    {
+      "task_id": "code-c543-block-texture-asset-audit",
+      "task_name": "code-c543-block-texture-asset-audit",
+      "original_filename": "918f18837f04c24d6da087356e4d830b3b094af8c68b68caa8bb30cb743172c7.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c543-block-texture-asset-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.14",
+          "1",
+          "0.14",
+          "0.14"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c543-block-texture-asset-audit/918f18837f04c24d6da087356e4d830b3b094af8c68b68caa8bb30cb743172c7.zip",
+      "source_version": "2026-09-06T22:11:48Z",
+      "sha256": "918f18837f04c24d6da087356e4d830b3b094af8c68b68caa8bb30cb743172c7",
+      "size_bytes": 6286808,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c543-block-texture-asset-audit-b50ac4-v6-sna-knlw"
+    },
+    {
+      "task_id": "code-c555-lead-source-attribution-audit",
+      "task_name": "code-c555-lead-source-attribution-audit",
+      "original_filename": "b92c3913bcb23b05d40ef505c4e1aa21d4db6a4bf59c7a4f590a6e6ca29ed8e9.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c555-lead-source-attribution-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.15",
+          "1",
+          "0.15",
+          "0.15"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c555-lead-source-attribution-audit/b92c3913bcb23b05d40ef505c4e1aa21d4db6a4bf59c7a4f590a6e6ca29ed8e9.zip",
+      "source_version": "2026-09-06T17:58:25Z",
+      "sha256": "b92c3913bcb23b05d40ef505c4e1aa21d4db6a4bf59c7a4f590a6e6ca29ed8e9",
+      "size_bytes": 6036546,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c555-lead-source-attribution-audit-6da638-v1-sna-uuek"
+    },
+    {
+      "task_id": "code-c563-site-rebuild-component-acceptance-audit",
+      "task_name": "code-c563-site-rebuild-component-acceptance-audit",
+      "original_filename": "e5f20dd1b85e84c901ccae6d48bb9c63ed2e771b3f74e10b94952c56333496da.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c563-site-rebuild-component-acceptance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.216667",
+          "0.216667",
+          "1",
+          "0.216667"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c563-site-rebuild-component-acceptance-audit/e5f20dd1b85e84c901ccae6d48bb9c63ed2e771b3f74e10b94952c56333496da.zip",
+      "source_version": "2026-09-06T18:20:14Z",
+      "sha256": "e5f20dd1b85e84c901ccae6d48bb9c63ed2e771b3f74e10b94952c56333496da",
+      "size_bytes": 5946795,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c563-site-rebuild-component-acceptance-audi-b36ddb-v1-sna-pdvc"
+    },
+    {
+      "task_id": "code-c569-trading-session-window-compliance-audit",
+      "task_name": "code-c569-trading-session-window-compliance-audit",
+      "original_filename": "55a0797d0c996fa40a87076e4de256cefc35e74e31642121069d9409f4f79ffa.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c569-trading-session-window-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1",
+          "0.234375",
+          "0.234375",
+          "0.234375"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c569-trading-session-window-compliance-audit/55a0797d0c996fa40a87076e4de256cefc35e74e31642121069d9409f4f79ffa.zip",
+      "source_version": "2026-09-06T16:32:41Z",
+      "sha256": "55a0797d0c996fa40a87076e4de256cefc35e74e31642121069d9409f4f79ffa",
+      "size_bytes": 6405115,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c569-trading-session-window-compliance-audi-0b52d6-v1-sna-jojb"
+    },
+    {
+      "task_id": "code-c680-agent-task-routing-cost-audit",
+      "task_name": "code-c680-agent-task-routing-cost-audit",
+      "original_filename": "b4b9080d3cdad6afffe60fc1e1f93bac9aaf10fee528337d5648d930e16226ac.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c680-agent-task-routing-cost-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "1"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c680-agent-task-routing-cost-audit/b4b9080d3cdad6afffe60fc1e1f93bac9aaf10fee528337d5648d930e16226ac.zip",
+      "source_version": "2026-09-05T21:45:31Z",
+      "sha256": "b4b9080d3cdad6afffe60fc1e1f93bac9aaf10fee528337d5648d930e16226ac",
+      "size_bytes": 6086500,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-acdac5303283"
+    },
+    {
+      "task_id": "code-c700-hero-asset-production-qc-audit",
+      "task_name": "code-c700-hero-asset-production-qc-audit",
+      "original_filename": "e1b9820a2571b0779c1920b7437cb0e05a14fa938848b7f6e439e383dee19bdc.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c700-hero-asset-production-qc-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c700-hero-asset-production-qc-audit/e1b9820a2571b0779c1920b7437cb0e05a14fa938848b7f6e439e383dee19bdc.zip",
+      "source_version": "2026-09-05T21:43:04Z",
+      "sha256": "e1b9820a2571b0779c1920b7437cb0e05a14fa938848b7f6e439e383dee19bdc",
+      "size_bytes": 4617145,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-0f8083c94976"
+    },
+    {
+      "task_id": "code-c708-video-edit-constraint-compliance-audit",
+      "task_name": "code-c708-video-edit-constraint-compliance-audit",
+      "original_filename": "33b582eb04992fb7e854e1d3c4749cd8182a8b8fac9ed90ac37f41ec9bf8361c.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c708-video-edit-constraint-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c708-video-edit-constraint-compliance-audit/33b582eb04992fb7e854e1d3c4749cd8182a8b8fac9ed90ac37f41ec9bf8361c.zip",
+      "source_version": "2026-09-05T21:48:02Z",
+      "sha256": "33b582eb04992fb7e854e1d3c4749cd8182a8b8fac9ed90ac37f41ec9bf8361c",
+      "size_bytes": 5479351,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-fd0446d4982a"
+    },
+    {
+      "task_id": "code-c726-math-renderer-latency-audit",
+      "task_name": "code-c726-math-renderer-latency-audit",
+      "original_filename": "217cfd3710cbecc6b80bd895b1e09c46aa869ff5f2e371bd7246a0db582ba44a.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c726-math-renderer-latency-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1.0",
+          "0.461667",
+          "0.461667",
+          "0.475833"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "engineering",
+      "original_category": "engineering",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c726-math-renderer-latency-audit/217cfd3710cbecc6b80bd895b1e09c46aa869ff5f2e371bd7246a0db582ba44a.zip",
+      "source_version": "2026-09-08T01:51:37Z",
+      "sha256": "217cfd3710cbecc6b80bd895b1e09c46aa869ff5f2e371bd7246a0db582ba44a",
+      "size_bytes": 3351847,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-code-c726g2fam2-math-renderer-latency-audit-2026-c5b52f-v1-sna-jpoq"
+    },
+    {
+      "task_id": "gen-g1134-week2-slide-outline-format-audit",
+      "task_name": "gen-g1134-week2-slide-outline-format-audit",
+      "original_filename": "2f0247a9ff3cf1e9f8cd2a31da9aaf234e710169e7de6fcd9a23a2cb1548a47c.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1134-week2-slide-outline-format-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.18125",
+          "0.18125",
+          "0.18125",
+          "1"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1134-week2-slide-outline-format-audit/2f0247a9ff3cf1e9f8cd2a31da9aaf234e710169e7de6fcd9a23a2cb1548a47c.zip",
+      "source_version": "2026-09-05T22:38:15Z",
+      "sha256": "2f0247a9ff3cf1e9f8cd2a31da9aaf234e710169e7de6fcd9a23a2cb1548a47c",
+      "size_bytes": 6083685,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-592e6b6166dc"
+    },
+    {
+      "task_id": "gen-g1146-specialty-cv-content-inclusion-audit",
+      "task_name": "gen-g1146-specialty-cv-content-inclusion-audit",
+      "original_filename": "0279459bd605bba3b5f26e2b7dd30c33dffb1e34d4a541147d6c43f4d9d012b2.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1146-specialty-cv-content-inclusion-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.257143",
+          "0.257143",
+          "1",
+          "0.257143"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1146-specialty-cv-content-inclusion-audit/0279459bd605bba3b5f26e2b7dd30c33dffb1e34d4a541147d6c43f4d9d012b2.zip",
+      "source_version": "2026-09-06T18:22:46Z",
+      "sha256": "0279459bd605bba3b5f26e2b7dd30c33dffb1e34d4a541147d6c43f4d9d012b2",
+      "size_bytes": 5893735,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-gen-g1146-specialty-cv-content-inclusion-audit-18276b-v1-sna-zscg"
+    },
+    {
+      "task_id": "gen-g1236-mls-photo-alteration-disclosure-audit",
+      "task_name": "gen-g1236-mls-photo-alteration-disclosure-audit",
+      "original_filename": "84478ad8d714c0ddca0fb3d606496155c0e20ccbf057c32038d64bca46b1a104.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1236-mls-photo-alteration-disclosure-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1236-mls-photo-alteration-disclosure-audit/84478ad8d714c0ddca0fb3d606496155c0e20ccbf057c32038d64bca46b1a104.zip",
+      "source_version": "2026-09-07T13:44:56Z",
+      "sha256": "84478ad8d714c0ddca0fb3d606496155c0e20ccbf057c32038d64bca46b1a104",
+      "size_bytes": 3958912,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-gen-g1236-mls-photo-alteration-disclosure-audit-2f90e5-v3-sna-sbhc"
+    },
+    {
+      "task_id": "gen-g1251-patio-addition-permit-exemption-audit",
+      "task_name": "gen-g1251-patio-addition-permit-exemption-audit",
+      "original_filename": "a5a4945d506acd02adad373848892c347b416b223aee28952f79167f096d1801.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1251-patio-addition-permit-exemption-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.15",
+          "0.15",
+          "0.15",
+          "0.15"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1251-patio-addition-permit-exemption-audit/a5a4945d506acd02adad373848892c347b416b223aee28952f79167f096d1801.zip",
+      "source_version": "2026-09-06T12:10:12Z",
+      "sha256": "a5a4945d506acd02adad373848892c347b416b223aee28952f79167f096d1801",
+      "size_bytes": 5606641,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-gen-g1251-patio-addition-permit-exemption-audit-32d4d5-v1-sna-dcsm"
+    },
+    {
+      "task_id": "gen-g1308-brand-name-candidate-screening-audit",
+      "task_name": "gen-g1308-brand-name-candidate-screening-audit",
+      "original_filename": "e67f607fcebfc59b2ae2bd0334459ffd0aee860bca029fc1a28a3485f17a899e.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1308-brand-name-candidate-screening-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.2",
+          "0.2",
+          "0.2",
+          "0.2"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1308-brand-name-candidate-screening-audit/e67f607fcebfc59b2ae2bd0334459ffd0aee860bca029fc1a28a3485f17a899e.zip",
+      "source_version": "2026-09-06T12:48:24Z",
+      "sha256": "e67f607fcebfc59b2ae2bd0334459ffd0aee860bca029fc1a28a3485f17a899e",
+      "size_bytes": 4375679,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-gen-g1308-brand-name-candidate-screening-audit-a910ce-v1-sna-nvoq"
+    },
+    {
+      "task_id": "gen-g169-social-disclosure-sponsored-audit",
+      "task_name": "gen-g169-social-disclosure-sponsored-audit",
+      "original_filename": "cd809d80e148e618902ddf01194aed91d81fa70ad21bed973700e5dac173369d.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g169-social-disclosure-sponsored-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.449893",
+          "0.449893",
+          "0.449893",
+          "0.391679"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g169-social-disclosure-sponsored-audit/cd809d80e148e618902ddf01194aed91d81fa70ad21bed973700e5dac173369d.zip",
+      "source_version": "2026-09-05T18:35:06Z",
+      "sha256": "cd809d80e148e618902ddf01194aed91d81fa70ad21bed973700e5dac173369d",
+      "size_bytes": 3472711,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "hc2-c71c3f36f0b7"
+    },
+    {
+      "task_id": "gen-g258-vocabulary-tracker-audit",
+      "task_name": "gen-g258-vocabulary-tracker-audit",
+      "original_filename": "3cbf2d539ccfb312f2ddad9c22472766008fc1bb2eb411e4e66e445bfe0619b1.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g258-vocabulary-tracker-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g258-vocabulary-tracker-audit/3cbf2d539ccfb312f2ddad9c22472766008fc1bb2eb411e4e66e445bfe0619b1.zip",
+      "source_version": "2026-09-05T23:37:15Z",
+      "sha256": "2c249b135ff6a8c60acc3fe5aa7294d169beb35af36a4c2225a861147243f7ee",
+      "size_bytes": 2994634,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-c9b055f2cbeb",
+      "original_source_sha256": "3cbf2d539ccfb312f2ddad9c22472766008fc1bb2eb411e4e66e445bfe0619b1",
+      "original_source_size_bytes": 3002947
+    },
+    {
+      "task_id": "gen-g300-nfl-depth-chart-audit",
+      "task_name": "gen-g300-nfl-depth-chart-audit",
+      "original_filename": "97464980797612cab6baa57f344c8dc054c2d88faf2ed3fda1bc86cc1a142c29.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g300-nfl-depth-chart-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1",
+          "0.15",
+          "0.15",
+          "0.15"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g300-nfl-depth-chart-audit/97464980797612cab6baa57f344c8dc054c2d88faf2ed3fda1bc86cc1a142c29.zip",
+      "source_version": "2026-09-06T12:41:50Z",
+      "sha256": "97464980797612cab6baa57f344c8dc054c2d88faf2ed3fda1bc86cc1a142c29",
+      "size_bytes": 5424348,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-gen-g300-nfl-depth-chart-audit-2110dd-v1-sna-xqcx"
+    },
+    {
+      "task_id": "gen-g455-proceedings-style-sheet-audit-m-v1",
+      "task_name": "gen-g455-proceedings-style-sheet-audit",
+      "original_filename": "07630e046b6aa111d19fe7d0ddc62ab3bb09d48ffd39cfac94959eb659bc826e.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g455-proceedings-style-sheet-audit-m-v1.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "1",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g455-proceedings-style-sheet-audit-m-v1/07630e046b6aa111d19fe7d0ddc62ab3bb09d48ffd39cfac94959eb659bc826e.zip",
+      "source_version": "2026-09-06T04:26:36Z",
+      "sha256": "07630e046b6aa111d19fe7d0ddc62ab3bb09d48ffd39cfac94959eb659bc826e",
+      "size_bytes": 3180041,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-c6015c3a6011"
+    },
+    {
+      "task_id": "gen-g568-pricing-guide-localization-audit",
+      "task_name": "gen-g568-pricing-guide-localization-audit",
+      "original_filename": "ea7e36b76f4a0d4da5b91ee8134f9f3adde3711aaa7e163ce39da6c24ebb52a4.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g568-pricing-guide-localization-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g568-pricing-guide-localization-audit/ea7e36b76f4a0d4da5b91ee8134f9f3adde3711aaa7e163ce39da6c24ebb52a4.zip",
+      "source_version": "2026-09-05T18:51:46Z",
+      "sha256": "ea7e36b76f4a0d4da5b91ee8134f9f3adde3711aaa7e163ce39da6c24ebb52a4",
+      "size_bytes": 5470297,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "hc2-9c0119e58311"
+    },
+    {
+      "task_id": "gen-g711-tree-service-invoice-rate-audit",
+      "task_name": "gen-g711-tree-service-invoice-rate-audit",
+      "original_filename": "068ab87c888e6be4b071cfa0901bbad1f85469f98de2c83a6bdd2533cb02cc50.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g711-tree-service-invoice-rate-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "1",
+          "0",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g711-tree-service-invoice-rate-audit/068ab87c888e6be4b071cfa0901bbad1f85469f98de2c83a6bdd2533cb02cc50.zip",
+      "source_version": "2026-09-08T07:47:32Z",
+      "sha256": "068ab87c888e6be4b071cfa0901bbad1f85469f98de2c83a6bdd2533cb02cc50",
+      "size_bytes": 6319834,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-pipeline-evaluation-c2c9a93e899f476e"
+    },
+    {
+      "task_id": "gen-g728-export-gift-customs-audit",
+      "task_name": "gen-g728-export-gift-customs-audit",
+      "original_filename": "bc30afdeda240c94b1852fa8820b645f2220b4a896117b656a249153fc849cab.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g728-export-gift-customs-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g728-export-gift-customs-audit/bc30afdeda240c94b1852fa8820b645f2220b4a896117b656a249153fc849cab.zip",
+      "source_version": "2026-09-05T18:51:51Z",
+      "sha256": "bc30afdeda240c94b1852fa8820b645f2220b4a896117b656a249153fc849cab",
+      "size_bytes": 3751896,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "hc2-ad1edbef7246"
+    },
+    {
+      "task_id": "gen-g734-cms-publish-readiness-audit-submit",
+      "task_name": "gen-g734-cms-publish-readiness-audit",
+      "original_filename": "e4b00b575703a2e45b4fecccc36a33b665d2d65eec0062455f0aef3addb86be0.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g734-cms-publish-readiness-audit-submit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "1",
+          "0",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g734-cms-publish-readiness-audit-submit/e4b00b575703a2e45b4fecccc36a33b665d2d65eec0062455f0aef3addb86be0.zip",
+      "source_version": "2026-09-05T23:28:16Z",
+      "sha256": "e4b00b575703a2e45b4fecccc36a33b665d2d65eec0062455f0aef3addb86be0",
+      "size_bytes": 4385657,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-16534838fdce"
+    },
+    {
+      "task_id": "gen-g789-dissertation-formatting-spec-audit",
+      "task_name": "gen-g789-dissertation-formatting-spec-audit",
+      "original_filename": "16f1bcc32bdb443b2da083d67fe149d4326795c71b86db09059059095ac58424.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g789-dissertation-formatting-spec-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.0",
+          "0.0",
+          "1.0",
+          "0.0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g789-dissertation-formatting-spec-audit/16f1bcc32bdb443b2da083d67fe149d4326795c71b86db09059059095ac58424.zip",
+      "source_version": "2026-09-06T01:27:43Z",
+      "sha256": "16f1bcc32bdb443b2da083d67fe149d4326795c71b86db09059059095ac58424",
+      "size_bytes": 4258894,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-bb7a252e9861"
+    },
+    {
+      "task_id": "gen-g799-research-conference-program-slot-audit",
+      "task_name": "gen-g799-research-conference-program-slot-audit",
+      "original_filename": "4a9761291d0ac675ef0b831b276a5b9e1d253a04e8f1b6a0050858990a26b4fe.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g799-research-conference-program-slot-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "1",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g799-research-conference-program-slot-audit/4a9761291d0ac675ef0b831b276a5b9e1d253a04e8f1b6a0050858990a26b4fe.zip",
+      "source_version": "2026-09-06T06:31:55Z",
+      "sha256": "4a9761291d0ac675ef0b831b276a5b9e1d253a04e8f1b6a0050858990a26b4fe",
+      "size_bytes": 4408287,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-7ffaceee7886"
+    },
+    {
+      "task_id": "gen-g818-vendor-recipe-card-completeness-audit",
+      "task_name": "gen-g818-vendor-recipe-card-completeness-audit",
+      "original_filename": "7b049383af54abb08a833c2e463a6ee16b41aa3c1a2377c7983337ae7961b238.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g818-vendor-recipe-card-completeness-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g818-vendor-recipe-card-completeness-audit/7b049383af54abb08a833c2e463a6ee16b41aa3c1a2377c7983337ae7961b238.zip",
+      "source_version": "2026-09-06T01:31:24Z",
+      "sha256": "7b049383af54abb08a833c2e463a6ee16b41aa3c1a2377c7983337ae7961b238",
+      "size_bytes": 2666419,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-f8d7fd3cde4c"
+    },
+    {
+      "task_id": "gen-g827-correspondence-summary-redaction-audit",
+      "task_name": "gen-g827-correspondence-summary-redaction-audit",
+      "original_filename": "13eb4f46e83e037e25c76749a67180c77845553828f89f80b2b3c122e105b37d.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g827-correspondence-summary-redaction-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "1",
+          "0",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g827-correspondence-summary-redaction-audit/13eb4f46e83e037e25c76749a67180c77845553828f89f80b2b3c122e105b37d.zip",
+      "source_version": "2026-09-06T00:30:52Z",
+      "sha256": "13eb4f46e83e037e25c76749a67180c77845553828f89f80b2b3c122e105b37d",
+      "size_bytes": 3794459,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-8caea3d64082"
+    },
+    {
+      "task_id": "gen-g833-heritage-food-documentary-clearance-audit",
+      "task_name": "gen-g833-heritage-food-documentary-clearance-audit",
+      "original_filename": "1bc0d0d3723d5af4f60b5dcc7403ba84680965d536872bb7012264de1da3162d.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g833-heritage-food-documentary-clearance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "1"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g833-heritage-food-documentary-clearance-audit/1bc0d0d3723d5af4f60b5dcc7403ba84680965d536872bb7012264de1da3162d.zip",
+      "source_version": "2026-09-05T23:33:37Z",
+      "sha256": "1bc0d0d3723d5af4f60b5dcc7403ba84680965d536872bb7012264de1da3162d",
+      "size_bytes": 4381417,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-dc15040a622d"
+    },
+    {
+      "task_id": "gen-g871-personal-brand-caption-style-audit",
+      "task_name": "gen-g871-personal-brand-caption-style-audit",
+      "original_filename": "213404364259fe206f4dfe28c2eda090da27d0e4cb26b8c7bdffd673d690a59b.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g871-personal-brand-caption-style-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "1"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g871-personal-brand-caption-style-audit/213404364259fe206f4dfe28c2eda090da27d0e4cb26b8c7bdffd673d690a59b.zip",
+      "source_version": "2026-09-07T13:32:51Z",
+      "sha256": "213404364259fe206f4dfe28c2eda090da27d0e4cb26b8c7bdffd673d690a59b",
+      "size_bytes": 4826522,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-gen-g871-personal-brand-caption-style-audit-a03e8b-v5-sna-btdm"
+    },
+    {
+      "task_id": "gen-g878-employee-bio-directory-style-audit",
+      "task_name": "gen-g878-employee-bio-directory-style-audit",
+      "original_filename": "14a08e92fe93824c0e4a61e096145b1d8d2f70489c14d0b44692b1d428326577.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g878-employee-bio-directory-style-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "1"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g878-employee-bio-directory-style-audit/14a08e92fe93824c0e4a61e096145b1d8d2f70489c14d0b44692b1d428326577.zip",
+      "source_version": "2026-09-06T01:50:18Z",
+      "sha256": "14a08e92fe93824c0e4a61e096145b1d8d2f70489c14d0b44692b1d428326577",
+      "size_bytes": 2916568,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-fcd935d5e9f5"
+    },
+    {
+      "task_id": "gen-g885-embassy-conference-signage-protocol-audit",
+      "task_name": "gen-g885-embassy-conference-signage-protocol-audit",
+      "original_filename": "e167f355274cce10c835253c599c55e1a6a2adbdce1d8d31a55adafc6c68a057.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g885-embassy-conference-signage-protocol-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "1",
+          "1",
+          "1"
+        ],
+        "successes": 3,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g885-embassy-conference-signage-protocol-audit/e167f355274cce10c835253c599c55e1a6a2adbdce1d8d31a55adafc6c68a057.zip",
+      "source_version": "2026-09-06T01:57:48Z",
+      "sha256": "e167f355274cce10c835253c599c55e1a6a2adbdce1d8d31a55adafc6c68a057",
+      "size_bytes": 4691032,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-60da58420991"
+    },
+    {
+      "task_id": "gen-g89-emission-inventory-recompute",
+      "task_name": "gen-g89-emission-inventory-recompute",
+      "original_filename": "8383c0d2f3ca1976714925d6bcb00191cbf68ada66433687d36a9e778dbf583c.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g89-emission-inventory-recompute.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "1",
+          "1",
+          "1"
+        ],
+        "successes": 3,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g89-emission-inventory-recompute/8383c0d2f3ca1976714925d6bcb00191cbf68ada66433687d36a9e778dbf583c.zip",
+      "source_version": "2026-09-05T18:52:16Z",
+      "sha256": "8383c0d2f3ca1976714925d6bcb00191cbf68ada66433687d36a9e778dbf583c",
+      "size_bytes": 3853016,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "hc2-60782263f2c7"
+    },
+    {
+      "task_id": "gen-g891-picture-book-character-consistency-audit",
+      "task_name": "gen-g891-picture-book-character-consistency-audit",
+      "original_filename": "cd48b627e67d58d4fd44c39a0f596becfd676fede983e8e9718cd13bfdb85bac.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g891-picture-book-character-consistency-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g891-picture-book-character-consistency-audit/cd48b627e67d58d4fd44c39a0f596becfd676fede983e8e9718cd13bfdb85bac.zip",
+      "source_version": "2026-09-06T01:52:06Z",
+      "sha256": "cd48b627e67d58d4fd44c39a0f596becfd676fede983e8e9718cd13bfdb85bac",
+      "size_bytes": 5213770,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-b6fd5dbd7dc1"
+    },
+    {
+      "task_id": "gen-g895-portrait-retouch-order-compliance-audit",
+      "task_name": "gen-g895-portrait-retouch-order-compliance-audit",
+      "original_filename": "183438ca400aa5e36ec2467600f9a20aad0663d398d769ccb44dcbdf5dcfc93d.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g895-portrait-retouch-order-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "1"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g895-portrait-retouch-order-compliance-audit/183438ca400aa5e36ec2467600f9a20aad0663d398d769ccb44dcbdf5dcfc93d.zip",
+      "source_version": "2026-09-05T18:55:28Z",
+      "sha256": "183438ca400aa5e36ec2467600f9a20aad0663d398d769ccb44dcbdf5dcfc93d",
+      "size_bytes": 18022988,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "hc2-16132c8ee2e4"
+    },
+    {
+      "task_id": "gen-g91-hotel-rate-parity-audit",
+      "task_name": "gen-g91-hotel-rate-parity-audit",
+      "original_filename": "bd0afc6949f5c49dd2068ad45df367a95d9c40a574c16c487a174b74f4cb61cc.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g91-hotel-rate-parity-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.460000",
+          "0.460000",
+          "0.460000",
+          "0.493333"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g91-hotel-rate-parity-audit/bd0afc6949f5c49dd2068ad45df367a95d9c40a574c16c487a174b74f4cb61cc.zip",
+      "source_version": "2026-09-05T18:55:54Z",
+      "sha256": "bd0afc6949f5c49dd2068ad45df367a95d9c40a574c16c487a174b74f4cb61cc",
+      "size_bytes": 5841081,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "hc2-f9a122f0c510"
+    },
+    {
+      "task_id": "gen-g918-fop-lodge-campaign-badge-title-audit",
+      "task_name": "gen-g918-fop-lodge-campaign-badge-title-audit",
+      "original_filename": "77df8449dc916d99dc9eb1b1c56f15e1dc215425212f64ccab7a31f465989947.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g918-fop-lodge-campaign-badge-title-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g918-fop-lodge-campaign-badge-title-audit/77df8449dc916d99dc9eb1b1c56f15e1dc215425212f64ccab7a31f465989947.zip",
+      "source_version": "2026-09-06T02:19:44Z",
+      "sha256": "77df8449dc916d99dc9eb1b1c56f15e1dc215425212f64ccab7a31f465989947",
+      "size_bytes": 4158480,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-64be23ca8bad"
+    },
+    {
+      "task_id": "gen-g942-video-essay-title-card-motif-audit",
+      "task_name": "gen-g942-video-essay-title-card-motif-audit",
+      "original_filename": "7ed4497853ddd829b5b750974e48323a4379adfd97c1173be6154eee44f0b7c9.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g942-video-essay-title-card-motif-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1",
+          "1",
+          "1",
+          "0"
+        ],
+        "successes": 3,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g942-video-essay-title-card-motif-audit/7ed4497853ddd829b5b750974e48323a4379adfd97c1173be6154eee44f0b7c9.zip",
+      "source_version": "2026-09-06T00:03:20Z",
+      "sha256": "7ed4497853ddd829b5b750974e48323a4379adfd97c1173be6154eee44f0b7c9",
+      "size_bytes": 6394360,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-2a364ffd0624"
+    },
+    {
+      "task_id": "gen-g959-cover-title-lockup-revision-signoff-audit",
+      "task_name": "gen-g959-cover-title-lockup-revision-signoff-audit",
+      "original_filename": "57c12739effe0b5af98ae5a008f9f2a4a531e59f5174a9f3a721be161eda150c.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g959-cover-title-lockup-revision-signoff-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "1",
+          "1",
+          "1"
+        ],
+        "successes": 3,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g959-cover-title-lockup-revision-signoff-audit/57c12739effe0b5af98ae5a008f9f2a4a531e59f5174a9f3a721be161eda150c.zip",
+      "source_version": "2026-09-05T18:54:01Z",
+      "sha256": "57c12739effe0b5af98ae5a008f9f2a4a531e59f5174a9f3a721be161eda150c",
+      "size_bytes": 4616696,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "hc2-02ed2da8c85e"
+    },
+    {
+      "task_id": "gen-g963-charity-booth-rack-safety-compliance-audit",
+      "task_name": "gen-g963-charity-booth-rack-safety-compliance-audit",
+      "original_filename": "5ca80fc0e3cc47464e00810512b9f7effaea06fe1ea42aac118a8e9ae8889106.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g963-charity-booth-rack-safety-compliance-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1",
+          "1",
+          "0",
+          "1"
+        ],
+        "successes": 3,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g963-charity-booth-rack-safety-compliance-audit/5ca80fc0e3cc47464e00810512b9f7effaea06fe1ea42aac118a8e9ae8889106.zip",
+      "source_version": "2026-09-06T06:39:38Z",
+      "sha256": "5ca80fc0e3cc47464e00810512b9f7effaea06fe1ea42aac118a8e9ae8889106",
+      "size_bytes": 3654616,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-cf00721f95b7"
+    },
+    {
+      "task_id": "gen-g968-concept-vehicle-render-badge-compliance-audit",
+      "task_name": "gen-g968-concept-vehicle-render-badge-compliance-audit",
+      "original_filename": "0d86f3281d6b6a9360065fecc5d6fa5062583d73ff31f09aa1c0d3296bec7d81.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g968-concept-vehicle-render-badge-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "1",
+          "0",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g968-concept-vehicle-render-badge-compliance-audit/0d86f3281d6b6a9360065fecc5d6fa5062583d73ff31f09aa1c0d3296bec7d81.zip",
+      "source_version": "2026-09-06T03:22:42Z",
+      "sha256": "0d86f3281d6b6a9360065fecc5d6fa5062583d73ff31f09aa1c0d3296bec7d81",
+      "size_bytes": 3351213,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-5591d387993c"
+    },
+    {
+      "task_id": "gen-g974-kdp-cover-proof-content-audit",
+      "task_name": "gen-g974-kdp-cover-proof-content-audit",
+      "original_filename": "ec0039ba9d6938738ea8aeb35aa23add6381f45024547863d675042034eb104a.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g974-kdp-cover-proof-content-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g974-kdp-cover-proof-content-audit/ec0039ba9d6938738ea8aeb35aa23add6381f45024547863d675042034eb104a.zip",
+      "source_version": "2026-09-06T02:33:20Z",
+      "sha256": "ec0039ba9d6938738ea8aeb35aa23add6381f45024547863d675042034eb104a",
+      "size_bytes": 11056308,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-36acc32f6ded"
+    },
+    {
+      "task_id": "gen-g980-greenhouse-as-built-compliance-audit-v3-final-staging-20260903",
+      "task_name": "gen-g980-greenhouse-as-built-compliance-audit",
+      "original_filename": "ea9e346be90eb280a02413ad65c234124f69b713e11d45f5d076faf5860b918a.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g980-greenhouse-as-built-compliance-audit-v3-final-staging-20260903.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "1",
+          "0",
+          "1",
+          "1"
+        ],
+        "successes": 3,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g980-greenhouse-as-built-compliance-audit-v3-final-staging-20260903/ea9e346be90eb280a02413ad65c234124f69b713e11d45f5d076faf5860b918a.zip",
+      "source_version": "2026-09-05T18:52:25Z",
+      "sha256": "ea9e346be90eb280a02413ad65c234124f69b713e11d45f5d076faf5860b918a",
+      "size_bytes": 8020572,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "hc2-fe61653cff07"
+    },
+    {
+      "task_id": "harbor-single-task-3kvz7phz",
+      "task_name": "gen-g446-tour-booking-recognition-audit",
+      "original_filename": "b31d68fc20bb685e1463134a3d8a02f5bc9906fb1f45750045f5b8b0a24497dd.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/harbor-single-task-3kvz7phz.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.9913793103",
+          "0.9655172412",
+          "1.0",
+          "0.9655172412"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-3kvz7phz/b31d68fc20bb685e1463134a3d8a02f5bc9906fb1f45750045f5b8b0a24497dd.zip",
+      "source_version": "2026-09-08T10:35:48Z",
+      "sha256": "b31d68fc20bb685e1463134a3d8a02f5bc9906fb1f45750045f5b8b0a24497dd",
+      "size_bytes": 6137284,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-gen-g446-tour-booking-recognition-audit-c5ca78-v14-sna-aqsi"
+    },
+    {
+      "task_id": "harbor-single-task-7guod6fj",
+      "task_name": "gen-g265-film-budget-audit",
+      "original_filename": "5b0fa96bb29929e8807143036661dd1d77b45a4012caf1a9db8dfd9e915721e4.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/harbor-single-task-7guod6fj.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "1",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-7guod6fj/5b0fa96bb29929e8807143036661dd1d77b45a4012caf1a9db8dfd9e915721e4.zip",
+      "source_version": "2026-09-08T01:01:01Z",
+      "sha256": "5b0fa96bb29929e8807143036661dd1d77b45a4012caf1a9db8dfd9e915721e4",
+      "size_bytes": 8308440,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-gen-g265-film-budget-audit-Transactional-Fairnes-6e392a-v1-sna-xhik"
+    },
+    {
+      "task_id": "harbor-single-task-_d7ve4og",
+      "task_name": "gen-g263-bdo-gear-audit",
+      "original_filename": "1f5b5c6e2e479bf47ee0e58af511707ffb98e0bed9fd289457d1f6f542a2959c.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/harbor-single-task-_d7ve4og.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "0"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-_d7ve4og/1f5b5c6e2e479bf47ee0e58af511707ffb98e0bed9fd289457d1f6f542a2959c.zip",
+      "source_version": "2026-09-08T05:42:53Z",
+      "sha256": "1f5b5c6e2e479bf47ee0e58af511707ffb98e0bed9fd289457d1f6f542a2959c",
+      "size_bytes": 1798870,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-gen-g263-bdo-gear-audit-da2627-v3-sna-mdoz"
+    },
+    {
+      "task_id": "harbor-single-task-n86vnrnp",
+      "task_name": "gen-g492-accessory-kit-completeness-audit",
+      "original_filename": "7e9600248762c4b06139a299a2aa98cff4ca0611288c63f6350cf7022bf02022.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/harbor-single-task-n86vnrnp.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "0",
+          "1"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-n86vnrnp/7e9600248762c4b06139a299a2aa98cff4ca0611288c63f6350cf7022bf02022.zip",
+      "source_version": "2026-09-06T03:44:28Z",
+      "sha256": "7e9600248762c4b06139a299a2aa98cff4ca0611288c63f6350cf7022bf02022",
+      "size_bytes": 3095357,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-312f27a49b63"
+    },
+    {
+      "task_id": "harbor-single-task-uptjublj",
+      "task_name": "gen-g777-thesis-submission-compliance-audit",
+      "original_filename": "80fce56985e681ff9cdcd85148dc9aba04dd9d224072b3f8a3541cc18bc0b2d9.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/harbor-single-task-uptjublj.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0",
+          "0",
+          "1",
+          "0"
+        ],
+        "successes": 1,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "other",
+      "original_category": "other",
+      "is_connector": false,
+      "connector_services": [],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-uptjublj/80fce56985e681ff9cdcd85148dc9aba04dd9d224072b3f8a3541cc18bc0b2d9.zip",
+      "source_version": "2026-09-05T22:38:47Z",
+      "sha256": "80fce56985e681ff9cdcd85148dc9aba04dd9d224072b3f8a3541cc18bc0b2d9",
+      "size_bytes": 5118641,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "tb2-c3a498702abf"
+    },
+    {
+      "task_id": "ideas-board-ranking-and-duplicate-pages",
+      "task_name": "ideas-board-ranking-and-duplicate-pages",
+      "original_filename": "0ce1c8bcbf6632b4dbce354c4bb42a2aecfe5809fbaec656a3c2272bd2279cf7.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/ideas-board-ranking-and-duplicate-pages.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "rewards": [
+          "0.3918",
+          "0.3918",
+          "0.3918",
+          "0.3918"
+        ],
+        "successes": 0,
+        "success_definition": "reward exactly 1.0"
+      },
+      "category": "connector",
+      "original_category": "unnamed",
+      "is_connector": true,
+      "connector_services": [
+        "notion-gym"
+      ],
+      "connector_provenance": {
+        "basis": "availability-pool.csv and task.toml structural validation",
+        "value": "notion-gym"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ideas-board-ranking-and-duplicate-pages/0ce1c8bcbf6632b4dbce354c4bb42a2aecfe5809fbaec656a3c2272bd2279cf7.zip",
+      "source_version": "2026-09-06T20:42:13Z",
+      "sha256": "0ce1c8bcbf6632b4dbce354c4bb42a2aecfe5809fbaec656a3c2272bd2279cf7",
+      "size_bytes": 11372501,
+      "reported_qc_verdict": "PASS",
+      "batch_id": "auto-ideas-board-ranking-and-duplicate-pages-v48-fina-62ac80-v1-sna-tvvn"
+    }
+  ]
+}

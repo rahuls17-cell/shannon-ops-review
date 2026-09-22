@@ -1,0 +1,2645 @@
+{
+  "delivery": "task-delivery-20260910-180348",
+  "generated_at": "2026-09-10T18:03:48.151111+05:30",
+  "source": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/",
+  "task_count": 60,
+  "summary": {
+    "difficulty": {
+      "easier": 12,
+      "harder": 48
+    },
+    "execution_type": {
+      "connector": 12,
+      "non-connector": 48
+    },
+    "category": {
+      "engineering": 18,
+      "health": 9,
+      "legal": 3,
+      "other": 18
+    },
+    "difficulty_policy": "3 of 4 passes -> easier; 0, 1 or 2 -> harder; 4 -> excluded",
+    "success_definition": "a run passes only at a reward of exactly 1.0"
+  },
+  "tasks": [
+    {
+      "task_id": "a-fortnight-nobody-was-watching",
+      "task_name": "harbor/a-fortnight-nobody-was-watching",
+      "original_filename": "cf6baa0ef6ec6b3ee9d31063decf90e787520d0f738e0ff21fa69d841f419329.zip",
+      "original_folder_name": "a-fortnight-nobody-was-watching",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/a-fortnight-nobody-was-watching.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.8462,
+          1.0,
+          1.0,
+          0.8462
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "linear-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:845023f334b38a10e09e692e7fd5f5493ee6e59d0d5b200cd461b4da71ca3284",
+          "dataset": "synthetic",
+          "dataset_provenance": "declared by the task author"
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/a-fortnight-nobody-was-watching/cf6baa0ef6ec6b3ee9d31063decf90e787520d0f738e0ff21fa69d841f419329.zip",
+      "source_version": "2026-09-07T15:42:01Z",
+      "sha256": "b90cdebe1853d35c83c1821080c77a7c25c05df88d51af0dda208009e0fbe0da",
+      "size_bytes": 5133855,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-a-fortnight-nobody-was-watching-final-1e2b17-v1-sna-crhl",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "image_pinning"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "appointment-backlog-stub-page-sweep",
+      "task_name": "harbor/appointment-backlog-stub-page-sweep",
+      "original_filename": "0a4e0a69b0b6f7a2b09926fff7a6c1a22973da5c306c92b2a51e63767ab29869.zip",
+      "original_folder_name": "appointment-backlog-stub-page-sweep",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/appointment-backlog-stub-page-sweep.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.9474,
+          1.0,
+          0.9474,
+          0.7895
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "notion-gym",
+          "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+          "dataset": "real",
+          "dataset_provenance": "declared during finalization from the gym image identity"
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/appointment-backlog-stub-page-sweep/0a4e0a69b0b6f7a2b09926fff7a6c1a22973da5c306c92b2a51e63767ab29869.zip",
+      "source_version": "2026-09-05T17:45:19Z",
+      "sha256": "99d4df230029832c548637a0183c48647b0d55328cf51118c8c1a9f63646243e",
+      "size_bytes": 7582181,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "hc2-07bc867a2555",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "dataset_declaration",
+          "image_pinning"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "atlanta-itinerary-settlement-standing-ranked",
+      "task_name": "harbor/atlanta-itinerary-settlement-standing-ranked",
+      "original_filename": "1566cb1991992c0c4dd153d013b1fcbe23018680855b190d16a134226a1b9c9a.zip",
+      "original_folder_name": "atlanta-itinerary-settlement-standing-ranked",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/atlanta-itinerary-settlement-standing-ranked.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.9,
+          0.9,
+          0.9
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "slack-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:926ccf1081606a438d86d861dda44e157c89396ee030f4e37aa771059c70b90c",
+          "dataset": "real",
+          "dataset_provenance": "declared by the task author"
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/atlanta-itinerary-settlement-standing-ranked/1566cb1991992c0c4dd153d013b1fcbe23018680855b190d16a134226a1b9c9a.zip",
+      "source_version": "2026-09-05T18:33:12Z",
+      "sha256": "1566cb1991992c0c4dd153d013b1fcbe23018680855b190d16a134226a1b9c9a",
+      "size_bytes": 3034550,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "hc2-e66ec7ed2cdc",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "ephyra-slow-lane-delayed-merge-audit",
+      "task_name": "harbor/ephyra-slow-lane-delayed-merge-audit",
+      "original_filename": "5fc6c2b3386806c2c06ff94a2e697326d3fb43736e9ba1cbd4c3579cfc93b6a2.zip",
+      "original_folder_name": "harbor-single-task-t8rwovcc",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/ephyra-slow-lane-delayed-merge-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.8333,
+          0.8333,
+          1.0,
+          0.8333
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "github-gym",
+          "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+          "dataset": "real",
+          "dataset_provenance": "declared by the task author"
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-t8rwovcc/5fc6c2b3386806c2c06ff94a2e697326d3fb43736e9ba1cbd4c3579cfc93b6a2.zip",
+      "source_version": "2026-09-06T03:58:16Z",
+      "sha256": "e2673a555ab6031b0493c31b1a81825dd76c408eb3c625356d3e55634f384f89",
+      "size_bytes": 12377055,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-882e32983e76",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "dataset_declaration",
+          "folder_rename",
+          "image_pinning"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "how-much-of-my-drive-is-link-only-realdocoutput",
+      "task_name": "harbor/how-much-of-my-drive-is-link-only-realdocoutput",
+      "original_filename": "6fcf965e24537003cec0310443de01e94208576b7109dc46a21d16698a5d50bc.zip",
+      "original_folder_name": "how-much-of-my-drive-is-link-only-realdocoutput",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/how-much-of-my-drive-is-link-only-realdocoutput.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.2,
+          1.0,
+          0.8,
+          1.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "google-drive-gym",
+          "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+          "dataset": "real",
+          "dataset_provenance": "declared during finalization from the gym image identity and the package setting GYM_DATASET=real"
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-much-of-my-drive-is-link-only-realdocoutput/6fcf965e24537003cec0310443de01e94208576b7109dc46a21d16698a5d50bc.zip",
+      "source_version": "2026-09-05T21:01:58Z",
+      "sha256": "ce72c1afac2eb14416a87e7fafdadd3c5e80a3d2a2212fbe4810852455fe66a4",
+      "size_bytes": 4806063,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-eef5b342c0b0",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "dataset_declaration",
+          "image_pinning",
+          "readme_generation"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "one-list-out-of-eleven-tabs",
+      "task_name": "harbor/one-list-out-of-eleven-tabs",
+      "original_filename": "92c03a5a51b39154645a39dedd997f8aedd8ca31b08ac06fdd225d9c550533e7.zip",
+      "original_folder_name": "one-list-out-of-eleven-tabs",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/one-list-out-of-eleven-tabs.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.037,
+          0.2593,
+          0.4074,
+          1.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "google-drive-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:1cb77ee036676d6789a086919dfa3d1023df4f4b718d2f8fd443663ee2d87db4",
+          "dataset": null,
+          "dataset_provenance": null
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/one-list-out-of-eleven-tabs/92c03a5a51b39154645a39dedd997f8aedd8ca31b08ac06fdd225d9c550533e7.zip",
+      "source_version": "2026-09-06T03:20:38Z",
+      "sha256": "92c03a5a51b39154645a39dedd997f8aedd8ca31b08ac06fdd225d9c550533e7",
+      "size_bytes": 5764916,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-fe5f637957a7",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "opened-files-migration-volume-signoff-realdocoutput",
+      "task_name": "harbor/opened-files-migration-volume-signoff-realdocoutput",
+      "original_filename": "56fdfe0c4a6539950264046dc544bad00d82f66a582aca355d0c20b82d594bee.zip",
+      "original_folder_name": "opened-files-migration-volume-signoff-realdocoutput",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/opened-files-migration-volume-signoff-realdocoutput.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.2,
+          1.0,
+          0.2,
+          1.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "google-drive-gym",
+          "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+          "dataset": "real",
+          "dataset_provenance": "declared during finalization from the gym image identity and the package setting GYM_DATASET=real"
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/opened-files-migration-volume-signoff-realdocoutput/56fdfe0c4a6539950264046dc544bad00d82f66a582aca355d0c20b82d594bee.zip",
+      "source_version": "2026-09-05T20:11:28Z",
+      "sha256": "ada9fd44481fa1a585713d76278d39b7f6495c7740422881c972e45e746c489c",
+      "size_bytes": 4994676,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-759676008bb1",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "dataset_declaration",
+          "image_pinning",
+          "stale_qc_claims"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "outside-voices-in-the-locked-sales-drive",
+      "task_name": "harbor/outside-voices-in-the-locked-sales-drive",
+      "original_filename": "c4bb2a1dbb1afa62742179d546e8abfd4a41434b89cdb1b530a909a15af3c9cc.zip",
+      "original_folder_name": "outside-voices-in-the-locked-sales-drive",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/outside-voices-in-the-locked-sales-drive.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          1.0,
+          0.8,
+          0.7333
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "google-drive-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b35727bc19eb444896e1b1cbbc81f8f8f6c54c75ff3e1d6e7efe0b89180b9c36",
+          "dataset": null,
+          "dataset_provenance": null
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/outside-voices-in-the-locked-sales-drive/c4bb2a1dbb1afa62742179d546e8abfd4a41434b89cdb1b530a909a15af3c9cc.zip",
+      "source_version": "2026-09-08T11:14:13Z",
+      "sha256": "c4bb2a1dbb1afa62742179d546e8abfd4a41434b89cdb1b530a909a15af3c9cc",
+      "size_bytes": 7762088,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-outside-voices-in-the-locked-sales-drive-2026090-d1a3e8-v1-sna-smil",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "stored-version-retention-readout",
+      "task_name": "harbor/stored-version-retention-readout",
+      "original_filename": "7aad93f7e5d09a3229054b560cfc5914404962571e0aca594fd5eb21f30bc184.zip",
+      "original_folder_name": "stored-version-retention-readout",
+      "package_path": "finalization_qc_accepted_zipped/easier/connector/stored-version-retention-readout.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          1.0,
+          0.8,
+          1.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "google-drive-gym",
+          "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+          "dataset": "real",
+          "dataset_provenance": "declared during finalization from the gym image identity and the package setting GYM_DATASET=real"
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/stored-version-retention-readout/7aad93f7e5d09a3229054b560cfc5914404962571e0aca594fd5eb21f30bc184.zip",
+      "source_version": "2026-09-05T19:11:24Z",
+      "sha256": "432d98e4a71fd5d65cc426b2d3e6696d8d9a7c617a4af9235364f9a7762aa3f0",
+      "size_bytes": 4537072,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "hc2-5b7a689edeb4",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "dataset_declaration",
+          "image_pinning"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "tag-estate-grade-versus-status-split",
+      "task_name": "harbor/tag-estate-grade-versus-status-split",
+      "original_filename": "a296725f2d391b27c11d059e4bafdd15ac6260735c0cb3afdd33c1b92f290110.zip",
+      "original_folder_name": "tag-estate-grade-versus-status-split",
+      "package_path": "finalization_qc_accepted_zipped/easier/connector/tag-estate-grade-versus-status-split.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "google-drive-gym",
+          "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+          "dataset": "real",
+          "dataset_provenance": "declared during finalization from the gym image identity and the package setting GYM_DATASET=real"
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tag-estate-grade-versus-status-split/a296725f2d391b27c11d059e4bafdd15ac6260735c0cb3afdd33c1b92f290110.zip",
+      "source_version": "2026-09-05T20:10:54Z",
+      "sha256": "ce5c6a7b7e64d3f8a6bb52c0b447993253536ca57a0ec8b09402d0c880156c64",
+      "size_bytes": 4792872,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-452b590b3ff7",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "dataset_declaration",
+          "image_pinning",
+          "stale_qc_claims"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "urgent-label-inflation-2027-audit",
+      "task_name": "harbor/urgent-label-inflation-2027-audit",
+      "original_filename": "89bb5a5ac727fe2215bbb7137be531802093279c3e42eb763517fa83579dc6c0.zip",
+      "original_folder_name": "urgent-label-inflation-2027-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/urgent-label-inflation-2027-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "outlook-gym",
+          "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+          "dataset": "real",
+          "dataset_provenance": "declared during finalization from the gym image identity"
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/urgent-label-inflation-2027-audit/89bb5a5ac727fe2215bbb7137be531802093279c3e42eb763517fa83579dc6c0.zip",
+      "source_version": "2026-09-06T04:18:52Z",
+      "sha256": "4d208f86c2410d808c187b7887ffb318825864756c0864c053ec36a918f68475",
+      "size_bytes": 7524647,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-73b10ebbe880",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "dataset_declaration",
+          "image_pinning"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "verify-duplicate-825-card-holds-and-300-hold-on-account-before-tp-reve",
+      "task_name": "harbor/verify-duplicate-825-card-holds-and-300-hold-on-account-before-tp-reve",
+      "original_filename": "597af192f4dfc1c48aee5a1bcd7506575822ad7b58b8db8d5fd4237b0e13300b.zip",
+      "original_folder_name": "verify-duplicate-825-card-holds-and-300-hold-on-account-before-tp-reve",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/verify-duplicate-825-card-holds-and-300-hold-on-account-before-tp-reve.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          1.0,
+          0.8571,
+          0.8571
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": null,
+      "category_original": null,
+      "execution_type": "connector",
+      "connector_services": [
+        {
+          "name": "slack-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+          "dataset": null,
+          "dataset_provenance": null
+        },
+        {
+          "name": "jira-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+          "dataset": null,
+          "dataset_provenance": null
+        },
+        {
+          "name": "zeta3-sql-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+          "dataset": null,
+          "dataset_provenance": null
+        },
+        {
+          "name": "confluence-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+          "dataset": null,
+          "dataset_provenance": null
+        },
+        {
+          "name": "google-drive-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+          "dataset": null,
+          "dataset_provenance": null
+        },
+        {
+          "name": "freshdesk-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+          "dataset": null,
+          "dataset_provenance": null
+        },
+        {
+          "name": "email-gym",
+          "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+          "dataset": null,
+          "dataset_provenance": null
+        }
+      ],
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/verify-duplicate-825-card-holds-and-300-hold-on-account-before-tp-reve/597af192f4dfc1c48aee5a1bcd7506575822ad7b58b8db8d5fd4237b0e13300b.zip",
+      "source_version": "2026-09-07T17:39:48Z",
+      "sha256": "da286924050c0e3fd9f8f74e9092efba38b60844af6d924600ec265f04a26fa5",
+      "size_bytes": 5826255,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-verify-duplicate-825-card-holds-and-300-hold-on--623dbe-v5-sna-krpz",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "stale_qc_claims"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c142-autoscaling-headroom-recompute",
+      "task_name": "obi/code-c142-autoscaling-headroom-recompute",
+      "original_filename": "987fd7b1a8ae864a537f38a5849749d1e8473a3b77dddcd30ff1d4b06c8c63a8.zip",
+      "original_folder_name": "code-c142-autoscaling-headroom-recompute",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c142-autoscaling-headroom-recompute.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c142-autoscaling-headroom-recompute/987fd7b1a8ae864a537f38a5849749d1e8473a3b77dddcd30ff1d4b06c8c63a8.zip",
+      "source_version": "2026-09-05T20:00:55Z",
+      "sha256": "9cb958026caa835a569a8d27d634730f1228ab949eeafc6369b6db4cb4e82e77",
+      "size_bytes": 3642192,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-500353107d0b",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c174-tech-guide-coverage-audit",
+      "task_name": "obi/code-c174-tech-guide-coverage-audit",
+      "original_filename": "1685658a3842442aa4a0641b6d9d33eacf83fb9d69b0dfedea6dd23f21b62db8.zip",
+      "original_folder_name": "code-c174-tech-guide-coverage-audit",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/engineering/code-c174-tech-guide-coverage-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.944805,
+          1.0,
+          1.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c174-tech-guide-coverage-audit/1685658a3842442aa4a0641b6d9d33eacf83fb9d69b0dfedea6dd23f21b62db8.zip",
+      "source_version": "2026-09-05T20:04:56Z",
+      "sha256": "1685658a3842442aa4a0641b6d9d33eacf83fb9d69b0dfedea6dd23f21b62db8",
+      "size_bytes": 6676621,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-150b163ffda0",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c221-api-auth-method-compliance-audit",
+      "task_name": "obi/code-c221-api-auth-method-compliance-audit",
+      "original_filename": "9bb27e8fb7de09e57d1f3819abd1957393ac2dad1557451a0a079ec87d10258d.zip",
+      "original_folder_name": "code-c221-api-auth-method-compliance-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c221-api-auth-method-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c221-api-auth-method-compliance-audit/9bb27e8fb7de09e57d1f3819abd1957393ac2dad1557451a0a079ec87d10258d.zip",
+      "source_version": "2026-09-05T21:25:16Z",
+      "sha256": "aa306f5aacb7d3dafbd46544b4a1f02a0f0d3f25b483a030f27ead7dc1867723",
+      "size_bytes": 4227662,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-dab1f348481c",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction",
+          "stale_qc_claims"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c338-inventory-asset-allocation-audit",
+      "task_name": "obi/code-c338-inventory-asset-allocation-audit",
+      "original_filename": "2a0f5a9dc2020e652b6813d03998d515a8828ed22e2fda2da1604ada33c5327f.zip",
+      "original_folder_name": "code-c338-inventory-asset-allocation-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c338-inventory-asset-allocation-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c338-inventory-asset-allocation-audit/2a0f5a9dc2020e652b6813d03998d515a8828ed22e2fda2da1604ada33c5327f.zip",
+      "source_version": "2026-09-06T05:29:26Z",
+      "sha256": "2a0f5a9dc2020e652b6813d03998d515a8828ed22e2fda2da1604ada33c5327f",
+      "size_bytes": 4819098,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-9e7f240ea340",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c349-tenant-provisioning-cutover-audit",
+      "task_name": "obi/code-c349-tenant-provisioning-cutover-audit",
+      "original_filename": "7e4b40457b0c07e6c078a4f04f8127e529b368f06925dfbde5692b69e3a6a201.zip",
+      "original_folder_name": "code-c349-tenant-provisioning-cutover-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c349-tenant-provisioning-cutover-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.295625,
+          0.295625,
+          0.295625
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c349-tenant-provisioning-cutover-audit/7e4b40457b0c07e6c078a4f04f8127e529b368f06925dfbde5692b69e3a6a201.zip",
+      "source_version": "2026-09-07T16:35:45Z",
+      "sha256": "55a284be886873d3d1450c52d7abd09da6460543f11199d70e05f3d95b0f56f2",
+      "size_bytes": 7729744,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-code-c349-tenant-provisioning-cutover-audit-322c45-v1-sna-kiqd",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c356-wine-list-print-readiness-audit",
+      "task_name": "obi/code-c356-wine-list-print-readiness-audit",
+      "original_filename": "e24342bacdfed715e33cf94e79e7ec4d7b727ba6ae13ae240efa9fb466381172.zip",
+      "original_folder_name": "code-c356-wine-list-print-readiness-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c356-wine-list-print-readiness-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.171667,
+          1.0,
+          0.171667,
+          1.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c356-wine-list-print-readiness-audit/e24342bacdfed715e33cf94e79e7ec4d7b727ba6ae13ae240efa9fb466381172.zip",
+      "source_version": "2026-09-07T15:58:50Z",
+      "sha256": "06f6623311028e662701a74d5f8620e5d6613a09d4879131434bad1ee03fcbd7",
+      "size_bytes": 6034924,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-code-c356-wine-list-print-readiness-audit-828dbe-v1-sna-npqn",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c36-provisioning-state-machine",
+      "task_name": "obi/code-c36-provisioning-state-machine",
+      "original_filename": "0b0aee061c6088819fe47a009148b7f8e28ac4f5f83fe9183ab4aa134b0a694e.zip",
+      "original_folder_name": "code-c36-provisioning-state-machine",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c36-provisioning-state-machine.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c36-provisioning-state-machine/0b0aee061c6088819fe47a009148b7f8e28ac4f5f83fe9183ab4aa134b0a694e.zip",
+      "source_version": "2026-09-05T20:54:57Z",
+      "sha256": "0b0aee061c6088819fe47a009148b7f8e28ac4f5f83fe9183ab4aa134b0a694e",
+      "size_bytes": 5584629,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-6562f3ec21e7",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c366-agent-orchestration-run-audit",
+      "task_name": "obi/code-c366-agent-orchestration-run-audit",
+      "original_filename": "f87c8ca7f23f150f74dc061d60d53613689dc095241c2df84430ac44d66bbcb0.zip",
+      "original_folder_name": "code-c366-agent-orchestration-run-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c366-agent-orchestration-run-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.15,
+          0.15,
+          0.15
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c366-agent-orchestration-run-audit/f87c8ca7f23f150f74dc061d60d53613689dc095241c2df84430ac44d66bbcb0.zip",
+      "source_version": "2026-09-05T18:33:12Z",
+      "sha256": "9065dd8653b5302a18f740276f773699846f286bbd83ca8305a71d439c286ef2",
+      "size_bytes": 4830510,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "hc2-576e27922a99",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c387-htgcd-well-permit-compliance-audit",
+      "task_name": "obi/code-c387-htgcd-well-permit-compliance-audit",
+      "original_filename": "e0b640a7ce296e30523189a8bb393dd275819eddeaf121f30aaf9b265ba06650.zip",
+      "original_folder_name": "code-c387-htgcd-well-permit-compliance-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c387-htgcd-well-permit-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.234375,
+          0.234375,
+          0.234375
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c387-htgcd-well-permit-compliance-audit/e0b640a7ce296e30523189a8bb393dd275819eddeaf121f30aaf9b265ba06650.zip",
+      "source_version": "2026-09-06T19:34:09Z",
+      "sha256": "32841c7f7dc3b9d8edebbcca9a72315a2881fbb69fb8499312c43012b25fca3a",
+      "size_bytes": 7000720,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-code-c387-htgcd-well-permit-compliance-audit-23686a-v1-sna-eihk",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c412-log-anomaly-baseline-audit",
+      "task_name": "obi/code-c412-log-anomaly-baseline-audit",
+      "original_filename": "11d9629f4906c76d0e9879633e24e9d4de7dc164829466a097bf6aba41f6cfea.zip",
+      "original_folder_name": "code-c412-log-anomaly-baseline-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c412-log-anomaly-baseline-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.479958,
+          0.479958,
+          1.0,
+          0.479958
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c412-log-anomaly-baseline-audit/11d9629f4906c76d0e9879633e24e9d4de7dc164829466a097bf6aba41f6cfea.zip",
+      "source_version": "2026-09-07T06:48:37Z",
+      "sha256": "11d9629f4906c76d0e9879633e24e9d4de7dc164829466a097bf6aba41f6cfea",
+      "size_bytes": 4309412,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-code-c412g2disp2-log-anomaly-baseline-audit-2026-ce0019-v1-sna-fsqz",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c413-service-account-repo-grant-audit",
+      "task_name": "obi/code-c413-service-account-repo-grant-audit",
+      "original_filename": "122f314630e0ff31c936aa06736ec8b83524359acc1c61c3fc549edc0599bbc4.zip",
+      "original_folder_name": "code-c413-service-account-repo-grant-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c413-service-account-repo-grant-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c413-service-account-repo-grant-audit/122f314630e0ff31c936aa06736ec8b83524359acc1c61c3fc549edc0599bbc4.zip",
+      "source_version": "2026-09-05T20:58:20Z",
+      "sha256": "c9437ff6541c2dd55c0dd793eb11fd31d905a859af04c61477167824e4bef09f",
+      "size_bytes": 7666872,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-a547812a06ee",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c439-service-estimate-mobilization-audit",
+      "task_name": "obi/code-c439-service-estimate-mobilization-audit",
+      "original_filename": "7d5f21e5be68a61af96c2bf909c08203c5e044d8d4341617aed976bbcc5c8bc0.zip",
+      "original_folder_name": "code-c439-service-estimate-mobilization-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c439-service-estimate-mobilization-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.958333333333,
+          0.375,
+          1.0,
+          0.916666666667
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c439-service-estimate-mobilization-audit/7d5f21e5be68a61af96c2bf909c08203c5e044d8d4341617aed976bbcc5c8bc0.zip",
+      "source_version": "2026-09-05T18:33:52Z",
+      "sha256": "7d5f21e5be68a61af96c2bf909c08203c5e044d8d4341617aed976bbcc5c8bc0",
+      "size_bytes": 6996312,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "hc2-05e5693684ee",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c480-supabase-storage-rls-hardening-audit",
+      "task_name": "obi/code-c480-supabase-storage-rls-hardening-audit",
+      "original_filename": "29bed67ca3cf5aec9e3128b09f95ef8f0435a10549e7da5bb6d7a6da1e52c893.zip",
+      "original_folder_name": "code-c480-supabase-storage-rls-hardening-audit",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/engineering/code-c480-supabase-storage-rls-hardening-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c480-supabase-storage-rls-hardening-audit/29bed67ca3cf5aec9e3128b09f95ef8f0435a10549e7da5bb6d7a6da1e52c893.zip",
+      "source_version": "2026-09-05T20:57:18Z",
+      "sha256": "964e38292489bd59dc6081f2a828a418f20e5f39c7e0b107b9d1f3568b7a36ce",
+      "size_bytes": 3664914,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-7bb002b9fcc7",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "image_pinning"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c645-subcontractor-prevailing-wage-audit",
+      "task_name": "obi/code-c645-subcontractor-prevailing-wage-audit",
+      "original_filename": "38098982f15254eca1311d1111c265a0c8700890067681398cd6470b86ef734f.zip",
+      "original_folder_name": "code-c645-subcontractor-prevailing-wage-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c645-subcontractor-prevailing-wage-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c645-subcontractor-prevailing-wage-audit/38098982f15254eca1311d1111c265a0c8700890067681398cd6470b86ef734f.zip",
+      "source_version": "2026-09-07T15:28:24Z",
+      "sha256": "7cf0134043a3fd15ed3d08268e92fceccabcb6e5fd777b1ddaea4f2745199ce5",
+      "size_bytes": 6782890,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-code-c645-subcontractor-prevailing-wage-audit-e285fe-v4-sna-bpzc",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c676-shipment-link-routing-audit",
+      "task_name": "obi/code-c676-shipment-link-routing-audit",
+      "original_filename": "491db80509f3e3e3f23b3ef7a6bc1ab02074a8ee9392fb93633fcb4e1667489d.zip",
+      "original_folder_name": "code-c676-shipment-link-routing-audit",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/engineering/code-c676-shipment-link-routing-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          1.0,
+          1.0,
+          1.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c676-shipment-link-routing-audit/491db80509f3e3e3f23b3ef7a6bc1ab02074a8ee9392fb93633fcb4e1667489d.zip",
+      "source_version": "2026-09-05T21:41:20Z",
+      "sha256": "491db80509f3e3e3f23b3ef7a6bc1ab02074a8ee9392fb93633fcb4e1667489d",
+      "size_bytes": 3700295,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-8da14abe1a69",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c764-remote-bridge-agent-compliance-audit",
+      "task_name": "obi/code-c764-remote-bridge-agent-compliance-audit",
+      "original_filename": "ff5d036dd6ce37314e8560dfc0b832c90f07e734fd85e99609d38e7c564273eb.zip",
+      "original_folder_name": "code-c764-remote-bridge-agent-compliance-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c764-remote-bridge-agent-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c764-remote-bridge-agent-compliance-audit/ff5d036dd6ce37314e8560dfc0b832c90f07e734fd85e99609d38e7c564273eb.zip",
+      "source_version": "2026-09-08T10:45:30Z",
+      "sha256": "ff5d036dd6ce37314e8560dfc0b832c90f07e734fd85e99609d38e7c564273eb",
+      "size_bytes": 5853566,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-pipeline-evaluation-36d269778bbd49f3",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c784-disc-duplication-job-audit",
+      "task_name": "obi/code-c784-disc-duplication-job-audit",
+      "original_filename": "268e45ba21d6c8ce991a246da906946b1fc84f85b2d820265b69e38c7fbb8925.zip",
+      "original_folder_name": "code-c784-disc-duplication-job-audit",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/engineering/code-c784-disc-duplication-job-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.0,
+          1.0,
+          1.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c784-disc-duplication-job-audit/268e45ba21d6c8ce991a246da906946b1fc84f85b2d820265b69e38c7fbb8925.zip",
+      "source_version": "2026-09-05T22:08:52Z",
+      "sha256": "268e45ba21d6c8ce991a246da906946b1fc84f85b2d820265b69e38c7fbb8925",
+      "size_bytes": 4770457,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-b2450d3fac65",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "code-c14-pii-redaction-fix",
+      "task_name": "obi/code-c14-pii-redaction-fix",
+      "original_filename": "8864bdb45e4916f4d96a7a968b777545f84f643a94c89cad903529c4714da0bf.zip",
+      "original_folder_name": "harbor-single-task-ibh1b75q",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c14-pii-redaction-fix.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "engineering",
+      "category_original": "code",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-ibh1b75q/8864bdb45e4916f4d96a7a968b777545f84f643a94c89cad903529c4714da0bf.zip",
+      "source_version": "2026-09-05T20:09:53Z",
+      "sha256": "75b02acb310501216ee1d9e22726aea7d574ad8666141cbf4662342ac4b7d1b3",
+      "size_bytes": 3614604,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-9665f2816211",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "folder_rename"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "health-h122-plate-calorie-reference-audit",
+      "task_name": "obi/health-h122-plate-calorie-reference-audit",
+      "original_filename": "9d833557aa84808193a99e625ecc4619dcbdc3747dd665de9dd9a9b8b649c097.zip",
+      "original_folder_name": "health-h122-plate-calorie-reference-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h122-plate-calorie-reference-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.469333,
+          0.469333,
+          0.469333,
+          0.469333
+        ],
+        "successes": 0,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "health",
+      "category_original": "health",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h122-plate-calorie-reference-audit/9d833557aa84808193a99e625ecc4619dcbdc3747dd665de9dd9a9b8b649c097.zip",
+      "source_version": "2026-09-07T08:45:03Z",
+      "sha256": "9d833557aa84808193a99e625ecc4619dcbdc3747dd665de9dd9a9b8b649c097",
+      "size_bytes": 3416904,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-health-h122g2disp2-plate-calorie-reference-audit-11437c-v1-sna-mkga",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "health-h125-eye-drop-lens-compatibility-audit",
+      "task_name": "obi/health-h125-eye-drop-lens-compatibility-audit",
+      "original_filename": "a26305ef8765b26670780952c4b14b441e3ed67b8f6b410bde459503654a42a3.zip",
+      "original_folder_name": "health-h125-eye-drop-lens-compatibility-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h125-eye-drop-lens-compatibility-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.18125,
+          1.0,
+          0.18125,
+          0.18125
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "health",
+      "category_original": "health",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h125-eye-drop-lens-compatibility-audit/a26305ef8765b26670780952c4b14b441e3ed67b8f6b410bde459503654a42a3.zip",
+      "source_version": "2026-09-06T15:27:54Z",
+      "sha256": "e4e1be696f702dcb98d53ceb6404374096af8345229938e11c2e0d0221770085",
+      "size_bytes": 6453846,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-health-h125-eye-drop-lens-compatibility-audit-0ab46d-v1-sna-ayie",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "health-h28-screening-interval-recall",
+      "task_name": "obi/health-h28-screening-interval-recall",
+      "original_filename": "39660d33028f00581ee5eb9b0344e4075e62d99e41bab3e215ee33ff19d61ee2.zip",
+      "original_folder_name": "health-h28-screening-interval-recall",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h28-screening-interval-recall.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.405556,
+          0.405556,
+          0.405556,
+          0.405556
+        ],
+        "successes": 0,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "health",
+      "category_original": "health",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h28-screening-interval-recall/39660d33028f00581ee5eb9b0344e4075e62d99e41bab3e215ee33ff19d61ee2.zip",
+      "source_version": "2026-09-06T19:55:08Z",
+      "sha256": "35d9fb61c9cfe0f0c3fe69de63cd09cf4c278dfd14fb92afb8109f75ef177039",
+      "size_bytes": 6334837,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-health-h28-screening-interval-recall-96acf6-v1-sna-dldf",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "health-h39-theatre-utilisation-coding",
+      "task_name": "harbor/health-h39-theatre-utilisation-coding",
+      "original_filename": "df6592c973f5352fba506f7a97d3a6a3b8caccfcbff0f48e928232c2700f593e.zip",
+      "original_folder_name": "health-h39-theatre-utilisation-coding",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h39-theatre-utilisation-coding.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "health",
+      "category_original": "health",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h39-theatre-utilisation-coding/df6592c973f5352fba506f7a97d3a6a3b8caccfcbff0f48e928232c2700f593e.zip",
+      "source_version": "2026-09-06T02:20:20Z",
+      "sha256": "ed974574af06e6ca214a76a72862e68fe5efaca80586c9de2389531e36978924",
+      "size_bytes": 3421921,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-26db4a25e78b",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "health-h59-bp-staging-badge-audit",
+      "task_name": "obi/health-h59-bp-staging-badge-audit",
+      "original_filename": "ffe9691959712337d8d8dd7d0daba921e0bdbe07027abdc37386c00c0c879b9d.zip",
+      "original_folder_name": "health-h59-bp-staging-badge-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h59-bp-staging-badge-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.14,
+          0.14,
+          0.14
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "health",
+      "category_original": "health",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h59-bp-staging-badge-audit/ffe9691959712337d8d8dd7d0daba921e0bdbe07027abdc37386c00c0c879b9d.zip",
+      "source_version": "2026-09-06T12:47:54Z",
+      "sha256": "8dbaa7bc4bd593dc9504b67e9753ac1f0eeeb41340187362993d179ad2138e60",
+      "size_bytes": 6938152,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-health-h59-bp-staging-badge-audit-33454e-v1-sna-asyj",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "health-h66-cme-reference-currency-gap-audit",
+      "task_name": "obi/health-h66-cme-reference-currency-gap-audit",
+      "original_filename": "c22f64a30acc57a0ef22d4ec217ee1457b6cac0eb1ebfdc00b5ee7d92898229e.zip",
+      "original_folder_name": "health-h66-cme-reference-currency-gap-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h66-cme-reference-currency-gap-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.263889,
+          0.263889,
+          0.263889,
+          0.263889
+        ],
+        "successes": 0,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "health",
+      "category_original": "health",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h66-cme-reference-currency-gap-audit/c22f64a30acc57a0ef22d4ec217ee1457b6cac0eb1ebfdc00b5ee7d92898229e.zip",
+      "source_version": "2026-09-06T19:24:28Z",
+      "sha256": "e35be6bd0ee5b73d19d61399a94d162553d4183b8a78dea9805ee3f02ae55f25",
+      "size_bytes": 7288904,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-health-h66-cme-reference-currency-gap-audit-74e43e-v1-sna-zwvq",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction",
+          "verifier_justification"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "health-h78-research-grant-coi-disclosure-audit",
+      "task_name": "obi/health-h78-research-grant-coi-disclosure-audit",
+      "original_filename": "3765240da8ae3d64484e6ec11bcc94b5928fc98825552189d13cc44fcbe6d9e5.zip",
+      "original_folder_name": "health-h78-research-grant-coi-disclosure-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h78-research-grant-coi-disclosure-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.2875,
+          1.0,
+          0.234375,
+          1.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "health",
+      "category_original": "health",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h78-research-grant-coi-disclosure-audit/3765240da8ae3d64484e6ec11bcc94b5928fc98825552189d13cc44fcbe6d9e5.zip",
+      "source_version": "2026-09-07T20:44:56Z",
+      "sha256": "f7d83298511ccf3b131827f844645b0e5ff52c8460b957fba51e6f0cf7792425",
+      "size_bytes": 9501183,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-health-h78-research-grant-coi-disclosure-audit-c920ed-v1-sna-ynoe",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "health-h79-neonatal-tpn-order-compliance-audit",
+      "task_name": "obi/health-h79-neonatal-tpn-order-compliance-audit",
+      "original_filename": "de30dade067fde3be9edf9723cca017e7ad55a30a7404fcc583267c5b75c07f8.zip",
+      "original_folder_name": "health-h79-neonatal-tpn-order-compliance-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h79-neonatal-tpn-order-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "health",
+      "category_original": "health",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h79-neonatal-tpn-order-compliance-audit/de30dade067fde3be9edf9723cca017e7ad55a30a7404fcc583267c5b75c07f8.zip",
+      "source_version": "2026-09-07T23:24:11Z",
+      "sha256": "de30dade067fde3be9edf9723cca017e7ad55a30a7404fcc583267c5b75c07f8",
+      "size_bytes": 7441131,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-pipeline-evaluation-c67212c70c4746f5",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "health-h82-pediatric-therapy-goal-note-audit",
+      "task_name": "obi/health-h82-pediatric-therapy-goal-note-audit",
+      "original_filename": "db1af1918efd1898a2efe6ea3be371eb85074fe6bc8e983d5685439d8de19ea6.zip",
+      "original_folder_name": "health-h82-pediatric-therapy-goal-note-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h82-pediatric-therapy-goal-note-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.39375,
+          0.39375,
+          0.39375,
+          0.39375
+        ],
+        "successes": 0,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "health",
+      "category_original": "health",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h82-pediatric-therapy-goal-note-audit/db1af1918efd1898a2efe6ea3be371eb85074fe6bc8e983d5685439d8de19ea6.zip",
+      "source_version": "2026-09-06T17:17:33Z",
+      "sha256": "9ad0c14d947ae07f29ca7d44661f9bb525fba08f3c6fbeedd570d720d5ba50ba",
+      "size_bytes": 7468962,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-health-h82-pediatric-therapy-goal-note-audit-ea2be8-v1-sna-sekd",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "law-l28-gift-register-thresholds",
+      "task_name": "obi/law-l28-gift-register-thresholds",
+      "original_filename": "6e57f28862aaf1abd443ec19be5208634d944a2e346d5a4c8ef95b52105ca076.zip",
+      "original_folder_name": "law-l28-gift-register-thresholds",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/legal/law-l28-gift-register-thresholds.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.915789,
+          1.0,
+          1.0,
+          0.915789
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "legal",
+      "category_original": "law",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l28-gift-register-thresholds/6e57f28862aaf1abd443ec19be5208634d944a2e346d5a4c8ef95b52105ca076.zip",
+      "source_version": "2026-09-08T10:16:49Z",
+      "sha256": "dbb783b593712075edf18da155821699f4a896b07bc6a950b33d1fb63258691b",
+      "size_bytes": 4246944,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-pipeline-evaluation-effdd7e384cc4305",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "image_pinning"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "law-l36-litigation-hold-custodians",
+      "task_name": "obi/law-l36-litigation-hold-custodians",
+      "original_filename": "ca6140442b42fe52ed13cbb05f5064e6448653fe305d29aecb393f76b56911e2.zip",
+      "original_folder_name": "law-l36-litigation-hold-custodians",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/legal/law-l36-litigation-hold-custodians.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "legal",
+      "category_original": "law",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l36-litigation-hold-custodians/ca6140442b42fe52ed13cbb05f5064e6448653fe305d29aecb393f76b56911e2.zip",
+      "source_version": "2026-09-08T06:03:26Z",
+      "sha256": "f199292b733c988d5e264db1e5dc02eaa230ad6ae6d16171c8bbea12c7a24bfb",
+      "size_bytes": 5234464,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-law-l36-litigation-hold-custodians-7e182e-v16-sna-bkwp",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "image_pinning"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "law-l51-sstb-compensation-concentration-audit",
+      "task_name": "obi/law-l51-sstb-compensation-concentration-audit",
+      "original_filename": "7fba036a63804b6ccbbeb82c517b25e09d816d8580e35dbc997f1dc2f0f60d29.zip",
+      "original_folder_name": "law-l51-sstb-compensation-concentration-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/legal/law-l51-sstb-compensation-concentration-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.18125,
+          0.18125,
+          0.18125,
+          0.18125
+        ],
+        "successes": 0,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "legal",
+      "category_original": "law",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l51-sstb-compensation-concentration-audit/7fba036a63804b6ccbbeb82c517b25e09d816d8580e35dbc997f1dc2f0f60d29.zip",
+      "source_version": "2026-09-06T15:58:54Z",
+      "sha256": "4434f6215812fef4ff60686a26428e5e51f365f26e8ef39a80a892741b54f8e1",
+      "size_bytes": 8074945,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-law-l51-sstb-compensation-concentration-audit-4643a4-v1-sna-nzfj",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g1176-application-kit-disclosure-audit",
+      "task_name": "obi/gen-g1176-application-kit-disclosure-audit",
+      "original_filename": "13d17fd624b323040d053c84166720e7bb5197750f157be019e7859abe8e957d.zip",
+      "original_folder_name": "gen-g1176-application-kit-disclosure-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1176-application-kit-disclosure-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.216667,
+          0.216667,
+          1.0,
+          0.216667
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1176-application-kit-disclosure-audit/13d17fd624b323040d053c84166720e7bb5197750f157be019e7859abe8e957d.zip",
+      "source_version": "2026-09-06T14:58:24Z",
+      "sha256": "dc6bb12bbb707902fa8ac1b83d5d3d97267edc853f5880343c6e96fe88e0fc5e",
+      "size_bytes": 5789206,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-gen-g1176-application-kit-disclosure-audit-5ce005-v1-sna-fzoy",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g1217-thought-leadership-post-scope-style-audit",
+      "task_name": "obi/gen-g1217-thought-leadership-post-scope-style-audit",
+      "original_filename": "1ad8122e9fe9a6ade3efd497a2e4a8e0f020cdc364d4b7eef6a3523ee8fb0086.zip",
+      "original_folder_name": "gen-g1217-thought-leadership-post-scope-style-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1217-thought-leadership-post-scope-style-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1217-thought-leadership-post-scope-style-audit/1ad8122e9fe9a6ade3efd497a2e4a8e0f020cdc364d4b7eef6a3523ee8fb0086.zip",
+      "source_version": "2026-09-05T22:41:38Z",
+      "sha256": "0f2fec901b267262bf59c23a9b79887e04a283a5db04805f28ffa1f72ea8ab13",
+      "size_bytes": 4505084,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-e49ffe32d092",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "image_pinning",
+          "readme_generation"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g1230-furniture-arrangement-validity-audit",
+      "task_name": "obi/gen-g1230-furniture-arrangement-validity-audit",
+      "original_filename": "8d8e0a5668b7e854f264a4dc0634b5dc6d99ab177cd6b8cd912fb0f563162a79.zip",
+      "original_folder_name": "gen-g1230-furniture-arrangement-validity-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1230-furniture-arrangement-validity-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.128125,
+          0.128125,
+          0.128125
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1230-furniture-arrangement-validity-audit/8d8e0a5668b7e854f264a4dc0634b5dc6d99ab177cd6b8cd912fb0f563162a79.zip",
+      "source_version": "2026-09-06T15:14:38Z",
+      "sha256": "e11f0db8796deb6ed09054f54c22b7f4740cb7ba3f6b5ba355d499438f7b39e6",
+      "size_bytes": 8263055,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-gen-g1230-furniture-arrangement-validity-audit-01ccbc-v1-sna-jrkl",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g1263-worship-slide-style-compliance-audit",
+      "task_name": "obi/gen-g1263-worship-slide-style-compliance-audit",
+      "original_filename": "0a848ca5c0fed942d0c81f11a1c92f0edaa727970ef015c836aecf523d4b5895.zip",
+      "original_folder_name": "gen-g1263-worship-slide-style-compliance-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1263-worship-slide-style-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.216667,
+          1.0,
+          0.216667,
+          0.216667
+        ],
+        "successes": 1,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1263-worship-slide-style-compliance-audit/0a848ca5c0fed942d0c81f11a1c92f0edaa727970ef015c836aecf523d4b5895.zip",
+      "source_version": "2026-09-06T18:35:29Z",
+      "sha256": "c3073e6f9df8d9b7adc23c5607c3b752f97b6fcde94d06f7c699837bca1fb41f",
+      "size_bytes": 5686917,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-gen-g1263-worship-slide-style-compliance-audit-966722-v1-sna-unar",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g191-edition-numbering-ap-audit",
+      "task_name": "obi/gen-g191-edition-numbering-ap-audit",
+      "original_filename": "26026f1f3f297d644182ac88cbdf4791878cb7979712ef15e960ac26a1e94112.zip",
+      "original_folder_name": "gen-g191-edition-numbering-ap-audit",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g191-edition-numbering-ap-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.9875,
+          1.0,
+          1.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g191-edition-numbering-ap-audit/26026f1f3f297d644182ac88cbdf4791878cb7979712ef15e960ac26a1e94112.zip",
+      "source_version": "2026-09-08T10:46:41Z",
+      "sha256": "26026f1f3f297d644182ac88cbdf4791878cb7979712ef15e960ac26a1e94112",
+      "size_bytes": 6162511,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-pipeline-evaluation-8aa70ce439a74e9d",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g304-maas-concept-doc-audit",
+      "task_name": "obi/gen-g304-maas-concept-doc-audit",
+      "original_filename": "bce5122949ee99d8fc9301ae5e9dc4b06aaa960ea578a8a744b9237e4070bdb5.zip",
+      "original_folder_name": "gen-g304-maas-concept-doc-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g304-maas-concept-doc-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.909091,
+          0.909091,
+          1.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g304-maas-concept-doc-audit/bce5122949ee99d8fc9301ae5e9dc4b06aaa960ea578a8a744b9237e4070bdb5.zip",
+      "source_version": "2026-09-08T09:42:28Z",
+      "sha256": "bce5122949ee99d8fc9301ae5e9dc4b06aaa960ea578a8a744b9237e4070bdb5",
+      "size_bytes": 8562392,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-gen-g304-maas-concept-doc-audit-NonConnector-Sta-6b9646-v1-sna-bzai-hard-20260908t084657844853",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g469-thesis-terminology-compliance-audit",
+      "task_name": "obi/gen-g469-thesis-terminology-compliance-audit",
+      "original_filename": "ba7fb7ddcb4bc768c5951d891806ed40a3431050832b03a706ca654428bffbe0.zip",
+      "original_folder_name": "gen-g469-thesis-terminology-compliance-audit-m-v2",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g469-thesis-terminology-compliance-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g469-thesis-terminology-compliance-audit-m-v2/ba7fb7ddcb4bc768c5951d891806ed40a3431050832b03a706ca654428bffbe0.zip",
+      "source_version": "2026-09-05T18:50:49Z",
+      "sha256": "c1d3f414a2056da1925a16f5f06e9a56edd807f551c7333faefc4b0cc1e0c8f9",
+      "size_bytes": 7273400,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "hc2-f04e4e235bde",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "folder_rename"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g565-channel-publishing-settings-audit",
+      "task_name": "obi/gen-g565-channel-publishing-settings-audit",
+      "original_filename": "916a2e2051f01fb07168a95058b8eee67d4b1b97566db68031e6de51c191e00c.zip",
+      "original_folder_name": "gen-g565-channel-publishing-settings-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g565-channel-publishing-settings-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g565-channel-publishing-settings-audit/916a2e2051f01fb07168a95058b8eee67d4b1b97566db68031e6de51c191e00c.zip",
+      "source_version": "2026-09-05T18:49:56Z",
+      "sha256": "06b44cf884d9e13f42f99ed2af40d0b9e5ac5277dc065db4319aea983be54a80",
+      "size_bytes": 9784902,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "hc2-8789d56aacec",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "readme_generation",
+          "redaction",
+          "stale_qc_claims"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g592-sop-review-cycle-compliance-audit",
+      "task_name": "obi/gen-g592-sop-review-cycle-compliance-audit",
+      "original_filename": "bcb2442ac83525c222b53556310590f1ea15e12281db9f8980fc55963f320e55.zip",
+      "original_folder_name": "gen-g592-sop-review-cycle-compliance-audit",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g592-sop-review-cycle-compliance-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.0,
+          1.0,
+          1.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g592-sop-review-cycle-compliance-audit/bcb2442ac83525c222b53556310590f1ea15e12281db9f8980fc55963f320e55.zip",
+      "source_version": "2026-09-06T00:35:03Z",
+      "sha256": "186688529ce57b42048ef0cee2c943998bb3c3c9e3acf3a8510a72d8988852e9",
+      "size_bytes": 5862588,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-9876cc5ab70c",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "image_pinning",
+          "stale_qc_claims"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g609-river-cyanotoxin-advisory-audit",
+      "task_name": "obi/gen-g609-river-cyanotoxin-advisory-audit",
+      "original_filename": "01493bc52b4911b8bc2dcfbfe5d4257668f7100c173ebb5641623c3352df171c.zip",
+      "original_folder_name": "gen-g609-river-cyanotoxin-advisory-audit",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g609-river-cyanotoxin-advisory-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g609-river-cyanotoxin-advisory-audit/01493bc52b4911b8bc2dcfbfe5d4257668f7100c173ebb5641623c3352df171c.zip",
+      "source_version": "2026-09-05T20:09:40Z",
+      "sha256": "01493bc52b4911b8bc2dcfbfe5d4257668f7100c173ebb5641623c3352df171c",
+      "size_bytes": 3061622,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-67462440c14f",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g61-performance-rights-reconcile",
+      "task_name": "obi/gen-g61-performance-rights-reconcile",
+      "original_filename": "2b90045ced5fc6ff6d77278ba15fc50a88456cfe82d096ec09782e709d3a98b0.zip",
+      "original_folder_name": "gen-g61-performance-rights-reconcile",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g61-performance-rights-reconcile.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.460667,
+          1.0,
+          1.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g61-performance-rights-reconcile/2b90045ced5fc6ff6d77278ba15fc50a88456cfe82d096ec09782e709d3a98b0.zip",
+      "source_version": "2026-09-07T03:36:03Z",
+      "sha256": "2b90045ced5fc6ff6d77278ba15fc50a88456cfe82d096ec09782e709d3a98b0",
+      "size_bytes": 3419231,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-gen-g61-performance-rights-reconcile-429b5a-v1-sna-mggo",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g644-handbook-revision-rollout-audit",
+      "task_name": "obi/gen-g644-handbook-revision-rollout-audit",
+      "original_filename": "25eb1b4982aff588d8cb8aef60a458c2cef5fc5c03c3b48c6b9a02c8f2e812f9.zip",
+      "original_folder_name": "gen-g644-handbook-revision-rollout-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g644-handbook-revision-rollout-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g644-handbook-revision-rollout-audit/25eb1b4982aff588d8cb8aef60a458c2cef5fc5c03c3b48c6b9a02c8f2e812f9.zip",
+      "source_version": "2026-09-05T23:36:46Z",
+      "sha256": "b007e428546fc81272f540c619f46255ded4fd593d053ffdc46625a7517baf18",
+      "size_bytes": 3757509,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-5b519a75135d",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "image_pinning",
+          "stale_qc_claims"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g678-merch-sales-report-integrity-audit",
+      "task_name": "obi/gen-g678-merch-sales-report-integrity-audit",
+      "original_filename": "9f1137f540a34922e44319bd3b63917a6ee3ec283a45aebedbdfc1642041f9b0.zip",
+      "original_folder_name": "gen-g678-merch-sales-report-integrity-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g678-merch-sales-report-integrity-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.85,
+          1.0,
+          0.85
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g678-merch-sales-report-integrity-audit/9f1137f540a34922e44319bd3b63917a6ee3ec283a45aebedbdfc1642041f9b0.zip",
+      "source_version": "2026-09-08T10:32:23Z",
+      "sha256": "28144ac064449a0f9feca0b0ef26b98bbc00e169f338e0a6c542476154bd828f",
+      "size_bytes": 6572891,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-pipeline-evaluation-e8fcd300f3dc43a4",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "stale_qc_claims"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g725-team-status-ticket-reconcile",
+      "task_name": "obi/gen-g725-team-status-ticket-reconcile",
+      "original_filename": "027ceacc3015973e214afe63943b80ea3f01242a707d3e1b1a5aa51ebfba5a1e.zip",
+      "original_folder_name": "gen-g725-team-status-ticket-reconcile",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g725-team-status-ticket-reconcile.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "successes": 3,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g725-team-status-ticket-reconcile/027ceacc3015973e214afe63943b80ea3f01242a707d3e1b1a5aa51ebfba5a1e.zip",
+      "source_version": "2026-09-05T18:17:05Z",
+      "sha256": "027ceacc3015973e214afe63943b80ea3f01242a707d3e1b1a5aa51ebfba5a1e",
+      "size_bytes": 7272111,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "auto-gen-g725-team-status-ticket-reconcile-20260826T2-43d7a3-v44-sna-egwf",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g743-vendor-whitepaper-deliverable-audit",
+      "task_name": "obi/gen-g743-vendor-whitepaper-deliverable-audit",
+      "original_filename": "b9dc11a44ebdd6b952e8ba53651eaa8a855405e31b106db8a18ba38587475013.zip",
+      "original_folder_name": "gen-g743-vendor-whitepaper-deliverable-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g743-vendor-whitepaper-deliverable-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          1.0,
+          0.0,
+          1.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g743-vendor-whitepaper-deliverable-audit/b9dc11a44ebdd6b952e8ba53651eaa8a855405e31b106db8a18ba38587475013.zip",
+      "source_version": "2026-09-05T23:09:00Z",
+      "sha256": "b9dc11a44ebdd6b952e8ba53651eaa8a855405e31b106db8a18ba38587475013",
+      "size_bytes": 5377517,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-09b30e6ef85b",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g788-creative-production-quote-tier-audit",
+      "task_name": "obi/gen-g788-creative-production-quote-tier-audit",
+      "original_filename": "6da1d9130afb2a1e16d42fcd782a4dfd611dd61834e60af5c4062dc09e45e05c.zip",
+      "original_folder_name": "gen-g788-creative-production-quote-tier-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g788-creative-production-quote-tier-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          1.0,
+          0.0,
+          1.0,
+          0.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g788-creative-production-quote-tier-audit/6da1d9130afb2a1e16d42fcd782a4dfd611dd61834e60af5c4062dc09e45e05c.zip",
+      "source_version": "2026-09-06T01:30:13Z",
+      "sha256": "6da1d9130afb2a1e16d42fcd782a4dfd611dd61834e60af5c4062dc09e45e05c",
+      "size_bytes": 6816498,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-d1f6eb98ecb1",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": true,
+        "byte_identical_to_source": true,
+        "changes_applied": null,
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g794-lecture-transcript-slide-crossref-audit",
+      "task_name": "obi/gen-g794-lecture-transcript-slide-crossref-audit",
+      "original_filename": "b6b5121230921fa31fc832f34e7affcfb3ffce73a422d0c17d476cb494a1188e.zip",
+      "original_folder_name": "gen-g794-lecture-transcript-slide-crossref-audit-hard",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g794-lecture-transcript-slide-crossref-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.0,
+          1.0,
+          1.0,
+          0.0
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g794-lecture-transcript-slide-crossref-audit-hard/b6b5121230921fa31fc832f34e7affcfb3ffce73a422d0c17d476cb494a1188e.zip",
+      "source_version": "2026-09-06T01:27:09Z",
+      "sha256": "ca2132e690081633f40e2cc8d9f69362510c65d1ce5539ccd4f8f581565300ed",
+      "size_bytes": 4228251,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-7cfb4068ad01",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "folder_rename",
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    },
+    {
+      "task_id": "gen-g872-bulk-unit-discount-eligibility-audit",
+      "task_name": "obi/gen-g872-bulk-unit-discount-eligibility-audit",
+      "original_filename": "28f05bc465656b010f9986d192e462ec776656cebbeb29b06b087f2f66406310.zip",
+      "original_folder_name": "gen-g872-bulk-unit-discount-eligibility-audit",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g872-bulk-unit-discount-eligibility-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "GLM-5.2",
+        "runs": 4,
+        "rewards": [
+          0.925,
+          1.0,
+          1.0,
+          0.925
+        ],
+        "successes": 2,
+        "success_definition": "a run passes only at a reward of exactly 1.0"
+      },
+      "category": "other",
+      "category_original": "gen",
+      "execution_type": "non-connector",
+      "connector_services": null,
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g872-bulk-unit-discount-eligibility-audit/28f05bc465656b010f9986d192e462ec776656cebbeb29b06b087f2f66406310.zip",
+      "source_version": "2026-09-06T01:52:42Z",
+      "sha256": "35f2e458832a422d5836e60a4abd26abde52dbe615216876f2e205c9edef7587",
+      "size_bytes": 4760951,
+      "reported_qc": {
+        "decision": "PASS",
+        "profile": "harbor-check/claude-opus-5-medium",
+        "batch_id": "tb2-79e3f6924dc0",
+        "note": "as reported by the accepted source; not a check performed here"
+      },
+      "finalization_checks": {
+        "sha256_matches_source_object_name": false,
+        "byte_identical_to_source": false,
+        "changes_applied": [
+          "redaction"
+        ],
+        "fourteen_factor_audit": "no unresolved findings"
+      }
+    }
+  ]
+}

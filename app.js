@@ -92,11 +92,12 @@ const infoCopy = {
   auditSource: 'How the task was attributed to a trainer. Accepted portal and Trainer records are direct. QC run owner is inferred from who ran the QC, and unverified means that inference was not confirmed. Contested means more than one trainer claims it, and Unattributed means nobody could be identified.',
   auditFlags: 'Three quality caveats carried per task: contested owner - more than one trainer claims it; unverified - the attribution was inferred and not confirmed; version dependent - the result changes between task versions.',
   manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. To cut a second round, load the first manifest back in and its tasks are left out.',
+  truthSplit: 'The only figures on this tab that add up, and the reason they do is that the population has exactly two states. A task that is accepted and whose package is collectable at the current bar has either already gone out or has not, so delivered plus ready is the whole of it, under any filter. It is counted in tasks, not rows: a task submitted three times is one thing to send. That is also why it does not match the Accepted card above, which counts rows - the same population, before repeat submissions are folded. And it is not the delivered figure in the join on the left either: that one counts audited tasks in every state, including the rejected and errored ones, which are not waiting to be delivered and never will be.',
   truthMakeup: 'Two different questions, answered by two different kinds of evidence, so they are shown apart. Connector is structural: it is read from mcp_servers in the task.toml inside the package, which is why a task with no package is not known rather than guessed. Domain is not structural at all - it is the prefix on the task name, gen- or law- or code- - so it is a naming convention that most tasks simply do not follow. That is why the two coverage figures are so different, and why a task can be a known non-connector with no domain at all.',
   truthConnector: 'Whether the task mounts connector gyms - Slack, Jira, Google Drive and the rest. It is decided structurally, by whether task.toml inside the package declares mcp_servers, and never from the task name: a gen- or code- prefix says nothing about whether a task talks to Slack. That marker only exists inside a package, so a task with no archive in the bucket has no answer and is listed as not known rather than guessed. Of the tasks that do have a package at the current bar, 99% are classified.',
   truthFlags: 'Short codes so the task name is never squeezed out of its column. DL - already delivered, covered by the Delivery tab. Times-N - the same task appears N times in the pipeline and is counted once while the Delivered filter is on. CK - check before shipping: the identifier names a task the audit already covers although the name does not match. DUP - another task shares its name and trainer, so it is probably the same work counted twice; red when the date and outcome match too. UM - unmerged: it arrived with no family id, so repeat runs of it may be counted separately. CO - carried over: first decided before the cut and settled after it. Hover any code for the full explanation for that row, and open the row with + for its evidence.',
   truthVersions: 'The pipeline records one row per submission, not per task. 152 of the delivered rows arrived without a family id, so the pipeline never merged their repeat runs, and another 30 are recorded under an alias or a placeholder name - 534 rows for 367 real tasks. Setting this filter therefore counts tasks rather than rows: a task with several versions appears once, tagged with how many it has, which one is being shown and why. Nothing is dropped - the tag lists the other versions, and clearing the filter brings every row back.',
-  truthDelivered: 'Whether this task is one of the 412 already covered by the delivery audit on the Delivery tab. The two datasets share only the task name, so they are joined on it - exactly first, then with version and status suffixes such as -final or -v5 stripped, and never when that would pull in more than one task. The join was checked against the package hash on the 66 tasks that carry one, and agreed on all 66. Ready for delivery means accepted, package collectable at the current bar, and no match to anything already delivered. 93 audited tasks have no counterpart here at all, but only 2 of them are accepted, so the split is reliable for accepted work.',
+  truthDelivered: 'Whether this task is one of the 412 already covered by the delivery audit on the Delivery tab. The two datasets share only the task name, so they are joined on it - exactly first, then with version and status suffixes such as -final or -v5 stripped, and never when that would pull in more than one task. The join was checked against the package hash on the 66 tasks that carry one, and agreed on all 66. The three figures here are the audit against the whole pipeline, not against the current filter, and they add up: found plus not found is the 412. Not found does not mean missing - every one of those has an accepted package in the bucket; what the pipeline lacks is a verdict for it inside its window, which starts at the cut.',
   truthTasks: 'One row is one task, not one submission. Runs of the same task are grouped by the family the pipeline assigned them, and the row shows the canonical run: the one that got furthest, breaking ties on outcome and then on decision time. Every other run stays attached under the row. The State column carries the predicate that decided it, and the source is the verdict object it was read from.',
   finding: 'What the gate objected to. The filter searches every run of a task, so a task that tripped a check, was fixed and then accepted is still findable under that check. The row itself separates the two: the Findings line shows what the run behind the current verdict found, and names anything that came from an earlier run of the same task. An accepted task showing HARBOR-CHECK from an earlier run was not accepted despite failing - it failed, was fixed, and passed.',
   gateEra: 'Which gate judged the deciding run, taken from the bucket\'s own sentinel files rather than inferred. The gate switched from Opus to GLM-5.2 at 2026-09-13T20:05:59Z, KESTREL came on at 2026-09-15T03:40:49Z, and KESTREL was fully operating on both gates from 2026-09-16T05:06:54Z. Acceptances made by GLM-5.2 without KESTREL review were withdrawn on 16 September and are being re-gated.',
@@ -1043,22 +1044,39 @@ function renderTruthFigures(result, filtered) {
   // same population, because the fold only ran when that filter was on. The
   // three shown here add up by construction; build_delivered_index.py asserts
   // it, so the arithmetic cannot drift without the build failing.
+  // Every tile answers the same three questions, in the same order, because
+  // a number on its own has repeatedly been read as something it is not: 574
+  // as tasks, "not found here" as missing work, the makeup strip as a
+  // breakdown of the card above it. Saying what was done, what follows from
+  // it, and what it does NOT claim is what stops that.
+  const tip = (meaning, did, so, not) =>
+    `${meaning}
+
+Did · ${did}
+So · ${so}
+Not · ${not}`;
+
   const idx = truth?.deliveredIndex;
   const c = idx ? idx.counts : null;
   byId('truthJoin').innerHTML = idx
     ? stat('delivered', c.auditedTasks, 0,
-        `Every task the Delivery tab accounts for. The two figures beside it split this number and nothing else: ${fmt(c.auditedMatched)} + ${fmt(c.auditedUnmatched)} = ${fmt(c.auditedTasks)}.`,
+        tip('Every task the Delivery tab accounts for.',
+          `Read the four delivery manifests in assets/manifests - the files that were actually handed over - and checked them against the audit. Same ${fmt(c.auditedTasks)} names, same batch split, nothing in one and not the other.` +
+          (c.manifestLiveCheckedOn ? ` Then listed the bucket itself on ${c.manifestLiveCheckedOn}: ${fmt(c.manifestLiveConfirmed)} of the ${fmt(c.manifestTasks)} packages are still there at the exact object each manifest names.` : ''),
+          `The two figures beside it split this number and nothing else: ${fmt(c.auditedMatched)} + ${fmt(c.auditedUnmatched)} = ${fmt(c.auditedTasks)}, asserted at build time.`,
+          'It does not follow the filters. This is a fixed record of what went out, not a count of what is on screen.'),
         null, 'aqua') +
       stat('found in the pipeline', c.auditedMatched, c.auditedTasks,
-        `Audited tasks that resolve to a task here. Counted once each, however many times the task was submitted - ${fmt(c.deliveredRows)} pipeline rows stand behind them. Matched ${Object.entries(c.byMethod).map(([m, n]) => `${fmt(n)} by ${m}`).join(', ')}.`,
+        tip('Audited tasks that resolve to a task here.',
+          `Matched on the task name first, then with version suffixes stripped, then through the verdict identifier${c.manifestClaimed ? `, and finally through the bucket folder each manifest names - that last one placed ${fmt(c.manifestClaimed)} rows recorded under machine names like harbor-single-task-, which no name join can see` : ''}.`,
+          `Counted once each however many times the task was submitted: ${fmt(c.deliveredRows)} pipeline rows stand behind these ${fmt(c.auditedMatched)} tasks.`,
+          'Not a claim that the package is unchanged. It says the pipeline knows this task, not that what is in the bucket today is what shipped.'),
         null, 'green') +
       stat('not found here', c.auditedUnmatched, c.auditedTasks,
-        `The pipeline holds no verdict for these in its window - it reads verdicts decided on or after ${truth.cut}, which is ${fmt(truth.counts.inScope)} of ${fmt(truth.counts.identities)} identities. ` +
-        `They are not missing work: ${c.unmatchedInBucket === c.auditedUnmatched ? 'every one of them has' : `${fmt(c.unmatchedInBucket)} of them have`} an accepted package in the bucket` +
-        `${Object.keys(c.unmatchedCohorts || {}).length ? `, under ${Object.entries(c.unmatchedCohorts).map(([k, n]) => `${k} (${fmt(n)})`).join(', ')} - a task can sit in more than one, so those overlap` : ''}. ` +
-        `${c.unmatchedClaimed ? `${fmt(c.unmatchedClaimed)} of them is a name collision rather than an absence. ` : ''}` +
-        `${c.unmatchedAbsent ? `${fmt(c.unmatchedAbsent)} have no package anywhere in the scan. ` : ''}` +
-        'Click for the list.',
+        tip('The pipeline holds no verdict for these inside its window.',
+          `Looked for each one by name, by identifier and by bucket folder, then looked it up in the bucket scan to see where it actually sits.`,
+          `${c.unmatchedInBucket === c.auditedUnmatched ? 'Every one of them has' : `${fmt(c.unmatchedInBucket)} of them have`} an accepted package in the bucket${Object.keys(c.unmatchedCohorts || {}).length ? `, under ${Object.entries(c.unmatchedCohorts).map(([k, n]) => `${k} (${fmt(n)})`).join(', ')} - a task can sit in more than one, so those overlap` : ''}. Click for the list.`,
+          `Not missing work, and not an error. The pipeline reads verdicts decided on or after ${truth.cut}, ${fmt(truth.counts.inScope)} of ${fmt(truth.counts.identities)} identities; these fall outside it${c.unmatchedClaimed ? `, except ${fmt(c.unmatchedClaimed)} whose only row a shorter audited name reached first` : ''}.`),
         null, 'amber', 'unmatched',
         c.unmatchedAbsent === 0
           ? 'all accepted in the bucket'
@@ -1069,16 +1087,28 @@ function renderTruthFigures(result, filtered) {
   // because one is evidence and the other is a naming convention.
   byId('truthMakeup').innerHTML =
     stat('connector', result.connectorTasks, result.rows.length,
-      `task.toml declares mcp_servers. ${fmt(result.connectorTasks)} of the ${fmt(result.rows.length)} shown.`,
+      tip('The task mounts connector gyms - Slack, Jira, Drive and the rest.',
+        'Opened the package and read whether task.toml declares [[environment.mcp_servers]].',
+        'It is structural evidence, so it holds whatever the task is called.',
+        'Never inferred from the name. A gen- or code- prefix says nothing about whether a task talks to Slack.'),
       null, 'aqua') +
     stat('non-connector', result.nonConnectorTasks, result.rows.length,
-      `task.toml declares none. ${fmt(result.nonConnectorTasks)} of the ${fmt(result.rows.length)} shown.`,
+      tip('The package declares no connector gyms.',
+        'Same read of the same file; this is the negative answer, not the absence of one.',
+        'These are the tasks the domain split below describes.',
+        'Not a guess. A task with no package scanned is in "not known", not here.'),
       null, 'blue') +
     stat('not known', result.connectorUnknown, result.rows.length,
-      'No package was scanned for these, and the marker only exists inside one. Not a guess either way.',
+      tip('No package was scanned for these.',
+        'Looked for an archive in the bucket and found none at the current bar.',
+        'They are reported as unknown so the two figures beside them mean what they say.',
+        'Not "no". The marker only exists inside a package, and calling these non-connector would invent an answer for ' + fmt(result.connectorUnknown) + ' tasks.'),
       null, 'slate') +
     stat('named domain', result.rows.length - (result.domains['Not recorded'] || 0), result.rows.length,
-      'The task name starts with a domain prefix such as gen- or law-. The rest carry no prefix.',
+      tip('The task name starts with a domain prefix such as gen- or law-.',
+        'Read the prefix off the name. Nothing was opened.',
+        'It gives a rough subject split for the tasks that follow the convention.',
+        'Not structural, and not comparable to connector above. It is a naming convention most tasks simply do not follow.'),
       null, 'violet');
   animateCounts(byId('truthMakeup'));
 
@@ -1102,14 +1132,60 @@ function renderTruthFigures(result, filtered) {
     : '<p class="empty">No task in this selection carries a domain prefix.</p>';
 
   byId('truthFlags').innerHTML = [
-    ['carried over', result.carriedOver, 'Carried over', 'First decided before the cut and settled by the current pipeline.'],
-    ['awaiting re-gate', result.gateOnly, 'Awaiting KESTREL re-gate', 'Accepted under the GLM-5.2 gate only; waiting for the KESTREL re-gate.'],
-    ['possible duplicates', result.possibleDuplicates, 'Possible duplicates', 'Same task name and trainer as another task in scope.'],
-    ['packages at the bar', result.atCurrentBar, 'Packages at the current bar', 'A package is collectable at the current bar.'],
-    // Not a flag, but it belongs with the measures that do follow the filters
-    // rather than in the join above, which is a fixed reconciliation.
-    ['ready for delivery', result.readyTasks, null, 'Accepted, collectable at the current bar and not yet delivered. Counted as tasks, so a task submitted twice is one thing to send.'],
-  ].map(([label, value, chain, tip]) => stat(label, value, result.rows.length, `${tip} Share of the ${fmt(result.rows.length)} tasks shown; a task can carry several flags.`, chain, label === 'ready for delivery' ? 'blue' : 'slate')).join('');
+    ['carried over', result.carriedOver, 'Carried over',
+      tip('First decided before the cut, settled by the current pipeline.',
+        'Compared each task’s first decision against the cut date and kept the ones that predate it.',
+        'It says this pipeline finished work that was already open, so the accepted figure is not all new work.',
+        'Not a duplicate and not a re-run. One task, settled once, that started earlier.')],
+    ['awaiting re-gate', result.gateOnly, 'Awaiting KESTREL re-gate',
+      tip('Accepted under the GLM-5.2 gate only.',
+        'Read which gate each verdict was decided under and kept those never seen by KESTREL.',
+        'They need a re-gate before they can be treated as accepted at the current bar.',
+        'Not rejected. Nothing here has failed; it has not been asked the current question yet.')],
+    ['possible duplicates', result.possibleDuplicates, 'Possible duplicates',
+      tip('Shares a task name and trainer with another task in scope.',
+        'Grouped by name and owner and flagged the groups with more than one member.',
+        'It marks work that may be counted more than once, so a figure built on names should be read with that in mind.',
+        'Not merged and not removed. A task name can legitimately cover unrelated work, so these are flagged for a person, never folded automatically.')],
+    ['packages at the bar', result.atCurrentBar, 'Packages at the current bar',
+      tip('The package is collectable from the bucket today.',
+        'Checked each task against the current-bar listing of the bucket rather than trusting its verdict.',
+        'Only these can be delivered at all, which is why ready is drawn from them.',
+        'Not the same as accepted. A rejected task can have a collectable package, and an accepted one can have none.')],
+  ].map(([label, value, chain, copy]) => stat(label, value, result.rows.length,
+    `${copy}
+Share · of the ${fmt(result.rows.length)} tasks shown. These overlap; a task can carry several.`,
+    chain, 'slate')).join('');
+
+  // The question this answers is the one the strip above kept inviting and
+  // could not answer: what is left to send. Accepted with a collectable
+  // package splits cleanly into delivered and not, and nothing else, so these
+  // three add up where the join's 371 never could - that one counts audited
+  // tasks in every state, 62 of which are rejected or errored.
+  const barRows = result.acceptedAtBarRows;
+  const folded = barRows - result.acceptedAtBarTasks;
+  const mf = idx ? idx.counts.manifestClaimed : 0;
+  byId('truthSplit').innerHTML =
+    stat('accepted at the bar', result.acceptedAtBarTasks, 0,
+      tip('Accepted, with a package collectable at the current bar.',
+        `Took every accepted and legacy-accepted row whose package is in the current bar, then folded repeat submissions of the same task into one.`,
+        `${fmt(result.deliveredAtBarTasks)} + ${fmt(result.readyTasks)} = ${fmt(result.acceptedAtBarTasks)}. There is nothing else one of these can be, so the two beside it are the whole of it under any filter.`,
+        folded ? `Not the Accepted card above. That counts ${fmt(barRows)} rows; this counts the ${fmt(result.acceptedAtBarTasks)} tasks they fold into.`
+               : 'Not a count of rows - a task submitted twice is one thing to send.'),
+      null, 'green', null, folded ? `${fmt(barRows)} rows, repeats folded` : null) +
+    stat('already delivered', result.deliveredAtBarTasks, result.acceptedAtBarTasks,
+      tip('Of those, the ones already handed over.',
+        `Joined against the delivery manifests and the audit${mf ? `; ${fmt(mf)} of the matches came from the bucket folder a manifest names, catching rows the pipeline records as harbor-single-task-, task2 or code-C470` : ''}.`,
+        'These are excluded from ready, so a new manifest cannot reissue them.',
+        `Not the ${fmt(idx ? idx.counts.auditedMatched : 0)} in the join on the left. That counts audited tasks in every state; a rejected or errored one is not waiting to be delivered.`),
+      null, 'aqua') +
+    stat('ready for delivery', result.readyTasks, result.acceptedAtBarTasks,
+      tip('Accepted, collectable, and not yet delivered.',
+        'Took the accepted-at-the-bar tasks and removed everything the manifests and the audit account for.',
+        'This is what the manifest button cuts from, one entry per task.',
+        `Not a promise that all of them are new work. ${fmt(idx ? Object.keys(idx.suspect || {}).length : 0)} carry a name or identifier close enough to delivered work to be worth checking, and are flagged in the manifest rather than dropped.`),
+      null, 'blue');
+  animateCounts(byId('truthSplit'));
   animateCounts(byId('truthJoin')); animateCounts(byId('truthFlags'));
 }
 
@@ -1270,8 +1346,21 @@ function renderJoinGap(result) {
   note.hidden = false;
   const narrowed = result.rows.length !== result.population.length;
   setText('truthJoinText',
+    (c.manifestTasks
+      ? `The ${fmt(c.manifestTasks)} delivered tasks come from the four handover manifests ` +
+        `(${Object.entries(c.manifestBatches).map(([b, n]) => `${b} ${fmt(n)}`).join(', ')}), which agree with the Delivery tab exactly. ` +
+        (c.manifestLiveCheckedOn
+          ? `${fmt(c.manifestLiveConfirmed)} of the ${fmt(c.manifestTasks)} packages they name were still in the bucket when it was listed on ${c.manifestLiveCheckedOn}` +
+            (c.manifestLiveMissing ? `; ${fmt(c.manifestLiveMissing)} were not` : '') + '. '
+          : `${fmt(c.manifestVerified)} of their packages still match the bucket scan by content hash` +
+            (c.manifestRepackaged ? `, ${fmt(c.manifestRepackaged)} have been repackaged since delivery` : '') +
+            (c.manifestAbsent ? ` and ${fmt(c.manifestAbsent)} are not in the published scan` : '') + '. ')
+      : '') +
     `${fmt(c.auditedMatched)} audited tasks stand on ${fmt(c.deliveredRows)} pipeline rows, ` +
     `because a task submitted more than once is still one task delivered. ` +
+    (c.manifestClaimed
+      ? `${fmt(c.manifestClaimed)} of them were found only through the bucket folder the manifest names - rows the pipeline records under machine names - and ${fmt(c.manifestFlagged)} more look like versions of delivered work and are flagged rather than counted. `
+      : '') +
     (narrowed
       ? `Of the ${fmt(result.rows.length)} tasks now shown, ${fmt(result.deliveredTasks)} have been delivered and ${fmt(result.readyTasks)} are ready to go. `
       : `${fmt(result.readyTasks)} more are accepted, at the current bar and not yet delivered. `) +

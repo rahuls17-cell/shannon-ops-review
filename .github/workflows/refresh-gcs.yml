@@ -58,6 +58,10 @@ jobs:
           if [ -f assets/pipeline-truth.json ]; then
             python3 tools/build_connector_index.py
           fi
+          # A fresh scan changes which delivered packages still match the
+          # bucket by hash, so the manifest check is rebuilt with it. The
+          # manifests themselves never change; the bucket does.
+          python3 tools/build_manifest_index.py
       - name: Commit refreshed snapshot
         run: |
           git config user.name github-actions[bot]
@@ -74,7 +78,7 @@ jobs:
             git reset --hard origin/main
             cp "$RUNNER_TEMP/gcs-pipeline.json" assets/gcs-pipeline.json
             cp "$RUNNER_TEMP/pipeline-version.json" assets/pipeline-version.json
-            git add assets/gcs-pipeline.json assets/pipeline-version.json assets/connector-index.json
+            git add assets/gcs-pipeline.json assets/pipeline-version.json assets/connector-index.json assets/manifest-index.json
             if git diff --cached --quiet; then
               echo "snapshot is identical to main; nothing to commit"
               pushed=1

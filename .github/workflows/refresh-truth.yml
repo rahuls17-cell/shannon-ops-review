@@ -96,6 +96,10 @@ jobs:
         # rebuilt against the pipeline that was just produced. Reads two files
         # already in the repo; touches neither the bucket nor any credential.
         run: |
+          # First: the delivery manifests against the bucket scan. It produces
+          # the folder names that let the delivered index place rows the
+          # pipeline records under machine names, so it has to run before it.
+          python3 tools/build_manifest_index.py
           python3 tools/build_delivered_index.py
           # Same reason as the delivered index: it resolves to pipeline
           # task ids, so a rebuilt pipeline leaves it describing the
@@ -124,7 +128,7 @@ jobs:
             cp "$RUNNER_TEMP/pipeline-truth.json" assets/pipeline-truth.json
             cp "$RUNNER_TEMP/delivered-index.json" assets/delivered-index.json
             cp "$RUNNER_TEMP/connector-index.json" assets/connector-index.json
-            git add assets/pipeline-truth.json assets/delivered-index.json assets/connector-index.json
+            git add assets/pipeline-truth.json assets/delivered-index.json assets/connector-index.json assets/manifest-index.json
             if git diff --cached --quiet; then
               echo "asset is identical to main; nothing to commit"
               pushed=1

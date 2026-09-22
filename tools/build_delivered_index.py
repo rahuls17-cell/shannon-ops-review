@@ -39,6 +39,14 @@ from datetime import datetime, timezone
 # does not carry. Applied repeatedly, so `-fixed-v5` collapses as well.
 SUFFIX = re.compile(r'(?:-(?:final|v\d+|\d{4,}|copy|new|fixed|updated))+$')
 
+# Names the platform generates rather than a person choosing them. Kept
+# identical to tools/build_manifest_index.py. A row called one of these makes
+# no claim about what the work is, so a manifest saying that folder went out
+# under a human name has nothing to contradict.
+PLACEHOLDER = re.compile(
+    r'^(harbor-single-task-|autorun-|content-[0-9a-f]{16,}|task\d*$|task[-_]|'
+    r'g\d+_|code-c\d+$|tasks?$)', re.I)
+
 # Strongest first. An audited task is reported under the best key that found it,
 # while each row keeps the key that actually reached it.
 METHOD_RANK = {
@@ -86,7 +94,7 @@ def embeds(haystack, name):
         start = at + 1
 
 
-def build(audit, truth, scan_rows=()):
+def build(audit, truth, scan_rows=(), manifest_tasks=()):
     rows = truth['tasks']
 
     by_exact = collections.defaultdict(list)
@@ -206,6 +214,62 @@ def build(audit, truth, scan_rows=()):
             # rows recorded under an alias or a placeholder.
             delivered_task.setdefault(task_id, entry['task'])
 
+    # --- what the delivery manifests place that a name join cannot ----------
+    #
+    # The manifests were written when each package was cut, so they carry both
+    # the human task name and the BUCKET FOLDER it came from. The pipeline
+    # records plenty of tasks under machine names - harbor-single-task-7guod6fj,
+    # task2, code-C470 - which no name join can ever connect to an audit row.
+    # The folder name connects them.
+    #
+    # The bar for claiming a row is deliberately high, and higher than for the
+    # audit join, because this runs against rows that are otherwise about to be
+    # delivered. A row whose own name is a VERSION of a delivered name is not
+    # claimed: after a rejection that is usually rework which still has to
+    # ship, and marking it delivered means it never ships at all. Those are
+    # flagged and left in ready for a person to decide.
+    manifest_spelling = {}
+    for task in manifest_tasks:
+        for spelling in (task.get('name'), task.get('taskId'), task.get('folder')):
+            if spelling:
+                manifest_spelling.setdefault(key(spelling), task)
+
+    manifest_claimed, manifest_flagged = {}, {}
+    for row in rows:
+        if row['id'] in delivered:
+            continue
+        if not (row.get('atCurrentBar') and row['state'] in ('accepted', 'legacy accepted')):
+            continue
+        name = key(row['name'])
+        tail = key(row['id']).split(':', 1)[-1]
+        stem = re.sub(r'-[0-9a-f]{6,}$', '', tail)
+        task = next((manifest_spelling[c] for c in (name, tail, stem)
+                     if c in manifest_spelling), None)
+        if task is None:
+            continue
+        note = {'task': task['name'], 'batch': task['batch'], 'sha256': task.get('sha256'),
+                'sourceUri': task.get('sourceUri'), 'rowName': row['name']}
+        if norm(name) == norm(task['name']) and name != key(task['name']):
+            manifest_flagged[row['id']] = dict(note, why='the row name is a version of a '
+                'delivered name, so it may be rework that still has to ship')
+        elif PLACEHOLDER.match(name) or name == key(task['name']):
+            manifest_claimed[row['id']] = dict(note, why='the row carries a machine name; the '
+                f"manifest records this folder being packaged as {task['name']} in {task['batch']}")
+        else:
+            manifest_flagged[row['id']] = dict(note, why='matched through the family id rather '
+                'than the row name, so it is reported rather than counted')
+
+    for task_id, note in manifest_claimed.items():
+        delivered[task_id] = 'delivery manifest'
+        delivered_task.setdefault(task_id, note['task'])
+        methods['delivery manifest'] += 1
+        # An audited task the name join could not place is placed after all, so
+        # it stops being part of the gap the page reports.
+        was_unmatched = next((u for u in unmatched_audit if u['task'] == note['task']), None)
+        if was_unmatched:
+            unmatched_audit.remove(was_unmatched)
+            matched_audit.append(note['task'])
+
     marked = [r for r in rows if r['id'] in delivered]
     accepted = [r for r in rows if r['state'] in ('accepted', 'legacy accepted')]
     at_bar = [r for r in accepted if r.get('atCurrentBar')]
@@ -259,6 +323,12 @@ def build(audit, truth, scan_rows=()):
     assert set(matched_audit) == set(delivered_task.values()), (
         'an audited task is counted as found but names no pipeline row')
 
+    # The manifest's own warnings sit beside the two the name join produces:
+    # all three mean the same thing to a reader cutting a manifest - check this
+    # one before you send it.
+    for task_id, note in manifest_flagged.items():
+        suspect.setdefault(task_id, note['task'])
+
     return {
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
         'auditGeneratedAt': audit.get('dataGeneratedAt'),
@@ -274,6 +344,24 @@ def build(audit, truth, scan_rows=()):
             # Where the unmatched ones actually are. The page states this on
             # the tile, because "not found here" was being read as "missing"
             # and almost none of them are.
+            'manifestTasks': len(manifest_tasks),
+            'manifestVerified': sum(1 for t in manifest_tasks
+                                    if (t.get('bucket') or {}).get('state') == 'hash'),
+            'manifestRepackaged': sum(1 for t in manifest_tasks
+                                      if (t.get('bucket') or {}).get('state') == 'folder'),
+            'manifestAbsent': sum(1 for t in manifest_tasks
+                                  if (t.get('bucket') or {}).get('state') == 'absent'),
+            'manifestBatches': dict(collections.Counter(t['batch'] for t in manifest_tasks)),
+            # The live listing is the check that settles it; the scan-based one
+            # above only covers what the pipeline scanner walks.
+            'manifestLiveConfirmed': sum(1 for t in manifest_tasks
+                                         if (t.get('live') or {}).get('state') in ('object', 'moved')),
+            'manifestLiveMissing': sum(1 for t in manifest_tasks
+                                       if (t.get('live') or {}).get('state') in ('absent', 'repackaged')),
+            'manifestLiveCheckedOn': next((t['live']['checkedOn'] for t in manifest_tasks
+                                           if t.get('live')), None),
+            'manifestClaimed': len(manifest_claimed),
+            'manifestFlagged': len(manifest_flagged),
             'unmatchedInBucket': sum(1 for u in unmatched_audit if u.get('inBucket')),
             'unmatchedClaimed': sum(1 for u in unmatched_audit if u.get('claimedBy')),
             'unmatchedAbsent': sum(1 for u in unmatched_audit
@@ -308,6 +396,7 @@ def main():
     ap.add_argument('--audit', default='assets/delivery-audit.json')
     ap.add_argument('--truth', default='assets/pipeline-truth.json')
     ap.add_argument('--scan', default='assets/gcs-pipeline.json')
+    ap.add_argument('--manifest', default='assets/manifest-index.json')
     ap.add_argument('--out', default='assets/delivered-index.json')
     args = ap.parse_args()
 
@@ -320,7 +409,13 @@ def main():
     if scan_path.exists():
         blob = json.loads(scan_path.read_text(encoding='utf-8'))
         scan_rows = blob.get('tasks') or (blob.get('finalisation') or {}).get('tasks') or []
-    payload = build(audit, truth, scan_rows)
+    # Optional, and the join still works without it - it just goes back to
+    # what a name alone can see.
+    manifest_path = pathlib.Path(args.manifest)
+    manifest_tasks = (json.loads(manifest_path.read_text(encoding='utf-8'))['tasks']
+                      if manifest_path.exists() else [])
+
+    payload = build(audit, truth, scan_rows, manifest_tasks)
 
     out = pathlib.Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -333,6 +428,10 @@ def main():
           f"{c['unmatchedCohorts']}")
     print(f"    name collision      : {c['unmatchedClaimed']:>6}")
     print(f"    nowhere at all      : {c['unmatchedAbsent']:>6}")
+    print(f"  placed by manifest    : {c['manifestClaimed']:>6}   "
+          f"(rows the name join could not see)")
+    print(f"  manifest flagged      : {c['manifestFlagged']:>6}   "
+          f"(a version of delivered work; left in ready)")
     print(f"  unmatched             : {c['auditedUnmatched']:>6}   "
           f"({c['unmatchedAccepted']} of them Accepted)")
     print(f"pipeline tasks          : {c['pipelineTasks']:>6}")

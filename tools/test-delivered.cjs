@@ -293,3 +293,167 @@ assert.ok(/so those overlap/.test(tile), 'the tile must say the cohort counts ov
 console.log(`the ${jc.auditedUnmatched} not found here: ${jc.unmatchedInBucket} have an accepted package in the bucket, `
   + `${jc.unmatchedClaimed} name collision, ${jc.unmatchedAbsent} missing outright`);
 Object.entries(jc.unmatchedCohorts).forEach(([c, n]) => console.log(`    ${String(n).padStart(3)}  ${c}`));
+
+// --- the accepted-at-the-bar split ------------------------------------------
+// The one strip on this tab whose figures add up, and the reason they do is
+// that the population has exactly two states: a task that is accepted and
+// whose package is collectable has either gone out or has not. It has to hold
+// under every filter, not just unfiltered, or the strip tells the reader
+// something that stops being true the moment they touch a control.
+{
+  const model = prepareTruth(truthAsset, index);
+  [{}, {connector: 'yes'}, {connector: 'no'}, {state: 'accepted'},
+   {delivered: 'ready'}, {delivered: 'yes'}, {carriedOver: 'yes'},
+   {search: 'audit'}].forEach(f => {
+    const r = filterTruth(model.rows, f);
+    assert.equal(r.acceptedAtBarTasks, r.deliveredAtBarTasks + r.readyTasks,
+      `delivered + ready must be the whole of accepted-at-the-bar under ${JSON.stringify(f)}`);
+    assert.ok(r.acceptedAtBarRows >= r.acceptedAtBarTasks,
+      'rows can never be fewer than the tasks they fold into');
+  });
+
+  const whole = filterTruth(model.rows, {});
+  // The split is a subset of the join, never the same number under two names:
+  // the join counts audited tasks in every state, and a rejected task is not
+  // waiting to be delivered. Conflating them is what made this look wrong.
+  assert.ok(whole.deliveredAtBarTasks < whole.deliveredTasks,
+    'some delivered tasks are not accepted at the bar');
+  // And it is a task count, so it must not equal the row count on the Accepted
+  // card - that difference is the whole reason the strip exists.
+  assert.ok(whole.acceptedAtBarRows > whole.acceptedAtBarTasks,
+    'sanity: repeat submissions exist, or the fold proves nothing');
+
+  const htmlSplit = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+  assert.ok(/id="truthSplit" class="stats stats-3"/.test(htmlSplit), 'the split holds three tiles');
+  const appSplit = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+  assert.ok(/truthSplit:/.test(appSplit), 'the split needs its own explanation, not the join’s');
+  const flagsBlock = appSplit.slice(appSplit.indexOf("byId('truthFlags').innerHTML"),
+                                    appSplit.indexOf("byId('truthSplit').innerHTML"));
+  assert.ok(!/ready for delivery/.test(flagsBlock),
+    'ready belongs to the split, not to a strip labelled as overlapping');
+
+  console.log(`accepted at the bar splits: ${whole.acceptedAtBarTasks} tasks = `
+    + `${whole.deliveredAtBarTasks} delivered + ${whole.readyTasks} ready `
+    + `(folded from ${whole.acceptedAtBarRows} rows; the join's ${whole.deliveredTasks} counts every state)`);
+}
+
+// A legacy-accepted task with a collectable package is not in today's data, so
+// nothing above would notice if `ready` quietly stopped covering that state -
+// the split would go on balancing because every such row is zero. Synthetic
+// rows make the branch real: a task waiting to be delivered under the old gate
+// is still a task waiting to be delivered.
+{
+  const row = (id, state, over) => Object.assign({
+    id, name: id, state, atCurrentBar: true, delivered: false, runs: 1,
+    gateEra: 'KESTREL full', owner: 'a@turing.com', decided: '2026-09-10',
+    findings: [], cohorts: [], connector: null, domain: 'Not recorded',
+  }, over);
+  const rows = [
+    row('a', 'accepted'),
+    row('b', 'accepted', {delivered: true, deliveredTask: 'b'}),
+    row('c', 'legacy accepted'),
+    row('d', 'legacy accepted', {delivered: true, deliveredTask: 'd'}),
+    row('e', 'rejected'),
+    row('f', 'accepted', {atCurrentBar: false}),
+  ];
+  const r = filterTruth(rows, {});
+  assert.equal(r.acceptedAtBarTasks, 4, 'both accepted states count, and only at the bar');
+  assert.equal(r.deliveredAtBarTasks, 2);
+  assert.equal(r.readyTasks, 2, 'a legacy-accepted task at the bar is still ready to send');
+  assert.equal(r.acceptedAtBarTasks, r.deliveredAtBarTasks + r.readyTasks);
+  console.log('legacy-accepted work is counted as ready: 4 = 2 delivered + 2 ready on synthetic rows');
+}
+
+// --- the delivery manifests -------------------------------------------------
+// These are the record of what was handed over, so what is asserted here is
+// that the page cannot claim more than they support.
+{
+  const mpath = path.join(root, 'assets', 'manifest-index.json');
+  assert.ok(fs.existsSync(mpath), 'the manifest index must be built and committed');
+  const mi = JSON.parse(fs.readFileSync(mpath, 'utf8'));
+  const mc = mi.counts;
+
+  assert.equal(mc.tasks, 412, 'four manifests, 412 handed-over tasks');
+  assert.equal(Object.values(mc.batches).reduce((a, b) => a + b, 0), mc.tasks);
+  assert.equal(mc.verified + mc.repackaged + mc.absent, mc.tasks,
+    'every delivered package is accounted for against the bucket');
+  assert.equal(new Set(mi.tasks.map(t => t.name)).size, mc.tasks,
+    'a task name must not appear in two manifests');
+  mi.tasks.forEach(t => {
+    assert.ok(t.sha256, `${t.name} has no hash, so its delivery cannot be checked`);
+    assert.ok(t.bucket && t.bucket.state, `${t.name} was never checked against the bucket`);
+  });
+
+  // The manifests and the audit are the same 412. If they ever diverge, one of
+  // the two is wrong about what shipped and the page must not pick a side
+  // silently.
+  const audit = JSON.parse(fs.readFileSync(path.join(root, 'assets', 'delivery-audit.json'), 'utf8'));
+  const norm = s => String(s || '').trim().toLowerCase().replace(/^(harbor|obi)\//, '');
+  const auditNames = new Set(audit.rows.map(r => norm(r.task)));
+  const manNames = new Set(mi.tasks.map(t => norm(t.name)));
+  assert.equal(auditNames.size, manNames.size);
+  assert.ok([...auditNames].every(n => manNames.has(n)),
+    'the delivery audit names a task no manifest delivered');
+
+  // Claims are the point of the exercise, and the refusal is the safeguard:
+  // a row named like a VERSION of delivered work may be rework that still has
+  // to ship, and marking it delivered means it never ships at all.
+  assert.ok(jc.manifestClaimed > 0, 'the manifests should place rows the name join cannot');
+  assert.equal(jc.manifestClaimed, (index.counts.byMethod['delivery manifest'] || 0),
+    'every manifest-placed row must be recorded under that method');
+  const claimedIds = Object.entries(index.delivered)
+    .filter(([, how]) => how === 'delivery manifest').map(([id]) => id);
+  assert.equal(claimedIds.length, jc.manifestClaimed);
+  const byId2 = new Map(truthAsset.tasks.map(r => [r.id, r]));
+  const PLACEHOLDER = /^(harbor-single-task-|autorun-|content-[0-9a-f]{16,}|task\d*$|task[-_]|g\d+_|code-c\d+$|tasks?$)/i;
+  claimedIds.forEach(id => {
+    const row = byId2.get(id);
+    assert.ok(row, `${id} was claimed but is not a pipeline task`);
+    const task = index.deliveredTask[id];
+    assert.ok(task, `${id} was claimed but names no delivered task`);
+    const name = norm(row.name);
+    assert.ok(PLACEHOLDER.test(name) || name === norm(task),
+      `${row.name} was claimed on a name that is neither a placeholder nor the delivered name`);
+  });
+
+  // Nothing may be both delivered and flagged as maybe-delivered.
+  const flagged = new Set(Object.keys(index.suspect || {}));
+  assert.ok(claimedIds.every(id => !flagged.has(id)),
+    'a row cannot be both counted as delivered and flagged as possibly delivered');
+
+  console.log(`manifests: ${mc.tasks} delivered tasks in ${Object.keys(mc.batches).length} batches`);
+  console.log(`  against the bucket: ${mc.verified} hash-verified, ${mc.repackaged} repackaged since, ${mc.absent} not in the scan`);
+  console.log(`  placed ${jc.manifestClaimed} rows the name join could not see, flagged ${jc.manifestFlagged} more`);
+}
+
+// --- the live bucket listing ------------------------------------------------
+// A listing needs credentials, so CI cannot make one. That makes two failure
+// modes worth guarding: a rebuild silently ERASING the check, and the page
+// presenting a months-old check as if it were fresh.
+{
+  const mi = JSON.parse(fs.readFileSync(path.join(root, 'assets', 'manifest-index.json'), 'utf8'));
+  const mc = mi.counts;
+  assert.ok(mc.liveCheckedOn,
+    'the committed manifest index must carry a live bucket check; a rebuild without '
+    + '--listing has to carry the previous answers forward, not erase them');
+  {
+    const states = mi.tasks.filter(t => t.live).length;
+    assert.equal(states, mc.tasks, 'a live check must cover every delivered package or none');
+    assert.equal(Object.values(mc.live).reduce((a, b) => a + b, 0), mc.tasks);
+    assert.equal(mc.liveConfirmed,
+      (mc.live.object || 0) + (mc.live.moved || 0),
+      'confirmed means the exact archive is there, at its path or moved within its folder');
+    mi.tasks.forEach(t => assert.ok(t.live.checkedOn,
+      `${t.name} has a live state with no date, so nobody can tell how old it is`));
+    // The live answer must reach the page, and it must not be quietly replaced
+    // by the scan-based one, which covers less and reported more as missing.
+    assert.equal(index.counts.manifestLiveConfirmed, mc.liveConfirmed);
+    assert.equal(index.counts.manifestLiveCheckedOn, mc.liveCheckedOn);
+    const app2 = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+    assert.ok(/manifestLiveCheckedOn/.test(app2),
+      'the page must say when the bucket was listed, not just what was found');
+    console.log(`live listing on ${mc.liveCheckedOn}: ${mc.liveConfirmed}/${mc.tasks} packages still in the bucket `
+      + `(${mc.live.object || 0} at their exact path, ${mc.live.moved || 0} moved within their folder, `
+      + `${(mc.live.absent || 0) + (mc.live.repackaged || 0)} not found)`);
+  }
+}

@@ -1,0 +1,3210 @@
+{
+  "schema_version": "task-packaging/1.0",
+  "created_at": "2026-09-08T00:17:45.075096+05:30",
+  "sources": [
+    {
+      "type": "gcs_prefix",
+      "uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/",
+      "snapshot": "read-only listing 2026-09-07; 177 task names / 203 archives"
+    },
+    {
+      "type": "local_verified_release",
+      "path": "release/",
+      "note": "archives already downloaded, hash-verified against their GCS object names, audited and remediated in this workspace"
+    }
+  ],
+  "selection_rule": "60 unique canonical task families frozen as manifest delivery-60-v1 (selection_manifest.csv, sha256 cb3a2c73400ff36d952dd29780383f69a55ad4569422c71471eba892b803d272); 12 connector + 48 non-connector; tasks failing all four GLM runs excluded at selection",
+  "difficulty_rule": "successes out of 4 completed scored trials, success = reward exactly 1.0. 3/4 successes -> easier; 0, 1 or 2 successes -> harder. No 4/4-success task is present in this delivery.",
+  "requested_count": 60,
+  "packaged_count": 60,
+  "review_needed_count": 0,
+  "counts_by_difficulty": {
+    "easier": 11,
+    "harder": 49
+  },
+  "counts_by_category": {
+    "connector": 12,
+    "engineering": 10,
+    "finance": 4,
+    "other": 19,
+    "health": 9,
+    "legal": 6
+  },
+  "counts_by_connector": {
+    "connector": 12,
+    "non-connector": 48
+  },
+  "integrity": {
+    "archives_byte_identical_to_gcs_source": 32,
+    "archives_modified_in_this_workspace": 28,
+    "modifications_recorded_in": "release/MODIFICATIONS.json and release/CHANGELOG.md"
+  },
+  "verification_limits": "Difficulty is taken from the vendor four-run GLM battery checked into each package under evaluations/difficulty/r1..r4. No new evaluations were run during packaging. QC status is the client-reported harbor check verdict, reproduced not re-adjudicated. Packaging assigns no SHIP approval.",
+  "tasks": [
+    {
+      "task_id": "harbor/appointment-backlog-placeholder-and-duplicate-audit",
+      "task_name": "appointment-backlog-placeholder-and-duplicate-audit",
+      "pipeline_batch_id": "hc2-9407fc94e1a0",
+      "original_filename": "appointment-backlog-placeholder-and-duplicate-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/connector/appointment-backlog-placeholder-and-duplicate-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.625,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "notion-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/appointment-backlog-placeholder-and-duplicate-audit/cc44e6932326ade15607acc6425e7608b6479587335201dd13c7addfb518773d.zip",
+      "source_version": "cc44e6932326ade15607acc6425e7608b6479587335201dd13c7addfb518773d",
+      "source_generation": null,
+      "sha256": "c993d2e5b5f7b2a107ccf1cc3185925045a353c6816dac6964e7f670bd09085f",
+      "size_bytes": 11025726,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 335,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning",
+          "dataset_declaration"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "harbor/ephyra-trunk-dependency-churn-manifest-audit",
+      "task_name": "ephyra-trunk-dependency-churn-manifest-audit",
+      "pipeline_batch_id": "tb2-4c7a4e638f9a",
+      "original_filename": "ephyra-trunk-dependency-churn-manifest-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/ephyra-trunk-dependency-churn-manifest-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.8,
+          1.0,
+          0.0,
+          1.0
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "github-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ephyra-trunk-dependency-churn-manifest-audit/88dcc6de3b1d235d5bd5d40f073d53a5591d642bfd20ff8676af255a7200e6ec.zip",
+      "source_version": "88dcc6de3b1d235d5bd5d40f073d53a5591d642bfd20ff8676af255a7200e6ec",
+      "source_generation": null,
+      "sha256": "17505a556c56729f50d9d8ee6d7d787eeb2d67d6d920d368bcf64ea52dbd9287",
+      "size_bytes": 18208254,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 396,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning",
+          "dataset_declaration"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "harbor/which-bug-tickets-went-cold",
+      "task_name": "which-bug-tickets-went-cold",
+      "pipeline_batch_id": "hc2-0914beceae1b",
+      "original_filename": "which-bug-tickets-went-cold.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/which-bug-tickets-went-cold.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.9231,
+          1.0,
+          1.0,
+          0.9231
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "slack-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-f9w4ghvz/3ecb7ba7b8aa4dfbaf9886c695ceec164429eb13a965ae4dfc2dda23c49e5817.zip",
+      "source_version": "3ecb7ba7b8aa4dfbaf9886c695ceec164429eb13a965ae4dfc2dda23c49e5817",
+      "source_generation": null,
+      "sha256": "475b589acaf06fd9109b325bebf95882895464d89415df18a2c02b6cc64a29c2",
+      "size_bytes": 13341841,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 375,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "harbor/drive-version-history-retention-review",
+      "task_name": "drive-version-history-retention-review",
+      "pipeline_batch_id": "tb2-82f1ad3b3a55",
+      "original_filename": "drive-version-history-retention-review.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/connector/drive-version-history-retention-review.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "google-drive-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-veeecron/1a2ecb735fbe0783cd668df0284d82fa016f8be2817fcdc6bac210bbe884bcea.zip",
+      "source_version": "1a2ecb735fbe0783cd668df0284d82fa016f8be2817fcdc6bac210bbe884bcea",
+      "source_generation": null,
+      "sha256": "774b26777de96e03d8b8336714293cf09e7f12dce15895f78366e7db3b45485a",
+      "size_bytes": 4813865,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 340,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "harbor/founding-month-thread-first-answer-credit",
+      "task_name": "founding-month-thread-first-answer-credit",
+      "pipeline_batch_id": "tb2-eb077e1dd2e5",
+      "original_filename": "founding-month-thread-first-answer-credit.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/connector/founding-month-thread-first-answer-credit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.8571,
+          1.0
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "slack-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-zq647anl/94cb04008f8e361ece63386de2a69e57fe7072d0f60cd93b47277858707b7e08.zip",
+      "source_version": "94cb04008f8e361ece63386de2a69e57fe7072d0f60cd93b47277858707b7e08",
+      "source_generation": null,
+      "sha256": "116e9aff66183f09444953204cf03fcf64cc6bd884eb7d79f324154d339090fa",
+      "size_bytes": 7483500,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 336,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "harbor/how-much-of-my-drive-is-link-only",
+      "task_name": "how-much-of-my-drive-is-link-only",
+      "pipeline_batch_id": "hc2-2f7cb57871ca",
+      "original_filename": "how-much-of-my-drive-is-link-only.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/how-much-of-my-drive-is-link-only.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.2,
+          1.0,
+          0.8,
+          1.0
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "google-drive-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-much-of-my-drive-is-link-only/6dcd8694fc1d20d4a0c39553db9cd800376283edb3cb87ffabb460e672863104.zip",
+      "source_version": "6dcd8694fc1d20d4a0c39553db9cd800376283edb3cb87ffabb460e672863104",
+      "source_generation": null,
+      "sha256": "3181358347d408bc92b72c4d8edc5c8fee8d3f652f4e39842609b94f7eed3958",
+      "size_bytes": 4866026,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 352,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning",
+          "dataset_declaration",
+          "readme_generation"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "harbor/onboarding-pack-feature-readiness-spread",
+      "task_name": "onboarding-pack-feature-readiness-spread",
+      "pipeline_batch_id": "tb2-fe37915f4d13",
+      "original_filename": "onboarding-pack-feature-readiness-spread.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/onboarding-pack-feature-readiness-spread.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          1.0,
+          0.1667,
+          1.0
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "notion-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/onboarding-pack-feature-readiness-spread/b649b4184ddcc0d3eb285877fb1bb4a382dd06319a39933aaccdbedb451a742a.zip",
+      "source_version": "b649b4184ddcc0d3eb285877fb1bb4a382dd06319a39933aaccdbedb451a742a",
+      "source_generation": null,
+      "sha256": "12eda2c018ae073987f703bcc3cfd2f098968aca70d59841bacbed2f94e371bc",
+      "size_bytes": 7087046,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 330,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning",
+          "dataset_declaration"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "harbor/opened-files-migration-volume-signoff",
+      "task_name": "opened-files-migration-volume-signoff",
+      "pipeline_batch_id": "hc2-963db0ab4007",
+      "original_filename": "opened-files-migration-volume-signoff.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/connector/opened-files-migration-volume-signoff.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          1.0,
+          0.2
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "google-drive-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/opened-files-migration-volume-signoff/84dcb8320886ca48e54a66a4155113216e1eaa6197bde2a6deac91bc78be7874.zip",
+      "source_version": "84dcb8320886ca48e54a66a4155113216e1eaa6197bde2a6deac91bc78be7874",
+      "source_generation": null,
+      "sha256": "8dbded32f378cf1bbdd71b7c95a65862398557a7ed1f7e7710ee3e8706b1afa8",
+      "size_bytes": 4355986,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 345,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning",
+          "dataset_declaration"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "review_csv_pass_rate": 1
+      }
+    },
+    {
+      "task_id": "harbor/relay-only-correspondents-cutover-exposure",
+      "task_name": "relay-only-correspondents-cutover-exposure",
+      "pipeline_batch_id": "tb2-94b95639f870",
+      "original_filename": "relay-only-correspondents-cutover-exposure.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/connector/relay-only-correspondents-cutover-exposure.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "outlook-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/relay-only-correspondents-cutover-exposure/d127bf20a76fd01e0ad080f658c53650963d5e060837db67d041d56e001b1ee9.zip",
+      "source_version": "d127bf20a76fd01e0ad080f658c53650963d5e060837db67d041d56e001b1ee9",
+      "source_generation": null,
+      "sha256": "92e134a6bbfb025191701e0b379547903d5219796c5251b941fcf131d3ae4a40",
+      "size_bytes": 9916763,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 337,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning",
+          "dataset_declaration"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "review_csv_pass_rate": 1
+      }
+    },
+    {
+      "task_id": "harbor/rsvp-silence-backlog-among-2026-regulars",
+      "task_name": "rsvp-silence-backlog-among-2026-regulars",
+      "pipeline_batch_id": "hc2-fd2223319d5e",
+      "original_filename": "rsvp-silence-backlog-among-2026-regulars.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/connector/rsvp-silence-backlog-among-2026-regulars.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.8,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "email-calendar-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/rsvp-silence-backlog-among-2026-regulars/71782d26849e1cadea87a3eecb46a545d23fdec0a723f6ecf1c9247aec06ec49.zip",
+      "source_version": "71782d26849e1cadea87a3eecb46a545d23fdec0a723f6ecf1c9247aec06ec49",
+      "source_generation": null,
+      "sha256": "22f495a5c072dc3e8bcf7cc0223b22dc5c9846dfdf3b57f030a4e36ff4adfbe6",
+      "size_bytes": 7889514,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 322,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning",
+          "dataset_declaration"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "review_csv_pass_rate": 1
+      }
+    },
+    {
+      "task_id": "harbor/unanswered-invitation-silence-audit",
+      "task_name": "unanswered-invitation-silence-audit",
+      "pipeline_batch_id": "tb2-5793246fa43b",
+      "original_filename": "unanswered-invitation-silence-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/unanswered-invitation-silence-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.6,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "email-calendar-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unanswered-invitation-silence-audit/d4fa3fa87f59768b6e492585f128ed07b391aeb2c77566b464184ffd6350c6b5.zip",
+      "source_version": "d4fa3fa87f59768b6e492585f128ed07b391aeb2c77566b464184ffd6350c6b5",
+      "source_generation": null,
+      "sha256": "bf3fddd52b1f7b783d8e3fa5d42046ab8d1c743f7d2f7d73fabcc9f3173dbc41",
+      "size_bytes": 5418259,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 337,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning",
+          "dataset_declaration"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "review_csv_pass_rate": 1
+      }
+    },
+    {
+      "task_id": "harbor/unclosed-review-thread-backlog-ownership-split",
+      "task_name": "unclosed-review-thread-backlog-ownership-split",
+      "pipeline_batch_id": "tb2-e89dc1a45737",
+      "original_filename": "unclosed-review-thread-backlog-ownership-split.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/connector/unclosed-review-thread-backlog-ownership-split.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.5,
+          1.0,
+          0.5
+        ]
+      },
+      "category_normalized": "connector",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": true,
+        "services": [
+          "google-drive-gym"
+        ],
+        "provenance": "real",
+        "provenance_basis": "declared dataset = \"real\"; see MODIFICATIONS.json _dataset_declaration"
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unclosed-review-thread-backlog-ownership-split/01bf182adb5fea88d40c89d407b34ee0378296fa560aa37222a1bea314e84408.zip",
+      "source_version": "01bf182adb5fea88d40c89d407b34ee0378296fa560aa37222a1bea314e84408",
+      "source_generation": null,
+      "sha256": "390601306d66197afb8bf9a3aba409705fd604a4105c4609d3001e759de5fd10",
+      "size_bytes": 5719753,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 342,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning",
+          "dataset_declaration"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/code-c153-content-pipeline-schedule-audit",
+      "task_name": "code-c153-content-pipeline-schedule-audit",
+      "pipeline_batch_id": "hc2-55d71908f76d",
+      "original_filename": "code-c153-content-pipeline-schedule-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c153-content-pipeline-schedule-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          1.0,
+          0.0,
+          1.0
+        ]
+      },
+      "category_normalized": "engineering",
+      "category_original": "code",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c153-content-pipeline-schedule-audit/56b2be255760c20b4e63e1e3a15c4cee197f204e3894bffcf73f4f9df937ed08.zip",
+      "source_version": "56b2be255760c20b4e63e1e3a15c4cee197f204e3894bffcf73f4f9df937ed08",
+      "source_generation": null,
+      "sha256": "d985abbcdbc8dae09579884456f0765f63613b090013c513e5fbc668e936f476",
+      "size_bytes": 5129107,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 424,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/code-c165-business-profile-completeness-audit",
+      "task_name": "code-c165-business-profile-completeness-audit",
+      "pipeline_batch_id": "tb2-ae51199f6f3f",
+      "original_filename": "code-c165-business-profile-completeness-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c165-business-profile-completeness-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "engineering",
+      "category_original": "code",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c165-business-profile-completeness-audit/c1d8b92fa64860b8132fdab0c8e700f96026821acaa1c69575deba86554aadb9.zip",
+      "source_version": "c1d8b92fa64860b8132fdab0c8e700f96026821acaa1c69575deba86554aadb9",
+      "source_generation": null,
+      "sha256": "2be068a2a21e9df24a1c6c206a80b133ae3c36e668341b25b7d9cf0456886fa8",
+      "size_bytes": 3915382,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 399,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 55
+      }
+    },
+    {
+      "task_id": "obi/code-c337-measure-job-rescission-hold-audit",
+      "task_name": "code-c337-measure-job-rescission-hold-audit",
+      "pipeline_batch_id": "tb2-5698833af67c",
+      "original_filename": "code-c337-measure-job-rescission-hold-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c337-measure-job-rescission-hold-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.377143,
+          1.0,
+          1.0,
+          0.377143
+        ]
+      },
+      "category_normalized": "engineering",
+      "category_original": "code",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c337-measure-job-rescission-hold-audit/6dc97b4953db503cc18f6b195d658dd10bfb01604befa95c00ed413aa47b92de.zip",
+      "source_version": "6dc97b4953db503cc18f6b195d658dd10bfb01604befa95c00ed413aa47b92de",
+      "source_generation": null,
+      "sha256": "6dc97b4953db503cc18f6b195d658dd10bfb01604befa95c00ed413aa47b92de",
+      "size_bytes": 8520427,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 396,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/code-c395-cis-subcontractor-deduction-audit",
+      "task_name": "code-c395-cis-subcontractor-deduction-audit",
+      "pipeline_batch_id": "auto-code-c395-cis-subcontractor-deduction-audit-dd169b-v1-sna-zjbd",
+      "original_filename": "code-c395-cis-subcontractor-deduction-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c395-cis-subcontractor-deduction-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.2875,
+          1.0,
+          0.2875
+        ]
+      },
+      "category_normalized": "engineering",
+      "category_original": "code",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c395-cis-subcontractor-deduction-audit/ff72ce0d328e87dd7438f1793a8d722f6dfb0d868e75bc2b7cef4ad908c8d924.zip",
+      "source_version": "ff72ce0d328e87dd7438f1793a8d722f6dfb0d868e75bc2b7cef4ad908c8d924",
+      "source_generation": null,
+      "sha256": "f35edda684901e163fe6816a946528d392941dbf20113ea5bda1148871bcc334",
+      "size_bytes": 6316275,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 487,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 28
+      }
+    },
+    {
+      "task_id": "obi/code-c418-territory-event-calendar-coverage-audit",
+      "task_name": "code-c418-territory-event-calendar-coverage-audit",
+      "pipeline_batch_id": "tb2-adce63cb1947",
+      "original_filename": "code-c418-territory-event-calendar-coverage-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c418-territory-event-calendar-coverage-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "engineering",
+      "category_original": "code",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c418-territory-event-calendar-coverage-audit/e04d1d31373b36610b391848e8c089161aea1a822ef614f4fe8823bc1bb4ea8c.zip",
+      "source_version": "e04d1d31373b36610b391848e8c089161aea1a822ef614f4fe8823bc1bb4ea8c",
+      "source_generation": null,
+      "sha256": "f65fd21f5bc5d711f9303d702daf216750c12ad7e359fb6f5647c158cf9f3329",
+      "size_bytes": 3732566,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 372,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "readme_generation"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/code-c423-multi-campus-account-access-audit",
+      "task_name": "code-c423-multi-campus-account-access-audit",
+      "pipeline_batch_id": "hc2-e970bdc86508",
+      "original_filename": "code-c423-multi-campus-account-access-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c423-multi-campus-account-access-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.145,
+          1.0,
+          1.0,
+          0.145
+        ]
+      },
+      "category_normalized": "engineering",
+      "category_original": "code",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c423-multi-campus-account-access-audit/356abdfd2c3f063a9ac5581ebe58f2b7c2aac6d79f6019f79b609d3409cee55f.zip",
+      "source_version": "356abdfd2c3f063a9ac5581ebe58f2b7c2aac6d79f6019f79b609d3409cee55f",
+      "source_generation": null,
+      "sha256": "88c6f57f401e2569d7a8aaf0eea9626daa4ed93716da66d9ccc7f120b42ef018",
+      "size_bytes": 6710358,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 503,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 30
+      }
+    },
+    {
+      "task_id": "obi/code-c443-plan-list-field-mapping-migration-audit",
+      "task_name": "code-c443-plan-list-field-mapping-migration-audit",
+      "pipeline_batch_id": "auto-code-c443-plan-list-field-mapping-migration-audi-3100ee-v1-sna-hnws",
+      "original_filename": "code-c443-plan-list-field-mapping-migration-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c443-plan-list-field-mapping-migration-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.216667,
+          0.216667,
+          1.0
+        ]
+      },
+      "category_normalized": "engineering",
+      "category_original": "code",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c443-plan-list-field-mapping-migration-audit/17bc3c60c99bd481a428984a23168bb61f2c563291c696532ba1142323e872b6.zip",
+      "source_version": "17bc3c60c99bd481a428984a23168bb61f2c563291c696532ba1142323e872b6",
+      "source_generation": null,
+      "sha256": "2a8ae662c176b753ebd86c37877c028d3a1353de1214973f48643b28bffd4d0c",
+      "size_bytes": 6277079,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 487,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 45
+      }
+    },
+    {
+      "task_id": "obi/code-c477-contract-review-queue-sla-audit",
+      "task_name": "code-c477-contract-review-queue-sla-audit",
+      "pipeline_batch_id": "auto-code-c477-contract-review-queue-sla-audit-c376d5-v6-sna-mdff",
+      "original_filename": "code-c477-contract-review-queue-sla-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c477-contract-review-queue-sla-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.2,
+          1.0,
+          1.0,
+          0.2
+        ]
+      },
+      "category_normalized": "engineering",
+      "category_original": "code",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c477-contract-review-queue-sla-audit/dd5d1f8ce766fe6a65f9aa27e1c49bed8b467d40f45b7466d9a688d081e50875.zip",
+      "source_version": "dd5d1f8ce766fe6a65f9aa27e1c49bed8b467d40f45b7466d9a688d081e50875",
+      "source_generation": null,
+      "sha256": "dd5d1f8ce766fe6a65f9aa27e1c49bed8b467d40f45b7466d9a688d081e50875",
+      "size_bytes": 6501938,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 412,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/code-c502-opportunity-cosell-split-agreement-audit",
+      "task_name": "code-c502-opportunity-cosell-split-agreement-audit",
+      "pipeline_batch_id": "hc2-ef29a09cde68",
+      "original_filename": "code-c502-opportunity-cosell-split-agreement-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c502-opportunity-cosell-split-agreement-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "engineering",
+      "category_original": "code",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c502-opportunity-cosell-split-agreement-audit/1cd6faed549600f3291c1a72390955301f83645ee825af778dfbbe04bbae73fd.zip",
+      "source_version": "1cd6faed549600f3291c1a72390955301f83645ee825af778dfbbe04bbae73fd",
+      "source_generation": null,
+      "sha256": "a57e0bc12d02e9ac4751148d71487eb9fab53f8c7941278410b1f1e840c57cda",
+      "size_bytes": 6122302,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 396,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "readme_generation"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/code-c568-mso-service-tier-eligibility-audit",
+      "task_name": "code-c568-mso-service-tier-eligibility-audit",
+      "pipeline_batch_id": "tb2-5f995dd31861",
+      "original_filename": "code-c568-mso-service-tier-eligibility-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/engineering/code-c568-mso-service-tier-eligibility-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "engineering",
+      "category_original": "code",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c568-mso-service-tier-eligibility-audit/03814d6a098f6cc8b45047dbd8de564f5dd6f86a509b82e0cee8dc6f4ac7cdaa.zip",
+      "source_version": "03814d6a098f6cc8b45047dbd8de564f5dd6f86a509b82e0cee8dc6f4ac7cdaa",
+      "source_generation": null,
+      "sha256": "59e5c53d2ec23c0d60ada62a05fcd353650146b9bdb88ec579062d57dbb3441f",
+      "size_bytes": 7376654,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 533,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/fin-f45-repo-haircut-recompute",
+      "task_name": "fin-f45-repo-haircut-recompute",
+      "pipeline_batch_id": "tb2-ec1556af16b3",
+      "original_filename": "fin-f45-repo-haircut-recompute.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/finance/fin-f45-repo-haircut-recompute.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "finance",
+      "category_original": "fin",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-f45-repo-haircut-recompute/b757c8dffabef802e4a29b06b39aa9f68e08034962825282b21b0e1a136a29ce.zip",
+      "source_version": "b757c8dffabef802e4a29b06b39aa9f68e08034962825282b21b0e1a136a29ce",
+      "source_generation": null,
+      "sha256": "b757c8dffabef802e4a29b06b39aa9f68e08034962825282b21b0e1a136a29ce",
+      "size_bytes": 3440936,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 393,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/fin-f57-municipal-fiscal-impact-allocation-audit",
+      "task_name": "fin-f57-municipal-fiscal-impact-allocation-audit",
+      "pipeline_batch_id": "tb2-331684a76ba6",
+      "original_filename": "fin-f57-municipal-fiscal-impact-allocation-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/finance/fin-f57-municipal-fiscal-impact-allocation-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "finance",
+      "category_original": "fin",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-f57-municipal-fiscal-impact-allocation-audit/f6b2a0f6e358320685bce15e632d69cba82d62d9adcb421c138291e0d63e4051.zip",
+      "source_version": "f6b2a0f6e358320685bce15e632d69cba82d62d9adcb421c138291e0d63e4051",
+      "source_generation": null,
+      "sha256": "afc4da555a0624adf1150a6bd9c25bb9cab4cb3f87b2d3dc91be3766d5d7071d",
+      "size_bytes": 6545854,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 585,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/fin-f67-workers-comp-ssdi-offset-audit",
+      "task_name": "fin-f67-workers-comp-ssdi-offset-audit",
+      "pipeline_batch_id": "tb2-5fedd57ca362",
+      "original_filename": "fin-f67-workers-comp-ssdi-offset-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/finance/fin-f67-workers-comp-ssdi-offset-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "finance",
+      "category_original": "fin",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-f67-workers-comp-ssdi-offset-audit/7c8fd6dc9449241a8a252d1543408fe37d864e25a6f84712caf5f182f822ec9b.zip",
+      "source_version": "7c8fd6dc9449241a8a252d1543408fe37d864e25a6f84712caf5f182f822ec9b",
+      "source_generation": null,
+      "sha256": "7c8fd6dc9449241a8a252d1543408fe37d864e25a6f84712caf5f182f822ec9b",
+      "size_bytes": 7577763,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 468,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/fin-f8-bank-reconciliation",
+      "task_name": "fin-f8-bank-reconciliation",
+      "pipeline_batch_id": "tb2-61df9f138709",
+      "original_filename": "fin-f8-bank-reconciliation.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/finance/fin-f8-bank-reconciliation.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.225,
+          1.0,
+          0.395,
+          0.2675
+        ]
+      },
+      "category_normalized": "finance",
+      "category_original": "fin",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-f8-bank-reconciliation/3ce9ff865686b799115c5c52a411167865e7b88d695bdf5daed8b9b027197bfb.zip",
+      "source_version": "3ce9ff865686b799115c5c52a411167865e7b88d695bdf5daed8b9b027197bfb",
+      "source_generation": null,
+      "sha256": "9e2ddf3ee584be60177cf639da921868808b3b98aaf50a89863888e44e73b0f4",
+      "size_bytes": 5599641,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 470,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 36
+      }
+    },
+    {
+      "task_id": "obi/gen-g1113-homeschool-geography-sequencing-audit",
+      "task_name": "gen-g1113-homeschool-geography-sequencing-audit",
+      "pipeline_batch_id": "tb2-7fc691be4f6b",
+      "original_filename": "gen-g1113-homeschool-geography-sequencing-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1113-homeschool-geography-sequencing-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "gen",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1113-homeschool-geography-sequencing-audit/47c2ac46b07d49d948893879a8d47eef689de35bbef86955d1e5970e5f77f4d3.zip",
+      "source_version": "47c2ac46b07d49d948893879a8d47eef689de35bbef86955d1e5970e5f77f4d3",
+      "source_generation": null,
+      "sha256": "34889cb3edb4537ae2574f254bbddc5141c616a6e9ce0fe58d1919f11625924b",
+      "size_bytes": 3594205,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 376,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 33
+      }
+    },
+    {
+      "task_id": "obi/gen-g1119-ati-template-completion-audit",
+      "task_name": "gen-g1119-ati-template-completion-audit",
+      "pipeline_batch_id": "tb2-2b77fbaca1c9",
+      "original_filename": "gen-g1119-ati-template-completion-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1119-ati-template-completion-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "gen",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1119-ati-template-completion-audit/af682a3f5a936b526a6052048544667d4c11a7e02e66f1e42cc2a699e21ded75.zip",
+      "source_version": "af682a3f5a936b526a6052048544667d4c11a7e02e66f1e42cc2a699e21ded75",
+      "source_generation": null,
+      "sha256": "ef1684a13f7c1510fce35b470cd921b373d8df768b6f7a8c2fce1aa75aa3eb4b",
+      "size_bytes": 5614104,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 565,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 50,
+        "local_paths": 20
+      }
+    },
+    {
+      "task_id": "obi/gen-g1202-content-repurposing-coverage-audit",
+      "task_name": "gen-g1202-content-repurposing-coverage-audit",
+      "pipeline_batch_id": "tb2-af490d8b78e3",
+      "original_filename": "gen-g1202-content-repurposing-coverage-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g1202-content-repurposing-coverage-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.9855,
+          1.0,
+          0.0,
+          1.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "gen",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1202-content-repurposing-coverage-audit/1d09b2f82d4a26ca05e2b1b4804acea300979a13f17056b5c56ded509e98fb02.zip",
+      "source_version": "1d09b2f82d4a26ca05e2b1b4804acea300979a13f17056b5c56ded509e98fb02",
+      "source_generation": null,
+      "sha256": "75817b230ab3f7edc4ec02d0cf26070d2a91ab33e2781cd79c5040e7e27ea4fb",
+      "size_bytes": 4153617,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 423,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "zone_identifier_removal",
+          "image_pinning"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 10
+      }
+    },
+    {
+      "task_id": "obi/gen-g244-story-timeline-consistency-audit",
+      "task_name": "gen-g244-story-timeline-consistency-audit",
+      "pipeline_batch_id": "tb2-c66ffdd26d86",
+      "original_filename": "gen-g244-story-timeline-consistency-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g244-story-timeline-consistency-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "gen",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g244-story-timeline-consistency-audit/7d0780b8b507541fba6eb04fd6514a50bc8f3ab8863a8b96ff991f3c9f65a5f6.zip",
+      "source_version": "7d0780b8b507541fba6eb04fd6514a50bc8f3ab8863a8b96ff991f3c9f65a5f6",
+      "source_generation": null,
+      "sha256": "7d0780b8b507541fba6eb04fd6514a50bc8f3ab8863a8b96ff991f3c9f65a5f6",
+      "size_bytes": 4575806,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 448,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/gen-g276-witness-statement-audit",
+      "task_name": "gen-g276-witness-statement-audit",
+      "pipeline_batch_id": "hc2-dee49ae6ece4",
+      "original_filename": "gen-g276-witness-statement-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g276-witness-statement-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.769230769231,
+          1.0,
+          0.923076923077,
+          1.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "gen",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g276-witness-statement-audit/ab512b546e9fec832ebd2df01e9028fa563240e72eaa0160ca7ca97399939b77.zip",
+      "source_version": "ab512b546e9fec832ebd2df01e9028fa563240e72eaa0160ca7ca97399939b77",
+      "source_generation": null,
+      "sha256": "ab512b546e9fec832ebd2df01e9028fa563240e72eaa0160ca7ca97399939b77",
+      "size_bytes": 5202738,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 446,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/gen-g292-grazing-cup-design-audit",
+      "task_name": "gen-g292-grazing-cup-design-audit",
+      "pipeline_batch_id": "auto-gen-g292-grazing-cup-design-audit-Error-Fixed-Fi-54842c-v1-sna-kfeh",
+      "original_filename": "gen-g292-grazing-cup-design-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g292-grazing-cup-design-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.96875,
+          0.90625
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "gen",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g292-grazing-cup-design-audit/cd5567252a147a6ce964e8d9f1c80424ad526944f78c160d2bcea6f98bbc859a.zip",
+      "source_version": "cd5567252a147a6ce964e8d9f1c80424ad526944f78c160d2bcea6f98bbc859a",
+      "source_generation": null,
+      "sha256": "cd5567252a147a6ce964e8d9f1c80424ad526944f78c160d2bcea6f98bbc859a",
+      "size_bytes": 12342980,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 848,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/gen-g295-pdf-translation-audit",
+      "task_name": "gen-g295-pdf-translation-audit",
+      "pipeline_batch_id": "hc2-3782ec985dae",
+      "original_filename": "gen-g295-pdf-translation-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g295-pdf-translation-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "gen",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g295-pdf-translation-audit/93175b607a41f00b234eb3d408a03e7d3e735aed7eafe5673332aa1430c4bbce.zip",
+      "source_version": "93175b607a41f00b234eb3d408a03e7d3e735aed7eafe5673332aa1430c4bbce",
+      "source_generation": null,
+      "sha256": "5cd8d5183db96209c8d384087a2c1e64024c66ff8265c8e193daad0a0f844710",
+      "size_bytes": 11153472,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 547,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 59,
+        "local_paths": 14
+      }
+    },
+    {
+      "task_id": "obi/gen-g297-trademark-registration-audit",
+      "task_name": "gen-g297-trademark-registration-audit",
+      "pipeline_batch_id": "hc2-403fc076954b",
+      "original_filename": "gen-g297-trademark-registration-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g297-trademark-registration-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.875,
+          0.875,
+          1.0,
+          1.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "gen",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g297-trademark-registration-audit/cd77fd9c295c092dd70806ccc6244418e23b910bfb89fa6438896814fee0fb6b.zip",
+      "source_version": "cd77fd9c295c092dd70806ccc6244418e23b910bfb89fa6438896814fee0fb6b",
+      "source_generation": null,
+      "sha256": "cd77fd9c295c092dd70806ccc6244418e23b910bfb89fa6438896814fee0fb6b",
+      "size_bytes": 6464025,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 500,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/gen-g541-dispersed-camping-permit-audit",
+      "task_name": "gen-g541-dispersed-camping-permit-audit",
+      "pipeline_batch_id": "tb2-acd7ff77fac6",
+      "original_filename": "gen-g541-dispersed-camping-permit-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g541-dispersed-camping-permit-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "gen",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g541-dispersed-camping-permit-audit/c3e501ddb2191b08c38ecf78702603299c0a5d9b940167f7ef907473fb09713f.zip",
+      "source_version": "c3e501ddb2191b08c38ecf78702603299c0a5d9b940167f7ef907473fb09713f",
+      "source_generation": null,
+      "sha256": "c3e501ddb2191b08c38ecf78702603299c0a5d9b940167f7ef907473fb09713f",
+      "size_bytes": 5602258,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 435,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/gen-g555-competency-response-readiness-audit",
+      "task_name": "gen-g555-competency-response-readiness-audit",
+      "pipeline_batch_id": "hc2-c2aba3277f48",
+      "original_filename": "gen-g555-competency-response-readiness-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g555-competency-response-readiness-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "gen",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g555-competency-response-readiness-audit/8825d6591c129461fa0c67586d0ce0c47267dde914a58d35b895620bd6c26ce9.zip",
+      "source_version": "8825d6591c129461fa0c67586d0ce0c47267dde914a58d35b895620bd6c26ce9",
+      "source_generation": null,
+      "sha256": "8825d6591c129461fa0c67586d0ce0c47267dde914a58d35b895620bd6c26ce9",
+      "size_bytes": 3311485,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 395,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/health-h104-lab-flag-reconciliation-audit",
+      "task_name": "health-h104-lab-flag-reconciliation-audit",
+      "pipeline_batch_id": "hc2-401f2e9ae88f",
+      "original_filename": "health-h104-lab-flag-reconciliation-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h104-lab-flag-reconciliation-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.461397,
+          1.0,
+          0.461397,
+          1.0
+        ]
+      },
+      "category_normalized": "health",
+      "category_original": "health",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h104-lab-flag-reconciliation-audit/edca096f8519487da7579946398da4c778d82c99596a907d71657ec209da52cd.zip",
+      "source_version": "edca096f8519487da7579946398da4c778d82c99596a907d71657ec209da52cd",
+      "source_generation": null,
+      "sha256": "edca096f8519487da7579946398da4c778d82c99596a907d71657ec209da52cd",
+      "size_bytes": 4170557,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 421,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/health-h107-equine-therapy-session-compliance-audit",
+      "task_name": "health-h107-equine-therapy-session-compliance-audit",
+      "pipeline_batch_id": "auto-health-h107-equine-therapy-session-compliance-au-766928-v1-sna-uuob",
+      "original_filename": "health-h107-equine-therapy-session-compliance-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h107-equine-therapy-session-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.93,
+          0.93,
+          0.97,
+          1.0
+        ]
+      },
+      "category_normalized": "health",
+      "category_original": "health",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h107-equine-therapy-session-compliance-audit/99e59b4303c5203e2f42fb6416c4fb2164d09d6c551c41590689860ecc506008.zip",
+      "source_version": "99e59b4303c5203e2f42fb6416c4fb2164d09d6c551c41590689860ecc506008",
+      "source_generation": null,
+      "sha256": "99e59b4303c5203e2f42fb6416c4fb2164d09d6c551c41590689860ecc506008",
+      "size_bytes": 10151163,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 766,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/health-h110-new-patient-call-log-audit",
+      "task_name": "health-h110-new-patient-call-log-audit",
+      "pipeline_batch_id": "hc2-2dcd68d7f7fc",
+      "original_filename": "health-h110-new-patient-call-log-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/health/health-h110-new-patient-call-log-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.0,
+          1.0,
+          1.0
+        ]
+      },
+      "category_normalized": "health",
+      "category_original": "health",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h110-new-patient-call-log-audit/1c5a383bcdb03d41130472732813ee9368fbad8d29d4745afff59e02e18193cf.zip",
+      "source_version": "1c5a383bcdb03d41130472732813ee9368fbad8d29d4745afff59e02e18193cf",
+      "source_generation": null,
+      "sha256": "1c5a383bcdb03d41130472732813ee9368fbad8d29d4745afff59e02e18193cf",
+      "size_bytes": 3864223,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 420,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/health-h23-specimen-labelling-taxonomy",
+      "task_name": "health-h23-specimen-labelling-taxonomy",
+      "pipeline_batch_id": "auto-health-h23-specimen-labelling-taxonomy-665c8f-v1-sna-kbey",
+      "original_filename": "health-h23-specimen-labelling-taxonomy.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h23-specimen-labelling-taxonomy.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.1675,
+          0.1675
+        ]
+      },
+      "category_normalized": "health",
+      "category_original": "health",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h23-specimen-labelling-taxonomy/5bef5bf523eb74ff0e35e8bcebc48f4ec8358d2086e066844e4933a830451ec3.zip",
+      "source_version": "5bef5bf523eb74ff0e35e8bcebc48f4ec8358d2086e066844e4933a830451ec3",
+      "source_generation": null,
+      "sha256": "a05f528c49623d215d016cfff57fd65cb6f0fd6901622b1dd203d63f776eff08",
+      "size_bytes": 5615881,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 507,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 28
+      }
+    },
+    {
+      "task_id": "obi/health-h67-youth-mtb-safety-check-audit",
+      "task_name": "health-h67-youth-mtb-safety-check-audit",
+      "pipeline_batch_id": "auto-health-h67-youth-mtb-safety-check-audit-d77974-v1-sna-swrg",
+      "original_filename": "health-h67-youth-mtb-safety-check-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h67-youth-mtb-safety-check-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.216667,
+          0.216667,
+          1.0
+        ]
+      },
+      "category_normalized": "health",
+      "category_original": "health",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h67-youth-mtb-safety-check-audit/d8ae822fb115b2680f8aec25ac7319a6834b2b9f7061321755fd014e3b11edb3.zip",
+      "source_version": "d8ae822fb115b2680f8aec25ac7319a6834b2b9f7061321755fd014e3b11edb3",
+      "source_generation": null,
+      "sha256": "2bf074386a168f9e8732bdfdc6e6d4db2980766825eff77d3e8839c0dec2bb92",
+      "size_bytes": 6677085,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 482,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 36
+      }
+    },
+    {
+      "task_id": "obi/health-h71-dermatology-lesion-referral-audit",
+      "task_name": "health-h71-dermatology-lesion-referral-audit",
+      "pipeline_batch_id": "tb2-e3f5ec37f1d9",
+      "original_filename": "health-h71-dermatology-lesion-referral-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h71-dermatology-lesion-referral-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          1.0,
+          0.0,
+          1.0
+        ]
+      },
+      "category_normalized": "health",
+      "category_original": "health",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h71-dermatology-lesion-referral-audit/a84adf4e16220cc0675705fc6d425a02816e24d91fe0ae321ece4e5a9276131f.zip",
+      "source_version": "a84adf4e16220cc0675705fc6d425a02816e24d91fe0ae321ece4e5a9276131f",
+      "source_generation": null,
+      "sha256": "bdc45e010861afc13de8eaea1eac696e1757b98114fe85dcd7aaa2d21474249b",
+      "size_bytes": 6953775,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 548,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 32,
+        "review_csv_pass_rate": 1
+      }
+    },
+    {
+      "task_id": "obi/health-h77-incentive-spirometry-adherence-audit",
+      "task_name": "health-h77-incentive-spirometry-adherence-audit",
+      "pipeline_batch_id": "auto-health-h77-incentive-spirometry-adherence-audit-70aab3-v1-sna-jmbt",
+      "original_filename": "health-h77-incentive-spirometry-adherence-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h77-incentive-spirometry-adherence-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.234375,
+          0.234375,
+          1.0
+        ]
+      },
+      "category_normalized": "health",
+      "category_original": "health",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h77-incentive-spirometry-adherence-audit/0af0f5620560b56887687d366feeab48bd1b78162ce7601a4ac450a4a9998407.zip",
+      "source_version": "0af0f5620560b56887687d366feeab48bd1b78162ce7601a4ac450a4a9998407",
+      "source_generation": null,
+      "sha256": "9303998a667cf47ac766ebd95db2f55bc8ef4a4bc310753df8fc17458e315148",
+      "size_bytes": 10620392,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 503,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 28
+      }
+    },
+    {
+      "task_id": "obi/health-h95-profile-prompt-style-compliance-audit",
+      "task_name": "health-h95-profile-prompt-style-compliance-audit",
+      "pipeline_batch_id": "auto-pipeline-evaluation-da3b282d3a4e4cc2",
+      "original_filename": "health-h95-profile-prompt-style-compliance-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h95-profile-prompt-style-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.467875,
+          1.0,
+          1.0,
+          0.467875
+        ]
+      },
+      "category_normalized": "health",
+      "category_original": "health",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h95-profile-prompt-style-compliance-audit/5a4f536fe9d2713bd06f491234a5705f96facc6f3e4128b6326984e66899d9cd.zip",
+      "source_version": "5a4f536fe9d2713bd06f491234a5705f96facc6f3e4128b6326984e66899d9cd",
+      "source_generation": null,
+      "sha256": "5a4f536fe9d2713bd06f491234a5705f96facc6f3e4128b6326984e66899d9cd",
+      "size_bytes": 4285128,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 420,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/health-h98-ebook-production-compliance-audit",
+      "task_name": "health-h98-ebook-production-compliance-audit",
+      "pipeline_batch_id": "tb2-ae7f3003f438",
+      "original_filename": "health-h98-ebook-production-compliance-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/health/health-h98-ebook-production-compliance-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "health",
+      "category_original": "health",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h98-ebook-production-compliance-audit/e8bbdd0cd13b3a778b14189e2ef5a4bf09fc7a81c6aa8bdfb7a623b21a70692d.zip",
+      "source_version": "e8bbdd0cd13b3a778b14189e2ef5a4bf09fc7a81c6aa8bdfb7a623b21a70692d",
+      "source_generation": null,
+      "sha256": "1483be0dad2a752e8183cdd5a10b342536dd8c0bb63fff8f287831e88d7ef402",
+      "size_bytes": 4389997,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 414,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 32
+      }
+    },
+    {
+      "task_id": "obi/law-l19-trademark-class-overlap",
+      "task_name": "law-l19-trademark-class-overlap",
+      "pipeline_batch_id": "auto-law-l19-trademark-class-overlap-6f0894-v1-sna-okqm",
+      "original_filename": "law-l19-trademark-class-overlap.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/legal/law-l19-trademark-class-overlap.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.306333,
+          0.306333,
+          0.306333,
+          1.0
+        ]
+      },
+      "category_normalized": "legal",
+      "category_original": "law",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l19-trademark-class-overlap/6bd1df9149ef36c21fc81e76f39c9ea3cc9bc4f696956bf11e2abf397ee16171.zip",
+      "source_version": "6bd1df9149ef36c21fc81e76f39c9ea3cc9bc4f696956bf11e2abf397ee16171",
+      "source_generation": null,
+      "sha256": "8f713e529fc3a4b20f5a8c3923aa577e137fd13737a3faf0f9b00b6fe0825513",
+      "size_bytes": 7672880,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 508,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 28
+      }
+    },
+    {
+      "task_id": "obi/law-l29-survival-periods",
+      "task_name": "law-l29-survival-periods",
+      "pipeline_batch_id": "tb2-dddaad5222c3",
+      "original_filename": "law-l29-survival-periods.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/legal/law-l29-survival-periods.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.8182,
+          1.0
+        ]
+      },
+      "category_normalized": "legal",
+      "category_original": "law",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l29-survival-periods/ce50af13a1901e52b1db3c043813f3a2aa736c7020042e563f6206654ac2033a.zip",
+      "source_version": "ce50af13a1901e52b1db3c043813f3a2aa736c7020042e563f6206654ac2033a",
+      "source_generation": null,
+      "sha256": "4b07188699426e2819368e45441082df204316afbadca55de0823a0e938e1d8c",
+      "size_bytes": 4065590,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 410,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "image_pinning",
+          "readme_generation"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 8,
+        "local_paths": 4
+      }
+    },
+    {
+      "task_id": "obi/law-l42-ip-chain-of-title",
+      "task_name": "law-l42-ip-chain-of-title",
+      "pipeline_batch_id": "tb2-dbaa7fbbdb35",
+      "original_filename": "law-l42-ip-chain-of-title.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/legal/law-l42-ip-chain-of-title.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "legal",
+      "category_original": "law",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l42-ip-chain-of-title/39eda1e54e59cf717b352dfa44b6490b5b07f8e7a4911fac3033cc708468b46b.zip",
+      "source_version": "39eda1e54e59cf717b352dfa44b6490b5b07f8e7a4911fac3033cc708468b46b",
+      "source_generation": null,
+      "sha256": "39eda1e54e59cf717b352dfa44b6490b5b07f8e7a4911fac3033cc708468b46b",
+      "size_bytes": 4089195,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 384,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": true,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/law-l47-consumer-warranty-statute-reconcile",
+      "task_name": "law-l47-consumer-warranty-statute-reconcile",
+      "pipeline_batch_id": "tb2-3cd5731701c6",
+      "original_filename": "law-l47-consumer-warranty-statute-reconcile.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/legal/law-l47-consumer-warranty-statute-reconcile.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "legal",
+      "category_original": "law",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l47-consumer-warranty-statute-reconcile/16f408bc65a7cb20faa8214bdd1fb9757acb9b4f242e7b9ec6e47957b368b69c.zip",
+      "source_version": "16f408bc65a7cb20faa8214bdd1fb9757acb9b4f242e7b9ec6e47957b368b69c",
+      "source_generation": null,
+      "sha256": "d48d1f1e1c804fdf4a56dab6de0175ab4305a355a2c5adb193f2f492a2744afc",
+      "size_bytes": 4628243,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 398,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 20
+      }
+    },
+    {
+      "task_id": "obi/law-l49-dscsa-trading-partner-verification-audit",
+      "task_name": "law-l49-dscsa-trading-partner-verification-audit",
+      "pipeline_batch_id": "auto-law-l49-dscsa-trading-partner-verification-audit-dd796b-v1-sna-hynq",
+      "original_filename": "law-l49-dscsa-trading-partner-verification-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/legal/law-l49-dscsa-trading-partner-verification-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.216667,
+          0.216667,
+          0.216667,
+          1.0
+        ]
+      },
+      "category_normalized": "legal",
+      "category_original": "law",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l49-dscsa-trading-partner-verification-audit/9e4faaa7163c5d0bcdc161799e06589f30e41de7b1bf5183892e95652171b793.zip",
+      "source_version": "9e4faaa7163c5d0bcdc161799e06589f30e41de7b1bf5183892e95652171b793",
+      "source_generation": null,
+      "sha256": "f66a1c164f7321aa83ebb4c578836154cbce3d9a94833794a68558c73c69d26d",
+      "size_bytes": 7974274,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 558,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 28
+      }
+    },
+    {
+      "task_id": "obi/law-l89-hcpcs-jcode-assignment-audit",
+      "task_name": "law-l89-hcpcs-jcode-assignment-audit",
+      "pipeline_batch_id": "auto-law-l89-hcpcs-jcode-assignment-audit-f1d358-v1-sna-lvwn",
+      "original_filename": "law-l89-hcpcs-jcode-assignment-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/legal/law-l89-hcpcs-jcode-assignment-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.216667,
+          1.0,
+          1.0,
+          0.216667
+        ]
+      },
+      "category_normalized": "legal",
+      "category_original": "law",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l89-hcpcs-jcode-assignment-audit/ea85d9a5d1eada55a4eccb77148d61310bf3bd19fb8cd69040b4042e0f5cad25.zip",
+      "source_version": "ea85d9a5d1eada55a4eccb77148d61310bf3bd19fb8cd69040b4042e0f5cad25",
+      "source_generation": null,
+      "sha256": "33b94a0f11abb349bf551b9619b88a3cece79ead8ca648257debb38e259ee58b",
+      "size_bytes": 6735882,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 495,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": null
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 36
+      }
+    },
+    {
+      "task_id": "obi/gen-g861-sync-license-exclusivity-hold-audit",
+      "task_name": "gen-g861-sync-license-exclusivity-hold-audit",
+      "pipeline_batch_id": "tb2-2bcb597f44f0",
+      "original_filename": "gen-g861-sync-license-exclusivity-hold-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g861-sync-license-exclusivity-hold-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.982456,
+          1.0,
+          0.982456,
+          0.982456
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-2ppskyfa/67a2fdc00bb169931a3452a463d4b8c7c139676208830fe7b5b5022a2c0ea6d6.zip",
+      "source_version": "67a2fdc00bb169931a3452a463d4b8c7c139676208830fe7b5b5022a2c0ea6d6",
+      "source_generation": null,
+      "sha256": "02b98c4588e294391315b0897ae69917448e3b377d67ae4ed5e530ca4bb33719",
+      "size_bytes": 4135664,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 413,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/gen-g958-monogram-trademark-priority-deadline-audit",
+      "task_name": "gen-g958-monogram-trademark-priority-deadline-audit",
+      "pipeline_batch_id": "tb2-c754565266f7",
+      "original_filename": "gen-g958-monogram-trademark-priority-deadline-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g958-monogram-trademark-priority-deadline-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-6m7xw6tv/81ba23c72595842d58feec9d2b280dac3414379c19c43cae2693a2b7a6afe28d.zip",
+      "source_version": "81ba23c72595842d58feec9d2b280dac3414379c19c43cae2693a2b7a6afe28d",
+      "source_generation": null,
+      "sha256": "e7cfe49c75854b42c1f0b7f3f13525b2e4b98de56135b982c1f97b2781f69ace",
+      "size_bytes": 3690551,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 389,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 44
+      }
+    },
+    {
+      "task_id": "obi/gen-g59-accreditation-compliance-recompute",
+      "task_name": "gen-g59-accreditation-compliance-recompute",
+      "pipeline_batch_id": "tb2-dca3ca3ead2a",
+      "original_filename": "gen-g59-accreditation-compliance-recompute.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g59-accreditation-compliance-recompute.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-6uzepc5h/2c6f4d6bf66d976ab0a9206ff065d717ce9001a78fa48193a506a216f2ef7d51.zip",
+      "source_version": "2c6f4d6bf66d976ab0a9206ff065d717ce9001a78fa48193a506a216f2ef7d51",
+      "source_generation": null,
+      "sha256": "f4d95f8f5b83132faa66ce3ac975613aba493d7d2ac785d7513e758bed7884cf",
+      "size_bytes": 5588145,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 524,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 40,
+        "local_paths": 8
+      }
+    },
+    {
+      "task_id": "obi/gen-g972-franchise-signage-brandmark-recreation-audit",
+      "task_name": "gen-g972-franchise-signage-brandmark-recreation-audit",
+      "pipeline_batch_id": "tb2-c46c353c1a3e",
+      "original_filename": "gen-g972-franchise-signage-brandmark-recreation-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g972-franchise-signage-brandmark-recreation-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-8jsgpxhw/496bb30cbcd63db52fb0266a393f87ced242675696b80e3463d392eac08d440d.zip",
+      "source_version": "496bb30cbcd63db52fb0266a393f87ced242675696b80e3463d392eac08d440d",
+      "source_generation": null,
+      "sha256": "c8913f08da0a469744702d9109ce8c249afb856e23f6f937e9d9c86995b89f40",
+      "size_bytes": 5589464,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 441,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 16,
+        "local_paths": 4
+      }
+    },
+    {
+      "task_id": "obi/gen-g960-nonprofit-tradeshow-asset-sourcing-audit",
+      "task_name": "gen-g960-nonprofit-tradeshow-asset-sourcing-audit",
+      "pipeline_batch_id": "tb2-5301edb5016d",
+      "original_filename": "gen-g960-nonprofit-tradeshow-asset-sourcing-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g960-nonprofit-tradeshow-asset-sourcing-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          0.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-9dn508it/60e38f6414f36e22869ccb574b0eeada5ade5110b41f9ac21c30c562ca83bad8.zip",
+      "source_version": "60e38f6414f36e22869ccb574b0eeada5ade5110b41f9ac21c30c562ca83bad8",
+      "source_generation": null,
+      "sha256": "ace82940499e98dc639f32c81f80624c04dc59002ca1c9e0cbbf0d605600ab02",
+      "size_bytes": 4135206,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 463,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null,
+      "sanitisation": {
+        "gateway_ip": 35
+      }
+    },
+    {
+      "task_id": "obi/gen-g842-attorney-ad-compliance-audit",
+      "task_name": "gen-g842-attorney-ad-compliance-audit",
+      "pipeline_batch_id": "tb2-cebf07aaaf96",
+      "original_filename": "gen-g842-attorney-ad-compliance-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/gen-g842-attorney-ad-compliance-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-gmt6efqk/6d53e582e80f72c1caac617c76f9352d6571d3a3998fba0b0f7e7f14dc064c72.zip",
+      "source_version": "6d53e582e80f72c1caac617c76f9352d6571d3a3998fba0b0f7e7f14dc064c72",
+      "source_generation": null,
+      "sha256": "f003c400f7631efc2b101cd712ba9db5fb3bf2c773c4ff153e7e0b3260ad5523",
+      "size_bytes": 3482305,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 379,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "harbor/fin-f22-hedge-effectiveness",
+      "task_name": "fin-f22-hedge-effectiveness",
+      "pipeline_batch_id": "tb2-b646c18c0988",
+      "original_filename": "fin-f22-hedge-effectiveness.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/fin-f22-hedge-effectiveness.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 1,
+        "failures": 3,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          0.0,
+          0.0,
+          1.0,
+          0.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-hhi2tqec/8ee9c1f965886e12af1c85ec9a4906098750e75deed626353137a0f116323204.zip",
+      "source_version": "8ee9c1f965886e12af1c85ec9a4906098750e75deed626353137a0f116323204",
+      "source_generation": null,
+      "sha256": "75bf99f8954d97a861dafa3b9a8ba49718ddf6ad609e220c681debb96c345863",
+      "size_bytes": 2977396,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 399,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/law-l83-cost-bill-recoverability-audit",
+      "task_name": "law-l83-cost-bill-recoverability-audit",
+      "pipeline_batch_id": "auto-law-l83-cost-bill-recoverability-audit-91e817-v4-sna-hyjg",
+      "original_filename": "law-l83-cost-bill-recoverability-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/easier/non-connector/other/law-l83-cost-bill-recoverability-audit.zip",
+      "difficulty": "easier",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 3,
+        "failures": 1,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.0,
+          1.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-wmtjlbe6/5d1c95a1fc7e31b88ebb369efae4b1faf1346bf6f5dd2f15d981c9bb3aee4f30.zip",
+      "source_version": "5d1c95a1fc7e31b88ebb369efae4b1faf1346bf6f5dd2f15d981c9bb3aee4f30",
+      "source_generation": null,
+      "sha256": "839f505be19cf79c545043c291fca2ffa86ee7ab7ffa31cb0bcbf53237f94baa",
+      "size_bytes": 3016331,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 374,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    },
+    {
+      "task_id": "obi/gen-g953-channel-icon-delivery-spec-audit",
+      "task_name": "gen-g953-channel-icon-delivery-spec-audit",
+      "pipeline_batch_id": "tb2-7d838001f699",
+      "original_filename": "gen-g953-channel-icon-delivery-spec-audit.zip",
+      "package_path": "finalization_qc_accepted_zipped/harder/non-connector/other/gen-g953-channel-icon-delivery-spec-audit.zip",
+      "difficulty": "harder",
+      "trial_evidence": {
+        "model": "glm-5.2",
+        "completed_scored_trials": 4,
+        "successes": 2,
+        "failures": 2,
+        "success_definition": "reward exactly 1.0",
+        "rewards": [
+          1.0,
+          1.0,
+          0.0,
+          0.0
+        ]
+      },
+      "category_normalized": "other",
+      "category_original": "unnamed",
+      "connector": {
+        "is_connector": false,
+        "services": null,
+        "provenance": null,
+        "provenance_basis": null
+      },
+      "source_uri": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-wvf98na3/ba6cbee64779058a004522b59d51e229cbdfda6307fe02294c939290b92d6c21.zip",
+      "source_version": "ba6cbee64779058a004522b59d51e229cbdfda6307fe02294c939290b92d6c21",
+      "source_generation": null,
+      "sha256": "6d4c366413111f0f8a0c79fd773473f5d9869bc2fe0f2564bfa872ac4fca2c23",
+      "size_bytes": 3117770,
+      "qc_status_reported": {
+        "client_harbor_check": "PASS",
+        "evidence": "review_handoff/<digest>.json automated_harbor_check",
+        "profile": "claude-code / anthropic/claude-opus-5 / medium"
+      },
+      "packaging_checks": {
+        "zip_crc_ok": true,
+        "entries": 369,
+        "source_copy_sha256_match": true,
+        "byte_identical_to_gcs_source": false,
+        "modifications_applied": [
+          "folder_rename"
+        ]
+      },
+      "audit_14_factor_open_flags": null,
+      "screening_resolution": null
+    }
+  ],
+  "sanitisation": {
+    "applied_at": "2026-09-08T02:01:02.907896+05:30",
+    "actions": {
+      "review_csv_pass_rate": "Stale pass-rate claims in review.csv corrected to the count measured from the packaged evaluations/difficulty reward files. Only claims worded as a pass rate were touched; completion counts such as \"4/4 executions\" were left alone.",
+      "gateway_ip": "Internal gateway IP replaced with <internal-gateway>.",
+      "local_paths": "Personal and local machine paths replaced with <redacted-local-path>. Container service accounts (/home/rlgymagent, /home/harbor) are generic infrastructure and were not touched."
+    },
+    "totals": {
+      "review_csv_pass_rate": 5,
+      "tasks_changed": 27,
+      "gateway_ip": 757,
+      "local_paths": 50
+    },
+    "per_task": {
+      "opened-files-migration-volume-signoff": {
+        "review_csv_pass_rate": 1
+      },
+      "relay-only-correspondents-cutover-exposure": {
+        "review_csv_pass_rate": 1
+      },
+      "rsvp-silence-backlog-among-2026-regulars": {
+        "review_csv_pass_rate": 1
+      },
+      "unanswered-invitation-silence-audit": {
+        "review_csv_pass_rate": 1
+      },
+      "code-c165-business-profile-completeness-audit": {
+        "gateway_ip": 55
+      },
+      "code-c395-cis-subcontractor-deduction-audit": {
+        "gateway_ip": 28
+      },
+      "code-c423-multi-campus-account-access-audit": {
+        "gateway_ip": 30
+      },
+      "code-c443-plan-list-field-mapping-migration-audit": {
+        "gateway_ip": 45
+      },
+      "fin-f8-bank-reconciliation": {
+        "gateway_ip": 36
+      },
+      "gen-g1113-homeschool-geography-sequencing-audit": {
+        "gateway_ip": 33
+      },
+      "gen-g1119-ati-template-completion-audit": {
+        "gateway_ip": 50,
+        "local_paths": 20
+      },
+      "gen-g1202-content-repurposing-coverage-audit": {
+        "gateway_ip": 10
+      },
+      "gen-g295-pdf-translation-audit": {
+        "gateway_ip": 59,
+        "local_paths": 14
+      },
+      "health-h23-specimen-labelling-taxonomy": {
+        "gateway_ip": 28
+      },
+      "health-h67-youth-mtb-safety-check-audit": {
+        "gateway_ip": 36
+      },
+      "health-h71-dermatology-lesion-referral-audit": {
+        "gateway_ip": 32,
+        "review_csv_pass_rate": 1
+      },
+      "health-h77-incentive-spirometry-adherence-audit": {
+        "gateway_ip": 28
+      },
+      "health-h98-ebook-production-compliance-audit": {
+        "gateway_ip": 32
+      },
+      "law-l19-trademark-class-overlap": {
+        "gateway_ip": 28
+      },
+      "law-l29-survival-periods": {
+        "gateway_ip": 8,
+        "local_paths": 4
+      },
+      "law-l47-consumer-warranty-statute-reconcile": {
+        "gateway_ip": 20
+      },
+      "law-l49-dscsa-trading-partner-verification-audit": {
+        "gateway_ip": 28
+      },
+      "law-l89-hcpcs-jcode-assignment-audit": {
+        "gateway_ip": 36
+      },
+      "gen-g958-monogram-trademark-priority-deadline-audit": {
+        "gateway_ip": 44
+      },
+      "gen-g59-accreditation-compliance-recompute": {
+        "gateway_ip": 40,
+        "local_paths": 8
+      },
+      "gen-g972-franchise-signage-brandmark-recreation-audit": {
+        "gateway_ip": 16,
+        "local_paths": 4
+      },
+      "gen-g960-nonprofit-tradeshow-asset-sourcing-audit": {
+        "gateway_ip": 35
+      }
+    },
+    "not_redacted": [
+      "xoxb-oracle-svc - a literal placeholder in task configuration, not a credential; changing it would alter runtime configuration"
+    ]
+  }
+}

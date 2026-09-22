@@ -482,9 +482,17 @@
               <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>the audit against the whole pipeline</em></p>
               <div id="truthJoin" class="stats stats-3"></div>
             </div>
+            <!-- The one place on this tab where the figures genuinely partition:
+                 a task accepted with a collectable package has either gone out
+                 or is waiting to. Kept apart from the flags beside it, which
+                 overlap and do not add up to anything. -->
             <div class="statgroup">
+              <p class="eyebrow">Accepted at the current bar<button class="why" data-info="truthSplit" aria-label="How this splits">?</button><em>delivered + ready is all of it</em></p>
+              <div id="truthSplit" class="stats stats-3"></div>
+            </div>
+            <div class="statgroup statgroup-wide">
               <p class="eyebrow">Flags on the shown tasks<em>overlapping, not a split</em></p>
-              <div id="truthFlags" class="stats stats-5"></div>
+              <div id="truthFlags" class="stats stats-4"></div>
             </div>
             <!-- Connector is read from the package; domain is read from the task
                  name. Two different kinds of evidence, so they are labelled

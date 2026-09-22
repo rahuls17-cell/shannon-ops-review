@@ -173,8 +173,11 @@
     const collapsed = Boolean(f.delivered);
     const matched = collapsed ? collapseByTask(selected) : selected;
 
-    const ready = matched.filter(row => row.delivered !== true && row.atCurrentBar &&
+    // Accepted and actually collectable. Everything in here has either been
+    // delivered or is waiting to be; there is no third thing it can be.
+    const collectable = matched.filter(row => row.atCurrentBar &&
       (row.state === 'accepted' || row.state === 'legacy accepted'));
+    const ready = collectable.filter(row => row.delivered !== true);
 
     const tally = key => matched.reduce((counts, row) => {
       const value = row[key];
@@ -223,6 +226,16 @@
       // that looks unrelated to it.
       deliveredTasks: new Set(matched.filter(row => row.delivered).map(taskKey)).size,
       readyTasks: new Set(ready.map(taskKey)).size,
+      // The one population that genuinely partitions: a task accepted with a
+      // package collectable at the current bar has either gone out or is
+      // waiting to. `ready` is defined as this set minus the delivered ones,
+      // so acceptedAtBarTasks = deliveredAtBarTasks + readyTasks holds by
+      // construction and cannot drift as either definition changes.
+      acceptedAtBarTasks: new Set(collectable.map(taskKey)).size,
+      deliveredAtBarTasks: new Set(collectable.filter(row => row.delivered === true)
+        .map(taskKey)).size,
+      acceptedAtBarRows: collectable.length,
+      deliveredAtBarRows: collectable.filter(row => row.delivered === true).length,
       unmerged: matched.filter(row => row.unmerged).length,
       possibleDuplicates: matched.filter(row => row.possibleDuplicate).length,
       likelyDuplicates: matched.filter(row => row.duplicateTier === 'likely').length,
