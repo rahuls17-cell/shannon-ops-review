@@ -126,7 +126,7 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
 // 1,021 folders while missing 104 that hold an accepted package and have no
 // accepted verdict row: a list that is too long and incomplete at once.
 {
-  const {prepareTruth, filterTruth} = require(path.join(root, '..', 'ops-review-dashboard', 'truth.js'));
+  const {prepareTruth, filterTruth} = require(path.join(root, 'truth.js'));
   const read = f => JSON.parse(fs.readFileSync(path.join(root, 'assets', f), 'utf8'));
   const model = prepareTruth(read('pipeline-truth.json'), read('delivered-index.json'),
     read('connector-index.json'), read('glm-index.json'), idx);
