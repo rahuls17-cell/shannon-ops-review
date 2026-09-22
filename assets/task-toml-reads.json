@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T17:37:16+00:00",
+ "generatedAt": "2026-09-22T17:45:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -28,6 +28,74 @@
    "services": [],
    "basis": "mcp_servers declared and empty",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g921-hoa-entrance-signage-landscaping-audit/f4c729b599c5f7597e4c28d917d563785d18a7fae422cadd85905a0c36f6e734.zip",
+   "readOn": "2026-09-22"
+  },
+  "bus-mg-bus-b8-a1-upskilling-caption-claim-verification-v11": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-mg-bus-b8-a1-upskilling-caption-claim-verification-v11/5ec5834cb27fbf7062f02197e88f7e0f1206682d1e75d4e0b0ba88a8dfb1d082.zip",
+   "readOn": "2026-09-22"
+  },
+  "code-c103-paging-escalation-policy-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c103-paging-escalation-policy-audit/3e1a23cccb6d0245c05dcc9bee18f6e699ecaa6628fd09a8a5e1871ce1f88e7b.zip",
+   "readOn": "2026-09-22"
+  },
+  "explain-savings-interest-change-for-account-1385-between-sep-and-oct-2": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/explain-savings-interest-change-for-account-1385-between-sep-and-oct-2/a83feffa8899638344bbf1f31b9b2e3bf26be3aead8bad9b4937d4e08a4b9221.zip",
+   "readOn": "2026-09-22"
+  },
+  "gen-g995-listing-photo-alteration-disclosure-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g995-listing-photo-alteration-disclosure-audit/7f8baae6756cfbb716051999b86b0dd164ea8a8a4e36bb33aac78f7c68ba727e.zip",
+   "readOn": "2026-09-22"
+  },
+  "sci-b51-a5-measurement-si-normalisation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b51-a5-measurement-si-normalisation/1bf40cdc6f5389980c1532165f9d59c7cce86ae82f1b6bec2580834b7aa45637.zip",
+   "readOn": "2026-09-22"
+  },
+  "tech-mg-it-b6-a5-manual-resource-link-normalization": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b6-a5-manual-resource-link-normalization/7c8be2458d4f35e9930d9afab0b40d56d08c92a3f5cb22934e672b5f7decae5c.zip",
+   "readOn": "2026-09-22"
+  },
+  "the-oversized-recordings": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-oversized-recordings/2307884d42cad0053b3779cbb8ca68e1e928d132657f1cbc275e8a3eb27713b8.zip",
+   "readOn": "2026-09-22"
+  },
+  "who-carried-september-v12-qc-upload-20260921": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-carried-september-v12-qc-upload-20260921/8445530e8d1d36d1a95f23d63a4c863dfb95e8b8640a7e2c9ed0159f0d4f2f85.zip",
    "readOn": "2026-09-22"
   }
  }
