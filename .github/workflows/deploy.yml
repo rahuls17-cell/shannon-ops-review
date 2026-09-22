@@ -1,0 +1,99 @@
+name: Deploy
+# Publishes whatever is on main, on every push.
+#
+# This site builds from a workflow rather than from a branch, so a push does not
+# deploy on its own. The refresh workflows each deploy at the end of their own
+# run, which was fine while they were the only things that changed assets - but
+# the Harbor VM now rebuilds and pushes on its own cron, because GitHub delivers
+# about 2% of what the refresh schedules ask for (a run every three hours
+# against every five minutes). A push event is not throttled that way, so this
+# is what turns a VM push into a published page.
+#
+# It builds nothing and reads no bucket: it publishes the files already in the
+# commit.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'assets/**'
+      - '*.js'
+      - '*.html'
+      - '*.css'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  # Pages allows one deployment at a time, and the refresh workflows deploy too.
+  # A queued run is not cancelled: it may carry newer assets than the one in
+  # flight, and dropping it would leave the site behind the repo.
+  group: pages-deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Prepare published files
+        run: |
+          mkdir -p _site
+          cp index.html _site/
+          cp -r assets _site/
+          # The list of scripts and stylesheets is read off index.html rather
+          # than written out here, for the same reason the refresh workflows do
+          # it: three hand-kept copies of one list is three chances to drift.
+          python3 - <<'COPY'
+          import pathlib, re, shutil
+          html = pathlib.Path('index.html').read_text(encoding='utf-8')
+          site = pathlib.Path('_site')
+          refs = re.findall(r'(?:src|href)="([^"]+\.(?:js|css))"', html)
+          local = [r for r in dict.fromkeys(refs)
+                   if not r.startswith(('http://', 'https://', '//', 'data:'))]
+          for ref in local:
+              target = site / ref
+              target.parent.mkdir(parents=True, exist_ok=True)
+              shutil.copy2(ref, target)
+          print('published ' + str(len(local)) + ' referenced files: ' + ', '.join(local))
+          COPY
+          # Pages caches these, so a returning visitor would keep running the
+          # previous build's JavaScript against the new data.
+          python3 - <<'STAMP'
+          import os, pathlib, re
+          version = os.environ.get('GITHUB_SHA', 'dev')[:12]
+          page = pathlib.Path('_site/index.html')
+          html = page.read_text(encoding='utf-8')
+          def bust(match):
+              attr, url = match.group(1), match.group(2)
+              if url.startswith(('http://', 'https://', '//', 'data:')) or '?' in url:
+                  return match.group(0)
+              return attr + '="' + url + '?v=' + version + '"'
+          html, n = re.compile(r'(src|href)="([^"]+\.(?:js|css))"').subn(bust, html)
+          page.write_text(html, encoding='utf-8')
+          print('stamped ' + str(n) + ' local asset URLs with v=' + version)
+          STAMP
+          # Fail rather than publish a page whose scripts 404.
+          python3 - <<'CHECK'
+          import re, sys, pathlib
+          html = pathlib.Path('index.html').read_text(encoding='utf-8')
+          missing = [src for src in re.findall(r'<script src="([^"]+)"', html)
+                     if not (pathlib.Path('_site') / src).exists()]
+          if missing:
+              sys.exit('not published but referenced by index.html: ' + ', '.join(missing))
+          print('all scripts referenced by index.html are present in _site')
+          CHECK
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - id: deployment
+        uses: actions/deploy-pages@v4
