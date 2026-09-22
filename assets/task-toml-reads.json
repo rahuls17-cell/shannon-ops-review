@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T17:45:06+00:00",
+ "generatedAt": "2026-09-22T17:50:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -96,6 +96,20 @@
    ],
    "basis": "a [[mcp_servers]] table with entries",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-carried-september-v12-qc-upload-20260921/8445530e8d1d36d1a95f23d63a4c863dfb95e8b8640a7e2c9ed0159f0d4f2f85.zip",
+   "readOn": "2026-09-22"
+  },
+  "gen-g1121-learning-path-unlock-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1121-learning-path-unlock-audit/5a9fb23373ebb9f4dcaac3f0bc5fdc835c5ea265a40c989714e15fdd0a7c887e.zip",
+   "readOn": "2026-09-22"
+  },
+  "health-tdt3-a1-pt-licensure-english-score-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt3-a1-pt-licensure-english-score-adjudication/4e2e28211460fefb756f83caed71a6521388834cb416cb4c595cc0ffe31f99f2.zip",
    "readOn": "2026-09-22"
   }
  }
