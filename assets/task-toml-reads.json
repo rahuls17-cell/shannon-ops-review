@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T21:21:17+00:00",
+ "generatedAt": "2026-09-22T21:41:27+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -701,6 +701,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/three-references-one-stays-home/0d84ab1de2069ee57bf733e31618a494904a7999a25489454caa1e7259fd3277.zip",
    "bytesRead": 50581,
+   "readOn": "2026-09-22"
+  },
+  "the-posts-no-room-will-list": {
+   "connector": true,
+   "services": [
+    "microsoft-teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-posts-no-room-will-list/493deac3cc605e9d2555e01cab5f6bf02621823e8776564ec57eed3e39dcf98d.zip",
+   "bytesRead": 51107,
    "readOn": "2026-09-22"
   }
  }
