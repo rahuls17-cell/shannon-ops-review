@@ -127,3 +127,43 @@ console.log(`csv checks passed: quoting, formula guard, ${COLUMNS.length} column
 console.log(`  full export     : ${all.rows.length.toLocaleString()} rows`);
 console.log(`  connector only  : ${connectors.rows.length.toLocaleString()} rows`);
 console.log(`  ready for delivery: ${ready.rows.length.toLocaleString()} tasks, ${folded.length} of them folded from repeat submissions`);
+
+// --- the GLM band travels with the export -----------------------------------
+// The column is on screen, so it has to be in the file people take away. The
+// thing worth guarding is the same one the column guards: a task with no
+// trials must export blank, never 0. 0/4 says the task was never solved, and
+// a spreadsheet full of zeros for tasks nobody trialled would be a false
+// claim about every one of them.
+{
+  const gi = COLUMNS.indexOf('glm_passes');
+  const bi = COLUMNS.indexOf('glm_band');
+  const ri = COLUMNS.indexOf('glm_rewards');
+  assert.ok(gi > -1 && bi > -1 && ri > -1, 'the export must carry the GLM band');
+
+  const sample = parseCsv(truthCsv([
+    {name: 'scored', glmPasses: 2, glmTrials: 4, glmRewards: [1, 0, 0, 1]},
+    {name: 'zero', glmPasses: 0, glmTrials: 4, glmRewards: [0, 0, 0, 0]},
+    {name: 'unscanned'},
+  ])).slice(1);
+  assert.deepEqual([sample[0][gi], sample[0][bi], sample[0][ri]], ['2', '2/4', '1 | 0 | 0 | 1']);
+  assert.deepEqual([sample[1][gi], sample[1][bi]], ['0', '0/4'],
+    'a genuine 0/4 must export as 0/4, because it is a real result');
+  assert.deepEqual([sample[2][gi], sample[2][bi], sample[2][ri]], ['', '', ''],
+    'a task with no trials must export blank, never 0');
+
+  const truth2 = prepareTruth(read('pipeline-truth.json'), read('delivered-index.json'),
+    read('connector-index.json'), read('glm-index.json'));
+  const banded = filterTruth(truth2.rows, {glm: 'band'});
+  const out = parseCsv(truthCsv(banded.rows)).slice(1);
+  assert.equal(out.length, banded.rows.length);
+  assert.ok(out.every(r => r[bi] && r[bi] !== '0/4' && r[bi] !== '4/4'),
+    'the 1-3 band filter must export only banded tasks');
+  out.forEach(r => assert.equal(Number(r[gi]), r[ri].split(' | ').filter(v => v === '1').length,
+    'the exported pass count must be the exact ones in the exported rewards'));
+
+  const none = parseCsv(truthCsv(filterTruth(truth2.rows, {glm: 'none'}).rows)).slice(1);
+  assert.ok(none.every(r => r[gi] === '' && r[bi] === ''),
+    'unscanned tasks must export with no band at all');
+  console.log(`csv carries the GLM band: ${banded.rows.length.toLocaleString()} banded tasks export a band, `
+    + `${none.length.toLocaleString()} unscanned export blank`);
+}

@@ -694,6 +694,28 @@
               </div>
               <div class="pager pager-split">
                 <label class="pagesize"><span>Show</span><select id="carriedPageSize"><option>10</option><option>20</option><option>30</option><option>40</option><option>50</option></select></label>
+                <!-- Opened from the x2 badge on a row. The fold is now
+                     unconditional, so a reader has to be able to see what was
+                     folded into a task and what merely looks like it. -->
+                <section id="duplicatePanel" class="unmatched" hidden aria-label="The submissions behind this task">
+                  <p class="panel-note" id="duplicateNote"></p>
+                  <div class="table-wrap">
+                    <table class="grid">
+                      <thead>
+                        <tr>
+                          <th scope="col">Submission</th>
+                          <th scope="col">Identifier</th>
+                          <th scope="col">State</th>
+                          <th scope="col">Decided</th>
+                          <th scope="col" class="num">Runs</th>
+                          <th scope="col">Counted</th>
+                        </tr>
+                      </thead>
+                      <tbody id="duplicateRows"></tbody>
+                    </table>
+                  </div>
+                  <button id="duplicateClose" class="ghost">Close</button>
+                </section>
                 <div class="pager"><button id="carriedPrev" class="ghost">Previous</button><span id="carriedPage" role="status"></span><button id="carriedNext" class="ghost">Next</button></div>
               </div>
             </div>

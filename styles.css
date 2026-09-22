@@ -1864,6 +1864,21 @@ button.stat[aria-pressed="true"] { border-color: var(--accent-line); background:
 .stat-l { font-size: 11.5px; color: var(--ink-2); }
 .stat-sub { font-size: 10.5px; line-height: 1.35; color: var(--muted); }
 
+/* The way back into a fold. Quiet enough not to compete with the task name,
+   loud enough that nobody has to wonder why a count went down. */
+.dupbadge {
+  margin-left: 6px; padding: 0 6px; height: 17px;
+  border-radius: 999px; border: 1px solid var(--line);
+  background: var(--panel-2); color: var(--ink-2);
+  font: inherit; font-size: 10.5px; font-variant-numeric: tabular-nums;
+  cursor: pointer; vertical-align: middle;
+}
+.dupbadge:hover { border-color: var(--accent-line); color: var(--ink); background: var(--accent-soft); }
+.dupbadge:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+/* "alike" is a suspicion, not arithmetic, so it does not look like a count. */
+.dupbadge.is-alike { border-style: dashed; }
+#duplicatePanel .is-shown > td { background: var(--accent-soft); }
+
 /* The GLM band is four characters and never wraps, so it does not need the
    padding a text column gets - without this the tenth column pushed the task
    table 18px past its wrapper and put a scrollbar under it. */

@@ -46,9 +46,14 @@ assert.equal(blind.deliveredIndex, null, 'and the model says the index is absent
 
 // --- the filter and the tallies agree --------------------------------------
 const all = filterTruth(model.rows, {});
-assert.equal(all.delivered, c.deliveredRows, 'delivered tally must match the index');
+assert.equal(all.deliveredRows, c.deliveredRows, 'delivered rows must match the index');
 assert.equal(all.deliveredNames, c.deliveredNames, 'distinct delivered names must match');
-assert.equal(all.readyForDelivery, c.readyRows, 'ready tally must match the index');
+assert.equal(all.readyForDelivery, c.readyRows, 'ready rows must match the index');
+// The page counts tasks, and every figure has to equal the list it selects.
+assert.equal(all.delivered, filterTruth(model.rows, {delivered: 'yes'}).rows.length,
+  'the delivered figure must equal what the Delivered filter shows');
+assert.ok(all.delivered < all.deliveredRows,
+  'sanity: repeat submissions exist, so delivered tasks must be fewer than rows');
 assert.equal(all.readyNames, c.readyNames, 'distinct ready names must match');
 
 // The delivered filter answers in tasks; `submissions` is the row count it
@@ -164,11 +169,20 @@ const colReady = filterTruth(model.rows, {delivered: 'ready'});
 assert.equal(colReady.rows.length, c.readyTasks,
   'the collapsed ready count must equal the distinct task count the index publishes');
 
-// With no Delivered filter nothing is collapsed - other views keep row counts.
+// The fold is unconditional: one task is one row under every filter, and the
+// submissions behind it stay available as the *Rows figures.
 const none = filterTruth(model.rows, {});
-assert.equal(none.collapsed, false, 'no delivered filter means no collapsing');
-assert.equal(none.rows.length, model.rows.length);
-assert.equal(none.versionsFolded, 0);
+assert.equal(none.collapsed, true, 'the fold must not depend on a filter');
+assert.ok(none.rows.length < model.rows.length, 'repeat submissions must be folded');
+assert.equal(none.submissions, model.rows.length, 'every submission is still accounted for');
+assert.equal(none.versionsFolded, model.rows.length - none.rows.length);
+// Whatever is filtered, the figure and the list it selects agree.
+['accepted', 'rejected', 'running'].forEach(state => {
+  const got = filterTruth(model.rows, {state});
+  assert.equal(got.rows.length, none[state === 'accepted' ? 'accepted'
+    : state === 'rejected' ? 'rejected' : 'running'],
+    `the ${state} figure must equal the ${state} list`);
+});
 
 // Collapsing is idempotent and order-independent.
 assert.equal(collapseByTask(collapseByTask(rawYes)).length, collapseByTask(rawYes).length,
@@ -239,7 +253,9 @@ assert.equal(unfiltered.deliveredTasks, folded.rows.length,
   'delivered tasks must read the same with and without the Delivered filter');
 assert.equal(unfiltered.deliveredTasks, jc.auditedMatched,
   'the tasks shown as delivered must be the audited tasks the index found');
-assert.ok(unfiltered.delivered > unfiltered.deliveredTasks,
+assert.equal(unfiltered.delivered, unfiltered.deliveredTasks,
+  'both figures count tasks now, so they must agree');
+assert.ok(unfiltered.deliveredRows > unfiltered.deliveredTasks,
   'sanity: there are repeat submissions, or this test proves nothing');
 assert.equal(unfiltered.readyTasks, filterTruth(prepared.rows, {delivered: 'ready'}).rows.length,
   'ready tasks must read the same with and without the Delivered filter');

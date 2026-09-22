@@ -128,7 +128,8 @@ everything.tasks.forEach(t => {
 const all = buildManifest(ready.rows, {size: 0});
 assert.equal(all.counts.rowsRepresented, ready.rows.length,
   'every ready row is represented by exactly one entry');
-assert.equal(all.counts.tasks, ready.readyNames ?? all.counts.tasks);
+assert.equal(all.counts.tasks, ready.readyTasks,
+  'the manifest must hold one entry per ready task');
 assert.equal(all.counts.tasks + all.counts.supersededRows, ready.rows.length,
   'entries plus superseded rows must equal the rows considered');
 assert.equal(all.counts.tasks, new Set(ready.rows.map(r => normaliseName(r.name))).size,
