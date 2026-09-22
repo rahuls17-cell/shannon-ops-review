@@ -457,3 +457,25 @@ Object.entries(jc.unmatchedCohorts).forEach(([c, n]) => console.log(`    ${Strin
       + `${(mc.live.absent || 0) + (mc.live.repackaged || 0)} not found)`);
   }
 }
+
+// --- the bucket lister is read-only -----------------------------------------
+// This runs on the Harbor VM with that machine's own credentials, against a
+// bucket nothing in this project is allowed to write to. The guard is that the
+// code cannot express a write, so it is asserted rather than trusted.
+{
+  const src = fs.readFileSync(path.join(root, 'tools', 'list_delivery_prefix.py'), 'utf8');
+  const body = src.split('"""').slice(2).join('"""');   // past the module docstring
+  ['method=', 'PUT', 'POST', 'DELETE', 'PATCH', 'upload', 'rewrite', 'delete(']
+    .forEach(verb => assert.ok(!body.includes(verb),
+      `list_delivery_prefix.py must not be able to ${verb} - the bucket is read-only`));
+  assert.ok(/devstorage\.read_only/.test(src), 'it must ask for a read-only scope');
+  assert.ok(/nextPageToken/.test(src),
+    'a truncated listing reads as packages having vanished, so it must paginate');
+  assert.ok(/min-objects|min_objects/.test(src),
+    'it must refuse to overwrite a good listing with a suspiciously short one');
+  assert.ok(/\.replace\(out\)/.test(src),
+    'the listing must be moved into place whole, never written in-place half-done');
+  // A token must never reach stdout, which is what the listing is read from.
+  assert.ok(!/print\([^)]*token/i.test(body), 'it must never print a credential');
+  console.log('bucket lister: read-only scope, paginated, atomic, no credential printed');
+}

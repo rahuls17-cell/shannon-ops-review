@@ -99,6 +99,9 @@ jobs:
           # First: the delivery manifests against the bucket scan. It produces
           # the folder names that let the delivered index place rows the
           # pipeline records under machine names, so it has to run before it.
+          # The VM does the listing on its own daily cron, where the
+          # credentials are. This runner has none, so the builder carries the
+          # previous answer forward and the page keeps printing its date.
           python3 tools/build_manifest_index.py
           python3 tools/build_delivered_index.py
           # Same reason as the delivered index: it resolves to pipeline
