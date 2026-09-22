@@ -21,7 +21,7 @@ const AUDIT_PAGE_SIZE = 40;
 const AUDIT_FILTERS = ['aBatch', 'aCategory', 'aType', 'aDifficulty', 'aGlm',
   'aAcceptance', 'aPriority', 'aTrainer', 'aSource', 'aFlagged'];
 
-const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tConnector', 'tCarried',
+const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tConnector', 'tGlm', 'tCarried',
   'tConfidence', 'tDuplicate', 'tDomain', 'tOwner'];
 let explorer = null;
 let explorerPath = '';
@@ -92,6 +92,7 @@ const infoCopy = {
   auditSource: 'How the task was attributed to a trainer. Accepted portal and Trainer records are direct. QC run owner is inferred from who ran the QC, and unverified means that inference was not confirmed. Contested means more than one trainer claims it, and Unattributed means nobody could be identified.',
   auditFlags: 'Three quality caveats carried per task: contested owner - more than one trainer claims it; unverified - the attribution was inferred and not confirmed; version dependent - the result changes between task versions.',
   manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. To cut a second round, load the first manifest back in and its tasks are left out.',
+  glm: 'Every task is run four times by the same GLM-5.2 battery before it is offered, and a run passes only at a reward of exactly 1.0, so a task scores 0/4 to 4/4. The band that gets accepted is 1 to 3: 4/4 is too easy to be worth benchmarking, and 0/4 has not been shown to be solvable at all. Read out of the bucket rather than from any report about it - the batch gate report names the four trial directories and each one’s verifier/reward.txt holds its reward - and checked against the bucket’s own cross-trial calibration, which states the same count. A dash means no trials are recorded for the batch that run was decided in, which is not the same as having failed them: 0/4 is a real and bad result and must not be what “we did not look” looks like. 1,501 of the 6,356 rows have a band. One caution: this is the band for the run THIS ROW stands for. Where a task was submitted more than once, the package that shipped may carry a different band, and the delivery manifests record that one.',
   truthSplit: 'The only figures on this tab that add up, and the reason they do is that the population has exactly two states. A task that is accepted and whose package is collectable at the current bar has either already gone out or has not, so delivered plus ready is the whole of it, under any filter. It is counted in tasks, not rows: a task submitted three times is one thing to send. That is also why it does not match the Accepted card above, which counts rows - the same population, before repeat submissions are folded. And it is not the delivered figure in the join on the left either: that one counts audited tasks in every state, including the rejected and errored ones, which are not waiting to be delivered and never will be.',
   truthMakeup: 'Two different questions, answered by two different kinds of evidence, so they are shown apart. Connector is structural: it is read from mcp_servers in the task.toml inside the package, which is why a task with no package is not known rather than guessed. Domain is not structural at all - it is the prefix on the task name, gen- or law- or code- - so it is a naming convention that most tasks simply do not follow. That is why the two coverage figures are so different, and why a task can be a known non-connector with no domain at all.',
   truthConnector: 'Whether the task mounts connector gyms - Slack, Jira, Google Drive and the rest. It is decided structurally, by whether task.toml inside the package declares mcp_servers, and never from the task name: a gen- or code- prefix says nothing about whether a task talks to Slack. That marker only exists inside a package, so a task with no archive in the bucket has no answer and is listed as not known rather than guessed. Of the tasks that do have a package at the current bar, 99% are classified.',
@@ -765,7 +766,14 @@ async function loadTruth() {
       const idx = await fetch(`assets/connector-index.json?t=${Date.now()}`, {cache: 'no-store'});
       if (idx.ok) connectorIndex = await idx.json();
     } catch (ignored) { connectorIndex = null; }
-    truth = window.prepareTruth(payload, deliveredIndex, connectorIndex);
+    // The four-trial GLM band, read out of the bucket by tools/scan_glm_trials.py.
+    // Optional: without it the column reads "not recorded" rather than zero.
+    let glmIndex = null;
+    try {
+      const g = await fetch(`assets/glm-index.json?t=${Date.now()}`, {cache: 'no-store'});
+      if (g.ok) glmIndex = await g.json();
+    } catch (ignored) { glmIndex = null; }
+    truth = window.prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex);
     truth.counts = payload.counts || null;
     populateTruthFilters();
     renderTruth();
@@ -917,6 +925,7 @@ function truthFilters() {
     finding: byId('tFinding').value, delivery: byId('tDelivery').value,
     delivered: byId('tDelivered') ? byId('tDelivered').value : '',
     connector: byId('tConnector') ? byId('tConnector').value : '',
+    glm: byId('tGlm') ? byId('tGlm').value : '',
     carriedOver: byId('tCarried').value, confidence: byId('tConfidence').value,
     domain: byId('tDomain').value, owner: byId('tOwner').value,
     duplicate: byId('tDuplicate').value,
@@ -1276,6 +1285,29 @@ function renderFlagLegend(rows) {
   }).join('');
 }
 
+// The four-trial GLM band for the run this row stands for.
+//
+// A dash, not a zero, when there are no trials: 0/4 is a real and bad result -
+// the task was never shown to be solvable - and it must not be what "we did
+// not look" looks like. 1,501 of the 6,356 rows have trials recorded; the rest
+// were decided in batches whose gate report lists none.
+function glmCell(row) {
+  if (row.glmPasses === undefined || row.glmPasses === null) {
+    return '<span class="muted" title="No GLM trials are recorded for the batch this run was decided in">–</span>';
+  }
+  const band = `${row.glmPasses}/${row.glmTrials}`;
+  const inBand = row.glmPasses > 0 && row.glmPasses < row.glmTrials;
+  const rewards = (row.glmRewards || []).map(v => (v === null ? '?' : v)).join(', ');
+  const tip = `${band} trials passed at a reward of exactly 1.0` +
+    (rewards ? ` · rewards ${rewards}` : '') +
+    `. ${inBand ? 'Inside the accepted 1-3 band.' : row.glmPasses === 0
+      ? 'Outside the band: never solved, so it was not shown to be solvable.'
+      : 'Outside the band: solved every time, so it is too easy.'}`;
+  return `<span class="pill" data-tone="x" data-tip="${esc(tip)}" style="--tone:var(${GLM_TONE[band] || '--slate'});--tone-soft:var(${(GLM_TONE[band] || '--slate')}-soft);--tone-ink:var(${(GLM_TONE[band] || '--slate')}-ink)">${esc(band)}</span>`;
+}
+
+const GLM_TONE = {'0/4': '--red', '1/4': '--blue', '2/4': '--violet', '3/4': '--aqua', '4/4': '--orange'};
+
 function renderTruthRows(rows) {
   const size = pageSize('truthPageSize');
   const pages = Math.max(Math.ceil(rows.length / size), 1);
@@ -1293,9 +1325,10 @@ function renderTruthRows(rows) {
       <td>${esc(row.owner || '\u2013')}</td>
       <td>${esc(row.decided || '\u2013')}${row.decidedInferred ? '<span class="chip chip-warn" title="No decision timestamp on the verdict; dated from when it was last updated">approx</span>' : ''}</td>
       <td>${esc(row.gateEra)}</td>
+      <td class="glmcell">${glmCell(row)}</td>
       <td class="num">${fmt(row.runs)}</td>
     </tr>
-    <tr class="drill" id="${id}" hidden><td colspan="9">
+    <tr class="drill" id="${id}" hidden><td colspan="10">
       <dl class="evidence">
         <dt>Why this state</dt><dd>${esc(row.why)}</dd>
         <dt>Canonical run</dt><dd>${esc(row.canonicalReason)}${row.runs > 1 ? ` of ${fmt(row.runs)} runs` : ''}</dd>
@@ -1317,10 +1350,14 @@ function renderTruthRows(rows) {
           : 'None on this run'}${(row.findingsPrior || []).length
           ? ` &middot; ${esc(row.findingsPrior.join(', '))} <span class="muted">on an earlier run of the same task</span>`
           : ''}</dd>
+        <dt>GLM trials</dt><dd>${row.glmPasses === undefined || row.glmPasses === null
+          ? 'Not recorded. The batch this run was decided in lists no GLM trials, which is not the same as having failed them.'
+          : `${fmt(row.glmPasses)} of ${fmt(row.glmTrials)} passed &middot; rewards ${esc((row.glmRewards || []).map(v => (v === null ? 'not read' : v)).join(', '))}` +
+            ` <span class="muted">a run passes only at exactly 1.0; read from verifier/reward.txt in the bucket</span>`}</dd>
         <dt>Read from</dt><dd><code>${esc(row.source)}</code></dd>
       </dl>
     </td></tr>`;
-  }).join('') : '<tr><td colspan="9" class="empty">No tasks match these filters.</td></tr>';
+  }).join('') : '<tr><td colspan="10" class="empty">No tasks match these filters.</td></tr>';
   setText('truthPage', `${fmt(from + 1)}\u2013${fmt(from + slice.length)} of ${fmt(rows.length)}`);
   byId('truthPrev').disabled = truthPage === 0;
   byId('truthNext').disabled = truthPage >= pages - 1;

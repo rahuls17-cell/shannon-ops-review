@@ -120,3 +120,51 @@ if (fs.existsSync(asset)) {
   console.log(`  unmerged identities: ${shown.unmerged} / dates inferred: ${shown.inferredDates}`);
 }
 console.log('truth checks passed: partition, filters, chains, refusal to render unreconciled data');
+
+// --- the GLM band -----------------------------------------------------------
+// Read from the trial files in the bucket. The risk worth guarding is not a
+// wrong number, it is a missing one being shown as 0/4: that says the task was
+// never solved, which is a real and damning result, and "we did not look" must
+// never render as it.
+{
+  const gpath = path.join(__dirname, '..', 'assets', 'glm-index.json');
+  if (fs.existsSync(gpath)) {
+    const gi = JSON.parse(fs.readFileSync(gpath, 'utf8'));
+    const gc = gi.counts;
+    assert.equal(gc.withTrials + gc.withoutTrials, gc.pipelineTasks,
+      'every pipeline task is either scanned or accounted for');
+    assert.equal(Object.values(gc.band).reduce((a, b) => a + b, 0), gc.withTrials,
+      'every scanned task lands in exactly one band');
+    Object.values(gi.glm).forEach(v => {
+      assert.ok(v.passes >= 0 && v.passes <= v.trials, 'passes cannot exceed trials');
+      assert.equal(v.passes, v.rewards.filter(r => r === 1).length,
+        'a run passes only at exactly 1.0, so the count must be of exact ones');
+    });
+
+    const asset = path.join(__dirname, '..', 'assets', 'pipeline-truth.json');
+    const live = prepareTruth(JSON.parse(fs.readFileSync(asset, 'utf8')), null, null, gi);
+    const banded = live.rows.filter(r => r.glmPasses !== undefined && r.glmPasses !== null);
+    assert.equal(banded.length, gc.withTrials, 'the band must reach the rows');
+    const blank = live.rows.filter(r => r.glmPasses === undefined || r.glmPasses === null);
+    assert.ok(blank.length > 0 && blank.every(r => r.glmPasses !== 0),
+      'a task with no trials must have no band, never a zero');
+
+    // The filter must not sweep unscanned rows into a band.
+    ['0', '1', '2', '3', '4', 'band'].forEach(v => {
+      const got = filterTruth(live.rows, {glm: v});
+      assert.ok(got.rows.every(r => r.glmPasses !== undefined && r.glmPasses !== null),
+        `the ${v} filter must not include rows with no trials`);
+    });
+    const none = filterTruth(live.rows, {glm: 'none'});
+    assert.equal(none.rows.length, blank.length);
+    const band = filterTruth(live.rows, {glm: 'band'});
+    assert.ok(band.rows.every(r => r.glmPasses > 0 && r.glmPasses < r.glmTrials));
+
+    const app = fs.readFileSync(path.join(__dirname, '..', 'app.js'), 'utf8');
+    assert.ok(/function glmCell/.test(app), 'the column needs its own renderer');
+    assert.ok(/No GLM trials are recorded/.test(app),
+      'a blank cell must say why it is blank');
+    console.log(`GLM band: ${gc.withTrials.toLocaleString()} of ${gc.pipelineTasks.toLocaleString()} rows scanned`,
+      JSON.stringify(gc.band), `| ${blank.length.toLocaleString()} have no trials recorded`);
+  }
+}

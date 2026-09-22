@@ -10,7 +10,7 @@
   // from the data - so the UI can never offer a value that matches nothing.
   const UNDECIDED = new Set(['error', 'no QC decision', 'queued', 'not started']);
 
-  function prepareTruth(payload, deliveredIndex, connectorIndex) {
+  function prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex) {
     if (!payload || !Array.isArray(payload.tasks)) throw new Error('No pipeline truth asset loaded');
     if (!payload.reconciles) throw new Error('Pipeline truth failed its own reconciliation; refusing to display it');
     const figures = new Map((payload.figures || []).map(f => [f.label, f]));
@@ -38,7 +38,16 @@
               connectorServices: hit.services || [],
               connectorVia: hit.via};
     };
-    const rows = (delivered || connectorIndex)
+    // The four-trial GLM band. Read from the trial files in the bucket, so a
+    // task with no trials recorded has no band rather than a zero - 0/4 is a
+    // real and bad result, and must not be what "we did not look" looks like.
+    const trials = (glmIndex && glmIndex.glm) || {};
+    const glmOf = id => {
+      const hit = trials[id];
+      if (!hit) return {};
+      return {glmPasses: hit.passes, glmTrials: hit.trials, glmRewards: hit.rewards || []};
+    };
+    const rows = (delivered || connectorIndex || glmIndex)
       ? payload.tasks.map(row => ({
           ...row,
           delivered: Boolean(delivered) && Object.prototype.hasOwnProperty.call(delivered, row.id),
@@ -46,6 +55,7 @@
           maybeDelivered: suspect[row.id] || null,
           deliveredTask: ((deliveredIndex || {}).deliveredTask || {})[row.id] || null,
           ...connectorOf(row.id),
+          ...glmOf(row.id),
         }))
       : payload.tasks;
 
@@ -56,6 +66,7 @@
       sources: payload.sources || {},
       figures,
       vocabulary: payload.vocabulary || {},
+      glmIndex: glmIndex || null,
       // Null when the index has not loaded, so the page can tell the difference
       // between "nothing is delivered" and "delivery is not known".
       deliveredIndex: deliveredIndex || null,
@@ -163,6 +174,12 @@
         (!f.connector || (f.connector === 'yes' ? row.connector === true
           : f.connector === 'no' ? row.connector === false
           : row.connector === null || row.connector === undefined)) &&
+        // The band is a property of the run, so a row with no trials is
+        // excluded from every band filter rather than counted as 0.
+        (!f.glm || (f.glm === 'none' ? (row.glmPasses === undefined || row.glmPasses === null)
+          : row.glmPasses === undefined || row.glmPasses === null ? false
+          : f.glm === 'band' ? (row.glmPasses > 0 && row.glmPasses < row.glmTrials)
+          : String(row.glmPasses) === f.glm)) &&
         (!f.search || text.includes(f.search.trim().toLowerCase())) &&
         (!f.start || (row.decided || '') >= f.start) &&
         (!f.end || (row.decided || '') <= f.end);
