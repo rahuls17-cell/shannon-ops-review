@@ -122,6 +122,7 @@ const infoCopy = {
   pipeline: 'The status names are the Harbor Console\u2019s own: its finalisation run state is done, rejected, parked or running, which the spec restates as Accepted, Rejected, Failed and Running. Rejected means harbor checks failed and the trainer reworks it - the largest bucket by far. Failed means an infrastructure error the trainer cannot rerun; it parks for QC or gen engineering. Submitted means the gate passed but no decision is recorded yet, which is what used to be shown as Done - it is not an acceptance. Current counts the latest attempt per family; All attempts counts retries separately.',
   dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
   scopeFunnel: scopeChainCopy,
+  pipelineAccepted: 'The count of tasks whose verdict is accepted, read from the same GCS verdicts the Pipeline tab reads, so the two agree. It used to count the evaluations feed instead, which is a different population and a different number - 775 against the Pipeline tab’s 1,081 - with nothing on the page to explain the gap. Legacy accepted is not included here: those were accepted before the current bar and the Pipeline tab counts them separately, so folding them in would break the agreement this figure exists to keep.',
   currentEvaluations: 'The latest evaluation of each task family in the GCS bucket, by status. It is the evidence feed rather than the console, so it answers what the pipeline last recorded about a family rather than what the task\u2019s decided state is - the Pipeline view carries that.',
   acceptanceScope: 'The date range is not applied to this half. The 240 audit sheet publishes counts only, with no per-task date to filter on, and the workbook records when a payment was made rather than when the work was done. Filtering would therefore cut what was paid while what was accepted stayed whole - and pending is accepted minus paid, so every outstanding balance on the page would quietly rise. The figures here are all-time, whatever range is set on the pipeline half.',
   dailyDelta: 'How many tasks reached each state on each day - the movement, not the standing total, so a quiet day and a busy day look different rather than both reading as a large total. The Pipeline figures are the standing total; this is the change. One row is one task: the chain has already grouped submissions into identities and chosen a canonical run for each, so a task resubmitted five times moves the line once. Where the chain could not read a decision date from a verdict it inferred the day, and the count of those is stated beneath the chart, because an inferred date should not be presented as an observed one.',
@@ -768,6 +769,10 @@ async function loadTruth() {
     populateTruthFilters();
     renderTruth();
     renderCarried();
+    // The Overview's Pipeline accepted tile reads this asset too, and it loads
+    // after the first render, so it would otherwise sit on a dash until
+    // something else happened to redraw it.
+    renderHero();
     buildDelta();
     renderScopeFunnel();
     populateDeltaFilter();
@@ -1838,22 +1843,35 @@ function renderHero() {
   setCount('metricActive', summary.activeTrainers);
   setText("metricRoster", `${fmt(summary.totalTrainers)} total trainer records`);
   setText('commandSourceStatus', gcsPipeline
-    ? `${fmt(snapshot.current.length)} evaluations \u00b7 ${fmt(snapshot.folders.length)} folders${(dateRange.start || dateRange.end) ? ` \u00b7 ${rangeLabel().toLowerCase()}` : ''}`
+    ? `${fmt(snapshot.current.length)} evaluations \u00b7 ${fmt(snapshot.folders.length)} folders` +
+      // Named because one tile in this panel now answers from the verdicts
+      // rather than the evaluations feed, and a reader should not have to guess
+      // which figure came from where.
+      (truth ? ` \u00b7 ${fmt(truth.rows.length)} decided tasks from the verdicts` : '') +
+      ((dateRange.start || dateRange.end) ? ` \u00b7 ${rangeLabel().toLowerCase()}` : '')
     : 'Waiting for the bucket scan.');
   const current = gcsPipeline ? snapshot.current.length : null;
-  const pipelineAccepted = gcsPipeline ? snapshot.current.filter(row => row.status === 'Accepted').length : null;
+  // Read from the verdicts, the same asset the Pipeline tab reads, so the two
+  // agree. It used to count status === 'Accepted' in the evaluations feed,
+  // which is a different population: that said 775 while the Pipeline tab said
+  // 1,081, and nothing on the page explained the gap. A figure called "pipeline
+  // accepted" has to be the pipeline's own number.
+  const pipelineAccepted = truth
+    ? truth.rows.filter(row => row.state === 'accepted').length : null;
+  const pipelineScope = truth ? truth.rows.length : null;
   const share = (value, base) => (value == null || !base) ? null : Math.round((value / base) * 100);
   const tiles = [
-    ['Current evaluated tasks', current, null, 'aqua'],
-    ['Pipeline accepted', pipelineAccepted, share(pipelineAccepted, current), 'aqua'],
-    ['Accepted finalisation folders', finalisationRows.length ? snapshot.folders.length : null, null, 'blue'],
-    ['Cross-cohort repeats excluded', snapshot.ready ? snapshot.duplicates : null, share(snapshot.ready ? snapshot.duplicates : null, snapshot.folders.length), 'yellow'],
+    ['Current evaluated tasks', current, null, 'aqua', 'of the evaluations feed'],
+    ['Pipeline accepted', pipelineAccepted, share(pipelineAccepted, pipelineScope), 'aqua',
+     `of ${fmt(pipelineScope || 0)} tasks the pipeline decided`],
+    ['Accepted finalisation folders', finalisationRows.length ? snapshot.folders.length : null, null, 'blue', ''],
+    ['Cross-cohort repeats excluded', snapshot.ready ? snapshot.duplicates : null, share(snapshot.ready ? snapshot.duplicates : null, snapshot.folders.length), 'yellow', 'of folders'],
   ];
   const summaryHost = byId('commandSummary');
-  summaryHost.innerHTML = tiles.map(([label, value, pct, tone], index) => `<div class="summary-item" style="--i:${index}" data-tone="${tone}">
-      <span>${label}</span>
+  summaryHost.innerHTML = tiles.map(([label, value, pct, tone, basis], index) => `<div class="summary-item" style="--i:${index}" data-tone="${tone}">
+      <span>${label}${label === 'Pipeline accepted' ? '<button class="why" data-info="pipelineAccepted" aria-label="Where this number comes from">?</button>' : ''}</span>
       <strong data-count="${value == null ? '' : value}" data-key="tile:${esc(label)}">${value == null ? '-' : fmt(value)}</strong>
-      ${pct == null ? '' : `<span class="tile-share"><i style="--pct:${pct}"></i><em>${pct}% of ${index === 1 ? 'current tasks' : 'folders'}</em></span>`}
+      ${pct == null ? '' : `<span class="tile-share"><i style="--pct:${pct}"></i><em>${pct}% ${esc(basis || '')}</em></span>`}
     </div>`).join('');
   summaryHost.querySelectorAll('[data-count=""]').forEach(node => node.removeAttribute('data-count'));
   animateCounts(summaryHost);

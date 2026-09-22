@@ -79,6 +79,14 @@ def build(truth, scan_rows):
             connector[task['id']] = {'isConnector': exact[name], 'via': 'name'}
         elif stem in loose:
             connector[task['id']] = {'isConnector': loose[stem], 'via': 'normalised name'}
+        elif task.get('connector') is not None:
+            # The ingest chain classified it from the narrower scan it is fed on
+            # the VM, and the scan published here does not reach it. Same rule
+            # and same scanner, so the answer is kept rather than discarded -
+            # otherwise the index would be a step backwards for those tasks, and
+            # the page would show a number the index cannot account for.
+            connector[task['id']] = {'isConnector': bool(task['connector']),
+                                     'via': 'ingest chain'}
         else:
             how['no package scanned'] += 1
             continue
