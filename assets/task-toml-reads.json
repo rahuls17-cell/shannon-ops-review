@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T20:01:31+00:00",
+ "generatedAt": "2026-09-22T20:20:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -607,6 +607,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c44-index-coverage-audit/dd3a3449f1925395f5275672a188a9531c7ebc34e3f6339bda55f99bf5b1e2e7.zip",
    "bytesRead": 63392,
+   "readOn": "2026-09-22"
+  },
+  "fin-b50-f3-mitochondria-biotech-bear-case-diligence": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b50-f3-mitochondria-biotech-bear-case-diligence/b2f0b602dabd636aa7679e6adb5924e742090004cc71ea4b9438fcb4788e2525.zip",
+   "bytesRead": 84339,
    "readOn": "2026-09-22"
   }
  }
