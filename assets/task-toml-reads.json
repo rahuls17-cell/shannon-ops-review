@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T23:42:04+00:00",
+ "generatedAt": "2026-09-22T23:50:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -833,6 +833,16 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-saved-queries-were-watching/b3e8a98a3ff63925cd904e4b0dd02afaa75c182dc9436fd12c0c52f4995f09f1.zip",
    "bytesRead": 54456,
+   "readOn": "2026-09-22"
+  },
+  "writing-sc05-a8-leadership-rubric-levels": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-a8-leadership-rubric-levels/6a21ccf1b78c8959b468ce240b935a658c70564df3d16444bb42c0bd16e14d23.zip",
+   "bytesRead": 97986,
    "readOn": "2026-09-22"
   }
  }
