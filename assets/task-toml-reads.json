@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T23:30:52+00:00",
+ "generatedAt": "2026-09-22T23:42:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -821,6 +821,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c411-recipe-dietary-tag-compliance-audit/7925d8afaf2e10aa1715df52efe3d4c80eb2759c5434098a0a679d1101e58048.zip",
    "bytesRead": 78834,
+   "readOn": "2026-09-22"
+  },
+  "what-the-saved-queries-were-watching": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-saved-queries-were-watching/b3e8a98a3ff63925cd904e4b0dd02afaa75c182dc9436fd12c0c52f4995f09f1.zip",
+   "bytesRead": 54456,
    "readOn": "2026-09-22"
   }
  }
