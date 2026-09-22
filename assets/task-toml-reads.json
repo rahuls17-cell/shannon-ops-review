@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T20:51:20+00:00",
+ "generatedAt": "2026-09-22T21:00:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -647,6 +647,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b5-a6-two-person-office-layout-fit/b7887ad0db2fc7f06b59f08510f4c89f9c60e42135259f46ee51593806967285.zip",
    "bytesRead": 84743,
+   "readOn": "2026-09-22"
+  },
+  "the-loudest-voice-has-no-account": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-loudest-voice-has-no-account/4f641d04502eafd3c2c3c8975748fd704c2eb392c0ef2885cbd3bf34d4e64bb2.zip",
+   "bytesRead": 55006,
    "readOn": "2026-09-22"
   }
  }
