@@ -59,7 +59,10 @@ assert.ok(yes.rows.length < yes.submissions, 'and must show them folded into tas
 
 const ready = filterTruth(model.rows, {delivered: 'ready'});
 assert.equal(ready.submissions, c.readyRows, 'the ready filter must select every ready row');
-assert.equal(ready.rows.length, c.readyNames, 'and must show one row per task');
+// One row per TASK, which folds -v3 and -v4 together; readyNames counts
+// distinct names and is the larger number. Both are checked.
+assert.equal(ready.rows.length, c.readyTasks, 'and must show one row per task');
+assert.ok(c.readyTasks <= c.readyNames, 'folding names into tasks cannot increase the count');
 ready.rows.forEach(r => {
   assert.ok(!r.delivered, 'a ready task cannot already be delivered');
   assert.ok(r.atCurrentBar, 'a ready task must have a package at the current bar');
@@ -158,7 +161,7 @@ colYes.rows.filter(r => r.versions > 1).forEach(r => {
 
 // Ready collapses to the same number the manifest ships.
 const colReady = filterTruth(model.rows, {delivered: 'ready'});
-assert.equal(colReady.rows.length, c.readyNames,
+assert.equal(colReady.rows.length, c.readyTasks,
   'the collapsed ready count must equal the distinct task count the index publishes');
 
 // With no Delivered filter nothing is collapsed - other views keep row counts.

@@ -21,7 +21,7 @@ const AUDIT_PAGE_SIZE = 40;
 const AUDIT_FILTERS = ['aBatch', 'aCategory', 'aType', 'aDifficulty', 'aGlm',
   'aAcceptance', 'aPriority', 'aTrainer', 'aSource', 'aFlagged'];
 
-const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tCarried',
+const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tConnector', 'tCarried',
   'tConfidence', 'tDuplicate', 'tDomain', 'tOwner'];
 let explorer = null;
 let explorerPath = '';
@@ -92,6 +92,8 @@ const infoCopy = {
   auditSource: 'How the task was attributed to a trainer. Accepted portal and Trainer records are direct. QC run owner is inferred from who ran the QC, and unverified means that inference was not confirmed. Contested means more than one trainer claims it, and Unattributed means nobody could be identified.',
   auditFlags: 'Three quality caveats carried per task: contested owner - more than one trainer claims it; unverified - the attribution was inferred and not confirmed; version dependent - the result changes between task versions.',
   manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. To cut a second round, load the first manifest back in and its tasks are left out.',
+  truthMakeup: 'Two different questions, answered by two different kinds of evidence, so they are shown apart. Connector is structural: it is read from mcp_servers in the task.toml inside the package, which is why a task with no package is not known rather than guessed. Domain is not structural at all - it is the prefix on the task name, gen- or law- or code- - so it is a naming convention that most tasks simply do not follow. That is why the two coverage figures are so different, and why a task can be a known non-connector with no domain at all.',
+  truthConnector: 'Whether the task mounts connector gyms - Slack, Jira, Google Drive and the rest. It is decided structurally, by whether task.toml inside the package declares mcp_servers, and never from the task name: a gen- or code- prefix says nothing about whether a task talks to Slack. That marker only exists inside a package, so a task with no archive in the bucket has no answer and is listed as not known rather than guessed. Of the tasks that do have a package at the current bar, 99% are classified.',
   truthFlags: 'Short codes so the task name is never squeezed out of its column. DL - already delivered, covered by the Delivery tab. Times-N - the same task appears N times in the pipeline and is counted once while the Delivered filter is on. CK - check before shipping: the identifier names a task the audit already covers although the name does not match. DUP - another task shares its name and trainer, so it is probably the same work counted twice; red when the date and outcome match too. UM - unmerged: it arrived with no family id, so repeat runs of it may be counted separately. CO - carried over: first decided before the cut and settled after it. Hover any code for the full explanation for that row, and open the row with + for its evidence.',
   truthVersions: 'The pipeline records one row per submission, not per task. 152 of the delivered rows arrived without a family id, so the pipeline never merged their repeat runs, and another 30 are recorded under an alias or a placeholder name - 534 rows for 367 real tasks. Setting this filter therefore counts tasks rather than rows: a task with several versions appears once, tagged with how many it has, which one is being shown and why. Nothing is dropped - the tag lists the other versions, and clearing the filter brings every row back.',
   truthDelivered: 'Whether this task is one of the 412 already covered by the delivery audit on the Delivery tab. The two datasets share only the task name, so they are joined on it - exactly first, then with version and status suffixes such as -final or -v5 stripped, and never when that would pull in more than one task. The join was checked against the package hash on the 66 tasks that carry one, and agreed on all 66. Ready for delivery means accepted, package collectable at the current bar, and no match to anything already delivered. 93 audited tasks have no counterpart here at all, but only 2 of them are accepted, so the split is reliable for accepted work.',
@@ -506,6 +508,12 @@ function renderBreakdown(id, counts, total) {
     </div>`).join('') : '<p class="empty">Nothing in this selection.</p>';
 }
 
+// One colour per domain, so the same domain reads the same on every strip.
+const DOMAIN_TONES = {
+  General: '--violet', Engineering: '--blue', Health: '--magenta',
+  Legal: '--orange', Finance: '--yellow', Business: '--aqua',
+};
+
 const AUDIT_TONES = {
   category: {Code: '--blue', 'Other/unclassified': '--slate', General: '--violet', Connector: '--aqua', Health: '--magenta', Law: '--orange', Finance: '--yellow'},
   acceptance: {Accepted: '--aqua', Rejected: '--red', Pending: '--yellow'},
@@ -748,7 +756,14 @@ async function loadTruth() {
       if (idx.ok) deliveredIndex = await idx.json();
     } catch (ignored) { deliveredIndex = null; }
     const payload = await response.json();
-    truth = window.prepareTruth(payload, deliveredIndex);
+    // Connector status is a second optional join, same shape as the delivered
+    // one: the page is still worth reading without it.
+    let connectorIndex = null;
+    try {
+      const idx = await fetch(`assets/connector-index.json?t=${Date.now()}`, {cache: 'no-store'});
+      if (idx.ok) connectorIndex = await idx.json();
+    } catch (ignored) { connectorIndex = null; }
+    truth = window.prepareTruth(payload, deliveredIndex, connectorIndex);
     truth.counts = payload.counts || null;
     populateTruthFilters();
     renderTruth();
@@ -895,6 +910,7 @@ function truthFilters() {
     state: byId('tState').value, gateEra: byId('tGate').value,
     finding: byId('tFinding').value, delivery: byId('tDelivery').value,
     delivered: byId('tDelivered') ? byId('tDelivered').value : '',
+    connector: byId('tConnector') ? byId('tConnector').value : '',
     carriedOver: byId('tCarried').value, confidence: byId('tConfidence').value,
     domain: byId('tDomain').value, owner: byId('tOwner').value,
     duplicate: byId('tDuplicate').value,
@@ -1021,6 +1037,43 @@ function renderTruthFigures(result, filtered) {
       stat('ready for delivery', result.readyForDelivery, result.rows.length,
         `${fmt(result.readyForDelivery)} accepted, collectable at the current bar and not yet delivered${result.collapsed ? '' : ` · ${fmt(result.readyNames)} distinct names`}. Share of the tasks shown.`, null, 'blue')
     : '<p class="empty">The delivered index is not loaded.</p>';
+  // Connector is structural, read from the package. Domain is a name prefix.
+  // They sit together because a reader wants both, but they are labelled apart
+  // because one is evidence and the other is a naming convention.
+  byId('truthMakeup').innerHTML =
+    stat('connector', result.connectorTasks, result.rows.length,
+      `task.toml declares mcp_servers. ${fmt(result.connectorTasks)} of the ${fmt(result.rows.length)} shown.`,
+      null, 'aqua') +
+    stat('non-connector', result.nonConnectorTasks, result.rows.length,
+      `task.toml declares none. ${fmt(result.nonConnectorTasks)} of the ${fmt(result.rows.length)} shown.`,
+      null, 'blue') +
+    stat('not known', result.connectorUnknown, result.rows.length,
+      'No package was scanned for these, and the marker only exists inside one. Not a guess either way.',
+      null, 'slate') +
+    stat('named domain', result.rows.length - (result.domains['Not recorded'] || 0), result.rows.length,
+      'The task name starts with a domain prefix such as gen- or law-. The rest carry no prefix.',
+      null, 'violet');
+  animateCounts(byId('truthMakeup'));
+
+  // The domain split of whatever is shown, so filtering to non-connector
+  // answers "which of these are general, which are law".
+  const domains = Object.entries(result.domains || {})
+    .filter(([name]) => name && name !== 'Not recorded' && name !== '(none)')
+    .sort((a, b) => b[1] - a[1]);
+  const domainTotal = domains.reduce((n, [, v]) => n + v, 0);
+  const unnamed = (result.domains || {})['Not recorded'] || 0;
+  byId('truthDomains').innerHTML = domains.length
+    ? domains.map(([name, n], index) => `
+      <button type="button" class="dim-row" style="--i:${index};--c:var(${DOMAIN_TONES[name] || '--slate'})"
+        data-domain="${esc(name)}" data-tip="${esc(name)}: ${fmt(n)} of the ${fmt(domainTotal)} shown tasks that carry a domain prefix">
+        <span class="dim-swatch"><i></i></span>
+        <span class="dim-label">${esc(name)}</span>
+        <b class="dim-n">${fmt(n)}</b>
+        <span class="dim-share"><i style="--pct:${Math.round((n / (domainTotal || 1)) * 100)}"></i><small>${Math.round((n / (domainTotal || 1)) * 100)}%</small></span>
+      </button>`).join('') +
+      (unnamed ? `<p class="dim-foot">${fmt(unnamed)} of the ${fmt(result.rows.length)} shown carry no domain prefix in their name, so they are not in this split.</p>` : '')
+    : '<p class="empty">No task in this selection carries a domain prefix.</p>';
+
   byId('truthFlags').innerHTML = [
     ['carried over', result.carriedOver, 'Carried over', 'First decided before the cut and settled by the current pipeline.'],
     ['awaiting re-gate', result.gateOnly, 'Awaiting KESTREL re-gate', 'Accepted under the GLM-5.2 gate only; waiting for the KESTREL re-gate.'],
@@ -1142,6 +1195,17 @@ function renderTruthRows(rows) {
         <dt>Canonical run</dt><dd>${esc(row.canonicalReason)}${row.runs > 1 ? ` of ${fmt(row.runs)} runs` : ''}</dd>
         <dt>Identity</dt><dd>${row.unmerged ? 'Keyed on the submission id: no family id was present, so repeat runs may still be counted separately.' : 'Keyed by the pipeline family id.'}${row.possibleDuplicate ? ` Shares its task name and trainer with ${fmt(row.duplicateSiblings)} other task${row.duplicateSiblings === 1 ? '' : 's'} in scope${row.duplicateSameDay && row.duplicateSameState ? ', decided the same day with the same outcome' : ''} - so this is very likely one task counted more than once. Flagged rather than merged, because a task name can legitimately cover unrelated work.` : ''}</dd>
         <dt>Delivered</dt><dd>${(row.cohorts || []).length ? esc(row.cohorts.join(', ')) : 'No package in any accepted folder'}</dd>
+        <dt>Connector</dt><dd>${row.connector === true
+          ? `Yes &middot; mounts ${fmt((row.connectorServices || []).length)} gym${(row.connectorServices || []).length === 1 ? '' : 's'}` +
+            ((row.connectorServices || []).length
+              ? `<div class="gymlist">${row.connectorServices.map(g => `<span class="chip chip-info">${esc(g)}</span>`).join('')}</div>`
+              : ' <span class="muted">but the scan did not record which</span>')
+          : row.connector === false
+            ? 'No &middot; task.toml declares no mcp_servers'
+            : 'Not known &middot; no package was scanned for this task, and the marker only exists inside one'}</dd>
+        <dt>Domain</dt><dd>${row.domain && row.domain !== 'Not recorded'
+          ? `${esc(row.domain)} <span class="muted">read from the task name prefix, not from the package</span>`
+          : '<span class="muted">Not recorded: the name carries no domain prefix</span>'}</dd>
         <dt>Findings</dt><dd>${(row.findings || []).length
           ? esc(row.findings.join(', ')) + ' <span class="muted">on this run</span>'
           : 'None on this run'}${(row.findingsPrior || []).length

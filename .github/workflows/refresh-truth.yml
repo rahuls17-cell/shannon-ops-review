@@ -97,6 +97,10 @@ jobs:
         # already in the repo; touches neither the bucket nor any credential.
         run: |
           python3 tools/build_delivered_index.py
+          # Same reason as the delivered index: it resolves to pipeline
+          # task ids, so a rebuilt pipeline leaves it describing the
+          # wrong rows. Reads the published bucket scan; no credential.
+          python3 tools/build_connector_index.py
           # Only the check that the index describes the data it was built from.
           # The behavioural suites moved to ci.yml: they assert how the page
           # reads this data, and when one of them was wrong about live data it
@@ -112,19 +116,21 @@ jobs:
           # top of origin/main rather than rebasing it onto a moved branch.
           cp assets/pipeline-truth.json "$RUNNER_TEMP/pipeline-truth.json"
           cp assets/delivered-index.json "$RUNNER_TEMP/delivered-index.json"
+          cp assets/connector-index.json "$RUNNER_TEMP/connector-index.json"
           pushed=0
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
             cp "$RUNNER_TEMP/pipeline-truth.json" assets/pipeline-truth.json
             cp "$RUNNER_TEMP/delivered-index.json" assets/delivered-index.json
-            git add assets/pipeline-truth.json assets/delivered-index.json
+            cp "$RUNNER_TEMP/connector-index.json" assets/connector-index.json
+            git add assets/pipeline-truth.json assets/delivered-index.json assets/connector-index.json
             if git diff --cached --quiet; then
               echo "asset is identical to main; nothing to commit"
               pushed=1
               break
             fi
-            git commit -m "Refresh derived pipeline and delivered index"
+            git commit -m "Refresh derived pipeline, delivered and connector indexes"
             if git push origin HEAD:main; then
               pushed=1
               break

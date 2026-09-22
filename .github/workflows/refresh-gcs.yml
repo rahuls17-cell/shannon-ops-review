@@ -51,6 +51,13 @@ jobs:
           python3 -c 'import json; p=json.load(open("assets/gcs-pipeline.json.new")); assert p["schemaVersion"] == 3; assert p["finalisation"]["tasks"]; assert all(isinstance(p[k], list) and p[k] for k in ("current", "historical", "legacy")); print(p["generatedAt"], {k:len(p[k]) for k in ("current","historical","legacy")}, p["finalisation"]["totals"])'
           mv assets/gcs-pipeline.json.new assets/gcs-pipeline.json
           python3 -c 'import json; p=json.load(open("assets/gcs-pipeline.json")); json.dump({"generatedAt":p["generatedAt"]},open("assets/pipeline-version.json","w"))'
+          # The connector classification is read from this scan, so a fresh
+          # scan can classify tasks the previous one could not. Rebuilt here
+          # as well as in refresh-truth, because either input moving makes it
+          # stale. Skipped when the pipeline asset is not present yet.
+          if [ -f assets/pipeline-truth.json ]; then
+            python3 tools/build_connector_index.py
+          fi
       - name: Commit refreshed snapshot
         run: |
           git config user.name github-actions[bot]
@@ -67,13 +74,13 @@ jobs:
             git reset --hard origin/main
             cp "$RUNNER_TEMP/gcs-pipeline.json" assets/gcs-pipeline.json
             cp "$RUNNER_TEMP/pipeline-version.json" assets/pipeline-version.json
-            git add assets/gcs-pipeline.json assets/pipeline-version.json
+            git add assets/gcs-pipeline.json assets/pipeline-version.json assets/connector-index.json
             if git diff --cached --quiet; then
               echo "snapshot is identical to main; nothing to commit"
               pushed=1
               break
             fi
-            git commit -m "Refresh GCS pipeline snapshot"
+            git commit -m "Refresh GCS pipeline snapshot and connector index"
             if git push origin HEAD:main; then
               pushed=1
               break

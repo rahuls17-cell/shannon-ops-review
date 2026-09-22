@@ -225,6 +225,10 @@ def build(audit, truth):
             'acceptedAtCurrentBar': len(at_bar),
             'readyRows': len(ready),
             'readyNames': len({key(r['name']) for r in ready}),
+            # Distinct names and distinct tasks are not the same number:
+            # -v3 and -v4 of one task are two names and one task. The page
+            # folds suffixes when it collapses, so it needs the task count.
+            'readyTasks': len({norm(r['name']) for r in ready}),
             'readySuspect': len(suspect),
             'byMethod': dict(methods),
         },

@@ -459,6 +459,14 @@
               <p class="eyebrow">Flags on the shown tasks<em>overlapping, not a split</em></p>
               <div id="truthFlags" class="stats stats-4"></div>
             </div>
+            <!-- Connector is read from the package; domain is read from the task
+                 name. Two different kinds of evidence, so they are labelled
+                 separately rather than presented as one classification. -->
+            <div class="statgroup statgroup-wide">
+              <p class="eyebrow">What the shown tasks are<button class="why" data-info="truthMakeup" aria-label="How connector and domain are decided">?</button><em>connector from the package, domain from the name</em></p>
+              <div id="truthMakeup" class="stats stats-4"></div>
+              <div id="truthDomains" class="dimstrip"></div>
+            </div>
           </div>
 
           <section class="panel" id="truthChainPanel" hidden>
@@ -486,6 +494,7 @@
                 <label class="field"><span>Gate<button class="why" data-info="gateEra" aria-label="What the gates are">?</button></span><select id="tGate"></select></label>
                 <label class="field"><span>Delivery</span><select id="tDelivery"><option value="">All</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting re-gate</option><option value="none">No package</option></select></label>
                                 <label class="field"><span>Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><button class="why" data-info="truthVersions" aria-label="Why versions are counted once">1x</button></span><select id="tDelivered"><option value="">Any</option><option value="yes">Already delivered</option><option value="ready">Ready for delivery</option><option value="no">Not delivered</option></select></label>
+                <label class="field"><span>Connector<button class="why" data-info="truthConnector" aria-label="How connector status is decided">?</button></span><select id="tConnector"><option value="">Any</option><option value="yes">Connector</option><option value="no">Non-connector</option><option value="unknown">Not known</option></select></label>
                 <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What a finding is">?</button></span><select id="tFinding"></select></label>
                 <details class="morefilters">
                   <summary class="ghost">More</summary>

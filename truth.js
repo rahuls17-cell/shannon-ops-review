@@ -10,7 +10,7 @@
   // from the data - so the UI can never offer a value that matches nothing.
   const UNDECIDED = new Set(['error', 'no QC decision', 'queued', 'not started']);
 
-  function prepareTruth(payload, deliveredIndex) {
+  function prepareTruth(payload, deliveredIndex, connectorIndex) {
     if (!payload || !Array.isArray(payload.tasks)) throw new Error('No pipeline truth asset loaded');
     if (!payload.reconciles) throw new Error('Pipeline truth failed its own reconciliation; refusing to display it');
     const figures = new Map((payload.figures || []).map(f => [f.label, f]));
@@ -25,13 +25,27 @@
     // task wrongly marked delivered is never delivered at all. They are carried
     // as a warning so a person decides rather than a heuristic.
     const suspect = (deliveredIndex && deliveredIndex.suspect) || {};
-    const rows = delivered
+    // Connector status is structural - mcp_servers in task.toml - so it is only
+    // known for a task whose package was scanned. The index widens what the
+    // chain already set without contradicting it: same scanner, same rule, and
+    // the two agree on every task they both cover. A task the index does not
+    // reach keeps whatever the chain knew, which is usually nothing.
+    const classified = (connectorIndex && connectorIndex.connector) || {};
+    const connectorOf = id => {
+      const hit = classified[id];
+      if (!hit) return {};
+      return {connector: hit.isConnector,
+              connectorServices: hit.services || [],
+              connectorVia: hit.via};
+    };
+    const rows = (delivered || connectorIndex)
       ? payload.tasks.map(row => ({
           ...row,
-          delivered: Object.prototype.hasOwnProperty.call(delivered, row.id),
-          deliveredVia: delivered[row.id] || null,
+          delivered: Boolean(delivered) && Object.prototype.hasOwnProperty.call(delivered, row.id),
+          deliveredVia: (delivered || {})[row.id] || null,
           maybeDelivered: suspect[row.id] || null,
-          deliveredTask: (deliveredIndex.deliveredTask || {})[row.id] || null,
+          deliveredTask: ((deliveredIndex || {}).deliveredTask || {})[row.id] || null,
+          ...connectorOf(row.id),
         }))
       : payload.tasks;
 
@@ -45,6 +59,7 @@
       // Null when the index has not loaded, so the page can tell the difference
       // between "nothing is delivered" and "delivery is not known".
       deliveredIndex: deliveredIndex || null,
+      connectorIndex: connectorIndex || null,
       // The index resolves to pipeline task ids, so it only describes the
       // pipeline it was built against. A refresh that rebuilt one and not the
       // other has to be visible rather than silently marking the wrong rows.
@@ -178,6 +193,7 @@
       versionsFolded: selected.length - matched.length,
       states: tally('state'),
       gateEras: tally('gateEra'),
+      domains: tally('domain'),
       findings: tally('findings'),
       accepted: matched.filter(row => row.state === 'accepted').length,
       legacyAccepted: matched.filter(row => row.state === 'legacy accepted').length,
@@ -188,6 +204,9 @@
       gateOnly: matched.filter(row => row.gateOnly).length,
       atCurrentBar: matched.filter(row => row.atCurrentBar).length,
       delivered: matched.filter(row => row.delivered).length,
+      connectorTasks: matched.filter(row => row.connector === true).length,
+      nonConnectorTasks: matched.filter(row => row.connector === false).length,
+      connectorUnknown: matched.filter(row => row.connector === null || row.connector === undefined).length,
       maybeDelivered: matched.filter(row => row.maybeDelivered).length,
       // "Ready" is deliberately narrow: accepted, its package actually
       // collectable at the current bar, and not already gone out. Counted by
