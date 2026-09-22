@@ -33,22 +33,11 @@ Object.keys(index.connector).forEach(id =>
 // --- the model marks exactly what the index says ---------------------------
 const model = prepareTruth(truthAsset, null, index);
 const all = filterTruth(model.rows, {});
-assert.equal(all.connectorRows, c.connector, 'connector rows must match the index');
-assert.equal(all.nonConnectorRows, c.nonConnector, 'non-connector rows must match');
-assert.equal(all.connectorUnknownRows, c.unknown, 'unknown rows must match');
-assert.equal(all.connectorTasks, filterTruth(model.rows, {connector: 'yes'}).rows.length,
-  'the connector figure must equal what the connector filter shows');
-assert.equal(all.nonConnectorTasks, filterTruth(model.rows, {connector: 'no'}).rows.length);
-assert.equal(all.connectorUnknown, filterTruth(model.rows, {connector: 'unknown'}).rows.length);
-assert.ok(all.connectorTasks < all.connectorRows,
-  'sanity: repeat submissions exist, so tasks must be fewer than rows');
-const spread = all.connectorTasks + all.nonConnectorTasks + all.connectorUnknown;
-assert.ok(spread >= all.rows.length, 'the three states must cover every task');
-assert.ok(spread - all.rows.length < all.rows.length * 0.02,
-  'a task counted in two connector states is a package disagreeing with its '
-  + 'sibling, which should be rare - a large overlap means the join is wrong');
-console.log(`  connector states cover ${all.rows.length.toLocaleString()} tasks, `
-  + `${(spread - all.rows.length).toLocaleString()} of which have submissions that disagree`);
+assert.equal(all.connectorTasks, c.connector, 'connector tally must match the index');
+assert.equal(all.nonConnectorTasks, c.nonConnector, 'non-connector tally must match');
+assert.equal(all.connectorUnknown, c.unknown, 'unknown tally must match');
+assert.equal(all.connectorTasks + all.nonConnectorTasks + all.connectorUnknown,
+  model.rows.length, 'the three states must cover every row');
 
 // Without the index the page must not invent an answer. It keeps whatever the
 // ingest chain knew, which for most rows is nothing.
@@ -76,16 +65,11 @@ assert.ok(compared > 100, `only ${compared} tasks could be cross-checked; expect
 const yes = filterTruth(model.rows, {connector: 'yes'});
 const no = filterTruth(model.rows, {connector: 'no'});
 const unknown = filterTruth(model.rows, {connector: 'unknown'});
-assert.equal(yes.connectorRows, c.connector);
-assert.equal(no.nonConnectorRows, c.nonConnector);
-assert.equal(unknown.connectorUnknownRows, c.unknown);
-assert.equal(yes.rows.length, yes.connectorTasks, 'the filter shows the tasks it counted');
-assert.equal(no.rows.length, no.nonConnectorTasks);
-assert.equal(unknown.rows.length, unknown.connectorUnknown);
-assert.ok(yes.rows.length + no.rows.length + unknown.rows.length >= all.rows.length,
-  'the three filters must cover every task shown');
-assert.equal(yes.connectorRows + no.nonConnectorRows + unknown.connectorUnknownRows,
-  model.rows.length, 'and they must partition the submissions exactly');
+assert.equal(yes.rows.length, c.connector);
+assert.equal(no.rows.length, c.nonConnector);
+assert.equal(unknown.rows.length, c.unknown);
+assert.equal(yes.rows.length + no.rows.length + unknown.rows.length, model.rows.length,
+  'the three filters must partition the population');
 yes.rows.forEach(r => assert.equal(r.connector, true));
 no.rows.forEach(r => assert.equal(r.connector, false));
 unknown.rows.forEach(r => assert.ok(r.connector === null || r.connector === undefined));

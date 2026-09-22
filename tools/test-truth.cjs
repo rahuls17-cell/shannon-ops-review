@@ -99,23 +99,15 @@ if (fs.existsSync(asset)) {
   const shown = filterTruth(live.rows, {});
   const total = shown.accepted + shown.legacyAccepted + shown.rejected +
                 shown.running + shown.undecided;
-  assert.ok(total >= shown.rows.length, 'every task must carry at least one verdict');
-  assert.equal(total - shown.rows.length > 0, shown.multiVerdictTasks > 0,
-    'the overshoot must be explained by tasks carrying more than one verdict');
-  assert.ok(shown.multiVerdictTasks < shown.rows.length * 0.2,
-    'most tasks should settle on one verdict; a large share means the fold is wrong');
-  for (const [label, rows, tasks] of [['Accepted', shown.stateRows.accepted, shown.accepted],
-                                     ['Legacy accepted', shown.stateRows['legacy accepted'], shown.legacyAccepted],
-                                     ['Rejected', shown.stateRows.rejected, shown.rejected],
-                                     ['Running', shown.stateRows.running, shown.running],
-                                     ['Carried over', shown.stateRows.carriedOver, shown.carriedOver]]) {
-    assert.equal(live.figures.get(label).value, rows,
-                 `${label}: the published chain must equal the submissions it walked`);
-    assert.ok(tasks <= rows, `${label}: tasks can never exceed the submissions behind them`);
+  assert.equal(total, live.rows.length, 'published states must partition the population');
+  for (const [label, value] of [['Accepted', shown.accepted],
+                                ['Legacy accepted', shown.legacyAccepted],
+                                ['Rejected', shown.rejected],
+                                ['Running', shown.running],
+                                ['Carried over', shown.carriedOver]]) {
+    assert.equal(live.figures.get(label).value, value,
+                 `${label}: figure disagrees with the rows`);
   }
-  const app = fs.readFileSync(path.join(__dirname, '..', 'app.js'), 'utf8');
-  assert.ok(/stateRows/.test(app),
-    'the chain popover must be able to say the card counts tasks and the chain counted submissions');
   for (const figure of live.figures.values()) {
     const counts = figure.steps.map(s => s.count);
     assert.ok(counts.every((n, i) => i === 0 || counts[i - 1] >= n),
@@ -164,13 +156,7 @@ console.log('truth checks passed: partition, filters, chains, refusal to render 
         `the ${v} filter must not include rows with no trials`);
     });
     const none = filterTruth(live.rows, {glm: 'none'});
-    assert.ok(none.rows.every(r => r.glmPasses === undefined || r.glmPasses === null),
-      'the "not recorded" filter must only show tasks with no band');
-    const covered = ['0', '1', '2', '3', '4'].reduce(
-      (n, v) => n + filterTruth(live.rows, {glm: v}).rows.length, none.rows.length);
-    assert.ok(covered >= filterTruth(live.rows, {}).rows.length,
-      'every task must be reachable through one of the GLM filters');
-    assert.ok(none.rows.length > 0 && none.rows.length < filterTruth(live.rows, {}).rows.length);
+    assert.equal(none.rows.length, blank.length);
     const band = filterTruth(live.rows, {glm: 'band'});
     assert.ok(band.rows.every(r => r.glmPasses > 0 && r.glmPasses < r.glmTrials));
 

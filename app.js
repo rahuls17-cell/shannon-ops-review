@@ -948,9 +948,7 @@ function fillSelect(id, counts, allLabel) {
 
 function populateTruthFilters() {
   if (!truth) return;
-  // Task counts, not submission counts: picking "accepted (998)" has to show
-  // 998 rows, and the published vocabulary counts submissions.
-  const v = truth.vocabularyTasks || truth.vocabulary;
+  const v = truth.vocabulary;
   fillSelect('tState', v.finalState, 'Any state');
   fillSelect('tGate', v.gateEra, 'Any gate');
   fillSelect('tFinding', v.findingFamilies, 'Any finding');
@@ -1206,20 +1204,8 @@ function renderChain(label, filtered) {
   if (!chain) { panel.hidden = true; return; }
   openChain = label;
   panel.hidden = false;
-  const result = truth ? window.filterTruth(truth.rows, truthFilters()) : null;
-  const shownAs = result ? ({
-    Accepted: [result.stateRows.accepted, result.accepted],
-    'Legacy accepted': [result.stateRows['legacy accepted'], result.legacyAccepted],
-    Rejected: [result.stateRows.rejected, result.rejected],
-    Running: [result.stateRows.running, result.running],
-    'Carried over': [result.stateRows.carriedOver, result.carriedOver],
-  })[label] : null;
-  const folded = shownAs && shownAs[0] !== shownAs[1];
   setText('truthChainTitle', `${chain.label}: ${fmt(chain.value)}`);
   setText('truthChainNote', (chain.note || '') +
-    (folded
-      ? ` This chain counts submissions, which is what the bucket is walked in. The card counts tasks: the ${fmt(shownAs[0])} submissions here are ${fmt(shownAs[1])} distinct tasks, because a task submitted more than once is still one task.`
-      : '') +
     (chain.stale ? ' Shown for the whole population; the cards reflect your filters.' : ''));
   const base = Math.max(1, ...chain.steps.map(step => step.count));
   byId('truthChain').innerHTML = chain.steps.map((step, index) => `
@@ -1305,22 +1291,6 @@ function renderFlagLegend(rows) {
 // the task was never shown to be solvable - and it must not be what "we did
 // not look" looks like. 1,501 of the 6,356 rows have trials recorded; the rest
 // were decided in batches whose gate report lists none.
-// How many submissions stand behind this one row, and whether anything else
-// looks like the same work.
-//
-// The table folds repeat submissions into one task, which is what makes the
-// counts mean what people expect - but a fold that cannot be inspected is just
-// a number going down for unexplained reasons. This badge is the way back in.
-function dupBadge(row) {
-  const folded = (row.versions || 1) > 1;
-  if (!folded && !row.possibleDuplicate) return '';
-  const label = folded ? `×${row.versions}` : 'alike';
-  const tip = folded
-    ? `${row.versions} submissions of this task, counted once. ${row.chosenBecause ? `Showing the one that ${row.chosenBecause}.` : ''} Click to see them.`
-    : `Shares a name and trainer with ${fmt(row.duplicateSiblings)} other task${row.duplicateSiblings === 1 ? '' : 's'} in scope, but nothing proves they are the same work, so they are counted separately. Click to compare.`;
-  return `<button type="button" class="dupbadge${folded ? '' : ' is-alike'}" data-dup="${esc(row.id)}" data-tip="${esc(tip)}">${esc(label)}</button>`;
-}
-
 function glmCell(row) {
   if (row.glmPasses === undefined || row.glmPasses === null) {
     return '<span class="muted" title="No GLM trials are recorded for the batch this run was decided in">–</span>';
@@ -1338,56 +1308,6 @@ function glmCell(row) {
 
 const GLM_TONE = {'0/4': '--red', '1/4': '--blue', '2/4': '--violet', '3/4': '--aqua', '4/4': '--orange'};
 
-// Everything behind one task: the submissions folded into it, and anything
-// that merely looks like the same work. The two are kept apart on purpose -
-// the first is arithmetic the page did, the second is a suspicion it refuses
-// to act on.
-function renderDuplicates(id) {
-  const panel = byId('duplicatePanel');
-  if (!panel || !truth) return;
-  const shown = window.filterTruth(truth.rows, truthFilters()).rows.find(r => r.id === id);
-  if (!shown) return;
-
-  const folded = (shown.otherVersions || []).map(v => ({...v, counted: false, alike: false}));
-  // Same name and trainer, different task key: not folded, and deliberately not.
-  const stem = (name) => String(name || '').trim().toLowerCase()
-    .replace(/(?:-(?:final|v\d+|\d{4,}|copy|new|fixed|updated))+$/, '');
-  const foldedIds = new Set([shown.id, ...folded.map(v => v.id)]);
-  const alike = shown.possibleDuplicate
-    ? truth.rows.filter(r => !foldedIds.has(r.id) && r.owner === shown.owner
-        && stem(r.name) === stem(shown.name))
-        .map(r => ({id: r.id, name: r.name, state: r.state, decided: r.decided,
-                    runs: r.runs, counted: true, alike: true}))
-    : [];
-
-  const all = [{id: shown.id, name: shown.name, state: shown.state, decided: shown.decided,
-                runs: shown.runs, counted: true, alike: false, shown: true}, ...folded, ...alike];
-
-  setText('duplicateNote',
-    `${esc(shown.name)}: ${fmt(all.length)} submission${all.length === 1 ? '' : 's'} in view. ` +
-    (folded.length
-      ? `${fmt(folded.length + 1)} of them are the same task and are counted once - the table shows the one that ${shown.chosenBecause || 'was chosen by the stated rule'}. `
-      : '') +
-    (alike.length
-      ? `${fmt(alike.length)} share this name and trainer but carry a different identity, so they are counted separately: a task name can legitimately cover unrelated work, and merging them on a hunch would hide real work rather than reveal a duplicate. `
-      : '') +
-    'Counted means the row contributes to the figures above.');
-
-  byId('duplicateRows').innerHTML = all.map(r => `
-    <tr${r.shown ? ' class="is-shown"' : ''}>
-      <td><div class="taskcell"><span class="taskname" title="${esc(r.name)}">${esc(r.name)}</span>${r.shown ? ' <span class="chip chip-info">shown in the table</span>' : ''}</div></td>
-      <td><code class="muted">${esc(r.id)}</code></td>
-      <td><span class="state state-${esc(String(r.state || '').replace(/\s+/g, '-'))}">${esc(r.state || '-')}</span></td>
-      <td>${esc(r.decided || '–')}</td>
-      <td class="num">${fmt(r.runs)}</td>
-      <td>${r.counted
-        ? `<span class="chip">counted${r.alike ? ' separately' : ''}</span>`
-        : '<span class="chip chip-warn" title="Folded into the row above; counted once">folded in</span>'}</td>
-    </tr>`).join('');
-  panel.hidden = false;
-  panel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
-}
-
 function renderTruthRows(rows) {
   const size = pageSize('truthPageSize');
   const pages = Math.max(Math.ceil(rows.length / size), 1);
@@ -1399,7 +1319,7 @@ function renderTruthRows(rows) {
     return `<tr class="drill-head">
       <td><button class="drill-toggle" aria-expanded="false" aria-controls="${id}" aria-label="Evidence for ${esc(row.name)}">+</button></td>
       <td class="num serial">${fmt(from + index + 1)}</td>
-      <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span>${dupBadge(row)}</div></td>
+      <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span></div></td>
       <td class="flagcell">${flagBadges(row)}</td>
       <td><span class="state state-${esc(row.state.replace(/\s+/g, '-'))}">${esc(row.state)}</span></td>
       <td>${esc(row.owner || '\u2013')}</td>
@@ -3168,13 +3088,6 @@ function wireEvents() {
   TRUTH_FILTERS.forEach(id => byId(id)?.addEventListener('change', () => { truthPage = 0; renderTruth(); }));
   byId('tSearch')?.addEventListener('input', () => { truthPage = 0; renderTruth(); });
   byId('tExport')?.addEventListener('click', downloadTruthCsv);
-  byId('truthRows')?.addEventListener('click', event => {
-    const badge = event.target.closest('[data-dup]');
-    if (!badge) return;
-    event.stopPropagation();
-    renderDuplicates(badge.dataset.dup);
-  });
-  byId('duplicateClose')?.addEventListener('click', () => { byId('duplicatePanel').hidden = true; });
   byId('tReset')?.addEventListener('click', () => {
     [...TRUTH_FILTERS, 'tSearch'].forEach(id => { if (byId(id)) byId(id).value = ''; });
     truthPage = 0; renderTruth();

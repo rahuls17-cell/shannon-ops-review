@@ -42,14 +42,6 @@
     ['decided_is_approximate', row => yesNo(Boolean(row.decidedInferred))],
     ['gate_era', row => row.gateEra],
     ['runs', row => row.runs],
-    ['glm_passes', row => (row.glmPasses === undefined || row.glmPasses === null
-      ? '' : row.glmPasses)],
-    ['glm_trials', row => (row.glmPasses === undefined || row.glmPasses === null
-      ? '' : row.glmTrials)],
-    ['glm_band', row => (row.glmPasses === undefined || row.glmPasses === null
-      ? '' : `${row.glmPasses}/${row.glmTrials}`)],
-    ['glm_rewards', row => (row.glmRewards || [])
-      .map(v => (v === null ? 'not read' : v))],
     ['at_current_bar', row => yesNo(Boolean(row.atCurrentBar))],
     ['awaiting_regate', row => yesNo(Boolean(row.gateOnly))],
     ['carried_over', row => yesNo(Boolean(row.carriedOver))],

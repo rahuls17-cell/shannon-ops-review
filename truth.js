@@ -66,11 +66,6 @@
       sources: payload.sources || {},
       figures,
       vocabulary: payload.vocabulary || {},
-      // The same vocabulary counted in TASKS. The published one counts
-      // submissions, so the State dropdown offered "accepted (1,126)" and
-      // then showed 998 rows once picked. A filter that disagrees with what
-      // it selects is worse than no count at all.
-      vocabularyTasks: taskVocabulary(rows),
       glmIndex: glmIndex || null,
       // Null when the index has not loaded, so the page can tell the difference
       // between "nothing is delivered" and "delivery is not known".
@@ -148,58 +143,6 @@
     return collapsed.sort((a, b) => at.get(a.id) - at.get(b.id));
   }
 
-  // A task is accepted when it HAS an accepted verdict, not when the run that
-  // happens to be shown is the accepted one.
-  function tasksWhere(rows, predicate) {
-    return new Set(rows.filter(predicate).map(taskKey)).size;
-  }
-
-  function distinctTasksInState(rows, state) {
-    return new Set(rows.filter(row => row.state === state).map(taskKey)).size;
-  }
-
-  function countMultiVerdict(rows) {
-    const seen = new Map();
-    rows.forEach(row => {
-      const key = taskKey(row);
-      if (!seen.has(key)) seen.set(key, new Set());
-      seen.get(key).add(row.state);
-    });
-    let many = 0;
-    seen.forEach(states => { if (states.size > 1) many += 1; });
-    return many;
-  }
-
-  // Distinct tasks per value, for every list the page offers as a filter. A
-  // task with two verdicts counts once under each, which is why these do not
-  // sum to the number of tasks - the same overlap the figures report.
-  function taskVocabulary(rows) {
-    const fields = {finalState: 'state', gateEra: 'gateEra', domain: 'domain', owner: 'owner'};
-    const out = {};
-    Object.entries(fields).forEach(([name, field]) => {
-      const seen = new Map();
-      rows.forEach(row => {
-        const value = row[field];
-        if (!value) return;
-        if (!seen.has(value)) seen.set(value, new Set());
-        seen.get(value).add(taskKey(row));
-      });
-      out[name] = {};
-      [...seen.entries()].sort((a, b) => b[1].size - a[1].size)
-        .forEach(([value, keys]) => { out[name][value] = keys.size; });
-    });
-    // Findings are a list per row, so they need their own pass.
-    const findings = new Map();
-    rows.forEach(row => (row.findings || []).forEach(one => {
-      if (!findings.has(one)) findings.set(one, new Set());
-      findings.get(one).add(taskKey(row));
-    }));
-    out.findingFamilies = {};
-    [...findings.entries()].sort((a, b) => b[1].size - a[1].size)
-      .forEach(([value, keys]) => { out.findingFamilies[value] = keys.size; });
-    return out;
-  }
-
   function filterTruth(rows, filters) {
     const f = filters || {};
     const has = (list, value) => !value || (list || []).includes(value);
@@ -242,38 +185,15 @@
         (!f.end || (row.decided || '') <= f.end);
     });
 
-    // Everything below counts TASKS, not submissions.
-    //
-    // This used to fold only when the Delivered filter was set, which meant the
-    // same question got two answers depending on a control that looked
-    // unrelated to it: Accepted read 1,126 normally and 998 the moment that
-    // filter moved. A person asking "how many accepted tasks are there" wants
-    // the second number every time. One task submitted three times is one
-    // task, whatever is filtered.
-    //
-    // The submission counts are kept alongside - `submissions`, `versionsFolded`
-    // and the *Rows figures below - because the fold has to be visible and
-    // checkable, not silent.
-    const collapsed = true;
-    const matched = collapseByTask(selected);
+    // Asking about delivery means asking about tasks. Collapse before anything
+    // is counted, so every figure below is a task count rather than a row count.
+    const collapsed = Boolean(f.delivered);
+    const matched = collapsed ? collapseByTask(selected) : selected;
 
     // Accepted and actually collectable. Everything in here has either been
     // delivered or is waiting to be; there is no third thing it can be.
-    // Counted twice on purpose: once as tasks, once as the submissions behind
-    // them, so the page can say what it folded.
     const collectable = matched.filter(row => row.atCurrentBar &&
       (row.state === 'accepted' || row.state === 'legacy accepted'));
-    const collectableRows = selected.filter(row => row.atCurrentBar &&
-      (row.state === 'accepted' || row.state === 'legacy accepted'));
-
-    // The three figures on the split strip, as sets of tasks rather than
-    // counts of rows. Delivery belongs to the task: one submission of it going
-    // out means the task has gone out, so a task with a delivered run and an
-    // undelivered one is delivered and not also ready. That is what keeps
-    // accepted = delivered + ready true under every filter.
-    const atBarKeys = new Set(collectableRows.map(taskKey));
-    const deliveredAtBarKeys = new Set(
-      collectableRows.filter(row => row.delivered === true).map(taskKey));
     const ready = collectable.filter(row => row.delivered !== true);
 
     const tally = key => matched.reduce((counts, row) => {
@@ -295,54 +215,26 @@
       gateEras: tally('gateEra'),
       domains: tally('domain'),
       findings: tally('findings'),
-      // Distinct TASKS carrying each verdict, counted over the submissions
-      // rather than over the folded row. A task rejected on one run and
-      // accepted on another really is both, and the fold has to pick one row
-      // to show - so counting the folded row's state would make Accepted read
-      // 840 unfiltered and 998 the moment you filtered to it. Counting the
-      // task instead gives the same answer either way, which is the point.
-      //
-      // These therefore overlap: 605 tasks carry more than one verdict, so the
-      // five figures sum to more than the tasks shown. The page says so.
-      accepted: distinctTasksInState(selected, 'accepted'),
-      legacyAccepted: distinctTasksInState(selected, 'legacy accepted'),
-      rejected: distinctTasksInState(selected, 'rejected'),
-      running: distinctTasksInState(selected, 'running'),
-      undecided: new Set(selected.filter(row => UNDECIDED.has(row.state)).map(taskKey)).size,
-      // How much of that overlap there is, so the page can state it rather
-      // than leaving a reader to find the sums do not add up.
-      multiVerdictTasks: countMultiVerdict(selected),
-      stateRows: {
-        accepted: selected.filter(row => row.state === 'accepted').length,
-        'legacy accepted': selected.filter(row => row.state === 'legacy accepted').length,
-        rejected: selected.filter(row => row.state === 'rejected').length,
-        running: selected.filter(row => row.state === 'running').length,
-        carriedOver: selected.filter(row => row.carriedOver).length,
-      },
-      carriedOver: tasksWhere(selected, row => row.carriedOver),
-      gateOnly: tasksWhere(selected, row => row.gateOnly),
-      atCurrentBar: tasksWhere(selected, row => row.atCurrentBar),
-      delivered: tasksWhere(selected, row => row.delivered),
-      connectorTasks: tasksWhere(selected, row => row.connector === true),
-      nonConnectorTasks: tasksWhere(selected, row => row.connector === false),
-      connectorUnknown: tasksWhere(selected,
-        row => row.connector === null || row.connector === undefined),
-      maybeDelivered: tasksWhere(selected, row => row.maybeDelivered),
-      // The submissions behind those, kept so the page and the indexes - which
-      // are built per row - can still be reconciled against each other.
-      deliveredRows: selected.filter(row => row.delivered).length,
-      connectorRows: selected.filter(row => row.connector === true).length,
-      nonConnectorRows: selected.filter(row => row.connector === false).length,
-      connectorUnknownRows: selected.filter(
-        row => row.connector === null || row.connector === undefined).length,
+      accepted: matched.filter(row => row.state === 'accepted').length,
+      legacyAccepted: matched.filter(row => row.state === 'legacy accepted').length,
+      rejected: matched.filter(row => row.state === 'rejected').length,
+      running: matched.filter(row => row.state === 'running').length,
+      undecided: matched.filter(row => UNDECIDED.has(row.state)).length,
+      carriedOver: matched.filter(row => row.carriedOver).length,
+      gateOnly: matched.filter(row => row.gateOnly).length,
+      atCurrentBar: matched.filter(row => row.atCurrentBar).length,
+      delivered: matched.filter(row => row.delivered).length,
+      connectorTasks: matched.filter(row => row.connector === true).length,
+      nonConnectorTasks: matched.filter(row => row.connector === false).length,
+      connectorUnknown: matched.filter(row => row.connector === null || row.connector === undefined).length,
+      maybeDelivered: matched.filter(row => row.maybeDelivered).length,
       // "Ready" is deliberately narrow: accepted, its package actually
       // collectable at the current bar, and not already gone out. Counted by
       // distinct name as well as by row, because a task that was submitted
       // twice is still one thing to deliver.
-      readyForDelivery: collectableRows.filter(row => row.delivered !== true).length,
-      readyNames: new Set(collectableRows.filter(row => row.delivered !== true)
-        .map(row => (row.name || '').trim().toLowerCase())).size,
-      deliveredNames: new Set(selected.filter(row => row.delivered)
+      readyForDelivery: ready.length,
+      readyNames: new Set(ready.map(row => (row.name || '').trim().toLowerCase())).size,
+      deliveredNames: new Set(matched.filter(row => row.delivered)
         .map(row => (row.name || '').trim().toLowerCase())).size,
       // Task counts that hold whether or not the Delivered filter folded the
       // rows. The strip above the table asks a question about delivery, and
@@ -350,20 +242,21 @@
       // otherwise the same population reads 574 or 371 depending on a filter
       // that looks unrelated to it.
       deliveredTasks: new Set(matched.filter(row => row.delivered).map(taskKey)).size,
-      readyTasks: atBarKeys.size - deliveredAtBarKeys.size,
+      readyTasks: new Set(ready.map(taskKey)).size,
       // The one population that genuinely partitions: a task accepted with a
       // package collectable at the current bar has either gone out or is
       // waiting to. `ready` is defined as this set minus the delivered ones,
       // so acceptedAtBarTasks = deliveredAtBarTasks + readyTasks holds by
       // construction and cannot drift as either definition changes.
-      acceptedAtBarTasks: atBarKeys.size,
-      deliveredAtBarTasks: deliveredAtBarKeys.size,
-      acceptedAtBarRows: collectableRows.length,
-      deliveredAtBarRows: collectableRows.filter(row => row.delivered === true).length,
-      unmerged: tasksWhere(selected, row => row.unmerged),
-      possibleDuplicates: tasksWhere(selected, row => row.possibleDuplicate),
-      likelyDuplicates: tasksWhere(selected, row => row.duplicateTier === 'likely'),
-      inferredDates: tasksWhere(selected, row => row.decidedInferred),
+      acceptedAtBarTasks: new Set(collectable.map(taskKey)).size,
+      deliveredAtBarTasks: new Set(collectable.filter(row => row.delivered === true)
+        .map(taskKey)).size,
+      acceptedAtBarRows: collectable.length,
+      deliveredAtBarRows: collectable.filter(row => row.delivered === true).length,
+      unmerged: matched.filter(row => row.unmerged).length,
+      possibleDuplicates: matched.filter(row => row.possibleDuplicate).length,
+      likelyDuplicates: matched.filter(row => row.duplicateTier === 'likely').length,
+      inferredDates: matched.filter(row => row.decidedInferred).length,
       owners: new Set(matched.map(row => row.owner).filter(Boolean)).size,
     };
   }
