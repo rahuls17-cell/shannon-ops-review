@@ -70,7 +70,9 @@
 
     const groups = new Map();
     rows.forEach(row => {
-      const k = normaliseName(row.name);
+      const k = row.cohortFolder
+        ? `folder:${String(row.cohortFolder).trim().toLowerCase()}`
+        : normaliseName(row.name);
       if (!k) return;
       if (!groups.has(k)) groups.set(k, []);
       groups.get(k).push(row);

@@ -480,7 +480,7 @@
           <div id="truthFigures" class="kpirow kpirow-5"></div>
           <div class="statstrip">
             <div class="statgroup">
-              <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>the audit against the whole pipeline</em></p>
+              <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>the manifests against the bucket</em></p>
               <div id="truthJoin" class="stats stats-3"></div>
             </div>
             <!-- The one place on this tab where the figures genuinely partition:
@@ -488,8 +488,17 @@
                  or is waiting to. Kept apart from the flags beside it, which
                  overlap and do not add up to anything. -->
             <div class="statgroup">
-              <p class="eyebrow">Accepted at the current bar<button class="why" data-info="truthSplit" aria-label="How this splits">?</button><em>delivered + ready is all of it</em></p>
+              <p class="eyebrow">Accepted packages<button class="why" data-info="truthSplit" aria-label="How this splits">?</button><em>delivered + still to deliver is all of it</em></p>
               <div id="truthSplit" class="stats stats-3"></div>
+            </div>
+            <!-- Counted by bucket FOLDER, not by verdict row. One folder is
+                 one task, so nothing here needs a name to be deduplicated -
+                 which is the whole reason these four can be stated as one
+                 arithmetic. It does not follow the filters. -->
+            <div class="statgroup statgroup-wide">
+              <p class="eyebrow">In the accepted cohort<button class="why" data-info="cohort" aria-label="How the cohort is counted">?</button><em>counted by bucket folder, one folder is one task</em></p>
+              <div id="truthCohort" class="stats stats-4"></div>
+              <p class="muted footnote" id="truthCohortNote"></p>
             </div>
             <div class="statgroup statgroup-wide">
               <p class="eyebrow">Flags on the shown tasks<em>overlapping, not a split</em></p>
@@ -556,17 +565,17 @@
                 <span id="truthJoinText"></span>
                 <button id="unmatchedShow" class="linkish" aria-expanded="false" aria-controls="unmatchedPanel"></button>
               </p>
-              <section id="unmatchedPanel" class="unmatched" hidden aria-label="Audited tasks the pipeline has no verdict for">
+              <section id="unmatchedPanel" class="unmatched" hidden aria-label="Delivered packages no longer in the bucket">
                 <p class="panel-note" id="unmatchedNote"></p>
                 <div class="table-wrap">
                   <table class="grid">
                     <thead>
                       <tr>
-                        <th scope="col">Audited task</th>
+                        <th scope="col">Delivered task</th>
                         <th scope="col">Batch</th>
-                        <th scope="col">Audit verdict</th>
-                        <th scope="col">Where it sits</th>
-                        <th scope="col">Why the pipeline cannot show it</th>
+                        <th scope="col">In the bucket</th>
+                        <th scope="col">What was looked for</th>
+                        <th scope="col">The object the manifest names</th>
                       </tr>
                     </thead>
                     <tbody id="unmatchedRows"></tbody>

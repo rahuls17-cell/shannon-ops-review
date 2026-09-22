@@ -360,6 +360,14 @@ def build(audit, truth, scan_rows=(), manifest_tasks=()):
                                        if (t.get('live') or {}).get('state') in ('absent', 'repackaged')),
             'manifestLiveCheckedOn': next((t['live']['checkedOn'] for t in manifest_tasks
                                            if t.get('live')), None),
+            # Small enough to travel with the index, and the page needs to be
+            # able to name them rather than only count them.
+            'manifestMissing': [
+                {'task': t['name'], 'batch': t['batch'], 'folder': t.get('folder'),
+                 'sourceUri': t.get('sourceUri'),
+                 'state': (t.get('live') or {}).get('state')}
+                for t in manifest_tasks
+                if (t.get('live') or {}).get('state') in ('absent', 'repackaged')],
             'manifestClaimed': len(manifest_claimed),
             'manifestFlagged': len(manifest_flagged),
             'unmatchedInBucket': sum(1 for u in unmatched_audit if u.get('inBucket')),

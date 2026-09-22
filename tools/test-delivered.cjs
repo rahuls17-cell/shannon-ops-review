@@ -250,8 +250,18 @@ assert.equal(unfiltered.readyTasks, filterTruth(prepared.rows, {delivered: 'read
 const appSrc = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
 const join = appSrc.slice(appSrc.indexOf("byId('truthJoin').innerHTML"),
                           appSrc.indexOf("byId('truthMakeup').innerHTML"));
-assert.ok(/c\.auditedTasks/.test(join) && /c\.auditedMatched/.test(join) && /c\.auditedUnmatched/.test(join),
-  'the three tiles must come from the index counts');
+assert.ok(/c\.manifestTasks/.test(join) && /c\.manifestLiveConfirmed/.test(join)
+  && /c\.manifestLiveMissing/.test(join),
+  'the three tiles must reconcile the manifests against the bucket');
+assert.equal(jc.manifestLiveConfirmed + jc.manifestLiveMissing, jc.manifestTasks,
+  'still in the bucket + no longer there must be every delivered task');
+assert.equal((jc.manifestMissing || []).length, jc.manifestLiveMissing,
+  'the panel must be able to name every package the figure claims is gone');
+(jc.manifestMissing || []).forEach(m => {
+  assert.ok(m.task && m.batch && m.sourceUri,
+    'a missing package must name itself, its batch and the object that was sent');
+  assert.ok(['absent', 'repackaged'].includes(m.state));
+});
 assert.ok(!/result\.delivered\b/.test(join),
   'the join tiles must not be driven by the filtered result');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
@@ -285,10 +295,12 @@ assert.ok(cohortTotal >= jc.unmatchedInBucket,
   'cohort counts overlap; they cannot come to less than the tasks');
 
 const appJoin = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
-const tile = appJoin.slice(appJoin.indexOf("stat('not found here'"),
+const tile = appJoin.slice(appJoin.indexOf("stat('no longer there'"),
                            appJoin.indexOf("byId('truthMakeup').innerHTML"));
-assert.ok(/unmatchedInBucket/.test(tile), 'the tile must say where they sit');
-assert.ok(/so those overlap/.test(tile), 'the tile must say the cohort counts overlap');
+assert.ok(/all three accepted prefixes/.test(tile),
+  'the tile must say it looked beyond the prefix the package was cut from');
+assert.ok(/Not a failed delivery/.test(tile),
+  'and it must say what a missing copy does not mean');
 
 console.log(`the ${jc.auditedUnmatched} not found here: ${jc.unmatchedInBucket} have an accepted package in the bucket, `
   + `${jc.unmatchedClaimed} name collision, ${jc.unmatchedAbsent} missing outright`);

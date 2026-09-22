@@ -10,7 +10,7 @@
   // from the data - so the UI can never offer a value that matches nothing.
   const UNDECIDED = new Set(['error', 'no QC decision', 'queued', 'not started']);
 
-  function prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex) {
+  function prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex, cohortIndex) {
     if (!payload || !Array.isArray(payload.tasks)) throw new Error('No pipeline truth asset loaded');
     if (!payload.reconciles) throw new Error('Pipeline truth failed its own reconciliation; refusing to display it');
     const figures = new Map((payload.figures || []).map(f => [f.label, f]));
@@ -67,6 +67,15 @@
       figures,
       vocabulary: payload.vocabulary || {},
       glmIndex: glmIndex || null,
+      cohortIndex: cohortIndex || null,
+      // One row per bucket folder, for the Accepted view.
+      //
+      // Accepted is decided by the bucket, so its list has to come from the
+      // bucket too. Filtering the verdict rows instead gives 1,145 rows that
+      // cover only 1,021 folders while missing 104 that hold an accepted
+      // package and have no accepted verdict row - a list that is both too
+      // long and incomplete at once.
+      cohortRows: cohortRows(rows, cohortIndex),
       // Null when the index has not loaded, so the page can tell the difference
       // between "nothing is delivered" and "delivery is not known".
       deliveredIndex: deliveredIndex || null,
@@ -84,7 +93,26 @@
   // Identical to manifest.js and tools/build_delivered_index.py on purpose.
   const SUFFIX = /(?:-(?:final|v\d+|\d{4,}|copy|new|fixed|updated))+$/;
 
+  function keyOf(value) {
+    let name = String(value || '').trim().toLowerCase();
+    for (const prefix of ['harbor/', 'obi/']) {
+      if (name.startsWith(prefix)) name = name.slice(prefix.length);
+    }
+    return name;
+  }
+
+  function stemOf(value) {
+    let name = keyOf(value), previous = null;
+    while (name !== previous) { previous = name; name = name.replace(SUFFIX, ''); }
+    return name;
+  }
+
   function taskKey(row) {
+    // A bucket folder IS the identity - that is the whole reason the Accepted
+    // list comes from the bucket. Two folders whose names normalise alike are
+    // still two tasks, and folding them lost three packages from the delivered
+    // split: 410 + 712 came to 1,122 rather than 1,125.
+    if (row.cohortFolder) return `folder:${String(row.cohortFolder).trim().toLowerCase()}`;
     // The audited task when the row has one: it is the only key that groups the
     // 30 rows recorded under an alias or a placeholder name with their siblings.
     if (row.deliveredTask) return `audit:${String(row.deliveredTask).trim().toLowerCase()}`;
@@ -141,6 +169,61 @@
     // Keep the order the rows arrived in, by the position of the shown row.
     const at = new Map(rows.map((r, i) => [r.id, i]));
     return collapsed.sort((a, b) => at.get(a.id) - at.get(b.id));
+  }
+
+  // Each folder gets the verdict row that best describes it, so the table keeps
+  // its trainer, dates, GLM band and drill-down. A folder with no verdict row
+  // still appears, carrying what the bucket knows and nothing invented.
+  function cohortRows(rows, cohortIndex) {
+    if (!cohortIndex || !cohortIndex.folders) return null;
+    const byName = new Map();
+    rows.forEach(row => {
+      [keyOf(row.name), stemOf(row.name)].forEach(spelling => {
+        if (!spelling) return;
+        const held = byName.get(spelling);
+        if (!held || preferred(row, held) < 0) byName.set(spelling, row);
+      });
+    });
+    const built = Object.values(cohortIndex.folders).map(entry => {
+      const match = byName.get(keyOf(entry.folder)) || byName.get(stemOf(entry.folder));
+      if (match) {
+        return {...match, state: 'accepted', atCurrentBar: true,
+                connector: entry.connector === undefined ? match.connector : entry.connector,
+                connectorServices: entry.connectorServices && entry.connectorServices.length
+                  ? entry.connectorServices : (match.connectorServices || []),
+                connectorVia: entry.connector === null || entry.connector === undefined
+                  ? match.connectorVia : 'the folder’s own package',
+                latestVerdict: entry.state || null,
+                latestDecided: entry.decided || match.decided,
+                delivered: Boolean(entry.delivered), deliveredVia: entry.delivered ? 'delivery manifest' : null,
+                cohortFolder: entry.folder, cohortDelivered: entry.delivered,
+                cohortState: entry.state || null, fromBucket: true};
+      }
+      // Nothing in the window describes this folder. Say that rather than
+      // borrowing another task's row to fill the columns.
+      return {
+        id: `folder:${entry.folder}`, name: entry.folder, state: 'accepted',
+        latestVerdict: entry.state || null, latestDecided: entry.decided || '',
+        why: 'An accepted package in the bucket. No verdict inside the pipeline window describes it.',
+        owner: entry.owner || '', decided: entry.decided || '', decidedInferred: false, runs: 0,
+        carriedOver: false, atCurrentBar: true, gateOnly: false, gateEra: 'Not recorded',
+        domain: 'Not recorded', connector: entry.connector === undefined ? null : entry.connector,
+        findings: [], findingsPrior: [],
+        cohorts: [cohortIndex.cohort], confidence: 'high', unmerged: false,
+        connectorServices: entry.connectorServices || [],
+        canonicalReason: 'the bucket folder itself', possibleDuplicate: false,
+        duplicateSiblings: 0, duplicateTier: '', source: `${cohortIndex.cohort}/${entry.folder}`,
+        delivered: Boolean(entry.delivered), cohortFolder: entry.folder,
+        cohortDelivered: entry.delivered, cohortState: entry.state || null,
+        fromBucket: true, noVerdict: true,
+      };
+    });
+    return built.sort((a, b) => {
+      const left = a.decided || '', right = b.decided || '';
+      if (left && right && left !== right) return left < right ? 1 : -1;
+      if (left !== right) return left ? -1 : 1;
+      return String(a.name).localeCompare(String(b.name));
+    });
   }
 
   function filterTruth(rows, filters) {
