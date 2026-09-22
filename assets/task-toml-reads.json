@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T20:40:52+00:00",
+ "generatedAt": "2026-09-22T20:51:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -627,6 +627,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b51-a3-path-cross-section-grading-plan/6cfe6ccd0c25cbe9f22a471b7be9862b3bf661ceb466473ddf784585a38c86c8.zip",
    "bytesRead": 68959,
+   "readOn": "2026-09-22"
+  },
+  "code-c18-rbac-policy-matrix": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c18-rbac-policy-matrix/a829866a0377c105920efb0312177ad3c43d9c23d9bf2f3f99480aabdf76f7e0.zip",
+   "bytesRead": 73137,
+   "readOn": "2026-09-22"
+  },
+  "tech-mg-it-b5-a6-two-person-office-layout-fit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b5-a6-two-person-office-layout-fit/b7887ad0db2fc7f06b59f08510f4c89f9c60e42135259f46ee51593806967285.zip",
+   "bytesRead": 84743,
    "readOn": "2026-09-22"
   }
  }
