@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T18:01:41+00:00",
+ "generatedAt": "2026-09-22T18:20:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -126,6 +126,13 @@
    ],
    "basis": "a [[mcp_servers]] table with entries",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/only-what-is-written-down/0e6c238e672d8cfe7ed220d4ca1c5c89d9a20b201068da5ef47f88e2347b8605.zip",
+   "readOn": "2026-09-22"
+  },
+  "code-c11-queue-consumer-idempotency": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c11-queue-consumer-idempotency/654c6baf5f884dbc8ac0a99059460603c904f9e10a66a51a0a8fed0c0c9e588d.zip",
    "readOn": "2026-09-22"
   }
  }
