@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T19:15:17+00:00",
+ "generatedAt": "2026-09-22T19:50:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -557,6 +557,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b43-h8-elimination-diet-trial-reconstruction/6eb7c431d1f5576b9735f3e9396f5bf5b7fd39980d030e927f553a2c7f9cb3fb.zip",
    "bytesRead": 68271,
+   "readOn": "2026-09-22"
+  },
+  "bus-b46-b2-power-filter-return-request-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b46-b2-power-filter-return-request-adjudication/22bef71bd3fa746136feb8d2e05953c2a0aec4b950f345f52b325dc3d5f6eb70.zip",
+   "bytesRead": 83443,
+   "readOn": "2026-09-22"
+  },
+  "fin-b45-a2-card-spend-posting-backlog": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b45-a2-card-spend-posting-backlog/e84cffdf83d9b0c8c42c9873ec20939fbe103a2fb797136ddb75ccf3daa57536.zip",
+   "bytesRead": 73517,
+   "readOn": "2026-09-22"
+  },
+  "health-b44-h5-monitor-epoch-alarm-classification-v22-FOR-QC-V2": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b44-h5-monitor-epoch-alarm-classification-v22-FOR-QC-V2/5a9bda38b7083142ef27e3b9b522e4f90884306431edf8ea10b9dd1904e6f3dc.zip",
+   "bytesRead": 73752,
    "readOn": "2026-09-22"
   }
  }
