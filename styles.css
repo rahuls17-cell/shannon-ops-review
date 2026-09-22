@@ -1275,6 +1275,64 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 
 /* ---------- Finalisation ---------- */
 .statusline { margin: -4px 0 0; font-size: 11.5px; color: var(--muted); }
+
+/* The filters sit above the figures they drive, so they need to read as a
+   control surface rather than as one more panel of results. Lighter fill and a
+   softer border than .panel: it is the thing you set, not a thing you read. */
+.filterbar {
+  padding: 12px 14px;
+  background: var(--panel-2);
+  border: 1px solid var(--line-soft);
+  border-radius: var(--radius);
+}
+
+.filterbar-lead {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 0 0 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--ink-2);
+}
+
+.filterbar-lead span {
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+/* Opening "More" from the top of the tab drops the panel over the figures
+   below, which carry their own stacking contexts. */
+.filterbar .morefilters-body { z-index: 40; }
+
+/* A grid rather than the flex row the toolbar uses inside a panel head: at full
+   width the controls are the widest thing on the tab, and flex-wrap left the
+   last line ragged against everything below it. Scoped to .filterbar so the
+   toolbars on the other tabs keep their own layout. */
+.filterbar .toolbar {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  align-items: end;
+}
+
+/* The shared rules size these to their content; in a grid track that is the
+   child overflowing its column instead of filling it. */
+.filterbar .field select,
+.filterbar .field input { width: 100%; min-width: 0; }
+/* Search takes two tracks: it is free text, and at one track the placeholder
+   that says which fields it searches was being cut off. */
+.filterbar .toolbar > label:first-child { grid-column: span 2; }
+
+/* These are buttons, not fields - stretching them to a full track made them
+   read as two more empty filters. */
+.filterbar .morefilters,
+.filterbar #tReset { justify-self: start; }
 .view-actions .sourcestrip { justify-content: flex-end; }
 .kpirow-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .kpi-button { text-align: left; font: inherit; cursor: pointer; }

@@ -447,6 +447,32 @@
             </div>
           </header>
           <p class="statusline" id="truthStatus"></p>
+          <!-- Above the figures on purpose: these drive every number on
+               this tab, not just the table, so they belong where they are
+               set rather than under the things they change. -->
+          <section class="filterbar" aria-label="Filters for every figure on this tab">
+            <p class="filterbar-lead">Filters<span>every figure, strip and chart below follows these</span></p>
+            <div class="toolbar" data-toolbar>
+              <label class="field"><span>Search</span><input id="tSearch" type="search" placeholder="Task, trainer or reason" /></label>
+              <label class="field"><span>State</span><select id="tState"></select></label>
+              <label class="field"><span>Gate<button class="why" data-info="gateEra" aria-label="What the gates are">?</button></span><select id="tGate"></select></label>
+              <label class="field"><span>Delivery</span><select id="tDelivery"><option value="">All</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting re-gate</option><option value="none">No package</option></select></label>
+              <label class="field"><span>Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><button class="why" data-info="truthVersions" aria-label="Why versions are counted once">1x</button></span><select id="tDelivered"><option value="">Any</option><option value="yes">Already delivered</option><option value="ready">Ready for delivery</option><option value="no">Not delivered</option></select></label>
+              <label class="field"><span>Connector<button class="why" data-info="truthConnector" aria-label="How connector status is decided">?</button></span><select id="tConnector"><option value="">Any</option><option value="yes">Connector</option><option value="no">Non-connector</option><option value="unknown">Not known</option></select></label>
+              <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What a finding is">?</button></span><select id="tFinding"></select></label>
+              <details class="morefilters">
+                <summary class="ghost">More</summary>
+                <div class="morefilters-body">
+                  <label class="field"><span>Domain</span><select id="tDomain"></select></label>
+                  <label class="field"><span>Trainer</span><select id="tOwner"></select></label>
+                  <label class="field"><span>Carried over</span><select id="tCarried"><option value="">All</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
+                  <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">All</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
+                  <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">All</option><option value="yes">Flagged</option><option value="likely">Likely</option><option value="no">Not flagged</option></select></label>
+                </div>
+              </details>
+              <button id="tReset" class="ghost">Clear</button>
+            </div>
+          </section>
 
           <div id="truthPartition" class="partition" aria-label="How the in-scope tasks split by state"></div>
           <div id="truthFigures" class="kpirow kpirow-5"></div>
@@ -488,26 +514,6 @@
           <section class="panel">
             <header class="panel-head">
               <div><h2>Tasks<button class="why" data-info="truthTasks" aria-label="What one row means">?</button></h2><p class="panel-note" id="truthCaveats"></p></div>
-              <div class="toolbar" data-toolbar>
-                <label class="field"><span>Search</span><input id="tSearch" type="search" placeholder="Task, trainer or reason" /></label>
-                <label class="field"><span>State</span><select id="tState"></select></label>
-                <label class="field"><span>Gate<button class="why" data-info="gateEra" aria-label="What the gates are">?</button></span><select id="tGate"></select></label>
-                <label class="field"><span>Delivery</span><select id="tDelivery"><option value="">All</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting re-gate</option><option value="none">No package</option></select></label>
-                                <label class="field"><span>Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><button class="why" data-info="truthVersions" aria-label="Why versions are counted once">1x</button></span><select id="tDelivered"><option value="">Any</option><option value="yes">Already delivered</option><option value="ready">Ready for delivery</option><option value="no">Not delivered</option></select></label>
-                <label class="field"><span>Connector<button class="why" data-info="truthConnector" aria-label="How connector status is decided">?</button></span><select id="tConnector"><option value="">Any</option><option value="yes">Connector</option><option value="no">Non-connector</option><option value="unknown">Not known</option></select></label>
-                <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What a finding is">?</button></span><select id="tFinding"></select></label>
-                <details class="morefilters">
-                  <summary class="ghost">More</summary>
-                  <div class="morefilters-body">
-                    <label class="field"><span>Domain</span><select id="tDomain"></select></label>
-                    <label class="field"><span>Trainer</span><select id="tOwner"></select></label>
-                    <label class="field"><span>Carried over</span><select id="tCarried"><option value="">All</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
-                    <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">All</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
-                    <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">All</option><option value="yes">Flagged</option><option value="likely">Likely</option><option value="no">Not flagged</option></select></label>
-                  </div>
-                </details>
-                <button id="tReset" class="ghost">Clear</button>
-              </div>
             </header>
             <div class="panel-body">
               <!-- Only shown under the Ready for delivery filter: a manifest cut
