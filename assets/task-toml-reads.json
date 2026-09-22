@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T21:10:50+00:00",
+ "generatedAt": "2026-09-22T21:21:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -669,6 +669,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c196-batch-job-deadline-cap-audit/cdc208ff1bc496a72b734a7e8936f6b66271e2d9fcf15d5938b40b795362ab12.zip",
    "bytesRead": 76732,
+   "readOn": "2026-09-22"
+  },
+  "code-c332-sales-awards-eligibility-audit-v1": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c332-sales-awards-eligibility-audit-v1/de84f37e871591229f010ec3f14f23dcefd95c31af037f6ba29a6645d7b56d5b.zip",
+   "bytesRead": 80390,
+   "readOn": "2026-09-22"
+  },
+  "health-tdt7-a1-urinary-diet-treat-allowance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt7-a1-urinary-diet-treat-allowance-audit/fe63056ffe61b2646338f048baad77c042d0471b197fa5b99ac0c375867586d4.zip",
+   "bytesRead": 134631,
+   "readOn": "2026-09-22"
+  },
+  "three-references-one-stays-home": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/three-references-one-stays-home/0d84ab1de2069ee57bf733e31618a494904a7999a25489454caa1e7259fd3277.zip",
+   "bytesRead": 50581,
    "readOn": "2026-09-22"
   }
  }
