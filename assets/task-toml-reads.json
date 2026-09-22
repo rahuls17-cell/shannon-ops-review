@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T18:31:29+00:00",
+ "generatedAt": "2026-09-22T18:51:16+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -140,6 +140,13 @@
    "services": [],
    "basis": "mcp_servers declared and empty",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b108-b15-executive-intro-email-figure-verification/9fa6ef4c0fb0f2e927a85370ac3fdd096515a86b62298afee52683342043a889.zip",
+   "readOn": "2026-09-22"
+  },
+  "bus-b31-a10-airport-lounge-outlet-master-table": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b31-a10-airport-lounge-outlet-master-table/c0dfc1455ca19a03b5b919238daff464ad9f3f4d13c18e304463e1b24e5fb6de.zip",
    "readOn": "2026-09-22"
   }
  }
