@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T22:51:30+00:00",
+ "generatedAt": "2026-09-22T23:00:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -783,6 +783,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-sc05-a7-translation-glossary-audit/eebc4c972f7883d7db705f254d584e24d5bcd6a081f5f9493e7c6b5ae6c08eab.zip",
    "bytesRead": 66172,
+   "readOn": "2026-09-22"
+  },
+  "bus-b48-b9-settlement-waterfall-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b9-settlement-waterfall-ledger/4c2899d05c119a20637911b7cf299c79432aab4fff6c4ba7d388e8e6ef5f4ca1.zip",
+   "bytesRead": 113988,
    "readOn": "2026-09-22"
   }
  }
