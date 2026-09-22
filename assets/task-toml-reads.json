@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T22:31:19+00:00",
+ "generatedAt": "2026-09-22T22:40:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -763,6 +763,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c197-retry-backoff-schedule-audit/9bbb756dc68c218208190339becfabeaf915b289f91c13cfba04479258bc6134.zip",
    "bytesRead": 75598,
+   "readOn": "2026-09-22"
+  },
+  "code-c107-postmortem-action-item-tracking-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c107-postmortem-action-item-tracking-audit/dc2443d69f580f738d9279d14a24b2e9d5f0e37e7554978740efcf855c4cd2b1.zip",
+   "bytesRead": 70674,
    "readOn": "2026-09-22"
   }
  }
