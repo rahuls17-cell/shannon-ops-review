@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T17:50:50+00:00",
+ "generatedAt": "2026-09-22T18:01:41+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -110,6 +110,22 @@
    "services": [],
    "basis": "mcp_servers declared and empty",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt3-a1-pt-licensure-english-score-adjudication/4e2e28211460fefb756f83caed71a6521388834cb416cb4c595cc0ffe31f99f2.zip",
+   "readOn": "2026-09-22"
+  },
+  "code-c13-feature-flag-cleanup": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c13-feature-flag-cleanup/ea0adc459bbb848e7468064ffa8a34916c1528200bb05f6eeabf7c158e330e85.zip",
+   "readOn": "2026-09-22"
+  },
+  "only-what-is-written-down": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/only-what-is-written-down/0e6c238e672d8cfe7ed220d4ca1c5c89d9a20b201068da5ef47f88e2347b8605.zip",
    "readOn": "2026-09-22"
   }
  }
