@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T18:51:16+00:00",
+ "generatedAt": "2026-09-22T19:00:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -147,6 +147,20 @@
    "services": [],
    "basis": "mcp_servers declared and empty",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b31-a10-airport-lounge-outlet-master-table/c0dfc1455ca19a03b5b919238daff464ad9f3f4d13c18e304463e1b24e5fb6de.zip",
+   "readOn": "2026-09-22"
+  },
+  "code-c116-storage-cost-allocation-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c116-storage-cost-allocation-recompute/09172870c685dd280ac677c380e7eb0e2edf9fca819c8f97fb52c55d587e081b.zip",
+   "readOn": "2026-09-22"
+  },
+  "fin-b53-f7-equity-thesis-claim-verification": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b53-f7-equity-thesis-claim-verification/60d9ab08a9aaeb3ca7173fce92d34948d0468bbfe04ddd0bb94e12626c597eca.zip",
    "readOn": "2026-09-22"
   }
  }
