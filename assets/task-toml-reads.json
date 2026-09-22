@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T19:10:49+00:00",
+ "generatedAt": "2026-09-22T19:15:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -528,6 +528,35 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/operating-collision-component-register-may-jul-2026/9114e02dd82e8810a51b11297510257cb410947656c2640b791f87a854cdaff5.zip",
    "bytesRead": 54094,
+   "readOn": "2026-09-22"
+  },
+  "audit-split-allocation-goal-ats-reversal-correctness-on-cleared-authorizations": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/audit-split-allocation-goal-ats-reversal-correctness-on-cleared-authorizations/72b64388d27ac19df976864dda86f27b19027b7fba5eceefd01ee8bcfcd1cfc6.zip",
+   "bytesRead": 70709,
+   "readOn": "2026-09-22"
+  },
+  "health-b43-h8-elimination-diet-trial-reconstruction": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b43-h8-elimination-diet-trial-reconstruction/6eb7c431d1f5576b9735f3e9396f5bf5b7fd39980d030e927f553a2c7f9cb3fb.zip",
+   "bytesRead": 68271,
    "readOn": "2026-09-22"
   }
  }
