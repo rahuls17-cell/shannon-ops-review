@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T19:50:55+00:00",
+ "generatedAt": "2026-09-22T20:01:31+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -587,6 +587,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b44-h5-monitor-epoch-alarm-classification-v22-FOR-QC-V2/5a9bda38b7083142ef27e3b9b522e4f90884306431edf8ea10b9dd1904e6f3dc.zip",
    "bytesRead": 73752,
+   "readOn": "2026-09-22"
+  },
+  "bus-mg-bus-b8-a5-marketplace-listing-normalisation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-mg-bus-b8-a5-marketplace-listing-normalisation/61f5113e5d4a4722844d430ffcca537fc23400d9ccff52c2b690cb81865ed54c.zip",
+   "bytesRead": 67469,
+   "readOn": "2026-09-22"
+  },
+  "code-c44-index-coverage-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c44-index-coverage-audit/dd3a3449f1925395f5275672a188a9531c7ebc34e3f6339bda55f99bf5b1e2e7.zip",
+   "bytesRead": 63392,
    "readOn": "2026-09-22"
   }
  }
