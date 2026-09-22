@@ -203,3 +203,93 @@ assert.ok(!/prepareTruth\(payload\)/.test(watcher),
   'watchForRebuild must not prepare a payload without the delivered index');
 console.log('refresh keeps the delivered index:',
   `${withIndex.readyForDelivery} ready with it, ${without.readyForDelivery} without`);
+
+// --- the delivery join has to reconcile -------------------------------------
+// The strip states three figures as a split of one: audited = found + not
+// found. It used to show 574 delivered ROWS, which fell to 371 the moment the
+// Delivered filter was set, for the same population - the fold only ran when
+// that filter was on. Both are now task counts, and the three add up.
+const jc = index.counts;
+assert.equal(jc.auditedMatched + jc.auditedUnmatched, jc.auditedTasks,
+  'found + not found must be exactly the audited tasks');
+assert.ok(jc.auditedMatched > 0 && jc.auditedUnmatched > 0);
+
+// Every audited task counted as found must be one the page can actually point
+// at. The -realdocoutput case broke this: its only pipeline row was already
+// claimed by a shorter audited name, so it counted as matched while naming no
+// row, and 372 + 40 came to 412 only by accident of the two being counted in
+// different places.
+const claimed = new Set(Object.values(index.deliveredTask));
+assert.equal(claimed.size, jc.auditedMatched,
+  'an audited task is counted as found but names no pipeline row');
+const listed = new Set((index.unmatchedAudit || []).map(r => r.task));
+assert.equal(listed.size, jc.auditedUnmatched,
+  'the panel must list every task the figure claims could not be found');
+assert.equal(claimed.size + listed.size, jc.auditedTasks);
+assert.ok([...claimed].every(t => !listed.has(t)),
+  'no audited task may be both found and not found');
+(index.unmatchedAudit || []).forEach(r => assert.ok(r.reason,
+  `${r.task} is listed as not found with no reason`));
+
+// The task count must not depend on a filter that looks unrelated to it.
+const prepared = prepareTruth(truthAsset, index);
+const unfiltered = filterTruth(prepared.rows, {});
+const folded = filterTruth(prepared.rows, {delivered: 'yes'});
+assert.equal(unfiltered.deliveredTasks, folded.rows.length,
+  'delivered tasks must read the same with and without the Delivered filter');
+assert.equal(unfiltered.deliveredTasks, jc.auditedMatched,
+  'the tasks shown as delivered must be the audited tasks the index found');
+assert.ok(unfiltered.delivered > unfiltered.deliveredTasks,
+  'sanity: there are repeat submissions, or this test proves nothing');
+assert.equal(unfiltered.readyTasks, filterTruth(prepared.rows, {delivered: 'ready'}).rows.length,
+  'ready tasks must read the same with and without the Delivered filter');
+
+// The strip is a reconciliation between two datasets, so it must not be wired
+// to the filtered result - that would read "not found here" for tasks that are
+// merely filtered out.
+const appSrc = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+const join = appSrc.slice(appSrc.indexOf("byId('truthJoin').innerHTML"),
+                          appSrc.indexOf("byId('truthMakeup').innerHTML"));
+assert.ok(/c\.auditedTasks/.test(join) && /c\.auditedMatched/.test(join) && /c\.auditedUnmatched/.test(join),
+  'the three tiles must come from the index counts');
+assert.ok(!/result\.delivered\b/.test(join),
+  'the join tiles must not be driven by the filtered result');
+const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+assert.ok(/id="truthJoin" class="stats stats-3"/.test(html), 'the join strip holds three tiles');
+
+console.log(`delivery join reconciles: ${jc.auditedTasks} audited = ${jc.auditedMatched} found + ${jc.auditedUnmatched} not found`);
+console.log(`  the ${jc.auditedMatched} found stand on ${jc.deliveredRows} pipeline rows`);
+console.log(`  ready: ${unfiltered.readyTasks} tasks from ${unfiltered.readyForDelivery} rows`);
+
+// --- where the unmatched ones sit ------------------------------------------
+// "Not found here" reads as "missing work", and it is not: the pipeline reads
+// verdicts decided on or after its cut, while the bucket holds every accepted
+// package whenever it was decided. Every one of these has an accepted package
+// sitting there, so the tile has to say so or it invites the wrong conclusion.
+assert.equal(jc.unmatchedInBucket + jc.unmatchedAbsent >= jc.auditedUnmatched - jc.unmatchedClaimed, true);
+assert.equal(jc.unmatchedInBucket + jc.unmatchedAbsent, jc.auditedUnmatched,
+  'every unmatched task is either in the bucket or it is not');
+assert.equal(jc.unmatchedAbsent, 0,
+  'none of the unmatched audited tasks are missing from the bucket');
+(index.unmatchedAudit || []).forEach(r => {
+  assert.equal(typeof r.inBucket, 'boolean', `${r.task} has no whereabouts`);
+  if (r.inBucket) {
+    assert.ok((r.cohorts || []).length, `${r.task} is in the bucket but names no cohort`);
+    assert.ok((r.outcome || []).length, `${r.task} is in the bucket but names no outcome`);
+  }
+});
+// The cohort tallies overlap by construction - one task can have folders in
+// several - so they must never be presented, or asserted, as a split.
+const cohortTotal = Object.values(jc.unmatchedCohorts).reduce((a, b) => a + b, 0);
+assert.ok(cohortTotal >= jc.unmatchedInBucket,
+  'cohort counts overlap; they cannot come to less than the tasks');
+
+const appJoin = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
+const tile = appJoin.slice(appJoin.indexOf("stat('not found here'"),
+                           appJoin.indexOf("byId('truthMakeup').innerHTML"));
+assert.ok(/unmatchedInBucket/.test(tile), 'the tile must say where they sit');
+assert.ok(/so those overlap/.test(tile), 'the tile must say the cohort counts overlap');
+
+console.log(`the ${jc.auditedUnmatched} not found here: ${jc.unmatchedInBucket} have an accepted package in the bucket, `
+  + `${jc.unmatchedClaimed} name collision, ${jc.unmatchedAbsent} missing outright`);
+Object.entries(jc.unmatchedCohorts).forEach(([c, n]) => console.log(`    ${String(n).padStart(3)}  ${c}`));

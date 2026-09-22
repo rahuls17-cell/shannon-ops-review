@@ -1030,17 +1030,39 @@ function renderTruthFigures(result, filtered) {
   // row reads as one strip. The join has no published chain - it depends on
   // the delivery audit, which the ingest chain never sees - so those two cells
   // explain themselves in the tooltip; the flags open their chain like the cards.
-  const stat = (label, value, base, tip, chain, tone) => `<${chain ? 'button' : 'div'} class="stat" style="--c:var(--${tone})"${chain ? ` data-chain="${esc(chain)}" aria-pressed="${openChain === chain}"` : ''} data-tip="${esc(tip)}">
+  const stat = (label, value, base, tip, chain, tone, opens, sub) => `<${chain || opens ? 'button' : 'div'} class="stat${opens ? ' stat-opens' : ''}" style="--c:var(--${tone})"${chain ? ` data-chain="${esc(chain)}" aria-pressed="${openChain === chain}"` : ''}${opens ? ` data-opens="${esc(opens)}"` : ''} data-tip="${esc(tip)}">
       <b class="stat-n" data-count="${value}" data-key="stat:${esc(label)}">${fmt(value)}</b>
       <span class="stat-l">${esc(label)}</span>
+      ${sub ? `<span class="stat-sub">${esc(sub)}</span>` : ''}
       <span class="stat-bar"><i style="--pct:${base ? Math.min(100, Math.round((value / base) * 100)) : 0}"></i><small>${base ? `${Math.round((value / base) * 100)}%` : ''}</small></span>
-    </${chain ? 'button' : 'div'}>`;
+    </${chain || opens ? 'button' : 'div'}>`;
+  // The delivery join is a reconciliation between two datasets - the Delivery
+  // tab's audit and the whole pipeline - so all three figures are counts of
+  // TASKS and none of them move with the filters. It used to show delivered
+  // rows: 574 unfiltered, 371 the moment the Delivered filter was set, for the
+  // same population, because the fold only ran when that filter was on. The
+  // three shown here add up by construction; build_delivered_index.py asserts
+  // it, so the arithmetic cannot drift without the build failing.
   const idx = truth?.deliveredIndex;
+  const c = idx ? idx.counts : null;
   byId('truthJoin').innerHTML = idx
-    ? stat('already delivered', result.delivered, result.rows.length,
-        `${fmt(result.delivered)} delivered${result.collapsed ? ' tasks' : ` rows, ${fmt(result.deliveredNames)} distinct names`} · matched by name against the ${fmt(idx.counts.auditedTasks)} tasks on the Delivery tab; ${fmt(idx.counts.auditedMatched)} found in the pipeline, ${fmt(idx.counts.auditedUnmatched)} not (${fmt(idx.counts.unmatchedAccepted)} of those accepted). Share of the tasks shown.`, null, 'aqua') +
-      stat('ready for delivery', result.readyForDelivery, result.rows.length,
-        `${fmt(result.readyForDelivery)} accepted, collectable at the current bar and not yet delivered${result.collapsed ? '' : ` · ${fmt(result.readyNames)} distinct names`}. Share of the tasks shown.`, null, 'blue')
+    ? stat('delivered', c.auditedTasks, 0,
+        `Every task the Delivery tab accounts for. The two figures beside it split this number and nothing else: ${fmt(c.auditedMatched)} + ${fmt(c.auditedUnmatched)} = ${fmt(c.auditedTasks)}.`,
+        null, 'aqua') +
+      stat('found in the pipeline', c.auditedMatched, c.auditedTasks,
+        `Audited tasks that resolve to a task here. Counted once each, however many times the task was submitted - ${fmt(c.deliveredRows)} pipeline rows stand behind them. Matched ${Object.entries(c.byMethod).map(([m, n]) => `${fmt(n)} by ${m}`).join(', ')}.`,
+        null, 'green') +
+      stat('not found here', c.auditedUnmatched, c.auditedTasks,
+        `The pipeline holds no verdict for these in its window - it reads verdicts decided on or after ${truth.cut}, which is ${fmt(truth.counts.inScope)} of ${fmt(truth.counts.identities)} identities. ` +
+        `They are not missing work: ${c.unmatchedInBucket === c.auditedUnmatched ? 'every one of them has' : `${fmt(c.unmatchedInBucket)} of them have`} an accepted package in the bucket` +
+        `${Object.keys(c.unmatchedCohorts || {}).length ? `, under ${Object.entries(c.unmatchedCohorts).map(([k, n]) => `${k} (${fmt(n)})`).join(', ')} - a task can sit in more than one, so those overlap` : ''}. ` +
+        `${c.unmatchedClaimed ? `${fmt(c.unmatchedClaimed)} of them is a name collision rather than an absence. ` : ''}` +
+        `${c.unmatchedAbsent ? `${fmt(c.unmatchedAbsent)} have no package anywhere in the scan. ` : ''}` +
+        'Click for the list.',
+        null, 'amber', 'unmatched',
+        c.unmatchedAbsent === 0
+          ? 'all accepted in the bucket'
+          : `${fmt(c.unmatchedInBucket)} in the bucket, ${fmt(c.unmatchedAbsent)} nowhere`)
     : '<p class="empty">The delivered index is not loaded.</p>';
   // Connector is structural, read from the package. Domain is a name prefix.
   // They sit together because a reader wants both, but they are labelled apart
@@ -1084,7 +1106,10 @@ function renderTruthFigures(result, filtered) {
     ['awaiting re-gate', result.gateOnly, 'Awaiting KESTREL re-gate', 'Accepted under the GLM-5.2 gate only; waiting for the KESTREL re-gate.'],
     ['possible duplicates', result.possibleDuplicates, 'Possible duplicates', 'Same task name and trainer as another task in scope.'],
     ['packages at the bar', result.atCurrentBar, 'Packages at the current bar', 'A package is collectable at the current bar.'],
-  ].map(([label, value, chain, tip]) => stat(label, value, result.rows.length, `${tip} Share of the ${fmt(result.rows.length)} tasks shown; a task can carry several flags.`, chain, 'slate')).join('');
+    // Not a flag, but it belongs with the measures that do follow the filters
+    // rather than in the join above, which is a fixed reconciliation.
+    ['ready for delivery', result.readyTasks, null, 'Accepted, collectable at the current bar and not yet delivered. Counted as tasks, so a task submitted twice is one thing to send.'],
+  ].map(([label, value, chain, tip]) => stat(label, value, result.rows.length, `${tip} Share of the ${fmt(result.rows.length)} tasks shown; a task can carry several flags.`, chain, label === 'ready for delivery' ? 'blue' : 'slate')).join('');
   animateCounts(byId('truthJoin')); animateCounts(byId('truthFlags'));
 }
 
@@ -1235,7 +1260,7 @@ function renderJoinGap(result) {
   const note = byId('truthJoinNote');
   if (!note) return;
   const idx = truth?.deliveredIndex;
-  if (!idx || !result.collapsed) {
+  if (!idx) {
     note.hidden = true;
     byId('unmatchedPanel').hidden = true;
     byId('unmatchedShow').setAttribute('aria-expanded', 'false');
@@ -1243,13 +1268,14 @@ function renderJoinGap(result) {
   }
   const c = idx.counts;
   note.hidden = false;
+  const narrowed = result.rows.length !== result.population.length;
   setText('truthJoinText',
-    `The Delivery tab lists ${fmt(c.auditedTasks)} audited tasks. ` +
-    `${fmt(c.auditedMatched)} of them were found in this bucket and are shown above, ` +
-    `folded where one task had several versions. ` +
-    `${fmt(c.auditedUnmatched)} could not be found at all` +
-    (c.unmatchedAccepted
-      ? ` - ${fmt(c.unmatchedAccepted)} of those ${c.unmatchedAccepted === 1 ? 'is' : 'are'} recorded as accepted.` : '.'));
+    `${fmt(c.auditedMatched)} audited tasks stand on ${fmt(c.deliveredRows)} pipeline rows, ` +
+    `because a task submitted more than once is still one task delivered. ` +
+    (narrowed
+      ? `Of the ${fmt(result.rows.length)} tasks now shown, ${fmt(result.deliveredTasks)} have been delivered and ${fmt(result.readyTasks)} are ready to go. `
+      : `${fmt(result.readyTasks)} more are accepted, at the current bar and not yet delivered. `) +
+    `The three figures above are the audit against the whole pipeline and do not follow the filters.`);
   const open = byId('unmatchedPanel').hidden === false;
   setText('unmatchedShow', open ? 'Hide them' : `Show the ${fmt(c.auditedUnmatched)} that could not be found`);
 }
@@ -1257,18 +1283,33 @@ function renderJoinGap(result) {
 function renderUnmatched() {
   const idx = truth?.deliveredIndex;
   const rows = (idx && idx.unmatchedAudit) || [];
+  const claimed = rows.filter(row => row.claimedBy).length;
+  const inBucket = rows.filter(row => row.inBucket).length;
+  // The old wording said no task in the bucket carried their name, which the
+  // "Where it sits" column then contradicts on every row. The bucket does hold
+  // them; what the pipeline lacks is a verdict for them inside its window.
   setText('unmatchedNote',
-    `These ${fmt(rows.length)} tasks appear on the Delivery tab but no task in ` +
-    `${esc(truth.bucket)} carries their name, so the Pipeline has nothing to show for them. ` +
-    'They are listed rather than netted off: a task missing from the bucket is a ' +
-    'different problem from a task counted twice, and only one of them is ours to fix here.');
+    `These ${fmt(rows.length)} make up the gap between the ${fmt(idx.counts.auditedTasks)} tasks ` +
+    `the Delivery tab accounts for and the ${fmt(idx.counts.auditedMatched)} this pipeline can show. ` +
+    (inBucket === rows.length
+      ? `None of them are missing work - every one has an accepted package in ${esc(truth.bucket)}. `
+      : `${fmt(inBucket)} have an accepted package in ${esc(truth.bucket)}; ${fmt(rows.length - inBucket)} do not. `) +
+    `The pipeline reads verdicts decided on or after ${esc(truth.cut)}, ${fmt(truth.counts.inScope)} of ` +
+    `${fmt(truth.counts.identities)} identities, and carries no row for these inside that window` +
+    (claimed ? `, except one whose only row a shorter audited name reached first` : '') + '. ' +
+    'They are listed rather than netted off: a task the pipeline cannot see is a different ' +
+    'problem from a task counted twice, and only one of them is ours to fix here.');
   byId('unmatchedRows').innerHTML = rows.length ? rows.map(row => `
     <tr>
       <td><div class="taskcell"><span class="taskname" title="${esc(row.task)}">${esc(row.task)}</span></div></td>
       <td>${esc(row.batch || '-')}</td>
       <td><span class="state state-${esc(String(row.acceptance || '').toLowerCase())}">${esc(row.acceptance || '-')}</span></td>
+      <td>${row.inBucket
+        ? `${esc((row.outcome || ['accepted']).join(', '))} in the bucket` +
+          `<div class="muted">${esc((row.cohorts || []).join(' · ')) || 'cohort not recorded'}</div>`
+        : '<span class="muted">no package in the bucket scan</span>'}</td>
       <td class="muted">${esc(row.reason || '')}</td>
-    </tr>`).join('') : '<tr><td colspan="4" class="empty">Every audited task was found.</td></tr>';
+    </tr>`).join('') : '<tr><td colspan="5" class="empty">Every audited task was found.</td></tr>';
 }
 
 function renderTruth() {
@@ -1295,6 +1336,7 @@ function renderTruth() {
     `${fmt(result.atCurrentBar)} have a package at the current bar / ${fmt(result.gateOnly)} await a KESTREL re-gate / ` +
     `${fmt(result.owners)} trainers.`);
   renderManifestBar(result);
+  renderExportButton(result);
   renderTruthRows(result.rows);
   renderFlagLegend(result.rows);
 }
@@ -1380,6 +1422,49 @@ function downloadManifest() {
     ...window.namesFromManifest(manifest)])];
   manifestExcludedFrom = `${link.download} and anything loaded before it`;
   renderTruth();
+}
+
+// --- CSV export ------------------------------------------------------------
+// The whole selection, not the page on show. The table pages twenty at a time
+// and hides its evidence behind a drill-down, so anyone working through a
+// filtered set has been reading it off the screen.
+
+function exportRowCount() {
+  if (!truth) return 0;
+  return window.filterTruth(truth.rows, truthFilters()).rows.length;
+}
+
+// The button says how many rows it would write, so nobody downloads a file to
+// find out what is in it - and so a filter that selected nothing is obvious
+// before the click rather than after.
+function renderExportButton(result) {
+  const button = byId('tExport');
+  if (!button) return;
+  const count = result ? result.rows.length : exportRowCount();
+  button.disabled = count === 0;
+  button.title = count
+    ? `Download the ${fmt(count)} ${result && result.collapsed ? 'tasks' : 'rows'} `
+      + 'currently shown, with the drill-down evidence as columns'
+    : 'Nothing matches these filters';
+}
+
+function downloadTruthCsv() {
+  if (!truth) return;
+  const result = window.filterTruth(truth.rows, truthFilters());
+  if (!result.rows.length) return;
+  const stamp = new Date().toISOString().slice(0, 19).replace('T', '-').replace(/:/g, '');
+  // A BOM, because Excel reads a UTF-8 CSV as the local codepage without one
+  // and the trainer column is full of names that are not ASCII.
+  const blob = new Blob(['﻿' + window.truthCsv(result.rows)],
+    {type: 'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `pipeline-${result.rows.length}-${stamp}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 async function loadManifestExclusions(file) {
@@ -2830,6 +2915,17 @@ function wireEvents() {
   wireDelivery();
   wireCarried();
   wirePayouts();
+  // The "not found here" tile and the link under the strip open the same panel,
+  // because the tile is the figure and the panel is what is behind it.
+  byId('truthJoin')?.addEventListener('click', event => {
+    const tile = event.target.closest('[data-opens="unmatched"]');
+    if (!tile) return;
+    const panel = byId('unmatchedPanel');
+    if (panel.hidden) { panel.hidden = false; renderUnmatched(); }
+    byId('unmatchedShow').setAttribute('aria-expanded', 'true');
+    renderJoinGap(window.filterTruth(truth.rows, truthFilters()));
+    panel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  });
   byId('unmatchedShow')?.addEventListener('click', () => {
     const panel = byId('unmatchedPanel');
     const opening = panel.hidden;
@@ -2865,6 +2961,7 @@ function wireEvents() {
   byId('auditNext')?.addEventListener('click', () => { auditPage += 1; renderAudit(); });
   TRUTH_FILTERS.forEach(id => byId(id)?.addEventListener('change', () => { truthPage = 0; renderTruth(); }));
   byId('tSearch')?.addEventListener('input', () => { truthPage = 0; renderTruth(); });
+  byId('tExport')?.addEventListener('click', downloadTruthCsv);
   byId('tReset')?.addEventListener('click', () => {
     [...TRUTH_FILTERS, 'tSearch'].forEach(id => { if (byId(id)) byId(id).value = ''; });
     truthPage = 0; renderTruth();

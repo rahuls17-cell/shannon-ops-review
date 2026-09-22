@@ -216,6 +216,13 @@
       readyNames: new Set(ready.map(row => (row.name || '').trim().toLowerCase())).size,
       deliveredNames: new Set(matched.filter(row => row.delivered)
         .map(row => (row.name || '').trim().toLowerCase())).size,
+      // Task counts that hold whether or not the Delivered filter folded the
+      // rows. The strip above the table asks a question about delivery, and
+      // that is answered in tasks however the table happens to be filtered -
+      // otherwise the same population reads 574 or 371 depending on a filter
+      // that looks unrelated to it.
+      deliveredTasks: new Set(matched.filter(row => row.delivered).map(taskKey)).size,
+      readyTasks: new Set(ready.map(taskKey)).size,
       unmerged: matched.filter(row => row.unmerged).length,
       possibleDuplicates: matched.filter(row => row.possibleDuplicate).length,
       likelyDuplicates: matched.filter(row => row.duplicateTier === 'likely').length,

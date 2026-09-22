@@ -1330,9 +1330,15 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .filterbar .toolbar > label:first-child { grid-column: span 2; }
 
 /* These are buttons, not fields - stretching them to a full track made them
-   read as two more empty filters. */
+   read as three more empty filters. */
 .filterbar .morefilters,
-.filterbar #tReset { justify-self: start; }
+.filterbar #tReset,
+.filterbar #tExport { justify-self: start; }
+
+/* More is styled as a fixed 34px summary elsewhere; sat next to Clear and
+   Export it was 3px shorter than its neighbours. Take the ghost padding and
+   let the height follow, so the three pills match whatever the type does. */
+.filterbar .morefilters > summary { height: auto; padding: 8px 15px; }
 .view-actions .sourcestrip { justify-content: flex-end; }
 .kpirow-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 .kpi-button { text-align: left; font: inherit; cursor: pointer; }
@@ -1832,24 +1838,35 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .partition .part:hover { filter: brightness(1.1); }
 .partition .part.is-on, .partition .part[aria-pressed="true"] { box-shadow: inset 0 0 0 2px #fff; }
 #truthFigures .kpi { animation: fade-up var(--t-slow) var(--ease) both; animation-delay: calc(var(--i, 0) * 60ms); }
-.statstrip { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: 12px; margin-top: 12px; }
+.statstrip { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 5fr); gap: 12px; margin-top: 12px; }
 .statgroup { padding: 12px 14px 12px; border-radius: var(--radius); background: var(--panel); border: 1px solid var(--line-soft); box-shadow: var(--shadow); }
 .statgroup .eyebrow { display: flex; align-items: center; gap: 6px; margin: 0 0 10px; }
 .statgroup .eyebrow em { font-style: normal; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--muted); margin-left: auto; }
 .stats { display: grid; gap: 8px; }
 .stats-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.stats-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 .stats-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.stats-5 { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+/* A tile that opens the list behind it, rather than a figure to read. */
+.stat-opens { cursor: pointer; text-align: left; font: inherit; }
+.stat-opens:hover { border-color: var(--accent-line); }
+.stat-opens:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .stat { display: grid; gap: 4px; padding: 10px 12px; border-radius: var(--radius-sm); background: var(--panel-2); border: 1px solid var(--line-soft); font: inherit; text-align: left; color: inherit; transition: transform var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease), border-color var(--t-fast) var(--ease); }
 button.stat { cursor: pointer; }
 button.stat:hover { transform: translateY(-2px); box-shadow: var(--shadow-lift); border-color: var(--line); }
 button.stat[aria-pressed="true"] { border-color: var(--accent-line); background: var(--accent-soft); }
 .stat-n { font-size: 22px; font-weight: 650; letter-spacing: -.03em; color: var(--ink); font-variant-numeric: tabular-nums; line-height: 1; }
 .stat-l { font-size: 11.5px; color: var(--ink-2); }
+.stat-sub { font-size: 10.5px; line-height: 1.35; color: var(--muted); }
+/* Three tiles in the narrower column: keep the sub-line from forcing the
+   strip taller than the flags beside it. */
+.stats-3 .stat { align-content: start; }
 .stat-bar { display: grid; grid-template-columns: minmax(0, 1fr) 34px; align-items: center; gap: 6px; margin-top: 2px; }
 .stat-bar i { display: block; height: 5px; border-radius: 3px; background: var(--panel-3); position: relative; overflow: hidden; }
 .stat-bar i::after { content: ""; position: absolute; inset: 0; width: calc(var(--pct) * 1%); border-radius: 3px; background: var(--c); transform-origin: left; animation: grow var(--t-slow) var(--ease) both; animation-delay: 200ms; }
 .stat-bar small { font-size: 10.5px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
-@media (max-width: 1100px) { .statstrip { grid-template-columns: 1fr; } .stats-4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 1100px) { .statstrip { grid-template-columns: 1fr; }
+  .stats-4, .stats-5 { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (prefers-reduced-motion: reduce) { .partition .part, #truthFigures .kpi, .stat-bar i::after { animation: none !important; } }
 
 /* ---------- Payouts ---------- */

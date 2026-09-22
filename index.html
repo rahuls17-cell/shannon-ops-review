@@ -451,7 +451,7 @@
                this tab, not just the table, so they belong where they are
                set rather than under the things they change. -->
           <section class="filterbar" aria-label="Filters for every figure on this tab">
-            <p class="filterbar-lead">Filters<span>every figure, strip and chart below follows these</span></p>
+            <p class="filterbar-lead">Filters<span>the figures, table and charts below follow these; the delivery join does not</span></p>
             <div class="toolbar" data-toolbar>
               <label class="field"><span>Search</span><input id="tSearch" type="search" placeholder="Task, trainer or reason" /></label>
               <label class="field"><span>State</span><select id="tState"></select></label>
@@ -471,6 +471,7 @@
                 </div>
               </details>
               <button id="tReset" class="ghost">Clear</button>
+              <button id="tExport" class="ghost">Export CSV</button>
             </div>
           </section>
 
@@ -478,12 +479,12 @@
           <div id="truthFigures" class="kpirow kpirow-5"></div>
           <div class="statstrip">
             <div class="statgroup">
-              <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>of the tasks shown</em></p>
-              <div id="truthJoin" class="stats stats-2"></div>
+              <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>the audit against the whole pipeline</em></p>
+              <div id="truthJoin" class="stats stats-3"></div>
             </div>
             <div class="statgroup">
               <p class="eyebrow">Flags on the shown tasks<em>overlapping, not a split</em></p>
-              <div id="truthFlags" class="stats stats-4"></div>
+              <div id="truthFlags" class="stats stats-5"></div>
             </div>
             <!-- Connector is read from the package; domain is read from the task
                  name. Two different kinds of evidence, so they are labelled
@@ -546,7 +547,7 @@
                 <span id="truthJoinText"></span>
                 <button id="unmatchedShow" class="linkish" aria-expanded="false" aria-controls="unmatchedPanel"></button>
               </p>
-              <section id="unmatchedPanel" class="unmatched" hidden aria-label="Audited tasks not found in the bucket">
+              <section id="unmatchedPanel" class="unmatched" hidden aria-label="Audited tasks the pipeline has no verdict for">
                 <p class="panel-note" id="unmatchedNote"></p>
                 <div class="table-wrap">
                   <table class="grid">
@@ -555,7 +556,8 @@
                         <th scope="col">Audited task</th>
                         <th scope="col">Batch</th>
                         <th scope="col">Audit verdict</th>
-                        <th scope="col">Why it could not be found</th>
+                        <th scope="col">Where it sits</th>
+                        <th scope="col">Why the pipeline cannot show it</th>
                       </tr>
                     </thead>
                     <tbody id="unmatchedRows"></tbody>
@@ -751,6 +753,7 @@
     <script src="pipeline-view.js"></script>
     <script src="truth.js"></script>
     <script src="manifest.js"></script>
+    <script src="csv.js"></script>
     <script src="delivery-audit.js"></script>
     <script src="daily-delta.js"></script>
     <script src="payout-ledger.js"></script>

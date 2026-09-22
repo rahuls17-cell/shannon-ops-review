@@ -86,7 +86,7 @@ def embeds(haystack, name):
         start = at + 1
 
 
-def build(audit, truth):
+def build(audit, truth, scan_rows=()):
     rows = truth['tasks']
 
     by_exact = collections.defaultdict(list)
@@ -100,6 +100,30 @@ def build(audit, truth):
     # clean one or fire on something generic.
     named = {key(r['name']) for r in rows} | {norm(r['name']) for r in rows}
     haystacks = [(r, key(r['id']) + '/' + key(r.get('source'))) for r in rows]
+
+    # Where an audited task actually sits when the pipeline has no verdict for
+    # it. "Not found here" was being read as "missing", and it is not: the
+    # pipeline reads verdicts decided on or after the cut, while the bucket
+    # holds every accepted package regardless of when it was decided. Answering
+    # this at build time keeps the 47 MB scan out of the browser.
+    in_bucket = collections.defaultdict(list)
+    for row in scan_rows:
+        for spelling in (row.get('declared_short'), row.get('folder'), row.get('declared_name')):
+            if spelling:
+                in_bucket[key(spelling)].append(row)
+                in_bucket[norm(spelling)].append(row)
+
+    def whereabouts(task):
+        hits = in_bucket.get(key(task)) or in_bucket.get(norm(task)) or []
+        if not hits:
+            return {'inBucket': False}
+        return {
+            'inBucket': True,
+            'outcome': sorted({str(h.get('outcome')) for h in hits if h.get('outcome')}),
+            'cohorts': sorted({str(h.get('cohortLabel') or h.get('cohort'))
+                               for h in hits if h.get('cohortLabel') or h.get('cohort')}),
+            'folders': len({h.get('folder') for h in hits if h.get('folder')}),
+        }
 
     delivered = {}          # pipeline id -> how it was matched
     rows_by_id = {r['id']: r for r in rows}
@@ -144,7 +168,28 @@ def build(audit, truth):
                 'acceptance': entry.get('acceptance'),
                 'reason': 'several pipeline names share this normalised name'
                           if ambiguous
-                          else 'no pipeline task carries this name',
+                          else 'no task decided in the pipeline window carries this name',
+                **whereabouts(entry['task']),
+            })
+            continue
+
+        # Every row this audited task found may already belong to an earlier
+        # one. how-much-of-my-drive-is-link-only-realdocoutput is the case:
+        # its only pipeline row is also embedded-matched by the shorter
+        # how-much-of-my-drive-is-link-only, which reached it first. Counting
+        # it as matched made the page claim 372 audited tasks were found while
+        # only 371 could be pointed at, and a reconciliation that does not
+        # reconcile is worse than a gap that is named.
+        claimed = [task_id for task_id in hits if task_id not in delivered_task]
+        if not claimed:
+            first = sorted(delivered_task[task_id] for task_id in hits)[0]
+            unmatched_audit.append({
+                'task': entry['task'],
+                'batch': entry.get('batch'),
+                'acceptance': entry.get('acceptance'),
+                'reason': f'its only pipeline rows are already claimed by {first}',
+                'claimedBy': first,
+                **whereabouts(entry['task']),
             })
             continue
 
@@ -206,6 +251,14 @@ def build(audit, truth):
         if twin and key(row['name']) != key(rows_by_id[twin]['name']):
             suspect[row['id']] = rows_by_id[twin]['name']
 
+    # The page states these three as a reconciliation - 412 audited, N found
+    # here, the rest not - so they have to add up, and every matched task has
+    # to be one the page can actually point at.
+    assert len(matched_audit) + len(unmatched_audit) == len(audit['rows']), (
+        f"{len(matched_audit)} + {len(unmatched_audit)} != {len(audit['rows'])} audited tasks")
+    assert set(matched_audit) == set(delivered_task.values()), (
+        'an audited task is counted as found but names no pipeline row')
+
     return {
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
         'auditGeneratedAt': audit.get('dataGeneratedAt'),
@@ -218,6 +271,15 @@ def build(audit, truth):
             'auditedUnmatched': len(unmatched_audit),
             'unmatchedAccepted': sum(1 for u in unmatched_audit
                                      if u['acceptance'] == 'Accepted'),
+            # Where the unmatched ones actually are. The page states this on
+            # the tile, because "not found here" was being read as "missing"
+            # and almost none of them are.
+            'unmatchedInBucket': sum(1 for u in unmatched_audit if u.get('inBucket')),
+            'unmatchedClaimed': sum(1 for u in unmatched_audit if u.get('claimedBy')),
+            'unmatchedAbsent': sum(1 for u in unmatched_audit
+                                   if not u.get('inBucket') and not u.get('claimedBy')),
+            'unmatchedCohorts': dict(collections.Counter(
+                c for u in unmatched_audit for c in (u.get('cohorts') or [])).most_common()),
             'pipelineTasks': len(rows),
             'deliveredRows': len(marked),
             'deliveredNames': len({key(r['name']) for r in marked}),
@@ -245,12 +307,20 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('--audit', default='assets/delivery-audit.json')
     ap.add_argument('--truth', default='assets/pipeline-truth.json')
+    ap.add_argument('--scan', default='assets/gcs-pipeline.json')
     ap.add_argument('--out', default='assets/delivered-index.json')
     args = ap.parse_args()
 
     audit = json.loads(pathlib.Path(args.audit).read_text(encoding='utf-8'))
     truth = json.loads(pathlib.Path(args.truth).read_text(encoding='utf-8'))
-    payload = build(audit, truth)
+    # Optional: without it the unmatched tasks are still listed, just without
+    # the "where does it actually sit" column.
+    scan_path = pathlib.Path(args.scan)
+    scan_rows = ()
+    if scan_path.exists():
+        blob = json.loads(scan_path.read_text(encoding='utf-8'))
+        scan_rows = blob.get('tasks') or (blob.get('finalisation') or {}).get('tasks') or []
+    payload = build(audit, truth, scan_rows)
 
     out = pathlib.Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
@@ -259,6 +329,10 @@ def main():
     c = payload['counts']
     print(f"audited tasks           : {c['auditedTasks']:>6}")
     print(f"  matched into pipeline : {c['auditedMatched']:>6}   {c['byMethod']}")
+    print(f"    of those, in bucket : {c['unmatchedInBucket']:>6}   "
+          f"{c['unmatchedCohorts']}")
+    print(f"    name collision      : {c['unmatchedClaimed']:>6}")
+    print(f"    nowhere at all      : {c['unmatchedAbsent']:>6}")
     print(f"  unmatched             : {c['auditedUnmatched']:>6}   "
           f"({c['unmatchedAccepted']} of them Accepted)")
     print(f"pipeline tasks          : {c['pipelineTasks']:>6}")
