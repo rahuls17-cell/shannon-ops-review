@@ -169,6 +169,366 @@
    "basis": "mcp_servers declared and empty",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b39-l30-replevin-client-email-statement-audit/89407e8ead61e9a71eaa04c5b7c727a827128c0dcc3c39e4f1a1aa4f90562996.zip",
    "readOn": "2026-09-22"
+  },
+  "harbor-single-task-ubew2l7v": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-ubew2l7v/311dc912b6da0cf9357c06f7e702c79db860e3e59abb58d4107d2ea3c298cde2.zip",
+   "bytesRead": 47079,
+   "readOn": "2026-09-22"
+  },
+  "harbor-single-task-f9w4ghvz": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-f9w4ghvz/3ecb7ba7b8aa4dfbaf9886c695ceec164429eb13a965ae4dfc2dda23c49e5817.zip",
+   "bytesRead": 52638,
+   "readOn": "2026-09-22"
+  },
+  "harbor-single-task-zq647anl": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-zq647anl/94cb04008f8e361ece63386de2a69e57fe7072d0f60cd93b47277858707b7e08.zip",
+   "bytesRead": 45194,
+   "readOn": "2026-09-22"
+  },
+  "harbor-single-task-x3z6_l7x": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-x3z6_l7x/903deb194cac51cd749e20767a4401a00904eb61ace6d95ebd145b30d920ecc8.zip",
+   "bytesRead": 47390,
+   "readOn": "2026-09-22"
+  },
+  "ephyra-trunk-dependency-churn-manifest-audit": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ephyra-trunk-dependency-churn-manifest-audit/88dcc6de3b1d235d5bd5d40f073d53a5591d642bfd20ff8676af255a7200e6ec.zip",
+   "bytesRead": 62660,
+   "readOn": "2026-09-22"
+  },
+  "harbor-single-task-rsypzlsz": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "google-drive-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-rsypzlsz/a025b4fb1f80a7622b4585518e3bc08c735ccee4f40c505923b070c115b15c39.zip",
+   "bytesRead": 45627,
+   "readOn": "2026-09-22"
+  },
+  "harbor-single-task-t8rwovcc": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-t8rwovcc/5fc6c2b3386806c2c06ff94a2e697326d3fb43736e9ba1cbd4c3579cfc93b6a2.zip",
+   "bytesRead": 48511,
+   "readOn": "2026-09-22"
+  },
+  "harbor-single-task-veeecron": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "google-drive-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-veeecron/1a2ecb735fbe0783cd668df0284d82fa016f8be2817fcdc6bac210bbe884bcea.zip",
+   "bytesRead": 44999,
+   "readOn": "2026-09-22"
+  },
+  "how-much-of-my-drive-is-link-only": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "google-drive-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-much-of-my-drive-is-link-only/6dcd8694fc1d20d4a0c39553db9cd800376283edb3cb87ffabb460e672863104.zip",
+   "bytesRead": 48563,
+   "readOn": "2026-09-22"
+  },
+  "how-much-of-my-drive-is-link-only-realdocoutput": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "google-drive-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-much-of-my-drive-is-link-only-realdocoutput/6fcf965e24537003cec0310443de01e94208576b7109dc46a21d16698a5d50bc.zip",
+   "bytesRead": 52895,
+   "readOn": "2026-09-22"
+  },
+  "relay-only-correspondents-cutover-exposure": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/relay-only-correspondents-cutover-exposure/d127bf20a76fd01e0ad080f658c53650963d5e060837db67d041d56e001b1ee9.zip",
+   "bytesRead": 50076,
+   "readOn": "2026-09-22"
+  },
+  "rsvp-silence-backlog-among-2026-regulars": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/rsvp-silence-backlog-among-2026-regulars/71782d26849e1cadea87a3eecb46a545d23fdec0a723f6ecf1c9247aec06ec49.zip",
+   "bytesRead": 47212,
+   "readOn": "2026-09-22"
+  },
+  "stored-version-retention-readout": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "google-drive-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/stored-version-retention-readout/7aad93f7e5d09a3229054b560cfc5914404962571e0aca594fd5eb21f30bc184.zip",
+   "bytesRead": 48183,
+   "readOn": "2026-09-22"
+  },
+  "unclosed-review-thread-backlog-ownership-split": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "google-drive-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unclosed-review-thread-backlog-ownership-split/01bf182adb5fea88d40c89d407b34ee0378296fa560aa37222a1bea314e84408.zip",
+   "bytesRead": 51886,
+   "readOn": "2026-09-22"
+  },
+  "harbor-single-task-2jtpr0_3": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-2jtpr0_3/f550d862d1563c010a3a124890aedb98cafcf473959856cae9c12cce382e33c2.zip",
+   "bytesRead": 45981,
+   "readOn": "2026-09-22"
+  },
+  "what-the-migration-runbook-settled": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-migration-runbook-settled/ad4e09edd30ee06f6ffd825fc9edde7b304105e614253b3485830f34f8a2145f.zip",
+   "bytesRead": 50627,
+   "readOn": "2026-09-22"
+  },
+  "candidates-parked-with-nothing-written": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/candidates-parked-with-nothing-written/1655b49e16781fa6fb212edec7bec49c9d3bb19b538253c13967bea965dd0c38.zip",
+   "bytesRead": 47172,
+   "readOn": "2026-09-22"
+  },
+  "customer-onboarding-signoff-gap": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/customer-onboarding-signoff-gap/1cad4494c0c8cd8ba0b7782d50fe6773e56699331de25965c09d310894c70cb5.zip",
+   "bytesRead": 53658,
+   "readOn": "2026-09-22"
+  },
+  "charge-sheet-priced-coverage-review-clean": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/charge-sheet-priced-coverage-review-clean/d262cfb7f49d4c40557369384c9f49f735e2b0923b237d50d07ab855440caa5e.zip",
+   "bytesRead": 58230,
+   "readOn": "2026-09-22"
+  },
+  "calendar-regulars-versus-one-time-visitors": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness:company-synthetic",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/calendar-regulars-versus-one-time-visitors/61adc53666a64f18ebc12fe1e04ee2b872e4138e720d07a97eaa244cdf17c61a.zip",
+   "bytesRead": 53787,
+   "readOn": "2026-09-22"
+  },
+  "lookalike-copies-i-can-actually-hand-over-v7": {
+   "connector": true,
+   "services": [
+    "google-drive-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:d56477eed0adfb72d46ae8f686fa400c6cf7cda824f768d25d631657ef000022",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lookalike-copies-i-can-actually-hand-over-v7/56e891199dd94df3efa39d12a6eaa55f92b6bb01a3d1e0de1fc162d66f2fc92e.zip",
+   "bytesRead": 53228,
+   "readOn": "2026-09-22"
+  },
+  "review-board-label-state-reconciliation-20260821T123303Z-1-001": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness:company-synthetic@sha256:5b98a4cafde8474df81d68c6027bcd0f3094a890a6d64d8832e6fc0ff5031525",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/review-board-label-state-reconciliation-20260821T123303Z-1-001/b91aeafe8a30debd6c3b5b9d65e9fa5453ceafbf8596eb7f12344249aca34d3e.zip",
+   "bytesRead": 58421,
+   "readOn": "2026-09-22"
+  },
+  "standing-invite-commitment-verification": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:5e401126242384590b9d1cde703e693d56342395c9acff12ab6c60facddb6dd2",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/standing-invite-commitment-verification/6e5674cbc0b17abba6390da841aa99f89259dfd539d068f5f7d1d7c9a8644def.zip",
+   "bytesRead": 70027,
+   "readOn": "2026-09-22"
+  },
+  "approval-reviewers-off-the-access-list": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "google-drive-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/approval-reviewers-off-the-access-list/4a3b701e967964a7892a4900e28ddc0d08cdb11c73131c0b8befcdf495f226d7.zip",
+   "bytesRead": 51160,
+   "readOn": "2026-09-22"
+  },
+  "ephyra-intake-form-column-teardown-rebuild-census": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ephyra-intake-form-column-teardown-rebuild-census/7cea87369ed37b72ba3ccacb6a9d793f520ed4facecc9125c268c8cfe864c661.zip",
+   "bytesRead": 71532,
+   "readOn": "2026-09-22"
+  },
+  "harbor-single-task-t12_zof8": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b35727bc19eb444896e1b1cbbc81f8f8f6c54c75ff3e1d6e7efe0b89180b9c36",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-t12_zof8/34afeb54a8f0b04861fd0252231dc84954bbf00c71a3de2bd6fa91abc480a4ff.zip",
+   "bytesRead": 52264,
+   "readOn": "2026-09-22"
+  },
+  "operating-collision-component-register-may-jul-2026": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:926ccf1081606a438d86d861dda44e157c89396ee030f4e37aa771059c70b90c",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/operating-collision-component-register-may-jul-2026/9114e02dd82e8810a51b11297510257cb410947656c2640b791f87a854cdaff5.zip",
+   "bytesRead": 54094,
+   "readOn": "2026-09-22"
   }
  }
 }

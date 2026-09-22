@@ -78,3 +78,79 @@ if (fs.existsSync(readsPath)) {
     + `${rows.filter(([, r]) => r.connector === false).length} non-connector`);
 }
 console.log('task.toml classifier: empty list, inline list, table form and no mention all read correctly');
+
+// --- which bench a connector belongs to -------------------------------------
+// Derived from the FROM line of environment/Dockerfile, because that is the
+// only place it appears: task.toml does not carry it and the bucket scan
+// records an image for none of the 2,022 packages it covers.
+//
+// Pinned against every labelled row of the reference sheet. Order matters in
+// the rule and it is easy to get backwards: benchmark-base sits under
+// data-obi-rl-gym and is a COMPANY image, while obi-benchmark under
+// connectors-rl-gym is a COMPUTER one, so the registry path has to be tested
+// before the image name. Testing the name first scored 344/348.
+{
+  const refPath = path.join(root, 'assets', 'bench-reference.json');
+  assert.ok(fs.existsSync(refPath), 'the labelled reference must be committed');
+  const ref = JSON.parse(fs.readFileSync(refPath, 'utf8'));
+  assert.ok(ref.labelled.length > 300, 'the reference must cover the whole labelled set');
+
+  const bench = image => JSON.parse(execFileSync('python', ['-c', `
+import sys, json, importlib.util
+spec = importlib.util.spec_from_file_location('r', ${JSON.stringify(tool)})
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+print(json.dumps(m.bench_type(sys.stdin.read().strip())))
+`], {input: image, encoding: 'utf8'}));
+
+  // Every distinct image in the reference, checked once.
+  const distinct = new Map();
+  ref.labelled.forEach(r => distinct.set(r.image, r.bench));
+  let checked = 0;
+  distinct.forEach((expected, image) => {
+    assert.equal(bench(image), expected,
+      `${image.slice(0, 70)} should be ${expected}`);
+    checked += 1;
+  });
+
+  // The ordering trap, stated as its own case so it cannot regress quietly.
+  assert.equal(bench('us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:x'),
+    'company bench zeta', 'benchmark-base under data-obi-rl-gym is a company image');
+  assert.equal(bench('us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/obi-benchmark@sha256:x'),
+    'computer bench synth', 'anything under connectors-rl-gym is a computer image');
+  assert.equal(bench('kuzphi/connectors-harness-aster:company-aster-v6'), 'company bench aster',
+    'aster is a company bench despite the connectors-harness name');
+  assert.equal(bench('kuzphi/connectors-harness:real-data-v4'), 'computer bench real');
+  assert.equal(bench('python:3.12-slim-bookworm'), null,
+    'a plain base image is not a bench at all');
+
+  const counts = {};
+  ref.labelled.forEach(r => { counts[r.bench] = (counts[r.bench] || 0) + 1; });
+  console.log(`bench rule: ${checked} distinct images, ${ref.labelled.length} labelled rows, all reproduced`);
+  console.log('  ' + Object.entries(counts).map(([k, n]) => `${k} ${n}`).join(' | '));
+}
+
+// --- FROM takes flags before the image ---------------------------------------
+// `FROM --platform=linux/amd64 <image>` is the common spelling here. Reading the
+// first token after FROM captured the flag as the image for 106 tasks, every one
+// of which then classified as no bench at all - including all 27 accepted
+// connectors that had no bench. The flags have to be skipped.
+{
+  const src = fs.readFileSync(path.join(__dirname, 'read_task_toml.py'), 'utf8');
+  const line = src.split('\n').find(l => l.startsWith('FROM_LINE'));
+  assert.ok(line, 'read_task_toml.py must define FROM_LINE');
+  assert.ok(line.includes('--'),
+    'FROM_LINE must skip the flags, or --platform is read as the image');
+  const body = line.slice(line.indexOf("r'") + 2, line.lastIndexOf("'"));
+  const re = new RegExp(body.replace(/\s/g, '\s'), 'i');
+  const cases = [
+    ['FROM --platform=linux/amd64 reg/connectors-rl-gym/obi:v3', 'reg/connectors-rl-gym/obi:v3'],
+    ['FROM reg/connectors-harness-aster/base:v1', 'reg/connectors-harness-aster/base:v1'],
+    ['FROM --platform=linux/amd64 --x=1 d/benchmark-base:v2', 'd/benchmark-base:v2'],
+  ];
+  cases.forEach(([line_, want]) => {
+    const got = re.exec(line_);
+    assert.ok(got, `no FROM match in ${line_}`);
+    assert.strictEqual(got[1], want, `wrong image from ${line_}`);
+  });
+  console.log('FROM line: flags skipped, image taken');
+}

@@ -10,7 +10,7 @@
   // from the data - so the UI can never offer a value that matches nothing.
   const UNDECIDED = new Set(['error', 'no QC decision', 'queued', 'not started']);
 
-  function prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex, cohortIndex) {
+  function prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex, cohortIndex, benchIndex) {
     if (!payload || !Array.isArray(payload.tasks)) throw new Error('No pipeline truth asset loaded');
     if (!payload.reconciles) throw new Error('Pipeline truth failed its own reconciliation; refusing to display it');
     const figures = new Map((payload.figures || []).map(f => [f.label, f]));
@@ -41,13 +41,32 @@
     // The four-trial GLM band. Read from the trial files in the bucket, so a
     // task with no trials recorded has no band rather than a zero - 0/4 is a
     // real and bad result, and must not be what "we did not look" looks like.
+    // Which bench a task runs on, from the base image in its Dockerfile. Only
+    // connector tasks have one: a plain base image is not a bench.
+    const benches = (benchIndex && benchIndex.bench) || {};
+    // The cache has two kinds of key, because it has two sources: the task
+    // source tree is keyed by pipeline row id, and a package opened directly is
+    // keyed by the bucket folder it sits in. A lookup that tries only the row id
+    // silently drops every bench that was read from a package - which is exactly
+    // the tasks whose task tree was missing, so the ones that needed it most.
+    const benchAt = (...keys) => {
+      for (let i = 0; i < keys.length; i += 1) {
+        const hit = keys[i] && benches[keys[i]];
+        if (hit && hit.bench) {
+          return {bench: hit.bench, benchImage: hit.image,
+                  benchSide: hit.bench.startsWith('company') ? 'company' : 'computer'};
+        }
+      }
+      return {};
+    };
+
     const trials = (glmIndex && glmIndex.glm) || {};
     const glmOf = id => {
       const hit = trials[id];
       if (!hit) return {};
       return {glmPasses: hit.passes, glmTrials: hit.trials, glmRewards: hit.rewards || []};
     };
-    const rows = (delivered || connectorIndex || glmIndex)
+    const rows = (delivered || connectorIndex || glmIndex || benchIndex)
       ? payload.tasks.map(row => ({
           ...row,
           delivered: Boolean(delivered) && Object.prototype.hasOwnProperty.call(delivered, row.id),
@@ -56,6 +75,7 @@
           deliveredTask: ((deliveredIndex || {}).deliveredTask || {})[row.id] || null,
           ...connectorOf(row.id),
           ...glmOf(row.id),
+          ...benchAt(row.id, row.name),
         }))
       : payload.tasks;
 
@@ -68,6 +88,7 @@
       vocabulary: payload.vocabulary || {},
       glmIndex: glmIndex || null,
       cohortIndex: cohortIndex || null,
+      benchIndex: benchIndex || null,
       // One row per bucket folder, for the Accepted view.
       //
       // Accepted is decided by the bucket, so its list has to come from the
@@ -75,7 +96,7 @@
       // cover only 1,021 folders while missing 104 that hold an accepted
       // package and have no accepted verdict row - a list that is both too
       // long and incomplete at once.
-      cohortRows: cohortRows(rows, cohortIndex),
+      cohortRows: cohortRows(rows, cohortIndex, benchAt),
       // Null when the index has not loaded, so the page can tell the difference
       // between "nothing is delivered" and "delivery is not known".
       deliveredIndex: deliveredIndex || null,
@@ -174,7 +195,7 @@
   // Each folder gets the verdict row that best describes it, so the table keeps
   // its trainer, dates, GLM band and drill-down. A folder with no verdict row
   // still appears, carrying what the bucket knows and nothing invented.
-  function cohortRows(rows, cohortIndex) {
+  function cohortRows(rows, cohortIndex, benchAt) {
     if (!cohortIndex || !cohortIndex.folders) return null;
     const byName = new Map();
     rows.forEach(row => {
@@ -187,7 +208,8 @@
     const built = Object.values(cohortIndex.folders).map(entry => {
       const match = byName.get(keyOf(entry.folder)) || byName.get(stemOf(entry.folder));
       if (match) {
-        return {...match, state: 'accepted', atCurrentBar: true,
+        return {...match, ...benchAt(entry.folder, match.id, match.name),
+                state: 'accepted', atCurrentBar: true,
                 connector: entry.connector === undefined ? match.connector : entry.connector,
                 connectorServices: entry.connectorServices && entry.connectorServices.length
                   ? entry.connectorServices : (match.connectorServices || []),
@@ -215,7 +237,7 @@
         duplicateSiblings: 0, duplicateTier: '', source: `${cohortIndex.cohort}/${entry.folder}`,
         delivered: Boolean(entry.delivered), cohortFolder: entry.folder,
         cohortDelivered: entry.delivered, cohortState: entry.state || null,
-        fromBucket: true, noVerdict: true,
+        fromBucket: true, noVerdict: true, ...benchAt(entry.folder),
       };
     });
     return built.sort((a, b) => {
@@ -259,6 +281,11 @@
           : row.connector === null || row.connector === undefined)) &&
         // The band is a property of the run, so a row with no trials is
         // excluded from every band filter rather than counted as 0.
+        // Bench is a property of connector tasks only, so a row without one is
+        // excluded from every bench filter rather than counted as neither.
+        (!f.bench || (f.bench === 'none' ? !row.bench
+          : f.bench === 'company' || f.bench === 'computer' ? row.benchSide === f.bench
+          : row.bench === f.bench)) &&
         (!f.glm || (f.glm === 'none' ? (row.glmPasses === undefined || row.glmPasses === null)
           : row.glmPasses === undefined || row.glmPasses === null ? false
           : f.glm === 'band' ? (row.glmPasses > 0 && row.glmPasses < row.glmTrials)

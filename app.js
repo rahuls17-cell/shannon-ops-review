@@ -23,7 +23,7 @@ const AUDIT_PAGE_SIZE = 40;
 const AUDIT_FILTERS = ['aBatch', 'aCategory', 'aType', 'aDifficulty', 'aGlm',
   'aAcceptance', 'aPriority', 'aTrainer', 'aSource', 'aFlagged'];
 
-const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tConnector', 'tGlm', 'tCarried',
+const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tConnector', 'tGlm', 'tBench', 'tCarried',
   'tConfidence', 'tDuplicate', 'tDomain', 'tOwner'];
 let explorer = null;
 let explorerPath = '';
@@ -139,6 +139,22 @@ const infoCopy = {
       + fmt(c.placeholderNames) + ' folders carry a machine name; one is called simply task and '
       + 'matches 19 different verdicts, so those joins are the weakest here and are counted and '
       + 'reported rather than quietly resolved.';
+  },
+  bench2: () => {
+    const b = truth && truth.benchIndex && truth.benchIndex.counts;
+    const split = b ? Object.entries(b.byBench).map(([k, n]) => `${k} ${fmt(n)}`).join(', ') : '';
+    return 'Which bench a connector task runs on, decided by the base image in its Dockerfile - '
+      + 'the FROM line, read from environment/Dockerfile in the task source. Nothing else carries '
+      + 'it: task.toml does not, the verdicts do not, and the bucket scan records an image for none '
+      + 'of the packages it covers. connectors-harness-aster is company aster; company-bench-private '
+      + 'and benchmark-base are company zeta; connectors-harness with real-data is computer real; '
+      + 'anything else under connectors-rl-gym or connectors-harness is computer synth. The registry '
+      + 'path is tested before the image name, because benchmark-base sits under data-obi-rl-gym and '
+      + 'is a company image while obi-benchmark under connectors-rl-gym is a computer one - reading '
+      + 'the name first gets four of the 348 labelled tasks wrong.'
+      + (split ? ' Across the pipeline: ' + split + '.' : '')
+      + ' Only connector tasks have a bench. A task on a plain base image is not on one, and is '
+      + 'listed as not a connector rather than being forced into a side.';
   },
   truthSplit: () => {
     const c = cohortIndex && cohortIndex.counts;
@@ -913,7 +929,13 @@ async function loadTruth() {
       const ch = await fetch(`assets/cohort-index.json?t=${Date.now()}`, {cache: 'no-store'});
       cohortIndex = ch.ok ? await ch.json() : null;
     } catch (ignored) { cohortIndex = null; }
-    truth = window.prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex, cohortIndex);
+    // Which bench each connector task runs on, read from its Dockerfile.
+    let benchIndex = null;
+    try {
+      const bx = await fetch(`assets/bench-index.json?t=${Date.now()}`, {cache: 'no-store'});
+      if (bx.ok) benchIndex = await bx.json();
+    } catch (ignored) { benchIndex = null; }
+    truth = window.prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex, cohortIndex, benchIndex);
     truth.counts = payload.counts || null;
     populateTruthFilters();
     renderTruth();
@@ -1067,6 +1089,7 @@ function truthFilters() {
     delivered: byId('tDelivered') ? byId('tDelivered').value : '',
     connector: byId('tConnector') ? byId('tConnector').value : '',
     glm: byId('tGlm') ? byId('tGlm').value : '',
+    bench: byId('tBench') ? byId('tBench').value : '',
     carriedOver: byId('tCarried').value, confidence: byId('tConfidence').value,
     domain: byId('tDomain').value, owner: byId('tOwner').value,
     duplicate: byId('tDuplicate').value,
@@ -1090,6 +1113,48 @@ function fillSelect(id, counts, allLabel, unit) {
   if ([...node.options].some(o => o.value === keep)) node.value = keep;
 }
 
+// The Bench filter, grouped and counted.
+//
+// It was a flat list with nbsp indentation, which put "company zeta" directly
+// beneath "Computer bench" and read as though it belonged there. optgroup is
+// what a browser renders as a real parent. Counts are there because every
+// other filter on this bar has them, and a filter that will not say how much
+// it selects invites the guess that it selects nothing.
+function fillBench() {
+  const node = byId('tBench');
+  if (!node || !truth || !truth.rows) return;
+  const keep = node.value;
+  const filters = truthFilters();
+  const source = (filters.state === 'accepted' && truth.cohortRows)
+    ? truth.cohortRows : truth.rows;
+  const shown = window.filterTruth(source, {
+    ...filters, bench: '', state: source === truth.cohortRows ? '' : filters.state,
+  }).rows;
+  const tally = {};
+  shown.forEach(row => {
+    const key = row.bench || 'none';
+    tally[key] = (tally[key] || 0) + 1;
+  });
+  const side = which => Object.entries(tally)
+    .filter(([bench]) => bench !== 'none' && bench.startsWith(which))
+    .reduce((total, [, n]) => total + n, 0);
+  const option = (value, label, n) =>
+    `<option value="${esc(value)}">${esc(label)}${n === undefined ? '' : ` (${fmt(n)})`}</option>`;
+  const group = (label, which) => {
+    const kids = Object.keys(tally).filter(b => b !== 'none' && b.startsWith(which)).sort();
+    if (!kids.length) return '';
+    return `<optgroup label="${esc(label)}">`
+      + option(which, `All ${label.toLowerCase()}`, side(which))
+      + kids.map(b => option(b, b.replace(`${which} bench `, ''), tally[b])).join('')
+      + '</optgroup>';
+  };
+  node.innerHTML = option('', 'Any bench')
+    + group('Company bench', 'company')
+    + group('Computer bench', 'computer')
+    + (tally.none ? `<optgroup label="Neither">${option('none', 'Not a connector', tally.none)}</optgroup>` : '');
+  if ([...node.options].some(o => o.value === keep)) node.value = keep;
+}
+
 function populateTruthFilters() {
   if (!truth) return;
   const v = truth.vocabulary;
@@ -1101,6 +1166,7 @@ function populateTruthFilters() {
   fillSelect('tFinding', v.findingFamilies, 'Any finding');
   fillSelect('tDomain', v.domain, 'Any domain');
   fillSelect('tOwner', v.owner, 'Any trainer');
+  fillBench();
   fillSelect('cState', v.finalState, 'Any state');
   fillSelect('cOwner', v.owner, 'Any trainer');
   fillSelect('cGate', v.gateEra, 'Any gate');
@@ -1698,6 +1764,7 @@ function renderTruth() {
     `${fmt(result.atCurrentBar)} have a package at the current bar / ${fmt(result.gateOnly)} await a KESTREL re-gate / ` +
     `${fmt(result.owners)} trainers.`);
   renderManifestBar(result);
+  fillBench();
   renderExportButton(result);
   renderTruthRows(result.rows);
   renderFlagLegend(result.rows);

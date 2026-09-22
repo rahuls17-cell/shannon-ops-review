@@ -68,3 +68,33 @@ console.log(`tooltips: ${new Set(used).size} buttons, all with copy; `
       `${evt} must be delegated too, or the button works by mouse but not keyboard`));
   console.log('? buttons are delegated, so a redrawn tile keeps its explanation');
 }
+
+// --- the Bench filter must group and count ----------------------------------
+// It shipped as a flat list with nbsp indentation, which placed "company zeta"
+// directly beneath "Computer bench" and read as though it belonged there. And
+// it was the only filter on the bar with no counts, which invites the guess
+// that it selects nothing.
+{
+  const fn = app.slice(app.indexOf('function fillBench()'), app.indexOf('function populateTruthFilters'));
+  assert.ok(fn, 'the bench options must be built from the data, not written into the html');
+  assert.ok(/<optgroup label=/.test(fn),
+    'the four benches must sit inside a real optgroup, not be indented with spaces');
+  assert.ok(!/&nbsp;/.test(html.slice(html.indexOf('id="tBench"') - 400, html.indexOf('id="tBench"') + 400)),
+    'nbsp indentation is what made a company bench look like a computer one');
+  assert.ok(/\(\$\{fmt\(n\)\}\)/.test(fn), 'every option must carry its count');
+  assert.ok(/tally\[key\] = \(tally\[key\] \|\| 0\) \+ 1/.test(fn),
+    'the counts must be tallied from the rows, so they cannot drift from the table');
+  assert.ok(/window\.filterTruth\(source, \{/.test(fn),
+    'the counts must be taken over the rows currently selected, not over everything');
+  assert.ok(/bench: ''/.test(fn),
+    'and the bench filter itself must be lifted, or choosing one zeroes the rest');
+  assert.ok(/truth\.cohortRows/.test(fn),
+    'under Accepted the rows are the bucket folders, so the counts come from those');
+  // There are two call sites: once when the filters are first built, and again
+  // on every redraw. Only the second keeps the counts following the filters.
+  const after = app.split('fillBench();').slice(1);
+  assert.ok(after.length > 1, 'the bench options must be rebuilt, not filled once at load');
+  assert.ok(after.some(tail => tail.slice(0, 80).includes('renderExportButton')),
+    'it must be redrawn with the table, or the counts stop following the filters');
+  console.log('bench filter: grouped by side, counted from the rows');
+}
