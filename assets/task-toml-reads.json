@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T21:41:27+00:00",
+ "generatedAt": "2026-09-22T22:01:19+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -713,6 +713,26 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-posts-no-room-will-list/493deac3cc605e9d2555e01cab5f6bf02621823e8776564ec57eed3e39dcf98d.zip",
    "bytesRead": 51107,
+   "readOn": "2026-09-22"
+  },
+  "health-b43-h14-post-procedure-food-catalog": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b43-h14-post-procedure-food-catalog/5ffd89f60fcce0f3f4f058ff581c1f9884af26f2dba4ee52f2504e9f2a197b6b.zip",
+   "bytesRead": 65422,
+   "readOn": "2026-09-22"
+  },
+  "j4-emea-version-counter-reconcile-register": {
+   "connector": null,
+   "services": [],
+   "basis": "mcp_servers present but not readable",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:c33ea2c5348e128524d6dce91ae4ec01e946822b554093a4aafc6ac7806121be",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/j4-emea-version-counter-reconcile-register/d16f934def689047100bc94be60b3539a2aef84f8179a5886267f67e62c64307.zip",
+   "bytesRead": 46119,
    "readOn": "2026-09-22"
   }
  }
