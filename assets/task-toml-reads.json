@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-22T23:00:59+00:00",
+ "generatedAt": "2026-09-22T23:11:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -793,6 +793,24 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b9-settlement-waterfall-ledger/4c2899d05c119a20637911b7cf299c79432aab4fff6c4ba7d388e8e6ef5f4ca1.zip",
    "bytesRead": 113988,
+   "readOn": "2026-09-22"
+  },
+  "100939": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/100939/e43167335fe5e07d3464c76ec5af77edaa9f01ff5edd4c1c81e0d9b912d55311.zip",
+   "bytesRead": 41551,
    "readOn": "2026-09-22"
   }
  }
