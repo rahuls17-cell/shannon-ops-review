@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T08:21:16+00:00",
+ "generatedAt": "2026-09-23T08:30:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1394,6 +1394,48 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pace-those-two-cycles-actually-set/e4359a9b009c2e8340f0cec94e34b0256824e5d5ab422f81cf55bb4f1744d777.zip",
    "bytesRead": 49592,
+   "readOn": "2026-09-23"
+  },
+  "bus-b19-b3-client-segment-classification-20260923T183037Z-1-001": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b19-b3-client-segment-classification-20260923T183037Z-1-001/808458182ff4b9e3bc4f9f9d46e5daae2ecb9bdad72fbaad1656ffeab19f96dc.zip",
+   "bytesRead": 93559,
+   "readOn": "2026-09-23"
+  },
+  "bus-mg-bus-b7-a7-fair-catalogue-proof-register-v7": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-mg-bus-b7-a7-fair-catalogue-proof-register-v7/2a5a6713dd93b2b7662d3c4270e3a4c5f9a0fd5dc5c1488b28cc8a1d0763dbb3.zip",
+   "bytesRead": 78876,
+   "readOn": "2026-09-23"
+  },
+  "litigation-signoff-overtaken-by-new-version": {
+   "connector": null,
+   "services": [],
+   "basis": "mcp_servers present but not readable",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:c33ea2c5348e128524d6dce91ae4ec01e946822b554093a4aafc6ac7806121be",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/litigation-signoff-overtaken-by-new-version/829978430b27003aa26bbfdba37190e24d9fa6d2e205cb5a52c43356611c21ff.zip",
+   "bytesRead": 59395,
+   "readOn": "2026-09-23"
+  },
+  "the-pins-nobody-can-vouch-for-postfix": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pins-nobody-can-vouch-for-postfix/131c45530a37e4738b1e1692525895db7645f400a52d3a47678536d0014b3c72.zip",
+   "bytesRead": 47736,
    "readOn": "2026-09-23"
   }
  }
