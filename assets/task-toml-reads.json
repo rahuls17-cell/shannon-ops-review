@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T19:11:07+00:00",
+ "generatedAt": "2026-09-23T19:20:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1824,6 +1824,46 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-the-pilot-was-waiting-on_v2/b6c920fbcb6116c60bb74954118bba33bace3d10bc4dd5d86978ee5c1948849e.zip",
    "bytesRead": 48043,
+   "readOn": "2026-09-23"
+  },
+  "bus-b47-b8-request-category-scorecard": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b8-request-category-scorecard/3de1489155a630bfbf73efd077be66ebb579a00b6647ef9c74d8fa63742115db.zip",
+   "bytesRead": 68031,
+   "readOn": "2026-09-23"
+  },
+  "code-c436-agent-profile-model-routing-audit-v1": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c436-agent-profile-model-routing-audit-v1/91720fc1e84a5d1fa9cc25b7340058e55cbd0dc33d2c58364e9950073612416e.zip",
+   "bytesRead": 82207,
+   "readOn": "2026-09-23"
+  },
+  "edu-sc09-b3-vti-task-001316": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc09-b3-vti-task-001316/f41c134f577f1b25f80a512ed36a9c37188d48a11c32fe490d758abe422a83e1.zip",
+   "bytesRead": 60786,
+   "readOn": "2026-09-23"
+  },
+  "health-b44-h8-colour-formulation-rule-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b44-h8-colour-formulation-rule-adjudication/1c551556e83edbe2c1d98f8c2b1369eeba12e7af27506432b9ecb0dd4b133c0f.zip",
+   "bytesRead": 85327,
    "readOn": "2026-09-23"
   }
  }
