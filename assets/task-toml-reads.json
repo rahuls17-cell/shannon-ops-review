@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T07:50:56+00:00",
+ "generatedAt": "2026-09-23T08:10:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1332,6 +1332,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b41-f3-social-security-claiming-reconstruction/a9c8ef9d6e81a06920e88c44e72a4cc649a538b98963f51ac45791718e9bb906.zip",
    "bytesRead": 125660,
+   "readOn": "2026-09-23"
+  },
+  "code-c57-api-rate-limit-headers-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c57-api-rate-limit-headers-recompute/2016b5bff08aee6d3120a4380825a11130354b9d028aafea7516ae383bd1d2fb.zip",
+   "bytesRead": 82031,
+   "readOn": "2026-09-23"
+  },
+  "the-huddles-that-left-no-notes": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-huddles-that-left-no-notes/c7554707f6a68f808d2a8797b6181cf9ed4103c461ee501df9c55469f9ec07b2.zip",
+   "bytesRead": 47727,
    "readOn": "2026-09-23"
   }
  }
