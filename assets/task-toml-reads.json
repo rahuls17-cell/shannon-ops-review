@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T22:21:16+00:00",
+ "generatedAt": "2026-09-23T22:30:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2118,6 +2118,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-practices-that-left-without-a-note/453c12f3812e5050e57ac9474da5931be06d5859b81556d4318a3cdc393062ee.zip",
    "bytesRead": 51495,
+   "readOn": "2026-09-23"
+  },
+  "did-the-reminders-ever-go-off": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/did-the-reminders-ever-go-off/4ee9385f766a8e80cdd05c0f80a985ccaf3939d2af4ede3ef2d62be34ffa714e.zip",
+   "bytesRead": 45042,
    "readOn": "2026-09-23"
   }
  }
