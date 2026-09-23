@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T14:41:16+00:00",
+ "generatedAt": "2026-09-23T14:51:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1600,6 +1600,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c119-table-lineage-completeness-audit/a5ffea7bf1d9264c44a853347d09e15631bfab546891a37e5bc4032a8d7c54c9.zip",
    "bytesRead": 79433,
+   "readOn": "2026-09-23"
+  },
+  "code-c115-etl-watermark-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c115-etl-watermark-reconciliation/574f0b0763a9be13e8fa04b55770e5410c7a10136c760905b12d7e6886727b8c.zip",
+   "bytesRead": 79196,
    "readOn": "2026-09-23"
   }
  }
