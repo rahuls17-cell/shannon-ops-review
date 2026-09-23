@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T08:40:52+00:00",
+ "generatedAt": "2026-09-23T08:51:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1456,6 +1456,30 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-b6-attrition-variance-v1/7040261fee2a6c79f7c49793139fcdd2b39b1d6cc72d2d0f1c71be2a795c6745.zip",
    "bytesRead": 65826,
+   "readOn": "2026-09-23"
+  },
+  "the-link-that-leads-elsewhere": {
+   "connector": true,
+   "services": [
+    "microsoft-teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-link-that-leads-elsewhere/27d3fddee4c6fffc98d0daab71ca9eefd47044490c7a56089f34bbe6de2d8688.zip",
+   "bytesRead": 49714,
+   "readOn": "2026-09-23"
+  },
+  "three-marts-gone-cold": {
+   "connector": true,
+   "services": [
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/three-marts-gone-cold/3919f564f9d6cd5e113a8a216cf1fd2e0a2893f0f6b203a3730020bbdb4774ad.zip",
+   "bytesRead": 46119,
    "readOn": "2026-09-23"
   }
  }
