@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T01:21:22+00:00",
+ "generatedAt": "2026-09-23T01:30:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -883,6 +883,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b19-b1-project-milestone-reconstruction/305bf59b81d8c263d7d3bbe51e12841f5a82466f68c5fc7dee4bf34c24615a1c.zip",
    "bytesRead": 80413,
+   "readOn": "2026-09-23"
+  },
+  "health-b44-h6-resurfacing-agent-formulary-normalisation-v9-FOR-QC-V2": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b44-h6-resurfacing-agent-formulary-normalisation-v9-FOR-QC-V2/070436dccda14a31f0892ff900b64a20edf9b7f4e14ef8ce21c4f0d70ba35327.zip",
+   "bytesRead": 78594,
    "readOn": "2026-09-23"
   }
  }
