@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T07:01:15+00:00",
+ "generatedAt": "2026-09-23T07:12:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1110,6 +1110,100 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-busy-threads-that-are-done/c7ea33cf4afc28a83b360194bb5746552f57d2a2c034f224c437d874bb30e2a6.zip",
    "bytesRead": 45101,
+   "readOn": "2026-09-23"
+  },
+  "bus-b48-b8-briefing-claim-evidence-normalisation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b8-briefing-claim-evidence-normalisation/d8b9f14355c7e328f8be2b23390532d04490b8eb5670acbd3b060b7c742f502d.zip",
+   "bytesRead": 133147,
+   "readOn": "2026-09-23"
+  },
+  "outside-reviewers-asking-for-tests": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/outside-reviewers-asking-for-tests/f3471ec28f83e3bed10e2eb27ef70cdb5ea453e163f8da109943a7886654c218.zip",
+   "bytesRead": 56512,
+   "readOn": "2026-09-23"
+  },
+  "the-conversations-more-than-one-person-was-in": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-conversations-more-than-one-person-was-in/637d21444d8bcacd974bc928b00470c015a7a8b153de4f3de2f36d6621aa1e77.zip",
+   "bytesRead": 50220,
+   "readOn": "2026-09-23"
+  },
+  "the-patients-who-keep-coming-back": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-patients-who-keep-coming-back/06a4f13ecbca04916b863a7a213cf63864e3afc79d324294ba5cf7b872e70ecd.zip",
+   "bytesRead": 48862,
+   "readOn": "2026-09-23"
+  },
+  "where-the-heavy-review-happens": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-the-heavy-review-happens/7d4affbcb8b949ad9cb7ad28b50dfe94cd7236df86f8abab208e6eefaf7d787c.zip",
+   "bytesRead": 45193,
+   "readOn": "2026-09-23"
+  },
+  "who-actually-writes-to-me-twice": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-actually-writes-to-me-twice/0fbded132970fae2adbd1ab6920d12172e12196bd4c717353afb2743ebc35da2.zip",
+   "bytesRead": 45634,
+   "readOn": "2026-09-23"
+  },
+  "who-i-have-sent-a-secure-message-to": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-i-have-sent-a-secure-message-to/9a14836cc42428ff20edb2472ce4f3f6e7d5f3e3ff531a73970bc7926c4e8414.zip",
+   "bytesRead": 50974,
+   "readOn": "2026-09-23"
+  },
+  "who-turns-up-in-the-busy-threads": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-turns-up-in-the-busy-threads/972f316ef6c8b642e45901ad38d1d85fd866a1c56f1fc28003299e0c43631817.zip",
+   "bytesRead": 45774,
    "readOn": "2026-09-23"
   }
  }
