@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T20:11:00+00:00",
+ "generatedAt": "2026-09-23T20:21:19+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1954,6 +1954,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-a5-hosting-inventory-register/46756d78fe6873e17a8069ef2450c75a276dd86c8a2982996c6122beb9cd039b.zip",
    "bytesRead": 66517,
+   "readOn": "2026-09-23"
+  },
+  "tech-b53-t1-funding-profile-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t1-funding-profile-reconciliation/e3ab00bc737e7fe4237caff45102d3895766e1243313106ad6feaa5cceb9097c.zip",
+   "bytesRead": 79802,
    "readOn": "2026-09-23"
   }
  }
