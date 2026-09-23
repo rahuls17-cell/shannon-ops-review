@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T07:41:29+00:00",
+ "generatedAt": "2026-09-23T07:50:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1312,6 +1312,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-billing-codes-that-do-not-agree-with-themselves/f484afa005847e68704c2d84799317614629003e6cb060dd88be22e2826e316c.zip",
    "bytesRead": 53204,
+   "readOn": "2026-09-23"
+  },
+  "code-c112-partition-pruning-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c112-partition-pruning-audit/db3931e59981c5db83872691c0b39f105f44adfbe80de258a6199e6137914439.zip",
+   "bytesRead": 62264,
+   "readOn": "2026-09-23"
+  },
+  "fin-b41-f3-social-security-claiming-reconstruction": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b41-f3-social-security-claiming-reconstruction/a9c8ef9d6e81a06920e88c44e72a4cc649a538b98963f51ac45791718e9bb906.zip",
+   "bytesRead": 125660,
    "readOn": "2026-09-23"
   }
  }
