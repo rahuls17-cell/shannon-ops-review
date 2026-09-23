@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T07:12:00+00:00",
+ "generatedAt": "2026-09-23T07:21:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1204,6 +1204,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-turns-up-in-the-busy-threads/972f316ef6c8b642e45901ad38d1d85fd866a1c56f1fc28003299e0c43631817.zip",
    "bytesRead": 45774,
+   "readOn": "2026-09-23"
+  },
+  "the-files-nobody-mentioned-in-my-inbox": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-files-nobody-mentioned-in-my-inbox/7e89b002f7b314a59bd34749087344dcfb2daaa96fb4cbfcae80c4051a23eb3a.zip",
+   "bytesRead": 51024,
+   "readOn": "2026-09-23"
+  },
+  "the-projects-nothing-was-ever-scheduled-in": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-projects-nothing-was-ever-scheduled-in/0fa1d24e0c199c00000f63111de44905451786d3d9509df1446d6617c8140939.zip",
+   "bytesRead": 52002,
+   "readOn": "2026-09-23"
+  },
+  "what-landed-with-writing-still-owed": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-landed-with-writing-still-owed/225640baac0096126e16405c641c60e03bdc050652bdd54f3bfc98f3d226e23f.zip",
+   "bytesRead": 47099,
    "readOn": "2026-09-23"
   }
  }
