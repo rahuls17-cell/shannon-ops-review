@@ -306,6 +306,19 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
   assert.equal(viaManifest.length, c.connectorFromManifest);
   assert.ok(viaManifest.every(f => f.delivered),
     'only a delivered folder can be classified from a manifest - nothing else was packaged');
+  // Held structurally rather than by luck. The fallback used to match a name
+  // with its version suffixes stripped, so the first new version of an already
+  // delivered task - code-c594-...-v59, 23 Sep - inherited the older version's
+  // answer under a label saying the manifest had packaged it. It had not. Both
+  // questions now read the same mapping, so the assertion above cannot be
+  // broken by a folder the manifest never saw.
+  const builder = fs.readFileSync(path.join(root, 'tools', 'build_cohort_index.py'), 'utf8');
+  const fallback = builder.slice(builder.indexOf('from_manifest = {'),
+    builder.indexOf('entries, how = {}'));
+  assert.ok(fallback.includes('delivered_folders.items()'),
+    'the manifest fallback must be keyed off the folders a manifest actually packaged');
+  assert.ok(!/norm\(/.test(fallback),
+    'matching a stripped-down name here is what let a different version answer for this one');
   const unresolved = c.unresolved || [];
   assert.equal(unresolved.length, c.connectorUnknown,
     'every unknown must be named, or the resolver cannot be pointed at it');

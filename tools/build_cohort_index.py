@@ -122,14 +122,13 @@ def build(folders, scan_rows, truth, manifest_tasks, source, reads=None):
     delivered_folders = {key(t['folder']): t for t in manifest_tasks
                          if t.get('folder') and t.get('prefix') == COHORT}
 
-    from_manifest = {}
-    for task in manifest_tasks:
-        if task.get('connector') is None:
-            continue
-        for spelling in (task.get('folder'), task.get('name')):
-            if spelling:
-                from_manifest.setdefault(key(spelling), bool(task['connector']))
-                from_manifest.setdefault(norm(spelling), bool(task['connector']))
+    # Keyed off the same mapping `delivered` uses, so a manifest can only answer
+    # for the folder it actually packaged. Matching a stripped-down name here
+    # instead let a new version of a delivered task inherit an answer from the
+    # old one, under a label claiming the manifest had packaged it.
+    from_manifest = {k: bool(task['connector'])
+                     for k, task in delivered_folders.items()
+                     if task.get('connector') is not None}
 
     entries, how = {}, collections.Counter()
     for folder in sorted(folders):
@@ -144,7 +143,7 @@ def build(folders, scan_rows, truth, manifest_tasks, source, reads=None):
         is_connector = seen_connector.get('isConnector')
         via = 'the folder’s own package' if is_connector is not None else None
         if is_connector is None:
-            fallback = from_manifest.get(kf, from_manifest.get(norm(folder)))
+            fallback = from_manifest.get(kf)
             if fallback is not None:
                 is_connector, via = fallback, 'the delivery manifest that packaged it'
         if is_connector is None:
