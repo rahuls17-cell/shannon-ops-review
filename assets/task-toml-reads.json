@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T23:10:50+00:00",
+ "generatedAt": "2026-09-23T23:20:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2214,6 +2214,16 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/determine-next-in-app-step-for-plaid-linked-account-stuck-in-manual-ve/8dc8e2efce20bf2788398fef22769cca07247e2f5177c9c448fb3f22c3ebb8fc.zip",
    "bytesRead": 67470,
+   "readOn": "2026-09-23"
+  },
+  "bus-b47-b2-intro-call-keyword-one-pager": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b2-intro-call-keyword-one-pager/fa1cadc02b3cbb921d1da767ee27f2d017f454ddc16d419443374592f837b1a7.zip",
+   "bytesRead": 65465,
    "readOn": "2026-09-23"
   }
  }
