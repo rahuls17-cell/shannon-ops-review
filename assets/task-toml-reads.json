@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T09:40:56+00:00",
+ "generatedAt": "2026-09-23T09:51:23+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1510,6 +1510,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g776-health-content-style-audit/cac16d6ca635e9fc23372c0c1fbdd175bd8427e5fc04c02180b22eb154b6d9ae.zip",
    "bytesRead": 82801,
+   "readOn": "2026-09-23"
+  },
+  "bus-b49-b4-brand-claim-verification-adjudication-pipeline-output-with-provenance": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b49-b4-brand-claim-verification-adjudication-pipeline-output-with-provenance/4f967751cd80d9171d85a6f8389ab1b690292bbab1197ca35e8a8407c87a53f7.zip",
+   "bytesRead": 90530,
+   "readOn": "2026-09-23"
+  },
+  "bus-b49-b8-performance-goal-rating-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b49-b8-performance-goal-rating-adjudication/ac491e67b6d8a2b02611f8b853896b6dbd36c557a2164f086fab56a9b45f467a.zip",
+   "bytesRead": 84305,
    "readOn": "2026-09-23"
   }
  }
