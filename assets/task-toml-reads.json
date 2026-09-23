@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T09:11:20+00:00",
+ "generatedAt": "2026-09-23T09:20:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1490,6 +1490,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b54-f5-membership-five-year-cost-comparison/257286edac69ab7373b91607fcf49dc0a6c4c8e79b2cbab8646bcd6f9f2ebd47.zip",
    "bytesRead": 75382,
+   "readOn": "2026-09-23"
+  },
+  "fin-b53-f6-mechanic-invoice-coverage-split": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b53-f6-mechanic-invoice-coverage-split/cb0e05c4f773a6ab9983272f749354fe15d750dc0ad5be0399ee36d04473ee19.zip",
+   "bytesRead": 79271,
    "readOn": "2026-09-23"
   }
  }
