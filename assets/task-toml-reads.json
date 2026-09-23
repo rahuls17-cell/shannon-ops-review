@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T14:51:22+00:00",
+ "generatedAt": "2026-09-23T15:21:32+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1610,6 +1610,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c115-etl-watermark-reconciliation/574f0b0763a9be13e8fa04b55770e5410c7a10136c760905b12d7e6886727b8c.zip",
    "bytesRead": 79196,
+   "readOn": "2026-09-23"
+  },
+  "bus-b43-b9-design-fee-increase-attribution": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b43-b9-design-fee-increase-attribution/1bd15c0040a1fecba1f0456713db9c6d14ddcb3c1f5105075ab441c81e265ae2.zip",
+   "bytesRead": 78136,
+   "readOn": "2026-09-23"
+  },
+  "code-c108-monitor-threshold-drift-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c108-monitor-threshold-drift-audit/4685e299cf20d4475874ffbacade181a9830e8d4cbb33201d7d00f2ef28808d2.zip",
+   "bytesRead": 79571,
+   "readOn": "2026-09-23"
+  },
+  "gen-g747-playbook-consolidation-toc-audit-submission": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g747-playbook-consolidation-toc-audit-submission/4db8f3d02808a0a39f219d7bd1c07423757f1b8ac62eb0378a80a019f69c560b.zip",
+   "bytesRead": 66071,
    "readOn": "2026-09-23"
   }
  }
