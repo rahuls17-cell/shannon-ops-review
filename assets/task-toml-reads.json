@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T09:20:52+00:00",
+ "generatedAt": "2026-09-23T09:31:23+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1500,6 +1500,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b53-f6-mechanic-invoice-coverage-split/cb0e05c4f773a6ab9983272f749354fe15d750dc0ad5be0399ee36d04473ee19.zip",
    "bytesRead": 79271,
+   "readOn": "2026-09-23"
+  },
+  "gen-g776-health-content-style-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g776-health-content-style-audit/cac16d6ca635e9fc23372c0c1fbdd175bd8427e5fc04c02180b22eb154b6d9ae.zip",
+   "bytesRead": 82801,
    "readOn": "2026-09-23"
   }
  }
