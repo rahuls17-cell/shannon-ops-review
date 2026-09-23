@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T02:41:18+00:00",
+ "generatedAt": "2026-09-23T03:00:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -950,6 +950,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b3-kit-size-order-adjudication/0e9579681f4ae6bf6f1bb263d6f304b07ea0533cf207ce2ad3196f25a059e0f1.zip",
    "bytesRead": 83324,
+   "readOn": "2026-09-23"
+  },
+  "law-b47-l8-cooperative-land-encroachment-variance": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b47-l8-cooperative-land-encroachment-variance/41b7ca110e9578d1557341bea3babe5dedd2db5dbbeb7821fbb18853431bb273.zip",
+   "bytesRead": 79844,
    "readOn": "2026-09-23"
   }
  }
