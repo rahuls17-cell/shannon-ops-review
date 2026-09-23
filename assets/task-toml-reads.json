@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T07:21:01+00:00",
+ "generatedAt": "2026-09-23T07:30:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1240,6 +1240,54 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-landed-with-writing-still-owed/225640baac0096126e16405c641c60e03bdc050652bdd54f3bfc98f3d226e23f.zip",
    "bytesRead": 47099,
+   "readOn": "2026-09-23"
+  },
+  "the-interviews-run-from-the-script": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-interviews-run-from-the-script/42ffa591283e70b8bbe8b7406ada8c654b6e0917cc1eeece9ff954e0f384ede0.zip",
+   "bytesRead": 47601,
+   "readOn": "2026-09-23"
+  },
+  "the-meetings-my-calendar-shows-somewhere-else": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-my-calendar-shows-somewhere-else/f0ec374a025cbbefe33358038603189ee26bf47ef449714a33320ca7acb8bc41.zip",
+   "bytesRead": 53751,
+   "readOn": "2026-09-23"
+  },
+  "the-points-still-on-the-board": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-points-still-on-the-board/af19db06cb75009c9bd37b4bf178209f16b6b50a5551219f03792602b9c38e3e.zip",
+   "bytesRead": 48288,
+   "readOn": "2026-09-23"
+  },
+  "the-projects-that-owe-more-than-they-have-shipped": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-projects-that-owe-more-than-they-have-shipped/89a4fbadf7bb5ef9093047d34502143cce6a736b265026975d3dd2a0d15f43d5.zip",
+   "bytesRead": 57637,
    "readOn": "2026-09-23"
   }
  }
