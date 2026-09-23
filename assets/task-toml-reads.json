@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T05:10:57+00:00",
+ "generatedAt": "2026-09-23T05:30:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1048,6 +1048,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c201-csrf-token-policy-audit/75e2a8ffdb199d1fab9c85f3cf9d743eee2601a3b7cf5f77346c9b5af41a663c.zip",
    "bytesRead": 73756,
+   "readOn": "2026-09-23"
+  },
+  "bus-b50-b7-bilingual-cv-page-budget-transform": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b50-b7-bilingual-cv-page-budget-transform/79edd1b6e2361dbf8a0395c69812c6bdcdad567bdb0cf2d548ee4f3be3c795b2.zip",
+   "bytesRead": 114426,
    "readOn": "2026-09-23"
   }
  }
