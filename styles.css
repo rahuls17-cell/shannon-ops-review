@@ -2050,3 +2050,121 @@ button.stat[aria-pressed="true"] { border-color: var(--accent-line); background:
 }
 .dimstrip .dim-share small { font-size: 10.5px; color: var(--muted); }
 .dim-foot { flex: 1 1 100%; margin: 4px 0 0; font-size: 11.5px; color: var(--ink-2); }
+
+/* The Payouts gate.
+   Deliberately plain: it is a door, not a feature, and should read as the tab
+   being withheld rather than as something that has gone wrong. */
+.lockpanel {
+  display: grid;
+  place-items: center;
+  min-height: 46vh;
+  padding: 40px 16px;
+}
+
+.lockbox {
+  width: 100%;
+  max-width: 420px;
+  padding: 32px 28px 26px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--panel);
+  box-shadow: 0 1px 2px rgb(16 24 40 / .04), 0 12px 32px rgb(16 24 40 / .06);
+  text-align: center;
+}
+
+.lockmark {
+  display: block;
+  margin-bottom: 14px;
+  color: var(--muted);
+  font-size: 15px;
+  letter-spacing: .38em;
+  /* the letter-spacing pushes the group off-centre by half a gap */
+  text-indent: .38em;
+}
+
+.lockbox h2 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  font-weight: 650;
+}
+
+.lockbox p {
+  margin: 0 auto 20px;
+  max-width: 34ch;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+
+#payoutUnlock {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+#payoutUnlock .field { flex: 1; margin: 0; }
+
+#payoutPass {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1px solid var(--line);
+  border-radius: 9px;
+  background: var(--panel-2);
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+}
+
+#payoutPass:focus-visible {
+  outline: 2px solid var(--brand, #4338ca);
+  outline-offset: 1px;
+}
+
+#payoutUnlock .primary {
+  padding: 9px 18px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--brand, #4338ca);
+  color: #fff;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+#payoutUnlock .primary:hover { filter: brightness(1.07); }
+
+.lockerr {
+  margin: 12px 0 0;
+  color: var(--red-ink, #9f2c2b);
+  font-size: 12.5px;
+}
+
+.locknote {
+  margin: 14px 0 0 !important;
+  color: var(--muted);
+  font-size: 11.5px;
+}
+
+/* A row whose person is withheld while Payouts is locked. It should read as
+   deliberately held back, not as data that failed to load - so the row keeps
+   its shape and only the name is replaced. */
+.leader-row.is-masked { cursor: default; }
+.leader-row.is-masked .person strong { font-weight: 500; }
+
+.maskedname {
+  display: inline-block;
+  padding: 1px 8px;
+  border: 1px dashed var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
+
+.masknote {
+  margin: -2px 0 10px;
+  color: var(--muted);
+  font-size: 11.5px;
+}

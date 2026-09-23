@@ -187,7 +187,7 @@
             </header>
             <div class="panel-body exposure">
               <div><p class="subhead">By bench</p><figure id="exposureChart" class="exposure-chart"></figure></div>
-              <div><p class="subhead">Largest amounts owed</p><div id="topPendingCards" class="leaderboard"></div></div>
+              <div><p class="subhead">Largest amounts owed</p><p class="masknote" id="topPendingLockNote" hidden>Names are hidden until the Payouts tab is unlocked.</p><div id="topPendingCards" class="leaderboard"></div></div>
             </div>
           </section>
 
@@ -220,6 +220,36 @@
             </div>
             <div class="sourcestrip" data-sources="payouts"></div>
           </header>
+          <!-- Payouts is withheld until a password is entered.
+               This keeps the tab away from someone who opens the dashboard and
+               clicks around. It is NOT access control: the page is served as
+               static files from a public repository, so the figures can still be
+               read straight out of assets/*.json, and everything here is visible
+               in view-source. Real protection needs the data behind an
+               authenticated server, not a check in the browser.
+               The password is stored as a salted SHA-256 so the plain string is
+               not sitting in the repository; anyone determined can still test
+               guesses against the hash. -->
+          <div class="lockpanel" id="payoutLock" hidden>
+            <div class="lockbox">
+              <span class="lockmark" aria-hidden="true">&#9679;&#9679;&#9679;&#9679;</span>
+              <h2>Payouts is locked</h2>
+              <p>This tab holds payment figures and per-person earnings. Enter the password to open it for this browser tab.</p>
+              <form id="payoutUnlock" autocomplete="off">
+                <label class="field" for="payoutPass"><span class="sr-only">Password</span>
+                  <input type="password" id="payoutPass" name="payoutPass" autocomplete="current-password"
+                    placeholder="Password" aria-describedby="payoutLockError" spellcheck="false">
+                </label>
+                <button type="submit" class="primary">Unlock</button>
+              </form>
+              <p class="lockerr" id="payoutLockError" role="alert" hidden></p>
+              <p class="locknote">It stays open until this tab is closed.</p>
+            </div>
+          </div>
+
+          <!-- hidden until applyPayoutLock() opens it, so the figures are not
+               on screen for the moment before the script runs -->
+          <div id="payoutBody" hidden>
           <p class="provenance is-warn" id="payoutSourceNote" hidden></p>
 
           <div id="payoutSummary" class="kpirow kpirow-5"></div>
@@ -314,6 +344,7 @@
               </div>
             </div>
           </section>
+          </div>
         </section>
 
         <!-- DELIVERY ------------------------------------------------------ -->

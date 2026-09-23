@@ -2353,6 +2353,105 @@ function statusColor(status) {
   return getComputedStyle(document.documentElement).getPropertyValue(token).trim() || '#7c8798';
 }
 
+// --- the Payouts gate -------------------------------------------------------
+// Payouts carries what people are owed and what they have been paid, which is
+// the one tab on here that should not be readable by whoever happens to open
+// the link. This withholds it until a password is entered.
+//
+// What this is not: security. The site is static files in a public repository,
+// so the same figures can be fetched straight from assets/*.json without ever
+// loading the page, and every line of this file is readable in view-source.
+// Anything that actually needs protecting has to sit behind a server that
+// checks who is asking. This raises the bar from "click the tab" to "know the
+// password or read the source", and that is all it does.
+//
+// The password is kept as a salted SHA-256 so the plain string is not in the
+// repository. That stops it being read at a glance; it does not stop anyone
+// testing guesses against the hash, which for a short password is quick.
+const PAYOUT_SALT = 'shannon-ops-review/payouts/v1:';
+const PAYOUT_HASH = '4a1d68e6f9a17461f13dc12558c8a327d11c43e3912d120a99ecdfe49d78d3f6';
+const PAYOUT_KEY = 'shannon.payouts.open';
+
+async function sha256Hex(text) {
+  const bytes = new TextEncoder().encode(text);
+  const digest = await crypto.subtle.digest('SHA-256', bytes);
+  return [...new Uint8Array(digest)].map(b => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Per tab, not per browser: closing the tab re-locks it. sessionStorage throws
+// in some privacy modes, so a failure to read it means locked rather than an
+// exception on the way into the view.
+function payoutsOpen() {
+  try {
+    return sessionStorage.getItem(PAYOUT_KEY) === PAYOUT_HASH;
+  } catch (ignored) {
+    return false;
+  }
+}
+
+function applyPayoutLock() {
+  const lock = byId('payoutLock');
+  const body = byId('payoutBody');
+  if (!lock || !body) return true;
+  const open = payoutsOpen();
+  lock.hidden = open;
+  body.hidden = !open;
+  if (!open) {
+    const field = byId('payoutPass');
+    if (field) { field.value = ''; window.setTimeout(() => field.focus(), 60); }
+  }
+  return open;
+}
+
+function wirePayoutLock() {
+  const form = byId('payoutUnlock');
+  if (!form) return;
+  // Clear the last failure as soon as the next attempt starts, or the message
+  // sits there contradicting what is now in the field.
+  byId('payoutPass')?.addEventListener('input', () => {
+    const error = byId('payoutLockError');
+    if (error && !error.hidden) { error.textContent = ''; error.hidden = true; }
+  });
+  form.addEventListener('submit', async event => {
+    event.preventDefault();
+    const field = byId('payoutPass');
+    const error = byId('payoutLockError');
+    const say = message => {
+      if (!error) return;
+      error.textContent = message;
+      error.hidden = !message;
+    };
+    if (!window.crypto || !crypto.subtle) {
+      say('This browser cannot check the password here (it needs a secure context). Open the site over https.');
+      return;
+    }
+    let hash = '';
+    try {
+      // Trimmed: a pasted password often carries a trailing space, and the
+      // field shows dots either way, so the rejection would be unexplainable.
+      hash = await sha256Hex(PAYOUT_SALT + String(field?.value || '').trim());
+    } catch (ignored) {
+      say('The password could not be checked in this browser.');
+      return;
+    }
+    if (hash !== PAYOUT_HASH) {
+      say('That password is not right.');
+      if (field) { field.value = ''; field.focus(); }
+      return;
+    }
+    say('');
+    try { sessionStorage.setItem(PAYOUT_KEY, PAYOUT_HASH); } catch (ignored) { /* held in the DOM for this visit */ }
+    applyPayoutLock();
+    if (!payoutsOpen()) {           // storage refused: open it for this visit anyway
+      byId('payoutLock').hidden = true;
+      byId('payoutBody').hidden = false;
+    }
+    // The Overview's Payout balance panel withholds names while this is locked,
+    // so it has to be drawn again now that it is not.
+    renderTopPendingCards();
+  });
+}
+
 function switchView(viewName, push = true) {
   if (!VIEWS.includes(viewName)) return;
   document.querySelectorAll('.viewnav-tab').forEach(button => {
@@ -2362,6 +2461,9 @@ function switchView(viewName, push = true) {
     button.tabIndex = active ? 0 : -1;
   });
   document.querySelectorAll('.view').forEach(view => view.classList.toggle('is-active', view.id === `view-${viewName}`));
+  // Applied on the way in, so a deep link to #payouts is gated the same way the
+  // tab is, and re-applied on every visit rather than once at startup.
+  if (viewName === 'payouts') applyPayoutLock();
   if (viewName === 'explorer') loadExplorer();
   if (push && location.hash.slice(1) !== viewName) history.pushState({viewName}, '', `#${viewName}`);
   window.scrollTo({top: 0, behavior: 'smooth'});
@@ -2676,16 +2778,31 @@ function renderTopPendingCards() {
     .slice(0, 8);
   const max = Math.max(...rows.map((row) => row.pendingAmount), 1);
   const host = byId('topPendingCards');
-  host.innerHTML = rows.map((row, index) => `
-        <div class="leader-row" role="button" tabindex="0" data-bench="${benchOf(row.team)}" data-person="${esc(row.name || row.email || '')}" style="--i:${index}" data-tip="Open ${esc(row.name || row.email || 'this person')} in Payouts">
+  // Who is owed what is the Payouts tab's business. Until that is unlocked the
+  // name is not written into the page at all - not blurred, not clipped - so
+  // there is nothing for Inspect Element to read. The amounts and the counts
+  // stay: they are the shape of the backlog, not a statement about a person.
+  const named = payoutsOpen();
+  const note = byId('topPendingLockNote');
+  if (note) note.hidden = named;
+  host.innerHTML = rows.map((row, index) => {
+    const who = row.name || row.email || 'Unknown';
+    // No data-person when masked, which also makes the row inert: the click and
+    // keyboard handlers both select on [data-person].
+    const identity = named
+      ? ` role="button" tabindex="0" data-person="${esc(who)}" data-tip="Open ${esc(who)} in Payouts"`
+      : ' data-tip="Unlock Payouts to see who this is"';
+    return `
+        <div class="leader-row${named ? '' : ' is-masked'}" data-bench="${benchOf(row.team)}" style="--i:${index}"${identity}>
           <div class="rank${index < 3 ? ` medal medal-${index + 1}` : ''}">${index + 1}</div>
           <div class="person">
-            <strong>${esc(row.name || row.email || 'Unknown')}</strong>
+            <strong>${named ? esc(who) : '<span class="maskedname">Hidden</span>'}</strong>
             <span>${fmt(row.pendingTasks)} of ${fmt(row.acceptedTasks)} tasks unpaid · ${esc(row.team || 'no team')}</span>
           </div>
           <div class="bar-track"><div class="bar-fill" style="width:${safePct(row.pendingAmount, max)}"></div></div>
-          <div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${esc(row.email || row.name)}">${money(row.pendingAmount)}</div>
-        </div>`).join('') || '<p class="empty">Nothing owed in this selection.</p>';
+          <div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${named ? esc(row.email || row.name) : index}">${money(row.pendingAmount)}</div>
+        </div>`;
+  }).join('') || '<p class="empty">Nothing owed in this selection.</p>';
   animateCounts(host);
 }
 
@@ -3660,7 +3777,11 @@ function init() {
   renderTeams();
   renderPlan();
   wireEvents();
+  wirePayoutLock();
   applyRange();
+  // Before the first switchView, so a load straight onto #payouts is gated by
+  // the same call that decides every later visit.
+  applyPayoutLock();
   switchView(location.hash.slice(1) || 'command', false);
   loadPayoutLedger();
   loadClientAcceptance();
