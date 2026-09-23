@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T20:01:26+00:00",
+ "generatedAt": "2026-09-23T20:11:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1916,6 +1916,44 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-had-the-last-word/b3d16400e077c4cb5f047481300fd1bdcc6020c90e8bd85a185f2f2c88ff577a.zip",
    "bytesRead": 43900,
+   "readOn": "2026-09-23"
+  },
+  "account-recovery-concierge-exposure-audit": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/account-recovery-concierge-exposure-audit/21a35435cc268f1dfa47eb99f3c491c537d8efcf91ce0378c3956646feb36975.zip",
+   "bytesRead": 53899,
+   "readOn": "2026-09-23"
+  },
+  "bus-b48-b5-engagement-log-invoice-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b5-engagement-log-invoice-reconciliation/9b66e39d05407882324857300addfbfce55ca560c80883ec0148f6210a46b1ec.zip",
+   "bytesRead": 87032,
+   "readOn": "2026-09-23"
+  },
+  "tech-b54-a5-hosting-inventory-register": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-a5-hosting-inventory-register/46756d78fe6873e17a8069ef2450c75a276dd86c8a2982996c6122beb9cd039b.zip",
+   "bytesRead": 66517,
    "readOn": "2026-09-23"
   }
  }
