@@ -76,7 +76,12 @@ def read_one(folder, token):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument('--out', default='task-names.json')
+    ap.add_argument('--out', default='task-names.json',
+                    help='the cache: every folder read, with a reason for each '
+                         'one that could not be')
+    ap.add_argument('--asset', default=None,
+                    help='the page-facing file, holding only folder -> task for '
+                         'folders still in the prefix')
     ap.add_argument('--workers', type=int, default=24)
     ap.add_argument('--limit', type=int, default=0, help='0 = every folder')
     args = ap.parse_args()
@@ -118,13 +123,17 @@ def main():
                 why['read'] += 1
                 known[folder] = {'task': name, 'sourceConfig': config}
 
+    # Only folders still in the prefix. The cache remembers everything it has
+    # ever read, which is what makes the steady state free, but a folder that
+    # has been removed must not keep a duplicate group alive.
+    live = set(folders)
     groups = collections.defaultdict(list)
     for folder, entry in known.items():
-        if entry.get('task'):
+        if entry.get('task') and folder in live:
             groups[entry['task']].append(folder)
     multi = {t: sorted(f) for t, f in groups.items() if len(f) > 1}
     extra = sum(len(f) - 1 for f in multi.values())
-    unreadable = [f for f, e in known.items() if not e.get('task')]
+    unreadable = [f for f, e in known.items() if not e.get('task') and f in live]
 
     payload = {
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
@@ -133,7 +142,7 @@ def main():
                 'the folder name and the package bytes both fail to identify it',
         'counts': {
             'folders': len(folders),
-            'read': len(known) - len(unreadable),
+            'read': sum(1 for f, e in known.items() if e.get('task') and f in live),
             'unreadable': len(unreadable),
             'distinctTasks': len(groups),
             'tasksUnderMoreThanOneFolder': len(multi),
@@ -145,6 +154,22 @@ def main():
         'names': known,
     }
     out.write_text(json.dumps(payload, indent=1), encoding='utf-8')
+
+    # The page's copy: the map it looks folders up in, the groups, and the
+    # counts that describe them. Derived here rather than by a step in the
+    # publish script, so the two shapes cannot drift apart.
+    if args.asset:
+        asset = pathlib.Path(args.asset)
+        asset.write_text(json.dumps({
+            'generatedAt': payload['generatedAt'],
+            'prefix': payload['prefix'],
+            'rule': payload['rule'],
+            'counts': payload['counts'],
+            'duplicates': multi,
+            'task': {f: known[f]['task'] for f in sorted(live)
+                     if known.get(f, {}).get('task')},
+        }, separators=(',', ':')), encoding='utf-8')
+        print(f'wrote {asset} for the page')
 
     c = payload['counts']
     print(f"\nfolders in the prefix            : {c['folders']:>6,}")
