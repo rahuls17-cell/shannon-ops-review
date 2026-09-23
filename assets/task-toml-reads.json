@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T19:20:59+00:00",
+ "generatedAt": "2026-09-23T19:40:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1864,6 +1864,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b44-h8-colour-formulation-rule-adjudication/1c551556e83edbe2c1d98f8c2b1369eeba12e7af27506432b9ecb0dd4b133c0f.zip",
    "bytesRead": 85327,
+   "readOn": "2026-09-23"
+  },
+  "bus-b48-b6-substation-pm-annexure-reporting-calendar": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b6-substation-pm-annexure-reporting-calendar/c0bfecb7b73a938bc5f9e9941994f8ed1fa75069e4909d326e5bddc2577684a5.zip",
+   "bytesRead": 93377,
+   "readOn": "2026-09-23"
+  },
+  "edu-b51-e4-lexical-claim-grounding": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b51-e4-lexical-claim-grounding/ddd78825581d5c4f2a7c31095e114fc61d03fd222f753b9b2551c1c658819221.zip",
+   "bytesRead": 63443,
+   "readOn": "2026-09-23"
+  },
+  "edu-s1-a4-control-implementation-group-mapping": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-s1-a4-control-implementation-group-mapping/779ad7a23d68b21d8ff3125bea8455d64531a86d741fb4c256666ab1b79c4d2d.zip",
+   "bytesRead": 66175,
    "readOn": "2026-09-23"
   }
  }
