@@ -60,6 +60,10 @@ def main():
          'count': verdicts['coverage']['rows'], 'source': 'step 1'},
         {'step': 'grouped into identities (family_id, then task_id)',
          'count': identities['coverage']['identities'], 'source': 'step 3'},
+    ] + ([
+        {'step': 'joined where they declare the same task name (never two trainers on a name alone)',
+         'count': identities['linkCounts']['after'], 'source': 'step 3b'},
+    ] if identities.get('linkCounts') else []) + [
         {'step': 'one canonical run per identity: max(progress, outcome, decided_at)',
          'count': len(rows), 'source': 'step 4'},
     ]
@@ -198,7 +202,8 @@ def main():
           f'= {covered + undecided:,} of {len(scope):,}  -> {"OK" if reconciles else "MISMATCH"}')
 
     published = [{
-        'id': r['identity'], 'name': r['name'], 'state': r['finalState'],
+        'id': r['identity'], 'name': r['name'], 'declaredName': r.get('declaredName') or '',
+        'state': r['finalState'],
         'why': r['statePredicate'], 'owner': r['owner'], 'decided': r['decidedDay'],
         'decidedInferred': r['decidedAtInferred'], 'runs': r['runs'],
         'carriedOver': r['carriedOver'], 'atCurrentBar': r['atCurrentBar'],

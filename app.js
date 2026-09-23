@@ -203,7 +203,7 @@ const infoCopy = {
             + ', and by opening the package and reading task.toml for ' + fmt(c.connectorFromPackage)
             + '.' : '');
   },
-  truthFlags: 'Short codes so the task name is never squeezed out of its column. DL - already delivered, covered by the Delivery tab. Times-N - the same task appears N times in the pipeline and is counted once while the Delivered filter is on. CK - check before shipping: the identifier names a task the audit already covers although the name does not match. DUP - another task shares its name and trainer, so it is probably the same work counted twice; red when the date and outcome match too. UM - unmerged: it arrived with no family id, so repeat runs of it may be counted separately. CO - carried over: first decided before the cut and settled after it. Hover any code for the full explanation for that row, and open the row with + for its evidence.',
+  truthFlags: 'Short codes so the task name is never squeezed out of its column. DL - already delivered, covered by the Delivery tab, or the same task delivered under another folder name. Times-N - the same task appears N times in the pipeline and is counted once while the Delivered filter is on. CK - check before shipping: the identifier names a task the audit already covers although the name does not match, or a different trainer already delivered a task with the same declared name. MIX - the folder holds archives that declare different tasks. DUP - another task shares its name and trainer, so it is probably the same work counted twice; red when the date and outcome match too. UM - unmerged: it arrived with no family id, so repeat runs of it may be counted separately. CO - carried over: first decided before the cut and settled after it. Hover any code for the full explanation for that row, and open the row with + for its evidence.',
   truthVersions: () => {
     const c = truth && truth.deliveredIndex && truth.deliveredIndex.counts;
     return 'The pipeline records one row per submission, not per task, and the same work can arrive '
@@ -1576,6 +1576,10 @@ const FLAGS = [
    tip: row => `This task is in the bucket under ${fmt(row.dupFolders.length)} folder names. ` +
      `Read from the [task] name in each package, not guessed from the folder. ` +
      `Click to see all ${fmt(row.dupFolders.length)}.`},
+  {code: 'MIX', tone: 'alert', when: row => row.mixedTasks,
+   label: 'MIX  the folder holds several tasks',
+   tip: row => `This folder holds ${fmt(row.mixedTasks.length)} archives that declare different tasks: ` +
+     `${row.mixedTasks.join(', ')}. It is counted once, under the first; check which one it is meant to be.`},
   {code: 'DUP', tone: row => (row.duplicateTier === 'likely' ? 'alert' : 'warn'),
    when: row => row.possibleDuplicate && !row.dupFolders,
    label: 'possible duplicate',

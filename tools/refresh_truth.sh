@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # Rebuild the derived pipeline from the bucket, end to end.
 #
-#   verdicts -> delivery -> identity -> canonical -> state -> tags
-#            -> provenance -> reconcile -> publish
+#   verdicts -> delivery -> identity -> declared names -> linked identity
+#            -> canonical -> state -> tags -> provenance -> reconcile -> publish
 #
 # The reconcile step is a gate, not a report: if any invariant fails the run
 # stops and the previous pipeline-truth.json stays published. A figure that
@@ -41,8 +41,19 @@ python3 "$HERE/index_delivery.py"       --out delivery.json    >>"$LOG" 2>&1
 say "step 3  identity"
 python3 "$HERE/assign_identity.py"      --verdicts verdicts.json --delivery delivery.json \
                                         --out identities.json  >>"$LOG" 2>&1
+# Step 3a keeps the name each submission declares in its task.toml. The cache
+# lives in $WORK and is only ever added to, because the bucket prunes submission
+# folders and a name not read in time is gone. A failed read is not fatal: the
+# names already cached still apply.
+say "step 3a declared names"
+python3 "$HERE/scan_submission_names.py" --verdicts verdicts.json \
+                                        --cache submission-names.json >>"$LOG" 2>&1 \
+    || say "step 3a failed - continuing with the names already cached"
+say "step 3b link identities by declared name"
+python3 "$HERE/link_identity.py"        --identities identities.json --names submission-names.json \
+                                        --out identities-linked.json --review link-review.json >>"$LOG" 2>&1
 say "step 4  canonical run"
-python3 "$HERE/select_canonical.py"     --identities identities.json \
+python3 "$HERE/select_canonical.py"     --identities identities-linked.json \
                                         --out canonical.json   >>"$LOG" 2>&1
 say "step 5  state"
 python3 "$HERE/derive_state.py"         --canonical canonical.json --delivery delivery.json \
@@ -52,7 +63,7 @@ python3 "$HERE/build_tags.py"           --tasks tasks.json --gcs "$HERE/pipeline
                                         --out tagged.json      >>"$LOG" 2>&1
 say "step 7  provenance"
 python3 "$HERE/build_provenance.py"     --tagged tagged.json --delivery delivery.json \
-                                        --verdicts verdicts.json --identities identities.json \
+                                        --verdicts verdicts.json --identities identities-linked.json \
                                         --out pipeline-truth.json >>"$LOG" 2>&1
 
 # The gate. A non-zero exit here leaves the published asset untouched.

@@ -50,6 +50,9 @@ jobs:
       - name: The delivered join
         run: python3 tools/test_delivered_join.py
 
+      - name: Identities joined by declared task name
+        run: python3 tools/test_link_identity.py
+
       - name: Known data defects have not spread
         # test_duplicate_sample.py exits 1 by design: it reports a genuine
         # contradiction upstream - two records for one task sharing the newest

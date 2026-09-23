@@ -57,21 +57,45 @@ def identity(text):
             config.group(1) if config else None)
 
 
-def read_one(folder, token):
-    objects = [n for n in list_objects(BUCKET, f'{PREFIX}{folder}/', token)
-               if n.endswith('.zip') and '/review_handoff/' not in n]
+def packages_in(folder, listing):
+    """The package archives in a folder, from a listing of the whole prefix."""
+    start = f'{PREFIX}{folder}/'
+    return sorted(n for n in listing
+                  if n.startswith(start) and n.endswith('.zip') and '/review_handoff/' not in n)
+
+
+def read_one(folder, token, packages=None):
+    """Every package in the folder, not only the first.
+
+    152 folders hold more than one archive - a re-cut left beside the original -
+    and in 3 of them the archives declare DIFFERENT tasks: the folder literally
+    named `task` holds three. Reading one archive saw one of the three and never
+    knew about the others. The folder's task stays the first archive's name, so
+    the figures do not move under anyone; the other names are returned too, and
+    the folder is reported as holding several tasks.
+    """
+    objects = packages if packages is not None else [
+        n for n in list_objects(BUCKET, f'{PREFIX}{folder}/', token)
+        if n.endswith('.zip') and '/review_handoff/' not in n]
     if not objects:
-        return None, None, 'no package in the folder'
-    remote = RemoteZip(BUCKET, objects[0], token)
-    with zipfile.ZipFile(remote) as archive:
-        members = [n for n in archive.namelist() if n.endswith('task.toml')]
-        if not members:
-            return None, None, 'package holds no task.toml'
-        text = archive.read(members[0]).decode('utf-8', 'replace')
-    name, config = identity(text)
-    if not name:
-        return None, config, 'task.toml declares no [task] name'
-    return name, config, None
+        return None, None, 'no package in the folder', []
+    names, config, reason = [], None, None
+    for obj in objects:
+        with zipfile.ZipFile(RemoteZip(BUCKET, obj, token)) as archive:
+            members = [n for n in archive.namelist() if n.endswith('task.toml')]
+            if not members:
+                reason = reason or 'package holds no task.toml'
+                continue
+            text = archive.read(members[0]).decode('utf-8', 'replace')
+        name, cfg = identity(text)
+        config = config or cfg
+        if not name:
+            reason = reason or 'task.toml declares no [task] name'
+        elif name not in names:
+            names.append(name)
+    if not names:
+        return None, config, reason, []
+    return names[0], config, None, names
 
 
 def main():
@@ -95,7 +119,12 @@ def main():
     out = pathlib.Path(args.out)
     known = (json.loads(out.read_text(encoding='utf-8')).get('names', {})
              if out.exists() else {})
-    todo = [f for f in folders if f not in known]
+    # A folder is re-read when the archives in it change: a package never
+    # changes, but a folder can gain one (a re-cut dropped beside the original),
+    # and a cache keyed on the folder alone would never look at it.
+    current = {f: packages_in(f, everything) for f in folders}
+    todo = [f for f in folders
+            if f not in known or known[f].get('packages') != [p.rsplit('/', 1)[-1] for p in current[f]]]
     if args.limit:
         todo = todo[:args.limit]
     print(f'{len(known):,} cached, {len(todo):,} to read', file=sys.stderr)
@@ -105,23 +134,26 @@ def main():
 
     def work(folder):
         try:
-            return folder, read_one(folder, token)
+            return folder, read_one(folder, token, current[folder])
         except Exception as error:                     # noqa: BLE001
-            return folder, (None, None, f'{type(error).__name__}: {error}')
+            return folder, (None, None, f'{type(error).__name__}: {error}', [])
 
     if todo:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
-            for folder, (name, config, reason) in pool.map(work, todo):
+            for folder, (name, config, reason, names) in pool.map(work, todo):
                 done += 1
                 if done % 100 == 0:
                     print(f'  {done:,}/{len(todo):,}', file=sys.stderr)
+                packages = [p.rsplit('/', 1)[-1] for p in current[folder]]
                 if name is None:
                     why[reason] += 1
                     known[folder] = {'task': None, 'sourceConfig': config,
-                                     'why': reason}
+                                     'why': reason, 'packages': packages}
                     continue
                 why['read'] += 1
-                known[folder] = {'task': name, 'sourceConfig': config}
+                known[folder] = {'task': name, 'sourceConfig': config, 'packages': packages}
+                if len(names) > 1:
+                    known[folder]['tasks'] = names
 
     # Only folders still in the prefix. The cache remembers everything it has
     # ever read, which is what makes the steady state free, but a folder that
@@ -134,6 +166,9 @@ def main():
     multi = {t: sorted(f) for t, f in groups.items() if len(f) > 1}
     extra = sum(len(f) - 1 for f in multi.values())
     unreadable = [f for f, e in known.items() if not e.get('task') and f in live]
+    # Folders whose archives declare more than one task. Reported, not split:
+    # which archive is the folder's is a question for whoever filed them.
+    mixed = {f: e['tasks'] for f, e in sorted(known.items()) if f in live and len(e.get('tasks') or []) > 1}
 
     payload = {
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
@@ -148,9 +183,11 @@ def main():
             'tasksUnderMoreThanOneFolder': len(multi),
             'foldersInThoseGroups': sum(len(f) for f in multi.values()),
             'foldersAboveTheFirst': extra,
+            'foldersHoldingSeveralTasks': len(mixed),
             'byReason': dict(why.most_common()),
         },
         'duplicates': multi,
+        'mixed': mixed,
         'names': known,
     }
     out.write_text(json.dumps(payload, indent=1), encoding='utf-8')
@@ -166,6 +203,7 @@ def main():
             'rule': payload['rule'],
             'counts': payload['counts'],
             'duplicates': multi,
+            'mixed': mixed,
             'task': {f: known[f]['task'] for f in sorted(live)
                      if known.get(f, {}).get('task')},
         }, separators=(',', ':')), encoding='utf-8')
@@ -179,6 +217,7 @@ def main():
     print(f"  tasks under >1 folder          : {c['tasksUnderMoreThanOneFolder']:>6,}")
     print(f"  folders in those groups        : {c['foldersInThoseGroups']:>6,}")
     print(f"  folders above the first        : {c['foldersAboveTheFirst']:>6,}")
+    print(f"  folders holding several tasks  : {c['foldersHoldingSeveralTasks']:>6,}")
     for reason, n in c['byReason'].items():
         if reason != 'read':
             print(f"  {reason:<32}: {n:>6,}")

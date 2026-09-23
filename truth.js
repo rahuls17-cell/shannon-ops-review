@@ -61,19 +61,24 @@
       (siblings[task] = siblings[task] || []).push(folder);
     });
     Object.keys(siblings).forEach(task => siblings[task].sort());
+    // Folders whose archives declare more than one task (the folder named `task`
+    // holds three). The folder is still counted under its first archive's task;
+    // the others are named so nobody mistakes the folder for one piece of work.
+    const mixed = (taskNameIndex && taskNameIndex.mixed) || {};
     const dupOf = folder => {
       const task = packageTasks[folder];
       const group = task ? siblings[task] : null;
+      const several = mixed[folder] && mixed[folder].length > 1 ? {mixedTasks: mixed[folder]} : {};
       // Cleared, not left alone: the row this folder matched may carry the
       // name-and-trainer heuristic, which is a claim about two submissions and
       // says nothing about two folders.
       if (!group || group.length < 2) {
         return {packageTask: task || null, possibleDuplicate: false,
-                duplicateSiblings: 0, duplicateTier: ''};
+                duplicateSiblings: 0, duplicateTier: '', ...several};
       }
       return {packageTask: task, dupFolders: group, duplicateSiblings: group.length - 1,
               possibleDuplicate: true, duplicateTier: 'confirmed',
-              duplicateVia: 'the task name declared inside the package'};
+              duplicateVia: 'the task name declared inside the package', ...several};
     };
 
     // Delivery is a property of the TASK, not of the folder it was cut from.

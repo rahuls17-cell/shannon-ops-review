@@ -106,8 +106,16 @@ def main():
             'identity': identity,
             'identityMethod': winner['identityMethod'],
             'identityConfidence': winner['identityConfidence'],
-            'unmerged': winner['identityMethod'] != 'family_id',
+            # declared_name groups (step 3b) are joined on the name the package
+            # itself declares, which is read rather than guessed - merged, not a
+            # fallback key.
+            'unmerged': winner['identityMethod'] not in ('family_id', 'declared_name'),
             'name': winner.get('taskName') or winner.get('submission'),
+            # The task's own [task] name from task.toml, when any run's folder was
+            # read. The `name` above is what the submitting tool called it, often
+            # a placeholder; the page shows both when they differ.
+            'declaredName': winner.get('declaredName') or next(
+                (r['declaredName'] for r in runs if r.get('declaredName')), ''),
             'owner': winner.get('owner') or None,
             'state': winner.get('state'),
             'decision': winner.get('decision') or '',
