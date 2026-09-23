@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T01:50:51+00:00",
+ "generatedAt": "2026-09-23T02:20:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -930,6 +930,16 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/task_verify_ach_debit_daily_limit_compliance_for_account_1039_on_2023_11_14/e055e2b310b06ccaa913fb1e5e765b8788c75a9160c97107586f2ce308b0e083.zip",
    "bytesRead": 59873,
+   "readOn": "2026-09-23"
+  },
+  "bus-b20-b5-property-data-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b20-b5-property-data-reconciliation/5fc9416c6f811a9199fa20e5bb3817729559e00b7dd5060b78882c5e5dfa4193.zip",
+   "bytesRead": 80857,
    "readOn": "2026-09-23"
   }
  }
