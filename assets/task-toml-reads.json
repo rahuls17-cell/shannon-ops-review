@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T05:00:50+00:00",
+ "generatedAt": "2026-09-23T05:10:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1038,6 +1038,16 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/verify-additional-owner-rejection-lifecycle-for-application-33698-on-a/a4b73c9d58fb2afa8347dedb9e8a20641fe024580f7f6cfef85e76dd7f9ef97c.zip",
    "bytesRead": 66701,
+   "readOn": "2026-09-23"
+  },
+  "code-c201-csrf-token-policy-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c201-csrf-token-policy-audit/75e2a8ffdb199d1fab9c85f3cf9d743eee2601a3b7cf5f77346c9b5af41a663c.zip",
+   "bytesRead": 73756,
    "readOn": "2026-09-23"
   }
  }
