@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T05:30:52+00:00",
+ "generatedAt": "2026-09-23T05:51:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1058,6 +1058,24 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b50-b7-bilingual-cv-page-budget-transform/79edd1b6e2361dbf8a0395c69812c6bdcdad567bdb0cf2d548ee4f3be3c795b2.zip",
    "bytesRead": 114426,
+   "readOn": "2026-09-23"
+  },
+  "reconstruct-lifecycle-for-errored-230-mobile-check-deposit-74-and-veri": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/reconstruct-lifecycle-for-errored-230-mobile-check-deposit-74-and-veri/83be088b51b3e5964910a258d275d8e8a01a0ca1cc49bc71ea7be90b2616da25.zip",
+   "bytesRead": 58298,
    "readOn": "2026-09-23"
   }
  }
