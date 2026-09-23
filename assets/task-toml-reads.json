@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T15:21:32+00:00",
+ "generatedAt": "2026-09-23T15:52:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1640,6 +1640,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g747-playbook-consolidation-toc-audit-submission/4db8f3d02808a0a39f219d7bd1c07423757f1b8ac62eb0378a80a019f69c560b.zip",
    "bytesRead": 66071,
+   "readOn": "2026-09-23"
+  },
+  "bus-b47-b4-account-executive-target-company-scorecard": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b4-account-executive-target-company-scorecard/6a139666943e84095a0f802dc5c6b4c2279041b2706f22ce34e29ad2d8b7f9e1.zip",
+   "bytesRead": 88107,
+   "readOn": "2026-09-23"
+  },
+  "code-c58-feature-flag-targeting-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c58-feature-flag-targeting-audit/72174c722fde2c32477b6a26e3184b50c15d63c1e0eb962dc5532d685dbabcc8.zip",
+   "bytesRead": 74391,
    "readOn": "2026-09-23"
   }
  }
