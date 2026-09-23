@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T22:40:51+00:00",
+ "generatedAt": "2026-09-23T22:50:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2142,6 +2142,38 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pull-requests-people-kept-replying-about/a5f2e46bf74ac1451672754f21bdb58b225d69fd4904c9eb3437c704a50bc1a6.zip",
    "bytesRead": 57276,
+   "readOn": "2026-09-23"
+  },
+  "bus-b20-a3-clearance-tolerance-normalization": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b20-a3-clearance-tolerance-normalization/34ac81075b2d8200ed47b4e4029c213871641f9cdda0324fc773adf24ffc307f.zip",
+   "bytesRead": 121900,
+   "readOn": "2026-09-23"
+  },
+  "tech-b54-a1-authenticator-enrolment-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-a1-authenticator-enrolment-reconciliation/1075175e117530b061b196205f4fe464f95cfd753ff9f0e3f7c6f604924ad364.zip",
+   "bytesRead": 70451,
+   "readOn": "2026-09-23"
+  },
+  "the-meetings-nobody-has-answered": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-nobody-has-answered/2d370eddd049338a7feb11623d2817df96d2fddbb908d865d783d5062269633e.zip",
+   "bytesRead": 49067,
    "readOn": "2026-09-23"
   }
  }
