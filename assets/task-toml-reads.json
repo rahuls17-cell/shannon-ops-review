@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T08:30:56+00:00",
+ "generatedAt": "2026-09-23T08:40:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1436,6 +1436,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pins-nobody-can-vouch-for-postfix/131c45530a37e4738b1e1692525895db7645f400a52d3a47678536d0014b3c72.zip",
    "bytesRead": 47736,
+   "readOn": "2026-09-23"
+  },
+  "code-c113-storage-tier-transition-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c113-storage-tier-transition-recompute/7bb9a96eb87a00d880faf3cd32079460e606d1b67166909c56278e6394efaedf.zip",
+   "bytesRead": 80785,
+   "readOn": "2026-09-23"
+  },
+  "writing-sc05-b6-attrition-variance-v1": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-b6-attrition-variance-v1/7040261fee2a6c79f7c49793139fcdd2b39b1d6cc72d2d0f1c71be2a795c6745.zip",
+   "bytesRead": 65826,
    "readOn": "2026-09-23"
   }
  }
