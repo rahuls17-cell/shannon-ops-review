@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T05:51:02+00:00",
+ "generatedAt": "2026-09-23T06:10:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1076,6 +1076,16 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/reconstruct-lifecycle-for-errored-230-mobile-check-deposit-74-and-veri/83be088b51b3e5964910a258d275d8e8a01a0ca1cc49bc71ea7be90b2616da25.zip",
    "bytesRead": 58298,
+   "readOn": "2026-09-23"
+  },
+  "fin-b40-a3-net-revenue-variance-attribution-fourth-return-minimal-semantic-format-fix-20260923T0": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b40-a3-net-revenue-variance-attribution-fourth-return-minimal-semantic-format-fix-20260923T0/56966eeb15641aedd3401e3dacc86b39345f64d3d855d78e2f5852c880f6e23b.zip",
+   "bytesRead": 112238,
    "readOn": "2026-09-23"
   }
  }
