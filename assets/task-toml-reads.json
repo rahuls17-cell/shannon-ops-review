@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T18:50:56+00:00",
+ "generatedAt": "2026-09-23T19:11:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1780,6 +1780,50 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b10-eye-evolution-caption-claims-check/7223a95379f31d0e8d40cd6b1b801ec4ff92d15b692c7ba3579a31c913a72511.zip",
    "bytesRead": 113211,
+   "readOn": "2026-09-23"
+  },
+  "bus-b22-b8-picture-book-topic-trend": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b8-picture-book-topic-trend/566401210db006737bba2694a10bacf61109ec210e3deb9e3a18159906c68547.zip",
+   "bytesRead": 64437,
+   "readOn": "2026-09-23"
+  },
+  "code-c111-incident-severity-classification-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c111-incident-severity-classification-audit/4206f0bc5c582c9c86ca0ea47a7702df46429e482c47224bb639cd2646767f4f.zip",
+   "bytesRead": 76650,
+   "readOn": "2026-09-23"
+  },
+  "the-bugs-that-became-issues": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-bugs-that-became-issues/9990c1b225b86879d91856a9c8d77b4cbe35b1e7f17f8904e24948335be06481.zip",
+   "bytesRead": 35641,
+   "readOn": "2026-09-23"
+  },
+  "who-the-pilot-was-waiting-on_v2": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-the-pilot-was-waiting-on_v2/b6c920fbcb6116c60bb74954118bba33bace3d10bc4dd5d86978ee5c1948849e.zip",
+   "bytesRead": 48043,
    "readOn": "2026-09-23"
   }
  }
