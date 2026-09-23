@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T09:00:52+00:00",
+ "generatedAt": "2026-09-23T09:11:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1480,6 +1480,16 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/three-marts-gone-cold/3919f564f9d6cd5e113a8a216cf1fd2e0a2893f0f6b203a3730020bbdb4774ad.zip",
    "bytesRead": 46119,
+   "readOn": "2026-09-23"
+  },
+  "fin-b54-f5-membership-five-year-cost-comparison": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b54-f5-membership-five-year-cost-comparison/257286edac69ab7373b91607fcf49dc0a6c4c8e79b2cbab8646bcd6f9f2ebd47.zip",
+   "bytesRead": 75382,
    "readOn": "2026-09-23"
   }
  }
