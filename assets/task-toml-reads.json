@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T00:30:53+00:00",
+ "generatedAt": "2026-09-23T01:21:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -873,6 +873,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b2-operating-expense-schedule-recompute/32eabd8eb2a8f306946870b5d22dc3f3505d2d5416c038cef675024898fe48c4.zip",
    "bytesRead": 92126,
+   "readOn": "2026-09-23"
+  },
+  "bus-b19-b1-project-milestone-reconstruction": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b19-b1-project-milestone-reconstruction/305bf59b81d8c263d7d3bbe51e12841f5a82466f68c5fc7dee4bf34c24615a1c.zip",
+   "bytesRead": 80413,
    "readOn": "2026-09-23"
   }
  }
