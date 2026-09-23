@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T07:30:55+00:00",
+ "generatedAt": "2026-09-23T07:41:29+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1288,6 +1288,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-projects-that-owe-more-than-they-have-shipped/89a4fbadf7bb5ef9093047d34502143cce6a736b265026975d3dd2a0d15f43d5.zip",
    "bytesRead": 57637,
+   "readOn": "2026-09-23"
+  },
+  "documentation-requests-that-merged": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/documentation-requests-that-merged/1fba3e3ad0f2bb4c96563875fcad7016258337d13b7e9c2ed4f2dfe4cdf9036c.zip",
+   "bytesRead": 54265,
+   "readOn": "2026-09-23"
+  },
+  "the-billing-codes-that-do-not-agree-with-themselves": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-billing-codes-that-do-not-agree-with-themselves/f484afa005847e68704c2d84799317614629003e6cb060dd88be22e2826e316c.zip",
+   "bytesRead": 53204,
    "readOn": "2026-09-23"
   }
  }
