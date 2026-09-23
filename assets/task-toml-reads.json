@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T20:30:58+00:00",
+ "generatedAt": "2026-09-23T20:51:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1984,6 +1984,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-mg-bus-b7-a2-lab-calibration-compliance-screen/a318ace80170299974ae426291d7d490a37949690d66acc5d4eddba531c10374.zip",
    "bytesRead": 117980,
+   "readOn": "2026-09-23"
+  },
+  "code-c106-runbook-coverage-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c106-runbook-coverage-audit/787ee019735ccb8150b9f83d0297d99501657f06cf7921aed2f0c70c8d09337a.zip",
+   "bytesRead": 75967,
    "readOn": "2026-09-23"
   }
  }
