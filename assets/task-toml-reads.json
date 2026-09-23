@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T10:11:23+00:00",
+ "generatedAt": "2026-09-23T10:31:38+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1540,6 +1540,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1254-fire-rated-ladder-vendor-leadtime-recompute-v1/5f0f39e6805f03f167414bcbc11c6f57a0783ebfd2fd074467524717fa193e36.zip",
    "bytesRead": 86164,
+   "readOn": "2026-09-23"
+  },
+  "code-c594-game-asset-originality-audit-v59": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c594-game-asset-originality-audit-v59/24c382e673a3f09c0b0df63eaf238c3623855001a8ae7f4697f8f671325eafee.zip",
+   "bytesRead": 82416,
    "readOn": "2026-09-23"
   }
  }
