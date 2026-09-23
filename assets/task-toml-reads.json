@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T22:01:16+00:00",
+ "generatedAt": "2026-09-23T22:10:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2060,6 +2060,52 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-books-my-time-more-than-once/679d9a7c41c107a0c0cbb7b755d9c9a0a2602c00a1c2d1756d9e64ab1595a7f0.zip",
    "bytesRead": 47707,
+   "readOn": "2026-09-23"
+  },
+  "gen-g382-altitude-acclimatization-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g382-altitude-acclimatization-audit/62cedd83e89766bc03babb999eff366ac6cda588190bf142a0b47b97b388add7.zip",
+   "bytesRead": 79405,
+   "readOn": "2026-09-23"
+  },
+  "heavily-reviewed-and-merged-anyway": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/heavily-reviewed-and-merged-anyway/3a06c64d1de8d6916142800a6a4f34e280449daadc567514db80f30db91f98fd.zip",
+   "bytesRead": 48997,
+   "readOn": "2026-09-23"
+  },
+  "the-issues-that-came-back-and-who-owns-them": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-issues-that-came-back-and-who-owns-them/01e10d2dec87cb5617d69621a9a391cfdee4f5c35b01d97030f0cf17015898a1.zip",
+   "bytesRead": 49534,
+   "readOn": "2026-09-23"
+  },
+  "the-work-that-crossed-the-boundary": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-work-that-crossed-the-boundary/777f376a8ab7730191ad745d6e510b3ef873c78ff4577683abd0b3c3467d3e6c.zip",
+   "bytesRead": 47669,
    "readOn": "2026-09-23"
   }
  }
