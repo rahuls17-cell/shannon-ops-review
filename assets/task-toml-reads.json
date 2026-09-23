@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T01:40:53+00:00",
+ "generatedAt": "2026-09-23T01:50:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -913,6 +913,23 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c199-iam-role-least-privilege-audit/d7a699c64044d23963b7ae9b81b879dd4c63e33660c18dd9a1039cf0383befe6.zip",
    "bytesRead": 78514,
+   "readOn": "2026-09-23"
+  },
+  "task_verify_ach_debit_daily_limit_compliance_for_account_1039_on_2023_11_14": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "confluence-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "docker.io/kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/task_verify_ach_debit_daily_limit_compliance_for_account_1039_on_2023_11_14/e055e2b310b06ccaa913fb1e5e765b8788c75a9160c97107586f2ce308b0e083.zip",
+   "bytesRead": 59873,
    "readOn": "2026-09-23"
   }
  }
