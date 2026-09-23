@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T15:52:13+00:00",
+ "generatedAt": "2026-09-23T16:00:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1660,6 +1660,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c58-feature-flag-targeting-audit/72174c722fde2c32477b6a26e3184b50c15d63c1e0eb962dc5532d685dbabcc8.zip",
    "bytesRead": 74391,
+   "readOn": "2026-09-23"
+  },
+  "bus-b48-b9-honor-society-pin-listing-comps-pricing": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b9-honor-society-pin-listing-comps-pricing/77f62e2f5f135db03a09c500d16aa5ec69d367b66455f00e61bfa8b18230bc5c.zip",
+   "bytesRead": 142251,
+   "readOn": "2026-09-23"
+  },
+  "promotions-repeat-sender-cleanup": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/promotions-repeat-sender-cleanup/d6230b78ab83da923398d42a81dd78c1ec5ebf06368203ebae0e47f66a429cde.zip",
+   "bytesRead": 49685,
    "readOn": "2026-09-23"
   }
  }
