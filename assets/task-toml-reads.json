@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T12:50:55+00:00",
+ "generatedAt": "2026-09-23T13:11:28+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1580,6 +1580,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-hl04-b1-census-submission-audit/61a4652a3d7bae56965bce7028dc090869c04e4591445c6fab691444862a2572.zip",
    "bytesRead": 72107,
+   "readOn": "2026-09-23"
+  },
+  "code-c205-sso-session-timeout-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c205-sso-session-timeout-audit/afdf800df768c1305ceb705af90a5b2bd4d04759b58eba029b9939ae3ea87acc.zip",
+   "bytesRead": 74255,
    "readOn": "2026-09-23"
   }
  }
