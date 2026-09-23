@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T04:30:58+00:00",
+ "generatedAt": "2026-09-23T04:41:24+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1000,6 +1000,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c200-cron-retry-budget-audit/e473349f38a51d665efd7b55b6211d5ece3fc2075671348a6e1464d52b9b0c67.zip",
    "bytesRead": 72168,
+   "readOn": "2026-09-23"
+  },
+  "career-hl04-b4-resume-skills-posting-match": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/career-hl04-b4-resume-skills-posting-match/4da73dd12de8237d10a5dbe617f400f716b95ad08ca0a2c84603a137acd40b4a.zip",
+   "bytesRead": 65817,
+   "readOn": "2026-09-23"
+  },
+  "gen-g370-informality-indicator-codebook-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g370-informality-indicator-codebook-audit/37a193c650411e453ac4384afed81ef46445fe2b7dbd3fc3e4a8bde692c60d94.zip",
+   "bytesRead": 81793,
    "readOn": "2026-09-23"
   }
  }
