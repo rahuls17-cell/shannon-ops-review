@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T01:30:53+00:00",
+ "generatedAt": "2026-09-23T01:40:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -893,6 +893,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b44-h6-resurfacing-agent-formulary-normalisation-v9-FOR-QC-V2/070436dccda14a31f0892ff900b64a20edf9b7f4e14ef8ce21c4f0d70ba35327.zip",
    "bytesRead": 78594,
+   "readOn": "2026-09-23"
+  },
+  "code-c198-network-segmentation-policy-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c198-network-segmentation-policy-audit/13037a71e8f7ae0d4554fb749c3f7bfc36563b30a3eb820ce389db3224fdf1ce.zip",
+   "bytesRead": 81376,
+   "readOn": "2026-09-23"
+  },
+  "code-c199-iam-role-least-privilege-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c199-iam-role-least-privilege-audit/d7a699c64044d23963b7ae9b81b879dd4c63e33660c18dd9a1039cf0383befe6.zip",
+   "bytesRead": 78514,
    "readOn": "2026-09-23"
   }
  }
