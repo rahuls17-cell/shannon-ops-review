@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T04:10:58+00:00",
+ "generatedAt": "2026-09-23T04:30:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -990,6 +990,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b607-t8-mesh-band-assignment-plan-v5/8008b2fdd912ad6e6d4677eebf499136de77d4af55ed56a01af50b9cbe1865ec.zip",
    "bytesRead": 66377,
+   "readOn": "2026-09-23"
+  },
+  "code-c200-cron-retry-budget-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c200-cron-retry-budget-audit/e473349f38a51d665efd7b55b6211d5ece3fc2075671348a6e1464d52b9b0c67.zip",
+   "bytesRead": 72168,
    "readOn": "2026-09-23"
   }
  }
