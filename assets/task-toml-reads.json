@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T18:21:33+00:00",
+ "generatedAt": "2026-09-23T18:50:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1770,6 +1770,16 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/explain-apy-tier-eligibility-and-overdraft-handling-for-a-joint-accoun/092a17c8939432d1636b511756448594742250b0efae15465f6341d603674cb7.zip",
    "bytesRead": 71026,
+   "readOn": "2026-09-23"
+  },
+  "bus-b48-b10-eye-evolution-caption-claims-check": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b10-eye-evolution-caption-claims-check/7223a95379f31d0e8d40cd6b1b801ec4ff92d15b692c7ba3579a31c913a72511.zip",
+   "bytesRead": 113211,
    "readOn": "2026-09-23"
   }
  }
