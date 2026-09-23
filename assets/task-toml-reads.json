@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T21:50:52+00:00",
+ "generatedAt": "2026-09-23T22:01:16+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2036,6 +2036,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/grooming-the-biggest-teams-backlog/6767867674f176026a5da30b1133e9630e601ba37a48b1de810b2e5917d6f371.zip",
    "bytesRead": 47548,
+   "readOn": "2026-09-23"
+  },
+  "found-or-not-found": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/found-or-not-found/b1d58a1ead6dbdad981bf1b38a41bddcfcf2fc2cc64fea59191b36394efec9fc.zip",
+   "bytesRead": 41681,
+   "readOn": "2026-09-23"
+  },
+  "who-books-my-time-more-than-once": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-books-my-time-more-than-once/679d9a7c41c107a0c0cbb7b755d9c9a0a2602c00a1c2d1756d9e64ab1595a7f0.zip",
+   "bytesRead": 47707,
    "readOn": "2026-09-23"
   }
  }
