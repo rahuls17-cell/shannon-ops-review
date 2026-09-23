@@ -883,6 +883,17 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 }
 .taskcell .chip { flex: 0 0 auto; margin-left: 0; }
 .taskcell { max-width: 330px; }
+/* The [task] name from task.toml, under a submitted name that differs from it. */
+.taskcell:has(.declared) { flex-wrap: wrap; row-gap: 1px; }
+.taskcell .declared {
+  flex-basis: 100%;
+  min-width: 0;
+  font-size: 11px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 
 /* Embedded delivery dashboard: its own page, its own styles, kept isolated. */
 .embed {

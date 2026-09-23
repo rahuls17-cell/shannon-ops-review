@@ -74,8 +74,10 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
     'Accepted is scoped to the prefix deliveries are cut from');
   assert.ok(/acceptedFromBucket/.test(app),
     'the Accepted card must read the cohort, not the verdict tally');
-  assert.ok(/accepted packages in the bucket/.test(app),
-    'and it must say on its face where it came from');
+  assert.ok(/accepted tasks in the bucket/.test(app),
+    'and it must say on its face where it came from, and that it counts tasks');
+  assert.ok(/acceptedShown\.tasks/.test(app),
+    'the card counts tasks - several folders can hold one task');
   // The bar underneath splits verdict states and must not be handed the bucket
   // figure, or its percentages stop meaning anything.
   const figures = app.slice(app.indexOf('function renderTruthFigures'),
@@ -110,8 +112,11 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
   // has to be folder-based too or the two argue on one screen.
   const splitBlock = app.slice(app.indexOf("byId('truthSplit').innerHTML"),
                                app.indexOf("animateCounts(byId('truthSplit'))"));
-  assert.ok(/cx\.packages/.test(splitBlock) && /cx\.delivered/.test(splitBlock),
-    'the split must read the cohort, not the verdict tallies');
+  // In tasks, like the card: a task went out if any of its folders did.
+  assert.ok(/tx\.tasks/.test(splitBlock) && /tx\.delivered/.test(splitBlock) && /tx\.toDeliver/.test(splitBlock),
+    'the split must read the cohort, counted in tasks, not the verdict tallies');
+  assert.ok(/acceptedTaskCounts\(truth\.cohortRows\)/.test(app),
+    'and those task counts come from the folder rows');
   assert.ok(/acceptedAtBarTasks/.test(splitBlock),
     'and it must still fall back to the verdict count when the listing is absent');
   assert.equal(c.delivered + c.notDelivered, c.packages,

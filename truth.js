@@ -76,6 +76,34 @@
               duplicateVia: 'the task name declared inside the package'};
     };
 
+    // Delivery is a property of the TASK, not of the folder it was cut from.
+    // When a task sits under several folders and a manifest delivered one of
+    // them, the others are the same work: listing them as "still to deliver"
+    // invites sending it twice. 34 folders were in that state when this was
+    // written, and the Ready filter offered 3 of them with no warning at all.
+    //
+    // Two outcomes, never a silent merge across people:
+    //   delivered  the delivered folder has the same trainer, or either side is
+    //              not a person (a service account re-cutting someone's task)
+    //   check      a DIFFERENT trainer delivered a task with this declared name.
+    //              Names are not unique per person, so this is a warning (CK)
+    //              for someone to look at, and the folder stays in the pool.
+    const folderEntries = (cohortIndex && cohortIndex.folders) || {};
+    const isPerson = owner => /@turing\.com$/i.test(owner || '') && !/^companybench@/i.test(owner || '');
+    const siblingDelivery = (folder, owner) => {
+      const entry = folderEntries[folder];
+      const task = packageTasks[folder];
+      if (!task || (entry && entry.delivered)) return null;
+      const gone = (siblings[task] || [])
+        .filter(other => other !== folder && folderEntries[other] && folderEntries[other].delivered)
+        .map(other => ({folder: other, batch: folderEntries[other].batch || null,
+                        owner: folderEntries[other].owner || null}));
+      if (!gone.length) return null;
+      const mine = owner || (entry && entry.owner) || null;
+      const same = gone.find(g => !isPerson(mine) || !isPerson(g.owner) || g.owner === mine);
+      return same ? {kind: 'delivered', via: same} : {kind: 'check', via: gone[0]};
+    };
+
     const benches = (benchIndex && benchIndex.bench) || {};
     // The cache has two kinds of key, because it has two sources: the task
     // source tree is keyed by pipeline row id, and a package opened directly is
@@ -99,7 +127,7 @@
       if (!hit) return {};
       return {glmPasses: hit.passes, glmTrials: hit.trials, glmRewards: hit.rewards || []};
     };
-    const rows = (delivered || connectorIndex || glmIndex || benchIndex)
+    const rows = (delivered || connectorIndex || glmIndex || benchIndex || cohortIndex)
       ? payload.tasks.map(row => ({
           ...row,
           delivered: Boolean(delivered) && Object.prototype.hasOwnProperty.call(delivered, row.id),
@@ -111,6 +139,9 @@
           ...benchAt(row.id, row.name),
         }))
       : payload.tasks;
+
+    const cohort = cohortRows(rows, cohortIndex, benchAt, dupOf, siblingDelivery);
+    carrySiblingDelivery(rows, cohort);
 
     return {
       generatedAt: payload.generatedAt,
@@ -130,7 +161,7 @@
       // cover only 1,021 folders while missing 104 that hold an accepted
       // package and have no accepted verdict row - a list that is both too
       // long and incomplete at once.
-      cohortRows: cohortRows(rows, cohortIndex, benchAt, dupOf),
+      cohortRows: cohort,
       // Null when the index has not loaded, so the page can tell the difference
       // between "nothing is delivered" and "delivery is not known".
       deliveredIndex: deliveredIndex || null,
@@ -229,8 +260,51 @@
   // Each folder gets the verdict row that best describes it, so the table keeps
   // its trainer, dates, GLM band and drill-down. A folder with no verdict row
   // still appears, carrying what the bucket knows and nothing invented.
-  function cohortRows(rows, cohortIndex, benchAt, dupOf) {
+  // The fields a folder row carries when its task already went out under a
+  // different folder. Kept apart from `delivered` from the manifest so the page
+  // can always say which of the two it is.
+  function siblingFields(sib, ownDelivered) {
+    if (!sib) return {};
+    const where = `${sib.via.folder}${sib.via.batch ? ` (${sib.via.batch})` : ''}`;
+    return sib.kind === 'delivered'
+      ? {delivered: true, deliveredVia: `same task delivered as ${where}`,
+         deliveredSibling: sib.via, cohortDelivered: ownDelivered}
+      : {sameNameDelivered: sib.via};
+  }
+
+  // The Ready filter reads the verdict rows, not the folder rows, so the same
+  // answer has to reach them. A folder row borrowed its verdict row by name;
+  // every verdict row with that spelling describes the same folder.
+  function carrySiblingDelivery(rows, cohort) {
+    if (!cohort) return;
+    const bySpelling = new Map();
+    rows.forEach(row => {
+      [keyOf(row.name), stemOf(row.name)].forEach(spelling => {
+        if (!spelling) return;
+        if (!bySpelling.has(spelling)) bySpelling.set(spelling, new Set());
+        bySpelling.get(spelling).add(row);
+      });
+    });
+    cohort.forEach(folderRow => {
+      if (folderRow.noVerdict || !(folderRow.deliveredSibling || folderRow.sameNameDelivered)) return;
+      const hits = new Set([...(bySpelling.get(keyOf(folderRow.cohortFolder)) || []),
+        ...(bySpelling.get(stemOf(folderRow.cohortFolder)) || [])]);
+      hits.forEach(row => {
+        if (row.delivered) return;
+        if (folderRow.deliveredSibling) {
+          row.delivered = true;
+          row.deliveredVia = folderRow.deliveredVia;
+          row.deliveredSibling = folderRow.deliveredSibling;
+        } else if (!row.sameNameDelivered) {
+          row.sameNameDelivered = folderRow.sameNameDelivered;
+        }
+      });
+    });
+  }
+
+  function cohortRows(rows, cohortIndex, benchAt, dupOf, siblingDelivery) {
     if (!cohortIndex || !cohortIndex.folders) return null;
+    const sibOf = siblingDelivery || (() => null);
     const byName = new Map();
     rows.forEach(row => {
       [keyOf(row.name), stemOf(row.name)].forEach(spelling => {
@@ -254,7 +328,8 @@
                 latestDecided: entry.decided || match.decided,
                 delivered: Boolean(entry.delivered), deliveredVia: entry.delivered ? 'delivery manifest' : null,
                 cohortFolder: entry.folder, cohortDelivered: entry.delivered,
-                cohortState: entry.state || null, fromBucket: true};
+                cohortState: entry.state || null, fromBucket: true,
+                ...siblingFields(sibOf(entry.folder, match.owner), entry.delivered)};
       }
       // Nothing in the window describes this folder. Say that rather than
       // borrowing another task's row to fill the columns.
@@ -274,6 +349,7 @@
         cohortDelivered: entry.delivered, cohortState: entry.state || null,
         fromBucket: true, noVerdict: true, ...benchAt(entry.folder),
         ...dupOf(entry.folder),
+        ...siblingFields(sibOf(entry.folder, entry.owner), entry.delivered),
       };
     });
     return built.sort((a, b) => {
@@ -284,12 +360,53 @@
     });
   }
 
+  // The accepted folders, counted as TASKS.
+  //
+  // A folder is one package; a task can sit under several folders after a
+  // re-cut or under a console placeholder. The declared [task] name decides
+  // which folders are one task; a folder whose package could not be read is its
+  // own task, because nothing says otherwise. Delivery is decided per task: it
+  // has gone out if any of its folders went out.
+  function acceptedTaskKey(row) {
+    // A folder whose declared name was delivered by a DIFFERENT trainer is not
+    // folded into that task: names are not unique per person, so it stays its
+    // own item in the pool, carrying CK, until someone decides.
+    if (row.sameNameDelivered || !row.packageTask) {
+      return `folder:${String(row.cohortFolder || row.id).toLowerCase()}`;
+    }
+    return `task:${keyOf(row.packageTask)}`;
+  }
+
+  function acceptedTaskCounts(folderRows) {
+    const tasks = new Map();
+    (folderRows || []).forEach(row => {
+      const key = acceptedTaskKey(row);
+      const held = tasks.get(key) || {delivered: false, check: false};
+      held.delivered = held.delivered || Boolean(row.delivered);
+      held.check = held.check || Boolean(row.sameNameDelivered || row.maybeDelivered);
+      tasks.set(key, held);
+    });
+    const all = [...tasks.values()];
+    const delivered = all.filter(t => t.delivered).length;
+    return {
+      folders: (folderRows || []).length,
+      tasks: tasks.size,
+      extraFolders: (folderRows || []).length - tasks.size,
+      delivered,
+      toDeliver: tasks.size - delivered,
+      toDeliverNeedsCheck: all.filter(t => !t.delivered && t.check).length,
+      deliveredViaSibling: (folderRows || []).filter(r => r.deliveredSibling).length,
+    };
+  }
+
   function filterTruth(rows, filters) {
     const f = filters || {};
     const has = (list, value) => !value || (list || []).includes(value);
     const selected = rows.filter(row => {
-      const text = [row.name, row.owner, row.why, (row.findings || []).join(' ')]
-        .join(' ').toLowerCase();
+      // The declared name too, so a row shown under a placeholder such as
+      // harbor-single-task-2sy38tlg is still found by searching for its task.
+      const text = [row.name, row.packageTask, row.declaredName, row.owner, row.why,
+        (row.findings || []).join(' ')].join(' ').toLowerCase();
       return (!f.state || f.state === row.state) &&
         (!f.gateEra || f.gateEra === row.gateEra) &&
         (!f.domain || f.domain === row.domain) &&
@@ -426,5 +543,8 @@
   root.prepareTruth = prepareTruth;
   root.filterTruth = filterTruth;
   root.chainFor = chainFor;
-  if (typeof module !== 'undefined') module.exports = {prepareTruth, filterTruth, collapseByTask, chainFor, UNDECIDED};
+  root.acceptedTaskCounts = acceptedTaskCounts;
+  if (typeof module !== 'undefined') {
+    module.exports = {prepareTruth, filterTruth, collapseByTask, chainFor, acceptedTaskCounts, UNDECIDED};
+  }
 })(typeof window === 'undefined' ? globalThis : window);
