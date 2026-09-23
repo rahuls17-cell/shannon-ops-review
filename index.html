@@ -37,16 +37,19 @@
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg><span>Bucket</span>
           </button>
         </nav>
-        <div class="side-foot">
-          <div class="side-card">
-            <p class="side-card-title">Read-only sources</p>
-            <p>Workbook payments, GCS evaluations and GCS finalisation. Nothing here writes to the bucket.</p>
-          </div>
-        </div>
       </aside>
 
       <div class="content">
         <header class="topbar">
+          <div class="segctl" role="group" aria-label="Segment">
+            <span class="segctl-label">Segment<button class="why" data-info="segment" aria-label="How the segments are defined">?</button></span>
+            <div class="segmented" id="segmentSwitch">
+              <button type="button" class="segbtn is-on" data-seg="">All</button>
+              <button type="button" class="segbtn" data-seg="connector">Connector</button>
+              <button type="button" class="segbtn" data-seg="non-connector">Non-connector</button>
+              <button type="button" class="segbtn" data-seg="company">Company Bench</button>
+            </div>
+          </div>
           <div class="topbar-actions">
             <dl class="freshness">
               <dt>Workbook</dt>
@@ -88,6 +91,8 @@
             </div>
           </header>
           <p id="dateError" class="alert" role="alert" hidden>Start date must be on or before end date.</p>
+
+          <section id="segmentStrip" class="segstrip" aria-label="The split by segment"></section>
 
           <p class="eyebrow">Delivery<span id="commandScopeNote"></span></p>
           <div class="kpirow">
@@ -218,7 +223,6 @@
               <p class="kicker">Money</p>
               <h1 id="payouts-title">Payouts</h1>
             </div>
-            <div class="sourcestrip" data-sources="payouts"></div>
           </header>
           <!-- Payouts is withheld until a password is entered.
                This keeps the tab away from someone who opens the dashboard and
@@ -254,6 +258,9 @@
 
           <div id="payoutSummary" class="kpirow kpirow-5"></div>
 
+          <div class="deck" id="payoutDeck">
+            <div class="deck-track" id="payoutTrack">
+              <div class="deck-pane" data-title="Settlement by bench">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Settlement by bench<button class="why" data-info="bench" aria-label="How benches are defined">?</button></h2><p class="panel-note" id="payoutBenchNote"></p></div>
@@ -263,13 +270,13 @@
               <div id="payoutTeams" class="teamstack"></div>
             </div>
           </section>
-
+              </div>
+              <div class="deck-pane" data-title="By trainer">
           <section class="panel">
             <header class="panel-head">
               <div><h2>By trainer<button class="why" data-info="payoutAccepted" aria-label="What counts as accepted">?</button></h2><p class="panel-note" id="payoutPeopleNote"></p></div>
               <div class="toolbar" data-toolbar>
                 <label class="field"><span>Search</span><input id="personSearch" type="search" placeholder="Name, team or manager" /></label>
-                <label class="field"><span>Bench<button class="why" data-info="bench" aria-label="How benches are defined">?</button></span><select id="benchFilter"><option value="">All</option><option value="company">Company</option><option value="computer">Computer</option><option value="unassigned">Unassigned</option></select></label>
                 <label class="field"><span>Payment</span><select id="paymentFilter"><option value="">All</option><option value="pending">Owed</option><option value="paid">Paid</option><option value="no-paid">Never paid</option><option value="zero">No accepted work</option></select></label>
                 <button id="payoutReset" class="ghost">Clear</button>
               </div>
@@ -300,14 +307,14 @@
               </div>
             </div>
           </section>
-
+              </div>
+              <div class="deck-pane" data-title="Tasks">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Tasks<button class="why" data-info="ledgerPayment" aria-label="How payment state is decided">?</button></h2><p class="panel-note">Every accepted task in the ledger and where its payment stands. Click a cell above the table to filter.</p></div>
               <div class="toolbar" data-toolbar>
                 <label class="field"><span>Search</span><input id="ledgerSearch" type="search" placeholder="Task, trainer or CJ" /></label>
                 <label class="field"><span>Payment</span><select id="ledgerPayment"><option value="">All</option></select></label>
-                <label class="field"><span>Type</span><select id="ledgerType"><option value="">All</option></select></label>
                 <details class="morefilters">
                   <summary class="ghost">More</summary>
                   <div class="morefilters-body">
@@ -344,6 +351,10 @@
               </div>
             </div>
           </section>
+              </div>
+            </div>
+          </div>
+          <nav class="deck-pager" id="payoutPager" aria-label="Payout panes"></nav>
           </div>
         </section>
 
@@ -362,7 +373,7 @@
 
           <section class="panel">
             <header class="panel-head">
-              <div><h2>Plan against actual<button class="why" data-info="workbook" aria-label="Scope of the plan figures">?</button></h2></div>
+              <div><h2>Plan against actual<button class="why" data-info="workbook" aria-label="Scope of the plan figures">?</button></h2><p class="panel-note" id="planNote"></p></div>
               <div class="chart-key"><span class="key-item is-plan">Planned</span><span class="key-item is-actual">Delivered</span></div>
             </header>
             <div class="panel-body"><div id="planCharts" class="plan-grid"></div></div>
@@ -384,7 +395,6 @@
                 <button type="button" class="segbtn" data-lens="batch">Batch</button>
                 <button type="button" class="segbtn" data-lens="glm">GLM</button>
                 <button type="button" class="segbtn" data-lens="difficulty">Difficulty</button>
-                <button type="button" class="segbtn" data-lens="type">Type</button>
                 <button type="button" class="segbtn" data-lens="source">Attribution</button>
               </div>
             </header>
@@ -408,22 +418,20 @@
 
 
 
-          <section class="panel">
+          <section class="panel inventory">
             <header class="panel-head">
               <div>
                 <h2>Task inventory<button class="why" data-info="auditFlags" aria-label="What the flags mean">?</button></h2>
-                <p class="panel-note" id="auditCaveats"></p>
+                <p class="panel-note" id="auditAudit"></p>
               </div>
               <div class="toolbar" data-toolbar>
                 <label class="field"><span>Search</span><input id="aSearch" type="search" placeholder="Task, SHA or trainer" /></label>
-                <label class="field"><span>Batch</span><select id="aBatch"></select></label>
                 <label class="field"><span>Category</span><select id="aCategory"></select></label>
                 <label class="field"><span>Acceptance<button class="why" data-info="auditAcceptance" aria-label="Where acceptance comes from">?</button></span><select id="aAcceptance"></select></label>
                 <label class="field"><span>GLM</span><select id="aGlm"></select></label>
                 <details class="morefilters">
                   <summary class="ghost">More</summary>
                   <div class="morefilters-body">
-                    <label class="field"><span>Type</span><select id="aType"></select></label>
                     <label class="field"><span>Difficulty<button class="why" data-info="auditDifficulty" aria-label="What difficulty means here">?</button></span><select id="aDifficulty"></select></label>
                     <label class="field"><span>Priority</span><select id="aPriority"></select></label>
                     <label class="field"><span>Trainer</span><select id="aTrainer"></select></label>
@@ -432,10 +440,12 @@
                   </div>
                 </details>
                 <button id="aReset" class="ghost">Clear</button>
+                <select id="aBatch" class="sr-only" aria-hidden="true" tabindex="-1"></select>
               </div>
             </header>
+            <div id="auditBatchTabs" class="batchtabs" role="group" aria-label="Batch"></div>
             <div class="panel-body">
-              <div class="chips-row"><div id="auditChips" class="chips"></div><p class="muted footnote" id="auditAudit"></p></div>
+              <div class="chips-row"><div id="auditChips" class="chips"></div></div>
               <div class="table-wrap">
                 <table class="grid inv">
                   <thead>
@@ -473,7 +483,6 @@
               <h1 id="pipeline-title">Pipeline<button class="why" data-info="scope" aria-label="What is counted here">?</button></h1>
             </div>
             <div class="view-actions">
-              <div class="sourcestrip" data-sources="pipeline"></div>
               <button id="truthRefresh" class="ghost">Rebuild from bucket</button>
             </div>
           </header>
@@ -482,34 +491,61 @@
                this tab, not just the table, so they belong where they are
                set rather than under the things they change. -->
           <section class="filterbar" aria-label="Filters for every figure on this tab">
-            <p class="filterbar-lead">Filters<span>the figures, table and charts below follow these; the delivery join does not</span></p>
-            <div class="toolbar" data-toolbar>
-              <label class="field"><span>Search</span><input id="tSearch" type="search" placeholder="Task, trainer or reason" /></label>
-              <label class="field"><span>State</span><select id="tState"></select></label>
-              <label class="field"><span>Gate<button class="why" data-info="gateEra" aria-label="What the gates are">?</button></span><select id="tGate"></select></label>
-              <label class="field"><span>Delivery</span><select id="tDelivery"><option value="">All</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting re-gate</option><option value="none">No package</option></select></label>
-              <label class="field"><span>Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><button class="why" data-info="truthVersions" aria-label="Why versions are counted once">1x</button></span><select id="tDelivered"><option value="">Any</option><option value="yes">Already delivered</option><option value="ready">Ready for delivery</option><option value="no">Not delivered</option></select></label>
-              <label class="field"><span>GLM<button class="why" data-info="glm" aria-label="What the GLM band is">?</button></span><select id="tGlm"><option value="">Any</option><option value="band">In the 1-3 band</option><option value="0">0 of 4</option><option value="1">1 of 4</option><option value="2">2 of 4</option><option value="3">3 of 4</option><option value="4">4 of 4</option><option value="none">Not recorded</option></select></label>
-              <label class="field"><span>Bench<button class="why" data-info="bench2" aria-label="How the bench is decided">?</button></span><select id="tBench"></select></label>
-              <label class="field"><span>Connector<button class="why" data-info="truthConnector" aria-label="How connector status is decided">?</button></span><select id="tConnector"><option value="">Any</option><option value="yes">Connector</option><option value="no">Non-connector</option><option value="unknown">Not known</option></select></label>
-              <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What a finding is">?</button></span><select id="tFinding"></select></label>
-              <details class="morefilters">
-                <summary class="ghost">More</summary>
-                <div class="morefilters-body">
-                  <label class="field"><span>Domain</span><select id="tDomain"></select></label>
-                  <label class="field"><span>Trainer</span><select id="tOwner"></select></label>
-                  <label class="field"><span>Carried over</span><select id="tCarried"><option value="">All</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
-                  <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">All</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
-                  <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">All</option><option value="yes">Flagged</option><option value="likely">Likely</option><option value="no">Not flagged</option></select></label>
-                </div>
-              </details>
-              <button id="tReset" class="ghost">Clear</button>
-              <button id="tExport" class="ghost">Export CSV</button>
+            <div class="filterbar-top">
+              <label class="fsearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="tSearch" type="search" placeholder="Search tasks, trainers or reasons" /></label>
+              <div class="filterbar-actions">
+                <span class="fcount" id="truthFilterCount"></span>
+                <button id="tReset" class="ghost">Clear</button>
+                <button id="tExport" class="ghost">Export CSV</button>
+              </div>
             </div>
+            <div class="fgroup is-primary"><span class="fgroup-label">State</span><div class="fchips fseg" id="tStateChips" role="group" aria-label="State"></div></div>
+            <div class="filterbar-grid">
+              <div class="fgroup"><span class="fgroup-label">Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><button class="why" data-info="truthVersions" aria-label="Why versions are counted once">1x</button></span><div class="fchips fseg" id="tDeliveredChips" role="group" aria-label="Delivered"></div></div>
+              <div class="fgroup"><span class="fgroup-label">Connector<button class="why" data-info="truthConnector" aria-label="How connector status is decided">?</button></span><div class="fchips fseg" id="tConnectorChips" role="group" aria-label="Connector"></div></div>
+              <div class="fgroup"><span class="fgroup-label">Gate<button class="why" data-info="gateEra" aria-label="What the gates are">?</button></span><div class="fchips fseg" id="tGateChips" role="group" aria-label="Gate"></div></div>
+              <div class="fgroup"><span class="fgroup-label">Package</span><div class="fchips fseg" id="tDeliveryChips" role="group" aria-label="Package"></div></div>
+            </div>
+            <div class="fgroup fgroup-selects">
+              <span class="fgroup-label">More</span>
+              <div class="fselects">
+                <label class="field"><span>GLM<button class="why" data-info="glm" aria-label="What the GLM band is">?</button></span><select id="tGlm"><option value="">Any</option><option value="band">In the 1-3 band</option><option value="0">0 of 4</option><option value="1">1 of 4</option><option value="2">2 of 4</option><option value="3">3 of 4</option><option value="4">4 of 4</option><option value="none">Not recorded</option></select></label>
+                <label class="field"><span>Bench<button class="why" data-info="bench2" aria-label="How the bench is decided">?</button></span><select id="tBench"></select></label>
+                <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What a finding is">?</button></span><select id="tFinding"></select></label>
+                <details class="morefilters">
+                  <summary class="ghost">More filters</summary>
+                  <div class="morefilters-body">
+                    <label class="field"><span>Domain</span><select id="tDomain"></select></label>
+                    <label class="field"><span>Trainer</span><select id="tOwner"></select></label>
+                    <label class="field"><span>Carried over</span><select id="tCarried"><option value="">All</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
+                    <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">All</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
+                    <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">All</option><option value="yes">Flagged</option><option value="likely">Likely</option><option value="no">Not flagged</option></select></label>
+                  </div>
+                </details>
+              </div>
+            </div>
+            <div class="chips-row"><div id="truthChips" class="chips"></div></div>
+            <select id="tState" class="sr-only" aria-hidden="true" tabindex="-1"></select>
+            <select id="tGate" class="sr-only" aria-hidden="true" tabindex="-1"></select>
+            <select id="tDelivery" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">All</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting re-gate</option><option value="none">No package</option></select>
+            <select id="tDelivered" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">Any</option><option value="yes">Already delivered</option><option value="ready">Ready for delivery</option><option value="no">Not delivered</option></select>
+            <select id="tConnector" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">Any</option><option value="yes">Connector</option><option value="no">Non-connector</option><option value="unknown">Not known</option></select>
           </section>
 
+          <div class="deck" id="pipelineDeck">
+            <div class="deck-track" id="pipelineTrack">
+              <section class="deck-pane is-active" data-title="States" aria-label="States">
           <div id="truthPartition" class="partition" aria-label="How the in-scope tasks split by state"></div>
           <div id="truthFigures" class="kpirow kpirow-5"></div>
+          <section class="panel" id="truthChainPanel" hidden>
+            <header class="panel-head">
+              <div><h2 id="truthChainTitle">How this is counted</h2><p class="panel-note" id="truthChainNote"></p></div>
+              <button id="truthChainClose" class="ghost">Close</button>
+            </header>
+            <div class="panel-body"><ol class="chain" id="truthChain"></ol></div>
+          </section>
+              </section>
+              <section class="deck-pane" data-title="Delivery &amp; makeup" aria-label="Delivery and makeup">
           <div class="statstrip">
             <div class="statgroup">
               <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>the manifests against the bucket</em></p>
@@ -545,15 +581,8 @@
               <div id="truthDomains" class="dimstrip"></div>
             </div>
           </div>
-
-          <section class="panel" id="truthChainPanel" hidden>
-            <header class="panel-head">
-              <div><h2 id="truthChainTitle">How this is counted</h2><p class="panel-note" id="truthChainNote"></p></div>
-              <button id="truthChainClose" class="ghost">Close</button>
-            </header>
-            <div class="panel-body"><ol class="chain" id="truthChain"></ol></div>
-          </section>
-
+              </section>
+              <section class="deck-pane" data-title="Outcomes by day" aria-label="Outcomes by day">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Outcomes by day</h2><p class="panel-note" id="scopeNote"></p></div>
@@ -561,10 +590,11 @@
             </header>
             <div class="panel-body"><figure class="daybars" id="scopeChart"></figure></div>
           </section>
-
+              </section>
+              <section class="deck-pane" data-title="Tasks" aria-label="Tasks">
           <section class="panel">
             <header class="panel-head">
-              <div><h2>Tasks<button class="why" data-info="truthTasks" aria-label="What one row means">?</button></h2><p class="panel-note" id="truthCaveats"></p></div>
+              <div><h2>Tasks<button class="why" data-info="truthTasks" aria-label="What one row means">?</button></h2><p class="panel-note" id="truthCount"></p><p class="statusline" id="truthCaveats"></p></div>
             </header>
             <div class="panel-body">
               <!-- Only shown under the Ready for delivery filter: a manifest cut
@@ -589,7 +619,6 @@
                 </div>
                 <p id="manifestSummary" class="muted footnote" role="status"></p>
               </div>
-              <p class="muted footnote" id="truthAudit"></p>
               <!-- Shown only while the Delivered filter is on: what the join
                    could not account for, so the gap between the Delivery tab's
                    412 and what appears here is never left unexplained. -->
@@ -615,19 +644,19 @@
                 </div>
               </section>
               <div class="table-wrap">
-                <table class="grid">
+                <table class="grid inv" id="truthTable">
                   <thead>
                     <tr>
                       <th scope="col"></th>
                       <th scope="col" class="num">#</th>
-                      <th scope="col">Task</th>
+                      <th scope="col"><button type="button" class="sort" data-sort="name">Task</button></th>
                       <th scope="col">Flags<button class="why" data-info="truthFlags" aria-label="What the flag codes mean">?</button></th>
-                      <th scope="col">State</th>
-                      <th scope="col">Trainer</th>
-                      <th scope="col">Decided</th>
-                      <th scope="col">Gate</th>
-                      <th scope="col" class="glmcol">GLM<button class="why" data-info="glm" aria-label="What the GLM band is">?</button></th>
-                      <th scope="col" class="num">Runs</th>
+                      <th scope="col"><button type="button" class="sort" data-sort="state">State</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="owner">Trainer</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="decided">Decided</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="gateEra">Gate</button></th>
+                      <th scope="col" class="glmcol"><button type="button" class="sort" data-sort="glmPasses">GLM</button><button class="why" data-info="glm" aria-label="What the GLM band is">?</button></th>
+                      <th scope="col" class="num"><button type="button" class="sort" data-sort="runs">Runs</button></th>
                     </tr>
                   </thead>
                   <tbody id="truthRows"></tbody>
@@ -646,6 +675,10 @@
               </div>
             </div>
           </section>
+              </section>
+            </div>
+          </div>
+          <nav class="deck-pager" id="pipelinePager" aria-label="Pipeline sections"></nav>
         </section>
 
         <!-- CARRIED OVER ------------------------------------------------- -->

@@ -20,7 +20,7 @@ const TRUTH_PAGE_SIZE = 40;
 let audit = null;
 let auditPage = 0;
 const AUDIT_PAGE_SIZE = 40;
-const AUDIT_FILTERS = ['aBatch', 'aCategory', 'aType', 'aDifficulty', 'aGlm',
+const AUDIT_FILTERS = ['aBatch', 'aCategory', 'aDifficulty', 'aGlm',
   'aAcceptance', 'aPriority', 'aTrainer', 'aSource', 'aFlagged'];
 
 const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tConnector', 'tGlm', 'tBench', 'tCarried',
@@ -240,6 +240,17 @@ const infoCopy = {
   scope: 'The cut is applied to the date a task was DECIDED, not the date it was submitted. A task uploaded in August but judged by the pipeline running today belongs to today, because the bar running today is what judged it. Cutting on submission instead would hide exactly the re-gated work that matters most. Tasks whose last decision falls before 5 September are excluded entirely and are not shown anywhere on this page. About a fifth of verdicts carry no decision timestamp - those are the runs that errored or never finished, so there was never a ruling to time - and they are placed by when the verdict was last updated and marked approx.',
   duplicates: 'This filter means two different things, because the two views count different units. Under Accepted the rows are bucket folders, and a folder is flagged when another folder holds the SAME TASK - read from the [task] name inside each package&rsquo;s task.toml, not guessed from the folder name. That is exact: 47 tasks sit under more than one folder name, which is 51 folders above the first, so counting folders counts those tasks more than once. Click the DUP badge to see every folder the task sits in, with the same columns as the table. In every other view the rows are submissions, and a row is flagged when another submission carries the same name AND the same trainer - a weaker, heuristic claim, with Likely meaning it also shares the decision day and the outcome. Nothing is merged in either view: a task name can legitimately cover unrelated work, and one name in this bucket carries 36 genuinely different tasks.',
   confidence: 'How confidently runs were grouped into one task. Keyed by family is the pipeline\'s own lineage id and is reliable - no family in this data spans two trainers. Unmerged means no family id was present, so the task is keyed on its submission id and repeat runs of it may still be counted separately. Task name was never used as a key: one literal name in this bucket carries 36 unrelated tasks.',
+  segment: () => {
+    const rows = truth ? truth.rows : [];
+    const count = key => rows.filter(row => segmentOf(row.owner, row.connector) === key).length;
+    const both = rows.filter(row => benchOf(rosterTeam(row.owner)) === 'company' && row.connector === true).length;
+    return 'One split for the whole dashboard, applied like the date range. Company Bench: the owner\u2019s roster team is Company. ' +
+      'Connector and Non-connector: the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit - for owners outside Company Bench. ' +
+      `Right now: Connector ${fmt(count('connector'))}, Non-connector ${fmt(count('non-connector'))}, Company Bench ${fmt(count('company'))} of ${fmt(rows.length)} pipeline tasks; ` +
+      `${fmt(count('unknown'))} carry no flag yet (the pipeline learns the type at delivery) and appear under All only. ` +
+      (both ? `${fmt(both)} Company Bench tasks are also connector tasks; they count under Company Bench. ` : '') +
+      'People follow the same rule: Company Bench by team, otherwise by the type of work they have accepted. The 240 audit counts and the daily plan are not split, and say so.';
+  },
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
   v2Accepted: 'Task folders in tasks/finalisation_client_qc_accepted_iteration_2/ in the bucket - the second client QC finalisation round. It is one of three accepted cohorts, so it is smaller than the accepted total on the Finalisation tab, and a task finalised into more than one cohort is counted here once per folder. Read it as the size of the v2 round, not as the total accepted work.',
@@ -327,13 +338,15 @@ function renderScopeFunnel() {
   const value = byId('countFunnel');
   if (!value) return;
   if (!truth) { value.textContent = '-'; return; }
-  const rows = truth.rows;
+  const rows = truthRows();
   // The scope chain is the longest published chain, cut at the step that
-  // produced the in-scope count; later steps are figure-specific.
+  // produced the in-scope count; later steps are figure-specific. A segment
+  // adds one more step of its own.
   const longest = [...truth.figures.values()].map(figure => figure.steps || [])
     .sort((a, b) => b.length - a.length)[0] || [];
-  const cut = longest.findIndex(step => step.count === rows.length);
-  const shared = cut >= 0 ? longest.slice(0, cut + 1) : [];
+  const cut = longest.findIndex(step => step.count === truth.rows.length);
+  const shared = (cut >= 0 ? longest.slice(0, cut + 1) : [])
+    .concat(segment ? [{step: `in the ${SEGMENTS[segment]} segment`, count: rows.length}] : []);
   scopeChain = shared;
   // Caveat counts feed the tooltip only.
   scopeCaveats = {
@@ -342,8 +355,8 @@ function renderScopeFunnel() {
     duplicates: rows.filter(row => row.possibleDuplicate).length,
     lowConfidence: rows.filter(row => row.confidence === 'low').length,
   };
-  animateCount(value, truth.counts?.inScope ?? rows.length);
-  setTextIfPresent('commandScopeNote', `since ${truth.cut}`);
+  animateCount(value, segment ? rows.length : (truth.counts?.inScope ?? rows.length));
+  setTextIfPresent('commandScopeNote', `since ${truth.cut}${segment ? ` · ${SEGMENTS[segment]} only` : ''}`);
   const node = byId('detailScope');
   if (node) node.innerHTML = shared.map(step => `<div><span>${esc(step.step)}</span><b>${fmt(step.count)}</b></div>`).join('');
 }
@@ -353,7 +366,7 @@ let deltaModel = null;
 function buildDelta() {
   if (!truth) { deltaModel = null; return; }
   try {
-    deltaModel = window.prepareDelta(truth);
+    deltaModel = window.prepareDelta({...truth, rows: truthRows()});
   } catch (error) {
     deltaModel = null;
     setText('deltaNote', `Daily delta could not be built: ${error.message}`);
@@ -403,7 +416,57 @@ function populateDeltaFilter() {
   select.value = counts.has(chosen) ? chosen : '';
 }
 
+
+// The split at a glance: one tile per segment, each one the filter.
+function renderSegmentStrip() {
+  const host = byId('segmentStrip');
+  if (!host) return;
+  const rows = truth ? truth.rows : [];
+  const people = data.trainers || [];
+  const ledger = payoutLedgerTasks;
+  const keys = ['connector', 'non-connector', 'company'];
+  const tiles = keys.map(key => {
+    const tasks = rows.filter(row => segmentOf(row.owner, row.connector) === key);
+    const v = verdicts(tasks);
+    const legacy = tasks.filter(r => r.state === 'legacy accepted').length;
+    const folk = people.filter(row => personSegments(row).has(key));
+    const money = ledger.filter(task => segmentOf(task.email, typeFlag(task.filterType)) === key);
+    const paid = money.filter(t => t.paymentState === 'Paid' || t.paymentState === 'Not itemised').length;
+    return {key, label: SEGMENTS[key], tasks: tasks.length, accepted: v.acc + legacy, rejected: v.rej, other: tasks.length - v.acc - legacy - v.rej,
+            people: folk.length, ledger: money.length, paid};
+  });
+  const unknown = rows.filter(row => segmentOf(row.owner, row.connector) === 'unknown').length;
+  const typed = rows.length - unknown;
+  const lead = [...tiles].sort((a, b) => b.accepted - a.accepted)[0];
+  host.innerHTML = `
+    <div class="segstrip-head">
+      <p class="eyebrow">The split<button class="why" data-info="segment" aria-label="How the segments are defined">?</button><span>${fmt(typed)} of ${fmt(rows.length)} pipeline tasks carry a type${unknown ? ` · ${fmt(unknown)} do not yet` : ''}</span></p>
+      <p class="segstrip-note">${segment ? `Showing <b>${SEGMENTS[segment]}</b> everywhere · click the tile again for all` : 'Click a tile to filter the whole dashboard'}</p>
+    </div>
+    <div class="segtiles">
+      ${tiles.map((t, index) => `<button type="button" class="segtile${segment === t.key ? ' is-on' : ''}${lead && lead.key === t.key && t.accepted ? ' is-lead' : ''}" style="--i:${index};--c:var(${SEGMENT_TONES[t.key]})" data-seg="${t.key}" aria-pressed="${segment === t.key}" data-tip="${esc(t.label)}: ${fmt(t.tasks)} pipeline tasks, ${fmt(t.accepted)} accepted · ${fmt(t.people)} people · ${fmt(t.ledger)} ledger tasks, ${fmt(t.paid)} paid">
+        <div class="segtile-head"><span class="segtile-name"><i></i>${esc(t.label)}</span>${lead && lead.key === t.key && t.accepted ? '<span class="medal medal-1" data-tip="Most accepted tasks">1</span>' : ''}</div>
+        <div class="segtile-main"><b data-count="${t.tasks}" data-key="seg:${t.key}:tasks">${fmt(t.tasks)}</b><span>pipeline tasks<small>${typed ? Math.round((t.tasks / typed) * 100) : 0}% of typed</small></span></div>
+        <span class="segtile-share"><i style="--pct:${typed ? Math.round((t.tasks / typed) * 100) : 0}"></i></span>
+        ${t.tasks ? verdictBar(t.accepted, t.rejected, t.other, t.tasks) : '<span class="vbar"></span>'}
+        <div class="segtile-facts">
+          <div><b data-count="${t.accepted}" data-key="seg:${t.key}:acc">${fmt(t.accepted)}</b><span>accepted</span></div>
+          <div><b data-count="${t.people}" data-key="seg:${t.key}:people">${fmt(t.people)}</b><span>people</span></div>
+          <div><b data-count="${t.paid}" data-key="seg:${t.key}:paid">${fmt(t.paid)}</b><span>paid of ${fmt(t.ledger)}</span></div>
+        </div>
+      </button>`).join('')}
+      ${unknown ? `<div class="segtile is-unknown" style="--i:3;--c:var(--slate)" data-tip="The pipeline only learns a task's type once it reaches delivery; these ${fmt(unknown)} have not, so they count under All and nowhere else.">
+        <div class="segtile-head"><span class="segtile-name"><i></i>Type not yet known</span></div>
+        <div class="segtile-main"><b data-count="${unknown}" data-key="seg:unknown">${fmt(unknown)}</b><span>pipeline tasks<small>${Math.round((unknown / (rows.length || 1)) * 100)}% of all</small></span></div>
+        <p class="segtile-why">No connector flag until delivery. Shown under All only.</p>
+      </div>` : ''}
+    </div>`;
+  animateCounts(host);
+}
+
 function renderEverything() {
+  syncSegmentSwitch();
+  renderSegmentStrip();
   renderSources();
   renderHero(); renderTopPendingCards(); renderDonut(); renderTrainerRows(); renderTeams();
   renderBenchCards();
@@ -413,6 +476,7 @@ function renderEverything() {
   renderScopeFunnel();
   populateDeltaFilter();
   renderDailyDelta();
+  fitDeck();
 }
 
 // The bucket is no longer a view of its own - it is the delivery evidence
@@ -508,11 +572,11 @@ async function loadPayoutLedger() {
   populateLedgerFilters();
   renderTrainerRows();
   renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
+  renderSegmentStrip();
 }
 
 function populateLedgerFilters() {
   const options = {
-    ledgerType: ['All task types', [...new Set(payoutLedgerTasks.map(row => row.filterType))].sort()],
     ledgerPayment: ['All payment states', [...new Set(payoutLedgerTasks.map(row => row.paymentState))].sort()],
   };
   Object.entries(options).forEach(([id, [label, values]]) => {
@@ -528,14 +592,12 @@ const PAYMENT_TONES = {Paid: 'aqua', Pending: 'red', 'Not itemised': 'yellow'};
 function renderPayoutLedger() {
   if (!payoutLedger) return;
   const filters = {
-    bench: byId('benchFilter').value,
     search: byId('ledgerSearch').value,
     payment: byId('ledgerPayment').value,
-    type: byId('ledgerType').value,
     validity: byId('ledgerValidity').value,
     duplicates: byId('ledgerDuplicates').value,
   };
-  const result = window.filterPayoutLedger(payoutLedgerTasks, filters);
+  const result = window.filterPayoutLedger(ledgerRows(), filters);
   const rows = result.rows;
   const people = new Map((payoutLedger.people || []).map(person => [person.email, person]));
 
@@ -560,13 +622,13 @@ function renderPayoutLedger() {
     cell('folded rows', result.duplicateRows, null, 'violet', 'ledgerDuplicates', 'duplicates', 'Source rows repeated for the same task and folded into one line.');
   animateCounts(byId('ledgerStrip'));
 
-  const labels = {ledgerSearch: 'Search', ledgerPayment: 'Payment', ledgerType: 'Type', ledgerValidity: 'Valid', ledgerDuplicates: 'Repeats', benchFilter: 'Bench'};
+  const labels = {ledgerSearch: 'Search', ledgerPayment: 'Payment', ledgerValidity: 'Valid', ledgerDuplicates: 'Repeats'};
   const shown = {valid: 'Valid', invalid: 'Valid = 0', duplicates: 'Folded only', unique: 'Single-row only'};
   const active = Object.keys(labels).map(id => [id, byId(id)?.value]).filter(([, value]) => value);
   byId('ledgerChips').innerHTML = active.length
     ? active.map(([id, value]) => `<button type="button" class="chipbtn" data-lclear="${id}"><span>${labels[id]}</span>${esc(shown[value] || value)}<i aria-hidden="true">×</i></button>`).join('') +
       '<button type="button" class="chipbtn is-clear" data-lclear="all">Clear all</button>'
-    : '<span class="chips-empty">No filters applied · the bench filter above also applies here</span>';
+    : `<span class="chips-empty">No filters applied${segment ? ` · ${SEGMENTS[segment]} segment from the top bar` : ''}</span>`;
 
   const sorted = [...rows].sort((a, b) => {
     const key = ledgerSort.key;
@@ -625,7 +687,7 @@ async function loadDeliveryAudit() {
 function auditFilters() {
   return {
     batch: byId('aBatch').value, category: byId('aCategory').value,
-    type: byId('aType').value, difficulty: byId('aDifficulty').value,
+    difficulty: byId('aDifficulty').value,
     glm: byId('aGlm').value, acceptance: byId('aAcceptance').value,
     priority: byId('aPriority').value, trainer: byId('aTrainer').value,
     flagged: byId('aFlagged').value, search: byId('aSearch').value,
@@ -638,7 +700,6 @@ function populateAuditFilters() {
   const all = window.filterDeliveryAudit(audit.rows, {});
   fillSelect('aBatch', all.byBatch, 'Any batch');
   fillSelect('aCategory', all.byCategory, 'Any category');
-  fillSelect('aType', all.byType, 'Any type');
   fillSelect('aDifficulty', all.byDifficulty, 'Any difficulty');
   fillSelect('aGlm', all.byGlm, 'Any score');
   fillSelect('aAcceptance', all.byAcceptance, 'Any acceptance');
@@ -673,8 +734,91 @@ const AUDIT_TONES = {
   difficulty: {Easier: '--aqua', Harder: '--orange'},
   type: {Connector: '--aqua', 'Non-connector': '--blue'},
 };
-const AUDIT_LENS_FILTER = {category: 'aCategory', acceptance: 'aAcceptance', glm: 'aGlm', batch: 'aBatch', difficulty: 'aDifficulty', type: 'aType', source: 'aSource'};
+const AUDIT_LENS_FILTER = {category: 'aCategory', acceptance: 'aAcceptance', glm: 'aGlm', batch: 'aBatch', difficulty: 'aDifficulty', source: 'aSource'};
 const AUDIT_FLAG_CODES = {'contested owner': 'CO', 'owner still contested': 'OC', unverified: 'UV', 'version dependent': 'VD'};
+
+// The segment split, one definition for every feed: Company Bench is the
+// owner's roster team; otherwise the task's connector flag decides. A row whose
+// source carries no flag is "type not yet known" and only shows under All.
+const SEGMENTS = {connector: 'Connector', 'non-connector': 'Non-connector', company: 'Company Bench'};
+const SEGMENT_TONES = {connector: '--aqua', 'non-connector': '--blue', company: '--violet', unknown: '--slate'};
+let segment = '';
+let rosterTeams = null;
+function rosterTeam(email) {
+  if (!rosterTeams) rosterTeams = new Map((data.trainers || []).map(row => [String(row.email || '').toLowerCase(), row.team || '']));
+  return rosterTeams.get(String(email || '').toLowerCase()) || '';
+}
+function segmentOf(email, connector) {
+  if (benchOf(rosterTeam(email)) === 'company') return 'company';
+  if (connector === true) return 'connector';
+  if (connector === false) return 'non-connector';
+  return 'unknown';
+}
+const inSegment = (email, connector) => !segment || segmentOf(email, connector) === segment;
+const typeFlag = type => (type === 'Connector' ? true : type === 'Non-connector' ? false : null);
+// Delivery folders carry the connector flag; evaluation rows borrow it by task name.
+let connectorByName = null;
+function connectorFor(task) {
+  if (!connectorByName) {
+    connectorByName = new Map();
+    (gcsPipeline?.finalisation?.tasks || []).forEach(folder => {
+      const flag = String(folder.is_connector).toLowerCase();
+      const value = flag === 'true' ? true : flag === 'false' ? false : null;
+      if (value === null) return;
+      [folder.declared_short, folder.folder].filter(Boolean).forEach(name => connectorByName.set(String(name).toLowerCase(), value));
+    });
+  }
+  const value = connectorByName.get(String(task || '').toLowerCase());
+  return value === undefined ? null : value;
+}
+// An evaluation row's type: the recorded task type first, then the folder flag.
+function evaluationConnector(row) {
+  const flag = typeFlag(pipelineType(row));
+  return flag === null ? connectorFor(row.task) : flag;
+}
+// A person is in a segment if they have work in it; Company Bench by team.
+function personSegments(row) {
+  if (benchOf(row.team) === 'company') return new Set(['company']);
+  const email = String(row.email || '').toLowerCase();
+  const ledger = payoutLedgerTasks.filter(task => String(task.email || '').toLowerCase() === email);
+  const con = (Number(row.sepConnectorAccepted) || 0) + (Number(row.projectConnectorAccepted) || 0) + ledger.filter(t => t.filterType === 'Connector').length;
+  const non = (Number(row.sepNonConnectorAccepted) || 0) + (Number(row.projectNonConnectorAccepted) || 0) + ledger.filter(t => t.filterType === 'Non-connector').length;
+  const set = new Set();
+  if (con) set.add('connector');
+  if (non) set.add('non-connector');
+  return set;
+}
+const personInSegment = row => !segment || personSegments(row).has(segment);
+const truthRows = () => (truth ? truth.rows.filter(row => inSegment(row.owner, row.connector)) : []);
+const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filter(row => inSegment(row.owner, row.connector)) : null);
+const auditRows = () => (audit ? audit.rows.filter(row => inSegment(row.trainer, typeFlag(row.type))) : []);
+const ledgerRows = () => payoutLedgerTasks.filter(task => inSegment(task.email, typeFlag(task.filterType)));
+
+function setSegment(value) {
+  segment = SEGMENTS[value] ? value : '';
+  try { localStorage.setItem('segment', segment); } catch { /* storage may be unavailable */ }
+  const url = new URL(location.href);
+  if (segment) url.searchParams.set('seg', segment); else url.searchParams.delete('seg');
+  history.replaceState(history.state, '', url);
+  renderEverything();
+}
+function syncSegmentSwitch() {
+  document.querySelectorAll('#segmentSwitch [data-seg]').forEach(button => {
+    const on = (button.dataset.seg || '') === segment;
+    button.classList.toggle('is-on', on);
+    button.setAttribute('aria-pressed', String(on));
+  });
+  document.body.dataset.segment = segment;
+  document.querySelectorAll('[data-range]').forEach(node => {
+    node.textContent = `${rangeLabel()}${segment ? ` · ${SEGMENTS[segment]} only` : ''}`;
+  });
+}
+function restoreSegment() {
+  let saved = '';
+  try { saved = new URL(location.href).searchParams.get('seg') || localStorage.getItem('segment') || ''; } catch { saved = ''; }
+  segment = SEGMENTS[saved] ? saved : '';
+}
+
 let auditLens = 'category';
 let auditSort = {key: 'task', dir: 1};
 
@@ -779,7 +923,7 @@ function fitWaffle() {
 window.addEventListener('resize', () => { if (audit) fitWaffle(); });
 
 function renderAuditChips(filters) {
-  const labels = {aBatch: 'Batch', aCategory: 'Category', aType: 'Type', aDifficulty: 'Difficulty', aGlm: 'GLM', aAcceptance: 'Acceptance', aPriority: 'Priority', aTrainer: 'Trainer', aSource: 'Source', aFlagged: 'Flagged', aSearch: 'Search'};
+  const labels = {aBatch: 'Batch', aCategory: 'Category', aDifficulty: 'Difficulty', aGlm: 'GLM', aAcceptance: 'Acceptance', aPriority: 'Priority', aTrainer: 'Trainer', aSource: 'Source', aFlagged: 'Flagged', aSearch: 'Search'};
   const active = [...AUDIT_FILTERS, 'aSearch'].map(id => [id, byId(id)?.value]).filter(([, value]) => value);
   byId('auditChips').innerHTML = active.length
     ? active.map(([id, value]) => `<button type="button" class="chipbtn" data-clear="${id}" title="Remove this filter"><span>${labels[id]}</span>${esc(id === 'aFlagged' ? (value === 'yes' ? 'Flagged' : 'Not flagged') : value)}<i aria-hidden="true">×</i></button>`).join('')
@@ -790,7 +934,7 @@ function renderAuditChips(filters) {
 function renderAudit() {
   if (!audit) return;
   const filters = auditFilters();
-  const result = window.filterDeliveryAudit(audit.rows, filters);
+  const result = window.filterDeliveryAudit(auditRows(), filters);
   const rows = result.rows;
   const shown = rows.length;
   const total = audit.rows.length;
@@ -801,7 +945,7 @@ function renderAudit() {
     ['Accepted', result.accepted, 'by the audit workbook', 'aqua', 'aAcceptance', 'Accepted', shown ? Math.round((result.accepted / shown) * 100) : 0],
     ['Rejected', result.rejected, 'by the audit workbook', 'red', 'aAcceptance', 'Rejected', shown ? Math.round((result.rejected / shown) * 100) : 0],
     ['Pending', result.pending, 'no decision recorded', 'yellow', 'aAcceptance', 'Pending', shown ? Math.round((result.pending / shown) * 100) : 0],
-    ['Connector tasks', result.connectors, `${shown ? Math.round((result.connectors / shown) * 100) : 0}% of those shown`, 'blue', 'aType', 'Connector', shown ? Math.round((result.connectors / shown) * 100) : 0],
+    ['Connector tasks', result.connectors, `${shown ? Math.round((result.connectors / shown) * 100) : 0}% of those shown`, 'blue', null, null, shown ? Math.round((result.connectors / shown) * 100) : 0],
     ['Trainers', result.trainers, `${fmt(shown - result.attributed)} unattributed`, 'violet', null, null, null],
   ];
   // What the bucket can still show for the audit. The workbook records what was
@@ -890,18 +1034,34 @@ function renderAudit() {
     : 'unknown';
   setText('auditStatus', `The Computer Bench task audit: ${fmt(audit.rows.length)} tasks across batches 1 to 4.1, built ${built}. ` +
     'A different population from Pipeline, judged by the audit workbook rather than by the GCS verdicts, so the two will not agree task for task.');
-  setText('auditCaveats',
-    `${fmt(result.flagged)} of ${fmt(shown)} shown carry a quality flag. ` +
-    (result.resolvedFromPipeline
-      ? `${fmt(result.resolvedFromPipeline)} had no usable owner in the workbook and take one from `
-        + 'the GCS verdicts instead, marked on the row. '
-      : '') +
-    `Acceptance here is the workbook figure, recorded ${audit.statusGeneratedAt ? audit.statusGeneratedAt.slice(0, 10) : 'an unknown date'}; `
-    + 'the Pipeline tab reads the bucket instead.');
   setText('auditAudit', `${fmt(shown)} of ${fmt(audit.rows.length)} tasks · ` +
     `${fmt(result.harder)} rated Harder · ${fmt(result.trainers)} trainers · ${result.megabytes.toFixed(0)} MB`);
   renderAuditChips(filters);
+  renderBatchTabs(filters);
   renderAuditRows(rows);
+}
+
+// Batch is the first cut anyone makes here, so it gets tabs of its own with a
+// count and verdict mix each; the other filters still apply to those counts.
+function renderBatchTabs(filters) {
+  const host = byId('auditBatchTabs');
+  if (!host) return;
+  const pool = window.filterDeliveryAudit(auditRows(), {...filters, batch: ''}).rows;
+  const order = (a, b) => parseFloat(String(a).replace(/[^\d.]/g, '')) - parseFloat(String(b).replace(/[^\d.]/g, ''));
+  const batches = [...new Set(auditRows().map(row => row.batch || window.DELIVERY_AUDIT_UNSET))].sort(order);
+  const current = byId('aBatch').value;
+  const tab = (value, label, list, index) => {
+    const v = verdicts(list);
+    return `<button type="button" class="batchtab${current === value ? ' is-on' : ''}" style="--i:${index}" data-filter="aBatch" data-value="${esc(value)}" aria-pressed="${current === value}" data-tip="${esc(label)}: ${fmt(list.length)} tasks${v.acc + v.rej ? ` \u00b7 ${v.rate}% of the ${fmt(v.acc + v.rej)} decided were accepted` : ' \u00b7 nothing decided yet'}">
+      <span class="batchtab-name">${esc(label)}</span>
+      <b class="batchtab-n" data-count="${list.length}" data-key="btab:${esc(value)}">${fmt(list.length)}</b>
+      ${list.length ? verdictBar(v.acc, v.rej, v.pen, list.length) : '<span class="vbar"></span>'}
+      <span class="batchtab-rate">${v.rate == null ? (list.length ? 'awaiting decisions' : 'no tasks') : `<b>${v.rate}%</b> accepted`}</span>
+    </button>`;
+  };
+  host.innerHTML = tab('', 'All batches', pool, 0) +
+    batches.map((batch, index) => tab(batch, batch, pool.filter(row => (row.batch || window.DELIVERY_AUDIT_UNSET) === batch), index + 1)).join('');
+  animateCounts(host);
 }
 
 async function loadTruth() {
@@ -965,6 +1125,8 @@ async function loadTruth() {
     renderScopeFunnel();
     populateDeltaFilter();
     renderDailyDelta();
+    renderSegmentStrip();
+    fitDeck();
   } catch (error) {
     truth = null;
     setText('truthStatus', `The derived pipeline could not be loaded: ${error.message}. ` +
@@ -1141,10 +1303,11 @@ function fillBench() {
   if (!node || !truth || !truth.rows) return;
   const keep = node.value;
   const filters = truthFilters();
-  const source = (filters.state === 'accepted' && truth.cohortRows)
-    ? truth.cohortRows : truth.rows;
+  // Under Accepted the rows are the bucket folders (truth.cohortRows), narrowed to the segment.
+  const cohort = truthCohortRows();
+  const source = (filters.state === 'accepted' && cohort) ? cohort : truthRows();
   const shown = window.filterTruth(source, {
-    ...filters, bench: '', state: source === truth.cohortRows ? '' : filters.state,
+    ...filters, bench: '', state: source === cohort ? '' : filters.state,
   }).rows;
   const tally = {};
   shown.forEach(row => {
@@ -1241,6 +1404,56 @@ function renderScope(result) {
     }).join('')}</div>`;
 }
 
+
+// The filter card: the three cuts people reach for first are chips with live
+// counts (each counted with the other filters applied), the rest are selects.
+function renderTruthFilterChips(filters, filtered) {
+  const rows = truthRows();
+  const without = key => window.filterTruth(rows, {...filters, [key]: ''});
+  const chip = (filter, value, label, count, tone, on) =>
+    `<button type="button" class="fchip${on ? ' is-on' : ''}" style="--c:${tone}" data-tfilter="${filter}" data-value="${esc(value)}" aria-pressed="${on}">${esc(label)}<b>${fmt(count)}</b></button>`;
+
+  const byState = without('state');
+  const states = ['accepted', 'rejected', 'error', 'running', 'legacy accepted'].filter(st => byState.rows.some(r => r.state === st));
+  byId('tStateChips').innerHTML = chip('tState', '', 'All', byState.rows.length, 'var(--slate)', !filters.state) +
+    states.map(st => chip('tState', st, stateLabel(st), byState.rows.filter(r => r.state === st).length, stateTone(st), filters.state === st)).join('');
+
+  const byDelivered = without('delivered').rows;
+  const deliveredCount = value => window.filterTruth(byDelivered, {delivered: value}).rows.length;
+  byId('tDeliveredChips').innerHTML = chip('tDelivered', '', 'Any', byDelivered.length, 'var(--slate)', !filters.delivered) +
+    [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
+      .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
+
+  const byConnector = without('connector').rows;
+  byId('tConnectorChips').innerHTML = chip('tConnector', '', 'Any', byConnector.length, 'var(--slate)', !filters.connector) +
+    [['yes', 'Connector', 'var(--aqua)', r => r.connector === true], ['no', 'Non-connector', 'var(--blue)', r => r.connector === false], ['unknown', 'Not known', 'var(--slate)', r => r.connector !== true && r.connector !== false]]
+      .map(([v, l, tone, test]) => chip('tConnector', v, l, byConnector.filter(test).length, tone, filters.connector === v)).join('');
+
+  const byGate = without('gateEra').rows;
+  const gates = [...new Set(byGate.map(r => r.gateEra).filter(Boolean))].sort((a, b) => byGate.filter(r => r.gateEra === b).length - byGate.filter(r => r.gateEra === a).length);
+  const GATE_TONES = {'KESTREL full': 'var(--green)', 'KESTREL on': 'var(--aqua)', 'Opus gate': 'var(--violet)', 'GLM-5.2 gate only': 'var(--amber)'};
+  byId('tGateChips').innerHTML = chip('tGate', '', 'Any', byGate.length, 'var(--slate)', !filters.gateEra) +
+    gates.map(g => chip('tGate', g, g, byGate.filter(r => r.gateEra === g).length, GATE_TONES[g] || 'var(--blue)', filters.gateEra === g)).join('');
+
+  const byDelivery = without('delivery').rows;
+  const deliveryCount = value => window.filterTruth(byDelivery, {delivery: value}).rows.length;
+  byId('tDeliveryChips').innerHTML = chip('tDelivery', '', 'Any', byDelivery.length, 'var(--slate)', !filters.delivery) +
+    [['current', 'At the current bar', 'var(--green)'], ['gateOnly', 'Awaiting re-gate', 'var(--amber)'], ['none', 'No package', 'var(--slate)']]
+      .map(([v, l, tone]) => chip('tDelivery', v, l, deliveryCount(v), tone, filters.delivery === v)).join('');
+
+  const shown = window.filterTruth(rows, filters).rows.length;
+  setText('truthFilterCount', filtered ? `${fmt(shown)} of ${fmt(rows.length)} tasks` : `${fmt(rows.length)} tasks`);
+
+  const labels = {tState: 'State', tGate: 'Gate', tFinding: 'Finding', tDelivery: 'Delivery', tDelivered: 'Delivered', tConnector: 'Connector', tGlm: 'GLM', tBench: 'Bench', tCarried: 'Carried over', tConfidence: 'Identity', tDomain: 'Domain', tOwner: 'Trainer', tDuplicate: 'Duplicates', tSearch: 'Search'};
+  const shownValue = id => { const node = byId(id); if (!node) return ''; if (node.tagName === 'SELECT') return (node.options[node.selectedIndex]?.textContent || node.value).replace(/\s*\(\d[\d,]*\)$/, ''); return node.value; };
+  const active = [...TRUTH_FILTERS, 'tSearch'].filter(id => byId(id)?.value);
+  const toneOf = id => byId(`${id}Chips`)?.querySelector('.fchip.is-on')?.style.getPropertyValue('--c') || 'var(--accent)';
+  byId('truthChips').innerHTML = active.length
+    ? active.map(id => `<button type="button" class="chipbtn" style="--c:${toneOf(id)}" data-tclear="${id}"><span>${labels[id] || id}</span>${esc(id === 'tState' ? stateLabel(byId(id).value) : shownValue(id))}<i aria-hidden="true">×</i></button>`).join('') +
+      '<button type="button" class="chipbtn is-clear" data-tclear="all">Clear all</button>'
+    : '';
+}
+
 function renderTruthFigures(result, filtered) {
   const cue = filtered ? 'filtered' : 'how is this counted?';
   // Accepted comes from the bucket, and only Accepted.
@@ -1290,11 +1503,11 @@ function renderTruthFigures(result, filtered) {
   // row reads as one strip. The join has no published chain - it depends on
   // the delivery audit, which the ingest chain never sees - so those two cells
   // explain themselves in the tooltip; the flags open their chain like the cards.
-  const stat = (label, value, base, tip, chain, tone, opens, sub) => `<${chain || opens ? 'button' : 'div'} class="stat${opens ? ' stat-opens' : ''}" style="--c:var(--${tone})"${chain ? ` data-chain="${esc(chain)}" aria-pressed="${openChain === chain}"` : ''}${opens ? ` data-opens="${esc(opens)}"` : ''} data-tip="${esc(tip)}">
+  const stat = (label, value, base, tip, chain, tone, opens, sub) => `<${chain || opens ? 'button' : 'div'} class="stat${opens ? ' stat-opens' : ''}" style="--c:var(--${tone});--ci:var(--${tone}-ink)"${chain ? ` data-chain="${esc(chain)}" aria-pressed="${openChain === chain}"` : ''}${opens ? ` data-opens="${esc(opens)}"` : ''} data-tip="${esc(tip)}">
       <b class="stat-n" data-count="${value}" data-key="stat:${esc(label)}">${fmt(value)}</b>
       <span class="stat-l">${esc(label)}</span>
       ${sub ? `<span class="stat-sub">${esc(sub)}</span>` : ''}
-      <span class="stat-bar"><i style="--pct:${base ? Math.min(100, Math.round((value / base) * 100)) : 0}"></i><small>${base ? `${Math.round((value / base) * 100)}%` : ''}</small></span>
+      ${base ? `<span class="stat-bar"><i style="--pct:${Math.min(100, Math.round((value / base) * 100))}"></i><small>${Math.round((value / base) * 100)}%</small></span>` : ''}
     </${chain || opens ? 'button' : 'div'}>`;
   // The delivery join is a reconciliation between two datasets - the Delivery
   // tab's audit and the whole pipeline - so all three figures are counts of
@@ -1308,12 +1521,9 @@ function renderTruthFigures(result, filtered) {
   // as tasks, "not found here" as missing work, the makeup strip as a
   // breakdown of the card above it. Saying what was done, what follows from
   // it, and what it does NOT claim is what stops that.
-  const tip = (meaning, did, so, not) =>
-    `${meaning}
-
-Did · ${did}
-So · ${so}
-Not · ${not}`;
+  // One sentence per tile: what the number is. The derivation lives in the
+  // chain panel and the drill rows, not in a hover.
+  const tip = meaning => meaning;
 
   const idx = truth?.deliveredIndex;
   const c = idx ? idx.counts : null;
@@ -1323,7 +1533,7 @@ Not · ${not}`;
           'Read the manifests themselves - the files that were sent - and checked them against the Delivery tab. Same names, same batch split, nothing in one and not the other.',
           `The two figures beside it split this number and nothing else: ${fmt(c.manifestLiveConfirmed)} + ${fmt(c.manifestLiveMissing)} = ${fmt(c.manifestTasks)}.`,
           'Not a count of what is on screen. This is a fixed record of what went out, and it does not follow the filters.'),
-        null, 'aqua') +
+        null, 'blue') +
       stat('still in the bucket', c.manifestLiveConfirmed, c.manifestTasks,
         tip('Delivered packages whose archive is still there.',
           `Listed the finalisation prefix on ${esc(c.manifestLiveCheckedOn)} and looked for the exact object each manifest names.`,
@@ -1407,10 +1617,8 @@ Not · ${not}`;
         'Checked each task against the current-bar listing of the bucket rather than trusting its verdict.',
         'Only these can be delivered at all, which is why ready is drawn from them.',
         'Not the same as accepted. A rejected task can have a collectable package, and an accepted one can have none.')],
-  ].map(([label, value, chain, copy]) => stat(label, value, result.rows.length,
-    `${copy}
-Share · of the ${fmt(result.rows.length)} tasks shown. These overlap; a task can carry several.`,
-    chain, 'slate')).join('');
+  ].map(([label, value, chain, copy]) => stat(label, value, result.rows.length, copy, chain,
+    {'carried over': 'violet', 'awaiting re-gate': 'amber', 'possible duplicates': 'red', 'packages at the bar': 'green'}[label] || 'slate')).join('');
 
   // The question this answers is the one the strip above kept inviting and
   // could not answer: what is left to send. Accepted with a collectable
@@ -1438,7 +1646,7 @@ Share · of the ${fmt(result.rows.length)} tasks shown. These overlap; a task ca
           `Read the folder each manifest packaged from, then counted its task as delivered. ${fmt(tx.deliveredViaSibling)} folders were never delivered themselves but hold a task that went out under another folder name; they count here, not below.`,
           `${fmt(tx.delivered)} of the ${fmt(tx.tasks)} tasks here have been handed over.`,
           `Not the ${fmt(truth.deliveredIndex ? truth.deliveredIndex.counts.manifestTasks : 412)} in the join on the left. That is every task ever delivered; this is the ones whose folder is still in this prefix.`),
-        null, 'aqua') +
+        null, 'blue') +
       stat('still to deliver', tx.toDeliver, tx.tasks,
         tip('Accepted tasks no manifest has claimed under any of their folders.',
           'Took the tasks in the prefix and removed every one with a delivered folder.',
@@ -1446,7 +1654,7 @@ Share · of the ${fmt(result.rows.length)} tasks shown. These overlap; a task ca
             ? `This is the pool a new delivery is cut from. ${fmt(tx.toDeliverNeedsCheck)} carry CK: a different trainer already delivered a task with the same declared name, so check before shipping.`
             : 'This is the pool a new delivery is cut from.',
           `Not a promise that all of them should go. ${fmt(cx.latestRejected)} hold an accepted package whose later resubmission was rejected, and that is worth a look before shipping.`),
-        null, 'blue')
+        null, 'magenta')
     : stat('accepted at the bar', result.acceptedAtBarTasks, 0,
         'The bucket listing has not loaded, so this falls back to the verdict count.',
         null, 'slate');
@@ -1707,25 +1915,38 @@ function declaredLine(row) {
   return `<span class="declared" title="The [task] name declared in the package's task.toml">declared: ${esc(bare(declared))}</span>`;
 }
 
+let truthSort = {key: '', dir: 1};
 function renderTruthRows(rows) {
   const size = pageSize('truthPageSize');
+  if (truthSort.key) {
+    const key = truthSort.key;
+    rows = [...rows].sort((a, b) => {
+      const va = typeof a[key] === 'number' ? a[key] : String(a[key] ?? ''), vb = typeof b[key] === 'number' ? b[key] : String(b[key] ?? '');
+      return (va < vb ? -1 : va > vb ? 1 : 0) * truthSort.dir || String(a.name).localeCompare(String(b.name));
+    });
+  }
+  document.querySelectorAll('#truthTable .sort').forEach(button => {
+    const on = button.dataset.sort === truthSort.key;
+    button.classList.toggle('is-on', on);
+    button.dataset.dir = on ? (truthSort.dir > 0 ? 'asc' : 'desc') : '';
+  });
   const pages = Math.max(Math.ceil(rows.length / size), 1);
   truthPage = Math.min(truthPage, pages - 1);
   const from = truthPage * size;
   const slice = rows.slice(from, from + size);
   byId('truthRows').innerHTML = slice.length ? slice.map((row, index) => {
     const id = `truth-${truthPage}-${index}`;
-    return `<tr class="drill-head">
+    return `<tr class="drill-head" style="--i:${index}">
       <td><button class="drill-toggle" aria-expanded="false" aria-controls="${id}" aria-label="Evidence for ${esc(row.name)}">+</button></td>
       <td class="num serial">${fmt(from + index + 1)}</td>
       <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span>${declaredLine(row)}</div></td>
       <td class="flagcell">${flagBadges(row, `dup-${id}`)}</td>
-      <td><span class="state state-${esc(row.state.replace(/\s+/g, '-'))}">${esc(row.state)}</span></td>
-      <td>${esc(row.owner || '\u2013')}</td>
-      <td>${esc(row.decided || '\u2013')}${row.decidedInferred ? '<span class="chip chip-warn" title="No decision timestamp on the verdict; dated from when it was last updated">approx</span>' : ''}</td>
-      <td>${esc(row.gateEra)}</td>
+      <td><span class="statepill" style="--c:${stateTone(row.state)}">${esc(stateLabel(row.state))}</span></td>
+      <td>${row.owner ? `<span class="who"><i class="avatar">${esc(initials(row.owner))}</i><span title="${esc(row.owner)}">${esc(row.owner)}</span></span>` : '<span class="who is-none"><i class="avatar">?</i><span>Not recorded</span></span>'}</td>
+      <td><span class="batch-chip">${esc(row.decided || '\u2013')}</span>${row.decidedInferred ? '<span class="flag flag-warn" title="No decision timestamp on the verdict; dated from when it was last updated">~</span>' : ''}</td>
+      <td><span class="gate-chip">${esc(row.gateEra)}</span></td>
       <td class="glmcell">${glmCell(row)}</td>
-      <td class="num">${fmt(row.runs)}</td>
+      <td class="num"><span class="runs-dots" data-tip="${fmt(row.runs)} run${row.runs === 1 ? '' : 's'} recorded">${Array.from({length: Math.min(row.runs, 7)}, () => '<i></i>').join('')}${row.runs > 7 ? '<i class="more"></i>' : ''}<b>${fmt(row.runs)}</b></span></td>
     </tr>
     <tr class="drill" id="${id}" hidden><td colspan="10">
       <dl class="evidence">
@@ -1762,6 +1983,7 @@ function renderTruthRows(rows) {
   setText('truthPage', `${fmt(from + 1)}\u2013${fmt(from + slice.length)} of ${fmt(rows.length)}`);
   byId('truthPrev').disabled = truthPage === 0;
   byId('truthNext').disabled = truthPage >= pages - 1;
+  fitDeck();
 }
 
 // What the delivered join could not account for.
@@ -1835,47 +2057,35 @@ function renderTruth() {
   // Accepted is decided by the bucket, so its list is the bucket's folders -
   // one row each - not a selection of verdict rows. The state filter is
   // dropped because every folder here is an accepted package by definition;
-  // the State column then shows what the latest verdict says about it, which
-  // is a different question and is why some read rejected.
-  const byBucket = filters.state === 'accepted' && truth.cohortRows;
+  // the State column then shows what the latest verdict says about it.
+  const cohort = truthCohortRows();
+  const byBucket = filters.state === 'accepted' && cohort;
   const result = byBucket
-    ? window.filterTruth(truth.cohortRows, {...filters, state: ''})
-    : window.filterTruth(truth.rows, filters);
-  // Accepted is a bucket figure, but it still has to answer the question the
-  // filters are asking. Counted over the same folders, narrowed the same way,
-  // so it equals the table whenever Accepted is the selected state.
-  acceptedShown = truth.cohortRows
-    ? window.acceptedTaskCounts(window.filterTruth(truth.cohortRows, {...filters, state: ''}).rows)
+    ? window.filterTruth(cohort, {...filters, state: ''})
+    : window.filterTruth(truthRows(), filters);
+  // Accepted is a bucket figure counted over the same folders, narrowed the
+  // same way, so it equals the table whenever Accepted is the selected state.
+  acceptedShown = cohort
+    ? window.acceptedTaskCounts(window.filterTruth(cohort, {...filters, state: ''}).rows)
     : null;
+  renderTruthFilterChips(filters, filtered);
   renderTruthFigures(result, filtered);
   renderScope(result);
   if (openChain) renderChain(openChain, filtered);
-  setText('truthStatus', `Derived from ${truth.bucket} at ${new Date(truth.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})} / ` +
-    `${fmt(truth.rows.length)} tasks decided on or after ${truth.cut}. The Harbor Console is not read.`);
+  // The status line is for rebuild progress only; provenance sits in the source strip.
+  if (!byId('truthRefresh')?.disabled) setText('truthStatus', '');
   const idx = truth.deliveredIndex;
-  setText('truthCaveats', `${fmt(result.unmerged)} of ${fmt(result.rows.length)} shown are unmerged, so repeat runs of them may still count separately. ` +
-    `${fmt(result.inferredDates)} carry no decision timestamp and are dated from when the verdict was last updated.` +
-    (idx ? ` Delivered is joined from the ${fmt(idx.counts.auditedTasks)} tasks on the Delivery tab by name; ` +
-      `${fmt(idx.counts.auditedUnmatched)} of those found no task here, ${fmt(idx.counts.unmatchedAccepted)} of them accepted.` : '') +
-    (truth.deliveredStale ? ' The delivered join was built against an earlier pipeline than the one shown, so treat those two figures as out of date until it is rebuilt.' : ''));
   renderJoinGap(result);
-  if (byBucket) {
-    setText('truthCaveats',
-      `Accepted is the ${fmt(window.acceptedTaskCounts(truth.cohortRows).tasks)} tasks held by the `
-      + `${fmt(truth.cohortRows.length)} folders in ${esc(truth.cohortIndex.cohort)} - one row per folder below, `
+  setText('truthCaveats', byBucket
+    ? `Accepted is the ${fmt(window.acceptedTaskCounts(cohort).tasks)} tasks held by the `
+      + `${fmt(cohort.length)} folders in ${esc(truth.cohortIndex.cohort)} - one row per folder below, `
       + 'with DUP on folders that hold the same task - counted in the bucket rather than derived from the verdicts. '
-      + `${fmt(truth.cohortRows.filter(r => r.noVerdict).length)} of them have no verdict inside the pipeline window, `
+      + `${fmt(cohort.filter(r => r.noVerdict).length)} of them have no verdict inside the pipeline window, `
       + 'so their trainer and dates are blank rather than borrowed from another run. '
-      + `Every row here is an accepted package, so the other cards are zero. `
-      + `${fmt(truth.cohortRows.filter(r => r.latestVerdict && r.latestVerdict !== 'accepted').length)} of them have had a later `
-      + 'submission come back rejected or unfinished; that is a different run and is shown in the row’s evidence, not as its state.');
-  }
-  setText('truthAudit', (result.collapsed
-      ? `${fmt(result.rows.length)} tasks shown, folded from ${fmt(result.submissions)} pipeline rows ` +
-        `(${fmt(result.versionsFolded)} repeat versions counted once) / `
-      : `${fmt(result.rows.length)} of ${fmt(truth.rows.length)} tasks shown / `) +
-    `${fmt(result.atCurrentBar)} have a package at the current bar / ${fmt(result.gateOnly)} await a KESTREL re-gate / ` +
-    `${fmt(result.owners)} trainers.`);
+      + `${fmt(cohort.filter(r => r.latestVerdict && r.latestVerdict !== 'accepted').length)} of them have had a later `
+      + 'submission come back rejected or unfinished; that is a different run and is shown in the row\u2019s evidence, not as its state.'
+    : '');
+  setText('truthCount', `${fmt(result.rows.length)}${result.collapsed ? ' tasks' : ` of ${fmt(truth.rows.length)} tasks`} \u00b7 ${fmt(result.atCurrentBar)} at the bar \u00b7 ${fmt(result.owners)} trainers`);
   renderManifestBar(result);
   fillBench();
   renderExportButton(result);
@@ -1973,9 +2183,10 @@ function downloadManifest() {
 
 function shownRows() {
   const filters = truthFilters();
-  return (filters.state === 'accepted' && truth.cohortRows)
-    ? window.filterTruth(truth.cohortRows, {...filters, state: ''})
-    : window.filterTruth(truth.rows, filters);
+  const cohort = truthCohortRows();
+  return (filters.state === 'accepted' && cohort)
+    ? window.filterTruth(cohort, {...filters, state: ''})
+    : window.filterTruth(truthRows(), filters);
 }
 
 function exportRowCount() {
@@ -2049,9 +2260,9 @@ function carriedFilters() {
 
 function renderCarried() {
   if (!truth) return;
-  const all = truth.rows.filter(row => row.carriedOver);
+  const all = truthRows().filter(row => row.carriedOver);
   const filters = carriedFilters();
-  const base = window.filterTruth(truth.rows, filters).rows;
+  const base = window.filterTruth(truthRows(), filters).rows;
   const rows = base.filter(row => (!carriedExtra.day || row.decided === carriedExtra.day) &&
     (!carriedExtra.runs || runsBucket(row.runs) === carriedExtra.runs) &&
     (!carriedExtra.finding || (row.findingsAllRuns || row.findings || []).includes(carriedExtra.finding)) &&
@@ -2286,6 +2497,7 @@ async function loadGcsPipeline(manual = false) {
     if (payload.schemaVersion !== 3 || !['current','historical','legacy'].every(key=>Array.isArray(payload[key])) || !Array.isArray(payload.finalisation?.tasks)) throw new Error('Invalid GCS export');
     ['current', 'historical', 'legacy'].forEach(key => payload[key].forEach(task => { task.domain = pipelineDomain(task); }));
     gcsPipeline = payload;
+    connectorByName = null;
     loadFinalisation(); renderDonut(); renderTrainerRows();
     renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
     if (manual) setTextIfPresent('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
@@ -2517,19 +2729,20 @@ function switchView(viewName, push = true) {
   // tab is, and re-applied on every visit rather than once at startup.
   if (viewName === 'payouts') applyPayoutLock();
   if (viewName === 'explorer') loadExplorer();
+  if (viewName === 'pipeline') fitDeck();
   if (push && location.hash.slice(1) !== viewName) history.pushState({viewName}, '', `#${viewName}`);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function commandSnapshot() {
-  const folders = finalisationRows.filter(row => inRange(row.date));
+  const folders = finalisationRows.filter(row => inRange(row.date) && inSegment(row.trainer?.email, typeFlag(row.filterType)));
   // One task can be finalised into several cohorts; the accepted count is task names, not folders.
   const tasks = new Set(folders.map(row => row.name));
   return {
     ready: Boolean(finalisationRows.length && gcsPipeline),
     folders,
     tasks,
-    current: (gcsPipeline?.current || []).filter(row => inRange(row.date)),
+    current: (gcsPipeline?.current || []).filter(row => inRange(row.date) && inSegment(row.trainer, evaluationConnector(row))),
     duplicates: folders.length - tasks.size,
     unassigned: folders.filter(row => !row.trainer).length,
   };
@@ -2539,15 +2752,15 @@ function renderHero() {
   const snapshot = commandSnapshot();
   const rows = payoutRows();
   // Published totals are displayed as published; per-row sums are the fallback.
-  const totals = payoutLedger?.totals;
+  const totals = segment ? null : payoutLedger?.totals;
   const summary = {
     paidAmount: totals ? totals.paidAmount : sum(rows, 'paidAmount'),
     pendingAmount: totals ? totals.pendingAmount : sum(rows, 'pendingAmount'),
     pendingTasks: totals ? totals.pendingTasks : sum(rows, 'pendingTasks'),
     paidTasks: totals ? totals.paidTasks : sum(rows, 'paidTasks'),
     acceptedTasks: totals ? totals.acceptedTasks : sum(rows, 'acceptedTasks'),
-    activeTrainers: data.summary?.activeTrainers ?? rows.filter(r => String(r.status).toLowerCase() === 'active').length,
-    totalTrainers: data.summary?.totalTrainers ?? rows.length,
+    activeTrainers: (!segment && data.summary?.activeTrainers) || rows.filter(r => String(r.status).toLowerCase() === 'active').length,
+    totalTrainers: (!segment && data.summary?.totalTrainers) || rows.length,
   };
   const generated = new Date(data.meta.generatedAt);
   const paid = summary.paidAmount;
@@ -2569,7 +2782,7 @@ function renderHero() {
   const v2 = snapshot.ready ? {tasks: v2Folders.length} : null;
   setCount('metricClientAccepted', clientAcceptance ? clientAcceptance.accepted : null);
   setText('metricClientAcceptedNote', clientAcceptance
-    ? `Priority Low of ${fmt(clientAcceptance.tasks)} audited tasks${clientAcceptance.live ? '' : ' / saved snapshot'}${dated ? ' / all dates: the 240 dashboard snapshot carries counts only' : ''}`
+    ? `Priority Low of ${fmt(clientAcceptance.tasks)} audited tasks${clientAcceptance.live ? '' : ' / saved snapshot'}${dated ? ' / all dates: the 240 dashboard snapshot carries counts only' : ''}${segment ? ' / not split by segment' : ''}`
     : 'Harbor 240 dashboard unavailable');
   setCount('metricV2Accepted', v2 ? v2.tasks : null);
   setText('metricV2AcceptedNote', v2 ? `of ${fmt(finalisationRows.length)} accepted folders` : '');
@@ -2669,7 +2882,7 @@ function renderHero() {
   }
 }
 
-function segment(tone, value, scale, tip) {
+function moneySeg(tone, value, scale, tip) {
   if (!value) return '';
   // Label inside the bar only where it fits; the tooltip and the line beneath
   // carry the number for the slivers.
@@ -2809,8 +3022,8 @@ function renderExposureChart(rows) {
       return `<div class="bench-bar" data-bench="${bench.key}" style="--i:${index}">
         <div class="bench-bar-head"><span>${esc(bench.label)}</span><b data-count="${benchTotal}" data-kind="money" data-key="bar:${bench.key}">${money(benchTotal)}</b></div>
         <div class="stack" style="width:${Math.max((benchTotal / scale) * 100, 2)}%">
-          ${segment('is-paid', bench.paid, scale, `${bench.label}: ${money(bench.paid)} paid for ${fmt(bench.paidTasks)} tasks`)}
-          ${segment('is-pending', bench.pending, scale, `${bench.label}: ${money(bench.pending)} owed for ${fmt(bench.pendingTasks)} tasks`)}
+          ${moneySeg('is-paid', bench.paid, scale, `${bench.label}: ${money(bench.paid)} paid for ${fmt(bench.paidTasks)} tasks`)}
+          ${moneySeg('is-pending', bench.pending, scale, `${bench.label}: ${money(bench.pending)} owed for ${fmt(bench.pendingTasks)} tasks`)}
         </div>
         <div class="bench-bar-foot">${fmt(bench.paidTasks)} of ${fmt(bench.paidTasks + bench.pendingTasks)} tasks paid</div>
       </div>`;
@@ -2991,9 +3204,7 @@ function uniqueTeams() {
 function filteredTrainers() {
   const search = byId("personSearch").value.trim().toLowerCase();
   const payment = byId('paymentFilter').value;
-  const bench = byId('benchFilter').value;
   return payoutRows()
-    .filter(row => !bench || benchOf(row.team) === bench)
     .filter(row => !payment || (payment === 'pending' ? row.pendingTasks > 0 : payment === 'paid' ? row.paidTasks > 0 : payment === 'no-paid' ? row.paidTasks === 0 : row.acceptedTasks === 0))
     .filter((trainer) => {
       if (!search) return true;
@@ -3068,7 +3279,7 @@ function benchOf(team) {
 function payoutRows() {
   const acceptedByEmail = payoutLedger ? ledgerAcceptedByEmail() : new Map();
   const paidByEmail = new Map((data.paidOut || []).map(row => [String(row.email || '').toLowerCase(), row]));
-  return data.trainers.map(row => {
+  return data.trainers.filter(personInSegment).map(row => {
     const paid = paidByEmail.get(row.email.toLowerCase());
     const acceptedTasks = payoutLedger ? (acceptedByEmail.get(row.email.toLowerCase()) || 0) : row.acceptedTasks;
     const paidTasks = Number(paid?.approvedTasks) || 0;
@@ -3088,7 +3299,7 @@ function renderPayoutSummary(rows) {
   const requests = payoutLedger?.totals?.paymentRequests;
   const requestDays = [...new Set((payoutLedger?.requests || []).map(r => r.requestedOn).filter(Boolean))].sort();
   const cards = [
-    ['Accepted tasks', sum(rows, 'acceptedTasks'), 'int', `${fmt(people)} ${people === 1 ? 'person' : 'people'} with accepted work`, 'aqua', null, null],
+    ['Accepted tasks', sum(rows, 'acceptedTasks'), 'int', `${fmt(people)} ${people === 1 ? 'person' : 'people'} with accepted work`, 'green', null, null],
     ['Paid tasks', sum(rows, 'paidTasks'), 'int', 'at $300 a task', 'blue', 'paymentFilter', 'paid', sum(rows, 'acceptedTasks') ? Math.round((sum(rows, 'paidTasks') / sum(rows, 'acceptedTasks')) * 100) : 0],
     ['Paid', paid, 'money', `${earned ? Math.round((paid / earned) * 100) : 0}% of ${money(earned)} earned`, 'aqua', null, null, earned ? Math.round((paid / earned) * 100) : 0],
     ['Owed', pending, 'money', `${fmt(sum(rows, 'pendingTasks'))} tasks not yet requested`, 'red', 'paymentFilter', 'pending', earned ? Math.round((pending / earned) * 100) : 0],
@@ -3118,7 +3329,7 @@ function renderPayoutPanels(rows) {
             settled: paid + owed ? Math.round((paid / (paid + owed)) * 100) : 0};
   }).filter(b => b.paid || b.owed);
   byId('payoutBenches').innerHTML = benches.length ? benches.map((b, index) => `
-    <button type="button" class="benchring${byId('benchFilter').value === b.key ? ' is-on' : ''}" style="--i:${index}" data-pfilter="benchFilter" data-value="${b.key}" data-tip="${esc(b.label)} bench: ${money(b.paid)} paid of ${money(b.paid + b.owed)} earned · click to filter">
+    <div class="benchring" style="--i:${index}" data-tip="${esc(b.label)} bench: ${money(b.paid)} paid of ${money(b.paid + b.owed)} earned">
       <div class="ring-big" style="--c:var(--aqua)">
         <svg viewBox="0 0 36 36" aria-hidden="true"><circle class="ring-bg" cx="18" cy="18" r="15.9155"/><circle class="ring-fg" cx="18" cy="18" r="15.9155" style="--pct:${b.settled}"/></svg>
         <b data-count="${b.settled}" data-kind="pct" data-key="bench:${b.key}:settled">${b.settled}%</b>
@@ -3132,7 +3343,7 @@ function renderPayoutPanels(rows) {
         </div>
         <div class="benchring-bar" aria-hidden="true">${b.paid ? `<i class="is-paid" style="flex:${b.paid}"></i>` : ''}${b.owed ? `<i class="is-owed" style="flex:${b.owed}"></i>` : ''}</div>
       </div>
-    </button>`).join('') : '<p class="empty">No payouts in this selection.</p>';
+    </div>`).join('') : '<p class="empty">No payouts in this selection.</p>';
 
   // One level finer: the same money per team, paid against owed on one scale.
   const teams = Object.entries(groupBy(rows.filter(row => row.paidAmount || row.pendingAmount), row => row.team || 'Unassigned'))
@@ -3148,7 +3359,7 @@ function renderPayoutPanels(rows) {
     </button>`).join('')}</div>
     <div class="chart-key"><span class="key-item"><i style="background:var(--aqua-ink)"></i>paid</span><span class="key-item"><i style="background:var(--red-ink)"></i>owed</span></div>` : '';
   const paid = sum(rows, 'paidAmount'), owed = sum(rows, 'pendingAmount');
-  setText('payoutBenchNote', paid + owed ? `${Math.round((paid / (paid + owed)) * 100)}% of ${money(paid + owed)} earned has been paid · ${money(owed)} still owed` : '');
+  setText('payoutBenchNote', paid + owed ? `${Math.round((paid / (paid + owed)) * 100)}% of ${money(paid + owed)} earned has been paid · ${money(owed)} still owed${segment ? ` · ${SEGMENTS[segment]} only` : ''}` : '');
   animateCounts(byId('payoutBenches'));
 }
 
@@ -3157,13 +3368,13 @@ function renderTrainerRows() {
   renderPayoutSummary(rows);
   renderPayoutPanels(rows);
   renderPayoutLedger();
-  const labels = {personSearch: 'Search', benchFilter: 'Bench', paymentFilter: 'Payment'};
+  const labels = {personSearch: 'Search', paymentFilter: 'Payment'};
   const shown = {pending: 'Owed', paid: 'Paid', 'no-paid': 'Never paid', zero: 'No accepted work', company: 'Company', computer: 'Computer', unassigned: 'Unassigned'};
   const active = Object.keys(labels).map(id => [id, byId(id)?.value]).filter(([, value]) => value);
   byId('payoutChips').innerHTML = active.length
     ? active.map(([id, value]) => `<button type="button" class="chipbtn" data-pclear="${id}"><span>${labels[id]}</span>${esc(shown[value] || value)}<i aria-hidden="true">×</i></button>`).join('') +
       '<button type="button" class="chipbtn is-clear" data-pclear="all">Clear all</button>'
-    : '<span class="chips-empty">No filters applied · click a figure, manager or bench above to filter</span>';
+    : `<span class="chips-empty">No filters applied${segment ? ` · ${SEGMENTS[segment]} segment from the top bar` : ''} · click a figure or team above to filter</span>`;
   setText('payoutPeopleNote', `${fmt(rows.length)} people · ${money(sum(rows, 'paidAmount'))} paid · ${money(sum(rows, 'pendingAmount'))} owed · ${fmt(sum(rows, 'last24Accepted'))} accepted in the last 24h`);
 
   const sorted = [...rows].sort((a, b) => {
@@ -3239,7 +3450,7 @@ function wirePayouts() {
     const pc = event.target.closest('#payoutChips [data-pclear]');
     if (pc) { if (pc.dataset.pclear === 'all') { byId('payoutReset').click(); return; } byId(pc.dataset.pclear).value = ''; rerender(); return; }
     const lc = event.target.closest('#ledgerChips [data-lclear]');
-    if (lc) { if (lc.dataset.lclear === 'all') { byId('resetLedgerFilters').click(); return; } byId(lc.dataset.lclear).value = ''; if (lc.dataset.lclear === 'benchFilter') { rerender(); } else { ledgerPage = 0; renderPayoutLedger(); } return; }
+    if (lc) { if (lc.dataset.lclear === 'all') { byId('resetLedgerFilters').click(); return; } byId(lc.dataset.lclear).value = ''; ledgerPage = 0; renderPayoutLedger(); return; }
     const head = event.target.closest('#trainerRows .drill-head');
     if (head) {
       const drill = head.nextElementSibling;
@@ -3261,14 +3472,14 @@ function wirePayouts() {
     renderPayoutLedger();
   }));
   byId('payoutReset')?.addEventListener('click', () => {
-    ['personSearch', 'benchFilter', 'paymentFilter'].forEach(id => { if (byId(id)) byId(id).value = ''; });
+    ['personSearch', 'paymentFilter'].forEach(id => { if (byId(id)) byId(id).value = ''; });
     rerender();
   });
 }
 
 function renderTeams() {
   if (!byId('teamGrid')) return;
-  const teams = Object.entries(groupBy(data.trainers, (trainer) => trainer.team || 'Unassigned'))
+  const teams = Object.entries(groupBy(data.trainers.filter(personInSegment), (trainer) => trainer.team || 'Unassigned'))
     .map(([team, rows]) => {
       const accepted = sum(rows, 'acceptedTasks');
       const paid = sum(rows, 'paidAmount');
@@ -3396,7 +3607,10 @@ async function loadExplorer(force = false) {
 // Plan against actual, as one race per bench: a lane to the target, the
 // daily bars beneath it, today marked and future days hatched.
 function planWindow() {
-  const benches = data.plan || [];
+  // The workbook plans per bench, so a segment shows its bench: Company
+  // Bench for company, Computer Bench for connector and non-connector alike.
+  const benches = (data.plan || []).filter(bench => !segment ||
+    (segment === 'company' ? /company/i.test(bench.bench) : !/company/i.test(bench.bench)));
   const dates = benches[0]?.dates || [];
   const within = dates.map(day => inRange(day));
   const shown = dates.filter((day, index) => within[index]);
@@ -3414,6 +3628,7 @@ function renderPlan() {
   const summary = byId('planSummary');
   if (!benches.length || !shown.length) {
     byId('planCharts').innerHTML = `<p class="empty">No daily plan ${dates.length ? 'in this date range' : 'recorded'}.</p>`;
+    setTextIfPresent('planNote', '');
     if (summary) summary.innerHTML = '';
     return;
   }
@@ -3433,6 +3648,9 @@ function renderPlan() {
     animateCounts(summary);
   }
 
+  setTextIfPresent('planNote', segment && segment !== 'company'
+    ? 'The plan is kept per bench; Computer Bench covers connector and non-connector work together.'
+    : '');
   byId('planCharts').innerHTML = benches.map((bench, benchIndex) => {
     const total = totals.find(row => row.bench === bench.bench);
     const pct = total.planned ? Math.min(100, Math.round((total.done / total.planned) * 100)) : 0;
@@ -3470,6 +3688,84 @@ function renderPlan() {
   animateCounts(byId('planCharts'));
 }
 
+
+// A deck shows one pane at a time; the pager fixed at the foot of the page
+// moves between panes and wraps at either end.
+function fitDeck() {
+  // Panes share one grid cell and the inactive ones collapse, so a deck is
+  // always exactly as tall as the pane on show; nothing to measure.
+}
+function makeDeck({view, deck: deckId, pager: pagerId, key}) {
+  const deck = byId(deckId), pager = byId(pagerId);
+  if (!deck || !pager) return null;
+  const panes = () => [...deck.querySelectorAll('.deck-pane')];
+  let index = 0;
+  const renderPager = () => {
+    const list = panes();
+    const prev = list[(index - 1 + list.length) % list.length], next = list[(index + 1) % list.length];
+    pager.innerHTML = `
+      <button type="button" class="pager-step" data-step="-1"><span aria-hidden="true">‹</span>${esc(prev.dataset.title)}</button>
+      <div class="pager-mid">
+        <span class="pager-title">${esc(list[index]?.dataset.title || '')}</span>
+        <div class="pager-dots" role="tablist">${list.map((pane, i) => `<button type="button" role="tab" class="pager-dot${i === index ? ' is-on' : ''}" data-index="${i}" aria-selected="${i === index}" aria-label="${esc(pane.dataset.title)}" data-tip="${esc(pane.dataset.title)}"></button>`).join('')}</div>
+      </div>
+      <button type="button" class="pager-step" data-step="1">${esc(next.dataset.title)}<span aria-hidden="true">›</span></button>`;
+  };
+  const go = target => {
+    const list = panes();
+    if (!list.length) return;
+    const direction = target >= index ? 1 : -1;
+    index = ((target % list.length) + list.length) % list.length;
+    list.forEach((pane, i) => {
+      pane.style.setProperty('--dir', `${direction * 28}px`);
+      pane.classList.toggle('is-active', i === index);
+      pane.setAttribute('aria-hidden', String(i !== index));
+    });
+    window.scrollTo({top: Math.min(window.scrollY, deck.getBoundingClientRect().top + window.scrollY - 90 || 0), behavior: 'smooth'});
+    renderPager();
+    try { localStorage.setItem(key, String(index)); } catch { /* storage may be unavailable */ }
+  };
+  try { index = Number(localStorage.getItem(key)) || 0; } catch { index = 0; }
+  go(index);
+  pager.addEventListener('click', event => {
+    const dot = event.target.closest('.pager-dot');
+    if (dot) { go(Number(dot.dataset.index)); return; }
+    const step = event.target.closest('.pager-step');
+    if (step) go(index + Number(step.dataset.step));
+  });
+  // Swipe: a horizontal drag or a sideways wheel moves one pane.
+  let start = null;
+  deck.addEventListener('pointerdown', event => { if (event.pointerType !== 'mouse' || event.button === 0) start = {x: event.clientX, y: event.clientY}; });
+  deck.addEventListener('pointerup', event => {
+    if (!start) return;
+    const dx = event.clientX - start.x, dy = event.clientY - start.y;
+    start = null;
+    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.5 && !event.target.closest('input, select, textarea, table')) go(index + (dx < 0 ? 1 : -1));
+  });
+  let wheelAt = 0;
+  deck.addEventListener('wheel', event => {
+    if (Math.abs(event.deltaX) < 30 || Math.abs(event.deltaX) < Math.abs(event.deltaY)) return;
+    if (event.target.closest('.table-wrap')) return;
+    const now = Date.now();
+    if (now - wheelAt < 700) return;
+    wheelAt = now;
+    go(index + (event.deltaX > 0 ? 1 : -1));
+  }, {passive: true});
+  document.addEventListener('keydown', event => {
+    if (!byId(view)?.classList.contains('is-active')) return;
+    if (event.target instanceof Element && event.target.matches('input, select, textarea')) return;
+    if (event.key === 'ArrowRight') go(index + 1);
+    if (event.key === 'ArrowLeft') go(index - 1);
+  });
+  return {go};
+}
+function wireDeck() {
+  [
+    {view: 'view-pipeline', deck: 'pipelineDeck', pager: 'pipelinePager', key: 'pipelinePane'},
+    {view: 'view-payouts', deck: 'payoutDeck', pager: 'payoutPager', key: 'payoutPane'},
+  ].forEach(makeDeck);
+}
+
 function wireDelivery() {
   const panel = byId('view-delivery');
   if (!panel) return;
@@ -3478,7 +3774,7 @@ function wireDelivery() {
   const setFilter = (id, value) => {
     const select = byId(id);
     if (!select || ![...select.options].some(option => option.value === value)) return;
-    select.value = select.value === value ? '' : value;
+    select.value = value === '' ? '' : (select.value === value ? '' : value);
     auditPage = 0;
     select.dispatchEvent(new Event('change', {bubbles: true}));
   };
@@ -3581,11 +3877,27 @@ function wireEvents() {
     event.preventDefault(); toggleCard(card);
   });
   byId('truthRefresh')?.addEventListener('click', rebuildTruth);
+  document.querySelectorAll('#truthTable .sort').forEach(button => button.addEventListener('click', () => {
+    const key = button.dataset.sort;
+    const numeric = ['runs', 'glmPasses', 'decided'].includes(key);
+    truthSort = truthSort.key === key ? {key, dir: -truthSort.dir} : {key, dir: numeric ? -1 : 1};
+    truthPage = 0;
+    renderTruth();
+  }));
   wirePayoutBalance();
   wireStatusFocus();
+  wireDeck();
   wireDelivery();
   wireCarried();
   wirePayouts();
+  // Pop-out controls close on a click anywhere else, or on Escape.
+  const popouts = () => document.querySelectorAll('details.rangepop[open], details.morefilters[open]');
+  document.addEventListener('pointerdown', event => {
+    popouts().forEach(box => { if (!box.contains(event.target)) box.open = false; });
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') popouts().forEach(box => { box.open = false; });
+  });
   // The "not found here" tile and the link under the strip open the same panel,
   // because the tile is the figure and the panel is what is behind it.
   byId('truthJoin')?.addEventListener('click', event => {
@@ -3596,6 +3908,12 @@ function wireEvents() {
     byId('unmatchedShow').setAttribute('aria-expanded', 'true');
     renderJoinGap(shownRows());
     panel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  });
+  document.addEventListener('click', event => {
+    const pick = event.target.closest('#segmentSwitch [data-seg], .segtile[data-seg]');
+    if (!pick || event.target.closest('.why')) return;
+    const value = pick.dataset.seg || '';
+    setSegment(pick.classList.contains('segtile') && segment === value ? '' : value);
   });
   byId('unmatchedShow')?.addEventListener('click', () => {
     const panel = byId('unmatchedPanel');
@@ -3633,6 +3951,20 @@ function wireEvents() {
   TRUTH_FILTERS.forEach(id => byId(id)?.addEventListener('change', () => { truthPage = 0; renderTruth(); }));
   byId('tSearch')?.addEventListener('input', () => { truthPage = 0; renderTruth(); });
   byId('tExport')?.addEventListener('click', downloadTruthCsv);
+  byId('view-pipeline')?.addEventListener('click', event => {
+    const pick = event.target.closest('.fchip[data-tfilter]');
+    if (pick) {
+      const select = byId(pick.dataset.tfilter);
+      select.value = pick.dataset.value;
+      truthPage = 0; renderTruth();
+      return;
+    }
+    const clear = event.target.closest('#truthChips [data-tclear]');
+    if (!clear) return;
+    if (clear.dataset.tclear === 'all') { byId('tReset').click(); return; }
+    byId(clear.dataset.tclear).value = '';
+    truthPage = 0; renderTruth();
+  });
   byId('tReset')?.addEventListener('click', () => {
     [...TRUTH_FILTERS, 'tSearch'].forEach(id => { if (byId(id)) byId(id).value = ''; });
     truthPage = 0; renderTruth();
@@ -3686,7 +4018,7 @@ function wireEvents() {
     carriedPage = 0;
     renderCarried();
   });
-  const ledgerFilters = ['ledgerPayment','ledgerType','ledgerValidity','ledgerDuplicates'];
+  const ledgerFilters = ['ledgerPayment','ledgerValidity','ledgerDuplicates'];
   const resetLedgerPage = () => { ledgerPage = 0; renderPayoutLedger(); };
   ledgerFilters.forEach(id => byId(id).addEventListener('change', resetLedgerPage));
   byId('ledgerSearch').addEventListener('input', resetLedgerPage);
@@ -3698,7 +4030,7 @@ function wireEvents() {
   const navButtons = [...document.querySelectorAll('.viewnav-tab')];
   navButtons.forEach((button, index) => {
     button.tabIndex = button.classList.contains('is-active') ? 0 : -1;
-    button.addEventListener('click', () => switchView(button.dataset.view));
+    button.addEventListener('click', () => { switchView(button.dataset.view); button.blur(); });
     button.addEventListener('keydown', event => {
       const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
       if (!step) return;
@@ -3723,7 +4055,6 @@ function wireEvents() {
   byId('ledgerPrevious').addEventListener('click', () => { ledgerPage -= 1; renderPayoutLedger(); });
   byId('ledgerNext').addEventListener('click', () => { ledgerPage += 1; renderPayoutLedger(); });
   byId('paymentFilter').addEventListener('change', resetPayoutPages);
-  byId('benchFilter').addEventListener('change', resetPayoutPages);
   const presets = {'7': 7, '14': 14, '30': 30};
   byId('datePreset').addEventListener('change', event => {
     dateRange.preset = event.target.value;
@@ -3785,7 +4116,9 @@ function wireEvents() {
   function place(element) {
     const anchor = element.getBoundingClientRect();
     const box = popover.getBoundingClientRect();
-    const left = Math.min(Math.max(12, anchor.left + anchor.width / 2 - box.width / 2), window.innerWidth - box.width - 12);
+    // Stay inside the content column so the sidebar never sits under the text.
+    const edge = (document.querySelector('.content')?.getBoundingClientRect().left || 0) + 12;
+    const left = Math.min(Math.max(edge, anchor.left + anchor.width / 2 - box.width / 2), window.innerWidth - box.width - 12);
     const below = anchor.bottom + 9;
     popover.style.left = `${left}px`;
     popover.style.top = `${below + box.height > window.innerHeight - 12 ? Math.max(12, anchor.top - box.height - 9) : below}px`;
@@ -3824,6 +4157,7 @@ function wireEvents() {
 // The topbar search drives whichever view owns a search box.
 
 function init() {
+  restoreSegment();
   renderHero();
   renderTopPendingCards();
   renderDonut();
