@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T12:30:57+00:00",
+ "generatedAt": "2026-09-23T12:41:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1560,6 +1560,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b108-b1-tailored-cv-claim-verification/07fcfe3e53a1ca1961812a9876e17df7bed1e9f99162cf58f8c859c73ed67fca.zip",
    "bytesRead": 101858,
+   "readOn": "2026-09-23"
+  },
+  "code-c17-cache-invalidation-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c17-cache-invalidation-audit/8106ae902b5504ed9aadfa3a2c8ff231c43fe51afb3435b44cd22e6a17c93b80.zip",
+   "bytesRead": 105450,
+   "readOn": "2026-09-23"
+  },
+  "writing-hl04-b1-census-submission-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-hl04-b1-census-submission-audit/61a4652a3d7bae56965bce7028dc090869c04e4591445c6fab691444862a2572.zip",
+   "bytesRead": 72107,
    "readOn": "2026-09-23"
   }
  }
