@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T16:21:39+00:00",
+ "generatedAt": "2026-09-23T17:01:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -1692,6 +1692,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b51-a6-language-quiz-marking-adjudication/20e4fdb13d25c7917f606c8cc9a87c137d98a57a3007448906fd013c2a51d259.zip",
    "bytesRead": 80015,
+   "readOn": "2026-09-23"
+  },
+  "bus-b50-b8-reservation-charge-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b50-b8-reservation-charge-recompute/e228b882194fdcf358b642973ac3754be6f962ee50f5d58d663eedac09c23feb.zip",
+   "bytesRead": 79719,
+   "readOn": "2026-09-23"
+  },
+  "tech-b61-t6-prefetcher-iso-storage-bakeoff-attribution": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b61-t6-prefetcher-iso-storage-bakeoff-attribution/7910a042547d7b1f0cc814f00f1b9c1d5040aeae54445265e697317f5d94f7a9.zip",
+   "bytesRead": 69214,
    "readOn": "2026-09-23"
   }
  }
