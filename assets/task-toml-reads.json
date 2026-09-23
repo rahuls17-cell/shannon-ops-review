@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-23T23:01:20+00:00",
+ "generatedAt": "2026-09-23T23:10:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2186,6 +2186,34 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-conversations-sitting-in-my-inbox/4b5c3ecceb83038c81783cc1a51bc7c60c0eee8dcbcde05ff83df9a6edbdd20e.zip",
    "bytesRead": 53043,
+   "readOn": "2026-09-23"
+  },
+  "code-c149-kb-article-accuracy-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c149-kb-article-accuracy-audit/b23120e1b7e7f88a3e7930c923808c8d5f2f161ef3f6506d94044f0fa5921091.zip",
+   "bytesRead": 73246,
+   "readOn": "2026-09-23"
+  },
+  "determine-next-in-app-step-for-plaid-linked-account-stuck-in-manual-ve": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/determine-next-in-app-step-for-plaid-linked-account-stuck-in-manual-ve/8dc8e2efce20bf2788398fef22769cca07247e2f5177c9c448fb3f22c3ebb8fc.zip",
+   "bytesRead": 67470,
    "readOn": "2026-09-23"
   }
  }
