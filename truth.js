@@ -10,7 +10,7 @@
   // from the data - so the UI can never offer a value that matches nothing.
   const UNDECIDED = new Set(['error', 'no QC decision', 'queued', 'not started']);
 
-  function prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex, cohortIndex, benchIndex) {
+  function prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex, cohortIndex, benchIndex, taskNameIndex) {
     if (!payload || !Array.isArray(payload.tasks)) throw new Error('No pipeline truth asset loaded');
     if (!payload.reconciles) throw new Error('Pipeline truth failed its own reconciliation; refusing to display it');
     const figures = new Map((payload.figures || []).map(f => [f.label, f]));
@@ -43,6 +43,39 @@
     // real and bad result, and must not be what "we did not look" looks like.
     // Which bench a task runs on, from the base image in its Dockerfile. Only
     // connector tasks have one: a plain base image is not a bench.
+    // Which task a folder actually holds, read from the [task] name in its
+    // package task.toml. The Accepted list counts folders, because one folder is
+    // one delivered package - but the same task is re-cut under a new folder
+    // name after a review, and shows up again under a console placeholder, so
+    // folders and tasks are not the same number.
+    //
+    // Nothing else can tell you which. A name rule loose enough to join
+    // `gen-g236-...` to `gen-g236-...-review-resolved-20260918-rerun` also joins
+    // ASTR_101198 to ASTR_101214, six separate tasks; and no two packages in the
+    // prefix are byte-identical, because a re-cut differs, so the object hash
+    // finds nothing either. The declared name is read, not inferred.
+    const packageTasks = (taskNameIndex && taskNameIndex.task) || {};
+    const siblings = {};
+    Object.keys(packageTasks).forEach(folder => {
+      const task = packageTasks[folder];
+      (siblings[task] = siblings[task] || []).push(folder);
+    });
+    Object.keys(siblings).forEach(task => siblings[task].sort());
+    const dupOf = folder => {
+      const task = packageTasks[folder];
+      const group = task ? siblings[task] : null;
+      // Cleared, not left alone: the row this folder matched may carry the
+      // name-and-trainer heuristic, which is a claim about two submissions and
+      // says nothing about two folders.
+      if (!group || group.length < 2) {
+        return {packageTask: task || null, possibleDuplicate: false,
+                duplicateSiblings: 0, duplicateTier: ''};
+      }
+      return {packageTask: task, dupFolders: group, duplicateSiblings: group.length - 1,
+              possibleDuplicate: true, duplicateTier: 'confirmed',
+              duplicateVia: 'the task name declared inside the package'};
+    };
+
     const benches = (benchIndex && benchIndex.bench) || {};
     // The cache has two kinds of key, because it has two sources: the task
     // source tree is keyed by pipeline row id, and a package opened directly is
@@ -89,6 +122,7 @@
       glmIndex: glmIndex || null,
       cohortIndex: cohortIndex || null,
       benchIndex: benchIndex || null,
+      taskNameIndex: taskNameIndex || null,
       // One row per bucket folder, for the Accepted view.
       //
       // Accepted is decided by the bucket, so its list has to come from the
@@ -96,7 +130,7 @@
       // cover only 1,021 folders while missing 104 that hold an accepted
       // package and have no accepted verdict row - a list that is both too
       // long and incomplete at once.
-      cohortRows: cohortRows(rows, cohortIndex, benchAt),
+      cohortRows: cohortRows(rows, cohortIndex, benchAt, dupOf),
       // Null when the index has not loaded, so the page can tell the difference
       // between "nothing is delivered" and "delivery is not known".
       deliveredIndex: deliveredIndex || null,
@@ -195,7 +229,7 @@
   // Each folder gets the verdict row that best describes it, so the table keeps
   // its trainer, dates, GLM band and drill-down. A folder with no verdict row
   // still appears, carrying what the bucket knows and nothing invented.
-  function cohortRows(rows, cohortIndex, benchAt) {
+  function cohortRows(rows, cohortIndex, benchAt, dupOf) {
     if (!cohortIndex || !cohortIndex.folders) return null;
     const byName = new Map();
     rows.forEach(row => {
@@ -209,6 +243,7 @@
       const match = byName.get(keyOf(entry.folder)) || byName.get(stemOf(entry.folder));
       if (match) {
         return {...match, ...benchAt(entry.folder, match.id, match.name),
+                ...dupOf(entry.folder),
                 state: 'accepted', atCurrentBar: true,
                 connector: entry.connector === undefined ? match.connector : entry.connector,
                 connectorServices: entry.connectorServices && entry.connectorServices.length
@@ -238,6 +273,7 @@
         delivered: Boolean(entry.delivered), cohortFolder: entry.folder,
         cohortDelivered: entry.delivered, cohortState: entry.state || null,
         fromBucket: true, noVerdict: true, ...benchAt(entry.folder),
+        ...dupOf(entry.folder),
       };
     });
     return built.sort((a, b) => {

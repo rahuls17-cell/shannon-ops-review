@@ -233,7 +233,7 @@ const infoCopy = {
   finding: 'What the gate objected to. The filter searches every run of a task, so a task that tripped a check, was fixed and then accepted is still findable under that check. The row itself separates the two: the Findings line shows what the run behind the current verdict found, and names anything that came from an earlier run of the same task. An accepted task showing HARBOR-CHECK from an earlier run was not accepted despite failing - it failed, was fixed, and passed.',
   gateEra: 'Which gate judged the deciding run, taken from the bucket\'s own sentinel files rather than inferred. The gate switched from Opus to GLM-5.2 at 2026-09-13T20:05:59Z, KESTREL came on at 2026-09-15T03:40:49Z, and KESTREL was fully operating on both gates from 2026-09-16T05:06:54Z. Acceptances made by GLM-5.2 without KESTREL review were withdrawn on 16 September and are being re-gated.',
   scope: 'The cut is applied to the date a task was DECIDED, not the date it was submitted. A task uploaded in August but judged by the pipeline running today belongs to today, because the bar running today is what judged it. Cutting on submission instead would hide exactly the re-gated work that matters most. Tasks whose last decision falls before 5 September are excluded entirely and are not shown anywhere on this page. About a fifth of verdicts carry no decision timestamp - those are the runs that errored or never finished, so there was never a ruling to time - and they are placed by when the verdict was last updated and marked approx.',
-  duplicates: 'A task is flagged when another task in scope carries the same name AND the same trainer. Likely means it also shares the decision day and the outcome. Most flagged rows do have a family id: that key is clean, in that no family spans two trainers, but it is not complete, because a task can be given a fresh family id when it is resubmitted - so the same work can appear two or three times under different families. Nothing is merged, because a task name can legitimately cover unrelated work: one name in this bucket carries 36 genuinely different tasks. Treat this as a review queue, not a correction.',
+  duplicates: 'This filter means two different things, because the two views count different units. Under Accepted the rows are bucket folders, and a folder is flagged when another folder holds the SAME TASK - read from the [task] name inside each package&rsquo;s task.toml, not guessed from the folder name. That is exact: 47 tasks sit under more than one folder name, which is 51 folders above the first, so counting folders counts those tasks more than once. Click the DUP badge to see every folder the task sits in, with the same columns as the table. In every other view the rows are submissions, and a row is flagged when another submission carries the same name AND the same trainer - a weaker, heuristic claim, with Likely meaning it also shares the decision day and the outcome. Nothing is merged in either view: a task name can legitimately cover unrelated work, and one name in this bucket carries 36 genuinely different tasks.',
   confidence: 'How confidently runs were grouped into one task. Keyed by family is the pipeline\'s own lineage id and is reliable - no family in this data spans two trainers. Unmerged means no family id was present, so the task is keyed on its submission id and repeat runs of it may still be counted separately. Task name was never used as a key: one literal name in this bucket carries 36 unrelated tasks.',
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
@@ -935,7 +935,15 @@ async function loadTruth() {
       const bx = await fetch(`assets/bench-index.json?t=${Date.now()}`, {cache: 'no-store'});
       if (bx.ok) benchIndex = await bx.json();
     } catch (ignored) { benchIndex = null; }
-    truth = window.prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex, cohortIndex, benchIndex);
+    // Which task each accepted folder actually holds. Missing is fine: without
+    // it no DUP is claimed, rather than a wrong one.
+    let taskNameIndex = null;
+    try {
+      const tx = await fetch(`assets/task-names.json?t=${Date.now()}`, {cache: 'no-store'});
+      if (tx.ok) taskNameIndex = await tx.json();
+    } catch (ignored) { taskNameIndex = null; }
+    truth = window.prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex, cohortIndex,
+      benchIndex, taskNameIndex);
     truth.counts = payload.counts || null;
     populateTruthFilters();
     renderTruth();
@@ -1530,8 +1538,13 @@ const FLAGS = [
    label: 'check before shipping',
    tip: row => `This task's identifier names "${row.maybeDelivered}", which the delivery audit ` +
      'already covers, but its own name does not match it. It may be a second copy of work that has already gone out.'},
+  {code: 'DUP', tone: 'alert', when: row => row.dupFolders,
+   label: 'DUP  same task, another folder',
+   tip: row => `This task is in the bucket under ${fmt(row.dupFolders.length)} folder names. ` +
+     `Read from the [task] name in each package, not guessed from the folder. ` +
+     `Click to see all ${fmt(row.dupFolders.length)}.`},
   {code: 'DUP', tone: row => (row.duplicateTier === 'likely' ? 'alert' : 'warn'),
-   when: row => row.possibleDuplicate,
+   when: row => row.possibleDuplicate && !row.dupFolders,
    label: 'possible duplicate',
    tip: row => `Same task name and trainer as ${fmt(row.duplicateSiblings)} other task` +
      `${row.duplicateSiblings === 1 ? '' : 's'}` +
@@ -1546,14 +1559,61 @@ const FLAGS = [
      'by the current pipeline rather than new work.'},
 ];
 
-function flagBadges(row) {
+function flagBadges(row, dupTarget) {
   const shown = FLAGS.filter(flag => flag.when(row));
   if (!shown.length) return '<span class="flag-none">-</span>';
   return shown.map(flag => {
     const tone = typeof flag.tone === 'function' ? flag.tone(row) : flag.tone;
     const code = typeof flag.code === 'function' ? flag.code(row) : flag.code;
+    // The confirmed duplicate opens the folders it stands for, so it is a
+    // button and not a span: a title attribute cannot hold nine folder names.
+    if (code === 'DUP' && row.dupFolders && dupTarget) {
+      return `<button type="button" class="flag flag-${esc(tone)} flag-btn" data-dup="${esc(dupTarget)}"` +
+        ` aria-expanded="false" aria-controls="${esc(dupTarget)}" title="${esc(flag.tip(row))}">` +
+        `${esc(code)}<b>${fmt(row.dupFolders.length)}</b></button>`;
+    }
     return `<span class="flag flag-${esc(tone)}" title="${esc(flag.tip(row))}">${esc(code)}</span>`;
   }).join('');
+}
+
+// The sibling folders, as table rows carrying every column the table above
+// carries, so a duplicate can be compared on the same terms as anything else.
+function dupPanel(row) {
+  const rows = (truth.cohortRows || []).filter(r => (row.dupFolders || []).includes(r.cohortFolder));
+  const body = rows.length ? rows.map(r => `
+        <tr${r.cohortFolder === row.cohortFolder ? ' class="is-self"' : ''}>
+          <td><code>${esc(r.cohortFolder)}</code>${r.cohortFolder === row.cohortFolder
+            ? ' <span class="chip">this row</span>' : ''}</td>
+          <td class="flagcell">${flagBadges(r)}</td>
+          <td><span class="state state-${esc(String(r.state).replace(/\s+/g, '-'))}">${esc(r.state)}</span></td>
+          <td>${esc(r.latestVerdict || '\u2013')}</td>
+          <td>${esc(r.owner || '\u2013')}</td>
+          <td>${esc(r.decided || '\u2013')}</td>
+          <td>${esc(r.gateEra || '\u2013')}</td>
+          <td>${esc(r.domain || '\u2013')}</td>
+          <td>${r.connector === true ? `connector &middot; ${fmt((r.connectorServices || []).length)} gym${(r.connectorServices || []).length === 1 ? '' : 's'}`
+            : r.connector === false ? 'not a connector' : 'not known'}</td>
+          <td>${esc(r.bench || '\u2013')}</td>
+          <td>${r.delivered ? 'delivered' : 'not delivered'}</td>
+          <td class="glmcell">${glmCell(r)}</td>
+          <td class="num">${fmt(r.runs)}</td>
+        </tr>`).join('') : '';
+  return `
+      <div class="dup-panel">
+        <p class="dup-why">The bucket holds this one task under <strong>${fmt((row.dupFolders || []).length)} folder names</strong>.
+          Each folder is counted once in Accepted, so this task contributes
+          ${fmt((row.dupFolders || []).length)} to that figure.
+          The task is <code>${esc(row.packageTask || '')}</code>, read from the
+          <code>[task] name</code> in each package&rsquo;s <code>task.toml</code> &mdash; not inferred from the folder name.</p>
+        <div class="tablewrap">
+          <table class="grid dup-grid">
+            <thead><tr><th>Folder in the bucket</th><th>Flags</th><th>State</th><th>Latest verdict</th>
+              <th>Trainer</th><th>Decided</th><th>Gate</th><th>Domain</th><th>Connector</th>
+              <th>Bench</th><th>Delivery</th><th>GLM</th><th class="num">Runs</th></tr></thead>
+            <tbody>${body || '<tr><td colspan="13" class="empty">No sibling rows in the current view.</td></tr>'}</tbody>
+          </table>
+        </div>
+      </div>`;
 }
 
 // Only the codes actually present are explained, so the legend stays short and
@@ -1608,7 +1668,7 @@ function renderTruthRows(rows) {
       <td><button class="drill-toggle" aria-expanded="false" aria-controls="${id}" aria-label="Evidence for ${esc(row.name)}">+</button></td>
       <td class="num serial">${fmt(from + index + 1)}</td>
       <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span></div></td>
-      <td class="flagcell">${flagBadges(row)}</td>
+      <td class="flagcell">${flagBadges(row, `dup-${id}`)}</td>
       <td><span class="state state-${esc(row.state.replace(/\s+/g, '-'))}">${esc(row.state)}</span></td>
       <td>${esc(row.owner || '\u2013')}</td>
       <td>${esc(row.decided || '\u2013')}${row.decidedInferred ? '<span class="chip chip-warn" title="No decision timestamp on the verdict; dated from when it was last updated">approx</span>' : ''}</td>
@@ -1645,7 +1705,8 @@ function renderTruthRows(rows) {
             ` <span class="muted">a run passes only at exactly 1.0; read from verifier/reward.txt in the bucket</span>`}</dd>
         <dt>Read from</dt><dd><code>${esc(row.source)}</code></dd>
       </dl>
-    </td></tr>`;
+    </td></tr>${row.dupFolders ? `
+    <tr class="drill" id="dup-${id}" hidden><td colspan="10">${dupPanel(row)}</td></tr>` : ''}`;
   }).join('') : '<tr><td colspan="10" class="empty">No tasks match these filters.</td></tr>';
   setText('truthPage', `${fmt(from + 1)}\u2013${fmt(from + slice.length)} of ${fmt(rows.length)}`);
   byId('truthPrev').disabled = truthPage === 0;
@@ -3430,12 +3491,19 @@ function wireEvents() {
     byId('truthChainPanel').scrollIntoView({behavior: 'smooth', block: 'nearest'});
   });
   byId('truthRows')?.addEventListener('click', event => {
-    const button = event.target.closest('.drill-toggle');
+    // The row's own toggle and the DUP badge open different panels by the same
+    // mechanism: both name their panel in aria-controls. Delegated, so the
+    // badges keep working after a filter redraws the table.
+    const button = event.target.closest('.drill-toggle, .flag-btn[data-dup]');
     if (!button) return;
     const panel = byId(button.getAttribute('aria-controls'));
     const open = button.getAttribute('aria-expanded') === 'true';
     button.setAttribute('aria-expanded', String(!open));
-    button.textContent = open ? '+' : '\u2212';
+    // Only the row toggle carries the +/- glyph; the badge keeps its code.
+    if (button.classList.contains('drill-toggle')) {
+      button.textContent = open ? '+' : '−';
+    }
+    button.classList.toggle('is-open', !open);
     if (panel) panel.hidden = open;
   });
   ['cState', 'cOwner'].forEach(id => byId(id)?.addEventListener('change', () => { carriedPage = 0; renderCarried(); }));

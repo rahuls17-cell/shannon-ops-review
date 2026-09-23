@@ -1055,6 +1055,64 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .flag-flat  { background: var(--panel-2); color: var(--ink-2); border: 1px solid var(--line); }
 .flag-none  { color: var(--muted); }
 
+/* A DUP that opens something.
+   The other flags are labels, so they take a help cursor and a title. This one
+   is a control: it says how many folders the task sits under and opens them,
+   which a title attribute cannot do. It has to read as clickable without
+   becoming a second kind of button in the row. */
+.flag-btn {
+  border: 1px solid currentColor;
+  cursor: pointer;
+  font: inherit;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: .03em;
+  transition: filter .12s ease, box-shadow .12s ease;
+}
+
+/* The count rides on the badge's own colour. Not `background: currentColor`
+   with a light `color`: currentColor resolves to the colour set on the SAME
+   element, so the pill came out white on white. A translucent wash darkens
+   whatever tone the badge already has and works in both themes. */
+.flag-btn b {
+  margin-left: 4px;
+  padding: 0 5px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / .13);
+  color: inherit;
+  font-size: 9.5px;
+}
+.flag-btn:hover { filter: brightness(.94); }
+.flag-btn:focus-visible { outline: 2px solid var(--accent, #3b3f8f); outline-offset: 2px; }
+.flag-btn.is-open { box-shadow: inset 0 0 0 2px currentColor; }
+
+.dup-panel { padding: 4px 2px 2px; }
+
+.dup-why {
+  margin: 0 0 12px;
+  max-width: 78ch;
+  color: var(--ink-2);
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+
+.dup-why code {
+  padding: 1px 5px;
+  border-radius: 4px;
+  background: var(--panel-2);
+  font-size: 11.5px;
+}
+
+.dup-grid { font-size: 12px; }
+.dup-grid th { white-space: nowrap; }
+.dup-grid td { vertical-align: middle; }
+.dup-grid code { font-size: 11px; word-break: break-all; }
+
+/* The row you opened it from, so the comparison has an anchor. */
+.dup-grid tr.is-self { background: var(--panel-2); }
+.dup-grid tr.is-self code { font-weight: 700; }
+
+
 /* The task column is the one that must never be squeezed. */
 .grid td .taskname { max-width: none; }
 
