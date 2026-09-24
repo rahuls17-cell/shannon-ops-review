@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T02:31:18+00:00",
+ "generatedAt": "2026-09-24T02:40:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2324,6 +2324,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c162-multisite-pricing-reconcile/b62ea3874e96c18cc998f1217c5a8234beff07b91c8463d0bd2ffe09cc166718.zip",
    "bytesRead": 73510,
+   "readOn": "2026-09-24"
+  },
+  "code-c110-dashboard-metric-definition-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c110-dashboard-metric-definition-audit/3a4efa3deeb21f4ba6e4a95d2e6aa99a19f728fbc3debe4088b0468444812b3c.zip",
+   "bytesRead": 82544,
+   "readOn": "2026-09-24"
+  },
+  "edu-s1-d3-lesson-plan-activity-quotas": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-s1-d3-lesson-plan-activity-quotas/0786277e82cd770ffe7a23a8a8ee2834efb88514630d223961f3ecbe27a8496f.zip",
+   "bytesRead": 80641,
    "readOn": "2026-09-24"
   }
  }
