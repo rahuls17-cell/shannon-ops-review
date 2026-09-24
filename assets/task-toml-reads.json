@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T13:21:19+00:00",
+ "generatedAt": "2026-09-24T14:00:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2919,6 +2919,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt6-a7-home-bp-lability-log-reconstruction/ecdf599d7f8665724d7535eccbbd25b0b81d66af2c01c928021270ea028e9e1f.zip",
    "bytesRead": 97505,
+   "readOn": "2026-09-24"
+  },
+  "the-tags-that-named-nobody-v7": {
+   "connector": true,
+   "services": [
+    "microsoft-teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-tags-that-named-nobody-v7/648852fc8983b61d1dcff912e0a4be07705d8663ab0c96c358e8e7ee05fe78ca.zip",
+   "bytesRead": 51055,
    "readOn": "2026-09-24"
   }
  }
