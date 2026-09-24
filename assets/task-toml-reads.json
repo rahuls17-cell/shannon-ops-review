@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T10:11:37+00:00",
+ "generatedAt": "2026-09-24T10:20:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2656,6 +2656,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g981-background-art-continuity-audit/c21021e9a3aed3e1e1148b67e6bd4cc84bdd713483b1330d3836f79c586f360e.zip",
    "bytesRead": 82795,
+   "readOn": "2026-09-24"
+  },
+  "gen-g714-startup-opportunity-feasibility-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g714-startup-opportunity-feasibility-audit/175dab2ff2f30e5e79d8d4732a22a545292dfe6cb5d9416293c4c01d04105775.zip",
+   "bytesRead": 72227,
+   "readOn": "2026-09-24"
+  },
+  "tech-b50-t1-proxy-client-routing-outcome-matrix": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b50-t1-proxy-client-routing-outcome-matrix/41399b42bc4d7f145888b8d7bb3e014b008201d3a160dab3f076b1cfcd9dfdd6.zip",
+   "bytesRead": 120914,
+   "readOn": "2026-09-24"
+  },
+  "tech-mg-it-b10-a8-practice-log-spring-redating": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b10-a8-practice-log-spring-redating/ffe583e2ef7305577f7ef1c8c37a008a3ed77e74fed542f14ce58163440bb3a0.zip",
+   "bytesRead": 78767,
    "readOn": "2026-09-24"
   }
  }
