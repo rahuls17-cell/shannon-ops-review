@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T12:10:54+00:00",
+ "generatedAt": "2026-09-24T12:20:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2791,6 +2791,30 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/verify-out-of-network-atm-fee-on-june-28-2022-withdrawal-for-account-4/028e4f52cad46d314ee99bcf52c1ad521393576a9dd3b924e4dd1c9eeecf734e.zip",
    "bytesRead": 60312,
+   "readOn": "2026-09-24"
+  },
+  "the-busy-threads-and-who-owns-them": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-busy-threads-and-who-owns-them/7db1e35f92b6fcb908600253448909358db9589c01027a8d0882c1c2af088cfe.zip",
+   "bytesRead": 46424,
+   "readOn": "2026-09-24"
+  },
+  "the-product-specs-with-nothing-written-in-them": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-product-specs-with-nothing-written-in-them/05b5d0b4c8ee5ba2ff797dbccffade0ba570238300efc49f62e488740e1ae97b.zip",
+   "bytesRead": 51406,
    "readOn": "2026-09-24"
   }
  }
