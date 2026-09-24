@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T04:50:51+00:00",
+ "generatedAt": "2026-09-24T05:20:49+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2444,6 +2444,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b51-e5-degree-plan-requirement-audit/17a7555a8cf6ee8277af9e90a375a74dfee4564a0052a94bcfde3a5308e696dc.zip",
    "bytesRead": 70803,
+   "readOn": "2026-09-24"
+  },
+  "code-c155-gas-detector-calibration-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c155-gas-detector-calibration-audit/c6464f7051bed602f11ed6219a24b6b87b9577ba774b3d9e7ad81fa38ec1b814.zip",
+   "bytesRead": 76220,
+   "readOn": "2026-09-24"
+  },
+  "fin-b54-f10-learner-explanation-reference-assessment": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b54-f10-learner-explanation-reference-assessment/f41b28972058e4edb6e6c83269df863387ec16afc05bcf52e53d94fa0351f50a.zip",
+   "bytesRead": 103198,
+   "readOn": "2026-09-24"
+  },
+  "health-h118-dme-orthosis-lcode-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h118-dme-orthosis-lcode-audit/ce35dfaba1eb61eb16c2a6b8bf854a931c724b8e096f4fb01531266cd426569b.zip",
+   "bytesRead": 73875,
    "readOn": "2026-09-24"
   }
  }
