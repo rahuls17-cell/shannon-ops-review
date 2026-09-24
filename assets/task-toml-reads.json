@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T12:31:45+00:00",
+ "generatedAt": "2026-09-24T12:40:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2839,6 +2839,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-review-turns-into-conversation/10bb8813b1f557cf29f1f5ae8e5d57c1d68fd7a933db3985dbf28be175ae9fad.zip",
    "bytesRead": 49589,
+   "readOn": "2026-09-24"
+  },
+  "law-b38-l5-consultant-fee-basis-recomputation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b38-l5-consultant-fee-basis-recomputation/b95ef8b24106e883d30b78494ef33bf66f37fc98da972a4a1a47b223533ef2eb.zip",
+   "bytesRead": 76545,
    "readOn": "2026-09-24"
   }
  }
