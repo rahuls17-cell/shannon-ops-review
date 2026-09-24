@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T18:50:53+00:00",
+ "generatedAt": "2026-09-24T19:30:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3243,6 +3243,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-a9-novel-scene-timeline/35ae1ac8fb2171a45af5df3f594d5067cf4eff0c5fae7c4e8c65f61e55d9b6fb.zip",
    "bytesRead": 66786,
+   "readOn": "2026-09-24"
+  },
+  "closed-bugs-that-were-never-written-up": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b35727bc19eb444896e1b1cbbc81f8f8f6c54c75ff3e1d6e7efe0b89180b9c36",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/closed-bugs-that-were-never-written-up/d3ec4f36612c421da8f0fa5e84448f7a7f24b02f5c55a6bb62a78f0879d80713.zip",
+   "bytesRead": 51427,
    "readOn": "2026-09-24"
   }
  }
