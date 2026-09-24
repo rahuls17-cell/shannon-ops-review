@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T10:20:54+00:00",
+ "generatedAt": "2026-09-24T10:30:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2686,6 +2686,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b10-a8-practice-log-spring-redating/ffe583e2ef7305577f7ef1c8c37a008a3ed77e74fed542f14ce58163440bb3a0.zip",
    "bytesRead": 78767,
+   "readOn": "2026-09-24"
+  },
+  "law-l39-classification-marking-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:2c941e860699f878900b0edc2403613c234d4b32eda3cc9fa7036991a2a63c4a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l39-classification-marking-audit/57dae79072bacef20fb0f688bb57bf088cf1d7051eebff5acc79917a0482d867.zip",
+   "bytesRead": 119519,
    "readOn": "2026-09-24"
   }
  }
