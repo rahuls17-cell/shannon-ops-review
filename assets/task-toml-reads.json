@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T14:31:02+00:00",
+ "generatedAt": "2026-09-24T14:41:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2991,6 +2991,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b43-h1-medicaid-remittance-claim-reconciliation-v1/8df921efc61e92a73c7862455c9910ab1c124928cb53746ff5826139a7bf4e71.zip",
    "bytesRead": 78113,
+   "readOn": "2026-09-24"
+  },
+  "fin-b54-f8-loi-red-flag-insurance-product-review": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b54-f8-loi-red-flag-insurance-product-review/22407767707aa70007ba713b1326261685fc8ee765941c69905461e4a14d2386.zip",
+   "bytesRead": 170481,
    "readOn": "2026-09-24"
   }
  }
