@@ -398,9 +398,9 @@ function renderDailyDelta() {
 
   byId('deltaPeaks').innerHTML = `<span class="peakstrip-label">Busiest day</span>` +
     result.states.filter(state => result.peak[state].count).map(state =>
-      `<span class="peakstrip-item"><span class="peakstrip-top"><i style="background:var(${
+      `<span class="peakstrip-item" style="--tone:var(${STATE_TOKENS[state] || '--slate'})"><span class="peakstrip-top"><i style="background:var(${
         STATE_TOKENS[state] || '--slate'})"></i>${esc(state)} <b>${fmt(result.peak[state].count)}</b></span>` +
-       `<small>(${esc(result.peak[state].date.slice(5))})</small></span>`).join('');
+       `<small>${esc(result.peak[state].date.slice(5))}</small></span>`).join('');
 
   setText('deltaNote', '');
 }
@@ -2841,11 +2841,11 @@ function renderHero() {
   const share = (value, base) => (value == null || !base) ? null : Math.round((value / base) * 100);
   const tiles = [
     ['Current evaluated tasks', current, null, 'aqua', 'of the evaluations feed'],
-    ['Pipeline accepted', pipelineAccepted, null, 'aqua',
+    ['Pipeline accepted', pipelineAccepted, null, 'green',
      cohortIndex ? 'accepted tasks in the delivery prefix'
        : `of ${fmt(pipelineScope || 0)} tasks the pipeline decided`],
     ['Accepted finalisation folders', finalisationRows.length ? snapshot.folders.length : null, null, 'blue', ''],
-    ['Cross-cohort repeats excluded', snapshot.ready ? snapshot.duplicates : null, share(snapshot.ready ? snapshot.duplicates : null, snapshot.folders.length), 'yellow', 'of folders'],
+    ['Cross-cohort repeats excluded', snapshot.ready ? snapshot.duplicates : null, share(snapshot.ready ? snapshot.duplicates : null, snapshot.folders.length), 'amber', 'of folders'],
   ];
   const summaryHost = byId('commandSummary');
   summaryHost.innerHTML = tiles.map(([label, value, pct, tone, basis], index) => `<div class="summary-item" style="--i:${index}" data-tone="${tone}">
@@ -3186,7 +3186,7 @@ function renderBenchCards() {
   host.innerHTML = benches.map((b, index) => {
     const focused = focusStatus ? (b.mix.find(([status]) => status === focusStatus)?.[1] || 0) : null;
     const focusPct = focusStatus && b.tasks ? Math.round(((focused || 0) / b.tasks) * 100) : null;
-    return `<div class="bench-card bench-rank-${rank.get(b.name)}" style="--i:${index}">
+    return `<div class="bench-card bench-rank-${rank.get(b.name)}" data-bench="${esc(b.name)}" style="--i:${index}">
       <div class="bench-head">
         <h3>${b.name} bench</h3>
         <span class="medal medal-${rank.get(b.name)}" data-tip="Rank ${rank.get(b.name)} of ${benches.length} by pipeline accepted">${rank.get(b.name)}</span>
@@ -3775,6 +3775,7 @@ function makeDeck({view, deck: deckId, pager: pagerId, key}) {
 }
 function wireDeck() {
   [
+    {view: 'view-command', deck: 'overviewDeck', pager: 'overviewPager', key: 'overviewPane'},
     {view: 'view-pipeline', deck: 'pipelineDeck', pager: 'pipelinePager', key: 'pipelinePane'},
     {view: 'view-payouts', deck: 'payoutDeck', pager: 'payoutPager', key: 'payoutPane'},
   ].forEach(makeDeck);

@@ -92,6 +92,9 @@
           </header>
           <p id="dateError" class="alert" role="alert" hidden>Start date must be on or before end date.</p>
 
+          <div class="deck" id="overviewDeck">
+            <div class="deck-track" id="overviewTrack">
+              <section class="deck-pane" data-title="Summary" aria-label="Summary">
           <section id="segmentStrip" class="segstrip" aria-label="The split by segment"></section>
 
           <p class="eyebrow">Delivery<span id="commandScopeNote"></span></p>
@@ -132,7 +135,7 @@
 
           <p class="eyebrow">Payouts<span>all dates &mdash; the date range is not applied</span><button class="why" data-info="acceptanceScope" aria-label="Why the date range is not applied here">?</button></p>
           <div class="kpirow kpirow-3">
-            <article class="kpi" data-tone="slate" data-expand aria-expanded="false" tabindex="0">
+            <article class="kpi" data-tone="orange" data-expand aria-expanded="false" tabindex="0">
               <div class="kpi-top"><h3>Active trainers</h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></i></div>
               <strong id="metricActive">-</strong>
               <p class="kpi-note" id="metricRoster">-</p>
@@ -157,7 +160,8 @@
               <span class="kpi-caret" aria-hidden="true"></span>
             </article>
           </div>
-
+              </section>
+              <section class="deck-pane" data-title="Pipeline" aria-label="Pipeline">
           <div class="split">
             <section class="panel">
               <header class="panel-head">
@@ -176,7 +180,8 @@
               </div>
             </section>
           </div>
-
+              </section>
+              <section class="deck-pane" data-title="Payout balance" aria-label="Payout balance">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Payout balance<button class="why" data-info="pending" aria-label="How paid and upcoming are calculated">?</button></h2><p class="panel-note" id="payoutBalanceNote"></p></div>
@@ -194,7 +199,8 @@
               </div>
             </div>
           </section>
-
+              </section>
+              <section class="deck-pane" data-title="Daily delta" aria-label="Daily delta">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Daily delta<button class="why" data-info="dailyDelta" aria-label="What the daily delta counts">?</button></h2><p class="figure-src is-panel" data-source="gcs-evaluations"></p></div>
@@ -206,13 +212,18 @@
               <p class="muted footnote" id="deltaNote"></p>
             </div>
           </section>
-
+              </section>
+              <section class="deck-pane" data-title="Sources" aria-label="Sources">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Where this data comes from<button class="why" data-info="sources" aria-label="How to read the source panel">?</button></h2><p class="panel-note" id="sourceNote"></p></div>
             </header>
             <div class="panel-body"><div id="sourceList" class="srcrows" data-sourcelist="all"></div></div>
           </section>
+              </section>
+            </div>
+          </div>
+          <nav class="deck-pager" id="overviewPager" aria-label="Overview panes"></nav>
         </section>
 
         <!-- PAYOUTS ------------------------------------------------------- -->

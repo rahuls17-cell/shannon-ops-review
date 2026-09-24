@@ -2288,7 +2288,7 @@ button.stat[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 10%, 
 #truthJoinNote { display: none; }
 
 /* ---------- Pipeline: a deck of panes with a pager fixed at the foot ---------- */
-#view-pipeline.is-active, #view-payouts.is-active { padding-bottom: 104px; }
+#view-pipeline.is-active, #view-payouts.is-active, #view-command.is-active { padding-bottom: 104px; }
 .deck { position: relative; }
 .deck-track { display: grid; }
 .deck-pane { grid-area: 1 / 1; min-width: 0; display: grid; gap: 14px; align-content: start; }
@@ -2426,3 +2426,73 @@ button.stat[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 18%, 
 /* The generic status tones must not paint the legend labels. */
 .key-item.is-paid, .key-item.is-pending { background: none; color: var(--ink-2); }
 #truthFigures { align-items: stretch; }
+#overviewDeck .deck-pane > .eyebrow { margin: 0; }
+#overviewDeck .deck-pane > .segstrip { margin: 0; }
+
+/* ---------- Overview: the Summary pane ---------- */
+.kpi[data-tone="orange"] { --kpi-tone: var(--orange); }
+#overviewTrack .deck-pane[data-title="Summary"] > .eyebrow, #segmentStrip .segstrip-head .eyebrow { display: flex; align-items: center; gap: 10px; font-size: 11px; font-weight: 700; letter-spacing: .09em; color: var(--ink); }
+#overviewTrack .deck-pane[data-title="Summary"] > .eyebrow::before, #segmentStrip .segstrip-head .eyebrow::before { content: ""; width: 18px; height: 3px; border-radius: 2px; background: var(--accent); }
+#overviewTrack .deck-pane[data-title="Summary"] > .eyebrow span, #segmentStrip .segstrip-head .eyebrow span { color: var(--muted); font-weight: 500; letter-spacing: .02em; text-transform: none; }
+.segtile { background: linear-gradient(160deg, color-mix(in srgb, var(--c) 17%, var(--panel)) 0%, color-mix(in srgb, var(--c) 5%, var(--panel)) 70%); border-color: color-mix(in srgb, var(--c) 40%, var(--line-soft)); box-shadow: none; }
+.segtile::before { height: 4px; }
+.segtile::after { display: none; }
+.segtile-name { color: var(--ink); }
+.segtile-main b { color: color-mix(in srgb, var(--c) 78%, var(--ink)); }
+.segtile-main span { color: var(--ink-2); }
+.segtile-share { background: color-mix(in srgb, var(--c) 18%, var(--panel)); }
+.segtile-facts { border-top-color: color-mix(in srgb, var(--c) 28%, transparent); }
+.segtile-facts b { color: color-mix(in srgb, var(--c) 60%, var(--ink)); }
+.segtile:hover { box-shadow: 0 12px 26px color-mix(in srgb, var(--c) 24%, transparent); border-color: color-mix(in srgb, var(--c) 65%, transparent); }
+.segtile.is-on { background: linear-gradient(160deg, color-mix(in srgb, var(--c) 26%, var(--panel)), color-mix(in srgb, var(--c) 10%, var(--panel))); border-color: color-mix(in srgb, var(--c) 70%, transparent); }
+.segtile.is-unknown { background: var(--panel-2); border-color: var(--line-soft); }
+.segtile.is-unknown::before { background: var(--slate); }
+.segtile.is-unknown .segtile-main b { color: var(--ink-2); }
+#overviewTrack .deck-pane[data-title="Summary"] .kpi { background: linear-gradient(160deg, color-mix(in srgb, var(--kpi-tone) 15%, var(--panel)) 0%, color-mix(in srgb, var(--kpi-tone) 5%, var(--panel)) 70%); border-color: color-mix(in srgb, var(--kpi-tone) 38%, var(--line-soft)); box-shadow: none; }
+#overviewTrack .deck-pane[data-title="Summary"] .kpi::before, #overviewTrack .deck-pane[data-title="Summary"] .kpi::after { display: none; }
+#overviewTrack .deck-pane[data-title="Summary"] .kpi h3 { color: var(--ink); }
+#overviewTrack .deck-pane[data-title="Summary"] .kpi > strong { color: color-mix(in srgb, var(--kpi-tone) 80%, var(--ink)); }
+#overviewTrack .deck-pane[data-title="Summary"] .kpi-note { color: var(--ink-2); }
+#overviewTrack .deck-pane[data-title="Summary"] .kpi-chip { background: var(--kpi-tone); color: #fff; box-shadow: 0 4px 12px color-mix(in srgb, var(--kpi-tone) 40%, transparent); }
+#overviewTrack .deck-pane[data-title="Summary"] .kpi:hover { transform: translateY(-2px); box-shadow: 0 12px 26px color-mix(in srgb, var(--kpi-tone) 22%, transparent); border-color: color-mix(in srgb, var(--kpi-tone) 65%, transparent); }
+#overviewTrack .deck-pane[data-title="Summary"] .kpi[aria-expanded="true"] { border-color: color-mix(in srgb, var(--kpi-tone) 70%, transparent); box-shadow: 0 0 0 2px color-mix(in srgb, var(--kpi-tone) 30%, transparent); }
+#overviewTrack .deck-pane[data-title="Summary"] .kpi-caret { color: color-mix(in srgb, var(--kpi-tone) 70%, var(--ink)); }
+
+/* ---------- Overview: the Pipeline pane ---------- */
+.summary-item[data-tone="green"] { --tone-bar: var(--green); }
+.summary-item[data-tone="amber"] { --tone-bar: var(--amber); }
+.summary-item[data-tone="green"]::before, .summary-item[data-tone="amber"]::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--tone-bar); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .summary-item { background: linear-gradient(160deg, color-mix(in srgb, var(--tone-bar) 15%, var(--panel)) 0%, color-mix(in srgb, var(--tone-bar) 5%, var(--panel)) 70%); border-color: color-mix(in srgb, var(--tone-bar) 38%, var(--line-soft)); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .summary-item::before { height: 4px; }
+#overviewTrack .deck-pane[data-title="Pipeline"] .summary-item span { color: var(--ink); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .summary-item strong { color: color-mix(in srgb, var(--tone-bar) 80%, var(--ink)); font-size: 24px; }
+#overviewTrack .deck-pane[data-title="Pipeline"] .summary-item .tile-share i::after { background: var(--tone-bar); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .summary-item:hover { box-shadow: 0 12px 26px color-mix(in srgb, var(--tone-bar) 22%, transparent); border-color: color-mix(in srgb, var(--tone-bar) 65%, transparent); }
+.bench-card[data-bench="Computer"] { --bc: var(--aqua); --bci: var(--aqua-ink); }
+.bench-card[data-bench="Company"] { --bc: var(--violet); --bci: var(--violet-ink); }
+.bench-card[data-bench="Unassigned"] { --bc: var(--slate); --bci: var(--slate-ink); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .bench-card { background: linear-gradient(160deg, color-mix(in srgb, var(--bc) 15%, var(--panel)) 0%, color-mix(in srgb, var(--bc) 5%, var(--panel)) 70%); border-color: color-mix(in srgb, var(--bc) 38%, var(--line-soft)); border-top: 4px solid var(--bc); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .bench-card:hover { box-shadow: 0 12px 26px color-mix(in srgb, var(--bc) 22%, transparent); border-color: color-mix(in srgb, var(--bc) 65%, transparent); border-top-color: var(--bc); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .bench-head h3 { color: var(--ink); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .bench-ring .ring-fg { stroke: var(--bc); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .bench-ring .ring-bg { stroke: color-mix(in srgb, var(--bc) 18%, var(--panel)); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .bench-ring b { color: var(--bci); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .bench-metric b { color: var(--ink); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .rankbar-label { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; background: color-mix(in srgb, var(--c) 14%, var(--panel)); color: color-mix(in srgb, var(--c) 72%, var(--ink)); font-weight: 600; font-size: 11.5px; justify-self: start; max-width: 100%; }
+#overviewTrack .deck-pane[data-title="Pipeline"] .rankbar-count { color: color-mix(in srgb, var(--c) 75%, var(--ink)); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .rankbar-track { background: color-mix(in srgb, var(--c) 12%, var(--panel-3)); }
+#overviewTrack .deck-pane[data-title="Pipeline"] .rankbar { grid-template-columns: 118px minmax(0, 1fr) 56px 40px; }
+#overviewTrack .deck-pane[data-title="Pipeline"] .rankbar[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 10%, var(--panel)); }
+
+/* ---------- Overview: the Daily delta legend and busiest-day strip ---------- */
+#overviewTrack .deck-pane[data-title="Daily delta"] .chart-key { gap: 8px; }
+#overviewTrack .deck-pane[data-title="Daily delta"] .chart-key .key-item[data-series] { padding: 4px 11px 4px 8px; border-radius: 999px; background: color-mix(in srgb, var(--tone) 14%, var(--panel)); border: 1px solid color-mix(in srgb, var(--tone) 40%, transparent); color: color-mix(in srgb, var(--tone) 72%, var(--ink)); font-weight: 600; font-size: 11.5px; text-transform: capitalize; }
+#overviewTrack .deck-pane[data-title="Daily delta"] .chart-key .key-item[data-series]::before { width: 8px; height: 8px; border-radius: 50%; background: var(--tone); box-shadow: 0 0 0 2px color-mix(in srgb, var(--tone) 25%, transparent); }
+#overviewTrack .deck-pane[data-title="Daily delta"] .chart-key .key-item.is-quiet { --tone: var(--slate); opacity: 1; color: var(--muted); }
+#overviewTrack .deck-pane[data-title="Daily delta"] .peakstrip { align-items: center; gap: 10px 10px; padding: 10px 14px; border-radius: var(--radius-sm); background: var(--panel-2); border: 1px dashed var(--line-soft); }
+#overviewTrack .deck-pane[data-title="Daily delta"] .peakstrip-label { display: inline-flex; align-items: center; gap: 8px; color: var(--ink); font-weight: 700; margin-right: 4px; }
+#overviewTrack .deck-pane[data-title="Daily delta"] .peakstrip-label::before { content: ""; width: 14px; height: 3px; border-radius: 2px; background: var(--accent); }
+#overviewTrack .deck-pane[data-title="Daily delta"] .peakstrip-item { flex-direction: row; align-items: center; gap: 8px; padding: 5px 10px 5px 8px; border-radius: 999px; background: color-mix(in srgb, var(--tone) 14%, var(--panel)); border: 1px solid color-mix(in srgb, var(--tone) 40%, transparent); color: color-mix(in srgb, var(--tone) 72%, var(--ink)); font-weight: 600; text-transform: capitalize; }
+#overviewTrack .deck-pane[data-title="Daily delta"] .peakstrip-item i { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 0 2px color-mix(in srgb, var(--tone) 25%, transparent); }
+#overviewTrack .deck-pane[data-title="Daily delta"] .peakstrip-item b { color: var(--ink); font-size: 12.5px; }
+#overviewTrack .deck-pane[data-title="Daily delta"] .peakstrip-item small { padding: 1px 6px; border-radius: 999px; background: color-mix(in srgb, var(--tone) 18%, var(--panel)); color: color-mix(in srgb, var(--tone) 70%, var(--ink)); font-weight: 600; }
