@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T19:30:52+00:00",
+ "generatedAt": "2026-09-24T19:40:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3255,6 +3255,16 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/closed-bugs-that-were-never-written-up/d3ec4f36612c421da8f0fa5e84448f7a7f24b02f5c55a6bb62a78f0879d80713.zip",
    "bytesRead": 51427,
+   "readOn": "2026-09-24"
+  },
+  "tech-mg-it-b9-a7-summer-trending-repo-leaderboard": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b9-a7-summer-trending-repo-leaderboard/998bc0e771c9d147d93f162902f1de96e0e3b0484ce10e510d83c771e9c48e97.zip",
+   "bytesRead": 79974,
    "readOn": "2026-09-24"
   }
  }
