@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T22:20:50+00:00",
+ "generatedAt": "2026-09-24T22:30:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3425,6 +3425,48 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c188-ci-mirror-pipeline-audit/6d1e34d9d616952a3bb310681a605e47976ad931057e2b279c8100fccac224f0.zip",
    "bytesRead": 78875,
+   "readOn": "2026-09-24"
+  },
+  "bus-b23-b8-integration-delivery-cost-model": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b8-integration-delivery-cost-model/6b21da361143b7098caa78c9600329f25577a1615ea94483e61f7de13c5c4975.zip",
+   "bytesRead": 94692,
+   "readOn": "2026-09-24"
+  },
+  "edu-sc09-b1-vocal-health-scope-of-practice-checkin-v7": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc09-b1-vocal-health-scope-of-practice-checkin-v7/875cf67f46b4ba6d05a731891284d020da61d10981e31fd84c18baa2a8ab1218.zip",
+   "bytesRead": 81662,
+   "readOn": "2026-09-24"
+  },
+  "gen-g1299-migratory-bird-population-label-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1299-migratory-bird-population-label-audit/00d690d53a4cffa5c1912451fea007be20a2fa75ae813093ac884b6eddd6fb54.zip",
+   "bytesRead": 71869,
+   "readOn": "2026-09-24"
+  },
+  "the-biggest-videos-in-marketing": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-biggest-videos-in-marketing/8fa5495da668e182ec95c1ccd6455363d3022927b4d120c8e014ba3b09636ba8.zip",
+   "bytesRead": 48176,
    "readOn": "2026-09-24"
   }
  }
