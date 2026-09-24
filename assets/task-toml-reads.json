@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T15:00:55+00:00",
+ "generatedAt": "2026-09-24T15:11:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3023,6 +3023,34 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/closed-as-duplicate-of-nothing/23a253d453489fb4013f13a568d3ff3d9aa650f1120453856ea92bb0a9fbf000.zip",
    "bytesRead": 54935,
+   "readOn": "2026-09-24"
+  },
+  "100770": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/100770/08310f8cbf9d7983f08b96ca107d054710d514d32912610015df0cd288db142b.zip",
+   "bytesRead": 41577,
+   "readOn": "2026-09-24"
+  },
+  "health-hl04-a5-altitude-training-week": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-hl04-a5-altitude-training-week/e289ae531df187f4bda09f03fe070f17724c3d79a323d9d24ad5304b107c7613.zip",
+   "bytesRead": 65781,
    "readOn": "2026-09-24"
   }
  }
