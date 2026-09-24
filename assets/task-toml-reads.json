@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T18:20:52+00:00",
+ "generatedAt": "2026-09-24T18:40:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3201,6 +3201,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b49-f9-btc-usd-trend-phase-deck/6c2dc589ec3ac405728e0fdc5d01aaaa828ab04cec6681148e7333cdae5f0699.zip",
    "bytesRead": 129183,
+   "readOn": "2026-09-24"
+  },
+  "health-b44-h7-clinician-directory-roster-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b44-h7-clinician-directory-roster-reconciliation/7941b834d8e6f6f37f6929da56c01c29e5bc23d922ed6520d975de08e77e1012.zip",
+   "bytesRead": 71807,
+   "readOn": "2026-09-24"
+  },
+  "the-room-was-loud-and-empty": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-room-was-loud-and-empty/29ce949d71587b18ef091c4160ef12092e4c5c827d53ad42e43b29203213f979.zip",
+   "bytesRead": 52566,
    "readOn": "2026-09-24"
   }
  }
