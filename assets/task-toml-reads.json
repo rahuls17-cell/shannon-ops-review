@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T10:00:57+00:00",
+ "generatedAt": "2026-09-24T10:11:37+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2636,6 +2636,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b8-revolver-auction-listing-fields-fees/5dbe6f7762b3bf3b50b3be0f5cf193a9d66828b4b54bfbf1e35c860a8d496634.zip",
    "bytesRead": 102394,
+   "readOn": "2026-09-24"
+  },
+  "bus-b67-b10-roofing-labor-only-estimate": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b67-b10-roofing-labor-only-estimate/8db9c86ef2e55bb32f2f70a012d32494f520663717b708c69d614489b8bce1a3.zip",
+   "bytesRead": 81359,
+   "readOn": "2026-09-24"
+  },
+  "gen-g981-background-art-continuity-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g981-background-art-continuity-audit/c21021e9a3aed3e1e1148b67e6bd4cc84bdd713483b1330d3836f79c586f360e.zip",
+   "bytesRead": 82795,
    "readOn": "2026-09-24"
   }
  }
