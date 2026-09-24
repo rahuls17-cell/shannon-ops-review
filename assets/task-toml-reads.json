@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T13:10:54+00:00",
+ "generatedAt": "2026-09-24T13:21:19+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2909,6 +2909,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b10-a3-portfolio-builder-price-gap-bridge/bbad57222dc1ad498273c2e44984da4f8b691032366b6f713f9fd0c8ead5d658.zip",
    "bytesRead": 116006,
+   "readOn": "2026-09-24"
+  },
+  "health-tdt6-a7-home-bp-lability-log-reconstruction": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt6-a7-home-bp-lability-log-reconstruction/ecdf599d7f8665724d7535eccbbd25b0b81d66af2c01c928021270ea028e9e1f.zip",
+   "bytesRead": 97505,
    "readOn": "2026-09-24"
   }
  }
