@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T03:11:01+00:00",
+ "generatedAt": "2026-09-24T03:20:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2384,6 +2384,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-t2-automation-window-schedule-plan/b56a80f58c2d11870b3c4fa09d698105b2fb7b48a7518376d23e33b9570a57b6.zip",
    "bytesRead": 81875,
+   "readOn": "2026-09-24"
+  },
+  "code-c49-health-check-config-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c49-health-check-config-audit/89939c4d5f06ce1f73e26c59f7bc0e613b06271789cb4f822ce9f36f8b52c606.zip",
+   "bytesRead": 74347,
+   "readOn": "2026-09-24"
+  },
+  "health-h64-skinfold-body-fat-recompute-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h64-skinfold-body-fat-recompute-audit/a1e9f400a9655a8151e5bfb4f0a4e8e7a3a2b4f6e3e3544e333c77f4c3051e95.zip",
+   "bytesRead": 87934,
    "readOn": "2026-09-24"
   }
  }
