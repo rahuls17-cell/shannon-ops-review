@@ -155,8 +155,8 @@ const infoCopy = {
       + 'is a company image while obi-benchmark under connectors-rl-gym is a computer one - reading '
       + 'the name first gets four of the 348 labelled tasks wrong.'
       + (split ? ' Across the pipeline: ' + split + '.' : '')
-      + ' Only connector tasks have a bench. A task on a plain base image is not on one, and is '
-      + 'listed as not a connector rather than being forced into a side.';
+      + ' A non-connector task runs on the Company bench. A task whose package was never read has '
+      + 'no bench recorded and is listed as bench not known rather than being forced into a side.';
   },
   truthSplit: () => {
     const c = cohortIndex && cohortIndex.counts;
@@ -1301,6 +1301,7 @@ function fillSelect(id, counts, allLabel, unit) {
 // what a browser renders as a real parent. Counts are there because every
 // other filter on this bar has them, and a filter that will not say how much
 // it selects invites the guess that it selects nothing.
+const BENCH_NAMES = {synth: 'synthetic'};
 function fillBench() {
   const node = byId('tBench');
   if (!node || !truth || !truth.rows) return;
@@ -1327,13 +1328,13 @@ function fillBench() {
     if (!kids.length) return '';
     return `<optgroup label="${esc(label)}">`
       + option(which, `All ${label.toLowerCase()}`, side(which))
-      + kids.map(b => option(b, b.replace(`${which} bench `, ''), tally[b])).join('')
+      + kids.map(b => option(b, `${label} \u00b7 ${BENCH_NAMES[b.replace(`${which} bench `, '')] || b.replace(`${which} bench `, '')}`, tally[b])).join('')
       + '</optgroup>';
   };
   node.innerHTML = option('', 'Any bench')
     + group('Company bench', 'company')
     + group('Computer bench', 'computer')
-    + (tally.none ? `<optgroup label="Neither">${option('none', 'Not a connector', tally.none)}</optgroup>` : '');
+    + (tally.none ? `<optgroup label="Not known">${option('none', 'Bench not known', tally.none)}</optgroup>` : '');
   if ([...node.options].some(o => o.value === keep)) node.value = keep;
 }
 

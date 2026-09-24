@@ -41,8 +41,8 @@
     // The four-trial GLM band. Read from the trial files in the bucket, so a
     // task with no trials recorded has no band rather than a zero - 0/4 is a
     // real and bad result, and must not be what "we did not look" looks like.
-    // Which bench a task runs on, from the base image in its Dockerfile. Only
-    // connector tasks have one: a plain base image is not a bench.
+    // Which bench a task runs on, from the base image in its Dockerfile.
+    // Non-connector tasks run on the Company bench.
     // Which task a folder actually holds, read from the [task] name in its
     // package task.toml. The Accepted list counts folders, because one folder is
     // one delivered package - but the same task is re-cut under a new folder
@@ -143,6 +143,10 @@
           ...glmOf(row.id),
           ...benchAt(row.id, row.name),
         }))
+        // A non-connector task runs on the Company bench; only a task whose
+        // package was never read is left without one.
+        .map(row => (row.bench || row.connector !== false ? row
+          : {...row, bench: 'company bench non-connector', benchSide: 'company'}))
       : payload.tasks;
 
     const cohort = cohortRows(rows, cohortIndex, benchAt, dupOf, siblingDelivery);
@@ -439,8 +443,8 @@
           : row.connector === null || row.connector === undefined)) &&
         // The band is a property of the run, so a row with no trials is
         // excluded from every band filter rather than counted as 0.
-        // Bench is a property of connector tasks only, so a row without one is
-        // excluded from every bench filter rather than counted as neither.
+        // A row whose bench is not known is excluded from every bench filter
+        // rather than counted as one side.
         (!f.bench || (f.bench === 'none' ? !row.bench
           : f.bench === 'company' || f.bench === 'computer' ? row.benchSide === f.bench
           : row.bench === f.bench)) &&
