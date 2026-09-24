@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T04:31:15+00:00",
+ "generatedAt": "2026-09-24T04:40:49+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2424,6 +2424,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c364-brand-wave-deck-qc-audit/e5e39f252f43bb1bcfde2e93c58bc0651f162bf23ac9d3c59492e25fa6ecbb27.zip",
    "bytesRead": 76667,
+   "readOn": "2026-09-24"
+  },
+  "tech-b54-a3-feeder-conductor-adjudication-v16": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-a3-feeder-conductor-adjudication-v16/2006d006706d65bbcbf8448a8a1f54eac084f67f43102b5e8769fa8c53fc03e2.zip",
+   "bytesRead": 69262,
    "readOn": "2026-09-24"
   }
  }
