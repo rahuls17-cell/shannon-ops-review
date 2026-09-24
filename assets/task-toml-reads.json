@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T17:40:53+00:00",
+ "generatedAt": "2026-09-24T18:00:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3151,6 +3151,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-a8-rig-footage-variance-attribution/f632791385efcc5f30607c4d656bf2a0afb4f305cd9faaaef69ad651a52aff71.zip",
    "bytesRead": 119020,
+   "readOn": "2026-09-24"
+  },
+  "code-c143-reserved-instance-coverage-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c143-reserved-instance-coverage-recompute/9fd49da53fcc20053f35f068bf3b73240768bb7364f1d50957f0266961de49a0.zip",
+   "bytesRead": 95972,
+   "readOn": "2026-09-24"
+  },
+  "fin-b54-f6-collectible-disposal-route-model": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b54-f6-collectible-disposal-route-model/a8781b118793aa60d2192b8001665a60180491643ed9ce86d9e511ec770be77d.zip",
+   "bytesRead": 131203,
    "readOn": "2026-09-24"
   }
  }
