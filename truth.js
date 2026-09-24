@@ -42,7 +42,7 @@
     // task with no trials recorded has no band rather than a zero - 0/4 is a
     // real and bad result, and must not be what "we did not look" looks like.
     // Which bench a task runs on, from the base image in its Dockerfile.
-    // Non-connector tasks run on the Company bench.
+    // Non-connector tasks run on the Computer bench.
     // Which task a folder actually holds, read from the [task] name in its
     // package task.toml. The Accepted list counts folders, because one folder is
     // one delivered package - but the same task is re-cut under a new folder
@@ -143,10 +143,10 @@
           ...glmOf(row.id),
           ...benchAt(row.id, row.name),
         }))
-        // A non-connector task runs on the Company bench; only a task whose
+        // A non-connector task runs on the Computer bench; only a task whose
         // package was never read is left without one.
         .map(row => (row.bench || row.connector !== false ? row
-          : {...row, bench: 'company bench non-connector', benchSide: 'company'}))
+          : {...row, bench: 'computer bench non-connector', benchSide: 'computer'}))
       : payload.tasks;
 
     const cohort = cohortRows(rows, cohortIndex, benchAt, dupOf, siblingDelivery);

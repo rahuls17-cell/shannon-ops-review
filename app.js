@@ -155,7 +155,7 @@ const infoCopy = {
       + 'is a company image while obi-benchmark under connectors-rl-gym is a computer one - reading '
       + 'the name first gets four of the 348 labelled tasks wrong.'
       + (split ? ' Across the pipeline: ' + split + '.' : '')
-      + ' A non-connector task runs on the Company bench. A task whose package was never read has '
+      + ' A non-connector task runs on the Computer bench. A task whose package was never read has '
       + 'no bench recorded and is listed as bench not known rather than being forced into a side.';
   },
   truthSplit: () => {
