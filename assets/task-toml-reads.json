@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T09:31:33+00:00",
+ "generatedAt": "2026-09-24T10:00:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2616,6 +2616,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b49-b2-director-level-bullet-dimension-audit/a108ce4294eaf00c32f96946a8d6f236886e0d6df06fffc29f7980983c131aea.zip",
    "bytesRead": 87400,
+   "readOn": "2026-09-24"
+  },
+  "bus-b46-b5-data-hall-three-week-lookahead-consolidation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b46-b5-data-hall-three-week-lookahead-consolidation/15938e3eb9fff9bd3ff7f6d27d2532dd1c6dd272d988c601b36e426a89ac2cbb.zip",
+   "bytesRead": 95953,
+   "readOn": "2026-09-24"
+  },
+  "bus-b48-b8-revolver-auction-listing-fields-fees": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b8-revolver-auction-listing-fields-fees/5dbe6f7762b3bf3b50b3be0f5cf193a9d66828b4b54bfbf1e35c860a8d496634.zip",
+   "bytesRead": 102394,
    "readOn": "2026-09-24"
   }
  }
