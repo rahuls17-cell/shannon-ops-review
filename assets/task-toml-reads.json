@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T23:10:51+00:00",
+ "generatedAt": "2026-09-24T23:30:49+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3477,6 +3477,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l83-cost-bill-recoverability-audit-91e817-v2-sna-bpxh/3fea25e33cd9237f0b5039f3ecbe14c83cb49decd50058ff55aca62bdf0b1b7d.zip",
    "bytesRead": 72390,
+   "readOn": "2026-09-24"
+  },
+  "bus-b22-b11-contracting-business-sale-comparison": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b11-contracting-business-sale-comparison/49786d90d84278f8b127e72dc3ddb2b4625386a551d146fc8707613abcc4e7a3.zip",
+   "bytesRead": 119858,
+   "readOn": "2026-09-24"
+  },
+  "code-c219-vulnerability-remediation-sla-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c219-vulnerability-remediation-sla-audit/bb938d3c7f7c74bf8b03fe85e9a9d6a696f3814237482d2b97c09c3b4397417e.zip",
+   "bytesRead": 78299,
    "readOn": "2026-09-24"
   }
  }
