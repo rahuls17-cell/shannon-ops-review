@@ -2654,23 +2654,18 @@ function payoutsOpen() {
 }
 
 // The Overview's Payout balance panel follows the Payouts lock. While locked
-// it shows a blurred stand-in of the same shape with no real figures in the
-// page, so nothing can be read out of the markup either.
-function veilPayoutBalance() {
+// the names and the amounts are not written into the page; a blurred
+// placeholder stands where each would be, so the layout keeps its shape.
+function payoutBalanceOpen() {
   const open = payoutsOpen();
   const veil = byId('payoutBalanceVeil');
   const body = byId('payoutBalanceBody');
   if (veil) veil.hidden = open;
   if (body) body.classList.toggle('is-locked', !open);
-  if (open) return true;
-  const chart = byId('exposureChart'), list = byId('topPendingCards');
-  if (chart) chart.innerHTML = `
-    <div class="settle"><div class="settle-head"><span>Settled</span><b>··%</b></div><div class="settle-track"><i style="--pct:55"></i></div></div>
-    ${[72, 48, 30].map((w, i) => `<div class="bench-bar" style="--i:${i}"><div class="bench-bar-head"><span>Bench</span><b>$····</b></div><div class="stack" style="width:${w}%"><span class="seg is-paid" style="width:60%"></span><span class="seg is-pending" style="width:40%"></span></div></div>`).join('')}`;
-  if (list) list.innerHTML = [92, 70, 55, 41, 28].map((w, i) => `
-    <div class="leader-row is-masked" style="--i:${i}"><div class="rank">${i + 1}</div><div class="person"><strong>Hidden</strong><span>· of · tasks unpaid</span></div><div class="bar-track"><div class="bar-fill" style="width:${w}%"></div></div><div class="amount">$····</div></div>`).join('');
-  return false;
+  return open;
 }
+const hiddenMoney = () => '<span class="blurred" aria-label="hidden amount">$0,000</span>';
+const hiddenName = () => '<span class="blurred" aria-label="hidden name">Hidden name</span>';
 
 function applyPayoutLock() {
   const lock = byId('payoutLock');
@@ -2891,11 +2886,11 @@ function renderHero() {
   }
 }
 
-function moneySeg(tone, value, scale, tip) {
+function moneySeg(tone, value, scale, tip, labelled = true) {
   if (!value) return '';
   // Label inside the bar only where it fits; the tooltip and the line beneath
   // carry the number for the slivers.
-  const label = value / scale >= 0.13 ? `<i>${money(value)}</i>` : '';
+  const label = labelled && value / scale >= 0.13 ? `<i>${money(value)}</i>` : '';
   return `<span class="seg ${tone}" style="flex:${value}" data-tip="${esc(tip)}">${label}</span>`;
 }
 
@@ -3020,20 +3015,21 @@ function renderExposureChart(rows) {
     ? `${money(paid + owed)} earned · ${money(paid)} paid · ${money(owed)} owed`
     : '') + (payoutLedgerError ? ' · ledger unavailable, workbook figures shown' : ''));
   const host = byId('exposureChart');
-  if (!veilPayoutBalance()) return;
+  const open = payoutBalanceOpen();
+  const cash = value => (open ? money(value) : hiddenMoney());
   host.innerHTML = benches.length ? `
-    <div class="settle" data-tip="${money(paid)} paid of ${money(paid + owed)} earned">
+    <div class="settle"${open ? ` data-tip="${money(paid)} paid of ${money(paid + owed)} earned"` : ''}>
       <div class="settle-head"><span>Settled</span><b data-count="${settled}" data-kind="pct" data-key="settle">${settled}%</b></div>
       <div class="settle-track"><i style="--pct:${settled}"></i><em style="--pct:${settled}"></em></div>
-      <div class="settle-foot"><span>${money(paid)} paid</span><span>${money(owed)} still owed</span></div>
+      <div class="settle-foot"><span>${cash(paid)} paid</span><span>${cash(owed)} still owed</span></div>
     </div>
     ${benches.map((bench, index) => {
       const benchTotal = bench.paid + bench.pending;
       return `<div class="bench-bar" data-bench="${bench.key}" style="--i:${index}">
-        <div class="bench-bar-head"><span>${esc(bench.label)}</span><b data-count="${benchTotal}" data-kind="money" data-key="bar:${bench.key}">${money(benchTotal)}</b></div>
+        <div class="bench-bar-head"><span>${esc(bench.label)}</span>${open ? `<b data-count="${benchTotal}" data-kind="money" data-key="bar:${bench.key}">${money(benchTotal)}</b>` : `<b>${hiddenMoney()}</b>`}</div>
         <div class="stack" style="width:${Math.max((benchTotal / scale) * 100, 2)}%">
-          ${moneySeg('is-paid', bench.paid, scale, `${bench.label}: ${money(bench.paid)} paid for ${fmt(bench.paidTasks)} tasks`)}
-          ${moneySeg('is-pending', bench.pending, scale, `${bench.label}: ${money(bench.pending)} owed for ${fmt(bench.pendingTasks)} tasks`)}
+          ${moneySeg('is-paid', bench.paid, scale, open ? `${bench.label}: ${money(bench.paid)} paid for ${fmt(bench.paidTasks)} tasks` : `${bench.label}: paid for ${fmt(bench.paidTasks)} tasks`, open)}
+          ${moneySeg('is-pending', bench.pending, scale, open ? `${bench.label}: ${money(bench.pending)} owed for ${fmt(bench.pendingTasks)} tasks` : `${bench.label}: owed for ${fmt(bench.pendingTasks)} tasks`, open)}
         </div>
         <div class="bench-bar-foot">${fmt(bench.paidTasks)} of ${fmt(bench.paidTasks + bench.pendingTasks)} tasks paid</div>
       </div>`;
@@ -3056,18 +3052,23 @@ function renderTopPendingCards() {
     .slice(0, 8);
   const max = Math.max(...rows.map((row) => row.pendingAmount), 1);
   const host = byId('topPendingCards');
-  if (!veilPayoutBalance()) return;
+  const open = payoutBalanceOpen();
   host.innerHTML = rows.map((row, index) => {
     const who = row.name || row.email || 'Unknown';
+    // No data-person while locked, which also makes the row inert: the click
+    // and keyboard handlers both select on [data-person].
+    const identity = open
+      ? ` role="button" tabindex="0" data-person="${esc(who)}" data-tip="Open ${esc(who)} in Payouts"`
+      : ' data-tip="Unlock Payouts to see who this is"';
     return `
-        <div class="leader-row" data-bench="${benchOf(row.team)}" style="--i:${index}" role="button" tabindex="0" data-person="${esc(who)}" data-tip="Open ${esc(who)} in Payouts">
+        <div class="leader-row${open ? '' : ' is-masked'}" data-bench="${benchOf(row.team)}" style="--i:${index}"${identity}>
           <div class="rank${index < 3 ? ` medal medal-${index + 1}` : ''}">${index + 1}</div>
           <div class="person">
-            <strong>${esc(who)}</strong>
+            <strong>${open ? esc(who) : hiddenName()}</strong>
             <span>${fmt(row.pendingTasks)} of ${fmt(row.acceptedTasks)} tasks unpaid · ${esc(row.team || 'no team')}</span>
           </div>
           <div class="bar-track"><div class="bar-fill" style="width:${safePct(row.pendingAmount, max)}"></div></div>
-          <div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${esc(row.email || row.name)}">${money(row.pendingAmount)}</div>
+          ${open ? `<div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${esc(row.email || row.name)}">${money(row.pendingAmount)}</div>` : `<div class="amount">${hiddenMoney()}</div>`}
         </div>`;
   }).join('') || '<p class="empty">Nothing owed in this selection.</p>';
   animateCounts(host);

@@ -183,15 +183,14 @@
               <button class="ghost" data-jump="payouts">Open Payouts</button>
             </header>
             <div class="veiled">
+              <div class="veil" id="payoutBalanceVeil" hidden>
+                <span class="lockmark" aria-hidden="true">&#9679;&#9679;&#9679;&#9679;</span>
+                <span>Names and amounts are hidden until Payouts is unlocked.</span>
+                <button class="ghost" data-jump="payouts">Unlock in Payouts</button>
+              </div>
               <div class="panel-body exposure" id="payoutBalanceBody">
                 <div><p class="subhead">By bench</p><figure id="exposureChart" class="exposure-chart"></figure></div>
                 <div><p class="subhead">Largest amounts owed</p><div id="topPendingCards" class="leaderboard"></div></div>
-              </div>
-              <div class="veil" id="payoutBalanceVeil" hidden>
-                <span class="lockmark" aria-hidden="true">&#9679;&#9679;&#9679;&#9679;</span>
-                <b>Locked</b>
-                <p>Who is owed what opens with the Payouts password.</p>
-                <button class="primary" data-jump="payouts">Unlock in Payouts</button>
               </div>
             </div>
           </section>
