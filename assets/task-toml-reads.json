@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T11:40:54+00:00",
+ "generatedAt": "2026-09-24T11:50:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2772,6 +2772,25 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/litigation-promised-fix-custody-trace/b54e2eddc0ab7c00e27caec18757cbddec8236689cb49a6b8cbf9efed4aa88fa.zip",
    "bytesRead": 49531,
+   "readOn": "2026-09-24"
+  },
+  "verify-out-of-network-atm-fee-on-june-28-2022-withdrawal-for-account-4": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "docker.io/kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/verify-out-of-network-atm-fee-on-june-28-2022-withdrawal-for-account-4/028e4f52cad46d314ee99bcf52c1ad521393576a9dd3b924e4dd1c9eeecf734e.zip",
+   "bytesRead": 60312,
    "readOn": "2026-09-24"
   }
  }
