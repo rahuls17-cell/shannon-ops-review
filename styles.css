@@ -2423,3 +2423,5 @@ button.stat[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 18%, 
 .is-locked .leader-row.is-masked { cursor: default; }
 .is-locked .settle-foot span, .is-locked .bench-bar-head b, .is-locked .leader-row .amount { color: var(--ink-2); }
 #payoutSummary .kpi[data-tone="amber"] { --tc: var(--amber); --tci: var(--amber-ink); }
+/* The generic status tones must not paint the legend labels. */
+.key-item.is-paid, .key-item.is-pending { background: none; color: var(--ink-2); }
