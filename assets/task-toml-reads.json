@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T18:40:53+00:00",
+ "generatedAt": "2026-09-24T18:50:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3223,6 +3223,26 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-room-was-loud-and-empty/29ce949d71587b18ef091c4160ef12092e4c5c827d53ad42e43b29203213f979.zip",
    "bytesRead": 52566,
+   "readOn": "2026-09-24"
+  },
+  "bus-b47-b5-research-equipment-landed-cost-quote-email-ja": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b5-research-equipment-landed-cost-quote-email-ja/dbc5896fe74ed0a27b440919516786e573094ba14771822e4d3c30c4076ddcbe.zip",
+   "bytesRead": 88948,
+   "readOn": "2026-09-24"
+  },
+  "writing-sc05-a9-novel-scene-timeline": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-a9-novel-scene-timeline/35ae1ac8fb2171a45af5df3f594d5067cf4eff0c5fae7c4e8c65f61e55d9b6fb.zip",
+   "bytesRead": 66786,
    "readOn": "2026-09-24"
   }
  }
