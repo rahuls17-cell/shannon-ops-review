@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T10:30:54+00:00",
+ "generatedAt": "2026-09-24T10:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2696,6 +2696,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l39-classification-marking-audit/57dae79072bacef20fb0f688bb57bf088cf1d7051eebff5acc79917a0482d867.zip",
    "bytesRead": 119519,
+   "readOn": "2026-09-24"
+  },
+  "gen-g937-wallpaper-stock-asset-reuse-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g937-wallpaper-stock-asset-reuse-audit/95ea2f4c4682b717cc5132298fc27bd5e9f2c2298704f5fc2bf2dacae1e79e11.zip",
+   "bytesRead": 116561,
    "readOn": "2026-09-24"
   }
  }
