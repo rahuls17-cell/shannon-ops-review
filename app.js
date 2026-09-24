@@ -15,6 +15,7 @@ let truth = null;
 let truthPage = 0;
 let cohortIndex = null;
 let acceptedShown = null;
+let truthByBucket = false;
 let openChain = null;
 const TRUTH_PAGE_SIZE = 40;
 let audit = null;
@@ -791,6 +792,8 @@ function personSegments(row) {
 const personInSegment = row => !segment || personSegments(row).has(segment);
 const truthRows = () => (truth ? truth.rows.filter(row => inSegment(row.owner, row.connector)) : []);
 const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filter(row => inSegment(row.owner, row.connector)) : null);
+// Under Accepted the rows are bucket folders; every headline counts the tasks they fold into.
+const shownTasks = rows => (truthByBucket ? window.acceptedTaskCounts(rows).tasks : rows.length);
 const auditRows = () => (audit ? audit.rows.filter(row => inSegment(row.trainer, typeFlag(row.type))) : []);
 const ledgerRows = () => payoutLedgerTasks.filter(task => inSegment(task.email, typeFlag(task.filterType)));
 
@@ -1408,41 +1411,47 @@ function renderScope(result) {
 // The filter card: the three cuts people reach for first are chips with live
 // counts (each counted with the other filters applied), the rest are selects.
 function renderTruthFilterChips(filters, filtered) {
-  const rows = truthRows();
-  const without = key => window.filterTruth(rows, {...filters, [key]: ''});
+  const verdictRows = truthRows();
+  const cohort = truthCohortRows();
+  const rows = truthByBucket ? cohort : verdictRows;
+  const without = key => window.filterTruth(rows, {...filters, [key]: '', ...(truthByBucket ? {state: ''} : {})});
   const chip = (filter, value, label, count, tone, on) =>
     `<button type="button" class="fchip${on ? ' is-on' : ''}" style="--c:${tone}" data-tfilter="${filter}" data-value="${esc(value)}" aria-pressed="${on}">${esc(label)}<b>${fmt(count)}</b></button>`;
 
-  const byState = without('state');
+  const byState = window.filterTruth(verdictRows, {...filters, state: ''});
+  // Accepted is decided by the bucket, so its chip counts the bucket's tasks like the card does.
+  const stateCount = st => (st === 'accepted' && cohort
+    ? window.acceptedTaskCounts(window.filterTruth(cohort, {...filters, state: ''}).rows).tasks
+    : byState.rows.filter(r => r.state === st).length);
   const states = ['accepted', 'rejected', 'error', 'running', 'legacy accepted'].filter(st => byState.rows.some(r => r.state === st));
   byId('tStateChips').innerHTML = chip('tState', '', 'All', byState.rows.length, 'var(--slate)', !filters.state) +
-    states.map(st => chip('tState', st, stateLabel(st), byState.rows.filter(r => r.state === st).length, stateTone(st), filters.state === st)).join('');
+    states.map(st => chip('tState', st, stateLabel(st), stateCount(st), stateTone(st), filters.state === st)).join('');
 
   const byDelivered = without('delivered').rows;
-  const deliveredCount = value => window.filterTruth(byDelivered, {delivered: value}).rows.length;
-  byId('tDeliveredChips').innerHTML = chip('tDelivered', '', 'Any', byDelivered.length, 'var(--slate)', !filters.delivered) +
+  const deliveredCount = value => shownTasks(window.filterTruth(byDelivered, {delivered: value}).rows);
+  byId('tDeliveredChips').innerHTML = chip('tDelivered', '', 'Any', shownTasks(byDelivered), 'var(--slate)', !filters.delivered) +
     [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
       .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
 
   const byConnector = without('connector').rows;
-  byId('tConnectorChips').innerHTML = chip('tConnector', '', 'Any', byConnector.length, 'var(--slate)', !filters.connector) +
+  byId('tConnectorChips').innerHTML = chip('tConnector', '', 'Any', shownTasks(byConnector), 'var(--slate)', !filters.connector) +
     [['yes', 'Connector', 'var(--aqua)', r => r.connector === true], ['no', 'Non-connector', 'var(--blue)', r => r.connector === false], ['unknown', 'Not known', 'var(--slate)', r => r.connector !== true && r.connector !== false]]
-      .map(([v, l, tone, test]) => chip('tConnector', v, l, byConnector.filter(test).length, tone, filters.connector === v)).join('');
+      .map(([v, l, tone, test]) => chip('tConnector', v, l, shownTasks(byConnector.filter(test)), tone, filters.connector === v)).join('');
 
   const byGate = without('gateEra').rows;
   const gates = [...new Set(byGate.map(r => r.gateEra).filter(Boolean))].sort((a, b) => byGate.filter(r => r.gateEra === b).length - byGate.filter(r => r.gateEra === a).length);
   const GATE_TONES = {'KESTREL full': 'var(--green)', 'KESTREL on': 'var(--aqua)', 'Opus gate': 'var(--violet)', 'GLM-5.2 gate only': 'var(--amber)'};
-  byId('tGateChips').innerHTML = chip('tGate', '', 'Any', byGate.length, 'var(--slate)', !filters.gateEra) +
-    gates.map(g => chip('tGate', g, g, byGate.filter(r => r.gateEra === g).length, GATE_TONES[g] || 'var(--blue)', filters.gateEra === g)).join('');
+  byId('tGateChips').innerHTML = chip('tGate', '', 'Any', shownTasks(byGate), 'var(--slate)', !filters.gateEra) +
+    gates.map(g => chip('tGate', g, g, shownTasks(byGate.filter(r => r.gateEra === g)), GATE_TONES[g] || 'var(--blue)', filters.gateEra === g)).join('');
 
   const byDelivery = without('delivery').rows;
-  const deliveryCount = value => window.filterTruth(byDelivery, {delivery: value}).rows.length;
-  byId('tDeliveryChips').innerHTML = chip('tDelivery', '', 'Any', byDelivery.length, 'var(--slate)', !filters.delivery) +
+  const deliveryCount = value => shownTasks(window.filterTruth(byDelivery, {delivery: value}).rows);
+  byId('tDeliveryChips').innerHTML = chip('tDelivery', '', 'Any', shownTasks(byDelivery), 'var(--slate)', !filters.delivery) +
     [['current', 'At the current bar', 'var(--green)'], ['gateOnly', 'Awaiting re-gate', 'var(--amber)'], ['none', 'No package', 'var(--slate)']]
       .map(([v, l, tone]) => chip('tDelivery', v, l, deliveryCount(v), tone, filters.delivery === v)).join('');
 
-  const shown = window.filterTruth(rows, filters).rows.length;
-  setText('truthFilterCount', filtered ? `${fmt(shown)} of ${fmt(rows.length)} tasks` : `${fmt(rows.length)} tasks`);
+  const shown = shownTasks(window.filterTruth(rows, truthByBucket ? {...filters, state: ''} : filters).rows);
+  setText('truthFilterCount', filtered ? `${fmt(shown)} of ${fmt(verdictRows.length)} tasks` : `${fmt(verdictRows.length)} tasks`);
 
   const labels = {tState: 'State', tGate: 'Gate', tFinding: 'Finding', tDelivery: 'Delivery', tDelivered: 'Delivered', tConnector: 'Connector', tGlm: 'GLM', tBench: 'Bench', tCarried: 'Carried over', tConfidence: 'Identity', tDomain: 'Domain', tOwner: 'Trainer', tDuplicate: 'Duplicates', tSearch: 'Search'};
   const shownValue = id => { const node = byId(id); if (!node) return ''; if (node.tagName === 'SELECT') return (node.options[node.selectedIndex]?.textContent || node.value).replace(/\s*\(\d[\d,]*\)$/, ''); return node.value; };
@@ -1550,26 +1559,28 @@ function renderTruthFigures(result, filtered) {
   // Connector is structural, read from the package. Domain is a name prefix.
   // They sit together because a reader wants both, but they are labelled apart
   // because one is evidence and the other is a naming convention.
+  const shownBase = shownTasks(result.rows);
+  const shownWhere = test => shownTasks(result.rows.filter(test));
   byId('truthMakeup').innerHTML =
-    stat('connector', result.connectorTasks, result.rows.length,
+    stat('connector', shownWhere(r => r.connector === true), shownBase,
       tip('The task mounts connector gyms - Slack, Jira, Drive and the rest.',
         'Opened the package and read whether task.toml declares [[environment.mcp_servers]].',
         'It is structural evidence, so it holds whatever the task is called.',
         'Never inferred from the name. A gen- or code- prefix says nothing about whether a task talks to Slack.'),
       null, 'aqua') +
-    stat('non-connector', result.nonConnectorTasks, result.rows.length,
+    stat('non-connector', shownWhere(r => r.connector === false), shownBase,
       tip('The package declares no connector gyms.',
         'Same read of the same file; this is the negative answer, not the absence of one.',
         'These are the tasks the domain split below describes.',
         'Not a guess. A task with no package scanned is in "not known", not here.'),
       null, 'blue') +
-    stat('not known', result.connectorUnknown, result.rows.length,
+    stat('not known', shownWhere(r => r.connector !== true && r.connector !== false), shownBase,
       tip('No package was scanned for these.',
         'Looked for an archive in the bucket and found none at the current bar.',
         'They are reported as unknown so the two figures beside them mean what they say.',
         'Not "no". The marker only exists inside a package, and calling these non-connector would invent an answer for ' + fmt(result.connectorUnknown) + ' tasks.'),
       null, 'slate') +
-    stat('named domain', result.rows.length - (result.domains['Not recorded'] || 0), result.rows.length,
+    stat('named domain', shownWhere(r => r.domain && r.domain !== 'Not recorded'), shownBase,
       tip('The task name starts with a domain prefix such as gen- or law-.',
         'Read the prefix off the name. Nothing was opened.',
         'It gives a rough subject split for the tasks that follow the convention.',
@@ -1597,27 +1608,27 @@ function renderTruthFigures(result, filtered) {
     : '<p class="empty">No task in this selection carries a domain prefix.</p>';
 
   byId('truthFlags').innerHTML = [
-    ['carried over', result.carriedOver, 'Carried over',
+    ['carried over', shownWhere(r => r.carriedOver), 'Carried over',
       tip('First decided before the cut, settled by the current pipeline.',
         'Compared each task’s first decision against the cut date and kept the ones that predate it.',
         'It says this pipeline finished work that was already open, so the accepted figure is not all new work.',
         'Not a duplicate and not a re-run. One task, settled once, that started earlier.')],
-    ['awaiting re-gate', result.gateOnly, 'Awaiting KESTREL re-gate',
+    ['awaiting re-gate', shownWhere(r => r.gateOnly), 'Awaiting KESTREL re-gate',
       tip('Accepted under the GLM-5.2 gate only.',
         'Read which gate each verdict was decided under and kept those never seen by KESTREL.',
         'They need a re-gate before they can be treated as accepted at the current bar.',
         'Not rejected. Nothing here has failed; it has not been asked the current question yet.')],
-    ['possible duplicates', result.possibleDuplicates, 'Possible duplicates',
+    ['possible duplicates', shownWhere(r => r.possibleDuplicate), 'Possible duplicates',
       tip('Shares a task name and trainer with another task in scope.',
         'Grouped by name and owner and flagged the groups with more than one member.',
         'It marks work that may be counted more than once, so a figure built on names should be read with that in mind.',
         'Not merged and not removed. A task name can legitimately cover unrelated work, so these are flagged for a person, never folded automatically.')],
-    ['packages at the bar', result.atCurrentBar, 'Packages at the current bar',
+    ['packages at the bar', shownWhere(r => r.atCurrentBar), 'Packages at the current bar',
       tip('The package is collectable from the bucket today.',
         'Checked each task against the current-bar listing of the bucket rather than trusting its verdict.',
         'Only these can be delivered at all, which is why ready is drawn from them.',
         'Not the same as accepted. A rejected task can have a collectable package, and an accepted one can have none.')],
-  ].map(([label, value, chain, copy]) => stat(label, value, result.rows.length, copy, chain,
+  ].map(([label, value, chain, copy]) => stat(label, value, shownBase, copy, chain,
     {'carried over': 'violet', 'awaiting re-gate': 'amber', 'possible duplicates': 'red', 'packages at the bar': 'green'}[label] || 'slate')).join('');
 
   // The question this answers is the one the strip above kept inviting and
@@ -2060,6 +2071,7 @@ function renderTruth() {
   // the State column then shows what the latest verdict says about it.
   const cohort = truthCohortRows();
   const byBucket = filters.state === 'accepted' && cohort;
+  truthByBucket = Boolean(byBucket);
   const result = byBucket
     ? window.filterTruth(cohort, {...filters, state: ''})
     : window.filterTruth(truthRows(), filters);
@@ -2085,7 +2097,8 @@ function renderTruth() {
       + `${fmt(cohort.filter(r => r.latestVerdict && r.latestVerdict !== 'accepted').length)} of them have had a later `
       + 'submission come back rejected or unfinished; that is a different run and is shown in the row\u2019s evidence, not as its state.'
     : '');
-  setText('truthCount', `${fmt(result.rows.length)}${result.collapsed ? ' tasks' : ` of ${fmt(truth.rows.length)} tasks`} \u00b7 ${fmt(result.atCurrentBar)} at the bar \u00b7 ${fmt(result.owners)} trainers`);
+  const shownN = shownTasks(result.rows);
+  setText('truthCount', `${fmt(shownN)}${result.collapsed ? ' tasks' : ` of ${fmt(truth.rows.length)} tasks`}${byBucket && result.rows.length !== shownN ? ` in ${fmt(result.rows.length)} folders` : ''} \u00b7 ${fmt(shownTasks(result.rows.filter(r => r.atCurrentBar)))} at the bar \u00b7 ${fmt(result.owners)} trainers`);
   renderManifestBar(result);
   fillBench();
   renderExportButton(result);
