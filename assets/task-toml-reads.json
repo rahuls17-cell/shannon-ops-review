@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T21:40:50+00:00",
+ "generatedAt": "2026-09-24T21:50:48+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3385,6 +3385,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b61-t1-gpu-node-fabric-cabling-plan-validation/4c76a17d2c98573bd64c7be0b30cb818457e593e0fe86a995cbb91f7f1fe3f5d.zip",
    "bytesRead": 74244,
+   "readOn": "2026-09-24"
+  },
+  "tech-b61-t9-planning-api-export-request-error-diagnosis": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b61-t9-planning-api-export-request-error-diagnosis/82e75aee145d79b5a66bdfbc36dad7088b9c4ee00c826574869717b664941f08.zip",
+   "bytesRead": 71125,
    "readOn": "2026-09-24"
   }
  }
