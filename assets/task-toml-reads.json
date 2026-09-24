@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T03:20:51+00:00",
+ "generatedAt": "2026-09-24T04:31:15+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2404,6 +2404,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h64-skinfold-body-fat-recompute-audit/a1e9f400a9655a8151e5bfb4f0a4e8e7a3a2b4f6e3e3544e333c77f4c3051e95.zip",
    "bytesRead": 87934,
+   "readOn": "2026-09-24"
+  },
+  "bus-b22-b3-therapist-brand-launch-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b3-therapist-brand-launch-plan/a52005079524e53120ad8e2289a71b34b90692ca7ce11efb26d39f0a6a848aeb.zip",
+   "bytesRead": 74881,
+   "readOn": "2026-09-24"
+  },
+  "code-c364-brand-wave-deck-qc-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c364-brand-wave-deck-qc-audit/e5e39f252f43bb1bcfde2e93c58bc0651f162bf23ac9d3c59492e25fa6ecbb27.zip",
+   "bytesRead": 76667,
    "readOn": "2026-09-24"
   }
  }
