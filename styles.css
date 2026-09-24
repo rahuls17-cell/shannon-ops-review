@@ -2065,6 +2065,9 @@ button.stat[aria-pressed="true"] { border-color: var(--accent-line); background:
 /* The Payouts gate.
    Deliberately plain: it is a door, not a feature, and should read as the tab
    being withheld rather than as something that has gone wrong. */
+/* The hidden attribute always wins over a display rule. */
+[hidden] { display: none !important; }
+
 .lockpanel {
   display: grid;
   place-items: center;
