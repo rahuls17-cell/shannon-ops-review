@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T23:30:49+00:00",
+ "generatedAt": "2026-09-24T23:40:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3497,6 +3497,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c219-vulnerability-remediation-sla-audit/bb938d3c7f7c74bf8b03fe85e9a9d6a696f3814237482d2b97c09c3b4397417e.zip",
    "bytesRead": 78299,
+   "readOn": "2026-09-24"
+  },
+  "gen-g555-competency-response-readiness-audit-d44643-v8-sna-fivy": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g555-competency-response-readiness-audit-d44643-v8-sna-fivy/722147a9c97bb5450ae1989ac2dd28a883c8d87cbe3cc22563ca1f384021c9c7.zip",
+   "bytesRead": 79581,
+   "readOn": "2026-09-24"
+  },
+  "the-edge-function-nobody-locked-down": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-edge-function-nobody-locked-down/4217b102b5b2d1e72c3d742957e889453866d33d3b06809d1c357ea83e8d55d3.zip",
+   "bytesRead": 57244,
    "readOn": "2026-09-24"
   }
  }
