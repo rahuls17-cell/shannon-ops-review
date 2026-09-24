@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T18:00:52+00:00",
+ "generatedAt": "2026-09-24T18:10:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3171,6 +3171,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b54-f6-collectible-disposal-route-model/a8781b118793aa60d2192b8001665a60180491643ed9ce86d9e511ec770be77d.zip",
    "bytesRead": 131203,
+   "readOn": "2026-09-24"
+  },
+  "bus-b22-b14-rideshare-brand-palette-normalization": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b14-rideshare-brand-palette-normalization/aaac8b590bbde1c988d390984558d4b4644e6ad839662e406ebee25e1bfa172a.zip",
+   "bytesRead": 75161,
+   "readOn": "2026-09-24"
+  },
+  "tech-mg-it-b6-a3-game-voice-audio-route-trace": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b6-a3-game-voice-audio-route-trace/92c246a1e8fd96be8610c8bb5dd49cab64b29ef89bfdd2f7e9b07aec5266c518.zip",
+   "bytesRead": 74244,
    "readOn": "2026-09-24"
   }
  }
