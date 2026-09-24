@@ -2425,3 +2425,4 @@ button.stat[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 18%, 
 #payoutSummary .kpi[data-tone="amber"] { --tc: var(--amber); --tci: var(--amber-ink); }
 /* The generic status tones must not paint the legend labels. */
 .key-item.is-paid, .key-item.is-pending { background: none; color: var(--ink-2); }
+#truthFigures { align-items: stretch; }

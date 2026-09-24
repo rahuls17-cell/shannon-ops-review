@@ -1485,7 +1485,7 @@ function renderTruthFigures(result, filtered) {
     ['Accepted', acceptedFromBucket === null ? result.accepted : acceptedFromBucket,
       acceptedFromBucket === null ? 'package at the current bar'
         : acceptedShown && acceptedShown.extraFolders
-          ? `accepted tasks in the bucket / ${fmt(acceptedShown.folders)} folders, ${fmt(acceptedShown.extraFolders)} are extra copies`
+          ? `${fmt(acceptedShown.folders)} folders, ${fmt(acceptedShown.extraFolders)} extra copies`
           : 'accepted tasks in the bucket', 'aqua'],
     ['Rejected', result.rejected, 'failed a QC decision', 'yellow'],
     ['No QC decision', result.undecided, 'parked, crashed or never decided', 'orange'],

@@ -536,15 +536,6 @@
               <section class="deck-pane is-active" data-title="States" aria-label="States">
           <div id="truthPartition" class="partition" aria-label="How the in-scope tasks split by state"></div>
           <div id="truthFigures" class="kpirow kpirow-5"></div>
-          <section class="panel" id="truthChainPanel" hidden>
-            <header class="panel-head">
-              <div><h2 id="truthChainTitle">How this is counted</h2><p class="panel-note" id="truthChainNote"></p></div>
-              <button id="truthChainClose" class="ghost">Close</button>
-            </header>
-            <div class="panel-body"><ol class="chain" id="truthChain"></ol></div>
-          </section>
-              </section>
-              <section class="deck-pane" data-title="Delivery &amp; makeup" aria-label="Delivery and makeup">
           <div class="statstrip">
             <div class="statgroup">
               <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>the manifests against the bucket</em></p>
@@ -558,6 +549,17 @@
               <p class="eyebrow">Accepted packages<button class="why" data-info="truthSplit" aria-label="How this splits">?</button><em>delivered + still to deliver is all of it</em></p>
               <div id="truthSplit" class="stats stats-3"></div>
             </div>
+          </div>
+          <section class="panel" id="truthChainPanel" hidden>
+            <header class="panel-head">
+              <div><h2 id="truthChainTitle">How this is counted</h2><p class="panel-note" id="truthChainNote"></p></div>
+              <button id="truthChainClose" class="ghost">Close</button>
+            </header>
+            <div class="panel-body"><ol class="chain" id="truthChain"></ol></div>
+          </section>
+              </section>
+              <section class="deck-pane" data-title="Delivery &amp; makeup" aria-label="Delivery and makeup">
+          <div class="statstrip">
             <!-- Counted by bucket FOLDER, not by verdict row. One folder is
                  one task, so nothing here needs a name to be deduplicated -
                  which is the whole reason these four can be stated as one
