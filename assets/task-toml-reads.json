@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T06:20:49+00:00",
+ "generatedAt": "2026-09-24T06:50:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2494,6 +2494,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c159-csrf-session-config-audit/fb7cf28a26910cc5c154b11e459ea409b55f0aa694ef9625baf76fc88c3b9a9e.zip",
    "bytesRead": 75608,
+   "readOn": "2026-09-24"
+  },
+  "bus-b19-b5-club-transaction-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b19-b5-club-transaction-reconciliation/12e8e30e3f830e023f3ac3dfea487bdbe5438e80f344a9b8e26044810fea58e1.zip",
+   "bytesRead": 79071,
+   "readOn": "2026-09-24"
+  },
+  "tech-b60-t9-sleep-tracker-nightly-rating-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b60-t9-sleep-tracker-nightly-rating-recompute/41e3e6874311dc77fbf39f5ebd622e0e4f7b858060510026462fcdd553d671bd.zip",
+   "bytesRead": 78618,
    "readOn": "2026-09-24"
   }
  }
