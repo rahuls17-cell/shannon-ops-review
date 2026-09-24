@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T10:40:51+00:00",
+ "generatedAt": "2026-09-24T10:51:18+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2706,6 +2706,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g937-wallpaper-stock-asset-reuse-audit/95ea2f4c4682b717cc5132298fc27bd5e9f2c2298704f5fc2bf2dacae1e79e11.zip",
    "bytesRead": 116561,
+   "readOn": "2026-09-24"
+  },
+  "health-b44-h10-propagation-guide-contradiction-sop": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b44-h10-propagation-guide-contradiction-sop/e177b7df4900cc111d77b041f659e188cff75ca3fd9848384c2d61d9c845910b.zip",
+   "bytesRead": 68979,
+   "readOn": "2026-09-24"
+  },
+  "only-the-integrations-answered": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/only-the-integrations-answered/a9672d6a01c5c6bc6492dc70baa02725363356ca0b971990d00be38db3341d39.zip",
+   "bytesRead": 50199,
+   "readOn": "2026-09-24"
+  },
+  "tech-b54-a6-release-roundup-extraction": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-a6-release-roundup-extraction/e5559e0b68da4c13ee226d2ff5ebb347d8a86224c7745e971c164018f3041138.zip",
+   "bytesRead": 77650,
    "readOn": "2026-09-24"
   }
  }
