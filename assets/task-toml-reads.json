@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T20:10:53+00:00",
+ "generatedAt": "2026-09-24T20:30:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3285,6 +3285,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c233-build-signing-reproducibility-audit/9b31b1c5631e16a6711ef0e3e4dfde7a7e1e96634946811a576b43a5100cdbab.zip",
    "bytesRead": 82190,
+   "readOn": "2026-09-24"
+  },
+  "edu-b50-a4-distress-screening-referral-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b50-a4-distress-screening-referral-adjudication/77dc5aa3ae504d4b31691ec2af5fe3a3761cb6dbddcd5cf3eb3dc73c8b4d3e10.zip",
+   "bytesRead": 72179,
+   "readOn": "2026-09-24"
+  },
+  "fin-b53-f5-equity-resistance-level-derivation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b53-f5-equity-resistance-level-derivation/229a22626bc2b47dffd3d299ce583adc727c823a2975dc5ab36f5d92db46b7f1.zip",
+   "bytesRead": 88922,
    "readOn": "2026-09-24"
   }
  }
