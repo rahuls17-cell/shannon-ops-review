@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T07:50:48+00:00",
+ "generatedAt": "2026-09-24T08:20:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2544,6 +2544,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c158-sports-feed-outage-reconcile/4b8ed42ba07b1a5519e5a6f015ec8e8f9419b0a06b157a9d7c0b9061af5b6541.zip",
    "bytesRead": 76804,
+   "readOn": "2026-09-24"
+  },
+  "tech-b54-a7-remote-action-adjudication-v4": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-a7-remote-action-adjudication-v4/113738f193fa26b4fd8f2a94cd04dac8d6c800896d1128029accc9eac69c9ab4.zip",
+   "bytesRead": 67466,
+   "readOn": "2026-09-24"
+  },
+  "tech-b61-t7-scanned-notice-ocr-transcript-normalization": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b61-t7-scanned-notice-ocr-transcript-normalization/5d195e01fe1e9c46e52e1a44402a3e80abdd21ba6d7e5fdbaa7439a497e978ff.zip",
+   "bytesRead": 101640,
    "readOn": "2026-09-24"
   }
  }
