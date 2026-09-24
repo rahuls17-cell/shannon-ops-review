@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T17:10:53+00:00",
+ "generatedAt": "2026-09-24T17:20:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3121,6 +3121,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t2-runtime-fault-step-adjudication/6906ee74f2dca947403e0d7880c8e2ab72102e3cbd61a28fbd8ebbe5baa04973.zip",
    "bytesRead": 73157,
+   "readOn": "2026-09-24"
+  },
+  "bus-b50-b9-end-grain-cutting-board-listing-field-build": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b50-b9-end-grain-cutting-board-listing-field-build/2f9ae72dd65b42d50b9d19dd7a6a45a5912687c900a92b15cb5458a42bc7fe50.zip",
+   "bytesRead": 108196,
+   "readOn": "2026-09-24"
+  },
+  "code-c244-api-write-actor-attribution-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c244-api-write-actor-attribution-audit/aabdb63ad8f6ff81bb6cb8af91069a0148ba94c5bcc616e6568dbcb7f5d3c1bd.zip",
+   "bytesRead": 81051,
    "readOn": "2026-09-24"
   }
  }
