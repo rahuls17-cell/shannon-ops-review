@@ -179,7 +179,7 @@
 
           <section class="panel">
             <header class="panel-head">
-              <div><h2>Payout balance<button class="why" data-info="pending" aria-label="How paid and owed are calculated">?</button></h2><p class="panel-note" id="payoutBalanceNote"></p></div>
+              <div><h2>Payout balance<button class="why" data-info="pending" aria-label="How paid and upcoming are calculated">?</button></h2><p class="panel-note" id="payoutBalanceNote"></p></div>
               <button class="ghost" data-jump="payouts">Open Payouts</button>
             </header>
             <div class="veiled">
@@ -190,7 +190,7 @@
               </div>
               <div class="panel-body exposure" id="payoutBalanceBody">
                 <div><p class="subhead">By bench</p><figure id="exposureChart" class="exposure-chart"></figure></div>
-                <div><p class="subhead">Largest amounts owed</p><div id="topPendingCards" class="leaderboard"></div></div>
+                <div><p class="subhead">Largest upcoming payments</p><div id="topPendingCards" class="leaderboard"></div></div>
               </div>
             </div>
           </section>
@@ -276,7 +276,7 @@
               <div><h2>By trainer<button class="why" data-info="payoutAccepted" aria-label="What counts as accepted">?</button></h2><p class="panel-note" id="payoutPeopleNote"></p></div>
               <div class="toolbar" data-toolbar>
                 <label class="field"><span>Search</span><input id="personSearch" type="search" placeholder="Name, team or manager" /></label>
-                <label class="field"><span>Payment</span><select id="paymentFilter"><option value="">All</option><option value="pending">Owed</option><option value="paid">Paid</option><option value="no-paid">Never paid</option><option value="zero">No accepted work</option></select></label>
+                <label class="field"><span>Payment</span><select id="paymentFilter"><option value="">All</option><option value="pending">Upcoming</option><option value="paid">Paid</option><option value="no-paid">Never paid</option><option value="zero">No accepted work</option></select></label>
                 <button id="payoutReset" class="ghost">Clear</button>
               </div>
             </header>
@@ -292,8 +292,8 @@
                       <th scope="col"><button type="button" class="sort" data-sort="team">Team</button></th>
                       <th scope="col"><button type="button" class="sort" data-sort="managerName">Manager</button></th>
                       <th scope="col" class="num"><button type="button" class="sort" data-sort="acceptedTasks">Accepted</button></th>
-                      <th scope="col"><button type="button" class="sort" data-sort="paidAmount">Paid vs owed</button></th>
-                      <th scope="col" class="num"><button type="button" class="sort" data-sort="pendingAmount">Owed $</button></th>
+                      <th scope="col"><button type="button" class="sort" data-sort="paidAmount">Paid vs upcoming</button></th>
+                      <th scope="col" class="num"><button type="button" class="sort" data-sort="pendingAmount">Upcoming $</button></th>
                       <th scope="col" class="num"><button type="button" class="sort" data-sort="last24Accepted">24h</button></th>
                     </tr>
                   </thead>

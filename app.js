@@ -617,7 +617,7 @@ function renderPayoutLedger() {
     cell('ledger tasks', rows.length, payoutLedgerTasks.length, 'slate', null, null, `${fmt(rows.length)} of ${fmt(payoutLedgerTasks.length)} tasks in the ledger match the filters.`) +
     cell('paid', result.paid, n, 'aqua', 'ledgerPayment', 'Paid', 'Paid and itemised against a payment request.') +
     cell('not itemised', result.unitemised, n, 'yellow', 'ledgerPayment', 'Not itemised', 'Paid in a lump that the request did not itemise task by task.') +
-    cell('owed', pending, n, 'red', 'ledgerPayment', 'Pending', 'Accepted, not yet in any payment request.') +
+    cell('upcoming', pending, n, 'amber', 'ledgerPayment', 'Pending', 'Accepted, not yet in any payment request.') +
     cell('valid = 0', invalid, n, 'orange', 'ledgerValidity', 'invalid', 'Accepted rows the tracker marks as not valid; excluded from what is payable.') +
     cell('folded rows', result.duplicateRows, null, 'violet', 'ledgerDuplicates', 'duplicates', 'Source rows repeated for the same task and folded into one line.');
   animateCounts(byId('ledgerStrip'));
@@ -3012,7 +3012,7 @@ function renderExposureChart(rows) {
   const owed = benches.reduce((value, bench) => value + bench.pending, 0);
   const settled = paid + owed ? Math.round((paid / (paid + owed)) * 100) : 0;
   setTextIfPresent('payoutBalanceNote', (benches.length
-    ? `${money(paid + owed)} earned · ${money(paid)} paid · ${money(owed)} owed`
+    ? `${money(paid + owed)} earned · ${money(paid)} paid · ${money(owed)} to be paid`
     : '') + (payoutLedgerError ? ' · ledger unavailable, workbook figures shown' : ''));
   const host = byId('exposureChart');
   const open = payoutBalanceOpen();
@@ -3021,7 +3021,7 @@ function renderExposureChart(rows) {
     <div class="settle"${open ? ` data-tip="${money(paid)} paid of ${money(paid + owed)} earned"` : ''}>
       <div class="settle-head"><span>Settled</span><b data-count="${settled}" data-kind="pct" data-key="settle">${settled}%</b></div>
       <div class="settle-track"><i style="--pct:${settled}"></i><em style="--pct:${settled}"></em></div>
-      <div class="settle-foot"><span>${cash(paid)} paid</span><span>${cash(owed)} still owed</span></div>
+      <div class="settle-foot"><span>${cash(paid)} paid</span><span>${cash(owed)} to be paid</span></div>
     </div>
     ${benches.map((bench, index) => {
       const benchTotal = bench.paid + bench.pending;
@@ -3029,14 +3029,14 @@ function renderExposureChart(rows) {
         <div class="bench-bar-head"><span>${esc(bench.label)}</span>${open ? `<b data-count="${benchTotal}" data-kind="money" data-key="bar:${bench.key}">${money(benchTotal)}</b>` : `<b>${hiddenMoney()}</b>`}</div>
         <div class="stack" style="width:${Math.max((benchTotal / scale) * 100, 2)}%">
           ${moneySeg('is-paid', bench.paid, scale, open ? `${bench.label}: ${money(bench.paid)} paid for ${fmt(bench.paidTasks)} tasks` : `${bench.label}: paid for ${fmt(bench.paidTasks)} tasks`, open)}
-          ${moneySeg('is-pending', bench.pending, scale, open ? `${bench.label}: ${money(bench.pending)} owed for ${fmt(bench.pendingTasks)} tasks` : `${bench.label}: owed for ${fmt(bench.pendingTasks)} tasks`, open)}
+          ${moneySeg('is-pending', bench.pending, scale, open ? `${bench.label}: ${money(bench.pending)} to be paid for ${fmt(bench.pendingTasks)} tasks` : `${bench.label}: ${fmt(bench.pendingTasks)} tasks to be paid`, open)}
         </div>
         <div class="bench-bar-foot">${fmt(bench.paidTasks)} of ${fmt(bench.paidTasks + bench.pendingTasks)} tasks paid</div>
       </div>`;
     }).join('')}
     <div class="chart-key">
       <span class="key-item is-paid">Paid</span>
-      <span class="key-item is-pending">Owed</span>
+      <span class="key-item is-pending">Upcoming</span>
     </div>` : '<p class="empty">No payouts in this selection.</p>';
   animateCounts(host);
 }
@@ -3070,7 +3070,7 @@ function renderTopPendingCards() {
           <div class="bar-track"><div class="bar-fill" style="width:${safePct(row.pendingAmount, max)}"></div></div>
           ${open ? `<div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${esc(row.email || row.name)}">${money(row.pendingAmount)}</div>` : `<div class="amount">${hiddenMoney()}</div>`}
         </div>`;
-  }).join('') || '<p class="empty">Nothing owed in this selection.</p>';
+  }).join('') || '<p class="empty">Nothing upcoming in this selection.</p>';
   animateCounts(host);
 }
 
@@ -3302,7 +3302,7 @@ function renderPayoutSummary(rows) {
     ['Accepted tasks', sum(rows, 'acceptedTasks'), 'int', `${fmt(people)} ${people === 1 ? 'person' : 'people'} with accepted work`, 'green', null, null],
     ['Paid tasks', sum(rows, 'paidTasks'), 'int', 'at $300 a task', 'blue', 'paymentFilter', 'paid', sum(rows, 'acceptedTasks') ? Math.round((sum(rows, 'paidTasks') / sum(rows, 'acceptedTasks')) * 100) : 0],
     ['Paid', paid, 'money', `${earned ? Math.round((paid / earned) * 100) : 0}% of ${money(earned)} earned`, 'aqua', null, null, earned ? Math.round((paid / earned) * 100) : 0],
-    ['Owed', pending, 'money', `${fmt(sum(rows, 'pendingTasks'))} tasks not yet requested`, 'red', 'paymentFilter', 'pending', earned ? Math.round((pending / earned) * 100) : 0],
+    ['Upcoming', pending, 'money', `${fmt(sum(rows, 'pendingTasks'))} tasks not yet requested`, 'amber', 'paymentFilter', 'pending', earned ? Math.round((pending / earned) * 100) : 0],
     ['Payment requests', requests ?? 0, 'int', requestDays.length ? (requestDays.length === 1 ? `all raised on ${requestDays[0]}` : `${requestDays[0]} to ${requestDays[requestDays.length - 1]}`) : 'from the PPT tracker', 'violet', null, null],
   ];
   byId('payoutSummary').innerHTML = cards.map(([label, value, kind, note, tone, filter, filterValue, pct], index) => {
@@ -3339,7 +3339,7 @@ function renderPayoutPanels(rows) {
         <p>${fmt(b.people)} ${b.people === 1 ? 'person' : 'people'} · ${money(b.paid + b.owed)} earned</p>
         <div class="benchring-lines">
           <div><span>Paid</span><b data-count="${b.paid}" data-kind="money" data-key="bench:${b.key}:paid">${money(b.paid)}</b><small>${fmt(b.paidTasks)} tasks</small></div>
-          <div><span>Owed</span><b class="is-owed" data-count="${b.owed}" data-kind="money" data-key="bench:${b.key}:owed">${money(b.owed)}</b><small>${fmt(b.owedTasks)} tasks</small></div>
+          <div><span>Upcoming</span><b class="is-owed" data-count="${b.owed}" data-kind="money" data-key="bench:${b.key}:owed">${money(b.owed)}</b><small>${fmt(b.owedTasks)} tasks</small></div>
         </div>
         <div class="benchring-bar" aria-hidden="true">${b.paid ? `<i class="is-paid" style="flex:${b.paid}"></i>` : ''}${b.owed ? `<i class="is-owed" style="flex:${b.owed}"></i>` : ''}</div>
       </div>
@@ -3351,15 +3351,15 @@ function renderPayoutPanels(rows) {
     .sort((a, b) => (b.paid + b.owed) - (a.paid + a.owed));
   const teamMax = Math.max(1, ...teams.map(t => t.paid + t.owed));
   byId('payoutTeams').innerHTML = teams.length ? `
-    <p class="subhead">By team<em>paid against owed, one scale · click a team to filter</em></p>
+    <p class="subhead">By team<em>paid against upcoming, one scale · click a team to filter</em></p>
     <div class="team-rows">${teams.map((t, index) => `<button type="button" class="team-row${search === t.team.toLowerCase() ? ' is-on' : ''}" style="--i:${index}" data-search="${esc(t.team)}" data-tip="${esc(t.team)}: ${money(t.paid)} paid, ${money(t.owed)} owed across ${fmt(t.people)} people">
       <span class="team-name">${esc(t.team)}<small>${fmt(t.people)} people</small></span>
       <span class="team-bar"><span class="team-bar-track" style="width:${Math.max(4, Math.round(((t.paid + t.owed) / teamMax) * 100))}%">${t.paid ? `<i class="is-paid" style="flex:${t.paid}">${t.paid / (t.paid + t.owed) > .18 ? money(t.paid) : ''}</i>` : ''}${t.owed ? `<i class="is-owed" style="flex:${t.owed}">${t.owed / (t.paid + t.owed) > .18 ? money(t.owed) : ''}</i>` : ''}</span></span>
       <span class="team-total"><b>${money(t.paid + t.owed)}</b><small>${Math.round((t.paid / ((t.paid + t.owed) || 1)) * 100)}% settled</small></span>
     </button>`).join('')}</div>
-    <div class="chart-key"><span class="key-item"><i style="background:var(--aqua-ink)"></i>paid</span><span class="key-item"><i style="background:var(--red-ink)"></i>owed</span></div>` : '';
+    <div class="chart-key"><span class="key-item"><i style="background:var(--aqua-ink)"></i>paid</span><span class="key-item"><i style="background:var(--amber-ink)"></i>upcoming</span></div>` : '';
   const paid = sum(rows, 'paidAmount'), owed = sum(rows, 'pendingAmount');
-  setText('payoutBenchNote', paid + owed ? `${Math.round((paid / (paid + owed)) * 100)}% of ${money(paid + owed)} earned has been paid · ${money(owed)} still owed${segment ? ` · ${SEGMENTS[segment]} only` : ''}` : '');
+  setText('payoutBenchNote', paid + owed ? `${Math.round((paid / (paid + owed)) * 100)}% of ${money(paid + owed)} earned has been paid · ${money(owed)} to be paid${segment ? ` · ${SEGMENTS[segment]} only` : ''}` : '');
   animateCounts(byId('payoutBenches'));
 }
 
@@ -3369,13 +3369,13 @@ function renderTrainerRows() {
   renderPayoutPanels(rows);
   renderPayoutLedger();
   const labels = {personSearch: 'Search', paymentFilter: 'Payment'};
-  const shown = {pending: 'Owed', paid: 'Paid', 'no-paid': 'Never paid', zero: 'No accepted work', company: 'Company', computer: 'Computer', unassigned: 'Unassigned'};
+  const shown = {pending: 'Upcoming', paid: 'Paid', 'no-paid': 'Never paid', zero: 'No accepted work', company: 'Company', computer: 'Computer', unassigned: 'Unassigned'};
   const active = Object.keys(labels).map(id => [id, byId(id)?.value]).filter(([, value]) => value);
   byId('payoutChips').innerHTML = active.length
     ? active.map(([id, value]) => `<button type="button" class="chipbtn" data-pclear="${id}"><span>${labels[id]}</span>${esc(shown[value] || value)}<i aria-hidden="true">×</i></button>`).join('') +
       '<button type="button" class="chipbtn is-clear" data-pclear="all">Clear all</button>'
     : `<span class="chips-empty">No filters applied${segment ? ` · ${SEGMENTS[segment]} segment from the top bar` : ''} · click a figure or team above to filter</span>`;
-  setText('payoutPeopleNote', `${fmt(rows.length)} people · ${money(sum(rows, 'paidAmount'))} paid · ${money(sum(rows, 'pendingAmount'))} owed · ${fmt(sum(rows, 'last24Accepted'))} accepted in the last 24h`);
+  setText('payoutPeopleNote', `${fmt(rows.length)} people · ${money(sum(rows, 'paidAmount'))} paid · ${money(sum(rows, 'pendingAmount'))} to be paid · ${fmt(sum(rows, 'last24Accepted'))} accepted in the last 24h`);
 
   const sorted = [...rows].sort((a, b) => {
     const key = payoutSort.key;
@@ -3411,7 +3411,7 @@ function renderTrainerRows() {
           <td><span class="batch-chip">${esc(row.team || 'Unassigned')}</span></td>
           <td>${esc(row.managerName || row.em || '-')}</td>
           <td class="num"><b>${fmt(row.acceptedTasks)}</b></td>
-          <td><span class="moneybar" data-tip="${money(row.paidAmount)} paid for ${fmt(row.paidTasks)} tasks · ${money(row.pendingAmount)} owed for ${fmt(row.pendingTasks)} tasks"><span class="moneybar-track" style="width:${Math.max(4, Math.round((total / moneyMax) * 100))}%">${row.paidAmount ? `<i class="is-paid" style="flex:${row.paidAmount}"></i>` : ''}${row.pendingAmount ? `<i class="is-owed" style="flex:${row.pendingAmount}"></i>` : ''}</span><small>${money(row.paidAmount)} paid</small></span></td>
+          <td><span class="moneybar" data-tip="${money(row.paidAmount)} paid for ${fmt(row.paidTasks)} tasks · ${money(row.pendingAmount)} to be paid for ${fmt(row.pendingTasks)} tasks"><span class="moneybar-track" style="width:${Math.max(4, Math.round((total / moneyMax) * 100))}%">${row.paidAmount ? `<i class="is-paid" style="flex:${row.paidAmount}"></i>` : ''}${row.pendingAmount ? `<i class="is-owed" style="flex:${row.pendingAmount}"></i>` : ''}</span><small>${money(row.paidAmount)} paid</small></span></td>
           <td class="num ${row.pendingAmount ? 'negative' : ''}">${money(row.pendingAmount)}</td>
           <td class="num">${row.last24Accepted ? `<span class="pulse-badge" data-tip="${fmt(row.last24Accepted)} accepted in the last 24 hours">${fmt(row.last24Accepted)}</span>` : '<span class="muted">0</span>'}</td>
         </tr>
@@ -3504,7 +3504,7 @@ function renderTeams() {
           <div class="team-line"><span>Active</span><b data-count="${t.active}" data-key="team:${esc(t.team)}:active">${fmt(t.active)}</b></div>
           <div class="team-line"><span>Managers</span><b data-count="${t.managers}" data-key="team:${esc(t.team)}:managers">${fmt(t.managers)}</b></div>
           <div class="team-line"><span>Paid</span><b data-count="${t.paid}" data-kind="money" data-key="team:${esc(t.team)}:paid">${money(t.paid)}</b></div>
-          <div class="team-line"><span>Owed</span><b class="${t.owed ? 'is-owed' : ''}" data-count="${t.owed}" data-kind="money" data-key="team:${esc(t.team)}:owed">${money(t.owed)}</b></div>
+          <div class="team-line"><span>Upcoming</span><b class="${t.owed ? 'is-owed' : ''}" data-count="${t.owed}" data-kind="money" data-key="team:${esc(t.team)}:owed">${money(t.owed)}</b></div>
           <div class="team-settle" data-tip="${money(t.paid)} paid of ${money(t.paid + t.owed)} earned">
             <span>Settled</span><i><em style="--pct:${t.settled}"></em></i><b data-count="${t.settled}" data-kind="pct" data-key="team:${esc(t.team)}:settled">${t.settled}%</b>
           </div>

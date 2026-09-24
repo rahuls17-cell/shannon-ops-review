@@ -418,7 +418,7 @@ main { padding: 20px 22px; display: block; }
   font-weight: 600;
 }
 
-.leader-row .amount { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--red-ink); }
+.leader-row .amount { font-weight: 600; font-variant-numeric: tabular-nums; color: var(--amber-ink); }
 .leader-row .muted { font-size: 11px; }
 
 /* ---------- Status grid ---------- */
@@ -580,7 +580,7 @@ main { padding: 20px 22px; display: block; }
 .seg:last-child { border-radius: 0 6px 6px 0; }
 .seg:only-child { border-radius: 6px; }
 .seg.is-paid { background: var(--aqua-ink); }
-.seg.is-pending { background: var(--red-ink); }
+.seg.is-pending { background: var(--amber); }
 .seg i { font-style: normal; font-size: 10.5px; font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .seg:hover { filter: brightness(1.12); }
 
@@ -588,7 +588,7 @@ main { padding: 20px 22px; display: block; }
 .key-item { display: inline-flex; align-items: center; gap: 7px; }
 .key-item::before { content: ""; width: 9px; height: 9px; border-radius: 3px; flex: none; }
 .key-item.is-paid::before { background: var(--aqua-ink); }
-.key-item.is-pending::before { background: var(--red-ink); }
+.key-item.is-pending::before { background: var(--amber); }
 
 /* ---------- Responsive ---------- */
 
@@ -1297,7 +1297,7 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .leader-row .rank { width: 22px; height: 22px; border-radius: 7px; background: var(--accent-soft); color: var(--accent); font-size: 11px; font-weight: 600; }
 .leader-row .person strong { display: block; font-size: 12.5px; }
 .leader-row .person span { font-size: 11px; color: var(--muted); }
-.leader-row .amount { font-weight: 650; color: var(--red-ink); }
+.leader-row .amount { font-weight: 650; color: var(--amber-ink); }
 .bar-fill { background: var(--red-ink); }
 
 /* Chart */
@@ -1328,7 +1328,7 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .team-sub { display: block; font-size: 11px; color: var(--muted); margin: 0 0 10px; }
 .team-line { padding: 3px 0; }
 .team-line b { font-variant-numeric: tabular-nums; }
-.team-line b.is-owed { color: var(--red); font-weight: 600; }
+.team-line b.is-owed { color: var(--amber-ink); font-weight: 600; }
 
 .plan-grid { display: grid; gap: 18px; }
 .plan-bench { display: grid; grid-template-columns: 34px minmax(0, 1fr); grid-template-rows: auto 150px; column-gap: 8px; }
@@ -1642,7 +1642,7 @@ a.tab-chip:hover { border-color: var(--accent-2); color: var(--accent-2); }
 .settle-head { display: flex; justify-content: space-between; align-items: baseline; }
 .settle-head span { font-size: 10px; font-weight: 600; letter-spacing: .07em; text-transform: uppercase; color: var(--muted); }
 .settle-head b { font-size: 22px; font-weight: 650; letter-spacing: -.03em; color: var(--aqua-ink); font-variant-numeric: tabular-nums; }
-.settle-track { position: relative; height: 10px; border-radius: 5px; background: color-mix(in srgb, var(--red) 22%, var(--panel-3)); overflow: visible; }
+.settle-track { position: relative; height: 10px; border-radius: 5px; background: color-mix(in srgb, var(--amber) 28%, var(--panel-3)); overflow: visible; }
 .settle-track i { position: absolute; inset: 0; width: calc(var(--pct) * 1%); border-radius: 5px; background: linear-gradient(90deg, var(--aqua-ink), var(--aqua)); transform-origin: left; animation: grow var(--t-slow) var(--ease) both; }
 .settle-track em { position: absolute; top: 50%; left: calc(var(--pct) * 1%); width: 14px; height: 14px; margin: -7px 0 0 -7px; border-radius: 50%; background: #fff; border: 3px solid var(--aqua-ink); animation: pulse-dot 2.2s ease-out infinite; }
 .settle-foot { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
@@ -1959,7 +1959,7 @@ button.stat[aria-pressed="true"] { border-color: var(--accent-line); background:
 .moneybar { display: grid; gap: 3px; min-width: 120px; }
 .moneybar-track { display: flex; gap: 2px; height: 8px; border-radius: 4px; overflow: hidden; }
 .moneybar-track i { display: block; min-width: 3px; transform-origin: left; animation: grow var(--t-slow) var(--ease) both; animation-delay: calc(var(--i, 0) * 25ms + 100ms); }
-.moneybar-track .is-paid { background: var(--aqua-ink); } .moneybar-track .is-owed { background: var(--red-ink); }
+.moneybar-track .is-paid { background: var(--aqua-ink); } .moneybar-track .is-owed { background: var(--amber); }
 .moneybar small { font-size: 10.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
 .who-text { display: grid; line-height: 1.25; }
 .who-text strong { font-weight: 600; font-size: 12.5px; }
@@ -1996,13 +1996,13 @@ button.stat[aria-pressed="true"] { border-color: var(--accent-line); background:
 .benchring-body h3 { margin: 0; font-size: 14px; }
 .benchring-body p { margin: -4px 0 0; font-size: 11.5px; color: var(--muted); }
 .benchring-lines { display: grid; gap: 4px; }
-.benchring-lines div { display: grid; grid-template-columns: 44px auto minmax(0, 1fr); align-items: baseline; gap: 10px; font-size: 12.5px; color: var(--ink-2); }
+.benchring-lines div { display: grid; grid-template-columns: 72px auto minmax(0, 1fr); align-items: baseline; gap: 10px; font-size: 12.5px; color: var(--ink-2); }
 .benchring-lines b { font-variant-numeric: tabular-nums; font-weight: 650; color: var(--ink); }
-.benchring-lines b.is-owed { color: var(--red-ink); }
+.benchring-lines b.is-owed { color: var(--amber-ink); }
 .benchring-lines small { color: var(--muted); font-size: 11px; text-align: right; white-space: nowrap; }
 .benchring-bar { display: flex; gap: 2px; height: 8px; border-radius: 4px; overflow: hidden; }
 .benchring-bar i { display: block; min-width: 3px; transform-origin: left; animation: grow var(--t-slow) var(--ease) both; animation-delay: calc(var(--i, 0) * 80ms + 200ms); }
-.benchring-bar .is-paid { background: var(--aqua-ink); } .benchring-bar .is-owed { background: var(--red-ink); }
+.benchring-bar .is-paid { background: var(--aqua-ink); } .benchring-bar .is-owed { background: var(--amber); }
 .teamstack { display: grid; gap: 8px; align-content: start; }
 .teamstack .subhead { display: flex; flex-wrap: wrap; gap: 8px; align-items: baseline; margin: 0; }
 .teamstack .subhead em { font-style: normal; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--muted); }
@@ -2016,7 +2016,7 @@ button.stat[aria-pressed="true"] { border-color: var(--accent-line); background:
 .team-bar { display: block; height: 22px; }
 .team-bar-track { display: flex; gap: 2px; height: 100%; border-radius: 6px; overflow: hidden; }
 .team-bar-track i { display: flex; align-items: center; justify-content: flex-end; padding: 0 8px; min-width: 4px; font-size: 11px; font-weight: 600; color: #fff; font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; transform-origin: left; animation: grow var(--t-slow) var(--ease) both; animation-delay: calc(var(--i, 0) * 60ms + 250ms); }
-.team-bar-track .is-paid { background: var(--aqua-ink); } .team-bar-track .is-owed { background: var(--red-ink); }
+.team-bar-track .is-paid { background: var(--aqua-ink); } .team-bar-track .is-owed { background: var(--amber); }
 .team-total { display: grid; text-align: right; line-height: 1.2; }
 .team-total b { font-variant-numeric: tabular-nums; font-weight: 650; color: var(--ink); font-size: 13px; }
 .team-total small { font-size: 11px; color: var(--muted); }
@@ -2422,3 +2422,4 @@ button.stat[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 18%, 
 .blurred { display: inline-block; filter: blur(5px); opacity: .8; user-select: none; pointer-events: none; }
 .is-locked .leader-row.is-masked { cursor: default; }
 .is-locked .settle-foot span, .is-locked .bench-bar-head b, .is-locked .leader-row .amount { color: var(--ink-2); }
+#payoutSummary .kpi[data-tone="amber"] { --tc: var(--amber); --tci: var(--amber-ink); }
