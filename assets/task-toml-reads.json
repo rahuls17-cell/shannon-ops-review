@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T01:00:52+00:00",
+ "generatedAt": "2026-09-24T01:20:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2274,6 +2274,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t5-controller-wiring-compatibility-register/9fb0b57a20a439abfc3e8642b0d91b92710c7c148283b444e240490112e9d9a9.zip",
    "bytesRead": 72265,
+   "readOn": "2026-09-24"
+  },
+  "gen-g980-greenhouse-as-built-compliance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g980-greenhouse-as-built-compliance-audit/6453676b14c6abb98a7ea9430133290ae5c896738b67e8cce997749fb07a924e.zip",
+   "bytesRead": 79504,
    "readOn": "2026-09-24"
   }
  }
