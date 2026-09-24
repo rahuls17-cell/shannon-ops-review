@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T20:40:50+00:00",
+ "generatedAt": "2026-09-24T21:10:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3317,6 +3317,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/a-three-issue-chain-all-archived/f252f88ff3f9deafd50ce41759036c3e13be8b9e7c037d662a523bd66f94488b.zip",
    "bytesRead": 45805,
+   "readOn": "2026-09-24"
+  },
+  "bus-b22-b5-lsa-pitch-script-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b5-lsa-pitch-script-audit/ed47aa48dca419f449c5d3239f340ee9c1260cf140c3dcd34f7f3f4bbd9d93a0.zip",
+   "bytesRead": 74853,
+   "readOn": "2026-09-24"
+  },
+  "bus-mg-bus-b8-a6-process-improvement-experience-screen": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-mg-bus-b8-a6-process-improvement-experience-screen/2a7e1664cfb24e9131954f2fbefb588df6b5c7fdc60a887484f945f74f61dec0.zip",
+   "bytesRead": 75773,
    "readOn": "2026-09-24"
   }
  }
