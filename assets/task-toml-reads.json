@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T10:51:18+00:00",
+ "generatedAt": "2026-09-24T11:10:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2738,6 +2738,30 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-a6-release-roundup-extraction/e5559e0b68da4c13ee226d2ff5ebb347d8a86224c7745e971c164018f3041138.zip",
    "bytesRead": 77650,
+   "readOn": "2026-09-24"
+  },
+  "the-channel-that-runs-itself": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-channel-that-runs-itself/1a3607e571b6613340942ab97fb53e979d4807a2c5e395d7e70709c70cf9bf94.zip",
+   "bytesRead": 51630,
+   "readOn": "2026-09-24"
+  },
+  "where-the-talking-moved": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-the-talking-moved/41ab4a9addb8581f30a3afef519dfa1496d523680179d658506a5c7c0d4bacc2.zip",
+   "bytesRead": 55211,
    "readOn": "2026-09-24"
   }
  }
