@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T22:30:52+00:00",
+ "generatedAt": "2026-09-24T23:10:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3467,6 +3467,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-biggest-videos-in-marketing/8fa5495da668e182ec95c1ccd6455363d3022927b4d120c8e014ba3b09636ba8.zip",
    "bytesRead": 48176,
+   "readOn": "2026-09-24"
+  },
+  "law-l83-cost-bill-recoverability-audit-91e817-v2-sna-bpxh": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l83-cost-bill-recoverability-audit-91e817-v2-sna-bpxh/3fea25e33cd9237f0b5039f3ecbe14c83cb49decd50058ff55aca62bdf0b1b7d.zip",
+   "bytesRead": 72390,
    "readOn": "2026-09-24"
   }
  }
