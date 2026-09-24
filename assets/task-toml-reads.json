@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T14:00:58+00:00",
+ "generatedAt": "2026-09-24T14:31:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2931,6 +2931,66 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-tags-that-named-nobody-v7/648852fc8983b61d1dcff912e0a4be07705d8663ab0c96c358e8e7ee05fe78ca.zip",
    "bytesRead": 51055,
+   "readOn": "2026-09-24"
+  },
+  "code-c216-runbook-freshness-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c216-runbook-freshness-audit/d49bb03553ec33b38ec06e096982dbc50b42489e983eac2dddafd126022361fe.zip",
+   "bytesRead": 72206,
+   "readOn": "2026-09-24"
+  },
+  "code-c239-queue-backpressure-threshold-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c239-queue-backpressure-threshold-audit/a61cefb869a7fa4ddc04b55043d8392e9c60b6aec7e68d9b262efb11e9a35811.zip",
+   "bytesRead": 71729,
+   "readOn": "2026-09-24"
+  },
+  "edu-b51-e7-item-bank-tag-normalisation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b51-e7-item-bank-tag-normalisation/bba5df137a4e72954990ed2914e353318c8ec33f87a786427109be83fd5c24e0.zip",
+   "bytesRead": 79151,
+   "readOn": "2026-09-24"
+  },
+  "edu-sc09-a9-test-calendar": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc09-a9-test-calendar/c62b9a8035b9dedc4a2dcb6a1c1612654487517a37b9eaf774d5284c9069d862.zip",
+   "bytesRead": 59382,
+   "readOn": "2026-09-24"
+  },
+  "fin-b53-f8-mortgage-product-reset-path-comparison": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b53-f8-mortgage-product-reset-path-comparison/c87767bd9d8ff67faad47b1c6c84594ba4a9939afc7fe4cc110e48212e3497a3.zip",
+   "bytesRead": 75276,
+   "readOn": "2026-09-24"
+  },
+  "health-b43-h1-medicaid-remittance-claim-reconciliation-v1": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b43-h1-medicaid-remittance-claim-reconciliation-v1/8df921efc61e92a73c7862455c9910ab1c124928cb53746ff5826139a7bf4e71.zip",
+   "bytesRead": 78113,
    "readOn": "2026-09-24"
   }
  }
