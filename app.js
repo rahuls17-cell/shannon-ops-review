@@ -2653,6 +2653,25 @@ function payoutsOpen() {
   }
 }
 
+// The Overview's Payout balance panel follows the Payouts lock. While locked
+// it shows a blurred stand-in of the same shape with no real figures in the
+// page, so nothing can be read out of the markup either.
+function veilPayoutBalance() {
+  const open = payoutsOpen();
+  const veil = byId('payoutBalanceVeil');
+  const body = byId('payoutBalanceBody');
+  if (veil) veil.hidden = open;
+  if (body) body.classList.toggle('is-locked', !open);
+  if (open) return true;
+  const chart = byId('exposureChart'), list = byId('topPendingCards');
+  if (chart) chart.innerHTML = `
+    <div class="settle"><div class="settle-head"><span>Settled</span><b>··%</b></div><div class="settle-track"><i style="--pct:55"></i></div></div>
+    ${[72, 48, 30].map((w, i) => `<div class="bench-bar" style="--i:${i}"><div class="bench-bar-head"><span>Bench</span><b>$····</b></div><div class="stack" style="width:${w}%"><span class="seg is-paid" style="width:60%"></span><span class="seg is-pending" style="width:40%"></span></div></div>`).join('')}`;
+  if (list) list.innerHTML = [92, 70, 55, 41, 28].map((w, i) => `
+    <div class="leader-row is-masked" style="--i:${i}"><div class="rank">${i + 1}</div><div class="person"><strong>Hidden</strong><span>· of · tasks unpaid</span></div><div class="bar-track"><div class="bar-fill" style="width:${w}%"></div></div><div class="amount">$····</div></div>`).join('');
+  return false;
+}
+
 function applyPayoutLock() {
   const lock = byId('payoutLock');
   const body = byId('payoutBody');
@@ -2710,9 +2729,9 @@ function wirePayoutLock() {
       byId('payoutLock').hidden = true;
       byId('payoutBody').hidden = false;
     }
-    // The Overview's Payout balance panel withholds names while this is locked,
-    // so it has to be drawn again now that it is not.
-    renderTopPendingCards();
+    // The Overview's Payout balance panel is veiled while this is locked, so
+    // it is drawn again now that it is not.
+    renderHero(); renderTopPendingCards();
   });
 }
 
@@ -2770,8 +2789,6 @@ function renderHero() {
 
   setText("generatedAt", generated.toLocaleString([], { dateStyle: "medium", timeStyle: "short" }));
   setText('scanAt', gcsPipeline ? new Date(gcsPipeline.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'}) : 'not loaded');
-  setCount('heroPending', pending, 'money');
-  setText("heroExposureText", `${paidPct}% paid / ${fmt(summary.pendingTasks)} tasks pending`);
   renderExposureChart(rows);
 
   const dated = Boolean(dateRange.start || dateRange.end);
@@ -2869,16 +2886,8 @@ function renderHero() {
     ['Pending = accepted \u2212 paid, never below 0', fmt(summary.pendingTasks)],
     ['Amount', money(pending)],
   ]);
-  const owedBy = ['Company', 'Computer', 'Unassigned'].map(b => [b, rows.filter(r => benchOf(r.team) === b.toLowerCase()).reduce((n, r) => n + r.pendingAmount, 0)]).filter(([, v]) => v);
-  detail('detailOwed', [
-    ['Earned (paid + owed)', money(totalExposure)],
-    ['Paid', money(paid)],
-    ['Owed', money(pending)],
-    ...owedBy.map(([k, v]) => [`Owed \u2014 ${k}`, money(v)]),
-  ]);
   if (!snapshot.ready) {
-    ['heroPending', 'metricPendingTasks', 'metricPending'].forEach(id => setText(id, '-'));
-    setText('heroExposureText', 'Waiting for both accepted sources');
+    ['metricPendingTasks', 'metricPending'].forEach(id => setText(id, '-'));
   }
 }
 
@@ -3011,6 +3020,7 @@ function renderExposureChart(rows) {
     ? `${money(paid + owed)} earned · ${money(paid)} paid · ${money(owed)} owed`
     : '') + (payoutLedgerError ? ' · ledger unavailable, workbook figures shown' : ''));
   const host = byId('exposureChart');
+  if (!veilPayoutBalance()) return;
   host.innerHTML = benches.length ? `
     <div class="settle" data-tip="${money(paid)} paid of ${money(paid + owed)} earned">
       <div class="settle-head"><span>Settled</span><b data-count="${settled}" data-kind="pct" data-key="settle">${settled}%</b></div>
@@ -3046,29 +3056,18 @@ function renderTopPendingCards() {
     .slice(0, 8);
   const max = Math.max(...rows.map((row) => row.pendingAmount), 1);
   const host = byId('topPendingCards');
-  // Who is owed what is the Payouts tab's business. Until that is unlocked the
-  // name is not written into the page at all - not blurred, not clipped - so
-  // there is nothing for Inspect Element to read. The amounts and the counts
-  // stay: they are the shape of the backlog, not a statement about a person.
-  const named = payoutsOpen();
-  const note = byId('topPendingLockNote');
-  if (note) note.hidden = named;
+  if (!veilPayoutBalance()) return;
   host.innerHTML = rows.map((row, index) => {
     const who = row.name || row.email || 'Unknown';
-    // No data-person when masked, which also makes the row inert: the click and
-    // keyboard handlers both select on [data-person].
-    const identity = named
-      ? ` role="button" tabindex="0" data-person="${esc(who)}" data-tip="Open ${esc(who)} in Payouts"`
-      : ' data-tip="Unlock Payouts to see who this is"';
     return `
-        <div class="leader-row${named ? '' : ' is-masked'}" data-bench="${benchOf(row.team)}" style="--i:${index}"${identity}>
+        <div class="leader-row" data-bench="${benchOf(row.team)}" style="--i:${index}" role="button" tabindex="0" data-person="${esc(who)}" data-tip="Open ${esc(who)} in Payouts">
           <div class="rank${index < 3 ? ` medal medal-${index + 1}` : ''}">${index + 1}</div>
           <div class="person">
-            <strong>${named ? esc(who) : '<span class="maskedname">Hidden</span>'}</strong>
+            <strong>${esc(who)}</strong>
             <span>${fmt(row.pendingTasks)} of ${fmt(row.acceptedTasks)} tasks unpaid · ${esc(row.team || 'no team')}</span>
           </div>
           <div class="bar-track"><div class="bar-fill" style="width:${safePct(row.pendingAmount, max)}"></div></div>
-          <div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${named ? esc(row.email || row.name) : index}">${money(row.pendingAmount)}</div>
+          <div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${esc(row.email || row.name)}">${money(row.pendingAmount)}</div>
         </div>`;
   }).join('') || '<p class="empty">Nothing owed in this selection.</p>';
   animateCounts(host);

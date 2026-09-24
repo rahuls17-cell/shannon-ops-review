@@ -131,7 +131,7 @@
           </div>
 
           <p class="eyebrow">Payouts<span>all dates &mdash; the date range is not applied</span><button class="why" data-info="acceptanceScope" aria-label="Why the date range is not applied here">?</button></p>
-          <div class="kpirow">
+          <div class="kpirow kpirow-3">
             <article class="kpi" data-tone="slate" data-expand aria-expanded="false" tabindex="0">
               <div class="kpi-top"><h3>Active trainers</h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></i></div>
               <strong id="metricActive">-</strong>
@@ -153,14 +153,6 @@
               <strong id="metricPendingTasks">-</strong>
               <p class="kpi-note" id="metricPending">-</p>
               <div class="kpi-more"><div class="kpi-detail" id="detailPending"></div></div>
-              <p class="figure-src" data-source="ops-workbook"></p>
-              <span class="kpi-caret" aria-hidden="true"></span>
-            </article>
-            <article class="kpi" data-tone="red" data-expand aria-expanded="false" tabindex="0">
-              <div class="kpi-top"><h3>Owed<button class="why" data-info="pending" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg></i></div>
-              <strong id="heroPending">-</strong>
-              <p class="kpi-note" id="heroExposureText">-</p>
-              <div class="kpi-more"><div class="kpi-detail" id="detailOwed"></div></div>
               <p class="figure-src" data-source="ops-workbook"></p>
               <span class="kpi-caret" aria-hidden="true"></span>
             </article>
@@ -190,9 +182,17 @@
               <div><h2>Payout balance<button class="why" data-info="pending" aria-label="How paid and owed are calculated">?</button></h2><p class="panel-note" id="payoutBalanceNote"></p></div>
               <button class="ghost" data-jump="payouts">Open Payouts</button>
             </header>
-            <div class="panel-body exposure">
-              <div><p class="subhead">By bench</p><figure id="exposureChart" class="exposure-chart"></figure></div>
-              <div><p class="subhead">Largest amounts owed</p><p class="masknote" id="topPendingLockNote" hidden>Names are hidden until the Payouts tab is unlocked.</p><div id="topPendingCards" class="leaderboard"></div></div>
+            <div class="veiled">
+              <div class="panel-body exposure" id="payoutBalanceBody">
+                <div><p class="subhead">By bench</p><figure id="exposureChart" class="exposure-chart"></figure></div>
+                <div><p class="subhead">Largest amounts owed</p><div id="topPendingCards" class="leaderboard"></div></div>
+              </div>
+              <div class="veil" id="payoutBalanceVeil" hidden>
+                <span class="lockmark" aria-hidden="true">&#9679;&#9679;&#9679;&#9679;</span>
+                <b>Locked</b>
+                <p>Who is owed what opens with the Payouts password.</p>
+                <button class="primary" data-jump="payouts">Unlock in Payouts</button>
+              </div>
             </div>
           </section>
 

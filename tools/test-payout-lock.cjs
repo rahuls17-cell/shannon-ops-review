@@ -107,36 +107,29 @@ const css = fs.readFileSync(path.join(root, 'styles.css'), 'utf8');
 
 // --- who is owed what, on the Overview --------------------------------------
 // The Payout balance panel sits on the tab everyone lands on and names people
-// next to what they are owed. The totals and the bench split are not about
-// anyone in particular and stay visible; the identities are withheld until
-// Payouts is unlocked.
-//
-// The test that matters is that the name is absent from the MARKUP. Blurring or
-// clipping it still sends the name to the browser, where Inspect Element reads
-// it off - a gate that looks like it works and does not.
+// next to what they are owed. Until Payouts is unlocked the panel is veiled:
+// what sits under the blur is a stand-in of the same shape, so no name and no
+// amount reaches the markup where Inspect Element could read it.
 {
-  const fn = app.slice(app.indexOf('function renderTopPendingCards'),
-    app.indexOf('function wirePayoutBalance'));
-  assert.ok(/const named = payoutsOpen\(\);/.test(fn),
-    'the panel must ask whether Payouts is unlocked');
-  assert.ok(/named \? esc\(who\) : '<span class="maskedname">/.test(fn),
-    'the name must be replaced in the markup, not styled out of sight');
-  assert.ok(!/filter:\s*blur/.test(css.slice(css.indexOf('.leader-row.is-masked'),
-    css.indexOf('.leader-row.is-masked') + 400)),
-    'a blur would leave the name readable in the DOM');
-  assert.ok(/named[\s\S]{0,120}data-person="\$\{esc\(who\)\}"/.test(fn),
-    'data-person carries the name too, so it must be gated with the label');
-  assert.ok(/data-key="owed:\$\{named \? esc\(row\.email \|\| row\.name\) : index\}"/.test(fn),
-    'the animation key is built from the email; masked rows must key on the rank instead');
-  // The click and keyboard handlers both select on [data-person], so dropping
-  // that attribute is what makes a masked row inert - no separate guard needed.
+  const veil = app.slice(app.indexOf('function veilPayoutBalance'), app.indexOf('function applyPayoutLock'));
+  assert.ok(/const open = payoutsOpen\(\);/.test(veil), 'the veil must ask whether Payouts is unlocked');
+  assert.ok(/if \(open\) return true;/.test(veil), 'an open lock must draw the real figures');
+  assert.ok(!/row\.|rows\[|money\(|esc\(who\)/.test(veil), 'the stand-in must be built from no real row');
+  const fn = app.slice(app.indexOf('function renderTopPendingCards'), app.indexOf('function wirePayoutBalance'));
+  assert.ok(/const host = byId\('topPendingCards'\);\s*if \(!veilPayoutBalance\(\)\) return;/.test(fn),
+    'the names must be withheld before any row is written into the markup');
+  const chart = app.slice(app.indexOf('function renderExposureChart'), app.indexOf('function renderTopPendingCards'));
+  assert.ok(/if \(!veilPayoutBalance\(\)\) return;/.test(chart),
+    'the bench split is veiled with the names');
+  assert.ok(html.includes('id="payoutBalanceVeil"') && html.includes('data-jump="payouts"'),
+    'the veil says where to unlock');
+  assert.ok(/\.is-locked \{[^}]*filter: blur/.test(css), 'the veiled panel is blurred');
   const wire = app.slice(app.indexOf('function wirePayoutBalance'), app.indexOf('function wireStatusFocus'));
-  assert.ok(wire.includes(".leader-row[data-person]"),
-    'the row handlers must select on data-person, or masked rows stay clickable');
+  assert.ok(wire.includes(".leader-row[data-person]"), 'the row handlers select on data-person');
   const unlock = app.slice(app.indexOf('function wirePayoutLock()'));
-  assert.ok(unlock.includes('renderTopPendingCards();'),
-    'unlocking must redraw the Overview panel, or the names stay hidden until a reload');
-  console.log('overview: identities withheld from the markup, rows inert, redrawn on unlock');
+  assert.ok(unlock.includes('renderHero(); renderTopPendingCards();'),
+    'unlocking must redraw the Overview panel, or it stays veiled until a reload');
+  console.log('overview: panel veiled with a stand-in, redrawn on unlock');
 }
 
 // --- two things that made a correct password look wrong ---------------------
