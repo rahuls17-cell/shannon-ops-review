@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T09:21:08+00:00",
+ "generatedAt": "2026-09-24T09:31:33+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2594,6 +2594,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc09-b2-vti-task-000676-v2/924d8cc876d085419b054568b8078b7a32e68c11c2aff9aa11ba90b2a230d25b.zip",
    "bytesRead": 58963,
+   "readOn": "2026-09-24"
+  },
+  "archived-senders-safe-to-clear": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/archived-senders-safe-to-clear/78d0f25f254c52744fd40008674c521192cc7691cda1af5a59c7d2b9b359f53c.zip",
+   "bytesRead": 56604,
+   "readOn": "2026-09-24"
+  },
+  "bus-b49-b2-director-level-bullet-dimension-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b49-b2-director-level-bullet-dimension-audit/a108ce4294eaf00c32f96946a8d6f236886e0d6df06fffc29f7980983c131aea.zip",
+   "bytesRead": 87400,
    "readOn": "2026-09-24"
   }
  }
