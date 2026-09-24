@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T20:30:51+00:00",
+ "generatedAt": "2026-09-24T20:40:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3305,6 +3305,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b53-f5-equity-resistance-level-derivation/229a22626bc2b47dffd3d299ce583adc727c823a2975dc5ab36f5d92db46b7f1.zip",
    "bytesRead": 88922,
+   "readOn": "2026-09-24"
+  },
+  "a-three-issue-chain-all-archived": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/a-three-issue-chain-all-archived/f252f88ff3f9deafd50ce41759036c3e13be8b9e7c037d662a523bd66f94488b.zip",
+   "bytesRead": 45805,
    "readOn": "2026-09-24"
   }
  }
