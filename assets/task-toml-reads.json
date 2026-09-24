@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T03:00:51+00:00",
+ "generatedAt": "2026-09-24T03:11:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2364,6 +2364,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b609-t8-festival-stock-purchase-plan/9d6b8bb972bd93609d7eed501b1879cc97756b39d8bce497fac6e9963c4b8996.zip",
    "bytesRead": 72950,
+   "readOn": "2026-09-24"
+  },
+  "code-c152-battery-sku-compatibility-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c152-battery-sku-compatibility-audit/cc0bbffe306ddcc8ae482eb2d44871f137f9fde41440d6cb1290fda898fce142.zip",
+   "bytesRead": 72033,
+   "readOn": "2026-09-24"
+  },
+  "tech-b54-t2-automation-window-schedule-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-t2-automation-window-schedule-plan/b56a80f58c2d11870b3c4fa09d698105b2fb7b48a7518376d23e33b9570a57b6.zip",
+   "bytesRead": 81875,
    "readOn": "2026-09-24"
   }
  }
