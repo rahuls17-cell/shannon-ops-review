@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T00:50:50+00:00",
+ "generatedAt": "2026-09-24T01:00:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2254,6 +2254,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c55-certificate-chain-traceability/42a24e2c1e9ae8e01856b5cca0651671434e380d3f4f1976ad853dfad7146cc4.zip",
    "bytesRead": 75674,
+   "readOn": "2026-09-24"
+  },
+  "gen-g290-photo-printing-service-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g290-photo-printing-service-audit/5ccb6821fcc5f4489348c37cbc6ed360fe6ac0e7b712a9544ec05458db4e6707.zip",
+   "bytesRead": 69610,
+   "readOn": "2026-09-24"
+  },
+  "tech-b53-t5-controller-wiring-compatibility-register": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t5-controller-wiring-compatibility-register/9fb0b57a20a439abfc3e8642b0d91b92710c7c148283b444e240490112e9d9a9.zip",
+   "bytesRead": 72265,
    "readOn": "2026-09-24"
   }
  }
