@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T21:30:51+00:00",
+ "generatedAt": "2026-09-24T21:40:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3365,6 +3365,26 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/task_verify_6_30_amount_correction_request_on_pending_check_deposit_for_acc/f857f9f38613ba1ae57fc3ff69459672cd47f890c7a9ca6dff1aaa848c94faeb.zip",
    "bytesRead": 61823,
+   "readOn": "2026-09-24"
+  },
+  "code-c228-terraform-state-drift-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c228-terraform-state-drift-audit/934ea21717b0e319d663fe92dc9123d57a97798785c5a069399ca5db5fa1e703.zip",
+   "bytesRead": 70363,
+   "readOn": "2026-09-24"
+  },
+  "tech-b61-t1-gpu-node-fabric-cabling-plan-validation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b61-t1-gpu-node-fabric-cabling-plan-validation/4c76a17d2c98573bd64c7be0b30cb818457e593e0fe86a995cbb91f7f1fe3f5d.zip",
+   "bytesRead": 74244,
    "readOn": "2026-09-24"
   }
  }
