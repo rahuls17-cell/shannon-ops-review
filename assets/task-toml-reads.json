@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T00:10:53+00:00",
+ "generatedAt": "2026-09-24T00:50:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2244,6 +2244,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c147-api-version-sunset-compliance-audit/3031c4b6f155088561d44418e4b5fd7eb7ea79fb1c3c510a7c2b52ba7fc72633.zip",
    "bytesRead": 77786,
+   "readOn": "2026-09-24"
+  },
+  "code-c55-certificate-chain-traceability": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c55-certificate-chain-traceability/42a24e2c1e9ae8e01856b5cca0651671434e380d3f4f1976ad853dfad7146cc4.zip",
+   "bytesRead": 75674,
    "readOn": "2026-09-24"
   }
  }
