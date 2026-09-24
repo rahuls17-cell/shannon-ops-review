@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T02:50:51+00:00",
+ "generatedAt": "2026-09-24T03:00:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -2354,6 +2354,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c150-ai-inference-claims-audit/2615e454fffc7e0bc30262f66d574e395619caafb17177bee23d3454d71a2c66.zip",
    "bytesRead": 91777,
+   "readOn": "2026-09-24"
+  },
+  "bus-b609-t8-festival-stock-purchase-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b609-t8-festival-stock-purchase-plan/9d6b8bb972bd93609d7eed501b1879cc97756b39d8bce497fac6e9963c4b8996.zip",
+   "bytesRead": 72950,
    "readOn": "2026-09-24"
   }
  }
