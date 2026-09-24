@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T19:40:50+00:00",
+ "generatedAt": "2026-09-24T20:10:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3265,6 +3265,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b9-a7-summer-trending-repo-leaderboard/998bc0e771c9d147d93f162902f1de96e0e3b0484ce10e510d83c771e9c48e97.zip",
    "bytesRead": 79974,
+   "readOn": "2026-09-24"
+  },
+  "bus-mg-bus-b7-a9-assistant-buyer-fit-scorecard": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-mg-bus-b7-a9-assistant-buyer-fit-scorecard/13924fd0c99cdcd0c70da2eb5be40a84970f3c1fdcaa6581d14b98791a348f52.zip",
+   "bytesRead": 76184,
+   "readOn": "2026-09-24"
+  },
+  "code-c233-build-signing-reproducibility-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c233-build-signing-reproducibility-audit/9b31b1c5631e16a6711ef0e3e4dfde7a7e1e96634946811a576b43a5100cdbab.zip",
+   "bytesRead": 82190,
    "readOn": "2026-09-24"
   }
  }
