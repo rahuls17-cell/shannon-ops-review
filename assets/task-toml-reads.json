@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T16:20:53+00:00",
+ "generatedAt": "2026-09-24T16:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3091,6 +3091,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b54-f2-assumable-loan-equity-gap-screen/06baa1659ea6ff22dae8943ee8827cbe3e3622ee705ba3bc4f41af5e0b8ba7b7.zip",
    "bytesRead": 95206,
+   "readOn": "2026-09-24"
+  },
+  "law-b37-l19-board-statement-disclosure-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b37-l19-board-statement-disclosure-audit/b0e0c4a762bc897c7beccb08e367e1a7c006c047aaa370be21857eccef9c9ebb.zip",
+   "bytesRead": 86678,
    "readOn": "2026-09-24"
   }
  }
