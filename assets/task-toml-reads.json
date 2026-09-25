@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T09:10:54+00:00",
+ "generatedAt": "2026-09-25T09:20:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4043,6 +4043,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/thirteen-tidied-away-two-links-left/ee05f2384553259551cab2e04615c5c3fffe500d0410e45590ab17a561d6d74e.zip",
    "bytesRead": 47069,
+   "readOn": "2026-09-25"
+  },
+  "code-c372-shellfish-harvest-zone-compliance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c372-shellfish-harvest-zone-compliance-audit/1a189f77a59f54f7755b2640b51502106be532eb79d0f84d5d1936dfe6a3b8fd.zip",
+   "bytesRead": 87311,
+   "readOn": "2026-09-25"
+  },
+  "health-b43-h15-cme-grant-cycle-calendar": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b43-h15-cme-grant-cycle-calendar/a8f94c0d74ab531d77853709445564f7088bd6df9679af410c450a17ee385652.zip",
+   "bytesRead": 68431,
    "readOn": "2026-09-25"
   }
  }
