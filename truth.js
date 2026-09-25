@@ -115,15 +115,18 @@
     // keyed by the bucket folder it sits in. A lookup that tries only the row id
     // silently drops every bench that was read from a package - which is exactly
     // the tasks whose task tree was missing, so the ones that needed it most.
+    // benchRead separates "read, and it is a plain image" from "never read".
     const benchAt = (...keys) => {
+      let plain = null;
       for (let i = 0; i < keys.length; i += 1) {
         const hit = keys[i] && benches[keys[i]];
         if (hit && hit.bench) {
-          return {bench: hit.bench, benchImage: hit.image,
+          return {bench: hit.bench, benchImage: hit.image, benchRead: true,
                   benchSide: hit.bench.startsWith('company') ? 'company' : 'computer'};
         }
+        if (hit && hit.image && !plain) plain = hit;
       }
-      return {};
+      return plain ? {benchImage: plain.image, benchRead: true} : {};
     };
 
     const trials = (glmIndex && glmIndex.glm) || {};
@@ -143,9 +146,10 @@
           ...glmOf(row.id),
           ...benchAt(row.id, row.name),
         }))
-        // A non-connector task runs on the Computer bench; only a task whose
-        // package was never read is left without one.
-        .map(row => (row.bench || row.connector !== false ? row
+        // A non-connector task runs on the Computer bench. A plain base image in
+        // the Dockerfile (python, node and the like) is the same evidence: no
+        // harness, so no connector. Only a task never read is left without one.
+        .map(row => (row.bench || (row.connector !== false && !row.benchRead) ? row
           : {...row, bench: 'computer bench non-connector', benchSide: 'computer'}))
       : payload.tasks;
 
@@ -443,7 +447,7 @@
           : row.connector === null || row.connector === undefined)) &&
         // The band is a property of the run, so a row with no trials is
         // excluded from every band filter rather than counted as 0.
-        // A row whose bench is not known is excluded from every bench filter
+        // A row never read for a bench is excluded from every bench filter
         // rather than counted as one side.
         (!f.bench || (f.bench === 'none' ? !row.bench
           : f.bench === 'company' || f.bench === 'computer' ? row.benchSide === f.bench

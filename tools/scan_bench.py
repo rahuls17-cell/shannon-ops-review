@@ -22,7 +22,23 @@ pairs and tools/test-task-toml.cjs checks the rule against every one.
 
 Where it is read from
 ---------------------
-    tasks/auto-<verdict stem>/<task>/environment/Dockerfile
+    tasks/auto-<verdict stem>/<task folder>/environment/Dockerfile
+
+The task folder is LISTED, not built from the pipeline row's name. It used to
+be built from the name, and the name is often not the folder:
+
+    autorun-e99e53...                      -> monthly-ledger-rollover-report-...
+    which-visits-...-96bbed-v3-sna-ttkc    -> which-visits-still-need-a-room
+    pipeline-evaluation-f19a47f5...        -> tech-b607-t5-nist-control-...
+    autorun-2590bbc7...                    -> harbor-single-task-eo0wf7d_
+
+So 1,478 rows were cached as having no Dockerfile when 29 of 30 sampled had
+one, one level down under a different name. Listing costs one extra small
+request per task and removes the guess. Entries starting with `_` are
+bookkeeping (_oracle_gate and the like), not tasks, and are skipped.
+
+When a batch holds several task folders and none is named for the row, the row
+is recorded as ambiguous rather than given the first folder's bench.
 
 Loose in the bucket, about 3 KB. Not inside the package: the delivery cohort
 holds only zips, and reading the Dockerfile out of one of those means fetching
@@ -92,17 +108,66 @@ def batch_of(row):
     return 'auto-' + stem[:-5] if stem.endswith('.json') else None
 
 
+LIST = 'https://storage.googleapis.com/storage/v1/b/{bucket}/o?{query}'
+# The version-and-run suffix the pipeline appends to a task name, which the
+# folder in the batch tree does not carry.
+RUN_SUFFIX = re.compile(r'-[0-9a-f]{6}-v\d+-sna-[a-z]{4}$')
+
+# The reason every row was cached under while the folder name was guessed. Any
+# miss still carrying it was recorded by the old path and is not evidence of
+# anything, so it is dropped on load and read again. Nothing writes this string
+# any more, so this clears the backlog once and then never matches again - on
+# the VM as well as here, with no manual reset.
+RETIRED_REASON = 'no Dockerfile at the task source path'
+
+
+def task_folders(bucket, batch, token, timeout=30):
+    """The task folders directly inside a batch tree, bookkeeping skipped."""
+    base = f'tasks/{batch}/'
+    query = urllib.parse.urlencode({'prefix': base, 'delimiter': '/',
+                                    'fields': 'prefixes', 'maxResults': '100'})
+    url = LIST.format(bucket=urllib.parse.quote(bucket, safe=''), query=query)
+    request = urllib.request.Request(url, headers={'Authorization': f'Bearer {token}'})
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        prefixes = json.load(response).get('prefixes', [])
+    names = [pre[len(base):].rstrip('/') for pre in prefixes]
+    return [n for n in names if n and not n.startswith('_')]
+
+
+def pick_folder(row_name, folders):
+    """The folder this row's task lives in, or None when that is not decidable.
+
+    An exact name wins. A single folder is unambiguous whatever it is called -
+    that is the autorun and placeholder case. Among several, only the one that
+    matches the name with its run suffix stripped is accepted; anything else
+    would be picking a neighbour's bench.
+    """
+    if row_name in folders:
+        return row_name
+    if len(folders) == 1:
+        return folders[0]
+    bare = RUN_SUFFIX.sub('', row_name)
+    return bare if bare in folders else None
+
+
 def read_one(row, bucket, token):
+    """(image, folder, reason) - reason is set only when there is no image."""
     batch = batch_of(row)
     if not batch:
-        return None, 'the row names no verdict object'
-    text = fetch(bucket, f'tasks/{batch}/{row["name"]}/environment/Dockerfile', token)
+        return None, None, 'the row names no verdict object'
+    folders = task_folders(bucket, batch, token)
+    if not folders:
+        return None, None, 'the batch tree holds no task folder'
+    folder = pick_folder(row['name'], folders)
+    if folder is None:
+        return None, None, f'{len(folders)} task folders in the batch, none named for this row'
+    text = fetch(bucket, f'tasks/{batch}/{folder}/environment/Dockerfile', token)
     if text is None:
-        return None, 'no Dockerfile at the task source path'
+        return None, folder, 'a task folder with no environment/Dockerfile'
     found = FROM_LINE.search(text)
     if not found:
-        return None, 'the Dockerfile declares no FROM'
-    return found.group(1), None
+        return None, folder, 'the Dockerfile declares no FROM'
+    return found.group(1), folder, None
 
 
 def main():
@@ -126,6 +191,12 @@ def main():
     cached = json.loads(out.read_text(encoding='utf-8')) if out.exists() else {}
     known = cached.get('bench', {})
     misses = cached.get('misses', {})
+    retired = [k for k, v in misses.items() if v.get('reason') == RETIRED_REASON]
+    for k in retired:
+        del misses[k]
+    if retired:
+        print(f'{len(retired):,} misses were recorded by the old name-guessing path '
+              f'and will be read again', file=sys.stderr)
 
     # Anything a package read already told us, so the two never disagree.
     reads_path = pathlib.Path(args.reads)
@@ -160,20 +231,21 @@ def main():
         try:
             return row, read_one(row, args.bucket, token)
         except Exception as error:                      # noqa: BLE001
-            return row, (None, f'{type(error).__name__}: {error}')
+            return row, (None, None, f'{type(error).__name__}: {error}')
 
     if todo:
         with ThreadPoolExecutor(max_workers=args.workers) as pool:
-            for row, (image, reason) in pool.map(work, todo):
+            for row, (image, folder, reason) in pool.map(work, todo):
                 done += 1
                 if done % 500 == 0:
                     print(f'  {done:,}/{len(todo):,}', file=sys.stderr)
                 if image is None:
                     why[reason] += 1
-                    misses[row['id']] = {'reason': reason,
+                    misses[row['id']] = {'reason': reason, 'folder': folder,
                                          'checkedOn': today.isoformat()}
                     continue
                 known[row['id']] = {'image': image, 'bench': bench_type(image),
+                                    'folder': folder,
                                     'via': 'the Dockerfile in the task source'}
                 misses.pop(row['id'], None)
                 why['read from the Dockerfile'] += 1

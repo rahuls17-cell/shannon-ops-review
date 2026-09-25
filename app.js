@@ -155,8 +155,10 @@ const infoCopy = {
       + 'is a company image while obi-benchmark under connectors-rl-gym is a computer one - reading '
       + 'the name first gets four of the 348 labelled tasks wrong.'
       + (split ? ' Across the pipeline: ' + split + '.' : '')
-      + ' A non-connector task runs on the Computer bench. A task whose package was never read has '
-      + 'no bench recorded and is listed as bench not known rather than being forced into a side.';
+      + ' A non-connector task runs on the Computer bench, and a Dockerfile on a plain base image - '
+      + 'python, node or similar, no harness - counts as the same evidence. Not read yet means no '
+      + 'Dockerfile has been read for the task, so its bench is unknown rather than absent; these '
+      + 'should shrink to the few whose task tree really is empty.';
   },
   truthSplit: () => {
     const c = cohortIndex && cohortIndex.counts;
@@ -1334,7 +1336,7 @@ function fillBench() {
   node.innerHTML = option('', 'Any bench')
     + group('Company bench', 'company')
     + group('Computer bench', 'computer')
-    + (tally.none ? `<optgroup label="Not known">${option('none', 'Bench not known', tally.none)}</optgroup>` : '');
+    + (tally.none ? `<optgroup label="No bench">${option('none', 'Not read yet', tally.none)}</optgroup>` : '');
   if ([...node.options].some(o => o.value === keep)) node.value = keep;
 }
 
