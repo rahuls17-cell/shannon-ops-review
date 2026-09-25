@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T21:21:32+00:00",
+ "generatedAt": "2026-09-25T21:30:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4918,6 +4918,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-my-meetings-happen/8b2ea5f2854eb8f9960c4c2fd8815e67b81e046a473a98a1d165e5a4f2d00227.zip",
    "bytesRead": 55298,
+   "readOn": "2026-09-25"
+  },
+  "fin-b44-a3-counterparty-cash-flow-bridge": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b44-a3-counterparty-cash-flow-bridge/814df3c12413e0ab3de971e2d756aaa61339bc585ad48d538b7c0daa07098735.zip",
+   "bytesRead": 109680,
+   "readOn": "2026-09-25"
+  },
+  "health-tdt10-a3-shelf-claim-basis-catalogue": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt10-a3-shelf-claim-basis-catalogue/48f5a2842f9ad0936d030625c7f1a11bd2c48819c6760a8a8b94372900590d7a.zip",
+   "bytesRead": 69512,
    "readOn": "2026-09-25"
   }
  }
