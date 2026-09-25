@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T22:31:00+00:00",
+ "generatedAt": "2026-09-25T23:20:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5000,6 +5000,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt9-a10-clipping-packet-rolling-window/9c766399965dfdcc42399778707b0a2746003b63e6690cb235bf55b6be44f60f.zip",
    "bytesRead": 70752,
+   "readOn": "2026-09-25"
+  },
+  "gen-g56-sku-pricetier-reconcile-v7": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12.13-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g56-sku-pricetier-reconcile-v7/149c32299fd552a3154c63e69f0a3c028444ff623c3ea41d81a5a2e31c79146e.zip",
+   "bytesRead": 76415,
    "readOn": "2026-09-25"
   }
  }
