@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T06:40:50+00:00",
+ "generatedAt": "2026-09-25T06:50:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3821,6 +3821,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t5-compose-env-config-reconciliation/f10b5bc1d07a606ccb6dd838e7d6ee6012bdb5b3b4d4ba3e21f2381011d7521a.zip",
    "bytesRead": 74968,
+   "readOn": "2026-09-25"
+  },
+  "code-c226-database-grant-recertification-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c226-database-grant-recertification-audit/fb0156f7ea10ac8ecacf237fb024412a15ddcac9440062240f49237a9e28d4b6.zip",
+   "bytesRead": 74893,
    "readOn": "2026-09-25"
   }
  }
