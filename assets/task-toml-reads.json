@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T21:30:54+00:00",
+ "generatedAt": "2026-09-25T21:50:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4938,6 +4938,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt10-a3-shelf-claim-basis-catalogue/48f5a2842f9ad0936d030625c7f1a11bd2c48819c6760a8a8b94372900590d7a.zip",
    "bytesRead": 69512,
+   "readOn": "2026-09-25"
+  },
+  "recount-the-lead-spreadsheets": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/recount-the-lead-spreadsheets/7e2e48d5857a2646258a1365500dca0f89e869970bc9992275cc9ab545860444.zip",
+   "bytesRead": 59190,
+   "readOn": "2026-09-25"
+  },
+  "writing-sc05-a4-chapter-submission-readiness-v2": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-a4-chapter-submission-readiness-v2/0a2eb50f4fb9492cc0d3ab601d4f4f501aa0177057563729678a63a9757da7cc.zip",
+   "bytesRead": 73095,
    "readOn": "2026-09-25"
   }
  }
