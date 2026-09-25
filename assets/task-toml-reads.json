@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T01:40:50+00:00",
+ "generatedAt": "2026-09-25T01:50:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3599,6 +3599,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c270-ai-model-endpoint-governance-audit/dcc016d3a7da17129c435e7e29c52a012d0dbb91e5b234fe4e45a7a8c82bf06e.zip",
    "bytesRead": 75072,
+   "readOn": "2026-09-25"
+  },
+  "code-c272-crm-sms-workflow-consent-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c272-crm-sms-workflow-consent-audit/dd31c334b9b53f6b6875f804c4cad9dbd3f8d2f0809ad9fa4094a88168fddbf5.zip",
+   "bytesRead": 74717,
+   "readOn": "2026-09-25"
+  },
+  "law-l62-llc-documentation-gap-audit-a5f69d-v19-sna-hzhp": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:32e2c347413bae52d567e2cc3eef31cd617a83dcac51644caadc0bbac131395a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l62-llc-documentation-gap-audit-a5f69d-v19-sna-hzhp/1693cf33051f0eb3bf9c9b1fcb3435abb0b60094e5f519867babfde9eb1fc2ef.zip",
+   "bytesRead": 79342,
    "readOn": "2026-09-25"
   }
  }
