@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T14:50:53+00:00",
+ "generatedAt": "2026-09-25T15:20:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4498,6 +4498,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-header-already-in-use/73e1354f7bf5468379332e2c3f297cda538c6424f542c55e2605237012229bb3.zip",
    "bytesRead": 44785,
+   "readOn": "2026-09-25"
+  },
+  "health-tdt8-a10-allergy-shelf-unit-price-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt8-a10-allergy-shelf-unit-price-ledger/da7c25f2214fbe42c3d74b1ccfc196637f44c61d53dc0a84bcfef29ec1ff9eef.zip",
+   "bytesRead": 70049,
+   "readOn": "2026-09-25"
+  },
+  "sci-sc07-a7-frost-southern-limits-v1": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc07-a7-frost-southern-limits-v1/1f83b5d1a77c66e48aac0973ae7f24c01fe9abb6ff6784d03396263200557181.zip",
+   "bytesRead": 73651,
    "readOn": "2026-09-25"
   }
  }
