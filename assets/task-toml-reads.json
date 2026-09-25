@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T01:20:50+00:00",
+ "generatedAt": "2026-09-25T01:40:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3579,6 +3579,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h60-hydration-target-compliance-audit-88a276-v1-sna-agnd/e31f58eb2cd6ab2e5127cff3eac6abb42f948b0f5e46613cd7b41981bc8787ab.zip",
    "bytesRead": 84939,
+   "readOn": "2026-09-25"
+  },
+  "code-c266-saas-tool-procurement-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c266-saas-tool-procurement-audit/9861797484a7f12c7d78134de0c82213f10ee2322aa3917b784b6cdd822dc19f.zip",
+   "bytesRead": 71764,
+   "readOn": "2026-09-25"
+  },
+  "code-c270-ai-model-endpoint-governance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c270-ai-model-endpoint-governance-audit/dcc016d3a7da17129c435e7e29c52a012d0dbb91e5b234fe4e45a7a8c82bf06e.zip",
+   "bytesRead": 75072,
    "readOn": "2026-09-25"
   }
  }
