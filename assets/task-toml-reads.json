@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T06:10:49+00:00",
+ "generatedAt": "2026-09-25T06:20:49+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3771,6 +3771,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c180-hardware-compat-matrix-audit/15fff273b37861ac27c31709b56524c1fb2712a2d5bfd494bdd57a02bf909398.zip",
    "bytesRead": 79872,
+   "readOn": "2026-09-25"
+  },
+  "bus-b108-b11-flatbed-upfit-invoice-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12.14-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b108-b11-flatbed-upfit-invoice-recompute/b95b3d2d64a7c1076a83f26f57961cd4902f140ed4a1b486c5cd16e54c41bcbd.zip",
+   "bytesRead": 99490,
    "readOn": "2026-09-25"
   }
  }
