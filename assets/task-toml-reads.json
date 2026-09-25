@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T13:50:54+00:00",
+ "generatedAt": "2026-09-25T14:00:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4426,6 +4426,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c176-floorplan-dimension-audit/6dd3d00dd621f2bacca37ca9738977f44274fbbf6b952ff16cdd7e50d26cbf3f.zip",
    "bytesRead": 91975,
+   "readOn": "2026-09-25"
+  },
+  "fin-b49-f5-cost-seg-bonus-depreciation-at-risk": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b49-f5-cost-seg-bonus-depreciation-at-risk/5373ca73132461c6dfd6c6e9cd732c3b737cd77bec94a36816c949d9715174f6.zip",
+   "bytesRead": 72345,
    "readOn": "2026-09-25"
   }
  }
