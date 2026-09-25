@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T15:20:53+00:00",
+ "generatedAt": "2026-09-25T15:30:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4518,6 +4518,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc07-a7-frost-southern-limits-v1/1f83b5d1a77c66e48aac0973ae7f24c01fe9abb6ff6784d03396263200557181.zip",
    "bytesRead": 73651,
+   "readOn": "2026-09-25"
+  },
+  "code-c262-ai-resource-link-accessibility-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c262-ai-resource-link-accessibility-audit/69d2689830057c4dbcbf4cd8586845280584dbc068c2625bb3ba910643d400cb.zip",
+   "bytesRead": 76458,
    "readOn": "2026-09-25"
   }
  }
