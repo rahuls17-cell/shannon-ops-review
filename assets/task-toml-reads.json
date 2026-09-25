@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T21:10:59+00:00",
+ "generatedAt": "2026-09-25T21:21:32+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4894,6 +4894,30 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t3-build-spec-chart-contradiction/2eccc31ce2241575b3674064905d15c176176178204cd35fd727800bda5703bd.zip",
    "bytesRead": 70719,
+   "readOn": "2026-09-25"
+  },
+  "one-name-twenty-four-mailboxes": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/one-name-twenty-four-mailboxes/50a4b8bd60f453b6670a18d46edd039e2cd3a4788eeecdf9d76716aa0e5d869f.zip",
+   "bytesRead": 51694,
+   "readOn": "2026-09-25"
+  },
+  "where-my-meetings-happen": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-my-meetings-happen/8b2ea5f2854eb8f9960c4c2fd8815e67b81e046a473a98a1d165e5a4f2d00227.zip",
+   "bytesRead": 55298,
    "readOn": "2026-09-25"
   }
  }
