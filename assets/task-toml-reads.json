@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T10:40:54+00:00",
+ "generatedAt": "2026-09-25T11:10:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4123,6 +4123,19 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c321-auto-apply-queue-routing-audit/b9764196617f1e392609a2900a5fdd0528ac1abdcada675e833c49efc9de5e79.zip",
    "bytesRead": 79108,
+   "readOn": "2026-09-25"
+  },
+  "100067": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/100067/02cc02438020f4b370851fb02e31b63e8b649caad4dc40a92ac301c0ff6fe61d.zip",
+   "bytesRead": 41645,
    "readOn": "2026-09-25"
   }
  }
