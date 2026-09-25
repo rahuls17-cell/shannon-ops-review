@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T23:20:55+00:00",
+ "generatedAt": "2026-09-25T23:50:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5010,6 +5010,48 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g56-sku-pricetier-reconcile-v7/149c32299fd552a3154c63e69f0a3c028444ff623c3ea41d81a5a2e31c79146e.zip",
    "bytesRead": 76415,
+   "readOn": "2026-09-25"
+  },
+  "bus-b23-b15-power-dialer-license-quote": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b15-power-dialer-license-quote/ef3abd71f3955cdd7a5aef42fd1e7b2f2a9f214911c65651fe9530ca45aa4ec0.zip",
+   "bytesRead": 92701,
+   "readOn": "2026-09-25"
+  },
+  "code-c222-branch-protection-policy-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c222-branch-protection-policy-audit/bbd78cb23bc9244bcdae9c775ba8039c0f4124a9fd6d5c5f51a7ed5527365671.zip",
+   "bytesRead": 82652,
+   "readOn": "2026-09-25"
+  },
+  "fin-b53-f3-utility-deductibility-contract-mismatch-review": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b53-f3-utility-deductibility-contract-mismatch-review/50665f23f7160007d8e8ef41b183629c4b5c83391952ecfd79480edcd32494b2.zip",
+   "bytesRead": 73537,
+   "readOn": "2026-09-25"
+  },
+  "the-2023-clinical-files-still-open-to-edits": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-2023-clinical-files-still-open-to-edits/c67adf32d656a6687bb2e28fb0d722a523867d0b69cccb29259f4c59905d549a.zip",
+   "bytesRead": 52647,
    "readOn": "2026-09-25"
   }
  }
