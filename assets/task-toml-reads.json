@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T19:10:59+00:00",
+ "generatedAt": "2026-09-25T19:21:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4716,6 +4716,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt9-a4-supervision-hours-credit-ledger/e860de454be6b1f77595dde5ff00e17f31a3f18962e5b79588bce8988f710e73.zip",
    "bytesRead": 85105,
+   "readOn": "2026-09-25"
+  },
+  "always-active-but-never-posted": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/always-active-but-never-posted/5b337bc52cce80e2c27d0357b36286c36c6f833a0f8ac6fb53ea818bfc32527e.zip",
+   "bytesRead": 46884,
+   "readOn": "2026-09-25"
+  },
+  "bus-b47-b9-quantity-takeoff-cost-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b9-quantity-takeoff-cost-reconciliation/f7c03a05b751816ad4a1c667f690da0bad37f49d13ec9cfb910962c13a0abc1f.zip",
+   "bytesRead": 70807,
+   "readOn": "2026-09-25"
+  },
+  "bus-b609-t4-sales-follow-up-weekday-date-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b609-t4-sales-follow-up-weekday-date-audit/9f3c388a81cedc0342d8bac839f1225b1d74eb67371eec1263d2a628ab21559e.zip",
+   "bytesRead": 71847,
    "readOn": "2026-09-25"
   }
  }
