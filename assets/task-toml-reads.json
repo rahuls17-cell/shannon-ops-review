@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T22:00:55+00:00",
+ "generatedAt": "2026-09-25T22:10:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4980,6 +4980,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a1-elbow-effusion-referral-adjudication/f2dab4d282f4a608d4118bf75e9cca4f4b9eb33135486185393c8b9dc006f04f.zip",
    "bytesRead": 95273,
+   "readOn": "2026-09-25"
+  },
+  "gen-g1140-executive-response-communication-audit-final": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1140-executive-response-communication-audit-final/341fe721c29a37406e8b2060908e442eec97d07399fd279dc778368449dcd897.zip",
+   "bytesRead": 87848,
    "readOn": "2026-09-25"
   }
  }
