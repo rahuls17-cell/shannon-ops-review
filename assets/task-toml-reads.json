@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T01:50:50+00:00",
+ "generatedAt": "2026-09-25T02:10:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3619,6 +3619,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l62-llc-documentation-gap-audit-a5f69d-v19-sna-hzhp/1693cf33051f0eb3bf9c9b1fcb3435abb0b60094e5f519867babfde9eb1fc2ef.zip",
    "bytesRead": 79342,
+   "readOn": "2026-09-25"
+  },
+  "100260": {
+   "connector": true,
+   "services": [
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/100260/c2973344deb9d278ddefc0751f2ade0fd1e02d4709853f4f4f610a309e467fcb.zip",
+   "bytesRead": 41131,
    "readOn": "2026-09-25"
   }
  }
