@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T06:00:51+00:00",
+ "generatedAt": "2026-09-25T06:10:49+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3761,6 +3761,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc09-a5-philosophy-salon-roster-reconciliation/9818694e4e71bd21a94d24562148c4cfe334bb228dd8b257eb9d3b3a38bfe655.zip",
    "bytesRead": 73132,
+   "readOn": "2026-09-25"
+  },
+  "code-c180-hardware-compat-matrix-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c180-hardware-compat-matrix-audit/15fff273b37861ac27c31709b56524c1fb2712a2d5bfd494bdd57a02bf909398.zip",
+   "bytesRead": 79872,
    "readOn": "2026-09-25"
   }
  }
