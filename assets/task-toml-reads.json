@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T11:20:53+00:00",
+ "generatedAt": "2026-09-25T11:31:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4146,6 +4146,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-f16-cash-flow-indirect-rebuild-9e08d9-v1-sna-gvwi/b9e75ac5e0778c71d68d16351c188d40041205abbeab1c9d65ae1087201b29aa.zip",
    "bytesRead": 86808,
+   "readOn": "2026-09-25"
+  },
+  "tech-b51-t4-grid-event-dataset-availability-register-v2": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t4-grid-event-dataset-availability-register-v2/7dccf173de41124d59c0628438f643aeb48e2df7f5c9a96f08f9046f9222c22a.zip",
+   "bytesRead": 142386,
+   "readOn": "2026-09-25"
+  },
+  "tech-mg-it-b9-a3-phone-data-counter-gap-english-reply": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b9-a3-phone-data-counter-gap-english-reply/6321d4cdb87a857729b72184aa946d0c5d23fc29cf54e5716f4142c824944204.zip",
+   "bytesRead": 112114,
    "readOn": "2026-09-25"
   }
  }
