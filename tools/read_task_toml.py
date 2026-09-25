@@ -61,7 +61,8 @@ NAMED = re.compile(r'name\s*=\s*"([^"]+)"')
 # common here - so the flags have to be skipped. Reading the first token instead
 # captured `--platform=linux/amd64` as the image for 106 of the tasks scanned,
 # every one of which then classified as no bench at all.
-FROM_LINE = re.compile(r'^\s*FROM\s+(?:--\S+\s+)*(\S+)', re.M | re.I)
+# A leading byte order mark (a Dockerfile saved by a Windows editor) must not hide the FROM line.
+FROM_LINE = re.compile(r'^\ufeff?\s*FROM\s+(?:--\S+\s+)*(\S+)', re.M | re.I)
 
 # Which bench a connector task belongs to, derived from that image. Checked
 # against the 348 labelled rows in the reference sheet, which it reproduces
