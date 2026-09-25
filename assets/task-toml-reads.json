@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T19:21:10+00:00",
+ "generatedAt": "2026-09-25T19:40:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4748,6 +4748,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b609-t4-sales-follow-up-weekday-date-audit/9f3c388a81cedc0342d8bac839f1225b1d74eb67371eec1263d2a628ab21559e.zip",
    "bytesRead": 71847,
+   "readOn": "2026-09-25"
+  },
+  "bus-b49-b6-warehouse-hazmat-resume-style-certification-review": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b49-b6-warehouse-hazmat-resume-style-certification-review/d30c7592bdb2c8604c50a0f9051a69b91b9e5664a2fe8f0b073170cc024915a8.zip",
+   "bytesRead": 74720,
+   "readOn": "2026-09-25"
+  },
+  "tech-mg-it-b10-a4-adviser-note-violation-register": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b10-a4-adviser-note-violation-register/59397bcf605f14c16388bf1ed644edac51dfc6da34a4dae8b6a72e6ce9233062.zip",
+   "bytesRead": 81412,
+   "readOn": "2026-09-25"
+  },
+  "the-merges-a-signing-rule-would-have-stopped": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-merges-a-signing-rule-would-have-stopped/ce229a41fc8a49134a294a471ab3e562c07647cc5367720cc4389257fdd2b34c.zip",
+   "bytesRead": 58754,
    "readOn": "2026-09-25"
   }
  }
