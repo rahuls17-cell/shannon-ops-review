@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T09:00:58+00:00",
+ "generatedAt": "2026-09-25T09:10:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4011,6 +4011,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t2-ai-video-tool-capability-scorecard/6c7f5cadf1dfb6f2c171f8ef840fb591200b75395754419a663d674a041ae3cc.zip",
    "bytesRead": 67571,
+   "readOn": "2026-09-25"
+  },
+  "code-c717-tv-channel-remote-compatibility-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c717-tv-channel-remote-compatibility-audit/d2bebb685805a8b32ec56f7e87aabddb2e6c2604de50784cfc54baeb3e8dfb45.zip",
+   "bytesRead": 80554,
+   "readOn": "2026-09-25"
+  },
+  "tech-b60-t6-lead-bot-transcript-rule-compliance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b60-t6-lead-bot-transcript-rule-compliance-audit/342d5fd92b2b17686f0cc12edffef53fc4639c3195244af51db068b7467a8ca0.zip",
+   "bytesRead": 80599,
+   "readOn": "2026-09-25"
+  },
+  "thirteen-tidied-away-two-links-left": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/thirteen-tidied-away-two-links-left/ee05f2384553259551cab2e04615c5c3fffe500d0410e45590ab17a561d6d74e.zip",
+   "bytesRead": 47069,
    "readOn": "2026-09-25"
   }
  }
