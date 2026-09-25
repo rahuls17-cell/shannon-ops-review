@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T15:30:52+00:00",
+ "generatedAt": "2026-09-25T16:00:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4528,6 +4528,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c262-ai-resource-link-accessibility-audit/69d2689830057c4dbcbf4cd8586845280584dbc068c2625bb3ba910643d400cb.zip",
    "bytesRead": 76458,
+   "readOn": "2026-09-25"
+  },
+  "strangers-with-a-say": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/strangers-with-a-say/0af97dd2e8765013f4ecc734cb25363e0c593b1865b461e559da1ab2895275e0.zip",
+   "bytesRead": 47039,
    "readOn": "2026-09-25"
   }
  }
