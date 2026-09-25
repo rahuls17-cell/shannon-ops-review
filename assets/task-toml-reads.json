@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T13:10:55+00:00",
+ "generatedAt": "2026-09-25T13:21:24+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4376,6 +4376,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-t8-filter-group-membership-register/90c6d6248d385cbd6e8cbe16be48fcf6e06cc2afa083cea0e2b3e96a384313f4.zip",
    "bytesRead": 99852,
+   "readOn": "2026-09-25"
+  },
+  "bus-b23-b11-smb-frustration-post-coding": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b11-smb-frustration-post-coding/c9cf3ffc7cbfe4ce6e9db098ac7cdd79a121a7a58db67394e595210d41ade554.zip",
+   "bytesRead": 127606,
+   "readOn": "2026-09-25"
+  },
+  "code-c229-mesh-mtls-enforcement-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c229-mesh-mtls-enforcement-audit/6fd92f16996a4ecb1f76dc03a36a30218f4adc6b35662c4e86c0a34d9e1d9f0d.zip",
+   "bytesRead": 68228,
    "readOn": "2026-09-25"
   }
  }
