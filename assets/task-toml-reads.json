@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T08:51:09+00:00",
+ "generatedAt": "2026-09-25T09:00:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3961,6 +3961,56 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc09-b10-vti-task-001698/d055bc86f35e04a9dae3fb8ef3b95a82f1a5505bab538e8938620a762741b92e.zip",
    "bytesRead": 74474,
+   "readOn": "2026-09-25"
+  },
+  "bus-b23-b7-small-retail-product-shortlist": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b7-small-retail-product-shortlist/17958bedddc199b718675041045b58cf78a27d33c72cc2146fc0e621a78a9c70.zip",
+   "bytesRead": 82113,
+   "readOn": "2026-09-25"
+  },
+  "bus-b23-b9-trade-fair-exhibitor-brief": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b9-trade-fair-exhibitor-brief/bd4eac174e43b14266783caa8336bef724943faaf470134764f2dd63dc572c8f.zip",
+   "bytesRead": 124371,
+   "readOn": "2026-09-25"
+  },
+  "bus-b67-b7-parcel-shipping-billable-cost": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b67-b7-parcel-shipping-billable-cost/80c82e89ab9e8d0501963957faf3ea70ad0272227d8fe8cc60cfebfc02f2ff73.zip",
+   "bytesRead": 81917,
+   "readOn": "2026-09-25"
+  },
+  "edu-sc05-a1-lesson-arc-plan-frontier-transition-difficulty-20260925": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc05-a1-lesson-arc-plan-frontier-transition-difficulty-20260925/b56ae62baac5b6569b47621d1aeaa3b00bda9b5ac3f9dc97a08f90a6949d83be.zip",
+   "bytesRead": 114837,
+   "readOn": "2026-09-25"
+  },
+  "tech-b51-t2-ai-video-tool-capability-scorecard": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t2-ai-video-tool-capability-scorecard/6c7f5cadf1dfb6f2c171f8ef840fb591200b75395754419a663d674a041ae3cc.zip",
+   "bytesRead": 67571,
    "readOn": "2026-09-25"
   }
  }
