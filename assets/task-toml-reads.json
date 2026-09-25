@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T20:50:56+00:00",
+ "generatedAt": "2026-09-25T21:00:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4864,6 +4864,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g704-appliance-service-quote-scope-audit/0f4878f15168672c13a328cf1fff97aba2ebf566c84bf92a64dc37e63710c0f1.zip",
    "bytesRead": 67607,
+   "readOn": "2026-09-25"
+  },
+  "code-c224-slo-error-budget-burn-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c224-slo-error-budget-burn-audit/53448fef3dc5868cc71803f328d626656cc54a73b6ad38ed4c6190a33dde7846.zip",
+   "bytesRead": 76751,
    "readOn": "2026-09-25"
   }
  }
