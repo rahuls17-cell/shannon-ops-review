@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T08:30:56+00:00",
+ "generatedAt": "2026-09-25T08:51:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3931,6 +3931,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b67-b9-hospital-feasibility-summary-claim-audit/c2c9c5192cf630f0ccceee0665c6a77d3b7e5fab387ac2efbe8af6e42f298d3a.zip",
    "bytesRead": 85617,
+   "readOn": "2026-09-25"
+  },
+  "gen-g985-finance-publication-header-art-spec-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g985-finance-publication-header-art-spec-audit/edebf586d96f672cbb0b79a78b8dbf79237e03dbc34073f8a0d84d7c9524ee0d.zip",
+   "bytesRead": 87342,
+   "readOn": "2026-09-25"
+  },
+  "law-b39-l18-limitation-status-count-register-private-rules-layout-parity-20260925": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b39-l18-limitation-status-count-register-private-rules-layout-parity-20260925/e20bab7e9f0be7c426a87f450d66f1406bece3e0ef97c87e1b01a77b2a7beb17.zip",
+   "bytesRead": 93800,
+   "readOn": "2026-09-25"
+  },
+  "sci-sc09-b10-vti-task-001698": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc09-b10-vti-task-001698/d055bc86f35e04a9dae3fb8ef3b95a82f1a5505bab538e8938620a762741b92e.zip",
+   "bytesRead": 74474,
    "readOn": "2026-09-25"
   }
  }
