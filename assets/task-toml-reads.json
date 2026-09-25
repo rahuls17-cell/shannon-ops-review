@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T18:20:56+00:00",
+ "generatedAt": "2026-09-25T18:31:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4560,6 +4560,68 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1124-facilitator-guide-vetting-audit/df3ef6b0a0106abab358e5208ecb49079a8f7fe86ed84c615acaf36f6a2d84f4.zip",
    "bytesRead": 65844,
+   "readOn": "2026-09-25"
+  },
+  "code-c121-compaction-small-file-policy-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c121-compaction-small-file-policy-audit/1044b2e90ae04c7c59203bb5b98786c7816a936f0204f1ac43ad9667a60f6331.zip",
+   "bytesRead": 89594,
+   "readOn": "2026-09-25"
+  },
+  "code-c293-account-lockout-policy-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c293-account-lockout-policy-audit/dfbb2a737297f21787275f843248d0c82fa8d649a2f057755c70f014b8ff2839.zip",
+   "bytesRead": 81188,
+   "readOn": "2026-09-25"
+  },
+  "code-c394-card-resale-ledger-reconciliation-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c394-card-resale-ledger-reconciliation-audit/f58cc76ab95c555074b167df71de55e3dc3c15044b008ce08719e7b4e7821f5e.zip",
+   "bytesRead": 82468,
+   "readOn": "2026-09-25"
+  },
+  "edu-b51-e1-community-desk-enquiry-routing": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b51-e1-community-desk-enquiry-routing/084796269a903d4072c4034251415bc9ee235fd0e1eb801b8ae434fc418d9efb.zip",
+   "bytesRead": 73256,
+   "readOn": "2026-09-25"
+  },
+  "tech-b53-t10-model-hardware-fit-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t10-model-hardware-fit-reconciliation/881ca511664268d34fefed5d44ef282aee3fe1a4740285cf7c207013ddc66340.zip",
+   "bytesRead": 116619,
+   "readOn": "2026-09-25"
+  },
+  "the-big-old-attachments-worth-clearing": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-big-old-attachments-worth-clearing/7757ff4fc278b6e4de4f3f8e7c0b0112d5761b110231069dce3270dc08dab083.zip",
+   "bytesRead": 53567,
    "readOn": "2026-09-25"
   }
  }
