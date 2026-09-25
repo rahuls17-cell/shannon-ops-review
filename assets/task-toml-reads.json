@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T19:40:54+00:00",
+ "generatedAt": "2026-09-25T20:21:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4780,6 +4780,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-merges-a-signing-rule-would-have-stopped/ce229a41fc8a49134a294a471ab3e562c07647cc5367720cc4389257fdd2b34c.zip",
    "bytesRead": 58754,
+   "readOn": "2026-09-25"
+  },
+  "how-deep-the-000-main-folder-goes": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-deep-the-000-main-folder-goes/48712480aa02d3272e50f22da13101acc9103956522e4b78286479e12b8d1926.zip",
+   "bytesRead": 54427,
    "readOn": "2026-09-25"
   }
  }
