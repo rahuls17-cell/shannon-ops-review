@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T14:40:52+00:00",
+ "generatedAt": "2026-09-25T14:50:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4466,6 +4466,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b52-t2-device-service-eligibility-adjudication/2a024d781f9e18f3fd40e5d50b1abb2c1a0a340066b956b0cdc8ca545f5ac02b.zip",
    "bytesRead": 74230,
+   "readOn": "2026-09-25"
+  },
+  "tech-b51-t7-sending-quota-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t7-sending-quota-recompute/247e45f1085be74772bed307c83d265cc80a7a62a36a4eaa22d8d51a7d0fe526.zip",
+   "bytesRead": 135403,
+   "readOn": "2026-09-25"
+  },
+  "tech-b51-t8-voice-agent-shift-routing-reconciliation-v2": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t8-voice-agent-shift-routing-reconciliation-v2/87e218c711c66577d23408134c139ef151f556da7f0f9b1c385e3c1036819cd7.zip",
+   "bytesRead": 81671,
+   "readOn": "2026-09-25"
+  },
+  "the-header-already-in-use": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-header-already-in-use/73e1354f7bf5468379332e2c3f297cda538c6424f542c55e2605237012229bb3.zip",
+   "bytesRead": 44785,
    "readOn": "2026-09-25"
   }
  }
