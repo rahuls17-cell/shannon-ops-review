@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T19:00:56+00:00",
+ "generatedAt": "2026-09-25T19:10:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4686,6 +4686,36 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-review-queue-nobody-drained/bf41fb845cad3f4b93599e7bdc0a7062a87b783d9c820b7dc67ae093e03d4b9c.zip",
    "bytesRead": 49798,
+   "readOn": "2026-09-25"
+  },
+  "code-c720-print-upscale-readiness-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c720-print-upscale-readiness-audit/6aac48b1772abf5cf095048ce9d723b366bbd1551e682edbdd39367d912dbc3b.zip",
+   "bytesRead": 71515,
+   "readOn": "2026-09-25"
+  },
+  "gen-g792-grant-preproposal-team-cap-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g792-grant-preproposal-team-cap-audit/63ce84b2155b0c2306defee45ccb8e012971edac6c7291195f9d55e39e1ffeeb.zip",
+   "bytesRead": 68200,
+   "readOn": "2026-09-25"
+  },
+  "health-tdt9-a4-supervision-hours-credit-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt9-a4-supervision-hours-credit-ledger/e860de454be6b1f77595dde5ff00e17f31a3f18962e5b79588bce8988f710e73.zip",
+   "bytesRead": 85105,
    "readOn": "2026-09-25"
   }
  }
