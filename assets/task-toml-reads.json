@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T04:30:50+00:00",
+ "generatedAt": "2026-09-25T05:10:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3711,6 +3711,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b53-f1-perp-notional-volume-fee-recompute-finalqc-date-title-fix-20260925T061635-IST/156830da939d480026d7d823e660711c94191185086dfe080275c577913ffc21.zip",
    "bytesRead": 104702,
+   "readOn": "2026-09-25"
+  },
+  "bus-b49-b10-release-campaign-window-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b49-b10-release-campaign-window-plan/9beca853770ca610b4ca4a7b8bcd9c51c3d3a1512d2447cd18eddc2e0b288f53.zip",
+   "bytesRead": 146827,
    "readOn": "2026-09-25"
   }
  }
