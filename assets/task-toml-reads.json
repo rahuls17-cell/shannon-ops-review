@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T22:10:53+00:00",
+ "generatedAt": "2026-09-25T22:31:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4990,6 +4990,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1140-executive-response-communication-audit-final/341fe721c29a37406e8b2060908e442eec97d07399fd279dc778368449dcd897.zip",
    "bytesRead": 87848,
+   "readOn": "2026-09-25"
+  },
+  "health-tdt9-a10-clipping-packet-rolling-window": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt9-a10-clipping-packet-rolling-window/9c766399965dfdcc42399778707b0a2746003b63e6690cb235bf55b6be44f60f.zip",
+   "bytesRead": 70752,
    "readOn": "2026-09-25"
   }
  }
