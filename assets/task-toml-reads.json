@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T03:40:50+00:00",
+ "generatedAt": "2026-09-25T04:30:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3701,6 +3701,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c269-security-vendor-control-audit/0c83bc7f0bd69da8e6ab53bc7f14a29721eca04103f15e40bfa15b4e2a9bc3d2.zip",
    "bytesRead": 96184,
+   "readOn": "2026-09-25"
+  },
+  "fin-b53-f1-perp-notional-volume-fee-recompute-finalqc-date-title-fix-20260925T061635-IST": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b53-f1-perp-notional-volume-fee-recompute-finalqc-date-title-fix-20260925T061635-IST/156830da939d480026d7d823e660711c94191185086dfe080275c577913ffc21.zip",
+   "bytesRead": 104702,
    "readOn": "2026-09-25"
   }
  }
