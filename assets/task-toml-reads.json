@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T14:20:54+00:00",
+ "generatedAt": "2026-09-25T14:40:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4456,6 +4456,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-b4-incident-timeline/ba4750903467e9646675e3e53d683908035a5dab610d762488eb3393f73c830e.zip",
    "bytesRead": 69166,
+   "readOn": "2026-09-25"
+  },
+  "tech-b52-t2-device-service-eligibility-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b52-t2-device-service-eligibility-adjudication/2a024d781f9e18f3fd40e5d50b1abb2c1a0a340066b956b0cdc8ca545f5ac02b.zip",
+   "bytesRead": 74230,
    "readOn": "2026-09-25"
   }
  }
