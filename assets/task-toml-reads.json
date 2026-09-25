@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T06:20:49+00:00",
+ "generatedAt": "2026-09-25T06:30:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3781,6 +3781,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b108-b11-flatbed-upfit-invoice-recompute/b95b3d2d64a7c1076a83f26f57961cd4902f140ed4a1b486c5cd16e54c41bcbd.zip",
    "bytesRead": 99490,
+   "readOn": "2026-09-25"
+  },
+  "fin-b50-f5-mega-backdoor-roth-contribution-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b50-f5-mega-backdoor-roth-contribution-plan/5f5b829b6fce51ae90e387092e59c6eee9d6fa0a72130313dcbcd64831b41041.zip",
+   "bytesRead": 63567,
+   "readOn": "2026-09-25"
+  },
+  "health-b43-h2-brachial-plexus-teaching-table-v10": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b43-h2-brachial-plexus-teaching-table-v10/02e0c2507f8328b1f25e6bbedb3d31db51541fce10c82bd7989100690b525b45.zip",
+   "bytesRead": 108974,
    "readOn": "2026-09-25"
   }
  }
