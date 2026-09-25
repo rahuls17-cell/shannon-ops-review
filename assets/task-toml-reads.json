@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T07:21:14+00:00",
+ "generatedAt": "2026-09-25T07:30:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3861,6 +3861,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c182-automation-suite-handoff-audit/0bcb3ade475a6a1f82806e3974bfb60af9ba404eab5d51fe6011071fbe609ff1.zip",
    "bytesRead": 77929,
+   "readOn": "2026-09-25"
+  },
+  "edu-sc09-a10-vti-task-000928": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc09-a10-vti-task-000928/1ccc9583c55eb7df29c4731ae45782f12317017babd4c864a931cdf38ee618b6.zip",
+   "bytesRead": 55011,
    "readOn": "2026-09-25"
   }
  }
