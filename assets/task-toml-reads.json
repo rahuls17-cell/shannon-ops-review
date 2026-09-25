@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-24T23:50:48+00:00",
+ "generatedAt": "2026-09-25T00:20:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3530,6 +3530,16 @@
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b6-token-listing-outreach-audit/4a61bca76fccee706350781c6691a1f98f45f3905be90d9e2b9bbdbb3e666c97.zip",
    "bytesRead": 105095,
    "readOn": "2026-09-24"
+  },
+  "code-c168-reminder-source-truth-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c168-reminder-source-truth-audit/774b9a4af0e6bc030e14b83b34539b58d009cfae628c4b7055f86b56c8192c0d.zip",
+   "bytesRead": 83663,
+   "readOn": "2026-09-25"
   }
  }
 }
