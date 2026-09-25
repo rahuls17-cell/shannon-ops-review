@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T00:50:49+00:00",
+ "generatedAt": "2026-09-25T01:00:49+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3559,6 +3559,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b51-a7-transfer-application-adjudication/ba630fad4924efe024885b98e84bf3eda33364ba0697418fffc5c3bbb0b72214.zip",
    "bytesRead": 84052,
+   "readOn": "2026-09-25"
+  },
+  "law-l71-charity-separation-package-audit-a5f2e2-v1-sna-qmnm": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l71-charity-separation-package-audit-a5f2e2-v1-sna-qmnm/e7dd5a1df975ecf73ebe3859e15bd74b5777a5137f48b6173c02fef6580909d9.zip",
+   "bytesRead": 75152,
    "readOn": "2026-09-25"
   }
  }
