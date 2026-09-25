@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T12:10:55+00:00",
+ "generatedAt": "2026-09-25T12:21:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4277,6 +4277,28 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/task_ach_counterparty_investigation_lock_determine_scope_across_owner_s_oth/c12da019af031bb908ab291835682809c9c2e7532ac86f0b564f9c453e7b3bde.zip",
    "bytesRead": 58586,
+   "readOn": "2026-09-25"
+  },
+  "bus-b47-b8-credits-deal-expansion-commission-statement": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b8-credits-deal-expansion-commission-statement/d62bc601005b4499ce5b6d93e0ea53a1a16e6964ffd986f3525699f16faeb795.zip",
+   "bytesRead": 69285,
+   "readOn": "2026-09-25"
+  },
+  "which-alert-keeps-coming-back": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-alert-keeps-coming-back/eed8991a22e3a49d67df9862b42ce7775e8a15571a6f373f024f2af7fc502cad.zip",
+   "bytesRead": 53435,
    "readOn": "2026-09-25"
   }
  }
