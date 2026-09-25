@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T16:00:52+00:00",
+ "generatedAt": "2026-09-25T17:40:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4540,6 +4540,16 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/strangers-with-a-say/0af97dd2e8765013f4ecc734cb25363e0c593b1865b461e559da1ab2895275e0.zip",
    "bytesRead": 47039,
+   "readOn": "2026-09-25"
+  },
+  "tech-b52-t1-wellness-hub-metric-coverage": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b52-t1-wellness-hub-metric-coverage/de0a8ce3b71beaf2167661484f6a758bdffb479c8c199322c673e784eddd264f.zip",
+   "bytesRead": 68346,
    "readOn": "2026-09-25"
   }
  }
