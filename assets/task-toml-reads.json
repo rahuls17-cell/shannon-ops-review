@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T18:50:54+00:00",
+ "generatedAt": "2026-09-25T19:00:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4664,6 +4664,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l7-msa-sow-precedence/eb3a9c808cc0d4757109c375ef8be4f222f8ffdaaff4822ca83af20828536dd4.zip",
    "bytesRead": 74767,
+   "readOn": "2026-09-25"
+  },
+  "bus-b22-b12-lihtc-developer-award-verification": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b12-lihtc-developer-award-verification/5d0b245d2341b9f4c2128e40e8972918b42714fbe9d1cb5247ae8bb3b6a18a33.zip",
+   "bytesRead": 69896,
+   "readOn": "2026-09-25"
+  },
+  "the-review-queue-nobody-drained": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-review-queue-nobody-drained/bf41fb845cad3f4b93599e7bdc0a7062a87b783d9c820b7dc67ae093e03d4b9c.zip",
+   "bytesRead": 49798,
    "readOn": "2026-09-25"
   }
  }
