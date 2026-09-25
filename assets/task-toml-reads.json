@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T18:31:06+00:00",
+ "generatedAt": "2026-09-25T18:40:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4622,6 +4622,38 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-big-old-attachments-worth-clearing/7757ff4fc278b6e4de4f3f8e7c0b0112d5761b110231069dce3270dc08dab083.zip",
    "bytesRead": 53567,
+   "readOn": "2026-09-25"
+  },
+  "code-c260-shot-block-continuity-export-compliance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c260-shot-block-continuity-export-compliance-audit/08494d344b0313277a2b9b6a4930a76afee72b0251f02d8cec1c866cee2831f9.zip",
+   "bytesRead": 98831,
+   "readOn": "2026-09-25"
+  },
+  "global-claims-ready-to-file": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/global-claims-ready-to-file/3979128cfe0ed10515b433dd1ac7903085ec7b997516caa0556ed24f652e41f3.zip",
+   "bytesRead": 50545,
+   "readOn": "2026-09-25"
+  },
+  "sci-sc07-b10-ontology-pruning-v3": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc07-b10-ontology-pruning-v3/308a2dd5921cfee53ec066bd48549010bc30024b5a389c37ca8db5359f931b09.zip",
+   "bytesRead": 84440,
    "readOn": "2026-09-25"
   }
  }
