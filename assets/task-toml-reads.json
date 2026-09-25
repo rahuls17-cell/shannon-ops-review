@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T12:30:54+00:00",
+ "generatedAt": "2026-09-25T13:00:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4329,6 +4329,33 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b41-f14-index-top-roster-reconciliation/abfad5b9dc9ae635f525034a96160c37222c9587749ad169a135c50e55e8b096.zip",
    "bytesRead": 81736,
+   "readOn": "2026-09-25"
+  },
+  "code-c705-interface-feature-tier-access-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c705-interface-feature-tier-access-audit/43edbc44f0a8dfbdab95f9479ef9bbb9f2ea46334a13fb90e773d770f78b6d7e.zip",
+   "bytesRead": 81408,
+   "readOn": "2026-09-25"
+  },
+  "zeta-subscription-840-canceled-after-failed-may-billing-trace-the-dunn-qc": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/zeta-subscription-840-canceled-after-failed-may-billing-trace-the-dunn-qc/4ccd270747bc7a9ad9aca49789081ea9fc9ee23e69a74c566c706f8f7b68e4d3.zip",
+   "bytesRead": 70510,
    "readOn": "2026-09-25"
   }
  }
