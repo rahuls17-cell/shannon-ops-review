@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T12:21:17+00:00",
+ "generatedAt": "2026-09-25T12:30:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4299,6 +4299,36 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-alert-keeps-coming-back/eed8991a22e3a49d67df9862b42ce7775e8a15571a6f373f024f2af7fc502cad.zip",
    "bytesRead": 53435,
+   "readOn": "2026-09-25"
+  },
+  "UPLOAD-THIS-tech-mg-it-b6-a1-repair-shipment-packet-assembly-runtime-settlement-final-20260925T1": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/UPLOAD-THIS-tech-mg-it-b6-a1-repair-shipment-packet-assembly-runtime-settlement-final-20260925T1/5f727b6218502918c37c792eb52c9fc8032805bfe07cebbe0f1c63a6c47badc8.zip",
+   "bytesRead": 164154,
+   "readOn": "2026-09-25"
+  },
+  "bus-b23-b4-seafood-sku-code-decoder": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b4-seafood-sku-code-decoder/d0661baec5dbc8892ce1f0c8280ed8593339994d3e59a8546f21c50791378c86.zip",
+   "bytesRead": 87120,
+   "readOn": "2026-09-25"
+  },
+  "fin-b41-f14-index-top-roster-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b41-f14-index-top-roster-reconciliation/abfad5b9dc9ae635f525034a96160c37222c9587749ad169a135c50e55e8b096.zip",
+   "bytesRead": 81736,
    "readOn": "2026-09-25"
   }
  }
