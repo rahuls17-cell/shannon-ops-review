@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T03:20:53+00:00",
+ "generatedAt": "2026-09-25T03:31:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3661,6 +3661,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b51-e6-survey-short-form-trim/2787134ac650b1f252126d9482a9517b6b9b6c62f4ffbe8f799dffa482184123.zip",
    "bytesRead": 148105,
+   "readOn": "2026-09-25"
+  },
+  "bus-b22-b9-seo-tool-setup-status-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b9-seo-tool-setup-status-audit/8dff9c38bb5487e87e21c1819d61c2dc82d5fa9beea265fa4ed8a2bafd1a6c5d.zip",
+   "bytesRead": 98524,
+   "readOn": "2026-09-25"
+  },
+  "bus-b48-b2-driveway-garage-concrete-replacement-estimates": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b2-driveway-garage-concrete-replacement-estimates/7581f77a11f846effb291fac42ceddfa4a4b1d2a5bb2e6676a253acc4e4a09ef.zip",
+   "bytesRead": 80721,
    "readOn": "2026-09-25"
   }
  }
