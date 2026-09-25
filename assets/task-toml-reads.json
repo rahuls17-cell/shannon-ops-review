@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T08:21:12+00:00",
+ "generatedAt": "2026-09-25T08:30:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3921,6 +3921,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g361-rangefinder-case-compatibility-audit/54c47fe86b12963147cec4ea805db9655b3a82d219c489cf04450536dd3387db.zip",
    "bytesRead": 82478,
+   "readOn": "2026-09-25"
+  },
+  "bus-b67-b9-hospital-feasibility-summary-claim-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b67-b9-hospital-feasibility-summary-claim-audit/c2c9c5192cf630f0ccceee0665c6a77d3b7e5fab387ac2efbe8af6e42f298d3a.zip",
+   "bytesRead": 85617,
    "readOn": "2026-09-25"
   }
  }
