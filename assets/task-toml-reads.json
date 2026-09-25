@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T05:50:49+00:00",
+ "generatedAt": "2026-09-25T06:00:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3731,6 +3731,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc09-b6-vti-task-000679/af8c1202bda5c85cf200e66cd3b8ce89b1a6ad2dfb8552ebdb6dbb38cdb69399.zip",
    "bytesRead": 58444,
+   "readOn": "2026-09-25"
+  },
+  "bus-mg-bus-b8-a2-ps-leadership-requirement-crosswalk": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-mg-bus-b8-a2-ps-leadership-requirement-crosswalk/e56eee5bc04d3a9e6704bec255641b7155d96a6ca660c9426beba6aa0fccd04b.zip",
+   "bytesRead": 73119,
+   "readOn": "2026-09-25"
+  },
+  "code-c303-digital-signage-asset-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c303-digital-signage-asset-audit/64b483467224fd149b4e7ef6c275f50c0de246fe381ba4045c3be885fe0dd418.zip",
+   "bytesRead": 77599,
+   "readOn": "2026-09-25"
+  },
+  "sci-sc09-a5-philosophy-salon-roster-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc09-a5-philosophy-salon-roster-reconciliation/9818694e4e71bd21a94d24562148c4cfe334bb228dd8b257eb9d3b3a38bfe655.zip",
+   "bytesRead": 73132,
    "readOn": "2026-09-25"
   }
  }
