@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T10:10:54+00:00",
+ "generatedAt": "2026-09-25T10:40:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4103,6 +4103,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b607-t7-solar-circuit-conductor-sizing/2a7d6656b42ee9a740225b994273acac58929449e0eb62b16a6b27a9f5440d40.zip",
    "bytesRead": 67616,
+   "readOn": "2026-09-25"
+  },
+  "code-c225-sbom-vulnerability-waiver-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c225-sbom-vulnerability-waiver-audit/18d8b489d1f73c88c9cd8feff1680e661d00e38e15c4e36d1480b186f5b3f37f.zip",
+   "bytesRead": 73049,
+   "readOn": "2026-09-25"
+  },
+  "code-c321-auto-apply-queue-routing-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c321-auto-apply-queue-routing-audit/b9764196617f1e392609a2900a5fdd0528ac1abdcada675e833c49efc9de5e79.zip",
+   "bytesRead": 79108,
    "readOn": "2026-09-25"
   }
  }
