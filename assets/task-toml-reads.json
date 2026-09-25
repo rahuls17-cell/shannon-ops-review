@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T00:20:51+00:00",
+ "generatedAt": "2026-09-25T00:30:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3539,6 +3539,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c168-reminder-source-truth-audit/774b9a4af0e6bc030e14b83b34539b58d009cfae628c4b7055f86b56c8192c0d.zip",
    "bytesRead": 83663,
+   "readOn": "2026-09-25"
+  },
+  "tech-b53-t4-subscription-cost-buildup-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t4-subscription-cost-buildup-recompute/cd94a6f2107a93a72b3d443d3b183fc5cbbff3cddc882e443e3ff13a1710bad7.zip",
+   "bytesRead": 117999,
    "readOn": "2026-09-25"
   }
  }
