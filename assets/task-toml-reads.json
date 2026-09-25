@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T11:40:53+00:00",
+ "generatedAt": "2026-09-25T12:10:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4218,6 +4218,65 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-counter-is-not-the-backlog/1c952b9fed2bfed0ea443f62e4dd9f8815290021560da6549143cb7496f35cda.zip",
    "bytesRead": 54960,
+   "readOn": "2026-09-25"
+  },
+  "bus-b22-b1-business-card-variant-catalogue": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b1-business-card-variant-catalogue/a539cf70588f7de56fbdc293c03ebddb9546382f18bda299dad369c42b5e681d.zip",
+   "bytesRead": 94264,
+   "readOn": "2026-09-25"
+  },
+  "bus-b22-b4-smart-table-ordering-tco": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b4-smart-table-ordering-tco/2a8e579447fbdfcf51740bf775897d23cc268b8df1bfa8c8d36d6fb7b389055d.zip",
+   "bytesRead": 90971,
+   "readOn": "2026-09-25"
+  },
+  "gen-g607-security-post-assignment-eligibility-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:b64e9d3a71eddaa1b3f80c04abf292b3139e3b7c4dd272d19c31dc1f91194d1b",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g607-security-post-assignment-eligibility-audit/59223e765388851911b7cc3beeb289d0f5ae7824a67b846556a8decd7b6ff2b2.zip",
+   "bytesRead": 72176,
+   "readOn": "2026-09-25"
+  },
+  "law-b42-l3-right-to-rent-follow-up-check-schedule": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b42-l3-right-to-rent-follow-up-check-schedule/8514ed147c57bcbc168fb6e818e15da433b0d438432f2170a4e8944e243db154.zip",
+   "bytesRead": 62593,
+   "readOn": "2026-09-25"
+  },
+  "task_ach_counterparty_investigation_lock_determine_scope_across_owner_s_oth": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "docker.io/kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/task_ach_counterparty_investigation_lock_determine_scope_across_owner_s_oth/c12da019af031bb908ab291835682809c9c2e7532ac86f0b564f9c453e7b3bde.zip",
+   "bytesRead": 58586,
    "readOn": "2026-09-25"
   }
  }
