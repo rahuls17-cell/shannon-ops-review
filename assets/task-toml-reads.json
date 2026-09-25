@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T20:21:22+00:00",
+ "generatedAt": "2026-09-25T20:31:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4792,6 +4792,58 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-deep-the-000-main-folder-goes/48712480aa02d3272e50f22da13101acc9103956522e4b78286479e12b8d1926.zip",
    "bytesRead": 54427,
+   "readOn": "2026-09-25"
+  },
+  "accounts-in-the-wrong-shape": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/accounts-in-the-wrong-shape/d6d0c5cf1d350b49e55173b4e6e1c1eb767b562a2d65428f62a873c81c5ea35e.zip",
+   "bytesRead": 46581,
+   "readOn": "2026-09-25"
+  },
+  "law-b36-l11-foreign-judgment-registration-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b36-l11-foreign-judgment-registration-audit/816181b64bcefdaeb034d1478a521630f9aa1cc1a52f7678529082365e7eb7b2.zip",
+   "bytesRead": 94311,
+   "readOn": "2026-09-25"
+  },
+  "tech-b51-t1-channel-video-retention-link-list": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t1-channel-video-retention-link-list/c7efda38a1f3f5f31fd59a662118d53715291b395d035f503965f725a9fca769.zip",
+   "bytesRead": 73787,
+   "readOn": "2026-09-25"
+  },
+  "tech-mg-it-b9-a1-feedback-api-request-signing": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b9-a1-feedback-api-request-signing/76110b0998dc259e6546cd6a5dec7ccec52f6c905a024411c9822578bef1e4c4.zip",
+   "bytesRead": 119883,
+   "readOn": "2026-09-25"
+  },
+  "writing-b52-a5-proposal-paragraph-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-b52-a5-proposal-paragraph-adjudication/d1f16c188a4e1e9a70043672cad002e821c2d9cec3137735ed8204105593c044.zip",
+   "bytesRead": 82383,
    "readOn": "2026-09-25"
   }
  }
