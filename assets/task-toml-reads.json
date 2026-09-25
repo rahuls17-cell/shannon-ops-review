@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T07:01:00+00:00",
+ "generatedAt": "2026-09-25T07:10:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3841,6 +3841,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c218-replica-lag-sla-audit/822a631dc48da8a5ae5d6791d6994de557c75ecbaae3cdd6976cf00025d57345.zip",
    "bytesRead": 78142,
+   "readOn": "2026-09-25"
+  },
+  "bus-b48-b4-storage-specification-shortlist": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b4-storage-specification-shortlist/213b74b21b8f29c2e9f033ba81a881ec310e19d7a9d1a9f0755e4a9acd226904.zip",
+   "bytesRead": 61772,
    "readOn": "2026-09-25"
   }
  }
