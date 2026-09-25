@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T13:40:53+00:00",
+ "generatedAt": "2026-09-25T13:50:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4416,6 +4416,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b50-a6-biostimulant-results-recompute/cb22cf917286e3ae46620c81910837f2883a64d9434c0c75d0c18d57cc67cfa2.zip",
    "bytesRead": 73341,
+   "readOn": "2026-09-25"
+  },
+  "code-c176-floorplan-dimension-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c176-floorplan-dimension-audit/6dd3d00dd621f2bacca37ca9738977f44274fbbf6b952ff16cdd7e50d26cbf3f.zip",
+   "bytesRead": 91975,
    "readOn": "2026-09-25"
   }
  }
