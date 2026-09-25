@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T10:00:56+00:00",
+ "generatedAt": "2026-09-25T10:10:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -4083,6 +4083,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b6-travel-backpack-fabric-tier-price-comparison/f27e78637c0e039f65213bdb9470c93f46ef562ccabe993f8704ff368474495f.zip",
    "bytesRead": 74173,
+   "readOn": "2026-09-25"
+  },
+  "gen-g1184-founder-post-style-compliance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1184-founder-post-style-compliance-audit/a8dace1e6a96019f8bfe810635d313507178c46f3911b0ce883903054a6ac628.zip",
+   "bytesRead": 82654,
+   "readOn": "2026-09-25"
+  },
+  "tech-b607-t7-solar-circuit-conductor-sizing": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b607-t7-solar-circuit-conductor-sizing/2a7d6656b42ee9a740225b994273acac58929449e0eb62b16a6b27a9f5440d40.zip",
+   "bytesRead": 67616,
    "readOn": "2026-09-25"
   }
  }
