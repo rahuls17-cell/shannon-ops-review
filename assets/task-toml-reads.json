@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-25T08:11:30+00:00",
+ "generatedAt": "2026-09-25T08:21:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -3901,6 +3901,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt7-a4-statin-discount-list-normalization/e0676627fe0d2c2728948a60f361cf79c3b1f97d18764dbe2e5161bb729336ba.zip",
    "bytesRead": 73201,
+   "readOn": "2026-09-25"
+  },
+  "code-c703-thumbnail-creative-brief-qc-audit-r7": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c703-thumbnail-creative-brief-qc-audit-r7/8a6f4674c13a616e9859381dd36bf8589b704b7cceca8e60f6d5e9931ec2f3dc.zip",
+   "bytesRead": 77871,
+   "readOn": "2026-09-25"
+  },
+  "gen-g361-rangefinder-case-compatibility-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g361-rangefinder-case-compatibility-audit/54c47fe86b12963147cec4ea805db9655b3a82d219c489cf04450536dd3387db.zip",
+   "bytesRead": 82478,
    "readOn": "2026-09-25"
   }
  }
