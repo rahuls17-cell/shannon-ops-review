@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T09:30:59+00:00",
+ "generatedAt": "2026-09-26T09:50:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5807,6 +5807,26 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/investigate_40_608_3ds_card_decline_on_card_43610_followed_by_card_ter/89e9fb8b9151b87aac95f7d6b77066fa509e4104d23f3df27fde292653f6cee4.zip",
    "bytesRead": 66323,
+   "readOn": "2026-09-26"
+  },
+  "bus-b609-t3-esg-definition-source-review-status-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b609-t3-esg-definition-source-review-status-reconciliation/080bacb8a4d0cf829e610bae910e215f45e9424e4f16f48945da493d079ace8f.zip",
+   "bytesRead": 78070,
+   "readOn": "2026-09-26"
+  },
+  "code-c283-deck-style-guide-slide-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c283-deck-style-guide-slide-audit/1e6f3ac6580520038a24e11776164fd1115ce9fd8483df94b955e2fd249ae7ce.zip",
+   "bytesRead": 78087,
    "readOn": "2026-09-26"
   }
  }
