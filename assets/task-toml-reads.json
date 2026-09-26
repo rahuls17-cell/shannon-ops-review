@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T07:21:04+00:00",
+ "generatedAt": "2026-09-26T07:31:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5574,6 +5574,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-is-actually-in-the-room/4b9a24b077a9470cab939a10fe56da9a41705e7d678840efd3a874a013b87053.zip",
    "bytesRead": 43024,
+   "readOn": "2026-09-26"
+  },
+  "the-meetings-that-clash-on-my-calendar": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-that-clash-on-my-calendar/6e1944702309415a89cb7c7590747bd7c62377bad615db2ba0476873576aca21.zip",
+   "bytesRead": 53481,
    "readOn": "2026-09-26"
   }
  }
