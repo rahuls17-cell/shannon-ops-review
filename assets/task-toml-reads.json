@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T15:50:53+00:00",
+ "generatedAt": "2026-09-26T16:01:23+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6507,6 +6507,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ten-replies-with-nothing-behind-them/0c18e07a6a3d72166c89edbae142b9853f69e000c3fe68276cd88627c602c6df.zip",
    "bytesRead": 65832,
+   "readOn": "2026-09-26"
+  },
+  "the-ten-fattest-files-that-all-weigh-the-same": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-ten-fattest-files-that-all-weigh-the-same/984acef0e1ddc0a22b4d7c2abab6e23e7a8dae999fe7e8be32df7e234c1934ba.zip",
+   "bytesRead": 61969,
    "readOn": "2026-09-26"
   }
  }
