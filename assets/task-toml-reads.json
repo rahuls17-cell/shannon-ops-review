@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T20:50:51+00:00",
+ "generatedAt": "2026-09-26T21:00:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7151,6 +7151,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c301-renewal-reminder-suppression-audit/8526747690770657b708b4fe91013d1139c704988222762ad21b72f5af9bca5a.zip",
    "bytesRead": 75577,
+   "readOn": "2026-09-26"
+  },
+  "bus-b53-b4-affiliate-launch-cost-breakeven-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b53-b4-affiliate-launch-cost-breakeven-plan/2ce84f0b3c3d5d61f7b7e29f345f280ef82e27405bd40f3b329152d128e03f3a.zip",
+   "bytesRead": 105330,
+   "readOn": "2026-09-26"
+  },
+  "code-c288-intent-routing-compliance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c288-intent-routing-compliance-audit/e98c09bd54480d848825c4871581758e690238ed4fa64d29e2a54cf0003910c3.zip",
+   "bytesRead": 85853,
    "readOn": "2026-09-26"
   }
  }
