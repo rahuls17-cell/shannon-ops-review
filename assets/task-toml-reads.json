@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T17:50:50+00:00",
+ "generatedAt": "2026-09-26T18:00:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6735,6 +6735,56 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g324-qualifying-agent-license-audit/fc2a14c7170c39c606e050c49d9d337d636a32d72430e2e83bfcbe3ea5c31b05.zip",
    "bytesRead": 59625,
+   "readOn": "2026-09-26"
+  },
+  "code-c191-ocr-deliverable-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c191-ocr-deliverable-audit/aa837a1b75534e675186e8ce41aec117b1c802728b32cd31a822a6a6e1ab1d0f.zip",
+   "bytesRead": 73618,
+   "readOn": "2026-09-26"
+  },
+  "health-h108-asc-unlisted-code-billing-audit-harbor-gate-566207-v6-sna-qouh": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h108-asc-unlisted-code-billing-audit-harbor-gate-566207-v6-sna-qouh/8bc5698c33a25ef5d853cf2783bcc2a88dd53c29f6140069f1d52cfa58543d26.zip",
+   "bytesRead": 92852,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt10-a1-home-access-grant-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt10-a1-home-access-grant-adjudication/3f989eb305d0b99dd8a397866eb422777a038d6e01098fa0909bc0a6da9e3684.zip",
+   "bytesRead": 86543,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt11-a4-eaa-serving-content-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a4-eaa-serving-content-ledger/bbcf001a12dff0090319818b474bc3f435f22fee824354a167bac855719ef26f.zip",
+   "bytesRead": 82391,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt5-a13-clinical-note-transcript-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt5-a13-clinical-note-transcript-audit/ea5ca8dd26fa449509fc4663f3a14addc5ac61e9cf58c91e261a9281394b4d12.zip",
+   "bytesRead": 75153,
    "readOn": "2026-09-26"
   }
  }
