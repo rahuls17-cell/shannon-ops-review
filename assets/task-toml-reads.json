@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T19:10:54+00:00",
+ "generatedAt": "2026-09-26T19:21:23+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6965,6 +6965,56 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c601-epi-report-pipeline-step-audit-v33/da390b3f1d90efb7babfe08f6d6117a5085cf15bb2f94b058fb086e9d108f84c.zip",
    "bytesRead": 185698,
+   "readOn": "2026-09-26"
+  },
+  "edu-s2-a2-teacher-guide-module-step-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-s2-a2-teacher-guide-module-step-audit/65b7ce078f75fe42bd67f87724b4053b904e1e4b78f55f0830073b03a7c3dc84.zip",
+   "bytesRead": 71566,
+   "readOn": "2026-09-26"
+  },
+  "gen-g982-render-change-order-revision-audit-HARDENED-V19-20260926": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g982-render-change-order-revision-audit-HARDENED-V19-20260926/ba53b3ed5eae66c5b29fd5e14ce62a4374a4cca61f7d9aaf4186deaeebabb0b7.zip",
+   "bytesRead": 85382,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt10-a5-case-count-extraction-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt10-a5-case-count-extraction-ledger/1d91e94cdd98e6b01ab541e2fa291a9ea4d048375880b413b528a64cb343eb55.zip",
+   "bytesRead": 82919,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt8-a4-cpet-handout-claim-grounding-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt8-a4-cpet-handout-claim-grounding-audit/e950546f53df85c17f90f5f3bec80507436d5c3f890ee47d6e30da9380527078.zip",
+   "bytesRead": 78487,
+   "readOn": "2026-09-26"
+  },
+  "tech-b50-t6-agent-action-approval-compliance-20260922T124429Z-1-001": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b50-t6-agent-action-approval-compliance-20260922T124429Z-1-001/1e868b53759839060da79f7b635c1b5c6d0631f62e3005fea0ff8500be679ebe.zip",
+   "bytesRead": 79375,
    "readOn": "2026-09-26"
   }
  }
