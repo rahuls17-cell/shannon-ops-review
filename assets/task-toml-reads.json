@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T12:40:51+00:00",
+ "generatedAt": "2026-09-26T12:50:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6111,6 +6111,36 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/low-risk-bookings-for-the-new-intake/b62417c28bb200f9213c24d42dfcafde6558365b4360a9414ff47b5cff1cdbc6.zip",
    "bytesRead": 46117,
+   "readOn": "2026-09-26"
+  },
+  "bus-b44-b11-weekly-status-carryover-reconstruction": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b11-weekly-status-carryover-reconstruction/c460663bbfd0ecff9349e7e6dea690a997b5b8788e4f8e7c96cb324438501907.zip",
+   "bytesRead": 163949,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt11-a5-bin-abatement-dose-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a5-bin-abatement-dose-ledger/e2e6d260701fd73323878a909bdd520d9d427c8250cdf42e9140ba011d123d2c.zip",
+   "bytesRead": 76738,
+   "readOn": "2026-09-26"
+  },
+  "tech-b53-t6-consumption-variance-attribution": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t6-consumption-variance-attribution/70b8f4e4e8be9440d15ec084e61bae724eb528c83c163f86e334383aa46a48bf.zip",
+   "bytesRead": 87072,
    "readOn": "2026-09-26"
   }
  }
