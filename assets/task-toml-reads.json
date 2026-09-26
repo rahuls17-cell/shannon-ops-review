@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T10:50:54+00:00",
+ "generatedAt": "2026-09-26T11:10:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5881,6 +5881,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c342-school-content-claims-audit/eab132c877ee3db8df0ea5b12bf1913953b3edd33c2fed49f89abb061af7e03b.zip",
    "bytesRead": 93542,
+   "readOn": "2026-09-26"
+  },
+  "bus-b44-b6-brand-name-availability-screening": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b6-brand-name-availability-screening/b9032cda33d05b51d2bd81503e6d67c0bbcfe4dc36af839d0fe1f294105cd5a5.zip",
+   "bytesRead": 74735,
+   "readOn": "2026-09-26"
+  },
+  "writing-sc05-b5-abstract-word-budget": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-b5-abstract-word-budget/a8cc31907617243b37fc511a98476c91b84ea3f216ffa12c74ae915944b4afc5.zip",
+   "bytesRead": 68584,
    "readOn": "2026-09-26"
   }
  }
