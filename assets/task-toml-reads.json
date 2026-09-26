@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T08:50:56+00:00",
+ "generatedAt": "2026-09-26T09:00:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5680,6 +5680,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c127-iam-privilege-escalation-path-audit/1c53544a0b075b82c03441cf5ed7970d5c4a0ecb65951ef58c97a4b049a9434b.zip",
    "bytesRead": 80035,
+   "readOn": "2026-09-26"
+  },
+  "bus-b53-b1-housing-research-citation-audience-tally": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b53-b1-housing-research-citation-audience-tally/c2ab9f0a10dc2371a78feb4de106fbda6f0903c891fe81d28d03344efd028720.zip",
+   "bytesRead": 103613,
+   "readOn": "2026-09-26"
+  },
+  "code-c282-training-module-version-compliance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c282-training-module-version-compliance-audit/f606fb754c21fde9dfe1ec2b346a2a62839c113cc5ad532ede9b9fabfd16347d.zip",
+   "bytesRead": 88361,
    "readOn": "2026-09-26"
   }
  }
