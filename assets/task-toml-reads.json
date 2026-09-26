@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T13:31:28+00:00",
+ "generatedAt": "2026-09-26T13:40:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6181,6 +6181,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a10-shepherd-breed-list-reconciliation/1e13d3758ed6c2f8e867469e28949583ed2a2da8898e5a6d0470682a60318529.zip",
    "bytesRead": 88336,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt10-a8-recovery-contact-window-register": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt10-a8-recovery-contact-window-register/33bb2d75ecde5c4d2cd3e3d464a28ebceccb2fbfd0c8ce257d9e86a7a7d4d76a.zip",
+   "bytesRead": 93901,
    "readOn": "2026-09-26"
   }
  }
