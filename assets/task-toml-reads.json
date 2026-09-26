@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T23:10:51+00:00",
+ "generatedAt": "2026-09-26T23:20:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7561,6 +7561,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g294-crf-translation-audit/02ad853f3e8d9fc81890147d42cbd2be175c904c5c567e4704def730b25105d4.zip",
    "bytesRead": 56648,
+   "readOn": "2026-09-26"
+  },
+  "the-outbound-tracker-dictionary": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-outbound-tracker-dictionary/d3dc8cabd7fbc786986deaca74480de151035266e6945e3982f0dc26ac10607c.zip",
+   "bytesRead": 48094,
    "readOn": "2026-09-26"
   }
  }
