@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T14:41:22+00:00",
+ "generatedAt": "2026-09-26T14:50:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6295,6 +6295,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/four-points-that-never-landed/2235603faf2aa6310d84abf45ceb4b09144c9bc0ab1074607e1e80907272457f.zip",
    "bytesRead": 47669,
+   "readOn": "2026-09-26"
+  },
+  "the-threads-that-lost-their-opener": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-threads-that-lost-their-opener/13b1ccc0ba6ebb7224651a5dc76dc898c358f27ab2af6e1cb81a233d11b1e92c.zip",
+   "bytesRead": 47575,
    "readOn": "2026-09-26"
   }
  }
