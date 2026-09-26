@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T08:11:02+00:00",
+ "generatedAt": "2026-09-26T08:30:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5636,6 +5636,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt9-a6-peptide-vendor-basis-catalogue/6f0f9aa37e8ebbd4fcc10a8536396f7c63024fed864f11a220bb3002aaa01db4.zip",
    "bytesRead": 68191,
+   "readOn": "2026-09-26"
+  },
+  "fin-b47-a2-gl-direct-cash-flow-two-months": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b47-a2-gl-direct-cash-flow-two-months/a4e07701a837eb3dc9adf2d6f526dec98ef1b3c0266941e6bb7ac6fa10ae47f8.zip",
+   "bytesRead": 62772,
+   "readOn": "2026-09-26"
+  },
+  "hardened_still_on_starter_grid": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/hardened_still_on_starter_grid/8bf737a06ae2508f977307e54e3a29470eec6952f54c7a5d15eb7a222808c83c.zip",
+   "bytesRead": 48768,
    "readOn": "2026-09-26"
   }
  }
