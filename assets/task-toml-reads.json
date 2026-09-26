@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T00:21:00+00:00",
+ "generatedAt": "2026-09-26T00:40:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5094,6 +5094,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/one-address-six-names-fifty-five-senders/1e4c09d65c74fa75fc561a1769c229aa52d5c3eb1d6a157ff72f78023a32d76e.zip",
    "bytesRead": 53685,
+   "readOn": "2026-09-26"
+  },
+  "gen-g268-shadow-economy-paper-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g268-shadow-economy-paper-audit/f41a5ea4124c74b69757c172a25c1ffa41be5e807681a34f1f685889084edd95.zip",
+   "bytesRead": 79373,
    "readOn": "2026-09-26"
   }
  }
