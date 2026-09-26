@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T18:00:52+00:00",
+ "generatedAt": "2026-09-26T18:10:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6785,6 +6785,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt5-a13-clinical-note-transcript-audit/ea5ca8dd26fa449509fc4663f3a14addc5ac61e9cf58c91e261a9281394b4d12.zip",
    "bytesRead": 75153,
+   "readOn": "2026-09-26"
+  },
+  "bus-b609-t10-automaker-holdings-control-classification-check": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b609-t10-automaker-holdings-control-classification-check/9c6034505a20feaa972d8d049b3541a5701eaa5f6e82ac48b7a048c45c089a1b.zip",
+   "bytesRead": 92137,
+   "readOn": "2026-09-26"
+  },
+  "fin-b43-a10-fx-cross-quote-check-behavioral-regression-fix-final-20260926T173804-IST": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b43-a10-fx-cross-quote-check-behavioral-regression-fix-final-20260926T173804-IST/0db85cff5f4810a30922a6ecc488f024c1ea2689fc6c88118d1955b53cb4c115.zip",
+   "bytesRead": 176408,
    "readOn": "2026-09-26"
   }
  }
