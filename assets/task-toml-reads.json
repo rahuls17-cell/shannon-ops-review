@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T12:30:53+00:00",
+ "generatedAt": "2026-09-26T12:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6079,6 +6079,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b50-s1-microanalysis-request-routing-v1/eeee73d84f1f2a64460b61c659fea64033786d90d49bfb6b1921b5d27abab6a3.zip",
    "bytesRead": 109494,
+   "readOn": "2026-09-26"
+  },
+  "bus-b43-b13-component-insourcing-cost-buildup": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b43-b13-component-insourcing-cost-buildup/998eb17de7e2e51a921a5feff88133ae66f0aa6a40469188e5c287dc84849993.zip",
+   "bytesRead": 128755,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt10-a9-regimen-cycle-interval-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt10-a9-regimen-cycle-interval-ledger/dcb26ca189b4f0ce4ec90da376d442b6b964bdff1346c514c67323bdaa16bdd7.zip",
+   "bytesRead": 73621,
+   "readOn": "2026-09-26"
+  },
+  "low-risk-bookings-for-the-new-intake": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/low-risk-bookings-for-the-new-intake/b62417c28bb200f9213c24d42dfcafde6558365b4360a9414ff47b5cff1cdbc6.zip",
+   "bytesRead": 46117,
    "readOn": "2026-09-26"
   }
  }
