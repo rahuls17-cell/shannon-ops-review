@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T22:01:08+00:00",
+ "generatedAt": "2026-09-26T22:10:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7407,6 +7407,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t9-mobile-plan-bill-variance-attribution-v2/fb9a448a3cefba1d0d360bda2f37d3fc4698631b2d546eaf7fe13f4019445a51.zip",
    "bytesRead": 97188,
+   "readOn": "2026-09-26"
+  },
+  "the-name-is-not-the-person": {
+   "connector": true,
+   "services": [
+    "microsoft_teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-name-is-not-the-person/6023f8a12130939a2ac8d6b9521e2c27c54a8b9c364ab5d7ec1e7caf2907f541.zip",
+   "bytesRead": 51726,
    "readOn": "2026-09-26"
   }
  }
