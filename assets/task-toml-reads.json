@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T23:40:50+00:00",
+ "generatedAt": "2026-09-26T23:50:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7593,6 +7593,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt9-a2-rehab-week-slot-programming/23094a910a0e5d9b2a9a7d9fe94a321620db3f4938209b2c0db3f9f002c04f4d.zip",
    "bytesRead": 68676,
+   "readOn": "2026-09-26"
+  },
+  "gen-sc06-b9-return-chart-aspects": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-sc06-b9-return-chart-aspects/ded954e9951fdbfa7b818aad2194479b5b1512154142fa51b15a117252673506.zip",
+   "bytesRead": 84179,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt11-a8-pelvic-pt-referral-window": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a8-pelvic-pt-referral-window/d429d83ea6e07d435b03c00310f28a7fce63568a5cafc736a147b3ad01a71c51.zip",
+   "bytesRead": 82522,
+   "readOn": "2026-09-26"
+  },
+  "who-still-owes-a-sign-off": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-still-owes-a-sign-off/60b93f8f8c9aa57d23b119ab43fdbeb1d72c2d7953f238f987352f59a93bc224.zip",
+   "bytesRead": 55183,
    "readOn": "2026-09-26"
   }
  }
