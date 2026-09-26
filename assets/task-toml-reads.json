@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T09:10:59+00:00",
+ "generatedAt": "2026-09-26T09:20:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5766,6 +5766,28 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-form-shelf-that-lost-its-columns/ff448c795c7033026d4ad98aa892f8354aab4c40196f95fea93bf925f27464d3.zip",
    "bytesRead": 52092,
+   "readOn": "2026-09-26"
+  },
+  "code-c285-image-export-format-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c285-image-export-format-audit/f1cf3773cd37df6f087e5d53ff9c362261045291172e77a0c928cca76d8bbcdf.zip",
+   "bytesRead": 90035,
+   "readOn": "2026-09-26"
+  },
+  "nobody-was-on-the-other-end": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nobody-was-on-the-other-end/4d9f0d9d4409ffaaf82f185dff4384d6773802daef9cb475cb266106a7c7ea4a.zip",
+   "bytesRead": 56844,
    "readOn": "2026-09-26"
   }
  }
