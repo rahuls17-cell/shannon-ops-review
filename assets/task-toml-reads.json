@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T22:40:52+00:00",
+ "generatedAt": "2026-09-26T23:00:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7511,6 +7511,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a7-heater-service-interval-plan/f2197165a45d35c94eeca6f7fdefba7e2f82cc56282d6e1011eb28b438ecd8fd.zip",
    "bytesRead": 76281,
+   "readOn": "2026-09-26"
+  },
+  "code-c30-dependency-cycle-resolution": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c30-dependency-cycle-resolution/8b56695b9b146ebe1ad8acb7645f624b46d70f2daeb25d1d6ee680ab546e0b2f.zip",
+   "bytesRead": 78955,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt8-a8-botanical-intake-record-contradiction": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt8-a8-botanical-intake-record-contradiction/55191c130d1738e27ef7adbf82f74c50e2aec662ecea7d565ef007869a3a87ab.zip",
+   "bytesRead": 81287,
    "readOn": "2026-09-26"
   }
  }
