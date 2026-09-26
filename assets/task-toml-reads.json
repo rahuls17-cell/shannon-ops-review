@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T03:50:52+00:00",
+ "generatedAt": "2026-09-26T04:01:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5270,6 +5270,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c276-site-migration-redirect-audit/ee2518b671d4ee89a66a84e95d71f2aa032e233fba2639229b127386489ba4f4.zip",
    "bytesRead": 79978,
+   "readOn": "2026-09-26"
+  },
+  "code-c139-release-train-freeze-window-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c139-release-train-freeze-window-audit/4facb27fb43e27af958b5f1ebec55bd7a3a801aee341d009ec1704f6ee489705.zip",
+   "bytesRead": 82727,
    "readOn": "2026-09-26"
   }
  }
