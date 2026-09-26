@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T04:30:56+00:00",
+ "generatedAt": "2026-09-26T04:41:31+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5326,6 +5326,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101568/12dd01b9ee566ae74ba1819a9d714377d1c0954e7ebc52771c34f53951b0b6da.zip",
    "bytesRead": 40444,
+   "readOn": "2026-09-26"
+  },
+  "bus-b44-b9-company-metric-claim-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b9-company-metric-claim-reconciliation/e0d2500a70229dc880bcc76340577bc53d07bb754abd204b4861b9ba036a77e4.zip",
+   "bytesRead": 109598,
+   "readOn": "2026-09-26"
+  },
+  "code-c183-dns-zone-config-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c183-dns-zone-config-audit/782999cacb561064d250af3aedde99227e4a9ed7bcf16d0d4b87dc048ca7e9ca.zip",
+   "bytesRead": 71809,
    "readOn": "2026-09-26"
   }
  }
