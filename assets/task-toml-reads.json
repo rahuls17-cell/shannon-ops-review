@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T07:41:02+00:00",
+ "generatedAt": "2026-09-26T07:50:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5596,6 +5596,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t7-chartplotter-touchscreen-recalibration-runbook-v5/84d990a7034d22df9f7ef898783fa0ba09c921f7f2d6fdb6357f7d9fae519886.zip",
    "bytesRead": 76986,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt9-a12-formulary-request-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt9-a12-formulary-request-adjudication/78611d069adfa5ae18245b0caaf0d9cad6f3783e16bd6c044c97d208045a75d5.zip",
+   "bytesRead": 67742,
    "readOn": "2026-09-26"
   }
  }
