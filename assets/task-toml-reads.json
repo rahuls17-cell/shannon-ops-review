@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T23:30:50+00:00",
+ "generatedAt": "2026-09-26T23:40:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7583,6 +7583,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b10-a5-mic-modelling-feature-matrix-audit/a9dd181ac17e71177d7a57ca9384426fc8ffdd314b1e76997edf60a12d34706a.zip",
    "bytesRead": 79001,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt9-a2-rehab-week-slot-programming": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt9-a2-rehab-week-slot-programming/23094a910a0e5d9b2a9a7d9fe94a321620db3f4938209b2c0db3f9f002c04f4d.zip",
+   "bytesRead": 68676,
    "readOn": "2026-09-26"
   }
  }
