@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T08:41:02+00:00",
+ "generatedAt": "2026-09-26T08:50:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5670,6 +5670,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-two-copies-shared-differently/bb7f2820d324bd0ea7033f537c02cc885a72c5d6966a97c32907e40c73e012ea.zip",
    "bytesRead": 50690,
+   "readOn": "2026-09-26"
+  },
+  "code-c127-iam-privilege-escalation-path-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c127-iam-privilege-escalation-path-audit/1c53544a0b075b82c03441cf5ed7970d5c4a0ecb65951ef58c97a4b049a9434b.zip",
+   "bytesRead": 80035,
    "readOn": "2026-09-26"
   }
  }
