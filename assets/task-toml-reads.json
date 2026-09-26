@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T17:21:23+00:00",
+ "generatedAt": "2026-09-26T17:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6695,6 +6695,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-b53-a4-study-abstract-figure-recompute/f98595c213cfba37ec8f86975296ef94467e0a342501f7ddc3fc920b5624b202.zip",
    "bytesRead": 105865,
+   "readOn": "2026-09-26"
+  },
+  "bus-b44-b13-change-order-cost-buildup": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b13-change-order-cost-buildup/ace3d9c92a7a2b7bd925e7bed97700f7915f6e66f011fc50a43133d2e93e71e9.zip",
+   "bytesRead": 140674,
+   "readOn": "2026-09-26"
+  },
+  "code-c34-timeseries-downsampling": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c34-timeseries-downsampling/ffb16f69c426432002edda73a0fbcf331493611bbb12440bce33a93cc91bf4b4.zip",
+   "bytesRead": 74554,
    "readOn": "2026-09-26"
   }
  }
