@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T21:50:55+00:00",
+ "generatedAt": "2026-09-26T22:01:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7363,6 +7363,50 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-b2-citation-rule-audit/91af6bfec783f7a47351d4667ff3132f6a6ae62ed1f3eeda8928127bb704becf.zip",
    "bytesRead": 76543,
+   "readOn": "2026-09-26"
+  },
+  "ASTR_101456": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101456/8c6f7a6c4ca473c03671780849e4cb9220908c34c1a42727e1bda93e56f69add.zip",
+   "bytesRead": 45287,
+   "readOn": "2026-09-26"
+  },
+  "bus-b67-b3-processing-order-cut-option-normalization": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b67-b3-processing-order-cut-option-normalization/322d13149554565701ecc9a496db1e149b2dd780ff00c61c75eb9ed0eb77b37f.zip",
+   "bytesRead": 136672,
+   "readOn": "2026-09-26"
+  },
+  "eighteen-projects-that-are-done-but-open": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/eighteen-projects-that-are-done-but-open/400be9f3bff90fb23cf21125e7a1e21530a0997d0e297515a6a7a61a07655e50.zip",
+   "bytesRead": 53974,
+   "readOn": "2026-09-26"
+  },
+  "tech-b51-t9-mobile-plan-bill-variance-attribution-v2": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t9-mobile-plan-bill-variance-attribution-v2/fb9a448a3cefba1d0d360bda2f37d3fc4698631b2d546eaf7fe13f4019445a51.zip",
+   "bytesRead": 97188,
    "readOn": "2026-09-26"
   }
  }
