@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T17:40:51+00:00",
+ "generatedAt": "2026-09-26T17:50:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6715,6 +6715,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c34-timeseries-downsampling/ffb16f69c426432002edda73a0fbcf331493611bbb12440bce33a93cc91bf4b4.zip",
    "bytesRead": 74554,
+   "readOn": "2026-09-26"
+  },
+  "code-c23-env-config-drift": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c23-env-config-drift/1b392b465e9f5c4987cae21bc82ad99d2c45b1554bab458a0766cffcb17aafbc.zip",
+   "bytesRead": 77236,
+   "readOn": "2026-09-26"
+  },
+  "gen-g324-qualifying-agent-license-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g324-qualifying-agent-license-audit/fc2a14c7170c39c606e050c49d9d337d636a32d72430e2e83bfcbe3ea5c31b05.zip",
+   "bytesRead": 59625,
    "readOn": "2026-09-26"
   }
  }
