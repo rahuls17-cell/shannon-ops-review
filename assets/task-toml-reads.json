@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T13:40:52+00:00",
+ "generatedAt": "2026-09-26T14:00:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6191,6 +6191,68 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt10-a8-recovery-contact-window-register/33bb2d75ecde5c4d2cd3e3d464a28ebceccb2fbfd0c8ce257d9e86a7a7d4d76a.zip",
    "bytesRead": 93901,
+   "readOn": "2026-09-26"
+  },
+  "are-we-keeping-core-hours": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/are-we-keeping-core-hours/0d5d9b5bc61eeaec638c00f1d5d27c975c6c8b17803b07721c90be760a345cac.zip",
+   "bytesRead": 45095,
+   "readOn": "2026-09-26"
+  },
+  "bus-b108-b14-canopy-tent-catalog-normalization": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b108-b14-canopy-tent-catalog-normalization/ee044e8072f42687b2d2dd04b3ae7a418f7df31d8517872b2b345879b776a797.zip",
+   "bytesRead": 70415,
+   "readOn": "2026-09-26"
+  },
+  "bus-b44-b15-subscription-commitment-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b15-subscription-commitment-audit/1acb99cf007df7b01a0097e0f3e6640e9ca044f9e2322dacb15d61163bd7cbae.zip",
+   "bytesRead": 101740,
+   "readOn": "2026-09-26"
+  },
+  "bus-b44-b16-midmonth-sales-runrate-scorecard": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b16-midmonth-sales-runrate-scorecard/80351283c7a4eb73f777cb54df3db75d9380155b2e96b1cff1fd01b7f288382f.zip",
+   "bytesRead": 109139,
+   "readOn": "2026-09-26"
+  },
+  "gen-g899-athletics-sponsor-logo-rights-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g899-athletics-sponsor-logo-rights-audit/5c9a9e8bc911ac9ef0a6c86dd3e0d479fea6c2c35e12663fa3436814e55e3b9f.zip",
+   "bytesRead": 110577,
+   "readOn": "2026-09-26"
+  },
+  "tech-b52-t3-procedure-media-match-register": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b52-t3-procedure-media-match-register/466c1308ff9e7b6eaafca8b12647c9b76cc52e77e6693074acfb36cea973965c.zip",
+   "bytesRead": 78300,
    "readOn": "2026-09-26"
   }
  }
