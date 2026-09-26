@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T18:20:51+00:00",
+ "generatedAt": "2026-09-26T18:31:36+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6839,6 +6839,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-private-entries-on-my-calendar/c140509dc7d28de429360528d8a9a304721b00b1d14f1cfd05dbc1b8f7022a82.zip",
    "bytesRead": 69320,
+   "readOn": "2026-09-26"
+  },
+  "j1-mydrive-redundant-copy-crossref": {
+   "connector": null,
+   "services": [],
+   "basis": "mcp_servers present but not readable",
+   "image": "kuzphi/connectors-harness@sha256:c33ea2c5348e128524d6dce91ae4ec01e946822b554093a4aafc6ac7806121be",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/j1-mydrive-redundant-copy-crossref/96dfdae8a158e3f488d7ecf58ca39cb1473496b225b76e01ed2716fc5b839621.zip",
+   "bytesRead": 46490,
+   "readOn": "2026-09-26"
+  },
+  "law-b48-l6-power-of-attorney-act-authority": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b48-l6-power-of-attorney-act-authority/3fdc304e255173d64cbc74915a746d9343b75063dead5637319e128fac9c2c02.zip",
+   "bytesRead": 70373,
    "readOn": "2026-09-26"
   }
  }
