@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T06:30:54+00:00",
+ "generatedAt": "2026-09-26T06:41:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5482,6 +5482,56 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c41-backfill-reconciliation/7d3c50bc00bf2ba7788aa63d4989ff2f55292593b35e04d3abfc19f5b1edd192.zip",
    "bytesRead": 74542,
+   "readOn": "2026-09-26"
+  },
+  "code-c280-video-edit-delivery-qa-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c280-video-edit-delivery-qa-audit/f511c99513b6bd34f254224208514070704199a3730e9becd229f7cb40e37084.zip",
+   "bytesRead": 87262,
+   "readOn": "2026-09-26"
+  },
+  "code-c54-dlq-source-reconcile": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c54-dlq-source-reconcile/36c53f9ecfaabb86eb2c88cf7c86b3b1db52c68602dc5f83f591c8b63c54162e.zip",
+   "bytesRead": 75401,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt10-a7-supplement-slot-booking-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt10-a7-supplement-slot-booking-plan/cf5d592eeebaa0822a97e0333813311f5a8912b30c5258148107b90513ae19f5.zip",
+   "bytesRead": 80738,
+   "readOn": "2026-09-26"
+  },
+  "tech-b52-t1-accelerator-memory-fit-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b52-t1-accelerator-memory-fit-adjudication/2c77797a20c63aaa463dcd5c661bea282b8aef1218517a8257faee28f791bc1d.zip",
+   "bytesRead": 74008,
+   "readOn": "2026-09-26"
+  },
+  "tech-b61-t4-faculty-roster-email-list-cleanup": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b61-t4-faculty-roster-email-list-cleanup/1260079966c4751fa951122c6bdb6a60e63e29e770851010fbb1238b25cbac2d.zip",
+   "bytesRead": 69791,
    "readOn": "2026-09-26"
   }
  }
