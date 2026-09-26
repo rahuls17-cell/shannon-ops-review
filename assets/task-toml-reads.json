@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T15:20:52+00:00",
+ "generatedAt": "2026-09-26T15:31:28+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6409,6 +6409,42 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b50-a5-campus-town-hall-facilitation-plan/aaff831dba35de6bd9788cc2706492723bc2e9e1a42a625869b9db57de5f9ac6.zip",
    "bytesRead": 67703,
+   "readOn": "2026-09-26"
+  },
+  "billing-codes-the-cpt-table-lacks": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/billing-codes-the-cpt-table-lacks/c7ed784d8109f78a4b1e2d83c1487305f379ae4bb3254fd4e831ad27c56aec1d.zip",
+   "bytesRead": 49585,
+   "readOn": "2026-09-26"
+  },
+  "member-of-twenty-seven-alone-on-six": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/member-of-twenty-seven-alone-on-six/bb78a261037f66dca796ba487af646546288151f83280843abfa9b58b270653f.zip",
+   "bytesRead": 52384,
+   "readOn": "2026-09-26"
+  },
+  "the-crash-went-away-because-the-check-did": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-crash-went-away-because-the-check-did/5e25546a5cbfd1da09bca60740f5a982eb7162275b58274ee064ec2cf0e626c1.zip",
+   "bytesRead": 59399,
    "readOn": "2026-09-26"
   }
  }
