@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T16:41:01+00:00",
+ "generatedAt": "2026-09-26T17:00:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6635,6 +6635,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-rooted-birth-code-tab/4d679254c672d03a4fd65843fd40b879e0b641db2f460cf9acb15ed4bc08b337.zip",
    "bytesRead": 49364,
+   "readOn": "2026-09-26"
+  },
+  "code-c27-schema-evolution-compat": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c27-schema-evolution-compat/e4f969768cb84d68c181ee221c440b105f5902e980239c8a970632690e52bb76.zip",
+   "bytesRead": 88362,
    "readOn": "2026-09-26"
   }
  }
