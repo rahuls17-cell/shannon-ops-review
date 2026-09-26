@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T08:00:57+00:00",
+ "generatedAt": "2026-09-26T08:11:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5626,6 +5626,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c179-network-failover-config-audit/e6c34f7cd9aa014518b9f0ab29c24273ccdfc39b89839998cdbf7b1aaec12c72.zip",
    "bytesRead": 68267,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt9-a6-peptide-vendor-basis-catalogue": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt9-a6-peptide-vendor-basis-catalogue/6f0f9aa37e8ebbd4fcc10a8536396f7c63024fed864f11a220bb3002aaa01db4.zip",
+   "bytesRead": 68191,
    "readOn": "2026-09-26"
   }
  }
