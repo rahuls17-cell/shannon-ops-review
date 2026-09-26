@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T03:31:00+00:00",
+ "generatedAt": "2026-09-26T03:40:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5230,6 +5230,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c278-static-site-deploy-governance-audit/92812da60a2476db3ea80a7882d41f1616c01b99de4e7fc4484638fa179d8d79.zip",
    "bytesRead": 86717,
+   "readOn": "2026-09-26"
+  },
+  "code-c192-solar-access-simulation-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c192-solar-access-simulation-audit/3a1924ca1b2d9a58d01d6b918f322a9320f0ada11139d0b43d1ee94da9ea095d.zip",
+   "bytesRead": 71815,
+   "readOn": "2026-09-26"
+  },
+  "sci-sc07-a4-flood-claim-check-v1": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc07-a4-flood-claim-check-v1/5159527b56a49f9fb7c2715ccf85391395e7b0c6893b74833dc1963acd4184f2.zip",
+   "bytesRead": 63799,
+   "readOn": "2026-09-26"
+  },
+  "tech-b51-t10-printer-queue-driver-diagnostic-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t10-printer-queue-driver-diagnostic-audit/106a8c794d08d440689aa325d10e215352ec59e3931de0a9e06c9ddb9e2e601d.zip",
+   "bytesRead": 68023,
    "readOn": "2026-09-26"
   }
  }
