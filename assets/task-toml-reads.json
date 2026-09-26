@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T11:10:58+00:00",
+ "generatedAt": "2026-09-26T11:20:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5901,6 +5901,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-b5-abstract-word-budget/a8cc31907617243b37fc511a98476c91b84ea3f216ffa12c74ae915944b4afc5.zip",
    "bytesRead": 68584,
+   "readOn": "2026-09-26"
+  },
+  "bus-b44-b12-colisting-outreach-day-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b12-colisting-outreach-day-plan/6255e28ef4d78afd04e939dd2f0a78f4af9366fec64e48b2473180007ed84a9a.zip",
+   "bytesRead": 142723,
+   "readOn": "2026-09-26"
+  },
+  "sci-sc09-a1-formula-sheet-layout": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc09-a1-formula-sheet-layout/428f28a02059f4e7ea54ede6e57e207f3de8c79d9c43fda0fd32daa8f0cdd749.zip",
+   "bytesRead": 69502,
+   "readOn": "2026-09-26"
+  },
+  "tech-b51-t9-spectrum-holdings-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t9-spectrum-holdings-reconciliation/1d587f0fe706473947c4912936adde8ac77d19e5f4a77396fbde923291dc87a7.zip",
+   "bytesRead": 75336,
    "readOn": "2026-09-26"
   }
  }
