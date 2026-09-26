@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T02:10:55+00:00",
+ "generatedAt": "2026-09-26T02:31:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5188,6 +5188,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c261-residential-circuit-protection-compliance-audit/b3d9378cd880c857824df27609f186af05c7f42c7d77f361c5a36e0451d7cbd3.zip",
    "bytesRead": 103061,
+   "readOn": "2026-09-26"
+  },
+  "code-c275-data-pipeline-run-log-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c275-data-pipeline-run-log-audit/1d093ad8d4fbeb6663384256491a460ffbce8732d2c8f62669406025d841217d.zip",
+   "bytesRead": 80527,
+   "readOn": "2026-09-26"
+  },
+  "tech-b52-t3-access-policy-board-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b52-t3-access-policy-board-adjudication/cf72b5331cde1849d256255acfc90eabb5bb03198003f6e6f64a194fef31e282.zip",
+   "bytesRead": 70617,
    "readOn": "2026-09-26"
   }
  }
