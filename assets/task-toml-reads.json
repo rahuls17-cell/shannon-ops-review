@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T09:20:57+00:00",
+ "generatedAt": "2026-09-26T09:30:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5788,6 +5788,25 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nobody-was-on-the-other-end/4d9f0d9d4409ffaaf82f185dff4384d6773802daef9cb475cb266106a7c7ea4a.zip",
    "bytesRead": 56844,
+   "readOn": "2026-09-26"
+  },
+  "investigate_40_608_3ds_card_decline_on_card_43610_followed_by_card_ter": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "docker.io/kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/investigate_40_608_3ds_card_decline_on_card_43610_followed_by_card_ter/89e9fb8b9151b87aac95f7d6b77066fa509e4104d23f3df27fde292653f6cee4.zip",
+   "bytesRead": 66323,
    "readOn": "2026-09-26"
   }
  }
