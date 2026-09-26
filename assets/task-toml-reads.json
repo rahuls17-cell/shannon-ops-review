@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T22:31:27+00:00",
+ "generatedAt": "2026-09-26T22:40:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7491,6 +7491,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b21-g11-particulate-concentration-variance/ff4e24d661175bc40a6ccd59fab81b3a796833ca5a181c3851fec08f14a1de8f.zip",
    "bytesRead": 100041,
+   "readOn": "2026-09-26"
+  },
+  "code-c622-saas-tenant-pilot-readiness-audit-v24-final": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c622-saas-tenant-pilot-readiness-audit-v24-final/bbb7a7778bbddf700e62af9785e3cecf16e65375ae612b111a60b4bec19d8f8c.zip",
+   "bytesRead": 92294,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt11-a7-heater-service-interval-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a7-heater-service-interval-plan/f2197165a45d35c94eeca6f7fdefba7e2f82cc56282d6e1011eb28b438ecd8fd.zip",
+   "bytesRead": 76281,
    "readOn": "2026-09-26"
   }
  }
