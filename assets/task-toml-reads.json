@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T04:01:00+00:00",
+ "generatedAt": "2026-09-26T04:11:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5280,6 +5280,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c139-release-train-freeze-window-audit/4facb27fb43e27af958b5f1ebec55bd7a3a801aee341d009ec1704f6ee489705.zip",
    "bytesRead": 82727,
+   "readOn": "2026-09-26"
+  },
+  "invites-missing-from-calendar": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/invites-missing-from-calendar/471d938ae52f4600a13551eab9b3ff745c8b0f7c14104c7f66b52da92a79ddaa.zip",
+   "bytesRead": 51665,
    "readOn": "2026-09-26"
   }
  }
