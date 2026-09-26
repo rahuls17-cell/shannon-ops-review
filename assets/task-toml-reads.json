@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T19:50:51+00:00",
+ "generatedAt": "2026-09-26T20:00:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7055,6 +7055,40 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b48-l7-demand-letter-claim-schedule/705a07083a101cf95bd5846fb55c7249076d46880e426ebf28e1770a8eaef94e.zip",
    "bytesRead": 74676,
+   "readOn": "2026-09-26"
+  },
+  "code-c287-subprocessor-security-review-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c287-subprocessor-security-review-audit/e991295c41047d45c58db8fbef70ce02db5be8bccfa51b464e98f82ded911488.zip",
+   "bytesRead": 77414,
+   "readOn": "2026-09-26"
+  },
+  "the-lights-are-still-on": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-lights-are-still-on/e1d673557a866001654dc6f6c49c447a157abaa01c512aaba5baf63832bf1d16.zip",
+   "bytesRead": 48648,
+   "readOn": "2026-09-26"
+  },
+  "the-status-board-nobody-maintains": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-status-board-nobody-maintains/a36be095e4812943c5f70128fc5e30aba1086db67ba5e07d5f00c8df46348b16.zip",
+   "bytesRead": 48011,
    "readOn": "2026-09-26"
   }
  }
