@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T11:20:58+00:00",
+ "generatedAt": "2026-09-26T11:31:27+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5931,6 +5931,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t9-spectrum-holdings-reconciliation/1d587f0fe706473947c4912936adde8ac77d19e5f4a77396fbde923291dc87a7.zip",
    "bytesRead": 75336,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt10-a4-component-folate-coverage-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt10-a4-component-folate-coverage-ledger/d239bd42035becf62c61f41f01ac705142e34f916f172cb2e066fd803dbef1a1.zip",
+   "bytesRead": 74182,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt11-a2-aip-protein-bar-formulary": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a2-aip-protein-bar-formulary/2f88a295b7e80f3a2c40110489bb5a072a60f3b791f927c2e87f776da395ab7a.zip",
+   "bytesRead": 75896,
    "readOn": "2026-09-26"
   }
  }
