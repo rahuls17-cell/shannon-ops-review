@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T21:31:27+00:00",
+ "generatedAt": "2026-09-26T21:40:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7293,6 +7293,36 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-covers-the-uruguay-side/26d18c8cedacda357901664601096bd0516c082ddf7fa9e9407cd1e86369155e.zip",
    "bytesRead": 45424,
+   "readOn": "2026-09-26"
+  },
+  "bus-b47-b10-programme-fee-buildup-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b10-programme-fee-buildup-recompute/ab18b8dd2a5aa73c331e0f8f8f0621e621d09d3abf441e398ddeb4d69507c8ac.zip",
+   "bytesRead": 80741,
+   "readOn": "2026-09-26"
+  },
+  "code-c558-pipeline-path-handoff-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:d50fb7611f86d04a3b0471b46d7557818d88983fc3136726336b2a4c657aa30b",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c558-pipeline-path-handoff-audit/06afde266f9ceef974a1001e20624aaed42aa1744461484636e97c59a328063d.zip",
+   "bytesRead": 78757,
+   "readOn": "2026-09-26"
+  },
+  "realty-b49-l3-commercial-offer-terms-precedence-v3": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/realty-b49-l3-commercial-offer-terms-precedence-v3/53e18c0aba0b5b52ad5008d28c7f569a66081582197daa91d5ba5a9d0321e17c.zip",
+   "bytesRead": 83030,
    "readOn": "2026-09-26"
   }
  }
