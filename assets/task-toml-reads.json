@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T07:31:02+00:00",
+ "generatedAt": "2026-09-26T07:41:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5586,6 +5586,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-that-clash-on-my-calendar/6e1944702309415a89cb7c7590747bd7c62377bad615db2ba0476873576aca21.zip",
    "bytesRead": 53481,
+   "readOn": "2026-09-26"
+  },
+  "tech-b51-t7-chartplotter-touchscreen-recalibration-runbook-v5": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t7-chartplotter-touchscreen-recalibration-runbook-v5/84d990a7034d22df9f7ef898783fa0ba09c921f7f2d6fdb6357f7d9fae519886.zip",
+   "bytesRead": 76986,
    "readOn": "2026-09-26"
   }
  }
