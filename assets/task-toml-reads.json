@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T15:00:52+00:00",
+ "generatedAt": "2026-09-26T15:10:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6349,6 +6349,26 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/still-waiting-on-a-reply/731585e306b4f1f11488802d4202b94c1ba1b2e84f95e050709fafea1ffd9259.zip",
    "bytesRead": 48637,
+   "readOn": "2026-09-26"
+  },
+  "bus-b56-a8-brand-fact-divergence-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b56-a8-brand-fact-divergence-audit/c1a656fd8d006147fc7570f9578e85bc9767814828eebd19558211e2ff6e45d3.zip",
+   "bytesRead": 134265,
+   "readOn": "2026-09-26"
+  },
+  "sci-b21-g10-soybean-fungicide-evidence-audit-v1": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b21-g10-soybean-fungicide-evidence-audit-v1/a076c0802a9860625086caee5c6f3dbf9f308ebec2d6cb6cea622fdad5d25e5b.zip",
+   "bytesRead": 84827,
    "readOn": "2026-09-26"
   }
  }
