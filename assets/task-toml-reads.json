@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T16:30:55+00:00",
+ "generatedAt": "2026-09-26T16:41:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6593,6 +6593,48 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ten-dropped-three-filed-twice/b5360efed2564c74ee3fcdb225b137bcdba089e3e7b216a951bde756be058a3f.zip",
    "bytesRead": 47746,
+   "readOn": "2026-09-26"
+  },
+  "fin-b49-f9-lbo-returns-bridge-attribution": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b49-f9-lbo-returns-bridge-attribution/8880384c181f43bfb8a65f885d515820dcbc4672abb5d5b74cf3d0ee0a8c2a2c.zip",
+   "bytesRead": 65867,
+   "readOn": "2026-09-26"
+  },
+  "health-tdt11-a14-bereavement-service-variance": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a14-bereavement-service-variance/9b2fd7329dcaa2c7bcc25b0229fe98e373c59ced3cac1a12ac907f5eb857a21b.zip",
+   "bytesRead": 84986,
+   "readOn": "2026-09-26"
+  },
+  "tech-b54-a2-orbital-workload-placement-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b54-a2-orbital-workload-placement-plan/4de323ac954ea481ad5983f3436ec4898ffef5f4cd4b2737262541ec2612bead.zip",
+   "bytesRead": 65900,
+   "readOn": "2026-09-26"
+  },
+  "the-rooted-birth-code-tab": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-rooted-birth-code-tab/4d679254c672d03a4fd65843fd40b879e0b641db2f460cf9acb15ed4bc08b337.zip",
+   "bytesRead": 49364,
    "readOn": "2026-09-26"
   }
  }
