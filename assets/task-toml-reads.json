@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T20:31:11+00:00",
+ "generatedAt": "2026-09-26T20:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7121,6 +7121,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-sc06-b4-bagua-sectors/59e49360bdaf0a18e55c25fd2342d2259e3025aefae2b8d97fa293735f7ad3b3.zip",
    "bytesRead": 85480,
+   "readOn": "2026-09-26"
+  },
+  "code-c300-chat-log-message-attribution-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c300-chat-log-message-attribution-audit/2fd869ca742c2bc3e011a85b02a64ce442cb5e00d053f23d651c1937a847e092.zip",
+   "bytesRead": 76096,
+   "readOn": "2026-09-26"
+  },
+  "edu-sc06-a9-division-two-roster": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc06-a9-division-two-roster/004c6ce7c64c8381eda39da9ac1f26936d0ffae115977147d0b1d3439f38babb.zip",
+   "bytesRead": 70891,
    "readOn": "2026-09-26"
   }
  }
