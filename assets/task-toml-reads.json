@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T12:10:55+00:00",
+ "generatedAt": "2026-09-26T12:30:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6027,6 +6027,58 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/thirty-eight-records-with-nobody-on-them/1115cac878307893c1955e5b21f29df0fc17829bf39b2be719d7f5059ab7cebd.zip",
    "bytesRead": 71710,
+   "readOn": "2026-09-26"
+  },
+  "bus-b49-b7-leadership-academy-slide-insert-brief-v2": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b49-b7-leadership-academy-slide-insert-brief-v2/5d9034f4a43c6fca044b8f27b08bf322cf3c5142b460fa1e002fb051d7a65200.zip",
+   "bytesRead": 93210,
+   "readOn": "2026-09-26"
+  },
+  "code-c157-image-asset-spec-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c157-image-asset-spec-audit/67a1fc3be12acb4acb0d1a3ce1d7b56877678c0f14f77a9ec08d7094263811ab.zip",
+   "bytesRead": 85329,
+   "readOn": "2026-09-26"
+  },
+  "code-c773-domain-email-routing-configuration-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c773-domain-email-routing-configuration-audit/9c9c77cfed06f675524f1669da7564dd0fd4d3ace7e31ccb2e962c7a540b6657.zip",
+   "bytesRead": 95358,
+   "readOn": "2026-09-26"
+  },
+  "outlook-07-the-room-the-reply-never-reached-QC-TESTING": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness:company-synthetic-20260907-0412-pt-pr1331@sha256:860e3366e0caf68ed49c7edb0d0aa648255ee0535aa1fec16806a18272db6767",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/outlook-07-the-room-the-reply-never-reached-QC-TESTING/471fbb1cf672aa0a09874a3e6515a5a93fd76a0fbd8b66093402e81a0305e0c2.zip",
+   "bytesRead": 63001,
+   "readOn": "2026-09-26"
+  },
+  "sci-b50-s1-microanalysis-request-routing-v1": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b50-s1-microanalysis-request-routing-v1/eeee73d84f1f2a64460b61c659fea64033786d90d49bfb6b1921b5d27abab6a3.zip",
+   "bytesRead": 109494,
    "readOn": "2026-09-26"
   }
  }
