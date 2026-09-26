@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T21:10:56+00:00",
+ "generatedAt": "2026-09-26T21:20:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7181,6 +7181,86 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b49-f6-macro-book-risk-budget-verifier-coverage-fix-final-20260926T192001-IST/16f876107876bc186e491009305028a69ddd048a55cf8a993f3c2d134328afa7.zip",
    "bytesRead": 139784,
+   "readOn": "2026-09-26"
+  },
+  "bus-b56-a7-service-line-compliance-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b56-a7-service-line-compliance-adjudication/60ebf89c3a6c635ec97953f8419b74d71b9917b348736f4574bdada873a7afee.zip",
+   "bytesRead": 126239,
+   "readOn": "2026-09-26"
+  },
+  "gen-g803-catastrophe-report-priority-tier-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:356b0d18f9385f4bdcc673af60e1e64c9d1504952e4ec36ee32044c722a6bc4e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g803-catastrophe-report-priority-tier-audit/a1bda350dcabb2193c6e472746ac2a650c11a153c0d9cb526d92ed7c2017d865.zip",
+   "bytesRead": 79828,
+   "readOn": "2026-09-26"
+  },
+  "health-h109-anesthesia-lecture-timebudget-audit-d002a2-v1-sna-vtnt": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h109-anesthesia-lecture-timebudget-audit-d002a2-v1-sna-vtnt/b68dfb3fc1b41fefeac1a7ed9ee1549fdf4d8e6063988851fe9e7c9c4d47d165.zip",
+   "bytesRead": 94081,
+   "readOn": "2026-09-26"
+  },
+  "investor-updates-or-talent-pool": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/investor-updates-or-talent-pool/da067c1f9ba91c0a73b482f1bade83c6f07a415e8e87d1eba6571365931e3aba.zip",
+   "bytesRead": 51012,
+   "readOn": "2026-09-26"
+  },
+  "tech-mg-it-b10-a7-feed-target-list-movement-review": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b10-a7-feed-target-list-movement-review/7b496ccae2419442875fcb44a813c1a3c49aabbdf995df9e8cf24af78563c8ed.zip",
+   "bytesRead": 76409,
+   "readOn": "2026-09-26"
+  },
+  "weekly-on-call-system-health-survey-for-week-of-mar-4-2024": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/weekly-on-call-system-health-survey-for-week-of-mar-4-2024/820828998551b6623f2503a02bf6536e415ec894f3a7133538732333876c3446.zip",
+   "bytesRead": 62871,
+   "readOn": "2026-09-26"
+  },
+  "writing-sc05-b3-data-table-recheck": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-b3-data-table-recheck/b5d5a295a14387cc93d408a4e711fb64c5203ad2736bc8b10512b1f5e1df889b.zip",
+   "bytesRead": 76055,
    "readOn": "2026-09-26"
   }
  }
