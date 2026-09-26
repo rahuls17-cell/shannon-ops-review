@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T00:01:02+00:00",
+ "generatedAt": "2026-09-26T00:11:16+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5062,6 +5062,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc09-a7-vti-task-001230/4df8c487d23d7dd18410c2fd00aa5c73867d7db2ac7e6ff44ae03389b02b158a.zip",
    "bytesRead": 57407,
+   "readOn": "2026-09-26"
+  },
+  "bus-b23-b12-campaign-prospect-list-merge": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b12-campaign-prospect-list-merge/bc716ee14261fae49b2af12a0451d7403e4c9c6a89bcad372953556762e39686.zip",
+   "bytesRead": 169729,
+   "readOn": "2026-09-26"
+  },
+  "career-sc05-b1-cv-posting-reconciliation-row-dated-rollback-difficulty-final-20260925T203944-IST": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/career-sc05-b1-cv-posting-reconciliation-row-dated-rollback-difficulty-final-20260925T203944-IST/7be08f1ccb9e181f034416677139e9f4bae9e220724805a790af7592683e25c8.zip",
+   "bytesRead": 78196,
    "readOn": "2026-09-26"
   }
  }
