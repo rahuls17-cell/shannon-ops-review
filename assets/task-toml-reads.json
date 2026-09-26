@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T14:20:53+00:00",
+ "generatedAt": "2026-09-26T14:41:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6273,6 +6273,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a3-hypoallergenic-lubricant-catalogue/f8ca4c09f5631124fd16eeb948a1b4537e345166d0c741cf3f9fc87f656c15b6.zip",
    "bytesRead": 81492,
+   "readOn": "2026-09-26"
+  },
+  "bus-b20-a5-newsletter-claim-verification": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b20-a5-newsletter-claim-verification/659cd80145ae57911596ea48a789060ad11579a5f90ff738c62e83eb8978ee30.zip",
+   "bytesRead": 67493,
+   "readOn": "2026-09-26"
+  },
+  "four-points-that-never-landed": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/four-points-that-never-landed/2235603faf2aa6310d84abf45ceb4b09144c9bc0ab1074607e1e80907272457f.zip",
+   "bytesRead": 47669,
    "readOn": "2026-09-26"
   }
  }
