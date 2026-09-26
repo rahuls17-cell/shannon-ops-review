@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T15:10:52+00:00",
+ "generatedAt": "2026-09-26T15:20:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6369,6 +6369,46 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b21-g10-soybean-fungicide-evidence-audit-v1/a076c0802a9860625086caee5c6f3dbf9f308ebec2d6cb6cea622fdad5d25e5b.zip",
    "bytesRead": 84827,
+   "readOn": "2026-09-26"
+  },
+  "bus-b66-b6-panel-run-of-show-local-times": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b66-b6-panel-run-of-show-local-times/f93db0d30546f452b87b0ec5ba40604009d17e77c85d872e757eda7b1ebab1b4.zip",
+   "bytesRead": 186321,
+   "readOn": "2026-09-26"
+  },
+  "code-c14-pii-redaction-fix": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c14-pii-redaction-fix/965b5fae49ddb947c0d222a03e0d664c764eee1028d7547e8e60ceff8ce13293.zip",
+   "bytesRead": 76363,
+   "readOn": "2026-09-26"
+  },
+  "code-c6-deploy-remediation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c6-deploy-remediation/7964b0bd39ff46712df50a2af29df611bbb5d34c19284c244c6112644c67135c.zip",
+   "bytesRead": 75118,
+   "readOn": "2026-09-26"
+  },
+  "edu-b50-a5-campus-town-hall-facilitation-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b50-a5-campus-town-hall-facilitation-plan/aaff831dba35de6bd9788cc2706492723bc2e9e1a42a625869b9db57de5f9ac6.zip",
+   "bytesRead": 67703,
    "readOn": "2026-09-26"
   }
  }
