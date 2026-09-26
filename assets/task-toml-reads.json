@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T05:50:50+00:00",
+ "generatedAt": "2026-09-26T06:00:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5408,6 +5408,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b53-b2-competitor-query-cluster-conflict-report/34ef58e4d85dda4c36e0a049442c1507700834621de5827f536ef8af7aa23d4e.zip",
    "bytesRead": 79227,
+   "readOn": "2026-09-26"
+  },
+  "code-c231-queue-consumer-lag-sla-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c231-queue-consumer-lag-sla-audit/11166bc416c9ea0c109a9d4e996775c297ae122bcc0fc9501e2c793ba427a497.zip",
+   "bytesRead": 81127,
+   "readOn": "2026-09-26"
+  },
+  "code-c273-datasheet-header-format-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c273-datasheet-header-format-audit/dcfc001cc8a58b42e4e7df4503c3edad0a1224e2a93ce4186cabcc7693d886f5.zip",
+   "bytesRead": 87345,
+   "readOn": "2026-09-26"
+  },
+  "the-docs-only-the-archive-holds": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-docs-only-the-archive-holds/298d667e7f89a553fd92853dc23706bca80aecc8bb1bbeea87cfe7a776610e86.zip",
+   "bytesRead": 47696,
    "readOn": "2026-09-26"
   }
  }
