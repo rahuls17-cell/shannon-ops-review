@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T05:21:22+00:00",
+ "generatedAt": "2026-09-26T05:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5378,6 +5378,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-s1-c4-thesis-table-body-consistency/4cb2e4fe43a15a2df81eb409fb45a87539a45bad55603814ac0392454e6c3f49.zip",
    "bytesRead": 78854,
+   "readOn": "2026-09-26"
+  },
+  "bus-mg-bus-b8-a10-inspection-lead-qualification-handoff": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-mg-bus-b8-a10-inspection-lead-qualification-handoff/02011c2795f604f77567a535dc4ee40b559e2371fd9b0a31ddd2c5f2f6294fce.zip",
+   "bytesRead": 74221,
+   "readOn": "2026-09-26"
+  },
+  "tech-b51-t5-unpaid-bills-recurring-template-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t5-unpaid-bills-recurring-template-reconciliation/d0cca7cd6eab0c7a919c78be7cccc5aba54174c035f2ca0bbbfcace3d201b06d.zip",
+   "bytesRead": 91966,
    "readOn": "2026-09-26"
   }
  }
