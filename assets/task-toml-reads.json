@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T11:31:27+00:00",
+ "generatedAt": "2026-09-26T11:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5951,6 +5951,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a2-aip-protein-bar-formulary/2f88a295b7e80f3a2c40110489bb5a072a60f3b791f927c2e87f776da395ab7a.zip",
    "bytesRead": 75896,
+   "readOn": "2026-09-26"
+  },
+  "bus-b44-b3-review-exchange-policy-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b3-review-exchange-policy-adjudication/2749739f942342e10ad1347ba36095e98f43923371c2e8159744b57d3040bdb0.zip",
+   "bytesRead": 92974,
+   "readOn": "2026-09-26"
+  },
+  "law-b36-l9-divorce-response-deadline-register-detail-id-grammar-final-20260925T191437-IST": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b36-l9-divorce-response-deadline-register-detail-id-grammar-final-20260925T191437-IST/769d230fddd2708895b667963433ff467308c66cd930aa19137e1b01412bc4f8.zip",
+   "bytesRead": 174408,
    "readOn": "2026-09-26"
   }
  }
