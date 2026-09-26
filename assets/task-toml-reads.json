@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T06:00:52+00:00",
+ "generatedAt": "2026-09-26T06:11:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5440,6 +5440,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-docs-only-the-archive-holds/298d667e7f89a553fd92853dc23706bca80aecc8bb1bbeea87cfe7a776610e86.zip",
    "bytesRead": 47696,
+   "readOn": "2026-09-26"
+  },
+  "the-tags-that-only-do-half-the-job": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-tags-that-only-do-half-the-job/91a8776616b4924a3dc0b39ff373601fa47f9b368b7619381e09922712cb75d2.zip",
+   "bytesRead": 52405,
    "readOn": "2026-09-26"
   }
  }
