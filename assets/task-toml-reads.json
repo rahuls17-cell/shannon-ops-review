@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T17:10:55+00:00",
+ "generatedAt": "2026-09-26T17:21:23+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6665,6 +6665,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g956-glass-panel-fabrication-batch-qc-audit/68f40b7ea85f8af00e2251a7a92c3d2d5dc530c03274e9377c46e68557b0f147.zip",
    "bytesRead": 78914,
+   "readOn": "2026-09-26"
+  },
+  "law-b49-l9-plan-breach-dispute-positions": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b49-l9-plan-breach-dispute-positions/181c53cfde58427a26262b0868c2d3cafc56dd01b671822e4588709c36c4f84b.zip",
+   "bytesRead": 83456,
+   "readOn": "2026-09-26"
+  },
+  "writing-b49-l2-survey-scope-coverage-review": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-b49-l2-survey-scope-coverage-review/4a5047b9e422a07d25696e0ebc1ac991eddd1ba1c6739200a90e711fd26f4fcc.zip",
+   "bytesRead": 114108,
+   "readOn": "2026-09-26"
+  },
+  "writing-b53-a4-study-abstract-figure-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-b53-a4-study-abstract-figure-recompute/f98595c213cfba37ec8f86975296ef94467e0a342501f7ddc3fc920b5624b202.zip",
+   "bytesRead": 105865,
    "readOn": "2026-09-26"
   }
  }
