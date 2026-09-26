@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T09:00:57+00:00",
+ "generatedAt": "2026-09-26T09:10:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5700,6 +5700,72 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c282-training-module-version-compliance-audit/f606fb754c21fde9dfe1ec2b346a2a62839c113cc5ad532ede9b9fabfd16347d.zip",
    "bytesRead": 88361,
+   "readOn": "2026-09-26"
+  },
+  "gen-g369-assay-reproducibility-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g369-assay-reproducibility-audit/319a582d543614c37409a4b49119bb8bd1d90b6c26a43047d80f2b6cbff06fbb.zip",
+   "bytesRead": 81525,
+   "readOn": "2026-09-26"
+  },
+  "gen-sc06-a6-surname-catalog": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-sc06-a6-surname-catalog/52a7a081d4a5ef55fd311100aa9b478959d0c61cd1bb53cf4826a9c6353ab569.zip",
+   "bytesRead": 91711,
+   "readOn": "2026-09-26"
+  },
+  "nineteen-of-nineteen-already-gone": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nineteen-of-nineteen-already-gone/fefdc57758524e91a502cf9450d20203c60cffcba09f71a40ca0dbe125ad020e.zip",
+   "bytesRead": 50693,
+   "readOn": "2026-09-26"
+  },
+  "tech-b51-t8-component-marking-replacement-register": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t8-component-marking-replacement-register/8d4483fbfc959e9e24c0e2a73a3857a188bdd498df9961bf1e35f304273810b0.zip",
+   "bytesRead": 74104,
+   "readOn": "2026-09-26"
+  },
+  "the-archive-box-with-the-documents-in": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-archive-box-with-the-documents-in/e6ea64138e4244194b5334cee9564c92a5068aafa57e1974242d5031cca0832e.zip",
+   "bytesRead": 53484,
+   "readOn": "2026-09-26"
+  },
+  "the-form-shelf-that-lost-its-columns": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-form-shelf-that-lost-its-columns/ff448c795c7033026d4ad98aa892f8354aab4c40196f95fea93bf925f27464d3.zip",
+   "bytesRead": 52092,
    "readOn": "2026-09-26"
   }
  }
