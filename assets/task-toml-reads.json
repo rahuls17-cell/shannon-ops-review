@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T23:00:52+00:00",
+ "generatedAt": "2026-09-26T23:10:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7531,6 +7531,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt8-a8-botanical-intake-record-contradiction/55191c130d1738e27ef7adbf82f74c50e2aec662ecea7d565ef007869a3a87ab.zip",
    "bytesRead": 81287,
+   "readOn": "2026-09-26"
+  },
+  "code-C735": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-C735/d201a5ee6a571df106386e98206b03f148095d91a54c69be3dd7366505bd23ab.zip",
+   "bytesRead": 69523,
+   "readOn": "2026-09-26"
+  },
+  "code-c556-strategy-migration-parameter-carryover-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c556-strategy-migration-parameter-carryover-audit/8792f5756e6bd6c890bebb254e1fd64a5baa47091f4ec791af236a7fcb7cdc1a.zip",
+   "bytesRead": 92255,
+   "readOn": "2026-09-26"
+  },
+  "gen-g294-crf-translation-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g294-crf-translation-audit/02ad853f3e8d9fc81890147d42cbd2be175c904c5c567e4704def730b25105d4.zip",
+   "bytesRead": 56648,
    "readOn": "2026-09-26"
   }
  }
