@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T10:01:00+00:00",
+ "generatedAt": "2026-09-26T10:10:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5837,6 +5837,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c286-video-delivery-spec-compliance-audit/f325af3b7a7279509550688ea5a6b21a01d896b804f8b2f200787e31c33906c0.zip",
    "bytesRead": 105840,
+   "readOn": "2026-09-26"
+  },
+  "the-onboarding-list-that-only-repeats-itself": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-onboarding-list-that-only-repeats-itself/0b4cdff487704a085a729bd0ef35e23ea94fb973242ba3748edb10c2e3d610e1.zip",
+   "bytesRead": 54435,
    "readOn": "2026-09-26"
   }
  }
