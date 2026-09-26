@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T21:00:54+00:00",
+ "generatedAt": "2026-09-26T21:10:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7171,6 +7171,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c288-intent-routing-compliance-audit/e98c09bd54480d848825c4871581758e690238ed4fa64d29e2a54cf0003910c3.zip",
    "bytesRead": 85853,
+   "readOn": "2026-09-26"
+  },
+  "fin-b49-f6-macro-book-risk-budget-verifier-coverage-fix-final-20260926T192001-IST": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b49-f6-macro-book-risk-budget-verifier-coverage-fix-final-20260926T192001-IST/16f876107876bc186e491009305028a69ddd048a55cf8a993f3c2d134328afa7.zip",
+   "bytesRead": 139784,
    "readOn": "2026-09-26"
   }
  }
