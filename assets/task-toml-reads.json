@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T22:10:52+00:00",
+ "generatedAt": "2026-09-26T22:20:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7419,6 +7419,48 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-name-is-not-the-person/6023f8a12130939a2ac8d6b9521e2c27c54a8b9c364ab5d7ec1e7caf2907f541.zip",
    "bytesRead": 51726,
+   "readOn": "2026-09-26"
+  },
+  "bus-b56-a3-raci-accountability-invariant-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b56-a3-raci-accountability-invariant-audit/bf44646c95f52f5902b3e3ee8b3d92973318999615b3329cf823f318d4072fe2.zip",
+   "bytesRead": 98566,
+   "readOn": "2026-09-26"
+  },
+  "gen-b49-l5-press-release-charge-element-mapping": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-b49-l5-press-release-charge-element-mapping/1f9d71423d060a91bf62c1dc518c87c6c231d05001712ca87a0682e27045454a.zip",
+   "bytesRead": 97824,
+   "readOn": "2026-09-26"
+  },
+  "health-h36-equipment-calibration-intervals-a73ff7-v6-sna-nery": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h36-equipment-calibration-intervals-a73ff7-v6-sna-nery/0402a35bc4d78dd5a1c33f11509debf649d958691563edf1b461e163610fa95e.zip",
+   "bytesRead": 85233,
+   "readOn": "2026-09-26"
+  },
+  "the-checkboxes-that-are-real": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-checkboxes-that-are-real/158d761d047cdb8ee45536834757e55ee111b577f141a27233fadd625afd10d6.zip",
+   "bytesRead": 52080,
    "readOn": "2026-09-26"
   }
  }
