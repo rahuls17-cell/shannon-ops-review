@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T18:40:56+00:00",
+ "generatedAt": "2026-09-26T18:50:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6881,6 +6881,28 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/waiting-on-the-reviewer/7804735f993052aca583de09105541ac722dfda8e916f5c9c8daad2e6e0f1621.zip",
    "bytesRead": 51309,
+   "readOn": "2026-09-26"
+  },
+  "health-hl04-a4-breathing-pattern-coding": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:0f5b26b9518d002b6173fd61daad821fa340635ebfec5bba471013f9ca114579",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-hl04-a4-breathing-pattern-coding/105e1cd97d30fc44545ff9158622dc94b88de0834c1624915a96465ce7aa02df.zip",
+   "bytesRead": 120463,
+   "readOn": "2026-09-26"
+  },
+  "the-case-for-keeping-the-date": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-case-for-keeping-the-date/d011dfaf5c42e2e80108ea418ef67b6349186fffa7741863398d4a88c765c067.zip",
+   "bytesRead": 54012,
    "readOn": "2026-09-26"
   }
  }
