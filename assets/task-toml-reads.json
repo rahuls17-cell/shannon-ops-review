@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T01:20:57+00:00",
+ "generatedAt": "2026-09-26T01:41:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -5144,6 +5144,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c263-eco-dimensional-preservation-audit/e7030a5ac9739d5fc8e2a7c16cc44d1131201928fe338158999a989242050fb4.zip",
    "bytesRead": 83683,
+   "readOn": "2026-09-26"
+  },
+  "thirteen-of-ninety-five-who-write-to-me": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/thirteen-of-ninety-five-who-write-to-me/1ebd36540da5806356757231c1348e7f38491c3e641e0e6812c31894ef15f9b5.zip",
+   "bytesRead": 69648,
    "readOn": "2026-09-26"
   }
  }
