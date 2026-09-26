@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T22:20:51+00:00",
+ "generatedAt": "2026-09-26T22:31:27+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7461,6 +7461,36 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-checkboxes-that-are-real/158d761d047cdb8ee45536834757e55ee111b577f141a27233fadd625afd10d6.zip",
    "bytesRead": 52080,
+   "readOn": "2026-09-26"
+  },
+  "code-c292-pdf-form-scripting-security-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c292-pdf-form-scripting-security-audit/1176fb36d8a532cbe72ad325982453e7cc7961c3f25d6f06f1086bdbf363c729.zip",
+   "bytesRead": 82381,
+   "readOn": "2026-09-26"
+  },
+  "code-c299-deck-export-handoff-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c299-deck-export-handoff-audit/97241f5ef90b7f25cb3d8e220e4132117ade8bd48f41ed35d4ff3bb8eb2fa1c4.zip",
+   "bytesRead": 74942,
+   "readOn": "2026-09-26"
+  },
+  "sci-b21-g11-particulate-concentration-variance": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b21-g11-particulate-concentration-variance/ff4e24d661175bc40a6ccd59fab81b3a796833ca5a181c3851fec08f14a1de8f.zip",
+   "bytesRead": 100041,
    "readOn": "2026-09-26"
   }
  }
