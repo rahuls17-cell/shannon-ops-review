@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T23:20:50+00:00",
+ "generatedAt": "2026-09-26T23:30:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7573,6 +7573,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-outbound-tracker-dictionary/d3dc8cabd7fbc786986deaca74480de151035266e6945e3982f0dc26ac10607c.zip",
    "bytesRead": 48094,
+   "readOn": "2026-09-26"
+  },
+  "tech-mg-it-b10-a5-mic-modelling-feature-matrix-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b10-a5-mic-modelling-feature-matrix-audit/a9dd181ac17e71177d7a57ca9384426fc8ffdd314b1e76997edf60a12d34706a.zip",
+   "bytesRead": 79001,
    "readOn": "2026-09-26"
   }
  }
