@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-26T16:01:23+00:00",
+ "generatedAt": "2026-09-26T16:10:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -6519,6 +6519,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-ten-fattest-files-that-all-weigh-the-same/984acef0e1ddc0a22b4d7c2abab6e23e7a8dae999fe7e8be32df7e234c1934ba.zip",
    "bytesRead": 61969,
+   "readOn": "2026-09-26"
+  },
+  "fin-b47-a6-debt-avalanche-payoff-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b47-a6-debt-avalanche-payoff-plan/3a2caa8fb396b96689008e6951c27082580973cef0309460b7681ec40c8b7100.zip",
+   "bytesRead": 72104,
+   "readOn": "2026-09-26"
+  },
+  "tech-b51-t3-mini-pc-nvme-upgrade-compatibility-shortlist-v2": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t3-mini-pc-nvme-upgrade-compatibility-shortlist-v2/f88ec023d7a5051dcab753ea0dea40c7c38f5c256ef1fa15307c032174de3cdf.zip",
+   "bytesRead": 80050,
    "readOn": "2026-09-26"
   }
  }
