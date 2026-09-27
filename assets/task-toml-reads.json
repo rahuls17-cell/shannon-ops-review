@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T08:20:51+00:00",
+ "generatedAt": "2026-09-27T09:30:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8161,6 +8161,16 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-path-is-not-the-coverage/e6e000c26cbd042aad820b7b4e947da68248701e717bc2bbf9f5d154f9314003.zip",
    "bytesRead": 58576,
+   "readOn": "2026-09-27"
+  },
+  "health-h101-psa-flare-trigger-audit-6ecacd-v1-sna-ucfp": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h101-psa-flare-trigger-audit-6ecacd-v1-sna-ucfp/cfe628d525544d39b8e91bbab4c683c968c7d1a347fdc02e5f903b74b91a8f76.zip",
+   "bytesRead": 88184,
    "readOn": "2026-09-27"
   }
  }
