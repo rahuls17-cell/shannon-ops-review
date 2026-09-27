@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T05:50:53+00:00",
+ "generatedAt": "2026-09-27T06:00:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7995,6 +7995,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/priorities-board-against-the-updates-20260920T063930Z-1-001/5ff48e8293185b9a8a69699e51be8b2efbbfb2bd4a981a1500c22de954358177.zip",
    "bytesRead": 57817,
+   "readOn": "2026-09-27"
+  },
+  "gen-g982-render-change-order-revision-audit-HARDENED-V20-20260926": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g982-render-change-order-revision-audit-HARDENED-V20-20260926/18911e3996fbb4ba6e1f14fe06559e194ac9d08566091e98e272f5c17bc07d6e.zip",
+   "bytesRead": 82612,
+   "readOn": "2026-09-27"
+  },
+  "health-tdt11-a6-jump-progression-block-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a6-jump-progression-block-plan/4f3140a90fe6b062b8905c8bf8c4834117c9bf121917c97d1adb22a0d1cdd44b.zip",
+   "bytesRead": 87810,
    "readOn": "2026-09-27"
   }
  }
