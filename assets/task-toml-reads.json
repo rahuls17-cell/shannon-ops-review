@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T03:20:53+00:00",
+ "generatedAt": "2026-09-27T03:30:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7801,6 +7801,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-weeks-general-went-quiet/5a6931445cd67e12bcb23a645e66154432f2fe8b67e5a7fee8fdcf42deecac2e.zip",
    "bytesRead": 45639,
+   "readOn": "2026-09-27"
+  },
+  "gen-g770-lender-outreach-engagement-tier-audit-Q-6a9e4d-v2-sna-sxkm": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g770-lender-outreach-engagement-tier-audit-Q-6a9e4d-v2-sna-sxkm/f7a9b525300fcd76acd6fa64e7967efb2295f12fa62f4246d99a2f7c236064a2.zip",
+   "bytesRead": 118250,
+   "readOn": "2026-09-27"
+  },
+  "sci-b21-g12-paper-novelty-claim-audit-v2": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b21-g12-paper-novelty-claim-audit-v2/a064ccd2a58e934503a322d5827e4c61dc69506e69c9aced7da3126beb7b675a.zip",
+   "bytesRead": 71952,
    "readOn": "2026-09-27"
   }
  }
