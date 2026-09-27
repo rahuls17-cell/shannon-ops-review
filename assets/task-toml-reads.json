@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T06:40:49+00:00",
+ "generatedAt": "2026-09-27T07:10:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8113,6 +8113,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-standing-meetings-and-who-owes-a-yes/ef012e9f248a060dc7647084f0a2422c551d0c2522e183e9451fc1f5162ef903.zip",
    "bytesRead": 54327,
+   "readOn": "2026-09-27"
+  },
+  "the-empty-tabs-in-my-trackers": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-empty-tabs-in-my-trackers/8d017e25ffc51ce381c13f361dbae2915d82ddc673757e214fd224d61ac53a71.zip",
+   "bytesRead": 54340,
+   "readOn": "2026-09-27"
+  },
+  "the-five-quiet-corners": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-five-quiet-corners/3e8cceb67569ffb6b68257cefc4956705880e3dfcfd233c38bcca2879b108e14.zip",
+   "bytesRead": 51523,
+   "readOn": "2026-09-27"
+  },
+  "the-work-that-is-actually-blocked": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-work-that-is-actually-blocked/098d196e7b2fb62f2230a3e100c0831037afdda24a846dcef5517a978759c03d.zip",
+   "bytesRead": 46009,
    "readOn": "2026-09-27"
   }
  }
