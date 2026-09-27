@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T02:40:51+00:00",
+ "generatedAt": "2026-09-27T02:50:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7769,6 +7769,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h37-waiting-time-clock__3_-11f213-v15-sna-cpyj/0a7a7d347a6bc0355dbc0d4249534c27fc541ea431c1f30694f0789ad5a16e0f.zip",
    "bytesRead": 91598,
+   "readOn": "2026-09-27"
+  },
+  "code-c302-partner-badge-asset-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c302-partner-badge-asset-audit/ae47e5bc70ed32f685b2ebb2fa37d94427cfff23beecfef5bc2a5c283e6ac9ff.zip",
+   "bytesRead": 75230,
    "readOn": "2026-09-27"
   }
  }
