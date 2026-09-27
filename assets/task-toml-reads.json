@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T05:30:55+00:00",
+ "generatedAt": "2026-09-27T05:50:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7983,6 +7983,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-prds-intake-by-year/3880dc9d13341fca367366ee39e260b9267e25872bdf51571f158338260b1c8d.zip",
    "bytesRead": 46992,
+   "readOn": "2026-09-27"
+  },
+  "priorities-board-against-the-updates-20260920T063930Z-1-001": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/priorities-board-against-the-updates-20260920T063930Z-1-001/5ff48e8293185b9a8a69699e51be8b2efbbfb2bd4a981a1500c22de954358177.zip",
+   "bytesRead": 57817,
    "readOn": "2026-09-27"
   }
  }
