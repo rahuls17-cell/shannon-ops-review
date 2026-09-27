@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T05:20:59+00:00",
+ "generatedAt": "2026-09-27T05:30:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7951,6 +7951,38 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101455/e979670774f16762fecb3ee7e193351d027cda52a6ae6ab4a73714f730ad607e.zip",
    "bytesRead": 41343,
+   "readOn": "2026-09-27"
+  },
+  "fin-f28-provision-recognition-b71b92-v1-sna-ybmd": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-f28-provision-recognition-b71b92-v1-sna-ybmd/80e68ea972d341f454ca6c45f4c7ea92cdb5b7f0dfe9c749073c0f839cae006a.zip",
+   "bytesRead": 98880,
+   "readOn": "2026-09-27"
+  },
+  "health-tdt7-a2-pull-day-session-time-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt7-a2-pull-day-session-time-ledger/30cad9962c6112c9e078709e6a26ea89a6bdf44c6e8e19f8843351184d8d5e9e.zip",
+   "bytesRead": 102049,
+   "readOn": "2026-09-27"
+  },
+  "the-prds-intake-by-year": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-prds-intake-by-year/3880dc9d13341fca367366ee39e260b9267e25872bdf51571f158338260b1c8d.zip",
+   "bytesRead": 46992,
    "readOn": "2026-09-27"
   }
  }
