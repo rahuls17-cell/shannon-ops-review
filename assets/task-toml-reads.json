@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T01:21:22+00:00",
+ "generatedAt": "2026-09-27T01:30:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7697,6 +7697,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g918-fop-lodge-campaign-badge-title-audit-df2d5d-v7-sna-jqoz/23788da196b6724b16623883d96ea8c8a13e109e3b642027390088b18b9d720d.zip",
    "bytesRead": 94516,
+   "readOn": "2026-09-27"
+  },
+  "bus-b44-b1-vehicle-import-duty-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b1-vehicle-import-duty-adjudication/84452d15465bafdf1b49b0783b1487333e7d06ed5fdb15a085b1d654ccd30ff5.zip",
+   "bytesRead": 70734,
+   "readOn": "2026-09-27"
+  },
+  "bus-b49-b5-reunion-group-post-event-fact-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:0f5b26b9518d002b6173fd61daad821fa340635ebfec5bba471013f9ca114579",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b49-b5-reunion-group-post-event-fact-reconciliation/0d610205c22c04f888e4467d88a5dd9565a2c77a0b9e64e74ccff8cb0bf6c5c5.zip",
+   "bytesRead": 123123,
+   "readOn": "2026-09-27"
+  },
+  "which-sender-repeats-itself": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-sender-repeats-itself/c0a842fb1ea0c4967f2ca41f2fb48ee26e26ea6a41a5ef2934ec025e032c1683.zip",
+   "bytesRead": 47201,
    "readOn": "2026-09-27"
   }
  }
