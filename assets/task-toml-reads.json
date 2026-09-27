@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T12:51:25+00:00",
+ "generatedAt": "2026-09-27T13:00:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8259,6 +8259,50 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-i-kept-going-back-to/a7d442a3aa7c184c0ba3ec68540b21930e6c41df6812d11ac909c848547f1ad1.zip",
    "bytesRead": 50754,
+   "readOn": "2026-09-27"
+  },
+  "ASTR_101141": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101141/42bb1260f8ba1d725fe4bf0a1db4a0d6ee573a0cd6ecdc4dd8bcd83375bd25fe.zip",
+   "bytesRead": 44071,
+   "readOn": "2026-09-27"
+  },
+  "edu-sc09-b8-self-monitoring-items": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc09-b8-self-monitoring-items/b127e37e6e9317682e209873ef883fe22efc0cb0661e8f6fd307388d31490c44.zip",
+   "bytesRead": 63510,
+   "readOn": "2026-09-27"
+  },
+  "four-things-are-moving": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/four-things-are-moving/e9bf5dc9e31aea6ee9c3b95bb2f60162d00ae54c222aa61350dd9a463a707779.zip",
+   "bytesRead": 49676,
+   "readOn": "2026-09-27"
+  },
+  "writing-sc05-a10-slide-content-transform": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-a10-slide-content-transform/86b0b4b94214d5275679db12bf273870a13ac68d91a891059ac49dda4f2c50e5.zip",
+   "bytesRead": 67313,
    "readOn": "2026-09-27"
   }
  }
