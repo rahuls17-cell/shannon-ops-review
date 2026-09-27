@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T01:50:51+00:00",
+ "generatedAt": "2026-09-27T02:10:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7739,6 +7739,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b20-rfp-shortlist-screening/b771b19d94296a49f488708955c9f4571ab15018e1bdbe4f1712a47bb4bb107d.zip",
    "bytesRead": 95016,
+   "readOn": "2026-09-27"
+  },
+  "gen-sc06-b10-well-gantry-cut-list": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-sc06-b10-well-gantry-cut-list/1a06a77aaed425724b77c536877f1822ea13ba447ebbb0a3de9868650ab6ece8.zip",
+   "bytesRead": 87775,
    "readOn": "2026-09-27"
   }
  }
