@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T00:00:52+00:00",
+ "generatedAt": "2026-09-27T00:21:33+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7635,6 +7635,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b54-b7-dtf-transfer-supplier-cost-comparison/b4b480d714d8025baee3ef6a79ec1723e114e41995a9fece7ceaaa0567163fed.zip",
    "bytesRead": 120952,
+   "readOn": "2026-09-27"
+  },
+  "nine-approvals-that-flagged-it-anyway": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nine-approvals-that-flagged-it-anyway/efec4526a52651deac75146a4fb239f8af646e52a0b98642120af556afd94aee.zip",
+   "bytesRead": 51811,
    "readOn": "2026-09-27"
   }
  }
