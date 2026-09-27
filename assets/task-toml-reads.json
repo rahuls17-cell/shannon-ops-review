@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T04:40:52+00:00",
+ "generatedAt": "2026-09-27T04:50:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7887,6 +7887,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/seventeen-unsized-on-the-worst-project/215c518a213a6e76659043995d62eaa58b936f98775220a75cc3bb1914a24e5b.zip",
    "bytesRead": 58738,
+   "readOn": "2026-09-27"
+  },
+  "bus-b66-b4-project-budget-variance-attribution": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b66-b4-project-budget-variance-attribution/2420f99cbb10ebb6bef2fd606565c29c4546dfede2f8e0692bedef8e3f199048.zip",
+   "bytesRead": 134022,
    "readOn": "2026-09-27"
   }
  }
