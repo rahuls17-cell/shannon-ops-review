@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T00:30:51+00:00",
+ "generatedAt": "2026-09-27T01:10:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7677,6 +7677,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-sc06-b5-imputation-figures/6bbacfd5e93eee9360bc9a5246945ba95db17b6990a83251dd0ff91df72e7e4b.zip",
    "bytesRead": 95277,
+   "readOn": "2026-09-27"
+  },
+  "health-tdt3-a7-matrix-reasoning-norm-percentile-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt3-a7-matrix-reasoning-norm-percentile-adjudication/e81c4796b345b7f741161167a01bdcb5b3227a45a89a62f45d37a59aa6025a11.zip",
+   "bytesRead": 140368,
    "readOn": "2026-09-27"
   }
  }
