@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T12:31:42+00:00",
+ "generatedAt": "2026-09-27T12:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8223,6 +8223,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b37-l20-vote-projection-recomputation-answer-semantic-fairness-fix-final-20260927T124930-IST/627fbb138bfaecf411f00a0d3a1c0245db68b907b0b072e32f5c73fdd38b57c0.zip",
    "bytesRead": 117672,
+   "readOn": "2026-09-27"
+  },
+  "every-post-is-in-here-twice": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/every-post-is-in-here-twice/b08f1b8e345bccbee91cdb0d02387f11fc7fd530e2dd940b6a035873cb77d519.zip",
+   "bytesRead": 46457,
    "readOn": "2026-09-27"
   }
  }
