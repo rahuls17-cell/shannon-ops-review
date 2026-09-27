@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T09:30:52+00:00",
+ "generatedAt": "2026-09-27T09:50:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8171,6 +8171,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h101-psa-flare-trigger-audit-6ecacd-v1-sna-ucfp/cfe628d525544d39b8e91bbab4c683c968c7d1a347fdc02e5f903b74b91a8f76.zip",
    "bytesRead": 88184,
+   "readOn": "2026-09-27"
+  },
+  "bus-b49-b5-resume-audit-finding-normalisation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b49-b5-resume-audit-finding-normalisation/387b985a87c4dbb4250338839cd9b0ef095a03a1bad444bc9013673bb3801022.zip",
+   "bytesRead": 72671,
    "readOn": "2026-09-27"
   }
  }
