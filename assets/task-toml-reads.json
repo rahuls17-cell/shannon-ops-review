@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T13:31:07+00:00",
+ "generatedAt": "2026-09-27T13:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8313,6 +8313,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sch-b2-ncea-derived-grade-study-timetable/14d5cd23406199ebba2477e9445f10d2d0e59b4862ed2eeda354486a6d517cc5.zip",
    "bytesRead": 70827,
+   "readOn": "2026-09-27"
+  },
+  "is-random-earning-its-place": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/is-random-earning-its-place/8772036e411b99039de476f55a679ee57b189d8ab55585c68f264a8b7fbcf500.zip",
+   "bytesRead": 48124,
    "readOn": "2026-09-27"
   }
  }
