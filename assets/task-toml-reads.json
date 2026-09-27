@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T02:10:53+00:00",
+ "generatedAt": "2026-09-27T02:30:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7749,6 +7749,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-sc06-b10-well-gantry-cut-list/1a06a77aaed425724b77c536877f1822ea13ba447ebbb0a3de9868650ab6ece8.zip",
    "bytesRead": 87775,
+   "readOn": "2026-09-27"
+  },
+  "gen-g64-airline-fareclass-benefits-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g64-airline-fareclass-benefits-audit/ebb8d87e50ad3fc5db9432533e4b8017f12f2a38cda7883f6dbcf3105a24c384.zip",
+   "bytesRead": 69732,
    "readOn": "2026-09-27"
   }
  }
