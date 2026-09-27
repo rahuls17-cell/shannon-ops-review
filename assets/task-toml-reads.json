@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T04:50:51+00:00",
+ "generatedAt": "2026-09-27T05:00:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7897,6 +7897,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b66-b4-project-budget-variance-attribution/2420f99cbb10ebb6bef2fd606565c29c4546dfede2f8e0692bedef8e3f199048.zip",
    "bytesRead": 134022,
+   "readOn": "2026-09-27"
+  },
+  "bus-b19-b4-offer-policy-contradiction-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b19-b4-offer-policy-contradiction-audit/952ad88e14a1ec7c854e7e24154a8a1323c587b394a6f3d8c286670802a49666.zip",
+   "bytesRead": 76536,
+   "readOn": "2026-09-27"
+  },
+  "the-lk-copy-safe-to-clear": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-lk-copy-safe-to-clear/b38b742016919df5535af9bb5c4d504c612684a3453eb85db844c8e2befa0b5f.zip",
+   "bytesRead": 52325,
    "readOn": "2026-09-27"
   }
  }
