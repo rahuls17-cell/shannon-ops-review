@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T07:10:51+00:00",
+ "generatedAt": "2026-09-27T08:20:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8149,6 +8149,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-work-that-is-actually-blocked/098d196e7b2fb62f2230a3e100c0831037afdda24a846dcef5517a978759c03d.zip",
    "bytesRead": 46009,
+   "readOn": "2026-09-27"
+  },
+  "the-path-is-not-the-coverage": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-path-is-not-the-coverage/e6e000c26cbd042aad820b7b4e947da68248701e717bc2bbf9f5d154f9314003.zip",
+   "bytesRead": 58576,
    "readOn": "2026-09-27"
   }
  }
