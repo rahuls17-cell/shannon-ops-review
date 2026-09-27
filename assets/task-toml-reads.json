@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T00:21:33+00:00",
+ "generatedAt": "2026-09-27T00:30:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -7647,6 +7647,36 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nine-approvals-that-flagged-it-anyway/efec4526a52651deac75146a4fb239f8af646e52a0b98642120af556afd94aee.zip",
    "bytesRead": 51811,
+   "readOn": "2026-09-27"
+  },
+  "bus-b53-b10-commercial-hvac-maintenance-contract-schedule": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b53-b10-commercial-hvac-maintenance-contract-schedule/23f91771fc7f047f761b775e23d66eae53c06c2b16fe390b6153241f9e78c9a9.zip",
+   "bytesRead": 153332,
+   "readOn": "2026-09-27"
+  },
+  "bus-b53-b9-behavior-primitive-kernel-synthesis": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b53-b9-behavior-primitive-kernel-synthesis/1509d444a0d3f4912c072ef5fcdb2ffd3fa41cbfd363aa1f4fc930a1efc584ae.zip",
+   "bytesRead": 99286,
+   "readOn": "2026-09-27"
+  },
+  "gen-sc06-b5-imputation-figures": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-sc06-b5-imputation-figures/6bbacfd5e93eee9360bc9a5246945ba95db17b6990a83251dd0ff91df72e7e4b.zip",
+   "bytesRead": 95277,
    "readOn": "2026-09-27"
   }
  }
