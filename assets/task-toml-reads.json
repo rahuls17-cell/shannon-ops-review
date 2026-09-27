@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T06:30:52+00:00",
+ "generatedAt": "2026-09-27T06:40:49+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8077,6 +8077,42 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-b52-a8-interview-guide-contents-reconciliation/99792b42ed7fdd57397252eafb5b4414c0b08cbc4b0daa9d0ff0de1f81281dc4.zip",
    "bytesRead": 75784,
+   "readOn": "2026-09-27"
+  },
+  "forty-two-bare-addresses-eight-names": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/forty-two-bare-addresses-eight-names/5b72a1193235f9764b9f601629852b5aafb34c2f6c8143ad74c89054c10433be.zip",
+   "bytesRead": 53897,
+   "readOn": "2026-09-27"
+  },
+  "sixteen-junked-under-a-name-you-know": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sixteen-junked-under-a-name-you-know/ff0caf3734d63a3fabb03a5f5e8a73b9cf068248252228fee4b852fe70f244c3.zip",
+   "bytesRead": 60716,
+   "readOn": "2026-09-27"
+  },
+  "the-standing-meetings-and-who-owes-a-yes": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-standing-meetings-and-who-owes-a-yes/ef012e9f248a060dc7647084f0a2422c551d0c2522e183e9451fc1f5162ef903.zip",
+   "bytesRead": 54327,
    "readOn": "2026-09-27"
   }
  }
