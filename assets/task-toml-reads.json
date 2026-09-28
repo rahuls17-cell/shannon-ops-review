@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T19:51:03+00:00",
+ "generatedAt": "2026-09-28T20:01:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9950,6 +9950,30 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t3-monitor-feed-output-plan/3a8a4dc1dcc900e99ff5f1d13500ee0179b0bc9247488fca8604de6f32dbe03f.zip",
    "bytesRead": 36311,
+   "readOn": "2026-09-28"
+  },
+  "moving-the-daily-standup": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/moving-the-daily-standup/6dc6110503e646c5f3e670c9e4200d9470142fb4962117817a06482bfcf7531d.zip",
+   "bytesRead": 55754,
+   "readOn": "2026-09-28"
+  },
+  "which-fax-line-rings-most": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-fax-line-rings-most/87751448df4e9b8ed935848bf70b614bd42e27ec8bfcd8209bd3d9c8e990b282.zip",
+   "bytesRead": 49854,
    "readOn": "2026-09-28"
   }
  }
