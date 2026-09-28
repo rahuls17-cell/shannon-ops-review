@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T10:31:18+00:00",
+ "generatedAt": "2026-09-28T10:51:21+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9135,6 +9135,48 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b24-leadership-evidence-reading-guide/8cadf18a4f089cb51b9d80c97d8cfc908b8e9dd877e58390bb786eb5daaa9d75.zip",
    "bytesRead": 79725,
+   "readOn": "2026-09-28"
+  },
+  "all-i-can-do-is-watch": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/all-i-can-do-is-watch/f5a6e4dfb2eef0988e75f0d73889e56afb17e4e9fedfe5254f305091b341b740.zip",
+   "bytesRead": 46975,
+   "readOn": "2026-09-28"
+  },
+  "edu-s1-a2-social-story-milestone-coverage": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-s1-a2-social-story-milestone-coverage/ddabb6747ba277887a1c6f7ebf58a2510e5dee73461ffff4d97acd83681aba1e.zip",
+   "bytesRead": 67309,
+   "readOn": "2026-09-28"
+  },
+  "edu-sca-b16-sports-kit-order-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b16-sports-kit-order-reconciliation/1c029bbd9ce20a3608959f9f1977fe4da81f0fc5ea6512fe1eca04903813a119.zip",
+   "bytesRead": 76275,
+   "readOn": "2026-09-28"
+  },
+  "fin-b43-a6-budget-ledger-account-review": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b43-a6-budget-ledger-account-review/700d39677d1e87ac07d52cdb9d7b19794da8a67dea07018f2ea2647335cdcdd9.zip",
+   "bytesRead": 65105,
    "readOn": "2026-09-28"
   }
  }
