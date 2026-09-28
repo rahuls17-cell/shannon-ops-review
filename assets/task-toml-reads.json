@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T19:41:06+00:00",
+ "generatedAt": "2026-09-28T19:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9920,6 +9920,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h17-antimicrobial-duration-review/9cc1bc8bc54e3e3ded0684dd9fe12d4e3b4b6ef8a27df683b1642a97d5d9c994.zip",
    "bytesRead": 79982,
+   "readOn": "2026-09-28"
+  },
+  "edu-mg-edu-b16-a1-reading-list-citation-handback": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-mg-edu-b16-a1-reading-list-citation-handback/d83626de60af087f372bc46ef763e3ed9ba9fa4885bed60bd85cb859ae4abe90.zip",
+   "bytesRead": 39233,
+   "readOn": "2026-09-28"
+  },
+  "gen-g1186-subscription-tier-marketing-claim-audit-96fd64-v17-sna-uysu": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1186-subscription-tier-marketing-claim-audit-96fd64-v17-sna-uysu/d05465c3616e6dfa72f33f1f479501e1127489f9a7570612afcd4cae6b990d5f.zip",
+   "bytesRead": 90619,
+   "readOn": "2026-09-28"
+  },
+  "tech-b53-t3-monitor-feed-output-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t3-monitor-feed-output-plan/3a8a4dc1dcc900e99ff5f1d13500ee0179b0bc9247488fca8604de6f32dbe03f.zip",
+   "bytesRead": 36311,
    "readOn": "2026-09-28"
   }
  }
