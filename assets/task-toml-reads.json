@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T08:21:14+00:00",
+ "generatedAt": "2026-09-28T08:30:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8861,6 +8861,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b50-a9-subject-revalidation-reconciliation/a382ef88a1080c5e5ac900496d634bbe297dae0ffcb3248e9638fbd938a97523.zip",
    "bytesRead": 97101,
+   "readOn": "2026-09-28"
+  },
+  "bus-b58-t7-investor-deal-lead-attribution": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b58-t7-investor-deal-lead-attribution/a7f05b044d5ce11ca5c17c1217afa0081ba43ce8ca40c68d773234c7ba0b5ede.zip",
+   "bytesRead": 69502,
+   "readOn": "2026-09-28"
+  },
+  "edu-b50-e4-pd-catalogue-normalisation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b50-e4-pd-catalogue-normalisation/4a23b0e2d7fe8751aebd60f6be0c1e20b855937833408f64cd349993a02035f6.zip",
+   "bytesRead": 68196,
+   "readOn": "2026-09-28"
+  },
+  "edu-sc07-a9-cracked-the-system-rulings": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc07-a9-cracked-the-system-rulings/8d13238743cfc8fcc9f13ecbc80aa54c1c2280fff64a3d5f88c874e46ad02669.zip",
+   "bytesRead": 147690,
    "readOn": "2026-09-28"
   }
  }
