@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T02:20:52+00:00",
+ "generatedAt": "2026-09-28T02:40:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8439,6 +8439,40 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b20-b1-recruiter-cancellation-variance/8970e99e25e4a700e4be0b6373350473e05e88012b2e664cc0eb3e02fdbd132c.zip",
    "bytesRead": 78643,
+   "readOn": "2026-09-28"
+  },
+  "clinic-days-i-lost": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinic-days-i-lost/8b3f5b0604cd70ebfc42373a3e1098b4fdaa7098b49c498cb325f3b4d330baaa.zip",
+   "bytesRead": 49160,
+   "readOn": "2026-09-28"
+  },
+  "code-c325-data-source-refresh-cadence-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c325-data-source-refresh-cadence-audit/1cfbb47ff0990dff2df22522ea6eb9b2d5b0e2dd98c1d9a8eae91fac5ff0afd5.zip",
+   "bytesRead": 83454,
+   "readOn": "2026-09-28"
+  },
+  "the-roadmap-still-on-track": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-roadmap-still-on-track/ffeb5a943542dce8bb550e0dbe47753b7c99024567485b370e13c9cf48e43d5b.zip",
+   "bytesRead": 44896,
    "readOn": "2026-09-28"
   }
  }
