@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T12:51:36+00:00",
+ "generatedAt": "2026-09-28T13:11:38+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9560,6 +9560,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc07-a6-ice-cap-bibliography/ae2ace44d63878b2779876b5cfddeef226f913ebb906476ab0a5b18937dad20e.zip",
    "bytesRead": 96193,
+   "readOn": "2026-09-28"
+  },
+  "bus-b108-b19-picture-light-spec-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b108-b19-picture-light-spec-reconciliation/54de5685c7306555f526e8511fc81c3facf0e548bc36b9e416f45aba378e920f.zip",
+   "bytesRead": 83944,
+   "readOn": "2026-09-28"
+  },
+  "edu-sch-a2-l1-l2-concept-attribution-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sch-a2-l1-l2-concept-attribution-audit/d9c1c9bb7cf45f13c7936365cee3479a3c1109f251a62f7237cfa11968d7a44f.zip",
+   "bytesRead": 71176,
    "readOn": "2026-09-28"
   }
  }
