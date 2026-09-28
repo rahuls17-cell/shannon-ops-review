@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T03:40:51+00:00",
+ "generatedAt": "2026-09-28T04:20:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8513,6 +8513,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g526-wnt-pathway-component-classification-au-27a52a-v2-sna-yoxu/11c62ebf4e92f7eb0f7248b75f61e5089c9a16a5055eb645e3125864495dc53a.zip",
    "bytesRead": 86975,
+   "readOn": "2026-09-28"
+  },
+  "edu-sca-b30-funded-masters-credit-threshold-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b30-funded-masters-credit-threshold-ledger/68dfea36ad2958f779460fa7145b68b6adb5f1530035af3c3f6bd0f973df36d8.zip",
+   "bytesRead": 74061,
    "readOn": "2026-09-28"
   }
  }
