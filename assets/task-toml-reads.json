@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T21:00:59+00:00",
+ "generatedAt": "2026-09-28T21:21:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10096,6 +10096,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a13-vision-therapy-evidence-transform/68ab3bf5d2fc63161e77800ba8ead1b842489a9125a3b11dca1b983d14b35901.zip",
    "bytesRead": 90996,
+   "readOn": "2026-09-28"
+  },
+  "edu-sca-b31-seminar-video-relevance-match-v2": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b31-seminar-video-relevance-match-v2/29df2ce06ffbe85c1c906e9d81ea9558aee41d9b99dc62e13981b0170a2fffc6.zip",
+   "bytesRead": 73515,
+   "readOn": "2026-09-28"
+  },
+  "health-tdt8-a5-cytometer-detector-slot-assignment": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt8-a5-cytometer-detector-slot-assignment/1b018dee30e26095a62110d952ad5ac08e70602b2452dae265334139b032fb6c.zip",
+   "bytesRead": 74288,
    "readOn": "2026-09-28"
   }
  }
