@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T23:20:57+00:00",
+ "generatedAt": "2026-09-28T23:30:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10345,6 +10345,43 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc07-b6-introduction-screening/cef5506704797c153fd07940404ec241951738684567cc2f48ee99e2926a2806.zip",
    "bytesRead": 126470,
+   "readOn": "2026-09-28"
+  },
+  "edu-b21-g19-worksheet-answer-key-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b21-g19-worksheet-answer-key-recompute/1835059b745be214250d54744aaa51bcc4efe80f6fbc053ad0acb9522238697e.zip",
+   "bytesRead": 115633,
+   "readOn": "2026-09-28"
+  },
+  "file-new-data-request-for-slack-data-intake-audit-trail-no-warehouse-t": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/file-new-data-request-for-slack-data-intake-audit-trail-no-warehouse-t/cba2b1a9cd4e3d6d66f74433c99407ac1590f649b12afb984337444201041ecd.zip",
+   "bytesRead": 60554,
+   "readOn": "2026-09-28"
+  },
+  "four-labels-and-thirty-one-stickers": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/four-labels-and-thirty-one-stickers/3107b6db58eeb9cefae1f3767c6b50daa6a50a9918de2e14fe7bb73dc31f9b6b.zip",
+   "bytesRead": 51610,
    "readOn": "2026-09-28"
   }
  }
