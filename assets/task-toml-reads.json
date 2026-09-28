@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T21:40:59+00:00",
+ "generatedAt": "2026-09-28T21:50:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10157,6 +10157,28 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-many-people-i-chased/265e9ae8ba2c36f488462c093c5678e919dfe85c7bac7e70b5a8e193d61c6cd2.zip",
    "bytesRead": 52872,
+   "readOn": "2026-09-28"
+  },
+  "ASTR_101218": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101218/d1d48f074278ddd7df5bb6458534b2236f68f35a5d054932e3a10b24f05f8f78.zip",
+   "bytesRead": 41535,
+   "readOn": "2026-09-28"
+  },
+  "gen-g368-assignment-submission-compliance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g368-assignment-submission-compliance-audit/86a50fe41dc52683c69ab4cd9c96437158cc202cd494cd11b05a10cbc97b5bb7.zip",
+   "bytesRead": 82297,
    "readOn": "2026-09-28"
   }
  }
