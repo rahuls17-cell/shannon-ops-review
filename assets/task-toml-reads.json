@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T03:00:53+00:00",
+ "generatedAt": "2026-09-28T03:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8493,6 +8493,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g88-waste-manifest-reconcile-d8726e-v2-sna-vszl/324aa771d19623383c6663fe6db4d4b3c3c0b4e9111b5e59c6a3e3792a7f6e14.zip",
    "bytesRead": 102827,
+   "readOn": "2026-09-28"
+  },
+  "gen-g1166-executive-lexicon-compliance-audit-5-f96fcc-v8-sna-altq": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1166-executive-lexicon-compliance-audit-5-f96fcc-v8-sna-altq/03cb552ce7bcfab209c9ee4f0b1668333f589fb0011d70a8116f59a987058252.zip",
+   "bytesRead": 89148,
+   "readOn": "2026-09-28"
+  },
+  "gen-g526-wnt-pathway-component-classification-au-27a52a-v2-sna-yoxu": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g526-wnt-pathway-component-classification-au-27a52a-v2-sna-yoxu/11c62ebf4e92f7eb0f7248b75f61e5089c9a16a5055eb645e3125864495dc53a.zip",
+   "bytesRead": 86975,
    "readOn": "2026-09-28"
   }
  }
