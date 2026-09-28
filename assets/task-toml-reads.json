@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T07:10:53+00:00",
+ "generatedAt": "2026-09-28T07:31:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8745,6 +8745,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b10-a6-newsletter-issue-launch-audit/82c9aff9da238f912b5b136c6d1a8b400e9e0ba6bdae44aef0f5e1f69479d45e.zip",
    "bytesRead": 117087,
+   "readOn": "2026-09-28"
+  },
+  "career-b49-l7-eeo-competency-evidence-coverage": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/career-b49-l7-eeo-competency-evidence-coverage/ef84d12c3200cb0836e33a797598c763a399a82910503c41aeed9ec73797e1c3.zip",
+   "bytesRead": 106612,
    "readOn": "2026-09-28"
   }
  }
