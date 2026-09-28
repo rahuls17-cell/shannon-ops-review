@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T23:10:55+00:00",
+ "generatedAt": "2026-09-28T23:20:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10305,6 +10305,46 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101223/ad396aaef1216ca9c6c5fc64e2748a84efc21af11af7bc8819a78ba3ef9d948e.zip",
    "bytesRead": 44332,
+   "readOn": "2026-09-28"
+  },
+  "bus-b23-b14-fintech-startup-target-list": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b14-fintech-startup-target-list/872e9c33ba4c25bdabb9b8577b6e360e20857bde3f77c09a24002a422c3ccb7a.zip",
+   "bytesRead": 180483,
+   "readOn": "2026-09-28"
+  },
+  "bus-b56-a5-campaign-budget-allocation-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b56-a5-campaign-budget-allocation-plan/1e6fd1d4efc69a8217456948779beb531c9de9682ce8cfb5613023630083a4ba.zip",
+   "bytesRead": 101294,
+   "readOn": "2026-09-28"
+  },
+  "career-b49-l8-nominee-stream-eligibility-assessment": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/career-b49-l8-nominee-stream-eligibility-assessment/29a6ef8b1066e29aee7e1a6a23a5bfb2f8f763e29318027e7e863e7647702ec3.zip",
+   "bytesRead": 70707,
+   "readOn": "2026-09-28"
+  },
+  "edu-sc07-b6-introduction-screening": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc07-b6-introduction-screening/cef5506704797c153fd07940404ec241951738684567cc2f48ee99e2926a2806.zip",
+   "bytesRead": 126470,
    "readOn": "2026-09-28"
   }
  }
