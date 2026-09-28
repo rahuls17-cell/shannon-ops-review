@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T09:01:18+00:00",
+ "generatedAt": "2026-09-28T09:11:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8985,6 +8985,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b54-b10-training-doc-step-renumbering/5bafbf32e0cde8b3d234a6ff93090f0050fd6736cf43021ef4788623c5a0f95a.zip",
    "bytesRead": 71794,
+   "readOn": "2026-09-28"
+  },
+  "bus-b53-b8-transformation-programme-action-plan-workbook": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b53-b8-transformation-programme-action-plan-workbook/3b24ef9c2860346836b766c51f1eae4f5e3c1c57a8eff340f3d311a704c3d4c9.zip",
+   "bytesRead": 76575,
    "readOn": "2026-09-28"
   }
  }
