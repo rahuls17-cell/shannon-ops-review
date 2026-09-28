@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T04:50:51+00:00",
+ "generatedAt": "2026-09-28T05:10:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8543,6 +8543,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt9-a8-phase-ladder-session-load-basis/85d3a95d554086aefda591cbef47397d03aaa18b872f2bceb6ab585e03599082.zip",
    "bytesRead": 81032,
+   "readOn": "2026-09-28"
+  },
+  "code-c403-afcfta-competition-protocol-notification-audit-FINAL-V64-FIXED": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c403-afcfta-competition-protocol-notification-audit-FINAL-V64-FIXED/fa3bc3c515a30d3a55c6e2aad436dff6f30aa3d375494527e0670ed143a04f0a.zip",
+   "bytesRead": 101471,
    "readOn": "2026-09-28"
   }
  }
