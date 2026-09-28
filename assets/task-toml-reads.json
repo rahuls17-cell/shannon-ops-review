@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T21:21:03+00:00",
+ "generatedAt": "2026-09-28T21:30:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10116,6 +10116,35 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt8-a5-cytometer-detector-slot-assignment/1b018dee30e26095a62110d952ad5ac08e70602b2452dae265334139b032fb6c.zip",
    "bytesRead": 74288,
+   "readOn": "2026-09-28"
+  },
+  "bill-reserve-window-bounded-1-31-days": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bill-reserve-window-bounded-1-31-days/5c1dc8a28f3bb0c767331f525c4e608de6864ecde451903c682fc6f3b3439b94.zip",
+   "bytesRead": 65448,
+   "readOn": "2026-09-28"
+  },
+  "bus-b58-t5-event-link-attribution": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b58-t5-event-link-attribution/22e90374caa91ee56ca9b83296d4fe37d3b37775d45e9e1ee2935a58393dac98.zip",
+   "bytesRead": 68093,
    "readOn": "2026-09-28"
   }
  }
