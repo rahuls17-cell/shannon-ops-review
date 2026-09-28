@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T12:21:29+00:00",
+ "generatedAt": "2026-09-28T12:31:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9470,6 +9470,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-a6-three-move-classification/4dcfe532bf8bc77b6285b0b0ef8c2ca2b35c7e19195c94553c287830f702a5c8.zip",
    "bytesRead": 68480,
+   "readOn": "2026-09-28"
+  },
+  "bus-b22-b7-solo-offer-portfolio-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b7-solo-offer-portfolio-plan/b08f7f09ac7c763cefd7fd299950abed1067358d03246a866bdbc599b5e8fb40.zip",
+   "bytesRead": 82061,
+   "readOn": "2026-09-28"
+  },
+  "bus-b56-a6-brand-name-availability-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b56-a6-brand-name-availability-reconciliation/e2844744b4a04027a9d62f6106d4ce25eff7f305ce1038e14a835d8b8f739cb6.zip",
+   "bytesRead": 73130,
    "readOn": "2026-09-28"
   }
  }
