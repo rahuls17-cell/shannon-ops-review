@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T07:51:01+00:00",
+ "generatedAt": "2026-09-28T08:01:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8775,6 +8775,50 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt8-a6-home-health-service-line-adjudication/794b04c7aabd0e8a4cce9af3a0c8dd36f5c75b62b1e55b1cc2e9749e80d14b36.zip",
    "bytesRead": 74496,
+   "readOn": "2026-09-28"
+  },
+  "ASTR_101204-v2-final-r5": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101204-v2-final-r5/49db26790cc55d0bbe1890bc72c5376cd3f2ee125c7968ae460ad0153aae49c0.zip",
+   "bytesRead": 48949,
+   "readOn": "2026-09-28"
+  },
+  "bus-b23-b1-crm-drip-enrollment-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b1-crm-drip-enrollment-audit/a4013ad915fee2ab5200a5f19a1ee50801b6f6895a68e662d74307bf211f095f.zip",
+   "bytesRead": 64875,
+   "readOn": "2026-09-28"
+  },
+  "bus-b59-t2-concept-template-order-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b59-t2-concept-template-order-audit/2a6b5a60d388158f06213e72af191e44cf55a16a9d0b7b86c0c9c60b4d97f164.zip",
+   "bytesRead": 80961,
+   "readOn": "2026-09-28"
+  },
+  "the-lead-board-exports-by-group": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-lead-board-exports-by-group/2e4ad1710b182323221fb027e3725e6985d28ff7e215cd9c350f8eaec0919688.zip",
+   "bytesRead": 47276,
    "readOn": "2026-09-28"
   }
  }
