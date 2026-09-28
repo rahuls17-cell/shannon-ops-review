@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T19:11:07+00:00",
+ "generatedAt": "2026-09-28T19:21:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9832,6 +9832,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b38-workplace-nvc-role-play-scheduling/b1e1259477cce06fa7c12df0607d0829d1deb4408388e1f65cbfef162426f66a.zip",
    "bytesRead": 68965,
+   "readOn": "2026-09-28"
+  },
+  "edu-b21-g17-aclp-activity-plan-transform": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b21-g17-aclp-activity-plan-transform/a8238b248408ecd7d1672d57202eadbd7a43373c7f1510d8cba790f94e16d0a1.zip",
+   "bytesRead": 119030,
+   "readOn": "2026-09-28"
+  },
+  "edu-sc07-b1-cad-programme-applications": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc07-b1-cad-programme-applications/0c61bff4726e498063037247492d00813b48f0d23025700fb4db835a0eb3c019.zip",
+   "bytesRead": 107127,
+   "readOn": "2026-09-28"
+  },
+  "the-news-nobody-could-answer": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-news-nobody-could-answer/e5ed1900dc1000b941f7994a8582cfb622ae6f69482ea1631b0c9018a25b6323.zip",
+   "bytesRead": 47725,
    "readOn": "2026-09-28"
   }
  }
