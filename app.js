@@ -430,7 +430,7 @@ function renderSegmentStrip() {
   const keys = ['connector', 'non-connector', 'company'];
   const tiles = keys.map(key => {
     const tasks = rows.filter(row => segmentOf(row.owner, row.connector) === key);
-    const v = verdicts(tasks);
+    const v = {acc: tasks.filter(r => r.state === 'accepted').length, rej: tasks.filter(r => r.state === 'rejected').length};
     const legacy = tasks.filter(r => r.state === 'legacy accepted').length;
     const folk = people.filter(row => personSegments(row).has(key));
     const money = ledger.filter(task => segmentOf(task.email, typeFlag(task.filterType)) === key);
@@ -614,13 +614,13 @@ function renderPayoutLedger() {
     </${filter ? 'button' : 'div'}>`;
   };
   const n = rows.length || 1;
-  const pending = rows.filter(row => row.paymentState === 'Pending').length;
+  const pending = rows.filter(row => row.paymentState === 'Not paid').length;
   const invalid = rows.filter(row => !row.valid).length;
   byId('ledgerStrip').innerHTML =
     cell('ledger tasks', rows.length, payoutLedgerTasks.length, 'slate', null, null, `${fmt(rows.length)} of ${fmt(payoutLedgerTasks.length)} tasks in the ledger match the filters.`) +
     cell('paid', result.paid, n, 'aqua', 'ledgerPayment', 'Paid', 'Paid and itemised against a payment request.') +
     cell('not itemised', result.unitemised, n, 'yellow', 'ledgerPayment', 'Not itemised', 'Paid in a lump that the request did not itemise task by task.') +
-    cell('upcoming', pending, n, 'amber', 'ledgerPayment', 'Pending', 'Accepted, not yet in any payment request.') +
+    cell('no payment yet', pending, n, 'amber', 'ledgerPayment', 'Not paid', 'Tasks of people who have not been paid for anything yet.') +
     cell('valid = 0', invalid, n, 'orange', 'ledgerValidity', 'invalid', 'Accepted rows the tracker marks as not valid; excluded from what is payable.') +
     cell('folded rows', result.duplicateRows, null, 'violet', 'ledgerDuplicates', 'duplicates', 'Source rows repeated for the same task and folded into one line.');
   animateCounts(byId('ledgerStrip'));
@@ -2858,7 +2858,7 @@ function renderHero() {
   summaryHost.querySelectorAll('[data-count=""]').forEach(node => node.removeAttribute('data-count'));
   animateCounts(summaryHost);
   setText('commandOwnership', snapshot.ready
-    ? `${fmt(snapshot.unassigned)} without a roster-linked owner`
+    ? `${fmt(snapshot.unassigned)} folders without a roster-linked owner`
     : '');
 
   const detail = (id, items) => { const node = byId(id); if (node) node.innerHTML = items.filter(Boolean).map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join(''); };
@@ -3391,7 +3391,7 @@ function renderTrainerRows() {
     ? active.map(([id, value]) => `<button type="button" class="chipbtn" data-pclear="${id}"><span>${labels[id]}</span>${esc(shown[value] || value)}<i aria-hidden="true">×</i></button>`).join('') +
       '<button type="button" class="chipbtn is-clear" data-pclear="all">Clear all</button>'
     : `<span class="chips-empty">No filters applied${segment ? ` · ${SEGMENTS[segment]} segment from the top bar` : ''} · click a figure or team above to filter</span>`;
-  setText('payoutPeopleNote', `${fmt(rows.length)} people · ${money(sum(rows, 'paidAmount'))} paid · ${money(sum(rows, 'pendingAmount'))} to be paid · ${fmt(sum(rows, 'last24Accepted'))} accepted in the last 24h`);
+  setText('payoutPeopleNote', `${fmt(rows.length)} roster records · ${money(sum(rows, 'paidAmount'))} paid · ${money(sum(rows, 'pendingAmount'))} to be paid · ${fmt(sum(rows, 'last24Accepted'))} accepted in the last 24h`);
 
   const sorted = [...rows].sort((a, b) => {
     const key = payoutSort.key;
