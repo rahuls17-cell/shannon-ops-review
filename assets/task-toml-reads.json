@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T18:11:02+00:00",
+ "generatedAt": "2026-09-28T18:31:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9738,6 +9738,34 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g292-grazing-cup-design-audit-Error-Fixed-340e7f-v1-sna-irvn/0d62ceac00264e547f8fe84ea5a9438458291dc474a785799380c650d2946030.zip",
    "bytesRead": 168566,
+   "readOn": "2026-09-28"
+  },
+  "health-h9-vaccine-interval-compliance": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h9-vaccine-interval-compliance/4ea2e872323eec467bdf72fb297b8b78fb9136f7d5a7b2cc02719bff60f79284.zip",
+   "bytesRead": 78930,
+   "readOn": "2026-09-28"
+  },
+  "trace-why-zeta-premium-subscription-1332-lapsed-after-dec-25-billing-f": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/trace-why-zeta-premium-subscription-1332-lapsed-after-dec-25-billing-f/d27741f6adc4e47b70becf10e7fe8191bab5b4a6032670f2d62e25d0ef8ad424.zip",
+   "bytesRead": 66690,
    "readOn": "2026-09-28"
   }
  }
