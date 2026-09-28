@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-27T23:40:51+00:00",
+ "generatedAt": "2026-09-28T00:30:54+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8400,6 +8400,16 @@
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1217-thought-leadership-post-scope-style-au-4231bf-v7-sna-iunz/7d23fe9bbb33a219bd53afc1e4088b0c6799fe25d9577ea3a5640845216d6ae2.zip",
    "bytesRead": 96335,
    "readOn": "2026-09-27"
+  },
+  "bus-b56-a2-ipo-signal-grounding-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b56-a2-ipo-signal-grounding-audit/e31c677f5c69729fdc9803f7e7215e7d327d9353ecfcbbbca8edb6165b7d870c.zip",
+   "bytesRead": 88299,
+   "readOn": "2026-09-28"
   }
  }
 }
