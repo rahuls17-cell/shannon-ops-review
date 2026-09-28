@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T08:01:02+00:00",
+ "generatedAt": "2026-09-28T08:11:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8819,6 +8819,38 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-lead-board-exports-by-group/2e4ad1710b182323221fb027e3725e6985d28ff7e215cd9c350f8eaec0919688.zip",
    "bytesRead": 47276,
+   "readOn": "2026-09-28"
+  },
+  "edu-sc07-b5-german-year-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc07-b5-german-year-plan/46c323a2ca2ab15eb3836425c9b20c9b2bd0e7751d50b921c2b0722671531495.zip",
+   "bytesRead": 78672,
+   "readOn": "2026-09-28"
+  },
+  "health-tdt10-a2-lice-formulary-catalogue": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt10-a2-lice-formulary-catalogue/a5328e2ade7f9349f7cd46ce795a4bc82189311794022a3b8437c941a6ed2dc6.zip",
+   "bytesRead": 96055,
+   "readOn": "2026-09-28"
+  },
+  "the-runbook-that-forgot-patient-data": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-runbook-that-forgot-patient-data/810fa29431d4c33c6d088c63b740f0e48b20de17b44f395f58896750ce4c9b63.zip",
+   "bytesRead": 48356,
    "readOn": "2026-09-28"
   }
  }
