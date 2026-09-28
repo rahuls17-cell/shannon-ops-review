@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T06:30:52+00:00",
+ "generatedAt": "2026-09-28T06:40:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8637,6 +8637,30 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g394-cdf-guideline-version-audit-v44-policy-wave-hardened/2a0d0db6ad3643d06ddf42659d9b29dacab0b171431f72a10f55e79b8be3e1bc.zip",
    "bytesRead": 86030,
+   "readOn": "2026-09-28"
+  },
+  "the-last-three-months-by-channel": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-last-three-months-by-channel/30a453159185c4ada23d9837519f1edc5ffcc04d6250fc6283f5c3d1267f45f5.zip",
+   "bytesRead": 47334,
+   "readOn": "2026-09-28"
+  },
+  "the-slowest-ten-all-on-one-board": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-slowest-ten-all-on-one-board/6326575109fc93499da58b0785cdecfaaddde3faed8921bc076e4088aa520825.zip",
+   "bytesRead": 54193,
    "readOn": "2026-09-28"
   }
  }
