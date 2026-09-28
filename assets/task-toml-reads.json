@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T06:50:51+00:00",
+ "generatedAt": "2026-09-28T07:00:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8673,6 +8673,58 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-same-mail-over-and-over/8581862fd05e9435e7e9b0d57065ae16539035b2628110e47d70eac9346f7712.zip",
    "bytesRead": 65380,
+   "readOn": "2026-09-28"
+  },
+  "bus-b22-b6-pest-marketplace-name-screen": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b6-pest-marketplace-name-screen/a828e82572d96f0bc11928c45264398384cf502582f76a9eb3de928f4c81d8e2.zip",
+   "bytesRead": 82664,
+   "readOn": "2026-09-28"
+  },
+  "code-c166-safety-gate-rule-review-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c166-safety-gate-rule-review-audit/f707f7f59da213613e2e35a017d88eca170f1854e324bd9987b9f6f0c2327cd8.zip",
+   "bytesRead": 86100,
+   "readOn": "2026-09-28"
+  },
+  "code-c167-fpga-board-spec-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c167-fpga-board-spec-audit/0bd5e10b3cd45469517ad7a46c286e173b99753dfdc57a6642503dd9f337cfc2.zip",
+   "bytesRead": 75207,
+   "readOn": "2026-09-28"
+  },
+  "code-c186-video-chapter-map-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c186-video-chapter-map-audit/9cc45edd8b969334b3807c377ab67b28d0f1fdcc918e1196391ad8a62ad8c68a.zip",
+   "bytesRead": 79606,
+   "readOn": "2026-09-28"
+  },
+  "twenty-unfiled-features-three-unsized": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/twenty-unfiled-features-three-unsized/89e02284c0e81081d43a6e7e52d71cea6050906d68efa41abf997fa8e432b20b.zip",
+   "bytesRead": 54268,
    "readOn": "2026-09-28"
   }
  }
