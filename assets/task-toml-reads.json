@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T07:00:55+00:00",
+ "generatedAt": "2026-09-28T07:10:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8725,6 +8725,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/twenty-unfiled-features-three-unsized/89e02284c0e81081d43a6e7e52d71cea6050906d68efa41abf997fa8e432b20b.zip",
    "bytesRead": 54268,
+   "readOn": "2026-09-28"
+  },
+  "code-c172-av-takeoff-quantity-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c172-av-takeoff-quantity-audit/eaee1b5438a2bdfdd1cbe53248fcbf43f19991f373a62164deb88aa0e740d34e.zip",
+   "bytesRead": 86909,
+   "readOn": "2026-09-28"
+  },
+  "tech-mg-it-b10-a6-newsletter-issue-launch-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b10-a6-newsletter-issue-launch-audit/82c9aff9da238f912b5b136c6d1a8b400e9e0ba6bdae44aef0f5e1f69479d45e.zip",
+   "bytesRead": 117087,
    "readOn": "2026-09-28"
   }
  }
