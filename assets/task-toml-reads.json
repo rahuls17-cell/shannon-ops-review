@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T08:30:58+00:00",
+ "generatedAt": "2026-09-28T08:41:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8891,6 +8891,68 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc07-a9-cracked-the-system-rulings/8d13238743cfc8fcc9f13ecbc80aa54c1c2280fff64a3d5f88c874e46ad02669.zip",
    "bytesRead": 147690,
+   "readOn": "2026-09-28"
+  },
+  "code-c104-log-sampling-ingestion-volume-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c104-log-sampling-ingestion-volume-recompute/25d78fc7f5172e0a203a42401f0db5141cf7812b43d66a6d7c495145ab0ffaa4.zip",
+   "bytesRead": 88615,
+   "readOn": "2026-09-28"
+  },
+  "code-c557-investor-benchmark-governance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c557-investor-benchmark-governance-audit/e2d23f4ea64f200605a57cdf032736f085ccb4974a20a29742299a1c6cd0445a.zip",
+   "bytesRead": 91218,
+   "readOn": "2026-09-28"
+  },
+  "edu-sch-b17-5dd7aed2-5fcc-4744-8284-b73121d8ffba": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sch-b17-5dd7aed2-5fcc-4744-8284-b73121d8ffba/38db776a8e1049578a87088af08208d102efc6eb341fd1223926f689e2088eca.zip",
+   "bytesRead": 73852,
+   "readOn": "2026-09-28"
+  },
+  "sci-sc07-b7-benchmark-file-manifest-v6": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc07-b7-benchmark-file-manifest-v6/204c1f65cab43b9c87e407cfd3500db07a3b37abcecf7c417418cd25e624f260.zip",
+   "bytesRead": 80420,
+   "readOn": "2026-09-28"
+  },
+  "who-keeps-pinging-everyone": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-keeps-pinging-everyone/cfa76e9bbe5330f9baf5c551a21fd9a79bcf82db515f70d6bcc9043d2667d0d3.zip",
+   "bytesRead": 46568,
+   "readOn": "2026-09-28"
+  },
+  "writing-b52-a10-ethics-lens-application-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-b52-a10-ethics-lens-application-audit/a039dd588398841ea27865fbefde5f85592f616c4874131bdbf1d2f1b20c3c5b.zip",
+   "bytesRead": 84776,
    "readOn": "2026-09-28"
   }
  }
