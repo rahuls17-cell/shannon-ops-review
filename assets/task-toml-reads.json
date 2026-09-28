@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T22:30:57+00:00",
+ "generatedAt": "2026-09-28T22:50:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10239,6 +10239,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1230-furniture-arrangement-validity-audit-de2029-v1-sna-cpyo/225f802b7ad37b1bcf8f63f141be7910208e9f0dd3b55b8b34bb10f7e6139ac4.zip",
    "bytesRead": 106429,
+   "readOn": "2026-09-28"
+  },
+  "ASTR_101221": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101221/6acd96b54763d26816f5ddd2a5396eb05b16a2e1d0ed3bb0877197308aa34b94.zip",
+   "bytesRead": 42299,
+   "readOn": "2026-09-28"
+  },
+  "health-tdt8-a9-elemental-mineral-label-gap-attribution": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt8-a9-elemental-mineral-label-gap-attribution/bcf8881720bc4787f76391645a88606b93377890597e55cfb68a791f33e449ae.zip",
+   "bytesRead": 75325,
    "readOn": "2026-09-28"
   }
  }
