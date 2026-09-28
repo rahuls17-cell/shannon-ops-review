@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T17:01:05+00:00",
+ "generatedAt": "2026-09-28T17:11:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9590,6 +9590,48 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b34-aerospace-wrestling-shortlist-review-v1/a9e6ecd400f6b4277b665fed7ea48be458c54ebefb59eb398327752be10c379c.zip",
    "bytesRead": 81200,
+   "readOn": "2026-09-28"
+  },
+  "code-c315-backrun-candidate-promotion-gate-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c315-backrun-candidate-promotion-gate-audit/c55563d1dcf931d02ad49aa8223d7c6e8ec6b72fc17f0982f5547db4e767c903.zip",
+   "bytesRead": 86052,
+   "readOn": "2026-09-28"
+  },
+  "gen-g1137-closing-entries-reconciliation-audit-D-37080f-v1-s96-oyzt": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1137-closing-entries-reconciliation-audit-D-37080f-v1-s96-oyzt/37a828ca9e7e78671a879a4c871d37d71afc63d13d2416f6c6e2771e11b1f9c8.zip",
+   "bytesRead": 88913,
+   "readOn": "2026-09-28"
+  },
+  "tech-b50-t5-packaged-goods-weight-overcharge-attribution-v3": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b50-t5-packaged-goods-weight-overcharge-attribution-v3/7696e448b5913e0f26697e1710480aeda8ffde86d65b74890d567e1d7ba008fc.zip",
+   "bytesRead": 117427,
+   "readOn": "2026-09-28"
+  },
+  "the-investor-contacts-held-twice": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-investor-contacts-held-twice/095f6646dbc18e1778a4067cab21f27747f875d8244261ea6e58debc02a745c9.zip",
+   "bytesRead": 56473,
    "readOn": "2026-09-28"
   }
  }
