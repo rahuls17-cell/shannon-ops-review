@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T22:20:57+00:00",
+ "generatedAt": "2026-09-28T22:30:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10229,6 +10229,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sch-b18-dental-apprentice-task-card-catalog-recode/e014f0a29d478a84afd5a46a366022474cc0763cdc237a7c2f9d69df5702b3fd.zip",
    "bytesRead": 38564,
+   "readOn": "2026-09-28"
+  },
+  "gen-g1230-furniture-arrangement-validity-audit-de2029-v1-sna-cpyo": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1230-furniture-arrangement-validity-audit-de2029-v1-sna-cpyo/225f802b7ad37b1bcf8f63f141be7910208e9f0dd3b55b8b34bb10f7e6139ac4.zip",
+   "bytesRead": 106429,
    "readOn": "2026-09-28"
   }
  }
