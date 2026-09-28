@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T22:10:58+00:00",
+ "generatedAt": "2026-09-28T22:20:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10199,6 +10199,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b50-e5-verse-reading-adjudication/005bebfb826f1818ddb849d09c85eb842c9a4a840f05a8765a243ba06e11f2ed.zip",
    "bytesRead": 70011,
+   "readOn": "2026-09-28"
+  },
+  "edu-b50-e6-first-aid-kit-selection": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b50-e6-first-aid-kit-selection/55e3892eeed4a441f83fcfddaf3c66a2cded4013907c9937aac492bd1219065a.zip",
+   "bytesRead": 62818,
+   "readOn": "2026-09-28"
+  },
+  "edu-sca-b27-nursing-sim-route-case-catalog": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b27-nursing-sim-route-case-catalog/52fac16fc243abca634fc91053be28f3407c8bc6c7d1d5956cdba0a67735ef0f.zip",
+   "bytesRead": 37532,
+   "readOn": "2026-09-28"
+  },
+  "edu-sch-b18-dental-apprentice-task-card-catalog-recode": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sch-b18-dental-apprentice-task-card-catalog-recode/e014f0a29d478a84afd5a46a366022474cc0763cdc237a7c2f9d69df5702b3fd.zip",
+   "bytesRead": 38564,
    "readOn": "2026-09-28"
   }
  }
