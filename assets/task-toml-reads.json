@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T08:41:17+00:00",
+ "generatedAt": "2026-09-28T08:51:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8953,6 +8953,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-b52-a10-ethics-lens-application-audit/a039dd588398841ea27865fbefde5f85592f616c4874131bdbf1d2f1b20c3c5b.zip",
    "bytesRead": 84776,
+   "readOn": "2026-09-28"
+  },
+  "law-b48-l3-home-occupation-ordinance-impact": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b48-l3-home-occupation-ordinance-impact/19cecd13a3d0816ed0f67dcf4bbff8bfa321094a4e6bb88be58a9054a99faadb.zip",
+   "bytesRead": 92501,
+   "readOn": "2026-09-28"
+  },
+  "the-research-library-by-format": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-research-library-by-format/850af17b835281acc9aefe9c003f1298aa24e751dabfec86690ed24f26c410a1.zip",
+   "bytesRead": 55346,
    "readOn": "2026-09-28"
   }
  }
