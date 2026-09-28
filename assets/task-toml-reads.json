@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T18:31:12+00:00",
+ "generatedAt": "2026-09-28T18:41:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9766,6 +9766,50 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/trace-why-zeta-premium-subscription-1332-lapsed-after-dec-25-billing-f/d27741f6adc4e47b70becf10e7fe8191bab5b4a6032670f2d62e25d0ef8ad424.zip",
    "bytesRead": 66690,
+   "readOn": "2026-09-28"
+  },
+  "edu-b50-e9-adviser-headcount-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b50-e9-adviser-headcount-reconciliation/e0e1a990d3fe346fddb9966b6104aa4de6edb1ba4c45c7ff0b097a5a5751c8a6.zip",
+   "bytesRead": 67530,
+   "readOn": "2026-09-28"
+  },
+  "health-h84-malnutrition-severity-staging-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h84-malnutrition-severity-staging-audit/cd72dad499dfb1dcfa02f4ee2aae45708eb26b78dd1a32c0009508cd7abe46d9.zip",
+   "bytesRead": 109697,
+   "readOn": "2026-09-28"
+  },
+  "the-inbox-really-is-the-big-folder": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-inbox-really-is-the-big-folder/caff1b89cea4a375c169d9ce58c93ba790fcb58c3136d99d9fe0162f319c3914.zip",
+   "bytesRead": 54186,
+   "readOn": "2026-09-28"
+  },
+  "the-pdf-someone-signed": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pdf-someone-signed/360ca67a1c65b4931db2b2b0aa40b5bd9e1e41f26df3ac757ddd2062df402569.zip",
+   "bytesRead": 45618,
    "readOn": "2026-09-28"
   }
  }
