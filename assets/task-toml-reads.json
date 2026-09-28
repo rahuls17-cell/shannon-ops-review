@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T06:40:51+00:00",
+ "generatedAt": "2026-09-28T06:50:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8661,6 +8661,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-slowest-ten-all-on-one-board/6326575109fc93499da58b0785cdecfaaddde3faed8921bc076e4088aa520825.zip",
    "bytesRead": 54193,
+   "readOn": "2026-09-28"
+  },
+  "the-same-mail-over-and-over": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-same-mail-over-and-over/8581862fd05e9435e7e9b0d57065ae16539035b2628110e47d70eac9346f7712.zip",
+   "bytesRead": 65380,
    "readOn": "2026-09-28"
   }
  }
