@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T06:20:52+00:00",
+ "generatedAt": "2026-09-28T06:30:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8617,6 +8617,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sch-b12-labour-survey-ledger-recompute/7b701aa68d6cd590a699da906033e633ac6e0379ac11c1e130a69f421ce541d6.zip",
    "bytesRead": 71698,
+   "readOn": "2026-09-28"
+  },
+  "bus-b58-t4-listing-metric-transcription": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b58-t4-listing-metric-transcription/d7a2afb85e9bc615f289f2f1a5cbc2f417cde5a98a65445c5f8f3b581e29c98b.zip",
+   "bytesRead": 69613,
+   "readOn": "2026-09-28"
+  },
+  "gen-g394-cdf-guideline-version-audit-v44-policy-wave-hardened": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g394-cdf-guideline-version-audit-v44-policy-wave-hardened/2a0d0db6ad3643d06ddf42659d9b29dacab0b171431f72a10f55e79b8be3e1bc.zip",
+   "bytesRead": 86030,
    "readOn": "2026-09-28"
   }
  }
