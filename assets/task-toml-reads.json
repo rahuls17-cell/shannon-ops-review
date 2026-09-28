@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T23:40:55+00:00",
+ "generatedAt": "2026-09-28T23:50:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10404,6 +10404,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-repositories-behind-my-inbox/1c8c7788de32373d5447b11de6154bd4b94c6b0469c9a0231d015b79dde8d235.zip",
    "bytesRead": 54046,
+   "readOn": "2026-09-28"
+  },
+  "code-c322-directory-listing-billing-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c322-directory-listing-billing-audit/924ffa9163400b4c03c6f131685ecd16603093c805c6efd4830e136c8acd27bc.zip",
+   "bytesRead": 82302,
    "readOn": "2026-09-28"
   }
  }
