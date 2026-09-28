@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T20:01:03+00:00",
+ "generatedAt": "2026-09-28T20:11:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9974,6 +9974,46 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-fax-line-rings-most/87751448df4e9b8ed935848bf70b614bd42e27ec8bfcd8209bd3d9c8e990b282.zip",
    "bytesRead": 49854,
+   "readOn": "2026-09-28"
+  },
+  "bus-b66-b9-okr-key-result-quality-review": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b66-b9-okr-key-result-quality-review/4ad8190200df413dc181924ef8a881047871b71abc94ec64745d1d4e80989771.zip",
+   "bytesRead": 94089,
+   "readOn": "2026-09-28"
+  },
+  "edu-sca-b17-ce94d7ae-1ce1-4fb3-ae47-99cad060b0c0": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b17-ce94d7ae-1ce1-4fb3-ae47-99cad060b0c0/501b5553cb36b7f836649829f561477acbcc90a1d6615fc6b3c543fbbcb0c308.zip",
+   "bytesRead": 83787,
+   "readOn": "2026-09-28"
+  },
+  "gen-g301-powerball-deduction-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g301-powerball-deduction-audit/e144742dd5307904de835ef645a6ff51bdb5edea6bdd3fa649e7e8c7b6d0d035.zip",
+   "bytesRead": 81074,
+   "readOn": "2026-09-28"
+  },
+  "gen-g661-trade-association-member-profile-completeness-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g661-trade-association-member-profile-completeness-audit/526e6d748b373c6c0b75d46448d172dff0991fa2f1de323c90cadfeeb01e1221.zip",
+   "bytesRead": 85004,
    "readOn": "2026-09-28"
   }
  }
