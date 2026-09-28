@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T06:10:52+00:00",
+ "generatedAt": "2026-09-28T06:20:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8597,6 +8597,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b8-mailbox-sending-ramp-plan/d8a1bb858a41f5c564e004fe3d0274ccafe71a9ec03178e1dcc0052fcb96ecb7.zip",
    "bytesRead": 70152,
+   "readOn": "2026-09-28"
+  },
+  "edu-mg-edu-b13-a3-feed-enzyme-mentoring-plan-order": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-mg-edu-b13-a3-feed-enzyme-mentoring-plan-order/7bc921851d31bd06f3561acf2562a60e581244329b9aea5ad15291d05b15d1fa.zip",
+   "bytesRead": 119148,
+   "readOn": "2026-09-28"
+  },
+  "edu-sch-b12-labour-survey-ledger-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sch-b12-labour-survey-ledger-recompute/7b701aa68d6cd590a699da906033e633ac6e0379ac11c1e130a69f421ce541d6.zip",
+   "bytesRead": 71698,
    "readOn": "2026-09-28"
   }
  }
