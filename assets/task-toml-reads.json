@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T05:10:51+00:00",
+ "generatedAt": "2026-09-28T05:20:51+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8553,6 +8553,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c403-afcfta-competition-protocol-notification-audit-FINAL-V64-FIXED/fa3bc3c515a30d3a55c6e2aad436dff6f30aa3d375494527e0670ed143a04f0a.zip",
    "bytesRead": 101471,
+   "readOn": "2026-09-28"
+  },
+  "code-c125-dns-record-hygiene-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c125-dns-record-hygiene-audit/6d0569d93cb4c67fb1682e889b1836437e22428820619a9946a2b82623546b7c.zip",
+   "bytesRead": 78288,
    "readOn": "2026-09-28"
   }
  }
