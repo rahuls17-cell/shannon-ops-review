@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T05:20:51+00:00",
+ "generatedAt": "2026-09-28T05:50:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8563,6 +8563,30 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c125-dns-record-hygiene-audit/6d0569d93cb4c67fb1682e889b1836437e22428820619a9946a2b82623546b7c.zip",
    "bytesRead": 78288,
+   "readOn": "2026-09-28"
+  },
+  "the-room-in-the-notes": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-room-in-the-notes/8572e7cf9b7c733dcfaeb3d8460043f6e0159cd38f2c2182ea98b44376f324e3.zip",
+   "bytesRead": 44615,
+   "readOn": "2026-09-28"
+  },
+  "who-emails-me-most": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-emails-me-most/53ce30abaddcc5f32f410283525bd845901188e759b167d688e3728e030396e1.zip",
+   "bytesRead": 42494,
    "readOn": "2026-09-28"
   }
  }
