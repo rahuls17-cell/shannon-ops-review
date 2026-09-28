@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T05:50:52+00:00",
+ "generatedAt": "2026-09-28T06:10:52+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8587,6 +8587,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-emails-me-most/53ce30abaddcc5f32f410283525bd845901188e759b167d688e3728e030396e1.zip",
    "bytesRead": 42494,
+   "readOn": "2026-09-28"
+  },
+  "bus-b44-b8-mailbox-sending-ramp-plan": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b8-mailbox-sending-ramp-plan/d8a1bb858a41f5c564e004fe3d0274ccafe71a9ec03178e1dcc0052fcb96ecb7.zip",
+   "bytesRead": 70152,
    "readOn": "2026-09-28"
   }
  }
