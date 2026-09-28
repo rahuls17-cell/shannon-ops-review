@@ -2496,3 +2496,5 @@ button.stat[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 18%, 
 #overviewTrack .deck-pane[data-title="Daily delta"] .peakstrip-item i { width: 8px; height: 8px; border-radius: 50%; box-shadow: 0 0 0 2px color-mix(in srgb, var(--tone) 25%, transparent); }
 #overviewTrack .deck-pane[data-title="Daily delta"] .peakstrip-item b { color: var(--ink); font-size: 12.5px; }
 #overviewTrack .deck-pane[data-title="Daily delta"] .peakstrip-item small { padding: 1px 6px; border-radius: 999px; background: color-mix(in srgb, var(--tone) 18%, var(--panel)); color: color-mix(in srgb, var(--tone) 70%, var(--ink)); font-weight: 600; }
+.fchip.is-zero { opacity: .5; }
+.fchip.is-zero:hover { opacity: 1; }

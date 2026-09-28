@@ -155,6 +155,7 @@
 
     const cohort = cohortRows(rows, cohortIndex, benchAt, dupOf, siblingDelivery);
     carrySiblingDelivery(rows, cohort);
+    carryDuplicateFolders(rows, cohort);
 
     return {
       generatedAt: payload.generatedAt,
@@ -311,6 +312,36 @@
         } else if (!row.sameNameDelivered) {
           row.sameNameDelivered = folderRow.sameNameDelivered;
         }
+      });
+    });
+  }
+
+  // A task held in several bucket folders is flagged on its verdict rows too,
+  // so the DUP badge does not depend on the Accepted list being the one shown.
+  function carryDuplicateFolders(rows, cohort) {
+    if (!cohort) return;
+    const bySpelling = new Map();
+    const identity = row => String(row.id || '').replace(/^(task|family|folder):/, '');
+    rows.forEach(row => {
+      [keyOf(row.name), stemOf(row.name), keyOf(identity(row))].forEach(spelling => {
+        if (!spelling) return;
+        if (!bySpelling.has(spelling)) bySpelling.set(spelling, new Set());
+        bySpelling.get(spelling).add(row);
+      });
+    });
+    cohort.forEach(folderRow => {
+      if (!folderRow.dupFolders) return;
+      const hits = new Set([...(bySpelling.get(keyOf(folderRow.cohortFolder)) || []),
+        ...(bySpelling.get(stemOf(folderRow.cohortFolder)) || []),
+        ...(bySpelling.get(keyOf(folderRow.packageTask)) || [])]);
+      hits.forEach(row => {
+        if (row.dupFolders) return;
+        if (!row.packageTask) row.packageTask = folderRow.packageTask;
+        row.dupFolders = folderRow.dupFolders;
+        row.duplicateSiblings = folderRow.dupFolders.length - 1;
+        row.possibleDuplicate = true;
+        row.duplicateTier = 'confirmed';
+        row.duplicateVia = folderRow.duplicateVia;
       });
     });
   }

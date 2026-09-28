@@ -107,19 +107,9 @@ const infoCopy = {
   manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. To cut a second round, load the first manifest back in and its tasks are left out.',
   glm: () => {
     const g = truth && truth.glmIndex && truth.glmIndex.counts;
-    const band = g ? Object.entries(g.band).map(([k, n]) => k + ' ' + fmt(n)).join(', ') : '';
-    return 'Every task is run four times by the same GLM-5.2 battery before it is offered, and a run '
-      + 'passes only at a reward of exactly 1.0, so a task scores 0/4 to 4/4. The band that gets '
-      + 'accepted is 1 to 3: 4/4 is too easy to be worth benchmarking, and 0/4 has not been shown to '
-      + 'be solvable at all. Read out of the bucket rather than from a report about it - the batch '
-      + 'gate report names the four trial directories and each verifier/reward.txt holds its reward - '
-      + 'and checked against the bucket own cross-trial calibration, which states the same count.'
-      + (g ? ' ' + fmt(g.withTrials) + ' of ' + fmt(g.pipelineTasks) + ' rows have a band: ' + band + '.' : '')
-      + ' A dash means no trials are recorded for the batch that run was decided in, which is not the '
-      + 'same as having failed them: 0/4 is a real and damning result and must not be what "we did not '
-      + 'look" renders as. One caution: this is the band for the run THIS ROW stands for. Where a task '
-      + 'was submitted more than once the package that shipped can carry a different band, and the '
-      + 'delivery manifest records that one.';
+    return 'How many of four GLM-5.2 trial runs solved the task. The 1 to 3 band is the useful one: 4/4 is too easy, 0/4 unproven'
+      + (g ? '. ' + fmt(g.withTrials) + ' of ' + fmt(g.pipelineTasks) + ' tasks have a score' : '')
+      + '.';
   },
   cohort: () => {
     const c = cohortIndex && cohortIndex.counts;
@@ -144,21 +134,10 @@ const infoCopy = {
   },
   bench2: () => {
     const b = truth && truth.benchIndex && truth.benchIndex.counts;
-    const split = b ? Object.entries(b.byBench).map(([k, n]) => `${k} ${fmt(n)}`).join(', ') : '';
-    return 'Which bench a connector task runs on, decided by the base image in its Dockerfile - '
-      + 'the FROM line, read from environment/Dockerfile in the task source. Nothing else carries '
-      + 'it: task.toml does not, the verdicts do not, and the bucket scan records an image for none '
-      + 'of the packages it covers. connectors-harness-aster is company aster; company-bench-private '
-      + 'and benchmark-base are company zeta; connectors-harness with real-data is computer real; '
-      + 'anything else under connectors-rl-gym or connectors-harness is computer synth. The registry '
-      + 'path is tested before the image name, because benchmark-base sits under data-obi-rl-gym and '
-      + 'is a company image while obi-benchmark under connectors-rl-gym is a computer one - reading '
-      + 'the name first gets four of the 348 labelled tasks wrong.'
-      + (split ? ' Across the pipeline: ' + split + '.' : '')
-      + ' A non-connector task runs on the Computer bench, and a Dockerfile on a plain base image - '
-      + 'python, node or similar, no harness - counts as the same evidence. Not read yet means no '
-      + 'Dockerfile has been read for the task, so its bench is unknown rather than absent; these '
-      + 'should shrink to the few whose task tree really is empty.';
+    return 'Which bench the task runs on, read from the FROM line of its Dockerfile: company aster or zeta, '
+      + 'computer real or synthetic. Non-connector tasks and plain base images run on the Computer bench; '
+      + 'not read yet means no Dockerfile has been read for the task.'
+      + (b ? ' ' + fmt(b.known) + ' Dockerfiles read so far.' : '');
   },
   truthSplit: () => {
     const c = cohortIndex && cohortIndex.counts;
@@ -192,57 +171,31 @@ const infoCopy = {
   },
   truthConnector: () => {
     const c = cohortIndex && cohortIndex.counts;
-    return 'Whether the task mounts connector gyms - Slack, Jira, Google Drive and the rest. It is '
-      + 'decided structurally, by whether task.toml inside the package declares at least one entry '
-      + 'under mcp_servers, and never from the task name: a gen- or code- prefix says nothing about '
-      + 'whether a task talks to Slack. Among these very tasks, '
-      + 'appointment-backlog-placeholder-and-duplicate-audit is a connector and '
-      + 'gen-g91-hotel-rate-parity-audit is not. Declaring the key is not enough either - four '
-      + 'packages say mcp_servers = [], an empty list, and those are non-connectors.'
-      + (c ? ' Across the ' + fmt(c.packages) + ' accepted packages: ' + fmt(c.connectorTasks)
-            + ' connector, ' + fmt(c.nonConnectorTasks) + ' not, ' + fmt(c.connectorUnknown)
-            + ' unknown. Read from the folder own package where the bucket scan covers it, from the '
-            + 'delivery manifest that packaged it for ' + fmt(c.connectorFromManifest)
-            + ', and by opening the package and reading task.toml for ' + fmt(c.connectorFromPackage)
-            + '.' : '');
+    return 'Connector means the package declares connector gyms such as Slack or Jira in its task.toml. '
+      + 'Read from the package, never from the name'
+      + (c ? ': ' + fmt(c.connectorTasks) + ' connector, ' + fmt(c.nonConnectorTasks) + ' non-connector, '
+             + fmt(c.connectorUnknown) + ' not read' : '')
+      + '.';
   },
   truthFlags: 'Short codes so the task name is never squeezed out of its column. DL - already delivered, covered by the Delivery tab, or the same task delivered under another folder name. Times-N - the same task appears N times in the pipeline and is counted once while the Delivered filter is on. CK - check before shipping: the identifier names a task the audit already covers although the name does not match, or a different trainer already delivered a task with the same declared name. MIX - the folder holds archives that declare different tasks. DUP - another task shares its name and trainer, so it is probably the same work counted twice; red when the date and outcome match too. UM - unmerged: it arrived with no family id, so repeat runs of it may be counted separately. CO - carried over: first decided before the cut and settled after it. Hover any code for the full explanation for that row, and open the row with + for its evidence.',
   truthVersions: () => {
     const c = truth && truth.deliveredIndex && truth.deliveredIndex.counts;
-    return 'The pipeline records one row per submission, not per task, and the same work can arrive '
-      + 'under several names.'
-      + (c ? ' ' + fmt(c.deliveredRows) + ' delivered rows stand for ' + fmt(c.auditedMatched)
-            + ' audited tasks.' : '')
-      + ' Setting this filter counts tasks rather than rows: a task with several versions appears '
-      + 'once, tagged with how many it has, which one is shown and why. Nothing is dropped - the tag '
-      + 'lists the other versions, and clearing the filter brings every row back. The Accepted view '
-      + 'does not need this at all: it is drawn from bucket folders, where one folder is already one '
-      + 'task.';
+    return 'A task submitted more than once is counted once here'
+      + (c ? ': ' + fmt(c.deliveredRows) + ' delivered rows are ' + fmt(c.auditedMatched) + ' tasks' : '')
+      + '. The \u00d7N badge says how many versions a row stands for.';
   },
   truthDelivered: () => {
     const c = truth && truth.deliveredIndex && truth.deliveredIndex.counts;
-    if (!c) return 'The delivered index has not loaded.';
-    return 'What was handed over, checked against the bucket. The ' + fmt(c.manifestTasks)
-      + ' come from the four delivery manifests in assets/manifests - the files that were actually '
-      + 'sent - and they agree with the Delivery tab exactly: same names, same batch split, nothing in '
-      + 'one and not the other. Every one was cut from finalisation_client_qc_accepted_iteration_2 and '
-      + 'no other prefix, which is why that prefix is what Accepted counts. The two figures beside it '
-      + 'split this number and nothing else: ' + fmt(c.manifestLiveConfirmed) + ' + '
-      + fmt(c.manifestLiveMissing) + ' = ' + fmt(c.manifestTasks) + '. Still in the bucket means the '
-      + 'exact object the manifest names was found when the prefix was listed on '
-      + c.manifestLiveCheckedOn + ', at its own path or moved within its folder. The '
-      + fmt(c.manifestLiveMissing) + ' that were not are NOT failed deliveries: they went out and the '
-      + 'manifest records the exact object sent, so what is gone is the bucket copy and that delivery '
-      + 'can no longer be reproduced on demand. Both were looked for across all three accepted '
-      + 'prefixes, not only the one they were cut from. These do not follow the filters - they are a '
-      + 'record of what shipped, not a count of what is on screen.';
+    return 'Delivered means handed over in one of the four delivery manifests'
+      + (c ? ': ' + fmt(c.manifestTasks) + ' tasks' : '')
+      + '. Ready means accepted with a package at the current bar and not yet delivered.';
   },
   truthTasks: 'One row is one task, not one submission. Runs of the same task are grouped by the family the pipeline assigned them, and the row shows the canonical run: the one that got furthest, breaking ties on outcome and then on decision time. Every other run stays attached under the row. The State column carries the predicate that decided it, and the source is the verdict object it was read from.',
-  finding: 'What the gate objected to. The filter searches every run of a task, so a task that tripped a check, was fixed and then accepted is still findable under that check. The row itself separates the two: the Findings line shows what the run behind the current verdict found, and names anything that came from an earlier run of the same task. An accepted task showing HARBOR-CHECK from an earlier run was not accepted despite failing - it failed, was fixed, and passed.',
-  gateEra: 'Which gate judged the deciding run, taken from the bucket\'s own sentinel files rather than inferred. The gate switched from Opus to GLM-5.2 at 2026-09-13T20:05:59Z, KESTREL came on at 2026-09-15T03:40:49Z, and KESTREL was fully operating on both gates from 2026-09-16T05:06:54Z. Acceptances made by GLM-5.2 without KESTREL review were withdrawn on 16 September and are being re-gated.',
+  finding: 'What the gate objected to, on any run of the task. A task that was fixed and later accepted still shows the earlier finding, marked as from an earlier run.',
+  gateEra: 'Which gate judged the deciding run: Opus until 13 September, GLM-5.2 after, with KESTREL review from 15 September and on both gates from 16 September. GLM-5.2 acceptances without KESTREL review are being re-gated.',
   scope: 'The cut is applied to the date a task was DECIDED, not the date it was submitted. A task uploaded in August but judged by the pipeline running today belongs to today, because the bar running today is what judged it. Cutting on submission instead would hide exactly the re-gated work that matters most. Tasks whose last decision falls before 5 September are excluded entirely and are not shown anywhere on this page. About a fifth of verdicts carry no decision timestamp - those are the runs that errored or never finished, so there was never a ruling to time - and they are placed by when the verdict was last updated and marked approx.',
-  duplicates: 'This filter means two different things, because the two views count different units. Under Accepted the rows are bucket folders, and a folder is flagged when another folder holds the SAME TASK - read from the [task] name inside each package&rsquo;s task.toml, not guessed from the folder name. That is exact: 47 tasks sit under more than one folder name, which is 51 folders above the first, so counting folders counts those tasks more than once. Click the DUP badge to see every folder the task sits in, with the same columns as the table. In every other view the rows are submissions, and a row is flagged when another submission carries the same name AND the same trainer - a weaker, heuristic claim, with Likely meaning it also shares the decision day and the outcome. Nothing is merged in either view: a task name can legitimately cover unrelated work, and one name in this bucket carries 36 genuinely different tasks.',
-  confidence: 'How confidently runs were grouped into one task. Keyed by family is the pipeline\'s own lineage id and is reliable - no family in this data spans two trainers. Unmerged means no family id was present, so the task is keyed on its submission id and repeat runs of it may still be counted separately. Task name was never used as a key: one literal name in this bucket carries 36 unrelated tasks.',
+  duplicates: 'Under Accepted, a folder is flagged DUP when another folder holds the same task, read from the package. Elsewhere a task is flagged when another submission shares its name and trainer.',
+  confidence: 'How runs were grouped into one task. Keyed by family uses the pipeline\'s own lineage id; unmerged means no family id, so repeat runs may be counted separately.',
   segment: () => {
     const rows = truth ? truth.rows : [];
     const count = key => rows.filter(row => segmentOf(row.owner, row.connector) === key).length;
@@ -268,7 +221,6 @@ const infoCopy = {
   ledgerAcceptance: 'The workbook Valid column, shown for audit only. Every unique task counts as accepted regardless of this flag, so a Valid = 0 row still carries pending payment. Two rows currently carry it: one whose child job is NA, and one whose child job cell says someone is looking into it.',
   trainerPick: 'Lists only people who have accepted work or a payment recorded against them, which is why it is short - the rest of the roster has nothing to pay. Picking one narrows both tables on this tab to that person: their payout row, and every task in their ledger. Use the search box instead to look someone up across the whole roster.',
   ledgerDuplicates: 'How many workbook rows folded into this one task. Above 1 means the same task and trainer were listed more than once. The extra rows are excluded from every accepted and pending count, but they are not hidden - filter to Folded rows only to see them.',
-  duplicates: 'Accepted work lives in three cohorts and the same task can be finalised into several of them. Folders are what the bucket holds; distinct tasks is what was actually done. The newest archive represents the task and the rest are marked as repeats, which is why adding the cohort totals together overstates the work.',
   ownership: 'Three tiers, strongest first. Harbor Console submitter is the console\u2019s own record of who submitted the task and is treated as proof. Name match only is the GCS trainer records joined by declared task name - finalisation repackages archives, so digests never match and the name is the only join available; that is evidence, not proof. Contested means two records claim the same name and the console does not settle it, so the task stays unassigned rather than being given to whoever was found first. The console export is a point-in-time dump, not live.',
   pipeline: 'The status names are the Harbor Console\u2019s own: its finalisation run state is done, rejected, parked or running, which the spec restates as Accepted, Rejected, Failed and Running. Rejected means harbor checks failed and the trainer reworks it - the largest bucket by far. Failed means an infrastructure error the trainer cannot rerun; it parks for QC or gen engineering. Submitted means the gate passed but no decision is recorded yet, which is what used to be shown as Done - it is not an acceptance. Current counts the latest attempt per family; All attempts counts retries separately.',
   dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
@@ -794,6 +746,9 @@ function personSegments(row) {
 const personInSegment = row => !segment || personSegments(row).has(segment);
 const truthRows = () => (truth ? truth.rows.filter(row => inSegment(row.owner, row.connector)) : []);
 const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filter(row => inSegment(row.owner, row.connector)) : null);
+// A search with no state chosen also reaches the accepted folders that have no
+// verdict inside the window; otherwise they are listed only under Accepted.
+const truthSearchRows = () => { const cohort = truthCohortRows(); return cohort ? truthRows().concat(cohort.filter(row => row.noVerdict)) : truthRows(); };
 // Under Accepted the rows are bucket folders; every headline counts the tasks they fold into.
 const shownTasks = rows => (truthByBucket ? window.acceptedTaskCounts(rows).tasks : rows.length);
 const auditRows = () => (audit ? audit.rows.filter(row => inSegment(row.trainer, typeFlag(row.type))) : []);
@@ -1414,19 +1369,20 @@ function renderScope(result) {
 // The filter card: the three cuts people reach for first are chips with live
 // counts (each counted with the other filters applied), the rest are selects.
 function renderTruthFilterChips(filters, filtered) {
-  const verdictRows = truthRows();
+  const verdictRows = filters.search ? truthSearchRows() : truthRows();
   const cohort = truthCohortRows();
   const rows = truthByBucket ? cohort : verdictRows;
   const without = key => window.filterTruth(rows, {...filters, [key]: '', ...(truthByBucket ? {state: ''} : {})});
   const chip = (filter, value, label, count, tone, on) =>
-    `<button type="button" class="fchip${on ? ' is-on' : ''}" style="--c:${tone}" data-tfilter="${filter}" data-value="${esc(value)}" aria-pressed="${on}">${esc(label)}<b>${fmt(count)}</b></button>`;
+    `<button type="button" class="fchip${on ? ' is-on' : ''}${!count && !on ? ' is-zero' : ''}" style="--c:${tone}" data-tfilter="${filter}" data-value="${esc(value)}" aria-pressed="${on}">${esc(label)}<b>${fmt(count)}</b></button>`;
 
   const byState = window.filterTruth(verdictRows, {...filters, state: ''});
   // Accepted is decided by the bucket, so its chip counts the bucket's tasks like the card does.
   const stateCount = st => (st === 'accepted' && cohort
     ? window.acceptedTaskCounts(window.filterTruth(cohort, {...filters, state: ''}).rows).tasks
     : byState.rows.filter(r => r.state === st).length);
-  const states = ['accepted', 'rejected', 'error', 'running', 'legacy accepted'].filter(st => byState.rows.some(r => r.state === st));
+  // Every state stays listed, at zero if nothing matches, so a filter can always be changed.
+  const states = ['accepted', 'rejected', 'error', 'running', 'legacy accepted'];
   byId('tStateChips').innerHTML = chip('tState', '', 'All', byState.rows.length, 'var(--slate)', !filters.state) +
     states.map(st => chip('tState', st, stateLabel(st), stateCount(st), stateTone(st), filters.state === st)).join('');
 
@@ -1454,7 +1410,7 @@ function renderTruthFilterChips(filters, filtered) {
       .map(([v, l, tone]) => chip('tDelivery', v, l, deliveryCount(v), tone, filters.delivery === v)).join('');
 
   const shown = shownTasks(window.filterTruth(rows, truthByBucket ? {...filters, state: ''} : filters).rows);
-  setText('truthFilterCount', filtered ? `${fmt(shown)} of ${fmt(verdictRows.length)} tasks` : `${fmt(verdictRows.length)} tasks`);
+  setText('truthFilterCount', filtered ? `${fmt(shown)} of ${fmt(truthRows().length)} tasks` : `${fmt(truthRows().length)} tasks`);
 
   const labels = {tState: 'State', tGate: 'Gate', tFinding: 'Finding', tDelivery: 'Delivery', tDelivered: 'Delivered', tConnector: 'Connector', tGlm: 'GLM', tBench: 'Bench', tCarried: 'Carried over', tConfidence: 'Identity', tDomain: 'Domain', tOwner: 'Trainer', tDuplicate: 'Duplicates', tSearch: 'Search'};
   const shownValue = id => { const node = byId(id); if (!node) return ''; if (node.tagName === 'SELECT') return (node.options[node.selectedIndex]?.textContent || node.value).replace(/\s*\(\d[\d,]*\)$/, ''); return node.value; };
@@ -2077,7 +2033,7 @@ function renderTruth() {
   truthByBucket = Boolean(byBucket);
   const result = byBucket
     ? window.filterTruth(cohort, {...filters, state: ''})
-    : window.filterTruth(truthRows(), filters);
+    : window.filterTruth(filters.search ? truthSearchRows() : truthRows(), filters);
   // Accepted is a bucket figure counted over the same folders, narrowed the
   // same way, so it equals the table whenever Accepted is the selected state.
   acceptedShown = cohort
@@ -2202,7 +2158,7 @@ function shownRows() {
   const cohort = truthCohortRows();
   return (filters.state === 'accepted' && cohort)
     ? window.filterTruth(cohort, {...filters, state: ''})
-    : window.filterTruth(truthRows(), filters);
+    : window.filterTruth(filters.search ? truthSearchRows() : truthRows(), filters);
 }
 
 function exportRowCount() {
@@ -4112,22 +4068,22 @@ function wireEvents() {
     applyRange();
   });
   const popover = byId('infoPopover');
+  // Hovering a ? shows its note until the pointer leaves; a click pins it.
   let openButton = null;
   function hideInfo() {
     popover.hidden = true;
     if (openButton) openButton.setAttribute('aria-expanded', 'false');
     openButton = null;
   }
-  function showInfo(button) {
+  function showInfo(button, pin = false) {
     // Entries may be functions when the text depends on loaded data.
     const entry = infoCopy[button.dataset.info];
     const copy = typeof entry === 'function' ? entry() : entry;
     if (!copy) return;
-    if (openButton) openButton.setAttribute('aria-expanded', 'false');
+    if (openButton && openButton !== button) openButton.setAttribute('aria-expanded', 'false');
     popover.textContent = copy;
     popover.hidden = false;
-    button.setAttribute('aria-expanded', 'true');
-    openButton = button;
+    if (pin) { button.setAttribute('aria-expanded', 'true'); openButton = button; }
     place(button);
   }
   function place(element) {
@@ -4143,20 +4099,23 @@ function wireEvents() {
   const asWhy = target => (target && target.closest ? target.closest('.why') : null);
   document.addEventListener('mouseover', event => {
     const button = asWhy(event.target);
-    if (button) { button.type = 'button'; showInfo(button); }
+    if (button && !openButton) { button.type = 'button'; showInfo(button); }
   });
   document.addEventListener('mouseout', event => {
     if (asWhy(event.target) && !openButton) hideInfo();
   });
   document.addEventListener('focusin', event => {
     const button = asWhy(event.target);
-    if (button) showInfo(button);
+    if (button && !openButton) showInfo(button);
+  });
+  document.addEventListener('focusout', event => {
+    if (asWhy(event.target) && !openButton) hideInfo();
   });
   document.addEventListener('click', event => {
     const button = asWhy(event.target);
     if (!button) return;
     event.stopPropagation();
-    if (openButton === button) hideInfo(); else showInfo(button);
+    if (openButton === button) hideInfo(); else showInfo(button, true);
   }, true);
   // Chart segments get the same popover, on hover, with their own copy.
   document.addEventListener('mouseover', event => {
