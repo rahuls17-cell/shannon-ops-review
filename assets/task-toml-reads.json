@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T22:50:57+00:00",
+ "generatedAt": "2026-09-28T23:00:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10261,6 +10261,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt8-a9-elemental-mineral-label-gap-attribution/bcf8881720bc4787f76391645a88606b93377890597e55cfb68a791f33e449ae.zip",
    "bytesRead": 75325,
+   "readOn": "2026-09-28"
+  },
+  "bus-b58-t10-copy-word-limit-compliance": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b58-t10-copy-word-limit-compliance/4fd3292f4b6714823d8788c589194ddcb2d3da309cb727cde2f3f466c88daff6.zip",
+   "bytesRead": 74663,
+   "readOn": "2026-09-28"
+  },
+  "code-c782-device-storage-migration-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c782-device-storage-migration-audit/c3e8463aface671121039d49566ee947cdd02c397d230c52fc89ed5a90e2c6e8.zip",
+   "bytesRead": 65460,
+   "readOn": "2026-09-28"
+  },
+  "the-calendar-blocks-that-only-look-like-meetings": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-calendar-blocks-that-only-look-like-meetings/d1085103b30f101bae2a56f31c4e123524347bd89a7a38d375c1d9616964aa03.zip",
+   "bytesRead": 62342,
    "readOn": "2026-09-28"
   }
  }
