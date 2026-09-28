@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T02:40:53+00:00",
+ "generatedAt": "2026-09-28T03:00:53+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -8473,6 +8473,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-roadmap-still-on-track/ffeb5a943542dce8bb550e0dbe47753b7c99024567485b370e13c9cf48e43d5b.zip",
    "bytesRead": 44896,
+   "readOn": "2026-09-28"
+  },
+  "code-c346-module-cutover-readiness-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c346-module-cutover-readiness-audit/9cf1fb390c731221c68ec706debc4de6d8d33b604fd3bdd0dd86bbe354cf83ce.zip",
+   "bytesRead": 75047,
+   "readOn": "2026-09-28"
+  },
+  "gen-g88-waste-manifest-reconcile-d8726e-v2-sna-vszl": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:32e2c347413bae52d567e2cc3eef31cd617a83dcac51644caadc0bbac131395a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g88-waste-manifest-reconcile-d8726e-v2-sna-vszl/324aa771d19623383c6663fe6db4d4b3c3c0b4e9111b5e59c6a3e3792a7f6e14.zip",
+   "bytesRead": 102827,
    "readOn": "2026-09-28"
   }
  }
