@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T18:01:02+00:00",
+ "generatedAt": "2026-09-28T18:11:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9718,6 +9718,26 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/timeline-off-the-weekends/48b1ea916cdf771bccf6386d32e5d73ef5afd0029c41e8d96f2feddaf5631196.zip",
    "bytesRead": 49588,
+   "readOn": "2026-09-28"
+  },
+  "code-c359-paint-catalog-compliance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c359-paint-catalog-compliance-audit/2bafcef424123ecb9be53487b4204db3574b35db633809020aed539a87fea178.zip",
+   "bytesRead": 70623,
+   "readOn": "2026-09-28"
+  },
+  "gen-g292-grazing-cup-design-audit-Error-Fixed-340e7f-v1-sna-irvn": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g292-grazing-cup-design-audit-Error-Fixed-340e7f-v1-sna-irvn/0d62ceac00264e547f8fe84ea5a9438458291dc474a785799380c650d2946030.zip",
+   "bytesRead": 168566,
    "readOn": "2026-09-28"
   }
  }
