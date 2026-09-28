@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T12:11:24+00:00",
+ "generatedAt": "2026-09-28T12:21:29+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9430,6 +9430,46 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-b53-a2-implications-style-normalisation/a3e0054fee1d484b29a4403e1eb83dee43834b111e6146eeca0492a39a1e525b.zip",
    "bytesRead": 135834,
+   "readOn": "2026-09-28"
+  },
+  "bus-b49-b1-motorcycle-stock-unit-caption-claim-screening": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b49-b1-motorcycle-stock-unit-caption-claim-screening/e2221d7dede543773abaebd8a929d403099ce4b74ce702e2197dcdbea0dfd37c.zip",
+   "bytesRead": 75025,
+   "readOn": "2026-09-28"
+  },
+  "bus-b59-t4-source-recency-label-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.13-slim@sha256:8d9d0b8bcf6506481eae4907c18f5e3e7902e629f5f6d684f9e7c32e85e3ddf0",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b59-t4-source-recency-label-audit/ed23aa20f26a3eb4d855c5bf7be160e19db2ebdb91c2461e63b32e8c9ccba769.zip",
+   "bytesRead": 64622,
+   "readOn": "2026-09-28"
+  },
+  "edu-mg-edu-b15-a1-konsequenzenregister-aktenabgleich": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-mg-edu-b15-a1-konsequenzenregister-aktenabgleich/e1854d28f75cb06b9be17cb4a579bcefdeb809a7cb929339cdb144b216121154.zip",
+   "bytesRead": 78103,
+   "readOn": "2026-09-28"
+  },
+  "writing-sc05-a6-three-move-classification": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-sc05-a6-three-move-classification/4dcfe532bf8bc77b6285b0b0ef8c2ca2b35c7e19195c94553c287830f702a5c8.zip",
+   "bytesRead": 68480,
    "readOn": "2026-09-28"
   }
  }
