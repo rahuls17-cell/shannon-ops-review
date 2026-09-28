@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T19:31:21+00:00",
+ "generatedAt": "2026-09-28T19:41:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9900,6 +9900,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-screenshot-pile/d5d10337384f020a5866873dfec57f0ca49b0c45660d4991f10e4a45fa3cbffa.zip",
    "bytesRead": 42840,
+   "readOn": "2026-09-28"
+  },
+  "gen-g374-land-disposition-notification-audit-60efc7-v7-sna-fayg": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:9c47360a2a0355e2da18516d0b1c2126ec22c195d2185e97347c9d98398c5bef",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g374-land-disposition-notification-audit-60efc7-v7-sna-fayg/bc83e0560c0c1621949db9748a16dc724ef087b58688ce741ee53b72e8046374.zip",
+   "bytesRead": 70671,
+   "readOn": "2026-09-28"
+  },
+  "health-h17-antimicrobial-duration-review": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h17-antimicrobial-duration-review/9cc1bc8bc54e3e3ded0684dd9fe12d4e3b4b6ef8a27df683b1642a97d5d9c994.zip",
+   "bytesRead": 79982,
    "readOn": "2026-09-28"
   }
  }
