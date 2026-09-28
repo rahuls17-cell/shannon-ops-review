@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T23:30:57+00:00",
+ "generatedAt": "2026-09-28T23:40:55+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10382,6 +10382,28 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/four-labels-and-thirty-one-stickers/3107b6db58eeb9cefae1f3767c6b50daa6a50a9918de2e14fe7bb73dc31f9b6b.zip",
    "bytesRead": 51610,
+   "readOn": "2026-09-28"
+  },
+  "gen-sc06-b2-spin-transport-evidence": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-sc06-b2-spin-transport-evidence/628bb1e080bb7308ee1a0e0f739f81820846262483bab79b9b3a6f216ebec703.zip",
+   "bytesRead": 87453,
+   "readOn": "2026-09-28"
+  },
+  "the-repositories-behind-my-inbox": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-repositories-behind-my-inbox/1c8c7788de32373d5447b11de6154bd4b94c6b0469c9a0231d015b79dde8d235.zip",
+   "bytesRead": 54046,
    "readOn": "2026-09-28"
   }
  }
