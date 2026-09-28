@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T17:21:07+00:00",
+ "generatedAt": "2026-09-28T18:01:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9686,6 +9686,38 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-atlas-docs-kept-twice/772c16b49a9f53290bb3f96d8058943dda6982fb2f98d1ea8aa42050d9ae00e3.zip",
    "bytesRead": 47464,
+   "readOn": "2026-09-28"
+  },
+  "edu-sc06-a5-study-guide-citations": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12.14-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc06-a5-study-guide-citations/0996a0a4c886d179a6c1354cf725fec8b0a6d40fe92e0b037603c205f5f6ed66.zip",
+   "bytesRead": 71919,
+   "readOn": "2026-09-28"
+  },
+  "law-b49-l10-appellate-costs-bill-survival": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b49-l10-appellate-costs-bill-survival/d9747d86ae4936cb1dc7cf88fb2865666a805a8f6d8e319f861830d03e704f07.zip",
+   "bytesRead": 70659,
+   "readOn": "2026-09-28"
+  },
+  "timeline-off-the-weekends": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/timeline-off-the-weekends/48b1ea916cdf771bccf6386d32e5d73ef5afd0029c41e8d96f2feddaf5631196.zip",
+   "bytesRead": 49588,
    "readOn": "2026-09-28"
   }
  }
