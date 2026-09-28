@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T11:11:15+00:00",
+ "generatedAt": "2026-09-28T11:21:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -9197,6 +9197,55 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b5-a9-basement-network-option-explainer/3aeaf4eb8a774e2d4edb914e88d7465a95e7831677917bc7fb7a1bd0cbaec855.zip",
    "bytesRead": 78242,
+   "readOn": "2026-09-28"
+  },
+  "automation-edit-spawning-a-duplicate-active-automation": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/automation-edit-spawning-a-duplicate-active-automation/0805a7736c38d2fc0cf62014c2c51b4887f05ac546e7acfe2c24309ecd882dcd.zip",
+   "bytesRead": 63124,
+   "readOn": "2026-09-28"
+  },
+  "bus-b22-b13-wellness-content-funnel-calendar": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b13-wellness-content-funnel-calendar/b4670da26559e85a3a23bc48986aa44502b83e48c2b457c3d729e1c95baad4c3.zip",
+   "bytesRead": 72027,
+   "readOn": "2026-09-28"
+  },
+  "edu-sca-b25-first-session-back-placement-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b25-first-session-back-placement-reconciliation/d66839fda3c9c7d0102ed7a0d1cf66bd944b2a8cce901bd67ddbbac7090b9607.zip",
+   "bytesRead": 72661,
+   "readOn": "2026-09-28"
+  },
+  "health-h14-sample-stability-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h14-sample-stability-audit/377ad65be75cc2e9dfc2ed764e3bdce8b9580a5ad2659bf3d557e4114330dacb.zip",
+   "bytesRead": 75899,
    "readOn": "2026-09-28"
   }
  }
