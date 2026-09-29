@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T09:00:58+00:00",
+ "generatedAt": "2026-09-29T09:31:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11251,6 +11251,50 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-mg-edu-b15-a2-diapositives-invariants-atelier/80b42e44f38617a041794c027e9ae988ef307b40ef689ef00328d29f7d1402d9.zip",
    "bytesRead": 70340,
+   "readOn": "2026-09-29"
+  },
+  "bus-b59-t5-download-link-availability": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b59-t5-download-link-availability/03f4891dc6de45b50220e20568baa168fc2847ecc4e655bb52d4d310340c634c.zip",
+   "bytesRead": 74145,
+   "readOn": "2026-09-29"
+  },
+  "bus-b59-t7-parent-quote-verbatim-check": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b59-t7-parent-quote-verbatim-check/b302937926a08ce5cf8d8f9700c301013811dce2b3f9415a6a4359ad983c94aa.zip",
+   "bytesRead": 69255,
+   "readOn": "2026-09-29"
+  },
+  "four-stale-conversations-that-moved-on": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/four-stale-conversations-that-moved-on/72da6ab5729dd5a53ecafe951fc322908e5479ca5d88e1892fef2626107c5a8e.zip",
+   "bytesRead": 62828,
+   "readOn": "2026-09-29"
+  },
+  "the-places-my-diary-would-not-hand-over": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-places-my-diary-would-not-hand-over/62d768e18622a50665a1a01b045367d3268363910816b28ba2d63cfc1023c31b.zip",
+   "bytesRead": 60436,
    "readOn": "2026-09-29"
   }
  }
