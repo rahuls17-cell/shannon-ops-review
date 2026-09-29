@@ -41,8 +41,8 @@
     // The four-trial GLM band. Read from the trial files in the bucket, so a
     // task with no trials recorded has no band rather than a zero - 0/4 is a
     // real and bad result, and must not be what "we did not look" looks like.
-    // Which bench a task runs on, from the base image in its Dockerfile. Only
-    // connector tasks have one: a plain base image is not a bench.
+    // Which bench a task runs on, from the base image in its Dockerfile.
+    // Non-connector tasks run on the Computer bench.
     // Which task a folder actually holds, read from the [task] name in its
     // package task.toml. The Accepted list counts folders, because one folder is
     // one delivered package - but the same task is re-cut under a new folder
@@ -82,15 +82,18 @@
     // keyed by the bucket folder it sits in. A lookup that tries only the row id
     // silently drops every bench that was read from a package - which is exactly
     // the tasks whose task tree was missing, so the ones that needed it most.
+    // benchRead separates "read, and it is a plain image" from "never read".
     const benchAt = (...keys) => {
+      let plain = null;
       for (let i = 0; i < keys.length; i += 1) {
         const hit = keys[i] && benches[keys[i]];
         if (hit && hit.bench) {
-          return {bench: hit.bench, benchImage: hit.image,
+          return {bench: hit.bench, benchImage: hit.image, benchRead: true,
                   benchSide: hit.bench.startsWith('company') ? 'company' : 'computer'};
         }
+        if (hit && hit.image && !plain) plain = hit;
       }
-      return {};
+      return plain ? {benchImage: plain.image, benchRead: true} : {};
     };
 
     const trials = (glmIndex && glmIndex.glm) || {};
@@ -110,7 +113,15 @@
           ...glmOf(row.id),
           ...benchAt(row.id, row.name),
         }))
+        // A non-connector task runs on the Computer bench. A plain base image in
+        // the Dockerfile (python, node and the like) is the same evidence: no
+        // harness, so no connector. Only a task never read is left without one.
+        .map(row => (row.bench || (row.connector !== false && !row.benchRead) ? row
+          : {...row, bench: 'computer bench non-connector', benchSide: 'computer'}))
       : payload.tasks;
+
+    const cohort = cohortRows(rows, cohortIndex, benchAt, dupOf);
+    carryDuplicateFolders(rows, cohort);
 
     return {
       generatedAt: payload.generatedAt,
@@ -130,7 +141,7 @@
       // cover only 1,021 folders while missing 104 that hold an accepted
       // package and have no accepted verdict row - a list that is both too
       // long and incomplete at once.
-      cohortRows: cohortRows(rows, cohortIndex, benchAt, dupOf),
+      cohortRows: cohort,
       // Null when the index has not loaded, so the page can tell the difference
       // between "nothing is delivered" and "delivery is not known".
       deliveredIndex: deliveredIndex || null,
@@ -226,6 +237,36 @@
     return collapsed.sort((a, b) => at.get(a.id) - at.get(b.id));
   }
 
+  // A task held in several bucket folders is flagged on its verdict rows too,
+  // so the DUP badge does not depend on the Accepted list being the one shown.
+  function carryDuplicateFolders(rows, cohort) {
+    if (!cohort) return;
+    const bySpelling = new Map();
+    const identity = row => String(row.id || '').replace(/^(task|family|folder):/, '');
+    rows.forEach(row => {
+      [keyOf(row.name), stemOf(row.name), keyOf(identity(row))].forEach(spelling => {
+        if (!spelling) return;
+        if (!bySpelling.has(spelling)) bySpelling.set(spelling, new Set());
+        bySpelling.get(spelling).add(row);
+      });
+    });
+    cohort.forEach(folderRow => {
+      if (!folderRow.dupFolders) return;
+      const hits = new Set([...(bySpelling.get(keyOf(folderRow.cohortFolder)) || []),
+        ...(bySpelling.get(stemOf(folderRow.cohortFolder)) || []),
+        ...(bySpelling.get(keyOf(folderRow.packageTask)) || [])]);
+      hits.forEach(row => {
+        if (row.dupFolders) return;
+        if (!row.packageTask) row.packageTask = folderRow.packageTask;
+        row.dupFolders = folderRow.dupFolders;
+        row.duplicateSiblings = folderRow.dupFolders.length - 1;
+        row.possibleDuplicate = true;
+        row.duplicateTier = 'confirmed';
+        row.duplicateVia = folderRow.duplicateVia;
+      });
+    });
+  }
+
   // Each folder gets the verdict row that best describes it, so the table keeps
   // its trainer, dates, GLM band and drill-down. A folder with no verdict row
   // still appears, carrying what the bucket knows and nothing invented.
@@ -284,6 +325,19 @@
     });
   }
 
+  // The accepted folders folded by the [task] name declared in each package's
+  // task.toml. A re-cut after review lands under a new folder name, so several
+  // folders can hold one task. A folder whose package could not be read is its
+  // own task, because nothing says otherwise. Shown beside the folder count; the
+  // Accepted figures themselves stay in folders.
+  function acceptedTaskNames(folderRows) {
+    const names = new Set();
+    (folderRows || []).forEach(row => names.add(row.packageTask
+      ? `task:${keyOf(row.packageTask)}` : `folder:${String(row.cohortFolder || row.id).toLowerCase()}`));
+    const folders = (folderRows || []).length;
+    return {folders, tasks: names.size, extraFolders: folders - names.size};
+  }
+
   function filterTruth(rows, filters) {
     const f = filters || {};
     const has = (list, value) => !value || (list || []).includes(value);
@@ -317,8 +371,8 @@
           : row.connector === null || row.connector === undefined)) &&
         // The band is a property of the run, so a row with no trials is
         // excluded from every band filter rather than counted as 0.
-        // Bench is a property of connector tasks only, so a row without one is
-        // excluded from every bench filter rather than counted as neither.
+        // A row never read for a bench is excluded from every bench filter
+        // rather than counted as one side.
         (!f.bench || (f.bench === 'none' ? !row.bench
           : f.bench === 'company' || f.bench === 'computer' ? row.benchSide === f.bench
           : row.bench === f.bench)) &&
@@ -426,5 +480,6 @@
   root.prepareTruth = prepareTruth;
   root.filterTruth = filterTruth;
   root.chainFor = chainFor;
-  if (typeof module !== 'undefined') module.exports = {prepareTruth, filterTruth, collapseByTask, chainFor, UNDECIDED};
+  root.acceptedTaskNames = acceptedTaskNames;
+  if (typeof module !== 'undefined') module.exports = {prepareTruth, filterTruth, collapseByTask, chainFor, acceptedTaskNames, UNDECIDED};
 })(typeof window === 'undefined' ? globalThis : window);

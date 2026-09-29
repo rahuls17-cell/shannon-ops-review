@@ -1,22 +1,30 @@
 (function (root) {
-  // Read model for the delivery task audit (assets/delivery-audit.json), the
-  // dataset the delivery dashboard publishes.
+  // Read model for the Delivery tab: every task handed to the client.
+  //
+  // Two sources, one row shape:
+  //   - assets/delivery-audit.json, the audit of batches 1 to 4.1, which carries
+  //     trainer attribution and the audit workbook's accept/reject decisions
+  //   - assets/drive-deliveries.json, one row per package in each later batch's
+  //     manifest.json on Drive. A manifest names no trainer and records no
+  //     decision, so those rows are Unattributed and Pending by construction.
+  // A batch the audit covers is never taken from Drive as well, so no task is
+  // listed twice.
   //
   // This is a DIFFERENT population from the Pipeline tab and must not be read
-  // as a second opinion on it:
-  //   - 412 audited tasks from batches 1 to 4.1, not the whole bucket
-  //   - its acceptance comes from the audit workbook, not from GCS verdicts
-  //   - it is a snapshot; the source stamps when its data was built
-  // Where the two disagree it is usually because this snapshot is older, so the
-  // page shows its build date rather than implying it is current.
+  // as a second opinion on it: it is what was delivered, not the whole bucket,
+  // and its acceptance comes from the audit workbook, not from GCS verdicts.
   //
   // Same shape as every other module here: prepare, then filter and tally.
   const UNSET = '(not recorded)';
   const value = v => (v === null || v === undefined || v === '' ? UNSET : String(v));
 
-  function prepareDeliveryAudit(payload) {
+  function prepareDeliveryAudit(payload, drivePayload) {
     if (!payload || !Array.isArray(payload.rows)) throw new Error('No delivery audit asset loaded');
-    const rows = payload.rows.map(row => ({
+    const audited = new Set(payload.rows.map(row => row.batch));
+    const driveRows = (drivePayload && Array.isArray(drivePayload.rows) ? drivePayload.rows : [])
+      .filter(row => !audited.has(row.batch))
+      .map(row => ({...row, fromManifest: true}));
+    const rows = payload.rows.concat(driveRows).map(row => ({
       ...row,
       task: row.task || '',
       // The source writes the literal string 'Unattributed' rather than
@@ -44,6 +52,14 @@
       statusSource: payload.statusSource,
       source: payload.source,
       summary: payload.summary || {},
+      auditedCount: payload.rows.length,
+      drive: drivePayload ? {
+        generatedAt: drivePayload.generatedAt,
+        folder: drivePayload.folder || null,
+        batches: drivePayload.batches || [],
+        skipped: drivePayload.skipped || [],
+        rows: driveRows.length,
+      } : null,
       rows,
     };
   }
@@ -51,7 +67,7 @@
   function filterDeliveryAudit(rows, filters) {
     const f = filters || {};
     const matched = rows.filter(row => {
-      const text = [row.task, row.sha, row.trainer, row.category, row.batch]
+      const text = [row.task, row.declaredName, row.sha, row.trainer, row.category, row.batch]
         .join(' ').toLowerCase();
       return (!f.batch || f.batch === value(row.batch)) &&
         (!f.category || f.category === value(row.category)) &&

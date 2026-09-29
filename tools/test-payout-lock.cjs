@@ -107,36 +107,35 @@ const css = fs.readFileSync(path.join(root, 'styles.css'), 'utf8');
 
 // --- who is owed what, on the Overview --------------------------------------
 // The Payout balance panel sits on the tab everyone lands on and names people
-// next to what they are owed. The totals and the bench split are not about
-// anyone in particular and stay visible; the identities are withheld until
-// Payouts is unlocked.
-//
-// The test that matters is that the name is absent from the MARKUP. Blurring or
-// clipping it still sends the name to the browser, where Inspect Element reads
-// it off - a gate that looks like it works and does not.
+// next to what they are owed. Until Payouts is unlocked neither a name nor an
+// amount is written into the markup: a blurred placeholder stands in for each,
+// so Inspect Element has nothing to read and the layout keeps its shape.
 {
-  const fn = app.slice(app.indexOf('function renderTopPendingCards'),
-    app.indexOf('function wirePayoutBalance'));
-  assert.ok(/const named = payoutsOpen\(\);/.test(fn),
-    'the panel must ask whether Payouts is unlocked');
-  assert.ok(/named \? esc\(who\) : '<span class="maskedname">/.test(fn),
+  const gate = app.slice(app.indexOf('function payoutBalanceOpen'), app.indexOf('function applyPayoutLock'));
+  assert.ok(/const open = payoutsOpen\(\);/.test(gate), 'the panel must ask whether Payouts is unlocked');
+  assert.ok(/hiddenMoney = \(\) => '<span class="blurred"/.test(gate) && /hiddenName = \(\) => '<span class="blurred"/.test(gate),
+    'the placeholders carry no value');
+  const fn = app.slice(app.indexOf('function renderTopPendingCards'), app.indexOf('function wirePayoutBalance'));
+  assert.ok(/<strong>\$\{open \? esc\(who\) : hiddenName\(\)\}<\/strong>/.test(fn),
     'the name must be replaced in the markup, not styled out of sight');
-  assert.ok(!/filter:\s*blur/.test(css.slice(css.indexOf('.leader-row.is-masked'),
-    css.indexOf('.leader-row.is-masked') + 400)),
-    'a blur would leave the name readable in the DOM');
-  assert.ok(/named[\s\S]{0,120}data-person="\$\{esc\(who\)\}"/.test(fn),
+  assert.ok(/open[\s\S]{0,120}data-person="\$\{esc\(who\)\}"/.test(fn),
     'data-person carries the name too, so it must be gated with the label');
-  assert.ok(/data-key="owed:\$\{named \? esc\(row\.email \|\| row\.name\) : index\}"/.test(fn),
-    'the animation key is built from the email; masked rows must key on the rank instead');
-  // The click and keyboard handlers both select on [data-person], so dropping
-  // that attribute is what makes a masked row inert - no separate guard needed.
+  assert.ok(/\$\{open \? `<div class="amount" data-count=[\s\S]{0,200}: `<div class="amount">\$\{hiddenMoney\(\)\}<\/div>`\}/.test(fn),
+    'the amount must be withheld from the markup with the name');
+  const chart = app.slice(app.indexOf('function renderExposureChart'), app.indexOf('function renderTopPendingCards'));
+  assert.ok(/const cash = value => \(open \? money\(value\) : hiddenMoney\(\)\);/.test(chart),
+    'the bench amounts are withheld with the names');
+  assert.ok(/\$\{open \? ` data-tip="\$\{money\(paid\)\}/.test(chart), 'the settle tooltip must not carry the amount while locked');
+  assert.ok(html.includes('id="payoutBalanceVeil"') && html.includes('data-jump="payouts"'),
+    'the notice says where to unlock');
+  assert.ok(/\.blurred \{[^}]*filter: blur/.test(css), 'placeholders are blurred');
   const wire = app.slice(app.indexOf('function wirePayoutBalance'), app.indexOf('function wireStatusFocus'));
   assert.ok(wire.includes(".leader-row[data-person]"),
     'the row handlers must select on data-person, or masked rows stay clickable');
   const unlock = app.slice(app.indexOf('function wirePayoutLock()'));
-  assert.ok(unlock.includes('renderTopPendingCards();'),
+  assert.ok(unlock.includes('renderHero(); renderTopPendingCards();'),
     'unlocking must redraw the Overview panel, or the names stay hidden until a reload');
-  console.log('overview: identities withheld from the markup, rows inert, redrawn on unlock');
+  console.log('overview: names and amounts withheld from the markup, rows inert, redrawn on unlock');
 }
 
 // --- two things that made a correct password look wrong ---------------------

@@ -15,12 +15,13 @@ let truth = null;
 let truthPage = 0;
 let cohortIndex = null;
 let acceptedShown = null;
+let truthByBucket = false;
 let openChain = null;
 const TRUTH_PAGE_SIZE = 40;
 let audit = null;
 let auditPage = 0;
 const AUDIT_PAGE_SIZE = 40;
-const AUDIT_FILTERS = ['aBatch', 'aCategory', 'aType', 'aDifficulty', 'aGlm',
+const AUDIT_FILTERS = ['aBatch', 'aCategory', 'aDifficulty', 'aGlm',
   'aAcceptance', 'aPriority', 'aTrainer', 'aSource', 'aFlagged'];
 
 const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tConnector', 'tGlm', 'tBench', 'tCarried',
@@ -97,28 +98,18 @@ const infoCopy = {
   consoleCounts: 'The Harbor Console is the source of truth for finalisation. Its counts are shown here as pulled, not recomputed. Our bucket scan lists what is physically stored under tasks/, and that prefix is reorganised and pruned - of 194 folders that left the accepted cohorts overnight, 172 were still in the console and 171 still accepted. So a folder count under-reports accepted work and the console figure is the one to quote. Legacy is the console\u2019s own bucket for anything before 5 September. The console sits behind IAP, so this is a pull through an authenticated browser session rather than a live read.',
   basis: 'The Harbor Console lists one row per submission, and its cards count those rows. This page lists one row per task, taken at its latest submission, because a task resubmitted five times is still one piece of work and counting it five times would overstate delivery and pay. Neither number is wrong: subtract the re-submissions from the console figure and you get this page. The residual few are the console filter starting at a time of day where ours starts at midnight, and anything submitted since the last pull.',
   explorerScope: 'A metadata-only mirror of the delivery prefixes of the GCS bucket: the seven finalisation cohorts and the trainer evaluation records. It holds names, sizes and timestamps, never object contents, and it never writes to the bucket. The whole bucket is far larger - over 22 million objects and 9 million folders - which cannot be mirrored into a static page, so prefixes outside this scope are deliberately absent rather than silently empty.',
-  auditComposition: 'The audited batches broken down four ways. These are the 412 tasks the Computer Bench audit covered - batches 1 to 4.1 - not the whole bucket, so this is a different population from the Pipeline tab and the two will not add up to each other.',
+  auditComposition: 'The delivered batches broken down four ways: batches 1 to 4.1 from the Computer Bench audit, and every later batch from the manifest.json in its Drive folder. That is what was handed over, not the whole bucket, so this is a different population from the Pipeline tab and the two will not add up to each other.',
   auditGlm: 'How many of four OpenCode GLM trials solved the task. 0/4 means no trial solved it and 4/4 means every trial did; a task is a useful benchmark when some trials succeed and some fail, so the middle buckets are the valuable ones. This score exists only for audited tasks - the pipeline itself records no difficulty score.',
-  auditDifficulty: 'The audit workbook rating of Harder or Easier. It comes from the audit, not from Harbor: the pipeline records no difficulty field at all, which is why this rating exists nowhere else on this dashboard.',
-  auditAcceptance: 'Accepted, Rejected or Pending as recorded by the audit workbook, not by the GCS verdicts the Pipeline tab reads. The two are different sources judged at different times, so a task can read Accepted here and Rejected there. The status line above gives the date this snapshot was built.',
+  auditDifficulty: 'Harder or Easier as the delivery recorded it: the audit workbook for batches 1 to 4.1, the batch manifest for every later batch. It does not come from Harbor: the pipeline records no difficulty field at all, which is why this rating exists nowhere else on this dashboard.',
+  auditAcceptance: 'Accepted, Rejected or Pending as recorded by the audit workbook, not by the GCS verdicts the Pipeline tab reads. The two are different sources judged at different times, so a task can read Accepted here and Rejected there. Batches read from Drive manifests are Pending until the client decides on them. The status line above gives the date this snapshot was built.',
   auditSource: 'How the task was attributed to a trainer. Accepted portal and Trainer records are direct. QC run owner is inferred from who ran the QC, and unverified means that inference was not confirmed. Contested means more than one trainer claims it, and Unattributed means nobody could be identified.',
   auditFlags: 'Three quality caveats carried per task: contested owner - more than one trainer claims it; unverified - the attribution was inferred and not confirmed; version dependent - the result changes between task versions.',
   manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. To cut a second round, load the first manifest back in and its tasks are left out.',
   glm: () => {
     const g = truth && truth.glmIndex && truth.glmIndex.counts;
-    const band = g ? Object.entries(g.band).map(([k, n]) => k + ' ' + fmt(n)).join(', ') : '';
-    return 'Every task is run four times by the same GLM-5.2 battery before it is offered, and a run '
-      + 'passes only at a reward of exactly 1.0, so a task scores 0/4 to 4/4. The band that gets '
-      + 'accepted is 1 to 3: 4/4 is too easy to be worth benchmarking, and 0/4 has not been shown to '
-      + 'be solvable at all. Read out of the bucket rather than from a report about it - the batch '
-      + 'gate report names the four trial directories and each verifier/reward.txt holds its reward - '
-      + 'and checked against the bucket own cross-trial calibration, which states the same count.'
-      + (g ? ' ' + fmt(g.withTrials) + ' of ' + fmt(g.pipelineTasks) + ' rows have a band: ' + band + '.' : '')
-      + ' A dash means no trials are recorded for the batch that run was decided in, which is not the '
-      + 'same as having failed them: 0/4 is a real and damning result and must not be what "we did not '
-      + 'look" renders as. One caution: this is the band for the run THIS ROW stands for. Where a task '
-      + 'was submitted more than once the package that shipped can carry a different band, and the '
-      + 'delivery manifest records that one.';
+    return 'How many of four GLM-5.2 trial runs solved the task. The 1 to 3 band is the useful one: 4/4 is too easy, 0/4 unproven'
+      + (g ? '. ' + fmt(g.withTrials) + ' of ' + fmt(g.pipelineTasks) + ' tasks have a score' : '')
+      + '.';
   },
   cohort: () => {
     const c = cohortIndex && cohortIndex.counts;
@@ -142,19 +133,10 @@ const infoCopy = {
   },
   bench2: () => {
     const b = truth && truth.benchIndex && truth.benchIndex.counts;
-    const split = b ? Object.entries(b.byBench).map(([k, n]) => `${k} ${fmt(n)}`).join(', ') : '';
-    return 'Which bench a connector task runs on, decided by the base image in its Dockerfile - '
-      + 'the FROM line, read from environment/Dockerfile in the task source. Nothing else carries '
-      + 'it: task.toml does not, the verdicts do not, and the bucket scan records an image for none '
-      + 'of the packages it covers. connectors-harness-aster is company aster; company-bench-private '
-      + 'and benchmark-base are company zeta; connectors-harness with real-data is computer real; '
-      + 'anything else under connectors-rl-gym or connectors-harness is computer synth. The registry '
-      + 'path is tested before the image name, because benchmark-base sits under data-obi-rl-gym and '
-      + 'is a company image while obi-benchmark under connectors-rl-gym is a computer one - reading '
-      + 'the name first gets four of the 348 labelled tasks wrong.'
-      + (split ? ' Across the pipeline: ' + split + '.' : '')
-      + ' Only connector tasks have a bench. A task on a plain base image is not on one, and is '
-      + 'listed as not a connector rather than being forced into a side.';
+    return 'Which bench the task runs on, read from the FROM line of its Dockerfile: company aster or zeta, '
+      + 'computer real or synthetic. Non-connector tasks and plain base images run on the Computer bench; '
+      + 'not read yet means no Dockerfile has been read for the task.'
+      + (b ? ' ' + fmt(b.known) + ' Dockerfiles read so far.' : '');
   },
   truthSplit: () => {
     const c = cohortIndex && cohortIndex.counts;
@@ -184,57 +166,42 @@ const infoCopy = {
   },
   truthConnector: () => {
     const c = cohortIndex && cohortIndex.counts;
-    return 'Whether the task mounts connector gyms - Slack, Jira, Google Drive and the rest. It is '
-      + 'decided structurally, by whether task.toml inside the package declares at least one entry '
-      + 'under mcp_servers, and never from the task name: a gen- or code- prefix says nothing about '
-      + 'whether a task talks to Slack. Among these very tasks, '
-      + 'appointment-backlog-placeholder-and-duplicate-audit is a connector and '
-      + 'gen-g91-hotel-rate-parity-audit is not. Declaring the key is not enough either - four '
-      + 'packages say mcp_servers = [], an empty list, and those are non-connectors.'
-      + (c ? ' Across the ' + fmt(c.packages) + ' accepted packages: ' + fmt(c.connectorTasks)
-            + ' connector, ' + fmt(c.nonConnectorTasks) + ' not, ' + fmt(c.connectorUnknown)
-            + ' unknown. Read from the folder own package where the bucket scan covers it, from the '
-            + 'delivery manifest that packaged it for ' + fmt(c.connectorFromManifest)
-            + ', and by opening the package and reading task.toml for ' + fmt(c.connectorFromPackage)
-            + '.' : '');
+    return 'Connector means the package declares connector gyms such as Slack or Jira in its task.toml. '
+      + 'Read from the package, never from the name'
+      + (c ? ': ' + fmt(c.connectorTasks) + ' connector, ' + fmt(c.nonConnectorTasks) + ' non-connector, '
+             + fmt(c.connectorUnknown) + ' not read' : '')
+      + '.';
   },
   truthFlags: 'Short codes so the task name is never squeezed out of its column. DL - already delivered, covered by the Delivery tab. Times-N - the same task appears N times in the pipeline and is counted once while the Delivered filter is on. CK - check before shipping: the identifier names a task the audit already covers although the name does not match. DUP - another task shares its name and trainer, so it is probably the same work counted twice; red when the date and outcome match too. UM - unmerged: it arrived with no family id, so repeat runs of it may be counted separately. CO - carried over: first decided before the cut and settled after it. Hover any code for the full explanation for that row, and open the row with + for its evidence.',
   truthVersions: () => {
     const c = truth && truth.deliveredIndex && truth.deliveredIndex.counts;
-    return 'The pipeline records one row per submission, not per task, and the same work can arrive '
-      + 'under several names.'
-      + (c ? ' ' + fmt(c.deliveredRows) + ' delivered rows stand for ' + fmt(c.auditedMatched)
-            + ' audited tasks.' : '')
-      + ' Setting this filter counts tasks rather than rows: a task with several versions appears '
-      + 'once, tagged with how many it has, which one is shown and why. Nothing is dropped - the tag '
-      + 'lists the other versions, and clearing the filter brings every row back. The Accepted view '
-      + 'does not need this at all: it is drawn from bucket folders, where one folder is already one '
-      + 'task.';
+    return 'A task submitted more than once is counted once here'
+      + (c ? ': ' + fmt(c.deliveredRows) + ' delivered rows are ' + fmt(c.auditedMatched) + ' tasks' : '')
+      + '. The \u00d7N badge says how many versions a row stands for.';
   },
   truthDelivered: () => {
     const c = truth && truth.deliveredIndex && truth.deliveredIndex.counts;
-    if (!c) return 'The delivered index has not loaded.';
-    return 'What was handed over, checked against the bucket. The ' + fmt(c.manifestTasks)
-      + ' come from the four delivery manifests in assets/manifests - the files that were actually '
-      + 'sent - and they agree with the Delivery tab exactly: same names, same batch split, nothing in '
-      + 'one and not the other. Every one was cut from finalisation_client_qc_accepted_iteration_2 and '
-      + 'no other prefix, which is why that prefix is what Accepted counts. The two figures beside it '
-      + 'split this number and nothing else: ' + fmt(c.manifestLiveConfirmed) + ' + '
-      + fmt(c.manifestLiveMissing) + ' = ' + fmt(c.manifestTasks) + '. Still in the bucket means the '
-      + 'exact object the manifest names was found when the prefix was listed on '
-      + c.manifestLiveCheckedOn + ', at its own path or moved within its folder. The '
-      + fmt(c.manifestLiveMissing) + ' that were not are NOT failed deliveries: they went out and the '
-      + 'manifest records the exact object sent, so what is gone is the bucket copy and that delivery '
-      + 'can no longer be reproduced on demand. Both were looked for across all three accepted '
-      + 'prefixes, not only the one they were cut from. These do not follow the filters - they are a '
-      + 'record of what shipped, not a count of what is on screen.';
+    return 'Delivered means handed over in one of the four delivery manifests'
+      + (c ? ': ' + fmt(c.manifestTasks) + ' tasks' : '')
+      + '. Ready means accepted with a package at the current bar and not yet delivered.';
   },
   truthTasks: 'One row is one task, not one submission. Runs of the same task are grouped by the family the pipeline assigned them, and the row shows the canonical run: the one that got furthest, breaking ties on outcome and then on decision time. Every other run stays attached under the row. The State column carries the predicate that decided it, and the source is the verdict object it was read from.',
-  finding: 'What the gate objected to. The filter searches every run of a task, so a task that tripped a check, was fixed and then accepted is still findable under that check. The row itself separates the two: the Findings line shows what the run behind the current verdict found, and names anything that came from an earlier run of the same task. An accepted task showing HARBOR-CHECK from an earlier run was not accepted despite failing - it failed, was fixed, and passed.',
-  gateEra: 'Which gate judged the deciding run, taken from the bucket\'s own sentinel files rather than inferred. The gate switched from Opus to GLM-5.2 at 2026-09-13T20:05:59Z, KESTREL came on at 2026-09-15T03:40:49Z, and KESTREL was fully operating on both gates from 2026-09-16T05:06:54Z. Acceptances made by GLM-5.2 without KESTREL review were withdrawn on 16 September and are being re-gated.',
+  finding: 'What the gate objected to, on any run of the task. A task that was fixed and later accepted still shows the earlier finding, marked as from an earlier run.',
+  gateEra: 'Which gate judged the deciding run: Opus until 13 September, GLM-5.2 after, with KESTREL review from 15 September and on both gates from 16 September. GLM-5.2 acceptances without KESTREL review are being re-gated.',
   scope: 'The cut is applied to the date a task was DECIDED, not the date it was submitted. A task uploaded in August but judged by the pipeline running today belongs to today, because the bar running today is what judged it. Cutting on submission instead would hide exactly the re-gated work that matters most. Tasks whose last decision falls before 5 September are excluded entirely and are not shown anywhere on this page. About a fifth of verdicts carry no decision timestamp - those are the runs that errored or never finished, so there was never a ruling to time - and they are placed by when the verdict was last updated and marked approx.',
-  duplicates: 'This filter means two different things, because the two views count different units. Under Accepted the rows are bucket folders, and a folder is flagged when another folder holds the SAME TASK - read from the [task] name inside each package&rsquo;s task.toml, not guessed from the folder name. That is exact: 47 tasks sit under more than one folder name, which is 51 folders above the first, so counting folders counts those tasks more than once. Click the DUP badge to see every folder the task sits in, with the same columns as the table. In every other view the rows are submissions, and a row is flagged when another submission carries the same name AND the same trainer - a weaker, heuristic claim, with Likely meaning it also shares the decision day and the outcome. Nothing is merged in either view: a task name can legitimately cover unrelated work, and one name in this bucket carries 36 genuinely different tasks.',
-  confidence: 'How confidently runs were grouped into one task. Keyed by family is the pipeline\'s own lineage id and is reliable - no family in this data spans two trainers. Unmerged means no family id was present, so the task is keyed on its submission id and repeat runs of it may still be counted separately. Task name was never used as a key: one literal name in this bucket carries 36 unrelated tasks.',
+  duplicates: 'Under Accepted, a folder is flagged DUP when another folder holds the same task, read from the package. Elsewhere a task is flagged when another submission shares its name and trainer.',
+  confidence: 'How runs were grouped into one task. Keyed by family uses the pipeline\'s own lineage id; unmerged means no family id, so repeat runs may be counted separately.',
+  segment: () => {
+    const rows = truth ? truth.rows : [];
+    const count = key => rows.filter(row => segmentOf(row.owner, row.connector) === key).length;
+    const both = rows.filter(row => benchOf(rosterTeam(row.owner)) === 'company' && row.connector === true).length;
+    return 'One split for the whole dashboard, applied like the date range. Company Bench: the owner\u2019s roster team is Company. ' +
+      'Connector and Non-connector: the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit - for owners outside Company Bench. ' +
+      `Right now: Connector ${fmt(count('connector'))}, Non-connector ${fmt(count('non-connector'))}, Company Bench ${fmt(count('company'))} of ${fmt(rows.length)} pipeline tasks; ` +
+      `${fmt(count('unknown'))} carry no flag yet (the pipeline learns the type at delivery) and appear under All only. ` +
+      (both ? `${fmt(both)} Company Bench tasks are also connector tasks; they count under Company Bench. ` : '') +
+      'People follow the same rule: Company Bench by team, otherwise by the type of work they have accepted. The 240 audit counts and the daily plan are not split, and say so.';
+  },
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
   v2Accepted: 'Task folders in tasks/finalisation_client_qc_accepted_iteration_2/ in the bucket - the second client QC finalisation round. It is one of three accepted cohorts, so it is smaller than the accepted total on the Finalisation tab, and a task finalised into more than one cohort is counted here once per folder. Read it as the size of the v2 round, not as the total accepted work.',
@@ -249,7 +216,6 @@ const infoCopy = {
   ledgerAcceptance: 'The workbook Valid column, shown for audit only. Every unique task counts as accepted regardless of this flag, so a Valid = 0 row still carries pending payment. Two rows currently carry it: one whose child job is NA, and one whose child job cell says someone is looking into it.',
   trainerPick: 'Lists only people who have accepted work or a payment recorded against them, which is why it is short - the rest of the roster has nothing to pay. Picking one narrows both tables on this tab to that person: their payout row, and every task in their ledger. Use the search box instead to look someone up across the whole roster.',
   ledgerDuplicates: 'How many workbook rows folded into this one task. Above 1 means the same task and trainer were listed more than once. The extra rows are excluded from every accepted and pending count, but they are not hidden - filter to Folded rows only to see them.',
-  duplicates: 'Accepted work lives in three cohorts and the same task can be finalised into several of them. Folders are what the bucket holds; distinct tasks is what was actually done. The newest archive represents the task and the rest are marked as repeats, which is why adding the cohort totals together overstates the work.',
   ownership: 'Three tiers, strongest first. Harbor Console submitter is the console\u2019s own record of who submitted the task and is treated as proof. Name match only is the GCS trainer records joined by declared task name - finalisation repackages archives, so digests never match and the name is the only join available; that is evidence, not proof. Contested means two records claim the same name and the console does not settle it, so the task stays unassigned rather than being given to whoever was found first. The console export is a point-in-time dump, not live.',
   pipeline: 'The status names are the Harbor Console\u2019s own: its finalisation run state is done, rejected, parked or running, which the spec restates as Accepted, Rejected, Failed and Running. Rejected means harbor checks failed and the trainer reworks it - the largest bucket by far. Failed means an infrastructure error the trainer cannot rerun; it parks for QC or gen engineering. Submitted means the gate passed but no decision is recorded yet, which is what used to be shown as Done - it is not an acceptance. Current counts the latest attempt per family; All attempts counts retries separately.',
   dates: 'Filters records by their recorded date, inclusive at both ends, and either end can be left empty. Records with no date are excluded as soon as a date is set. Status counts and the table use the same filter. Payout figures are untouched.',
@@ -319,13 +285,15 @@ function renderScopeFunnel() {
   const value = byId('countFunnel');
   if (!value) return;
   if (!truth) { value.textContent = '-'; return; }
-  const rows = truth.rows;
+  const rows = truthRows();
   // The scope chain is the longest published chain, cut at the step that
-  // produced the in-scope count; later steps are figure-specific.
+  // produced the in-scope count; later steps are figure-specific. A segment
+  // adds one more step of its own.
   const longest = [...truth.figures.values()].map(figure => figure.steps || [])
     .sort((a, b) => b.length - a.length)[0] || [];
-  const cut = longest.findIndex(step => step.count === rows.length);
-  const shared = cut >= 0 ? longest.slice(0, cut + 1) : [];
+  const cut = longest.findIndex(step => step.count === truth.rows.length);
+  const shared = (cut >= 0 ? longest.slice(0, cut + 1) : [])
+    .concat(segment ? [{step: `in the ${SEGMENTS[segment]} segment`, count: rows.length}] : []);
   scopeChain = shared;
   // Caveat counts feed the tooltip only.
   scopeCaveats = {
@@ -334,8 +302,8 @@ function renderScopeFunnel() {
     duplicates: rows.filter(row => row.possibleDuplicate).length,
     lowConfidence: rows.filter(row => row.confidence === 'low').length,
   };
-  animateCount(value, truth.counts?.inScope ?? rows.length);
-  setTextIfPresent('commandScopeNote', `since ${truth.cut}`);
+  animateCount(value, segment ? rows.length : (truth.counts?.inScope ?? rows.length));
+  setTextIfPresent('commandScopeNote', `since ${truth.cut}${segment ? ` · ${SEGMENTS[segment]} only` : ''}`);
   const node = byId('detailScope');
   if (node) node.innerHTML = shared.map(step => `<div><span>${esc(step.step)}</span><b>${fmt(step.count)}</b></div>`).join('');
 }
@@ -345,7 +313,7 @@ let deltaModel = null;
 function buildDelta() {
   if (!truth) { deltaModel = null; return; }
   try {
-    deltaModel = window.prepareDelta(truth);
+    deltaModel = window.prepareDelta({...truth, rows: truthRows()});
   } catch (error) {
     deltaModel = null;
     setText('deltaNote', `Daily delta could not be built: ${error.message}`);
@@ -376,9 +344,9 @@ function renderDailyDelta() {
 
   byId('deltaPeaks').innerHTML = `<span class="peakstrip-label">Busiest day</span>` +
     result.states.filter(state => result.peak[state].count).map(state =>
-      `<span class="peakstrip-item"><span class="peakstrip-top"><i style="background:var(${
+      `<span class="peakstrip-item" style="--tone:var(${STATE_TOKENS[state] || '--slate'})"><span class="peakstrip-top"><i style="background:var(${
         STATE_TOKENS[state] || '--slate'})"></i>${esc(state)} <b>${fmt(result.peak[state].count)}</b></span>` +
-       `<small>(${esc(result.peak[state].date.slice(5))})</small></span>`).join('');
+       `<small>${esc(result.peak[state].date.slice(5))}</small></span>`).join('');
 
   setText('deltaNote', '');
 }
@@ -395,7 +363,57 @@ function populateDeltaFilter() {
   select.value = counts.has(chosen) ? chosen : '';
 }
 
+
+// The split at a glance: one tile per segment, each one the filter.
+function renderSegmentStrip() {
+  const host = byId('segmentStrip');
+  if (!host) return;
+  const rows = truth ? truth.rows : [];
+  const people = data.trainers || [];
+  const ledger = payoutLedgerTasks;
+  const keys = ['connector', 'non-connector', 'company'];
+  const tiles = keys.map(key => {
+    const tasks = rows.filter(row => segmentOf(row.owner, row.connector) === key);
+    const v = {acc: tasks.filter(r => r.state === 'accepted').length, rej: tasks.filter(r => r.state === 'rejected').length};
+    const legacy = tasks.filter(r => r.state === 'legacy accepted').length;
+    const folk = people.filter(row => personSegments(row).has(key));
+    const money = ledger.filter(task => segmentOf(task.email, typeFlag(task.filterType)) === key);
+    const paid = money.filter(t => t.paymentState === 'Paid' || t.paymentState === 'Not itemised').length;
+    return {key, label: SEGMENTS[key], tasks: tasks.length, accepted: v.acc + legacy, rejected: v.rej, other: tasks.length - v.acc - legacy - v.rej,
+            people: folk.length, ledger: money.length, paid};
+  });
+  const unknown = rows.filter(row => segmentOf(row.owner, row.connector) === 'unknown').length;
+  const typed = rows.length - unknown;
+  const lead = [...tiles].sort((a, b) => b.accepted - a.accepted)[0];
+  host.innerHTML = `
+    <div class="segstrip-head">
+      <p class="eyebrow">The split<button class="why" data-info="segment" aria-label="How the segments are defined">?</button><span>${fmt(typed)} of ${fmt(rows.length)} pipeline tasks carry a type${unknown ? ` · ${fmt(unknown)} do not yet` : ''}</span></p>
+      <p class="segstrip-note">${segment ? `Showing <b>${SEGMENTS[segment]}</b> everywhere · click the tile again for all` : 'Click a tile to filter the whole dashboard'}</p>
+    </div>
+    <div class="segtiles">
+      ${tiles.map((t, index) => `<button type="button" class="segtile${segment === t.key ? ' is-on' : ''}${lead && lead.key === t.key && t.accepted ? ' is-lead' : ''}" style="--i:${index};--c:var(${SEGMENT_TONES[t.key]})" data-seg="${t.key}" aria-pressed="${segment === t.key}" data-tip="${esc(t.label)}: ${fmt(t.tasks)} pipeline tasks, ${fmt(t.accepted)} accepted · ${fmt(t.people)} people · ${fmt(t.ledger)} ledger tasks, ${fmt(t.paid)} paid">
+        <div class="segtile-head"><span class="segtile-name"><i></i>${esc(t.label)}</span>${lead && lead.key === t.key && t.accepted ? '<span class="medal medal-1" data-tip="Most accepted tasks">1</span>' : ''}</div>
+        <div class="segtile-main"><b data-count="${t.tasks}" data-key="seg:${t.key}:tasks">${fmt(t.tasks)}</b><span>pipeline tasks<small>${typed ? Math.round((t.tasks / typed) * 100) : 0}% of typed</small></span></div>
+        <span class="segtile-share"><i style="--pct:${typed ? Math.round((t.tasks / typed) * 100) : 0}"></i></span>
+        ${t.tasks ? verdictBar(t.accepted, t.rejected, t.other, t.tasks) : '<span class="vbar"></span>'}
+        <div class="segtile-facts">
+          <div><b data-count="${t.accepted}" data-key="seg:${t.key}:acc">${fmt(t.accepted)}</b><span>accepted</span></div>
+          <div><b data-count="${t.people}" data-key="seg:${t.key}:people">${fmt(t.people)}</b><span>people</span></div>
+          <div><b data-count="${t.paid}" data-key="seg:${t.key}:paid">${fmt(t.paid)}</b><span>paid of ${fmt(t.ledger)}</span></div>
+        </div>
+      </button>`).join('')}
+      ${unknown ? `<div class="segtile is-unknown" style="--i:3;--c:var(--slate)" data-tip="The pipeline only learns a task's type once it reaches delivery; these ${fmt(unknown)} have not, so they count under All and nowhere else.">
+        <div class="segtile-head"><span class="segtile-name"><i></i>Type not yet known</span></div>
+        <div class="segtile-main"><b data-count="${unknown}" data-key="seg:unknown">${fmt(unknown)}</b><span>pipeline tasks<small>${Math.round((unknown / (rows.length || 1)) * 100)}% of all</small></span></div>
+        <p class="segtile-why">No connector flag until delivery. Shown under All only.</p>
+      </div>` : ''}
+    </div>`;
+  animateCounts(host);
+}
+
 function renderEverything() {
+  syncSegmentSwitch();
+  renderSegmentStrip();
   renderSources();
   renderHero(); renderTopPendingCards(); renderDonut(); renderTrainerRows(); renderTeams();
   renderBenchCards();
@@ -405,6 +423,7 @@ function renderEverything() {
   renderScopeFunnel();
   populateDeltaFilter();
   renderDailyDelta();
+  fitDeck();
 }
 
 // The bucket is no longer a view of its own - it is the delivery evidence
@@ -500,11 +519,11 @@ async function loadPayoutLedger() {
   populateLedgerFilters();
   renderTrainerRows();
   renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
+  renderSegmentStrip();
 }
 
 function populateLedgerFilters() {
   const options = {
-    ledgerType: ['All task types', [...new Set(payoutLedgerTasks.map(row => row.filterType))].sort()],
     ledgerPayment: ['All payment states', [...new Set(payoutLedgerTasks.map(row => row.paymentState))].sort()],
   };
   Object.entries(options).forEach(([id, [label, values]]) => {
@@ -520,14 +539,12 @@ const PAYMENT_TONES = {Paid: 'aqua', Pending: 'red', 'Not itemised': 'yellow'};
 function renderPayoutLedger() {
   if (!payoutLedger) return;
   const filters = {
-    bench: byId('benchFilter').value,
     search: byId('ledgerSearch').value,
     payment: byId('ledgerPayment').value,
-    type: byId('ledgerType').value,
     validity: byId('ledgerValidity').value,
     duplicates: byId('ledgerDuplicates').value,
   };
-  const result = window.filterPayoutLedger(payoutLedgerTasks, filters);
+  const result = window.filterPayoutLedger(ledgerRows(), filters);
   const rows = result.rows;
   const people = new Map((payoutLedger.people || []).map(person => [person.email, person]));
 
@@ -541,24 +558,24 @@ function renderPayoutLedger() {
     </${filter ? 'button' : 'div'}>`;
   };
   const n = rows.length || 1;
-  const pending = rows.filter(row => row.paymentState === 'Pending').length;
+  const pending = rows.filter(row => row.paymentState === 'Not paid').length;
   const invalid = rows.filter(row => !row.valid).length;
   byId('ledgerStrip').innerHTML =
     cell('ledger tasks', rows.length, payoutLedgerTasks.length, 'slate', null, null, `${fmt(rows.length)} of ${fmt(payoutLedgerTasks.length)} tasks in the ledger match the filters.`) +
     cell('paid', result.paid, n, 'aqua', 'ledgerPayment', 'Paid', 'Paid and itemised against a payment request.') +
     cell('not itemised', result.unitemised, n, 'yellow', 'ledgerPayment', 'Not itemised', 'Paid in a lump that the request did not itemise task by task.') +
-    cell('owed', pending, n, 'red', 'ledgerPayment', 'Pending', 'Accepted, not yet in any payment request.') +
+    cell('no payment yet', pending, n, 'amber', 'ledgerPayment', 'Not paid', 'Tasks of people who have not been paid for anything yet.') +
     cell('valid = 0', invalid, n, 'orange', 'ledgerValidity', 'invalid', 'Accepted rows the tracker marks as not valid; excluded from what is payable.') +
     cell('folded rows', result.duplicateRows, null, 'violet', 'ledgerDuplicates', 'duplicates', 'Source rows repeated for the same task and folded into one line.');
   animateCounts(byId('ledgerStrip'));
 
-  const labels = {ledgerSearch: 'Search', ledgerPayment: 'Payment', ledgerType: 'Type', ledgerValidity: 'Valid', ledgerDuplicates: 'Repeats', benchFilter: 'Bench'};
+  const labels = {ledgerSearch: 'Search', ledgerPayment: 'Payment', ledgerValidity: 'Valid', ledgerDuplicates: 'Repeats'};
   const shown = {valid: 'Valid', invalid: 'Valid = 0', duplicates: 'Folded only', unique: 'Single-row only'};
   const active = Object.keys(labels).map(id => [id, byId(id)?.value]).filter(([, value]) => value);
   byId('ledgerChips').innerHTML = active.length
     ? active.map(([id, value]) => `<button type="button" class="chipbtn" data-lclear="${id}"><span>${labels[id]}</span>${esc(shown[value] || value)}<i aria-hidden="true">×</i></button>`).join('') +
       '<button type="button" class="chipbtn is-clear" data-lclear="all">Clear all</button>'
-    : '<span class="chips-empty">No filters applied · the bench filter above also applies here</span>';
+    : `<span class="chips-empty">No filters applied${segment ? ` · ${SEGMENTS[segment]} segment from the top bar` : ''}</span>`;
 
   const sorted = [...rows].sort((a, b) => {
     const key = ledgerSort.key;
@@ -603,12 +620,19 @@ async function loadDeliveryAudit() {
   try {
     const response = await fetch(`assets/delivery-audit.json?t=${Date.now()}`, {cache: 'no-store'});
     if (!response.ok) throw new Error(`asset returned ${response.status}`);
-    audit = window.prepareDeliveryAudit(await response.json());
+    // Batches after 4.1 come from their Drive manifests. Optional: without the
+    // asset the tab still shows the audited batches, and says the rest are missing.
+    let drive = null;
+    try {
+      const dr = await fetch(`assets/drive-deliveries.json?t=${Date.now()}`, {cache: 'no-store'});
+      if (dr.ok) drive = await dr.json();
+    } catch (ignored) { drive = null; }
+    audit = window.prepareDeliveryAudit(await response.json(), drive);
     populateAuditFilters();
     renderAudit();
   } catch (error) {
     audit = null;
-    setText('auditStatus', `The task audit could not be loaded: ${error.message}. ` +
+    setText('auditAudit', `The task audit could not be loaded: ${error.message}. ` +
       'Rebuild it with tools/build_delivery_audit.py.');
   }
   renderSources();
@@ -617,7 +641,7 @@ async function loadDeliveryAudit() {
 function auditFilters() {
   return {
     batch: byId('aBatch').value, category: byId('aCategory').value,
-    type: byId('aType').value, difficulty: byId('aDifficulty').value,
+    difficulty: byId('aDifficulty').value,
     glm: byId('aGlm').value, acceptance: byId('aAcceptance').value,
     priority: byId('aPriority').value, trainer: byId('aTrainer').value,
     flagged: byId('aFlagged').value, search: byId('aSearch').value,
@@ -630,7 +654,6 @@ function populateAuditFilters() {
   const all = window.filterDeliveryAudit(audit.rows, {});
   fillSelect('aBatch', all.byBatch, 'Any batch');
   fillSelect('aCategory', all.byCategory, 'Any category');
-  fillSelect('aType', all.byType, 'Any type');
   fillSelect('aDifficulty', all.byDifficulty, 'Any difficulty');
   fillSelect('aGlm', all.byGlm, 'Any score');
   fillSelect('aAcceptance', all.byAcceptance, 'Any acceptance');
@@ -659,18 +682,107 @@ const DOMAIN_TONES = {
 };
 
 const AUDIT_TONES = {
-  category: {Code: '--blue', 'Other/unclassified': '--slate', General: '--violet', Connector: '--aqua', Health: '--magenta', Law: '--orange', Finance: '--yellow'},
+  category: {Code: '--blue', 'Other/unclassified': '--slate', General: '--violet', Connector: '--aqua', Health: '--magenta', Law: '--orange', Finance: '--yellow',
+             'Real Connector': '--green', Synthetic: '--accent', 'Company Bench Zeta': '--violet', CompanyBench: '--violet', Legal: '--orange', Engineering: '--blue', Other: '--slate'},
   acceptance: {Accepted: '--aqua', Rejected: '--red', Pending: '--yellow'},
   glm: {'0/4': '--slate', '1/4': '--blue', '2/4': '--violet', '3/4': '--accent', '4/4': '--aqua'},
   difficulty: {Easier: '--aqua', Harder: '--orange'},
   type: {Connector: '--aqua', 'Non-connector': '--blue'},
 };
-const AUDIT_LENS_FILTER = {category: 'aCategory', acceptance: 'aAcceptance', glm: 'aGlm', batch: 'aBatch', difficulty: 'aDifficulty', type: 'aType', source: 'aSource'};
+const AUDIT_LENS_FILTER = {category: 'aCategory', acceptance: 'aAcceptance', glm: 'aGlm', batch: 'aBatch', difficulty: 'aDifficulty', source: 'aSource'};
 const AUDIT_FLAG_CODES = {'contested owner': 'CO', 'owner still contested': 'OC', unverified: 'UV', 'version dependent': 'VD'};
+
+// The segment split, one definition for every feed: Company Bench is the
+// owner's roster team; otherwise the task's connector flag decides. A row whose
+// source carries no flag is "type not yet known" and only shows under All.
+const SEGMENTS = {connector: 'Connector', 'non-connector': 'Non-connector', company: 'Company Bench'};
+const SEGMENT_TONES = {connector: '--aqua', 'non-connector': '--blue', company: '--violet', unknown: '--slate'};
+let segment = '';
+let rosterTeams = null;
+function rosterTeam(email) {
+  if (!rosterTeams) rosterTeams = new Map((data.trainers || []).map(row => [String(row.email || '').toLowerCase(), row.team || '']));
+  return rosterTeams.get(String(email || '').toLowerCase()) || '';
+}
+function segmentOf(email, connector) {
+  if (benchOf(rosterTeam(email)) === 'company') return 'company';
+  if (connector === true) return 'connector';
+  if (connector === false) return 'non-connector';
+  return 'unknown';
+}
+const inSegment = (email, connector) => !segment || segmentOf(email, connector) === segment;
+const typeFlag = type => (type === 'Connector' ? true : type === 'Non-connector' ? false : null);
+// Delivery folders carry the connector flag; evaluation rows borrow it by task name.
+let connectorByName = null;
+function connectorFor(task) {
+  if (!connectorByName) {
+    connectorByName = new Map();
+    (gcsPipeline?.finalisation?.tasks || []).forEach(folder => {
+      const flag = String(folder.is_connector).toLowerCase();
+      const value = flag === 'true' ? true : flag === 'false' ? false : null;
+      if (value === null) return;
+      [folder.declared_short, folder.folder].filter(Boolean).forEach(name => connectorByName.set(String(name).toLowerCase(), value));
+    });
+  }
+  const value = connectorByName.get(String(task || '').toLowerCase());
+  return value === undefined ? null : value;
+}
+// An evaluation row's type: the recorded task type first, then the folder flag.
+function evaluationConnector(row) {
+  const flag = typeFlag(pipelineType(row));
+  return flag === null ? connectorFor(row.task) : flag;
+}
+// A person is in a segment if they have work in it; Company Bench by team.
+function personSegments(row) {
+  if (benchOf(row.team) === 'company') return new Set(['company']);
+  const email = String(row.email || '').toLowerCase();
+  const ledger = payoutLedgerTasks.filter(task => String(task.email || '').toLowerCase() === email);
+  const con = (Number(row.sepConnectorAccepted) || 0) + (Number(row.projectConnectorAccepted) || 0) + ledger.filter(t => t.filterType === 'Connector').length;
+  const non = (Number(row.sepNonConnectorAccepted) || 0) + (Number(row.projectNonConnectorAccepted) || 0) + ledger.filter(t => t.filterType === 'Non-connector').length;
+  const set = new Set();
+  if (con) set.add('connector');
+  if (non) set.add('non-connector');
+  return set;
+}
+const personInSegment = row => !segment || personSegments(row).has(segment);
+const truthRows = () => (truth ? truth.rows.filter(row => inSegment(row.owner, row.connector)) : []);
+const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filter(row => inSegment(row.owner, row.connector)) : null);
+// A search with no state chosen also reaches the accepted folders that have no
+// verdict inside the window; otherwise they are listed only under Accepted.
+const truthSearchRows = () => { const cohort = truthCohortRows(); return cohort ? truthRows().concat(cohort.filter(row => row.noVerdict)) : truthRows(); };
+// Under Accepted the rows are bucket folders; every headline counts them, one folder per task.
+const shownTasks = rows => rows.length;
+const auditRows = () => (audit ? audit.rows.filter(row => inSegment(row.trainer, typeFlag(row.type))) : []);
+const ledgerRows = () => payoutLedgerTasks.filter(task => inSegment(task.email, typeFlag(task.filterType)));
+
+function setSegment(value) {
+  segment = SEGMENTS[value] ? value : '';
+  try { localStorage.setItem('segment', segment); } catch { /* storage may be unavailable */ }
+  const url = new URL(location.href);
+  if (segment) url.searchParams.set('seg', segment); else url.searchParams.delete('seg');
+  history.replaceState(history.state, '', url);
+  renderEverything();
+}
+function syncSegmentSwitch() {
+  document.querySelectorAll('#segmentSwitch [data-seg]').forEach(button => {
+    const on = (button.dataset.seg || '') === segment;
+    button.classList.toggle('is-on', on);
+    button.setAttribute('aria-pressed', String(on));
+  });
+  document.body.dataset.segment = segment;
+  document.querySelectorAll('[data-range]').forEach(node => {
+    node.textContent = `${rangeLabel()}${segment ? ` · ${SEGMENTS[segment]} only` : ''}`;
+  });
+}
+function restoreSegment() {
+  let saved = '';
+  try { saved = new URL(location.href).searchParams.get('seg') || localStorage.getItem('segment') || ''; } catch { saved = ''; }
+  segment = SEGMENTS[saved] ? saved : '';
+}
+
 let auditLens = 'category';
 let auditSort = {key: 'task', dir: 1};
 
-const auditTone = (lens, key) => `var(${(AUDIT_TONES[lens] || {})[key] || '--slate'})`;
+const auditTone = (lens, key) => (lens === 'category' ? categoryTone(key) : `var(${(AUDIT_TONES[lens] || {})[key] || '--slate'})`);
 const lensValue = (row, lens) => lens === 'glm' ? row.glmBucket : (row[lens] || window.DELIVERY_AUDIT_UNSET);
 const verdictBar = (acc, rej, pen, total) => `<span class="vbar" aria-hidden="true">
   ${acc ? `<i class="is-accepted" style="flex:${acc}" data-tip="Accepted ${fmt(acc)} (${Math.round((acc / total) * 100)}%)"></i>` : ''}
@@ -688,14 +800,18 @@ const glmDots = bucket => {
 };
 const initials = email => String(email || '').split('@')[0].split(/[._-]/).filter(Boolean).slice(0, 2).map(part => part[0].toUpperCase()).join('') || '?';
 
-function renderAuditRows(rows) {
-  const size = pageSize('auditPageSize');
-  const sorted = [...rows].sort((a, b) => {
+// The table's current sort, shared with the export so the file reads like the page.
+function sortedAuditRows(rows) {
+  return [...rows].sort((a, b) => {
     const key = auditSort.key;
     const va = key === 'glm' ? Number(String(a.glmBucket).split('/')[0]) : key === 'size_mb' ? Number(a.size_mb) || 0 : String(a[key] || '');
     const vb = key === 'glm' ? Number(String(b.glmBucket).split('/')[0]) : key === 'size_mb' ? Number(b.size_mb) || 0 : String(b[key] || '');
     return (va < vb ? -1 : va > vb ? 1 : 0) * auditSort.dir || String(a.task).localeCompare(String(b.task));
   });
+}
+function renderAuditRows(rows) {
+  const size = pageSize('auditPageSize');
+  const sorted = sortedAuditRows(rows);
   const pages = Math.max(Math.ceil(sorted.length / size), 1);
   auditPage = Math.min(auditPage, pages - 1);
   const from = auditPage * size;
@@ -716,18 +832,17 @@ function renderAuditRows(rows) {
       <td class="num serial">${fmt(from + index + 1)}</td>
       <td><div class="taskcell"><span class="taskname" title="${esc(row.task)}">${esc(row.task)}</span>
         ${row.flags.map(f => `<span class="flag flag-warn" title="${esc(f)}">${AUDIT_FLAG_CODES[f] || esc(f)}</span>`).join('')}</div></td>
-      <td><span class="batch-chip">${esc(String(row.batch || '-').replace(/^Batch\s*/i, 'B'))}</span></td>
+      <td><span class="batch-chip" data-series="${/^companybench/i.test(String(row.batch)) ? 'company' : 'batch'}">${esc(String(row.batch || '-').replace(/^Batch\s*/i, 'B').replace(/^CompanyBench\s*/i, 'CB'))}</span></td>
       <td><span class="cat" style="--c:${auditTone('category', row.category)}"><i></i>${esc(row.category || '-')}</span></td>
       <td>${glmDots(row.glmBucket)}</td>
       <td><span class="diff" style="--c:${auditTone('difficulty', row.difficulty)}">${esc(row.difficulty || '-')}</span></td>
-      <td>${row.trainer
-        ? `<span class="who"><i class="avatar">${esc(initials(row.trainer))}</i><span>${esc(row.trainer)}</span>${row.resolvedFromPipeline ? '<em class="chip" title="The audit workbook left this unattributed; this owner is the one the GCS verdicts record for the task.">from verdicts</em>' : ''}</span>`
-        : '<span class="who is-none"><i class="avatar">?</i><span>Unattributed</span></span>'}</td>
-      <td><span class="state state-${esc(String(row.acceptance || '').toLowerCase())}">${esc(row.acceptance || '-')}</span></td>
+      <td><span class="verdict verdict-${esc(String(row.acceptance || 'none').toLowerCase())}">${esc(row.acceptance || '-')}</span></td>
       <td class="num"><span class="mb"><i style="--pct:${Math.round(((Number(row.size_mb) || 0) / maxMb) * 100)}"></i>${row.size_mb ? Number(row.size_mb).toFixed(1) : '-'}</span></td>
     </tr>
-    <tr class="drill" id="${id}" hidden><td colspan="10">
+    <tr class="drill" id="${id}" hidden><td colspan="9">
       <dl class="drill-grid">
+        ${row.declaredName ? `<dt>Declared name</dt><dd>${esc(row.declaredName)}</dd>` : ''}
+        ${row.fromManifest ? `<dt>Package</dt><dd><code>${esc(row.packagePath || '-')}</code></dd>` : ''}
         <dt>SHA</dt><dd><code>${esc(row.sha || '-')}</code></dd>
         <dt>Size</dt><dd>${row.size_mb ? `${Number(row.size_mb).toFixed(2)} MB` : '-'}</dd>
         <dt>Versions</dt><dd>${esc(String(row.versions || '1'))}</dd>
@@ -740,7 +855,7 @@ function renderAuditRows(rows) {
         <dt>Feedback</dt><dd>${row.feedback_url ? `<a href="${esc(row.feedback_url)}" target="_blank" rel="noopener">Open the feedback sheet</a>` : '-'}</dd>
       </dl>
     </td></tr>`;
-  }).join('') : '<tr><td colspan="10" class="empty">No tasks match these filters.</td></tr>';
+  }).join('') : '<tr><td colspan="9" class="empty">No tasks match these filters.</td></tr>';
   setText('auditPage', `${fmt(sorted.length ? from + 1 : 0)}–${fmt(from + slice.length)} of ${fmt(sorted.length)}`);
   byId('auditPrev').disabled = auditPage === 0;
   byId('auditNext').disabled = auditPage >= pages - 1;
@@ -771,29 +886,117 @@ function fitWaffle() {
 window.addEventListener('resize', () => { if (audit) fitWaffle(); });
 
 function renderAuditChips(filters) {
-  const labels = {aBatch: 'Batch', aCategory: 'Category', aType: 'Type', aDifficulty: 'Difficulty', aGlm: 'GLM', aAcceptance: 'Acceptance', aPriority: 'Priority', aTrainer: 'Trainer', aSource: 'Source', aFlagged: 'Flagged', aSearch: 'Search'};
+  const labels = {aBatch: 'Batch', aCategory: 'Category', aDifficulty: 'Difficulty', aGlm: 'GLM', aAcceptance: 'Acceptance', aPriority: 'Priority', aTrainer: 'Trainer', aSource: 'Source', aFlagged: 'Flagged', aSearch: 'Search'};
   const active = [...AUDIT_FILTERS, 'aSearch'].map(id => [id, byId(id)?.value]).filter(([, value]) => value);
   byId('auditChips').innerHTML = active.length
     ? active.map(([id, value]) => `<button type="button" class="chipbtn" data-clear="${id}" title="Remove this filter"><span>${labels[id]}</span>${esc(id === 'aFlagged' ? (value === 'yes' ? 'Flagged' : 'Not flagged') : value)}<i aria-hidden="true">×</i></button>`).join('')
       + `<button type="button" class="chipbtn is-clear" data-clear="aReset-all">Clear all</button>`
-    : '<span class="chips-empty">No filters applied · click any figure, square or bar above to filter</span>';
+    : '';
+}
+
+
+// The Delivery page is read one batch at a time. The rail on the left picks
+// the batch; everything on the right follows the filters, and every bar,
+// cell and row is a filter of its own.
+const GLM_ORDER = ['0/4', '1/4', '2/4', '3/4', '4/4'];
+// A manifest category such as "Non-Connector · Health" takes the tone of its
+// last part, so the same domain reads the same colour whichever batch named it.
+const categoryTone = key => {
+  const table = AUDIT_TONES.category;
+  const tail = String(key).split('\u00b7').pop().trim();
+  const hit = table[key] || table[tail] || Object.keys(table).find(k => tail.toLowerCase().startsWith(k.toLowerCase()));
+  return `var(${hit ? (table[hit] || hit) : '--slate'})`;
+};
+
+// Shannon's own batches first, then CompanyBench, each by number. Sorting on the
+// number alone would put CompanyBench 1 beside Batch 1 as if they were one series.
+const BATCH_SERIES = [/^batch\b/i, /^companybench\b/i];
+function batchOrder(a, b) {
+  const series = v => { const i = BATCH_SERIES.findIndex(re => re.test(String(v))); return i < 0 ? BATCH_SERIES.length : i; };
+  const number = v => parseFloat(String(v).replace(/[^\d.]/g, '')) || 0;
+  return series(a) - series(b) || number(a) - number(b) || String(a).localeCompare(String(b));
+}
+function renderDeliveryCharts(rows, result, filters, shown, total) {
+  const short = email => String(email || '').split('@')[0];
+  const isOn = (id, value) => byId(id)?.value === value;
+  const bar = (filter, value, label, n, max, tone, index, extra = '') =>
+    `<button type="button" class="hbar${isOn(filter, value) ? ' is-on' : ''}" style="--c:${tone};--i:${index}" data-filter="${filter}" data-value="${esc(value)}" data-tip="${esc(label)}: ${fmt(n)} of ${fmt(shown)} (${shown ? Math.round((n / shown) * 100) : 0}%)">
+      <span class="hbar-label">${label}</span><span class="hbar-track"><i style="--pct:${max ? Math.round((n / max) * 100) : 0}"></i></span><b class="hbar-n" data-count="${n}" data-key="hb:${filter}:${esc(value)}">${fmt(n)}</b>${extra}</button>`;
+
+  // Category mix
+  const cats = Object.entries(groupBy(rows, r => r.category || window.DELIVERY_AUDIT_UNSET)).map(([k, l]) => [k, l.length]).sort((a, b) => b[1] - a[1]);
+  const catMax = Math.max(1, ...cats.map(c => c[1]));
+  const catTone = categoryTone;
+  // Two columns, filled row by row, so the ranking reads left to right.
+  byId('catBars').innerHTML = cats.length ? cats.map(([k, n], i) => bar('aCategory', k, esc(k), n, catMax, catTone(k), i)).join('') : '<p class="empty">No tasks match these filters.</p>';
+  setText('catNote', filters.category ? `filtered to ${filters.category}` : `${fmt(cats.length)} categories \u00b7 ${fmt(shown)} tasks`);
+
+  // GLM success
+  const glm = GLM_ORDER.map(k => [k, rows.filter(r => r.glmBucket === k).length]).filter(([, n], i) => n || i < 5);
+  // A manifest that records no trials still delivered its tasks; count them
+  // rather than let the chart quietly add up to fewer than are shown.
+  const unscored = rows.filter(r => r.glmBucket === window.DELIVERY_AUDIT_UNSET).length;
+  if (unscored) glm.push([window.DELIVERY_AUDIT_UNSET, unscored]);
+  const glmMax = Math.max(1, ...glm.map(g => g[1]));
+  byId('glmBars').innerHTML = glm.map(([k, n], i) => bar('aGlm', k, glmDots(k), n, glmMax, `var(${AUDIT_TONES.glm[k] || '--slate'})`, i)).join('');
+
+  // Category x GLM heat map
+  const cols = GLM_ORDER.filter(k => rows.some(r => r.glmBucket === k));
+  const cellMax = Math.max(1, ...cats.flatMap(([k]) => cols.map(c => rows.filter(r => (r.category || window.DELIVERY_AUDIT_UNSET) === k && r.glmBucket === c).length)));
+  byId('catGlm').innerHTML = cats.length && cols.length ? `
+    <div class="heat-row" style="--cols:${cols.length}"><span></span>${cols.map(c => `<span class="heat-head">${esc(c)}</span>`).join('')}</div>` +
+    cats.map(([k]) => `<div class="heat-row" style="--cols:${cols.length}"><span class="heat-label">${esc(k)}</span>${cols.map(c => {
+      const n = rows.filter(r => (r.category || window.DELIVERY_AUDIT_UNSET) === k && r.glmBucket === c).length;
+      const on = isOn('aCategory', k) && isOn('aGlm', c);
+      return `<button type="button" class="heat-cell${on ? ' is-on' : ''}${n ? '' : ' is-zero'}" style="--c:${catTone(k)};--t:${Math.round((n / cellMax) * 70)}" data-filter="aCategory" data-value="${esc(k)}" data-filter2="aGlm" data-value2="${esc(c)}" data-tip="${esc(k)} at ${esc(c)}: ${fmt(n)}">${fmt(n)}</button>`;
+    }).join('')}</div>`).join('') : '<p class="empty">No tasks match these filters.</p>';
+
+  // Trainer concentration
+  const people = Object.entries(groupBy(rows.filter(r => r.trainer && /@/.test(r.trainer)), r => r.trainer)).map(([k, l]) => [k, l.length]).sort((a, b) => b[1] - a[1]);
+  // As many accounts as the heat map has rows, so the two cards stay level.
+  const top = people.slice(0, Math.max(8, cats.length));
+  const topMax = Math.max(1, ...top.map(t => t[1]));
+  byId('trainerBars').innerHTML = top.length ? top.map(([k, n], i) => bar('aTrainer', k, esc(short(k)), n, topMax, 'var(--violet)', i)).join('') : '<p class="empty">No attributed tasks match.</p>';
+  setText('trainerNote', `${fmt(people.length)} accounts`);
+
+  // Verdicts by batch
+  const order = batchOrder;
+  const batches = [...new Set(rows.map(r => r.batch || window.DELIVERY_AUDIT_UNSET))].sort(order);
+  byId('batchStacks').innerHTML = batches.length ? batches.map((batch, i) => {
+    const list = rows.filter(r => (r.batch || window.DELIVERY_AUDIT_UNSET) === batch);
+    const v = verdicts(list);
+    return `<button type="button" class="stack-row${isOn('aBatch', batch) ? ' is-on' : ''}" style="--i:${i}" data-filter="aBatch" data-value="${esc(batch)}">
+      <span class="stack-label">${esc(batch)}</span>${verdictBar(v.acc, v.rej, v.pen, list.length)}<span class="stack-n"><b data-count="${list.length}" data-key="stack:${esc(batch)}">${fmt(list.length)}</b><small>${v.rate == null ? 'pending' : `${v.rate}% acc.`}</small></span>
+    </button>`;
+  }).join('') : '<p class="empty">No tasks match these filters.</p>';
+
+  // Current view strip and the coverage card in the rail
+  const attributed = result.attributed, coverage = shown ? Math.round((attributed / shown) * 100) : 0;
+  byId('auditView').innerHTML = `
+    <div class="viewstrip-title"><b>Current view</b><span>Everything on this page follows the filters</span></div>
+    <div class="viewtile"><b data-count="${shown}" data-key="view:shown">${fmt(shown)}</b><span>visible tasks</span></div>
+    <div class="viewtile" style="--c:var(--aqua)"><b data-count="${coverage}" data-kind="pct" data-key="view:cov">${coverage}%</b><span>trainer coverage</span></div>
+    <div class="viewtile" style="--c:var(--aqua)"><b data-count="${result.accepted}" data-key="view:acc">${fmt(result.accepted)}</b><span>accepted</span></div>
+    <div class="viewtile" style="--c:var(--red)"><b data-count="${result.rejected}" data-key="view:rej">${fmt(result.rejected)}</b><span>rejected</span></div>
+    <div class="viewtile" style="--c:var(--yellow)"><b data-count="${result.pending}" data-key="view:pen">${fmt(result.pending)}</b><span>pending</span></div>`;
+  ['catBars', 'glmBars', 'trainerBars', 'batchStacks', 'auditView'].forEach(id => animateCounts(byId(id)));
 }
 
 function renderAudit() {
   if (!audit) return;
   const filters = auditFilters();
-  const result = window.filterDeliveryAudit(audit.rows, filters);
+  const result = window.filterDeliveryAudit(auditRows(), filters);
   const rows = result.rows;
   const shown = rows.length;
   const total = audit.rows.length;
 
   // Figures: each one filters on click.
   const figures = [
-    ['Audited tasks', shown, `of ${fmt(total)} in the audit`, 'slate', null, null, total ? Math.round((shown / total) * 100) : 0],
+    ['Delivered tasks', shown, `of ${fmt(total)} delivered`, 'slate', null, null, total ? Math.round((shown / total) * 100) : 0],
     ['Accepted', result.accepted, 'by the audit workbook', 'aqua', 'aAcceptance', 'Accepted', shown ? Math.round((result.accepted / shown) * 100) : 0],
     ['Rejected', result.rejected, 'by the audit workbook', 'red', 'aAcceptance', 'Rejected', shown ? Math.round((result.rejected / shown) * 100) : 0],
     ['Pending', result.pending, 'no decision recorded', 'yellow', 'aAcceptance', 'Pending', shown ? Math.round((result.pending / shown) * 100) : 0],
-    ['Connector tasks', result.connectors, `${shown ? Math.round((result.connectors / shown) * 100) : 0}% of those shown`, 'blue', 'aType', 'Connector', shown ? Math.round((result.connectors / shown) * 100) : 0],
+    ['Connector tasks', result.connectors, `${shown ? Math.round((result.connectors / shown) * 100) : 0}% of those shown`, 'blue', null, null, shown ? Math.round((result.connectors / shown) * 100) : 0],
     ['Trainers', result.trainers, `${fmt(shown - result.attributed)} unattributed`, 'violet', null, null, null],
   ];
   // What the bucket can still show for the audit. The workbook records what was
@@ -801,9 +1004,12 @@ function renderAudit() {
   // and the two are different claims.
   const co = cohortIndex ? cohortIndex.counts : null;
   if (co) {
+    // The cohort index checks the audited batches only; the Drive batches are
+    // not in it, so the share is of the audit, not of everything delivered.
+    const audited = audit.auditedCount || total;
     figures.splice(1, 0, ['Verified in the bucket', co.delivered,
-      `of the ${fmt(total)} audited, still a folder in the finalisation prefix`,
-      'green', null, null, total ? Math.round((co.delivered / total) * 100) : 0]);
+      `of the ${fmt(audited)} audited, still a folder in the finalisation prefix`,
+      'green', null, null, audited ? Math.round((co.delivered / audited) * 100) : 0]);
   }
   const figuresHost = byId('auditFigures');
   figuresHost.innerHTML = figures.map(([label, value, note, tone, filter, filterValue, pct], index) => {
@@ -819,81 +1025,61 @@ function renderAudit() {
   }).join('');
   animateCounts(figuresHost);
 
-  // Composition: one dimension at a time. The list is the legend, each row
-  // carrying its count, share, verdict mix and acceptance of decided tasks;
-  // the map colours every task by the same dimension.
-  const lens = auditLens;
-  document.querySelectorAll('#auditLens [data-lens]').forEach(button => button.classList.toggle('is-on', button.dataset.lens === lens));
-  const groups = Object.entries(groupBy(rows, row => lensValue(row, lens))).map(([key, list]) => ({key, list, n: list.length, ...verdicts(list)}));
-  const orderFor = {
-    batch: (a, b) => parseFloat(String(a.key).replace(/[^\d.]/g, '')) - parseFloat(String(b.key).replace(/[^\d.]/g, '')),
-    glm: (a, b) => parseInt(b.key, 10) - parseInt(a.key, 10),
-    acceptance: (a, b) => ['Accepted', 'Rejected', 'Pending'].indexOf(a.key) - ['Accepted', 'Rejected', 'Pending'].indexOf(b.key),
-    difficulty: (a, b) => ['Easier', 'Harder'].indexOf(a.key) - ['Easier', 'Harder'].indexOf(b.key),
-  };
-  groups.sort(orderFor[lens] || ((a, b) => b.n - a.n));
-  const SOURCE_TONES = ['--accent', '--blue', '--aqua', '--violet', '--magenta', '--orange', '--yellow', '--slate', '--red'];
-  const toneFor = key => {
-    if (AUDIT_TONES[lens]?.[key]) return `var(${AUDIT_TONES[lens][key]})`;
-    return `var(${SOURCE_TONES[groups.findIndex(g => g.key === key) % SOURCE_TONES.length]})`;
-  };
-  const lensFilter = AUDIT_LENS_FILTER[lens];
-  const lensTitle = {category: 'By category', acceptance: 'By verdict', batch: 'By batch', glm: 'By GLM score', difficulty: 'By difficulty', type: 'By type', source: 'By attribution'}[lens];
-  const maxN = Math.max(1, ...groups.map(g => g.n));
-  setText('auditListTitle', `${lensTitle} · ${fmt(groups.length)} group${groups.length === 1 ? '' : 's'}`);
-  let previousRate = null;
-  byId('auditList').innerHTML = groups.length ? groups.map((g, index) => {
-    const on = byId(lensFilter)?.value === g.key;
-    const trend = lens === 'batch' && g.rate != null && previousRate != null
-      ? (g.rate > previousRate ? '<em class="trend up" data-tip="Up on the batch before">↑</em>' : g.rate < previousRate ? '<em class="trend down" data-tip="Down on the batch before">↓</em>' : '<em class="trend flat">→</em>')
-      : '';
-    if (lens === 'batch' && g.rate != null) previousRate = g.rate;
-    return `<button type="button" class="dim-row${on ? ' is-on' : ''}" style="--i:${index};--c:${toneFor(g.key)}" data-filter="${lensFilter}" data-value="${esc(g.key)}" data-v="${esc(g.key)}">
-      <span class="dim-swatch"><i></i></span>
-      <span class="dim-label">${lens === 'glm' ? glmDots(g.key) : esc(g.key)}</span>
-      <b class="dim-n" data-count="${g.n}" data-key="dim:${lens}:${esc(g.key)}">${fmt(g.n)}</b>
-      <span class="dim-share"><i style="--pct:${Math.round((g.n / maxN) * 100)}"></i><small>${Math.round((g.n / (shown || 1)) * 100)}%</small></span>
-      ${lens === 'acceptance' ? '<span></span><span></span>' : `${verdictBar(g.acc, g.rej, g.pen, g.n)}<span class="dim-rate">${g.rate == null ? '<small>no decisions</small>' : `<b>${g.rate}%</b>${trend}`}</span>`}
-    </button>`;
-  }).join('') : '<p class="empty">No tasks match these filters.</p>';
-  animateCounts(byId('auditList'));
-
-  const largest = groups[0] && [...groups].sort((a, b) => b.n - a.n)[0];
-  const decided = groups.filter(g => g.rate != null && g.acc + g.rej >= 5);
-  const best = decided.length ? decided.reduce((b, g) => g.rate > b.rate ? g : b) : null;
-  const worst = decided.length > 1 ? decided.reduce((b, g) => g.rate < b.rate ? g : b) : null;
-  setText('auditInsight', !largest ? '' : lens === 'acceptance'
-    ? `${fmt(result.accepted + result.rejected)} of ${fmt(shown)} shown have a decision; ${fmt(result.pending)} are still pending.`
-    : `Largest group ${largest.key} (${fmt(largest.n)}, ${Math.round((largest.n / (shown || 1)) * 100)}%)` +
-      (best ? ` · highest acceptance of decided tasks ${best.key} (${best.rate}%)` : '') +
-      (worst && worst !== best ? ` · lowest ${worst.key} (${worst.rate}%)` : '') + '. Acceptance counts decided tasks only.');
-
-  const rank = key => groups.findIndex(g => g.key === key);
-  const grouped = [...rows].sort((a, b) => rank(lensValue(a, lens)) - rank(lensValue(b, lens)) || String(a.task).localeCompare(String(b.task)));
-  byId('auditWaffle').innerHTML = grouped.map((row, index) => {
-    const v = lensValue(row, lens);
-    return `<i class="sq" role="button" tabindex="0" data-task="${esc(row.task)}" data-v="${esc(v)}" style="--c:${toneFor(v)};--i:${Math.min(index, 60)}" data-tip="${esc(row.task)} · ${esc(row.category || '-')} · ${esc(row.acceptance || '-')} · GLM ${esc(row.glmBucket)} · ${esc(row.difficulty || '-')} · ${esc(row.batch || '-')}"></i>`;
-  }).join('') || '<p class="empty">No tasks match these filters.</p>';
-  setText('auditMapNote', `${fmt(shown)} of ${fmt(total)} · hover a row to light its tasks · click a square to find it below`);
-  fitWaffle();
+  renderDeliveryCharts(rows, result, filters, shown, total);
 
   const built = audit.dataGeneratedAt
     ? new Date(audit.dataGeneratedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})
     : 'unknown';
-  setText('auditStatus', `The Computer Bench task audit: ${fmt(audit.rows.length)} tasks across batches 1 to 4.1, built ${built}. ` +
-    'A different population from Pipeline, judged by the audit workbook rather than by the GCS verdicts, so the two will not agree task for task.');
-  setText('auditCaveats',
-    `${fmt(result.flagged)} of ${fmt(shown)} shown carry a quality flag. ` +
-    (result.resolvedFromPipeline
-      ? `${fmt(result.resolvedFromPipeline)} had no usable owner in the workbook and take one from `
-        + 'the GCS verdicts instead, marked on the row. '
-      : '') +
-    `Acceptance here is the workbook figure, recorded ${audit.statusGeneratedAt ? audit.statusGeneratedAt.slice(0, 10) : 'an unknown date'}; `
-    + 'the Pipeline tab reads the bucket instead.');
-  setText('auditAudit', `${fmt(shown)} of ${fmt(audit.rows.length)} tasks · ` +
-    `${fmt(result.harder)} rated Harder · ${fmt(result.trainers)} trainers · ${result.megabytes.toFixed(0)} MB`);
+  const drive = audit.drive;
+  const skipped = drive && drive.skipped.length
+    ? ` · ${fmt(drive.skipped.length)} Drive folder${drive.skipped.length === 1 ? '' : 's'} not read: ` +
+      drive.skipped.map(s => `${s.name} (${s.reason})`).join('; ')
+    : '';
+  const fromDrive = drive
+    ? ` · ${fmt(drive.rows)} from ${fmt(drive.batches.length)} Drive manifests, read ` +
+      new Date(drive.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})
+    : ' · Drive manifests not loaded';
+  setText('auditAudit', `${fmt(shown)} of ${fmt(audit.rows.length)} tasks`);
   renderAuditChips(filters);
+  renderBatchTabs(filters);
   renderAuditRows(rows);
+  const plan = [...document.querySelectorAll('#planSummary .kpi')].slice(0, 2).map(k => `${k.querySelector('strong')?.textContent} ${k.querySelector('h3')?.textContent.toLowerCase()}`);
+  setTextIfPresent('planFoldSum', plan.join(' \u00b7 '));
+}
+
+// Batch is the first cut anyone makes here, so it gets tabs of its own with a
+// count and verdict mix each; the other filters still apply to those counts.
+let batchPage = 0;
+const BATCH_PAGE = 5;
+function renderBatchTabs(filters) {
+  const host = byId('auditBatchTabs');
+  if (!host) return;
+  const pool = window.filterDeliveryAudit(auditRows(), {...filters, batch: ''}).rows;
+  const order = batchOrder;
+  const batches = [...new Set(auditRows().map(row => row.batch || window.DELIVERY_AUDIT_UNSET))].sort(order);
+  const current = byId('aBatch').value;
+  // The chosen batch is always on the page that is showing.
+  const pages = Math.max(1, Math.ceil(batches.length / BATCH_PAGE));
+  if (current && batches.includes(current)) batchPage = Math.floor(batches.indexOf(current) / BATCH_PAGE);
+  batchPage = Math.min(Math.max(0, batchPage), pages - 1);
+  const shownBatches = batches.slice(batchPage * BATCH_PAGE, batchPage * BATCH_PAGE + BATCH_PAGE);
+  const row = (value, label, list, index) => {
+    const v = verdicts(list);
+    return `<button type="button" class="batchrow${current === value ? ' is-on' : ''}" style="--i:${index}" data-filter="aBatch" data-value="${esc(value)}" aria-pressed="${current === value}">
+      <span class="batchrow-name">${esc(label)}</span>
+      <b class="batchrow-n" data-count="${list.length}" data-key="btab:${esc(value)}">${fmt(list.length)}</b>
+      <span class="batchrow-sub">${v.rate == null ? (list.length ? 'awaiting decisions' : 'no tasks') : `${v.rate}% accepted`}</span>
+      ${list.length ? verdictBar(v.acc, v.rej, v.pen, list.length) : '<span class="vbar"></span>'}
+    </button>`;
+  };
+  host.innerHTML = row('', 'All batches', pool, 0) +
+    shownBatches.map((batch, index) => row(batch, batch, pool.filter(r => (r.batch || window.DELIVERY_AUDIT_UNSET) === batch), index + 1)).join('');
+  const pager = byId('batchPager');
+  if (pager) {
+    pager.hidden = pages <= 1;
+    pager.innerHTML = `<button type="button" class="ghost" data-bpage="-1" ${batchPage === 0 ? 'disabled' : ''} aria-label="Earlier batches">\u2039</button><span>${fmt(batchPage * BATCH_PAGE + 1)}\u2013${fmt(batchPage * BATCH_PAGE + shownBatches.length)} of ${fmt(batches.length)} batches</span><button type="button" class="ghost" data-bpage="1" ${batchPage >= pages - 1 ? 'disabled' : ''} aria-label="Later batches">\u203a</button>`;
+  }
+  animateCounts(host);
 }
 
 async function loadTruth() {
@@ -957,6 +1143,8 @@ async function loadTruth() {
     renderScopeFunnel();
     populateDeltaFilter();
     renderDailyDelta();
+    renderSegmentStrip();
+    fitDeck();
   } catch (error) {
     truth = null;
     setText('truthStatus', `The derived pipeline could not be loaded: ${error.message}. ` +
@@ -1128,15 +1316,17 @@ function fillSelect(id, counts, allLabel, unit) {
 // what a browser renders as a real parent. Counts are there because every
 // other filter on this bar has them, and a filter that will not say how much
 // it selects invites the guess that it selects nothing.
+const BENCH_NAMES = {synth: 'synthetic'};
 function fillBench() {
   const node = byId('tBench');
   if (!node || !truth || !truth.rows) return;
   const keep = node.value;
   const filters = truthFilters();
-  const source = (filters.state === 'accepted' && truth.cohortRows)
-    ? truth.cohortRows : truth.rows;
+  // Under Accepted the rows are the bucket folders (truth.cohortRows), narrowed to the segment.
+  const cohort = truthCohortRows();
+  const source = (filters.state === 'accepted' && cohort) ? cohort : truthRows();
   const shown = window.filterTruth(source, {
-    ...filters, bench: '', state: source === truth.cohortRows ? '' : filters.state,
+    ...filters, bench: '', state: source === cohort ? '' : filters.state,
   }).rows;
   const tally = {};
   shown.forEach(row => {
@@ -1153,13 +1343,13 @@ function fillBench() {
     if (!kids.length) return '';
     return `<optgroup label="${esc(label)}">`
       + option(which, `All ${label.toLowerCase()}`, side(which))
-      + kids.map(b => option(b, b.replace(`${which} bench `, ''), tally[b])).join('')
+      + kids.map(b => option(b, `${label} \u00b7 ${BENCH_NAMES[b.replace(`${which} bench `, '')] || b.replace(`${which} bench `, '')}`, tally[b])).join('')
       + '</optgroup>';
   };
   node.innerHTML = option('', 'Any bench')
     + group('Company bench', 'company')
     + group('Computer bench', 'computer')
-    + (tally.none ? `<optgroup label="Neither">${option('none', 'Not a connector', tally.none)}</optgroup>` : '');
+    + (tally.none ? `<optgroup label="No bench">${option('none', 'Not read yet', tally.none)}</optgroup>` : '');
   if ([...node.options].some(o => o.value === keep)) node.value = keep;
 }
 
@@ -1233,6 +1423,63 @@ function renderScope(result) {
     }).join('')}</div>`;
 }
 
+
+// The filter card: the three cuts people reach for first are chips with live
+// counts (each counted with the other filters applied), the rest are selects.
+function renderTruthFilterChips(filters, filtered) {
+  const verdictRows = filters.search ? truthSearchRows() : truthRows();
+  const cohort = truthCohortRows();
+  const rows = truthByBucket ? cohort : verdictRows;
+  const without = key => window.filterTruth(rows, {...filters, [key]: '', ...(truthByBucket ? {state: ''} : {})});
+  const chip = (filter, value, label, count, tone, on) =>
+    `<button type="button" class="fchip${on ? ' is-on' : ''}${!count && !on ? ' is-zero' : ''}" style="--c:${tone}" data-tfilter="${filter}" data-value="${esc(value)}" aria-pressed="${on}">${esc(label)}<b>${fmt(count)}</b></button>`;
+
+  const byState = window.filterTruth(verdictRows, {...filters, state: ''});
+  // Accepted is decided by the bucket, so its chip counts the bucket's folders like the card does.
+  const stateCount = st => (st === 'accepted' && cohort
+    ? window.filterTruth(cohort, {...filters, state: ''}).rows.length
+    : byState.rows.filter(r => r.state === st).length);
+  // Every state stays listed, at zero if nothing matches, so a filter can always be changed.
+  const states = ['accepted', 'rejected', 'error', 'running', 'legacy accepted'];
+  byId('tStateChips').innerHTML = chip('tState', '', 'All', byState.rows.length, 'var(--slate)', !filters.state) +
+    states.map(st => chip('tState', st, stateLabel(st), stateCount(st), stateTone(st), filters.state === st)).join('');
+
+  const byDelivered = without('delivered').rows;
+  const deliveredCount = value => shownTasks(window.filterTruth(byDelivered, {delivered: value}).rows);
+  byId('tDeliveredChips').innerHTML = chip('tDelivered', '', 'Any', shownTasks(byDelivered), 'var(--slate)', !filters.delivered) +
+    [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
+      .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
+
+  const byConnector = without('connector').rows;
+  byId('tConnectorChips').innerHTML = chip('tConnector', '', 'Any', shownTasks(byConnector), 'var(--slate)', !filters.connector) +
+    [['yes', 'Connector', 'var(--aqua)', r => r.connector === true], ['no', 'Non-connector', 'var(--blue)', r => r.connector === false], ['unknown', 'Not known', 'var(--slate)', r => r.connector !== true && r.connector !== false]]
+      .map(([v, l, tone, test]) => chip('tConnector', v, l, shownTasks(byConnector.filter(test)), tone, filters.connector === v)).join('');
+
+  const byGate = without('gateEra').rows;
+  const gates = [...new Set(byGate.map(r => r.gateEra).filter(Boolean))].sort((a, b) => byGate.filter(r => r.gateEra === b).length - byGate.filter(r => r.gateEra === a).length);
+  const GATE_TONES = {'KESTREL full': 'var(--green)', 'KESTREL on': 'var(--aqua)', 'Opus gate': 'var(--violet)', 'GLM-5.2 gate only': 'var(--amber)'};
+  byId('tGateChips').innerHTML = chip('tGate', '', 'Any', shownTasks(byGate), 'var(--slate)', !filters.gateEra) +
+    gates.map(g => chip('tGate', g, g, shownTasks(byGate.filter(r => r.gateEra === g)), GATE_TONES[g] || 'var(--blue)', filters.gateEra === g)).join('');
+
+  const byDelivery = without('delivery').rows;
+  const deliveryCount = value => shownTasks(window.filterTruth(byDelivery, {delivery: value}).rows);
+  byId('tDeliveryChips').innerHTML = chip('tDelivery', '', 'Any', shownTasks(byDelivery), 'var(--slate)', !filters.delivery) +
+    [['current', 'At the current bar', 'var(--green)'], ['gateOnly', 'Awaiting re-gate', 'var(--amber)'], ['none', 'No package', 'var(--slate)']]
+      .map(([v, l, tone]) => chip('tDelivery', v, l, deliveryCount(v), tone, filters.delivery === v)).join('');
+
+  const shown = shownTasks(window.filterTruth(rows, truthByBucket ? {...filters, state: ''} : filters).rows);
+  setText('truthFilterCount', filtered ? `${fmt(shown)} of ${fmt(truthRows().length)} tasks` : `${fmt(truthRows().length)} tasks`);
+
+  const labels = {tState: 'State', tGate: 'Gate', tFinding: 'Finding', tDelivery: 'Delivery', tDelivered: 'Delivered', tConnector: 'Connector', tGlm: 'GLM', tBench: 'Bench', tCarried: 'Carried over', tConfidence: 'Identity', tDomain: 'Domain', tOwner: 'Trainer', tDuplicate: 'Duplicates', tSearch: 'Search'};
+  const shownValue = id => { const node = byId(id); if (!node) return ''; if (node.tagName === 'SELECT') return (node.options[node.selectedIndex]?.textContent || node.value).replace(/\s*\(\d[\d,]*\)$/, ''); return node.value; };
+  const active = [...TRUTH_FILTERS, 'tSearch'].filter(id => byId(id)?.value);
+  const toneOf = id => byId(`${id}Chips`)?.querySelector('.fchip.is-on')?.style.getPropertyValue('--c') || 'var(--accent)';
+  byId('truthChips').innerHTML = active.length
+    ? active.map(id => `<button type="button" class="chipbtn" style="--c:${toneOf(id)}" data-tclear="${id}"><span>${labels[id] || id}</span>${esc(id === 'tState' ? stateLabel(byId(id).value) : shownValue(id))}<i aria-hidden="true">×</i></button>`).join('') +
+      '<button type="button" class="chipbtn is-clear" data-tclear="all">Clear all</button>'
+    : '';
+}
+
 function renderTruthFigures(result, filtered) {
   const cue = filtered ? 'filtered' : 'how is this counted?';
   // Accepted comes from the bucket, and only Accepted.
@@ -1276,11 +1523,11 @@ function renderTruthFigures(result, filtered) {
   // row reads as one strip. The join has no published chain - it depends on
   // the delivery audit, which the ingest chain never sees - so those two cells
   // explain themselves in the tooltip; the flags open their chain like the cards.
-  const stat = (label, value, base, tip, chain, tone, opens, sub) => `<${chain || opens ? 'button' : 'div'} class="stat${opens ? ' stat-opens' : ''}" style="--c:var(--${tone})"${chain ? ` data-chain="${esc(chain)}" aria-pressed="${openChain === chain}"` : ''}${opens ? ` data-opens="${esc(opens)}"` : ''} data-tip="${esc(tip)}">
+  const stat = (label, value, base, tip, chain, tone, opens, sub) => `<${chain || opens ? 'button' : 'div'} class="stat${opens ? ' stat-opens' : ''}" style="--c:var(--${tone});--ci:var(--${tone}-ink)"${chain ? ` data-chain="${esc(chain)}" aria-pressed="${openChain === chain}"` : ''}${opens ? ` data-opens="${esc(opens)}"` : ''} data-tip="${esc(tip)}">
       <b class="stat-n" data-count="${value}" data-key="stat:${esc(label)}">${fmt(value)}</b>
       <span class="stat-l">${esc(label)}</span>
       ${sub ? `<span class="stat-sub">${esc(sub)}</span>` : ''}
-      <span class="stat-bar"><i style="--pct:${base ? Math.min(100, Math.round((value / base) * 100)) : 0}"></i><small>${base ? `${Math.round((value / base) * 100)}%` : ''}</small></span>
+      ${base ? `<span class="stat-bar"><i style="--pct:${Math.min(100, Math.round((value / base) * 100))}"></i><small>${Math.round((value / base) * 100)}%</small></span>` : ''}
     </${chain || opens ? 'button' : 'div'}>`;
   // The delivery join is a reconciliation between two datasets - the Delivery
   // tab's audit and the whole pipeline - so all three figures are counts of
@@ -1294,12 +1541,9 @@ function renderTruthFigures(result, filtered) {
   // as tasks, "not found here" as missing work, the makeup strip as a
   // breakdown of the card above it. Saying what was done, what follows from
   // it, and what it does NOT claim is what stops that.
-  const tip = (meaning, did, so, not) =>
-    `${meaning}
-
-Did · ${did}
-So · ${so}
-Not · ${not}`;
+  // One sentence per tile: what the number is. The derivation lives in the
+  // chain panel and the drill rows, not in a hover.
+  const tip = meaning => meaning;
 
   const idx = truth?.deliveredIndex;
   const c = idx ? idx.counts : null;
@@ -1309,7 +1553,7 @@ Not · ${not}`;
           'Read the manifests themselves - the files that were sent - and checked them against the Delivery tab. Same names, same batch split, nothing in one and not the other.',
           `The two figures beside it split this number and nothing else: ${fmt(c.manifestLiveConfirmed)} + ${fmt(c.manifestLiveMissing)} = ${fmt(c.manifestTasks)}.`,
           'Not a count of what is on screen. This is a fixed record of what went out, and it does not follow the filters.'),
-        null, 'aqua') +
+        null, 'blue') +
       stat('still in the bucket', c.manifestLiveConfirmed, c.manifestTasks,
         tip('Delivered packages whose archive is still there.',
           `Listed the finalisation prefix on ${esc(c.manifestLiveCheckedOn)} and looked for the exact object each manifest names.`,
@@ -1326,26 +1570,28 @@ Not · ${not}`;
   // Connector is structural, read from the package. Domain is a name prefix.
   // They sit together because a reader wants both, but they are labelled apart
   // because one is evidence and the other is a naming convention.
+  const shownBase = shownTasks(result.rows);
+  const shownWhere = test => shownTasks(result.rows.filter(test));
   byId('truthMakeup').innerHTML =
-    stat('connector', result.connectorTasks, result.rows.length,
+    stat('connector', shownWhere(r => r.connector === true), shownBase,
       tip('The task mounts connector gyms - Slack, Jira, Drive and the rest.',
         'Opened the package and read whether task.toml declares [[environment.mcp_servers]].',
         'It is structural evidence, so it holds whatever the task is called.',
         'Never inferred from the name. A gen- or code- prefix says nothing about whether a task talks to Slack.'),
       null, 'aqua') +
-    stat('non-connector', result.nonConnectorTasks, result.rows.length,
+    stat('non-connector', shownWhere(r => r.connector === false), shownBase,
       tip('The package declares no connector gyms.',
         'Same read of the same file; this is the negative answer, not the absence of one.',
         'These are the tasks the domain split below describes.',
         'Not a guess. A task with no package scanned is in "not known", not here.'),
       null, 'blue') +
-    stat('not known', result.connectorUnknown, result.rows.length,
+    stat('not known', shownWhere(r => r.connector !== true && r.connector !== false), shownBase,
       tip('No package was scanned for these.',
         'Looked for an archive in the bucket and found none at the current bar.',
         'They are reported as unknown so the two figures beside them mean what they say.',
         'Not "no". The marker only exists inside a package, and calling these non-connector would invent an answer for ' + fmt(result.connectorUnknown) + ' tasks.'),
       null, 'slate') +
-    stat('named domain', result.rows.length - (result.domains['Not recorded'] || 0), result.rows.length,
+    stat('named domain', shownWhere(r => r.domain && r.domain !== 'Not recorded'), shownBase,
       tip('The task name starts with a domain prefix such as gen- or law-.',
         'Read the prefix off the name. Nothing was opened.',
         'It gives a rough subject split for the tasks that follow the convention.',
@@ -1373,30 +1619,28 @@ Not · ${not}`;
     : '<p class="empty">No task in this selection carries a domain prefix.</p>';
 
   byId('truthFlags').innerHTML = [
-    ['carried over', result.carriedOver, 'Carried over',
+    ['carried over', shownWhere(r => r.carriedOver), 'Carried over',
       tip('First decided before the cut, settled by the current pipeline.',
         'Compared each task’s first decision against the cut date and kept the ones that predate it.',
         'It says this pipeline finished work that was already open, so the accepted figure is not all new work.',
         'Not a duplicate and not a re-run. One task, settled once, that started earlier.')],
-    ['awaiting re-gate', result.gateOnly, 'Awaiting KESTREL re-gate',
+    ['awaiting re-gate', shownWhere(r => r.gateOnly), 'Awaiting KESTREL re-gate',
       tip('Accepted under the GLM-5.2 gate only.',
         'Read which gate each verdict was decided under and kept those never seen by KESTREL.',
         'They need a re-gate before they can be treated as accepted at the current bar.',
         'Not rejected. Nothing here has failed; it has not been asked the current question yet.')],
-    ['possible duplicates', result.possibleDuplicates, 'Possible duplicates',
+    ['possible duplicates', shownWhere(r => r.possibleDuplicate), 'Possible duplicates',
       tip('Shares a task name and trainer with another task in scope.',
         'Grouped by name and owner and flagged the groups with more than one member.',
         'It marks work that may be counted more than once, so a figure built on names should be read with that in mind.',
         'Not merged and not removed. A task name can legitimately cover unrelated work, so these are flagged for a person, never folded automatically.')],
-    ['packages at the bar', result.atCurrentBar, 'Packages at the current bar',
+    ['packages at the bar', shownWhere(r => r.atCurrentBar), 'Packages at the current bar',
       tip('The package is collectable from the bucket today.',
         'Checked each task against the current-bar listing of the bucket rather than trusting its verdict.',
         'Only these can be delivered at all, which is why ready is drawn from them.',
         'Not the same as accepted. A rejected task can have a collectable package, and an accepted one can have none.')],
-  ].map(([label, value, chain, copy]) => stat(label, value, result.rows.length,
-    `${copy}
-Share · of the ${fmt(result.rows.length)} tasks shown. These overlap; a task can carry several.`,
-    chain, 'slate')).join('');
+  ].map(([label, value, chain, copy]) => stat(label, value, shownBase, copy, chain,
+    {'carried over': 'violet', 'awaiting re-gate': 'amber', 'possible duplicates': 'red', 'packages at the bar': 'green'}[label] || 'slate')).join('');
 
   // The question this answers is the one the strip above kept inviting and
   // could not answer: what is left to send. Accepted with a collectable
@@ -1420,13 +1664,13 @@ Share · of the ${fmt(result.rows.length)} tasks shown. These overlap; a task ca
           'Read the folder each manifest packaged from - no name matching, so this join cannot be wrong about which task it means.',
           `${fmt(cx.delivered)} of the ${fmt(cx.packages)} packages here have been handed over.`,
           `Not the ${fmt(truth.deliveredIndex ? truth.deliveredIndex.counts.manifestTasks : 412)} in the join on the left. That is every task ever delivered; this is the ones whose folder is still in this prefix.`),
-        null, 'aqua') +
+        null, 'blue') +
       stat('still to deliver', cx.notDelivered, cx.packages,
         tip('Accepted packages no manifest has claimed.',
           'Took the folders in the prefix and removed the ones a manifest names.',
           'This is the pool a new delivery is cut from.',
           `Not a promise that all of them should go. ${fmt(cx.latestRejected)} hold an accepted package whose later resubmission was rejected, and that is worth a look before shipping.`),
-        null, 'blue')
+        null, 'magenta')
     : stat('accepted at the bar', result.acceptedAtBarTasks, 0,
         'The bucket listing has not loaded, so this falls back to the verdict count.',
         null, 'slate');
@@ -1438,6 +1682,7 @@ Share · of the ${fmt(result.rows.length)} tasks shown. These overlap; a task ca
   // the two units in one strip is what made every earlier figure argue with
   // its neighbour.
   const co = cohortIndex ? cohortIndex.counts : null;
+  const tn = truth.cohortRows ? window.acceptedTaskNames(truth.cohortRows) : null;
   if (co && byId('truthCohort')) {
     byId('truthCohort').innerHTML =
       stat('packages in the cohort', co.packages, 0,
@@ -1446,6 +1691,14 @@ Share · of the ${fmt(result.rows.length)} tasks shown. These overlap; a task ca
           `This is the honest total: ${fmt(co.packages)} tasks have an accepted package sitting in ${esc(cohortIndex.cohort)}.`,
           'Not a count of submissions, and not comparable to the Accepted card above, which counts verdict rows and can hold several per task.'),
         null, 'aqua') +
+      // Folded by the [task] name in each package's task.toml. Stated beside the
+      // folder count, not instead of it: every other figure here is in folders.
+      (tn ? stat('tasks by declared name', tn.tasks, 0,
+        tip('The folders in the cohort, folded by the [task] name declared in each package.',
+          `Read the [task] name from the task.toml inside each package and counted the distinct names. A folder whose package could not be read counts as its own task.`,
+          `${fmt(tn.folders)} folders hold ${fmt(tn.tasks)} distinct tasks, so ${fmt(tn.extraFolders)} folders are extra copies: a re-cut after review lands under a new folder name.`,
+          'Not the Accepted figure. Accepted and the rest of this strip count folders; this is the same folders counted by the name inside them.'),
+        null, 'magenta') : '') +
       stat('decided since the cut', co.decided, co.packages,
         tip(`Folders with a verdict dated on or after ${esc(cohortIndex.cut)}.`,
           'Joined each folder to the verdicts by the names its package declares, then kept the ones the pipeline window reaches.',
@@ -1656,25 +1909,38 @@ function glmCell(row) {
 
 const GLM_TONE = {'0/4': '--red', '1/4': '--blue', '2/4': '--violet', '3/4': '--aqua', '4/4': '--orange'};
 
+let truthSort = {key: '', dir: 1};
 function renderTruthRows(rows) {
   const size = pageSize('truthPageSize');
+  if (truthSort.key) {
+    const key = truthSort.key;
+    rows = [...rows].sort((a, b) => {
+      const va = typeof a[key] === 'number' ? a[key] : String(a[key] ?? ''), vb = typeof b[key] === 'number' ? b[key] : String(b[key] ?? '');
+      return (va < vb ? -1 : va > vb ? 1 : 0) * truthSort.dir || String(a.name).localeCompare(String(b.name));
+    });
+  }
+  document.querySelectorAll('#truthTable .sort').forEach(button => {
+    const on = button.dataset.sort === truthSort.key;
+    button.classList.toggle('is-on', on);
+    button.dataset.dir = on ? (truthSort.dir > 0 ? 'asc' : 'desc') : '';
+  });
   const pages = Math.max(Math.ceil(rows.length / size), 1);
   truthPage = Math.min(truthPage, pages - 1);
   const from = truthPage * size;
   const slice = rows.slice(from, from + size);
   byId('truthRows').innerHTML = slice.length ? slice.map((row, index) => {
     const id = `truth-${truthPage}-${index}`;
-    return `<tr class="drill-head">
+    return `<tr class="drill-head" style="--i:${index}">
       <td><button class="drill-toggle" aria-expanded="false" aria-controls="${id}" aria-label="Evidence for ${esc(row.name)}">+</button></td>
       <td class="num serial">${fmt(from + index + 1)}</td>
       <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span></div></td>
       <td class="flagcell">${flagBadges(row, `dup-${id}`)}</td>
-      <td><span class="state state-${esc(row.state.replace(/\s+/g, '-'))}">${esc(row.state)}</span></td>
-      <td>${esc(row.owner || '\u2013')}</td>
-      <td>${esc(row.decided || '\u2013')}${row.decidedInferred ? '<span class="chip chip-warn" title="No decision timestamp on the verdict; dated from when it was last updated">approx</span>' : ''}</td>
-      <td>${esc(row.gateEra)}</td>
+      <td><span class="statepill" style="--c:${stateTone(row.state)}">${esc(stateLabel(row.state))}</span></td>
+      <td>${row.owner ? `<span class="who"><i class="avatar">${esc(initials(row.owner))}</i><span title="${esc(row.owner)}">${esc(row.owner)}</span></span>` : '<span class="who is-none"><i class="avatar">?</i><span>Not recorded</span></span>'}</td>
+      <td><span class="batch-chip">${esc(row.decided || '\u2013')}</span>${row.decidedInferred ? '<span class="flag flag-warn" title="No decision timestamp on the verdict; dated from when it was last updated">~</span>' : ''}</td>
+      <td><span class="gate-chip">${esc(row.gateEra)}</span></td>
       <td class="glmcell">${glmCell(row)}</td>
-      <td class="num">${fmt(row.runs)}</td>
+      <td class="num"><span class="runs-dots" data-tip="${fmt(row.runs)} run${row.runs === 1 ? '' : 's'} recorded">${Array.from({length: Math.min(row.runs, 7)}, () => '<i></i>').join('')}${row.runs > 7 ? '<i class="more"></i>' : ''}<b>${fmt(row.runs)}</b></span></td>
     </tr>
     <tr class="drill" id="${id}" hidden><td colspan="10">
       <dl class="evidence">
@@ -1711,6 +1977,7 @@ function renderTruthRows(rows) {
   setText('truthPage', `${fmt(from + 1)}\u2013${fmt(from + slice.length)} of ${fmt(rows.length)}`);
   byId('truthPrev').disabled = truthPage === 0;
   byId('truthNext').disabled = truthPage >= pages - 1;
+  fitDeck();
 }
 
 // What the delivered join could not account for.
@@ -1784,46 +2051,37 @@ function renderTruth() {
   // Accepted is decided by the bucket, so its list is the bucket's folders -
   // one row each - not a selection of verdict rows. The state filter is
   // dropped because every folder here is an accepted package by definition;
-  // the State column then shows what the latest verdict says about it, which
-  // is a different question and is why some read rejected.
-  const byBucket = filters.state === 'accepted' && truth.cohortRows;
+  // the State column then shows what the latest verdict says about it.
+  const cohort = truthCohortRows();
+  const byBucket = filters.state === 'accepted' && cohort;
+  truthByBucket = Boolean(byBucket);
   const result = byBucket
-    ? window.filterTruth(truth.cohortRows, {...filters, state: ''})
-    : window.filterTruth(truth.rows, filters);
+    ? window.filterTruth(cohort, {...filters, state: ''})
+    : window.filterTruth(filters.search ? truthSearchRows() : truthRows(), filters);
   // Accepted is a bucket figure, but it still has to answer the question the
   // filters are asking. Counted over the same folders, narrowed the same way,
   // so it equals the table whenever Accepted is the selected state.
-  acceptedShown = truth.cohortRows
-    ? window.filterTruth(truth.cohortRows, {...filters, state: ''}).rows.length
+  acceptedShown = cohort
+    ? window.filterTruth(cohort, {...filters, state: ''}).rows.length
     : null;
+  renderTruthFilterChips(filters, filtered);
   renderTruthFigures(result, filtered);
   renderScope(result);
   if (openChain) renderChain(openChain, filtered);
-  setText('truthStatus', `Derived from ${truth.bucket} at ${new Date(truth.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})} / ` +
-    `${fmt(truth.rows.length)} tasks decided on or after ${truth.cut}. The Harbor Console is not read.`);
+  // The status line is for rebuild progress only; provenance sits in the source strip.
+  if (!byId('truthRefresh')?.disabled) setText('truthStatus', '');
   const idx = truth.deliveredIndex;
-  setText('truthCaveats', `${fmt(result.unmerged)} of ${fmt(result.rows.length)} shown are unmerged, so repeat runs of them may still count separately. ` +
-    `${fmt(result.inferredDates)} carry no decision timestamp and are dated from when the verdict was last updated.` +
-    (idx ? ` Delivered is joined from the ${fmt(idx.counts.auditedTasks)} tasks on the Delivery tab by name; ` +
-      `${fmt(idx.counts.auditedUnmatched)} of those found no task here, ${fmt(idx.counts.unmatchedAccepted)} of them accepted.` : '') +
-    (truth.deliveredStale ? ' The delivered join was built against an earlier pipeline than the one shown, so treat those two figures as out of date until it is rebuilt.' : ''));
   renderJoinGap(result);
-  if (byBucket) {
-    setText('truthCaveats',
-      `Accepted is the ${fmt(truth.cohortRows.length)} task folders in ${esc(truth.cohortIndex.cohort)} - `
+  setText('truthCaveats', byBucket
+    ? `Accepted is the ${fmt(cohort.length)} task folders in ${esc(truth.cohortIndex.cohort)} - `
       + 'one folder, one task, counted in the bucket rather than derived from the verdicts. '
-      + `${fmt(truth.cohortRows.filter(r => r.noVerdict).length)} of them have no verdict inside the pipeline window, `
+      + `${fmt(cohort.filter(r => r.noVerdict).length)} of them have no verdict inside the pipeline window, `
       + 'so their trainer and dates are blank rather than borrowed from another run. '
-      + `Every row here is an accepted package, so the other cards are zero. `
-      + `${fmt(truth.cohortRows.filter(r => r.latestVerdict && r.latestVerdict !== 'accepted').length)} of them have had a later `
-      + 'submission come back rejected or unfinished; that is a different run and is shown in the row’s evidence, not as its state.');
-  }
-  setText('truthAudit', (result.collapsed
-      ? `${fmt(result.rows.length)} tasks shown, folded from ${fmt(result.submissions)} pipeline rows ` +
-        `(${fmt(result.versionsFolded)} repeat versions counted once) / `
-      : `${fmt(result.rows.length)} of ${fmt(truth.rows.length)} tasks shown / `) +
-    `${fmt(result.atCurrentBar)} have a package at the current bar / ${fmt(result.gateOnly)} await a KESTREL re-gate / ` +
-    `${fmt(result.owners)} trainers.`);
+      + `${fmt(cohort.filter(r => r.latestVerdict && r.latestVerdict !== 'accepted').length)} of them have had a later `
+      + 'submission come back rejected or unfinished; that is a different run and is shown in the row\u2019s evidence, not as its state.'
+    : '');
+  const shownN = shownTasks(result.rows);
+  setText('truthCount', `${fmt(shownN)}${result.collapsed ? ' tasks' : ` of ${fmt(truth.rows.length)} tasks`}${byBucket && result.rows.length !== shownN ? ` in ${fmt(result.rows.length)} folders` : ''} \u00b7 ${fmt(shownTasks(result.rows.filter(r => r.atCurrentBar)))} at the bar \u00b7 ${fmt(result.owners)} trainers`);
   renderManifestBar(result);
   fillBench();
   renderExportButton(result);
@@ -1921,9 +2179,10 @@ function downloadManifest() {
 
 function shownRows() {
   const filters = truthFilters();
-  return (filters.state === 'accepted' && truth.cohortRows)
-    ? window.filterTruth(truth.cohortRows, {...filters, state: ''})
-    : window.filterTruth(truth.rows, filters);
+  const cohort = truthCohortRows();
+  return (filters.state === 'accepted' && cohort)
+    ? window.filterTruth(cohort, {...filters, state: ''})
+    : window.filterTruth(filters.search ? truthSearchRows() : truthRows(), filters);
 }
 
 function exportRowCount() {
@@ -1943,6 +2202,34 @@ function renderExportButton(result) {
     ? `Download the ${fmt(count)} ${result && result.collapsed ? 'tasks' : 'rows'} `
       + 'currently shown, with the drill-down evidence as columns'
     : 'Nothing matches these filters';
+}
+
+// The Delivery export writes the tasks the filters currently show, in the
+// table's own order, one row per task.
+const AUDIT_CSV_COLUMNS = [
+  ['task', r => r.task], ['batch', r => r.batch], ['category', r => r.category], ['type', r => r.type],
+  ['glm', r => r.glmBucket], ['difficulty', r => r.difficulty], ['priority', r => r.priority],
+  ['acceptance', r => r.acceptance], ['trainer', r => r.trainer], ['source', r => r.source],
+  ['sha', r => r.sha], ['size_mb', r => r.size_mb], ['versions', r => r.versions],
+  ['connectors', r => (r.connectorList || []).map(c => (typeof c === 'string' ? c : c.name || c.service || c.id || ''))],
+  ['flags', r => r.flags], ['feedback_url', r => r.feedback_url],
+];
+function downloadAuditCsv() {
+  if (!audit) return;
+  const rows = sortedAuditRows(window.filterDeliveryAudit(auditRows(), auditFilters()).rows);
+  if (!rows.length) return;
+  const lines = [AUDIT_CSV_COLUMNS.map(([name]) => name).join(',')]
+    .concat(rows.map(row => AUDIT_CSV_COLUMNS.map(([, read]) => window.csvCell(read(row))).join(',')));
+  const stamp = new Date().toISOString().slice(0, 19).replace('T', '-').replace(/:/g, '');
+  const blob = new Blob(['\ufeff' + lines.join('\r\n') + '\r\n'], {type: 'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `delivery-${rows.length}-${stamp}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 function downloadTruthCsv() {
@@ -1997,9 +2284,9 @@ function carriedFilters() {
 
 function renderCarried() {
   if (!truth) return;
-  const all = truth.rows.filter(row => row.carriedOver);
+  const all = truthRows().filter(row => row.carriedOver);
   const filters = carriedFilters();
-  const base = window.filterTruth(truth.rows, filters).rows;
+  const base = window.filterTruth(truthRows(), filters).rows;
   const rows = base.filter(row => (!carriedExtra.day || row.decided === carriedExtra.day) &&
     (!carriedExtra.runs || runsBucket(row.runs) === carriedExtra.runs) &&
     (!carriedExtra.finding || (row.findingsAllRuns || row.findings || []).includes(carriedExtra.finding)) &&
@@ -2234,6 +2521,7 @@ async function loadGcsPipeline(manual = false) {
     if (payload.schemaVersion !== 3 || !['current','historical','legacy'].every(key=>Array.isArray(payload[key])) || !Array.isArray(payload.finalisation?.tasks)) throw new Error('Invalid GCS export');
     ['current', 'historical', 'legacy'].forEach(key => payload[key].forEach(task => { task.domain = pipelineDomain(task); }));
     gcsPipeline = payload;
+    connectorByName = null;
     loadFinalisation(); renderDonut(); renderTrainerRows();
     renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
     if (manual) setTextIfPresent('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
@@ -2389,6 +2677,20 @@ function payoutsOpen() {
   }
 }
 
+// The Overview's Payout balance panel follows the Payouts lock. While locked
+// the names and the amounts are not written into the page; a blurred
+// placeholder stands where each would be, so the layout keeps its shape.
+function payoutBalanceOpen() {
+  const open = payoutsOpen();
+  const veil = byId('payoutBalanceVeil');
+  const body = byId('payoutBalanceBody');
+  if (veil) veil.hidden = open;
+  if (body) body.classList.toggle('is-locked', !open);
+  return open;
+}
+const hiddenMoney = () => '<span class="blurred" aria-label="hidden amount">$0,000</span>';
+const hiddenName = () => '<span class="blurred" aria-label="hidden name">Hidden name</span>';
+
 function applyPayoutLock() {
   const lock = byId('payoutLock');
   const body = byId('payoutBody');
@@ -2446,9 +2748,9 @@ function wirePayoutLock() {
       byId('payoutLock').hidden = true;
       byId('payoutBody').hidden = false;
     }
-    // The Overview's Payout balance panel withholds names while this is locked,
-    // so it has to be drawn again now that it is not.
-    renderTopPendingCards();
+    // The Overview's Payout balance panel is veiled while this is locked, so
+    // it is drawn again now that it is not.
+    renderHero(); renderTopPendingCards();
   });
 }
 
@@ -2465,19 +2767,20 @@ function switchView(viewName, push = true) {
   // tab is, and re-applied on every visit rather than once at startup.
   if (viewName === 'payouts') applyPayoutLock();
   if (viewName === 'explorer') loadExplorer();
+  if (viewName === 'pipeline') fitDeck();
   if (push && location.hash.slice(1) !== viewName) history.pushState({viewName}, '', `#${viewName}`);
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
 function commandSnapshot() {
-  const folders = finalisationRows.filter(row => inRange(row.date));
+  const folders = finalisationRows.filter(row => inRange(row.date) && inSegment(row.trainer?.email, typeFlag(row.filterType)));
   // One task can be finalised into several cohorts; the accepted count is task names, not folders.
   const tasks = new Set(folders.map(row => row.name));
   return {
     ready: Boolean(finalisationRows.length && gcsPipeline),
     folders,
     tasks,
-    current: (gcsPipeline?.current || []).filter(row => inRange(row.date)),
+    current: (gcsPipeline?.current || []).filter(row => inRange(row.date) && inSegment(row.trainer, evaluationConnector(row))),
     duplicates: folders.length - tasks.size,
     unassigned: folders.filter(row => !row.trainer).length,
   };
@@ -2487,15 +2790,15 @@ function renderHero() {
   const snapshot = commandSnapshot();
   const rows = payoutRows();
   // Published totals are displayed as published; per-row sums are the fallback.
-  const totals = payoutLedger?.totals;
+  const totals = segment ? null : payoutLedger?.totals;
   const summary = {
     paidAmount: totals ? totals.paidAmount : sum(rows, 'paidAmount'),
     pendingAmount: totals ? totals.pendingAmount : sum(rows, 'pendingAmount'),
     pendingTasks: totals ? totals.pendingTasks : sum(rows, 'pendingTasks'),
     paidTasks: totals ? totals.paidTasks : sum(rows, 'paidTasks'),
     acceptedTasks: totals ? totals.acceptedTasks : sum(rows, 'acceptedTasks'),
-    activeTrainers: data.summary?.activeTrainers ?? rows.filter(r => String(r.status).toLowerCase() === 'active').length,
-    totalTrainers: data.summary?.totalTrainers ?? rows.length,
+    activeTrainers: (!segment && data.summary?.activeTrainers) || rows.filter(r => String(r.status).toLowerCase() === 'active').length,
+    totalTrainers: (!segment && data.summary?.totalTrainers) || rows.length,
   };
   const generated = new Date(data.meta.generatedAt);
   const paid = summary.paidAmount;
@@ -2505,8 +2808,6 @@ function renderHero() {
 
   setText("generatedAt", generated.toLocaleString([], { dateStyle: "medium", timeStyle: "short" }));
   setText('scanAt', gcsPipeline ? new Date(gcsPipeline.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'}) : 'not loaded');
-  setCount('heroPending', pending, 'money');
-  setText("heroExposureText", `${paidPct}% paid / ${fmt(summary.pendingTasks)} tasks pending`);
   renderExposureChart(rows);
 
   const dated = Boolean(dateRange.start || dateRange.end);
@@ -2517,7 +2818,7 @@ function renderHero() {
   const v2 = snapshot.ready ? {tasks: v2Folders.length} : null;
   setCount('metricClientAccepted', clientAcceptance ? clientAcceptance.accepted : null);
   setText('metricClientAcceptedNote', clientAcceptance
-    ? `Priority Low of ${fmt(clientAcceptance.tasks)} audited tasks${clientAcceptance.live ? '' : ' / saved snapshot'}${dated ? ' / all dates: the 240 dashboard snapshot carries counts only' : ''}`
+    ? `Priority Low of ${fmt(clientAcceptance.tasks)} audited tasks${clientAcceptance.live ? '' : ' / saved snapshot'}${dated ? ' / all dates: the 240 dashboard snapshot carries counts only' : ''}${segment ? ' / not split by segment' : ''}`
     : 'Harbor 240 dashboard unavailable');
   setCount('metricV2Accepted', v2 ? v2.tasks : null);
   setText('metricV2AcceptedNote', v2 ? `of ${fmt(finalisationRows.length)} accepted folders` : '');
@@ -2547,11 +2848,11 @@ function renderHero() {
   const share = (value, base) => (value == null || !base) ? null : Math.round((value / base) * 100);
   const tiles = [
     ['Current evaluated tasks', current, null, 'aqua', 'of the evaluations feed'],
-    ['Pipeline accepted', pipelineAccepted, null, 'aqua',
+    ['Pipeline accepted', pipelineAccepted, null, 'green',
      cohortIndex ? 'accepted packages in the delivery prefix'
        : `of ${fmt(pipelineScope || 0)} tasks the pipeline decided`],
     ['Accepted finalisation folders', finalisationRows.length ? snapshot.folders.length : null, null, 'blue', ''],
-    ['Cross-cohort repeats excluded', snapshot.ready ? snapshot.duplicates : null, share(snapshot.ready ? snapshot.duplicates : null, snapshot.folders.length), 'yellow', 'of folders'],
+    ['Cross-cohort repeats excluded', snapshot.ready ? snapshot.duplicates : null, share(snapshot.ready ? snapshot.duplicates : null, snapshot.folders.length), 'amber', 'of folders'],
   ];
   const summaryHost = byId('commandSummary');
   summaryHost.innerHTML = tiles.map(([label, value, pct, tone, basis], index) => `<div class="summary-item" style="--i:${index}" data-tone="${tone}">
@@ -2562,7 +2863,7 @@ function renderHero() {
   summaryHost.querySelectorAll('[data-count=""]').forEach(node => node.removeAttribute('data-count'));
   animateCounts(summaryHost);
   setText('commandOwnership', snapshot.ready
-    ? `${fmt(snapshot.unassigned)} without a roster-linked owner`
+    ? `${fmt(snapshot.unassigned)} folders without a roster-linked owner`
     : '');
 
   const detail = (id, items) => { const node = byId(id); if (node) node.innerHTML = items.filter(Boolean).map(([k, v]) => `<div><span>${k}</span><b>${v}</b></div>`).join(''); };
@@ -2601,24 +2902,16 @@ function renderHero() {
     ['Pending = accepted \u2212 paid, never below 0', fmt(summary.pendingTasks)],
     ['Amount', money(pending)],
   ]);
-  const owedBy = ['Company', 'Computer', 'Unassigned'].map(b => [b, rows.filter(r => benchOf(r.team) === b.toLowerCase()).reduce((n, r) => n + r.pendingAmount, 0)]).filter(([, v]) => v);
-  detail('detailOwed', [
-    ['Earned (paid + owed)', money(totalExposure)],
-    ['Paid', money(paid)],
-    ['Owed', money(pending)],
-    ...owedBy.map(([k, v]) => [`Owed \u2014 ${k}`, money(v)]),
-  ]);
   if (!snapshot.ready) {
-    ['heroPending', 'metricPendingTasks', 'metricPending'].forEach(id => setText(id, '-'));
-    setText('heroExposureText', 'Waiting for both accepted sources');
+    ['metricPendingTasks', 'metricPending'].forEach(id => setText(id, '-'));
   }
 }
 
-function segment(tone, value, scale, tip) {
+function moneySeg(tone, value, scale, tip, labelled = true) {
   if (!value) return '';
   // Label inside the bar only where it fits; the tooltip and the line beneath
   // carry the number for the slivers.
-  const label = value / scale >= 0.13 ? `<i>${money(value)}</i>` : '';
+  const label = labelled && value / scale >= 0.13 ? `<i>${money(value)}</i>` : '';
   return `<span class="seg ${tone}" style="flex:${value}" data-tip="${esc(tip)}">${label}</span>`;
 }
 
@@ -2637,6 +2930,13 @@ function sourceState(source) {
     return payoutLedger
       ? {tone: 'snapshot', label: 'Snapshot', detail: `Ledger built ${new Date(payoutLedger.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}`}
       : {tone: 'warn', label: 'Not loaded', detail: 'The payout ledger did not load in this visit.'};
+  }
+  if (source.id === 'drive-deliveries') {
+    const drive = audit && audit.drive;
+    if (!drive) return {tone: 'warn', label: 'Not loaded', detail: 'The Drive manifests did not load in this visit.'};
+    const skipped = drive.skipped.length ? ` / ${fmt(drive.skipped.length)} folder${drive.skipped.length === 1 ? '' : 's'} skipped` : '';
+    return {tone: drive.skipped.length ? 'warn' : 'snapshot', label: 'Snapshot',
+      detail: `${fmt(drive.batches.length)} batches, ${fmt(drive.rows)} tasks, read ${new Date(drive.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}${skipped}`};
   }
   if (source.id === 'harbor-240') {
     if (!clientAcceptance) return {tone: 'warn', label: 'Not loaded', detail: 'The 240 dashboard could not be read and no snapshot was available.'};
@@ -2740,29 +3040,31 @@ function renderExposureChart(rows) {
   const owed = benches.reduce((value, bench) => value + bench.pending, 0);
   const settled = paid + owed ? Math.round((paid / (paid + owed)) * 100) : 0;
   setTextIfPresent('payoutBalanceNote', (benches.length
-    ? `${money(paid + owed)} earned · ${money(paid)} paid · ${money(owed)} owed`
+    ? `${money(paid + owed)} earned · ${money(paid)} paid · ${money(owed)} to be paid`
     : '') + (payoutLedgerError ? ' · ledger unavailable, workbook figures shown' : ''));
   const host = byId('exposureChart');
+  const open = payoutBalanceOpen();
+  const cash = value => (open ? money(value) : hiddenMoney());
   host.innerHTML = benches.length ? `
-    <div class="settle" data-tip="${money(paid)} paid of ${money(paid + owed)} earned">
+    <div class="settle"${open ? ` data-tip="${money(paid)} paid of ${money(paid + owed)} earned"` : ''}>
       <div class="settle-head"><span>Settled</span><b data-count="${settled}" data-kind="pct" data-key="settle">${settled}%</b></div>
       <div class="settle-track"><i style="--pct:${settled}"></i><em style="--pct:${settled}"></em></div>
-      <div class="settle-foot"><span>${money(paid)} paid</span><span>${money(owed)} still owed</span></div>
+      <div class="settle-foot"><span>${cash(paid)} paid</span><span>${cash(owed)} to be paid</span></div>
     </div>
     ${benches.map((bench, index) => {
       const benchTotal = bench.paid + bench.pending;
       return `<div class="bench-bar" data-bench="${bench.key}" style="--i:${index}">
-        <div class="bench-bar-head"><span>${esc(bench.label)}</span><b data-count="${benchTotal}" data-kind="money" data-key="bar:${bench.key}">${money(benchTotal)}</b></div>
+        <div class="bench-bar-head"><span>${esc(bench.label)}</span>${open ? `<b data-count="${benchTotal}" data-kind="money" data-key="bar:${bench.key}">${money(benchTotal)}</b>` : `<b>${hiddenMoney()}</b>`}</div>
         <div class="stack" style="width:${Math.max((benchTotal / scale) * 100, 2)}%">
-          ${segment('is-paid', bench.paid, scale, `${bench.label}: ${money(bench.paid)} paid for ${fmt(bench.paidTasks)} tasks`)}
-          ${segment('is-pending', bench.pending, scale, `${bench.label}: ${money(bench.pending)} owed for ${fmt(bench.pendingTasks)} tasks`)}
+          ${moneySeg('is-paid', bench.paid, scale, open ? `${bench.label}: ${money(bench.paid)} paid for ${fmt(bench.paidTasks)} tasks` : `${bench.label}: paid for ${fmt(bench.paidTasks)} tasks`, open)}
+          ${moneySeg('is-pending', bench.pending, scale, open ? `${bench.label}: ${money(bench.pending)} to be paid for ${fmt(bench.pendingTasks)} tasks` : `${bench.label}: ${fmt(bench.pendingTasks)} tasks to be paid`, open)}
         </div>
         <div class="bench-bar-foot">${fmt(bench.paidTasks)} of ${fmt(bench.paidTasks + bench.pendingTasks)} tasks paid</div>
       </div>`;
     }).join('')}
     <div class="chart-key">
       <span class="key-item is-paid">Paid</span>
-      <span class="key-item is-pending">Owed</span>
+      <span class="key-item is-pending">Upcoming</span>
     </div>` : '<p class="empty">No payouts in this selection.</p>';
   animateCounts(host);
 }
@@ -2778,31 +3080,25 @@ function renderTopPendingCards() {
     .slice(0, 8);
   const max = Math.max(...rows.map((row) => row.pendingAmount), 1);
   const host = byId('topPendingCards');
-  // Who is owed what is the Payouts tab's business. Until that is unlocked the
-  // name is not written into the page at all - not blurred, not clipped - so
-  // there is nothing for Inspect Element to read. The amounts and the counts
-  // stay: they are the shape of the backlog, not a statement about a person.
-  const named = payoutsOpen();
-  const note = byId('topPendingLockNote');
-  if (note) note.hidden = named;
+  const open = payoutBalanceOpen();
   host.innerHTML = rows.map((row, index) => {
     const who = row.name || row.email || 'Unknown';
-    // No data-person when masked, which also makes the row inert: the click and
-    // keyboard handlers both select on [data-person].
-    const identity = named
+    // No data-person while locked, which also makes the row inert: the click
+    // and keyboard handlers both select on [data-person].
+    const identity = open
       ? ` role="button" tabindex="0" data-person="${esc(who)}" data-tip="Open ${esc(who)} in Payouts"`
       : ' data-tip="Unlock Payouts to see who this is"';
     return `
-        <div class="leader-row${named ? '' : ' is-masked'}" data-bench="${benchOf(row.team)}" style="--i:${index}"${identity}>
+        <div class="leader-row${open ? '' : ' is-masked'}" data-bench="${benchOf(row.team)}" style="--i:${index}"${identity}>
           <div class="rank${index < 3 ? ` medal medal-${index + 1}` : ''}">${index + 1}</div>
           <div class="person">
-            <strong>${named ? esc(who) : '<span class="maskedname">Hidden</span>'}</strong>
+            <strong>${open ? esc(who) : hiddenName()}</strong>
             <span>${fmt(row.pendingTasks)} of ${fmt(row.acceptedTasks)} tasks unpaid · ${esc(row.team || 'no team')}</span>
           </div>
           <div class="bar-track"><div class="bar-fill" style="width:${safePct(row.pendingAmount, max)}"></div></div>
-          <div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${named ? esc(row.email || row.name) : index}">${money(row.pendingAmount)}</div>
+          ${open ? `<div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${esc(row.email || row.name)}">${money(row.pendingAmount)}</div>` : `<div class="amount">${hiddenMoney()}</div>`}
         </div>`;
-  }).join('') || '<p class="empty">Nothing owed in this selection.</p>';
+  }).join('') || '<p class="empty">Nothing upcoming in this selection.</p>';
   animateCounts(host);
 }
 
@@ -2904,7 +3200,7 @@ function renderBenchCards() {
   host.innerHTML = benches.map((b, index) => {
     const focused = focusStatus ? (b.mix.find(([status]) => status === focusStatus)?.[1] || 0) : null;
     const focusPct = focusStatus && b.tasks ? Math.round(((focused || 0) / b.tasks) * 100) : null;
-    return `<div class="bench-card bench-rank-${rank.get(b.name)}" style="--i:${index}">
+    return `<div class="bench-card bench-rank-${rank.get(b.name)}" data-bench="${esc(b.name)}" style="--i:${index}">
       <div class="bench-head">
         <h3>${b.name} bench</h3>
         <span class="medal medal-${rank.get(b.name)}" data-tip="Rank ${rank.get(b.name)} of ${benches.length} by pipeline accepted">${rank.get(b.name)}</span>
@@ -2936,9 +3232,7 @@ function uniqueTeams() {
 function filteredTrainers() {
   const search = byId("personSearch").value.trim().toLowerCase();
   const payment = byId('paymentFilter').value;
-  const bench = byId('benchFilter').value;
   return payoutRows()
-    .filter(row => !bench || benchOf(row.team) === bench)
     .filter(row => !payment || (payment === 'pending' ? row.pendingTasks > 0 : payment === 'paid' ? row.paidTasks > 0 : payment === 'no-paid' ? row.paidTasks === 0 : row.acceptedTasks === 0))
     .filter((trainer) => {
       if (!search) return true;
@@ -3013,7 +3307,7 @@ function benchOf(team) {
 function payoutRows() {
   const acceptedByEmail = payoutLedger ? ledgerAcceptedByEmail() : new Map();
   const paidByEmail = new Map((data.paidOut || []).map(row => [String(row.email || '').toLowerCase(), row]));
-  return data.trainers.map(row => {
+  return data.trainers.filter(personInSegment).map(row => {
     const paid = paidByEmail.get(row.email.toLowerCase());
     const acceptedTasks = payoutLedger ? (acceptedByEmail.get(row.email.toLowerCase()) || 0) : row.acceptedTasks;
     const paidTasks = Number(paid?.approvedTasks) || 0;
@@ -3033,10 +3327,10 @@ function renderPayoutSummary(rows) {
   const requests = payoutLedger?.totals?.paymentRequests;
   const requestDays = [...new Set((payoutLedger?.requests || []).map(r => r.requestedOn).filter(Boolean))].sort();
   const cards = [
-    ['Accepted tasks', sum(rows, 'acceptedTasks'), 'int', `${fmt(people)} ${people === 1 ? 'person' : 'people'} with accepted work`, 'aqua', null, null],
+    ['Accepted tasks', sum(rows, 'acceptedTasks'), 'int', `${fmt(people)} ${people === 1 ? 'person' : 'people'} with accepted work`, 'green', null, null],
     ['Paid tasks', sum(rows, 'paidTasks'), 'int', 'at $300 a task', 'blue', 'paymentFilter', 'paid', sum(rows, 'acceptedTasks') ? Math.round((sum(rows, 'paidTasks') / sum(rows, 'acceptedTasks')) * 100) : 0],
     ['Paid', paid, 'money', `${earned ? Math.round((paid / earned) * 100) : 0}% of ${money(earned)} earned`, 'aqua', null, null, earned ? Math.round((paid / earned) * 100) : 0],
-    ['Owed', pending, 'money', `${fmt(sum(rows, 'pendingTasks'))} tasks not yet requested`, 'red', 'paymentFilter', 'pending', earned ? Math.round((pending / earned) * 100) : 0],
+    ['Upcoming', pending, 'money', `${fmt(sum(rows, 'pendingTasks'))} tasks not yet requested`, 'amber', 'paymentFilter', 'pending', earned ? Math.round((pending / earned) * 100) : 0],
     ['Payment requests', requests ?? 0, 'int', requestDays.length ? (requestDays.length === 1 ? `all raised on ${requestDays[0]}` : `${requestDays[0]} to ${requestDays[requestDays.length - 1]}`) : 'from the PPT tracker', 'violet', null, null],
   ];
   byId('payoutSummary').innerHTML = cards.map(([label, value, kind, note, tone, filter, filterValue, pct], index) => {
@@ -3063,7 +3357,7 @@ function renderPayoutPanels(rows) {
             settled: paid + owed ? Math.round((paid / (paid + owed)) * 100) : 0};
   }).filter(b => b.paid || b.owed);
   byId('payoutBenches').innerHTML = benches.length ? benches.map((b, index) => `
-    <button type="button" class="benchring${byId('benchFilter').value === b.key ? ' is-on' : ''}" style="--i:${index}" data-pfilter="benchFilter" data-value="${b.key}" data-tip="${esc(b.label)} bench: ${money(b.paid)} paid of ${money(b.paid + b.owed)} earned · click to filter">
+    <div class="benchring" style="--i:${index}" data-tip="${esc(b.label)} bench: ${money(b.paid)} paid of ${money(b.paid + b.owed)} earned">
       <div class="ring-big" style="--c:var(--aqua)">
         <svg viewBox="0 0 36 36" aria-hidden="true"><circle class="ring-bg" cx="18" cy="18" r="15.9155"/><circle class="ring-fg" cx="18" cy="18" r="15.9155" style="--pct:${b.settled}"/></svg>
         <b data-count="${b.settled}" data-kind="pct" data-key="bench:${b.key}:settled">${b.settled}%</b>
@@ -3073,11 +3367,11 @@ function renderPayoutPanels(rows) {
         <p>${fmt(b.people)} ${b.people === 1 ? 'person' : 'people'} · ${money(b.paid + b.owed)} earned</p>
         <div class="benchring-lines">
           <div><span>Paid</span><b data-count="${b.paid}" data-kind="money" data-key="bench:${b.key}:paid">${money(b.paid)}</b><small>${fmt(b.paidTasks)} tasks</small></div>
-          <div><span>Owed</span><b class="is-owed" data-count="${b.owed}" data-kind="money" data-key="bench:${b.key}:owed">${money(b.owed)}</b><small>${fmt(b.owedTasks)} tasks</small></div>
+          <div><span>Upcoming</span><b class="is-owed" data-count="${b.owed}" data-kind="money" data-key="bench:${b.key}:owed">${money(b.owed)}</b><small>${fmt(b.owedTasks)} tasks</small></div>
         </div>
         <div class="benchring-bar" aria-hidden="true">${b.paid ? `<i class="is-paid" style="flex:${b.paid}"></i>` : ''}${b.owed ? `<i class="is-owed" style="flex:${b.owed}"></i>` : ''}</div>
       </div>
-    </button>`).join('') : '<p class="empty">No payouts in this selection.</p>';
+    </div>`).join('') : '<p class="empty">No payouts in this selection.</p>';
 
   // One level finer: the same money per team, paid against owed on one scale.
   const teams = Object.entries(groupBy(rows.filter(row => row.paidAmount || row.pendingAmount), row => row.team || 'Unassigned'))
@@ -3085,15 +3379,15 @@ function renderPayoutPanels(rows) {
     .sort((a, b) => (b.paid + b.owed) - (a.paid + a.owed));
   const teamMax = Math.max(1, ...teams.map(t => t.paid + t.owed));
   byId('payoutTeams').innerHTML = teams.length ? `
-    <p class="subhead">By team<em>paid against owed, one scale · click a team to filter</em></p>
+    <p class="subhead">By team<em>paid against upcoming, one scale · click a team to filter</em></p>
     <div class="team-rows">${teams.map((t, index) => `<button type="button" class="team-row${search === t.team.toLowerCase() ? ' is-on' : ''}" style="--i:${index}" data-search="${esc(t.team)}" data-tip="${esc(t.team)}: ${money(t.paid)} paid, ${money(t.owed)} owed across ${fmt(t.people)} people">
       <span class="team-name">${esc(t.team)}<small>${fmt(t.people)} people</small></span>
       <span class="team-bar"><span class="team-bar-track" style="width:${Math.max(4, Math.round(((t.paid + t.owed) / teamMax) * 100))}%">${t.paid ? `<i class="is-paid" style="flex:${t.paid}">${t.paid / (t.paid + t.owed) > .18 ? money(t.paid) : ''}</i>` : ''}${t.owed ? `<i class="is-owed" style="flex:${t.owed}">${t.owed / (t.paid + t.owed) > .18 ? money(t.owed) : ''}</i>` : ''}</span></span>
       <span class="team-total"><b>${money(t.paid + t.owed)}</b><small>${Math.round((t.paid / ((t.paid + t.owed) || 1)) * 100)}% settled</small></span>
     </button>`).join('')}</div>
-    <div class="chart-key"><span class="key-item"><i style="background:var(--aqua-ink)"></i>paid</span><span class="key-item"><i style="background:var(--red-ink)"></i>owed</span></div>` : '';
+    <div class="chart-key"><span class="key-item"><i style="background:var(--aqua-ink)"></i>paid</span><span class="key-item"><i style="background:var(--amber-ink)"></i>upcoming</span></div>` : '';
   const paid = sum(rows, 'paidAmount'), owed = sum(rows, 'pendingAmount');
-  setText('payoutBenchNote', paid + owed ? `${Math.round((paid / (paid + owed)) * 100)}% of ${money(paid + owed)} earned has been paid · ${money(owed)} still owed` : '');
+  setText('payoutBenchNote', paid + owed ? `${Math.round((paid / (paid + owed)) * 100)}% of ${money(paid + owed)} earned has been paid · ${money(owed)} to be paid${segment ? ` · ${SEGMENTS[segment]} only` : ''}` : '');
   animateCounts(byId('payoutBenches'));
 }
 
@@ -3102,14 +3396,14 @@ function renderTrainerRows() {
   renderPayoutSummary(rows);
   renderPayoutPanels(rows);
   renderPayoutLedger();
-  const labels = {personSearch: 'Search', benchFilter: 'Bench', paymentFilter: 'Payment'};
-  const shown = {pending: 'Owed', paid: 'Paid', 'no-paid': 'Never paid', zero: 'No accepted work', company: 'Company', computer: 'Computer', unassigned: 'Unassigned'};
+  const labels = {personSearch: 'Search', paymentFilter: 'Payment'};
+  const shown = {pending: 'Upcoming', paid: 'Paid', 'no-paid': 'Never paid', zero: 'No accepted work', company: 'Company', computer: 'Computer', unassigned: 'Unassigned'};
   const active = Object.keys(labels).map(id => [id, byId(id)?.value]).filter(([, value]) => value);
   byId('payoutChips').innerHTML = active.length
     ? active.map(([id, value]) => `<button type="button" class="chipbtn" data-pclear="${id}"><span>${labels[id]}</span>${esc(shown[value] || value)}<i aria-hidden="true">×</i></button>`).join('') +
       '<button type="button" class="chipbtn is-clear" data-pclear="all">Clear all</button>'
-    : '<span class="chips-empty">No filters applied · click a figure, manager or bench above to filter</span>';
-  setText('payoutPeopleNote', `${fmt(rows.length)} people · ${money(sum(rows, 'paidAmount'))} paid · ${money(sum(rows, 'pendingAmount'))} owed · ${fmt(sum(rows, 'last24Accepted'))} accepted in the last 24h`);
+    : `<span class="chips-empty">No filters applied${segment ? ` · ${SEGMENTS[segment]} segment from the top bar` : ''} · click a figure or team above to filter</span>`;
+  setText('payoutPeopleNote', `${fmt(rows.length)} roster records · ${money(sum(rows, 'paidAmount'))} paid · ${money(sum(rows, 'pendingAmount'))} to be paid · ${fmt(sum(rows, 'last24Accepted'))} accepted in the last 24h`);
 
   const sorted = [...rows].sort((a, b) => {
     const key = payoutSort.key;
@@ -3145,7 +3439,7 @@ function renderTrainerRows() {
           <td><span class="batch-chip">${esc(row.team || 'Unassigned')}</span></td>
           <td>${esc(row.managerName || row.em || '-')}</td>
           <td class="num"><b>${fmt(row.acceptedTasks)}</b></td>
-          <td><span class="moneybar" data-tip="${money(row.paidAmount)} paid for ${fmt(row.paidTasks)} tasks · ${money(row.pendingAmount)} owed for ${fmt(row.pendingTasks)} tasks"><span class="moneybar-track" style="width:${Math.max(4, Math.round((total / moneyMax) * 100))}%">${row.paidAmount ? `<i class="is-paid" style="flex:${row.paidAmount}"></i>` : ''}${row.pendingAmount ? `<i class="is-owed" style="flex:${row.pendingAmount}"></i>` : ''}</span><small>${money(row.paidAmount)} paid</small></span></td>
+          <td><span class="moneybar" data-tip="${money(row.paidAmount)} paid for ${fmt(row.paidTasks)} tasks · ${money(row.pendingAmount)} to be paid for ${fmt(row.pendingTasks)} tasks"><span class="moneybar-track" style="width:${Math.max(4, Math.round((total / moneyMax) * 100))}%">${row.paidAmount ? `<i class="is-paid" style="flex:${row.paidAmount}"></i>` : ''}${row.pendingAmount ? `<i class="is-owed" style="flex:${row.pendingAmount}"></i>` : ''}</span><small>${money(row.paidAmount)} paid</small></span></td>
           <td class="num ${row.pendingAmount ? 'negative' : ''}">${money(row.pendingAmount)}</td>
           <td class="num">${row.last24Accepted ? `<span class="pulse-badge" data-tip="${fmt(row.last24Accepted)} accepted in the last 24 hours">${fmt(row.last24Accepted)}</span>` : '<span class="muted">0</span>'}</td>
         </tr>
@@ -3184,7 +3478,7 @@ function wirePayouts() {
     const pc = event.target.closest('#payoutChips [data-pclear]');
     if (pc) { if (pc.dataset.pclear === 'all') { byId('payoutReset').click(); return; } byId(pc.dataset.pclear).value = ''; rerender(); return; }
     const lc = event.target.closest('#ledgerChips [data-lclear]');
-    if (lc) { if (lc.dataset.lclear === 'all') { byId('resetLedgerFilters').click(); return; } byId(lc.dataset.lclear).value = ''; if (lc.dataset.lclear === 'benchFilter') { rerender(); } else { ledgerPage = 0; renderPayoutLedger(); } return; }
+    if (lc) { if (lc.dataset.lclear === 'all') { byId('resetLedgerFilters').click(); return; } byId(lc.dataset.lclear).value = ''; ledgerPage = 0; renderPayoutLedger(); return; }
     const head = event.target.closest('#trainerRows .drill-head');
     if (head) {
       const drill = head.nextElementSibling;
@@ -3206,14 +3500,14 @@ function wirePayouts() {
     renderPayoutLedger();
   }));
   byId('payoutReset')?.addEventListener('click', () => {
-    ['personSearch', 'benchFilter', 'paymentFilter'].forEach(id => { if (byId(id)) byId(id).value = ''; });
+    ['personSearch', 'paymentFilter'].forEach(id => { if (byId(id)) byId(id).value = ''; });
     rerender();
   });
 }
 
 function renderTeams() {
   if (!byId('teamGrid')) return;
-  const teams = Object.entries(groupBy(data.trainers, (trainer) => trainer.team || 'Unassigned'))
+  const teams = Object.entries(groupBy(data.trainers.filter(personInSegment), (trainer) => trainer.team || 'Unassigned'))
     .map(([team, rows]) => {
       const accepted = sum(rows, 'acceptedTasks');
       const paid = sum(rows, 'paidAmount');
@@ -3238,7 +3532,7 @@ function renderTeams() {
           <div class="team-line"><span>Active</span><b data-count="${t.active}" data-key="team:${esc(t.team)}:active">${fmt(t.active)}</b></div>
           <div class="team-line"><span>Managers</span><b data-count="${t.managers}" data-key="team:${esc(t.team)}:managers">${fmt(t.managers)}</b></div>
           <div class="team-line"><span>Paid</span><b data-count="${t.paid}" data-kind="money" data-key="team:${esc(t.team)}:paid">${money(t.paid)}</b></div>
-          <div class="team-line"><span>Owed</span><b class="${t.owed ? 'is-owed' : ''}" data-count="${t.owed}" data-kind="money" data-key="team:${esc(t.team)}:owed">${money(t.owed)}</b></div>
+          <div class="team-line"><span>Upcoming</span><b class="${t.owed ? 'is-owed' : ''}" data-count="${t.owed}" data-kind="money" data-key="team:${esc(t.team)}:owed">${money(t.owed)}</b></div>
           <div class="team-settle" data-tip="${money(t.paid)} paid of ${money(t.paid + t.owed)} earned">
             <span>Settled</span><i><em style="--pct:${t.settled}"></em></i><b data-count="${t.settled}" data-kind="pct" data-key="team:${esc(t.team)}:settled">${t.settled}%</b>
           </div>
@@ -3341,7 +3635,10 @@ async function loadExplorer(force = false) {
 // Plan against actual, as one race per bench: a lane to the target, the
 // daily bars beneath it, today marked and future days hatched.
 function planWindow() {
-  const benches = data.plan || [];
+  // The workbook plans per bench, so a segment shows its bench: Company
+  // Bench for company, Computer Bench for connector and non-connector alike.
+  const benches = (data.plan || []).filter(bench => !segment ||
+    (segment === 'company' ? /company/i.test(bench.bench) : !/company/i.test(bench.bench)));
   const dates = benches[0]?.dates || [];
   const within = dates.map(day => inRange(day));
   const shown = dates.filter((day, index) => within[index]);
@@ -3359,6 +3656,7 @@ function renderPlan() {
   const summary = byId('planSummary');
   if (!benches.length || !shown.length) {
     byId('planCharts').innerHTML = `<p class="empty">No daily plan ${dates.length ? 'in this date range' : 'recorded'}.</p>`;
+    setTextIfPresent('planNote', '');
     if (summary) summary.innerHTML = '';
     return;
   }
@@ -3378,6 +3676,9 @@ function renderPlan() {
     animateCounts(summary);
   }
 
+  setTextIfPresent('planNote', segment && segment !== 'company'
+    ? 'The plan is kept per bench; Computer Bench covers connector and non-connector work together.'
+    : '');
   byId('planCharts').innerHTML = benches.map((bench, benchIndex) => {
     const total = totals.find(row => row.bench === bench.bench);
     const pct = total.planned ? Math.min(100, Math.round((total.done / total.planned) * 100)) : 0;
@@ -3415,6 +3716,85 @@ function renderPlan() {
   animateCounts(byId('planCharts'));
 }
 
+
+// A deck shows one pane at a time; the pager fixed at the foot of the page
+// moves between panes and wraps at either end.
+function fitDeck() {
+  // Panes share one grid cell and the inactive ones collapse, so a deck is
+  // always exactly as tall as the pane on show; nothing to measure.
+}
+function makeDeck({view, deck: deckId, pager: pagerId, key}) {
+  const deck = byId(deckId), pager = byId(pagerId);
+  if (!deck || !pager) return null;
+  const panes = () => [...deck.querySelectorAll('.deck-pane')];
+  let index = 0;
+  const renderPager = () => {
+    const list = panes();
+    const prev = list[(index - 1 + list.length) % list.length], next = list[(index + 1) % list.length];
+    pager.innerHTML = `
+      <button type="button" class="pager-step" data-step="-1"><span aria-hidden="true">‹</span>${esc(prev.dataset.title)}</button>
+      <div class="pager-mid">
+        <span class="pager-title">${esc(list[index]?.dataset.title || '')}</span>
+        <div class="pager-dots" role="tablist">${list.map((pane, i) => `<button type="button" role="tab" class="pager-dot${i === index ? ' is-on' : ''}" data-index="${i}" aria-selected="${i === index}" aria-label="${esc(pane.dataset.title)}" data-tip="${esc(pane.dataset.title)}"></button>`).join('')}</div>
+      </div>
+      <button type="button" class="pager-step" data-step="1">${esc(next.dataset.title)}<span aria-hidden="true">›</span></button>`;
+  };
+  const go = target => {
+    const list = panes();
+    if (!list.length) return;
+    const direction = target >= index ? 1 : -1;
+    index = ((target % list.length) + list.length) % list.length;
+    list.forEach((pane, i) => {
+      pane.style.setProperty('--dir', `${direction * 28}px`);
+      pane.classList.toggle('is-active', i === index);
+      pane.setAttribute('aria-hidden', String(i !== index));
+    });
+    window.scrollTo({top: Math.min(window.scrollY, deck.getBoundingClientRect().top + window.scrollY - 90 || 0), behavior: 'smooth'});
+    renderPager();
+    try { localStorage.setItem(key, String(index)); } catch { /* storage may be unavailable */ }
+  };
+  try { index = Number(localStorage.getItem(key)) || 0; } catch { index = 0; }
+  go(index);
+  pager.addEventListener('click', event => {
+    const dot = event.target.closest('.pager-dot');
+    if (dot) { go(Number(dot.dataset.index)); return; }
+    const step = event.target.closest('.pager-step');
+    if (step) go(index + Number(step.dataset.step));
+  });
+  // Swipe: a horizontal drag or a sideways wheel moves one pane.
+  let start = null;
+  deck.addEventListener('pointerdown', event => { if (event.pointerType !== 'mouse' || event.button === 0) start = {x: event.clientX, y: event.clientY}; });
+  deck.addEventListener('pointerup', event => {
+    if (!start) return;
+    const dx = event.clientX - start.x, dy = event.clientY - start.y;
+    start = null;
+    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.5 && !event.target.closest('input, select, textarea, table')) go(index + (dx < 0 ? 1 : -1));
+  });
+  let wheelAt = 0;
+  deck.addEventListener('wheel', event => {
+    if (Math.abs(event.deltaX) < 30 || Math.abs(event.deltaX) < Math.abs(event.deltaY)) return;
+    if (event.target.closest('.table-wrap')) return;
+    const now = Date.now();
+    if (now - wheelAt < 700) return;
+    wheelAt = now;
+    go(index + (event.deltaX > 0 ? 1 : -1));
+  }, {passive: true});
+  document.addEventListener('keydown', event => {
+    if (!byId(view)?.classList.contains('is-active')) return;
+    if (event.target instanceof Element && event.target.matches('input, select, textarea')) return;
+    if (event.key === 'ArrowRight') go(index + 1);
+    if (event.key === 'ArrowLeft') go(index - 1);
+  });
+  return {go};
+}
+function wireDeck() {
+  [
+    {view: 'view-command', deck: 'overviewDeck', pager: 'overviewPager', key: 'overviewPane'},
+    {view: 'view-pipeline', deck: 'pipelineDeck', pager: 'pipelinePager', key: 'pipelinePane'},
+    {view: 'view-payouts', deck: 'payoutDeck', pager: 'payoutPager', key: 'payoutPane'},
+  ].forEach(makeDeck);
+}
+
 function wireDelivery() {
   const panel = byId('view-delivery');
   if (!panel) return;
@@ -3423,7 +3803,7 @@ function wireDelivery() {
   const setFilter = (id, value) => {
     const select = byId(id);
     if (!select || ![...select.options].some(option => option.value === value)) return;
-    select.value = select.value === value ? '' : value;
+    select.value = value === '' ? '' : (select.value === value ? '' : value);
     auditPage = 0;
     select.dispatchEvent(new Event('change', {bubbles: true}));
   };
@@ -3431,8 +3811,24 @@ function wireDelivery() {
     const node = event.target.closest('[data-filter][data-value]');
     if (!node || event.target.closest('a')) return;
     event.preventDefault();
+    if (node.dataset.filter2) {
+      // A heat-map cell sets two filters at once; the same cell again clears both.
+      const a = byId(node.dataset.filter), b = byId(node.dataset.filter2);
+      const on = a.value === node.dataset.value && b.value === node.dataset.value2;
+      b.value = on ? '' : node.dataset.value2;
+      a.value = on ? '' : node.dataset.value;
+      auditPage = 0;
+      a.dispatchEvent(new Event('change', {bubbles: true}));
+      return;
+    }
     setFilter(node.dataset.filter, node.dataset.value);
   };
+  byId('batchPager')?.addEventListener('click', event => {
+    const step = event.target.closest('[data-bpage]');
+    if (!step || step.disabled) return;
+    batchPage += Number(step.dataset.bpage);
+    renderBatchTabs(auditFilters());
+  });
   panel.addEventListener('click', pick);
   panel.addEventListener('keydown', event => { if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-filter][data-value]')) pick(event); });
 
@@ -3526,11 +3922,27 @@ function wireEvents() {
     event.preventDefault(); toggleCard(card);
   });
   byId('truthRefresh')?.addEventListener('click', rebuildTruth);
+  document.querySelectorAll('#truthTable .sort').forEach(button => button.addEventListener('click', () => {
+    const key = button.dataset.sort;
+    const numeric = ['runs', 'glmPasses', 'decided'].includes(key);
+    truthSort = truthSort.key === key ? {key, dir: -truthSort.dir} : {key, dir: numeric ? -1 : 1};
+    truthPage = 0;
+    renderTruth();
+  }));
   wirePayoutBalance();
   wireStatusFocus();
+  wireDeck();
   wireDelivery();
   wireCarried();
   wirePayouts();
+  // Pop-out controls close on a click anywhere else, or on Escape.
+  const popouts = () => document.querySelectorAll('details.rangepop[open], details.morefilters[open]');
+  document.addEventListener('pointerdown', event => {
+    popouts().forEach(box => { if (!box.contains(event.target)) box.open = false; });
+  });
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape') popouts().forEach(box => { box.open = false; });
+  });
   // The "not found here" tile and the link under the strip open the same panel,
   // because the tile is the figure and the panel is what is behind it.
   byId('truthJoin')?.addEventListener('click', event => {
@@ -3541,6 +3953,12 @@ function wireEvents() {
     byId('unmatchedShow').setAttribute('aria-expanded', 'true');
     renderJoinGap(shownRows());
     panel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
+  });
+  document.addEventListener('click', event => {
+    const pick = event.target.closest('#segmentSwitch [data-seg], .segtile[data-seg]');
+    if (!pick || event.target.closest('.why')) return;
+    const value = pick.dataset.seg || '';
+    setSegment(pick.classList.contains('segtile') && segment === value ? '' : value);
   });
   byId('unmatchedShow')?.addEventListener('click', () => {
     const panel = byId('unmatchedPanel');
@@ -3578,6 +3996,21 @@ function wireEvents() {
   TRUTH_FILTERS.forEach(id => byId(id)?.addEventListener('change', () => { truthPage = 0; renderTruth(); }));
   byId('tSearch')?.addEventListener('input', () => { truthPage = 0; renderTruth(); });
   byId('tExport')?.addEventListener('click', downloadTruthCsv);
+  ['aExport', 'aExportTop'].forEach(id => byId(id)?.addEventListener('click', downloadAuditCsv));
+  byId('view-pipeline')?.addEventListener('click', event => {
+    const pick = event.target.closest('.fchip[data-tfilter]');
+    if (pick) {
+      const select = byId(pick.dataset.tfilter);
+      select.value = pick.dataset.value;
+      truthPage = 0; renderTruth();
+      return;
+    }
+    const clear = event.target.closest('#truthChips [data-tclear]');
+    if (!clear) return;
+    if (clear.dataset.tclear === 'all') { byId('tReset').click(); return; }
+    byId(clear.dataset.tclear).value = '';
+    truthPage = 0; renderTruth();
+  });
   byId('tReset')?.addEventListener('click', () => {
     [...TRUTH_FILTERS, 'tSearch'].forEach(id => { if (byId(id)) byId(id).value = ''; });
     truthPage = 0; renderTruth();
@@ -3631,7 +4064,7 @@ function wireEvents() {
     carriedPage = 0;
     renderCarried();
   });
-  const ledgerFilters = ['ledgerPayment','ledgerType','ledgerValidity','ledgerDuplicates'];
+  const ledgerFilters = ['ledgerPayment','ledgerValidity','ledgerDuplicates'];
   const resetLedgerPage = () => { ledgerPage = 0; renderPayoutLedger(); };
   ledgerFilters.forEach(id => byId(id).addEventListener('change', resetLedgerPage));
   byId('ledgerSearch').addEventListener('input', resetLedgerPage);
@@ -3643,7 +4076,7 @@ function wireEvents() {
   const navButtons = [...document.querySelectorAll('.viewnav-tab')];
   navButtons.forEach((button, index) => {
     button.tabIndex = button.classList.contains('is-active') ? 0 : -1;
-    button.addEventListener('click', () => switchView(button.dataset.view));
+    button.addEventListener('click', () => { switchView(button.dataset.view); button.blur(); });
     button.addEventListener('keydown', event => {
       const step = event.key === 'ArrowRight' ? 1 : event.key === 'ArrowLeft' ? -1 : 0;
       if (!step) return;
@@ -3668,7 +4101,6 @@ function wireEvents() {
   byId('ledgerPrevious').addEventListener('click', () => { ledgerPage -= 1; renderPayoutLedger(); });
   byId('ledgerNext').addEventListener('click', () => { ledgerPage += 1; renderPayoutLedger(); });
   byId('paymentFilter').addEventListener('change', resetPayoutPages);
-  byId('benchFilter').addEventListener('change', resetPayoutPages);
   const presets = {'7': 7, '14': 14, '30': 30};
   byId('datePreset').addEventListener('change', event => {
     dateRange.preset = event.target.value;
@@ -3709,28 +4141,30 @@ function wireEvents() {
     applyRange();
   });
   const popover = byId('infoPopover');
+  // Hovering a ? shows its note until the pointer leaves; a click pins it.
   let openButton = null;
   function hideInfo() {
     popover.hidden = true;
     if (openButton) openButton.setAttribute('aria-expanded', 'false');
     openButton = null;
   }
-  function showInfo(button) {
+  function showInfo(button, pin = false) {
     // Entries may be functions when the text depends on loaded data.
     const entry = infoCopy[button.dataset.info];
     const copy = typeof entry === 'function' ? entry() : entry;
     if (!copy) return;
-    if (openButton) openButton.setAttribute('aria-expanded', 'false');
+    if (openButton && openButton !== button) openButton.setAttribute('aria-expanded', 'false');
     popover.textContent = copy;
     popover.hidden = false;
-    button.setAttribute('aria-expanded', 'true');
-    openButton = button;
+    if (pin) { button.setAttribute('aria-expanded', 'true'); openButton = button; }
     place(button);
   }
   function place(element) {
     const anchor = element.getBoundingClientRect();
     const box = popover.getBoundingClientRect();
-    const left = Math.min(Math.max(12, anchor.left + anchor.width / 2 - box.width / 2), window.innerWidth - box.width - 12);
+    // Stay inside the content column so the sidebar never sits under the text.
+    const edge = (document.querySelector('.content')?.getBoundingClientRect().left || 0) + 12;
+    const left = Math.min(Math.max(edge, anchor.left + anchor.width / 2 - box.width / 2), window.innerWidth - box.width - 12);
     const below = anchor.bottom + 9;
     popover.style.left = `${left}px`;
     popover.style.top = `${below + box.height > window.innerHeight - 12 ? Math.max(12, anchor.top - box.height - 9) : below}px`;
@@ -3738,20 +4172,24 @@ function wireEvents() {
   const asWhy = target => (target && target.closest ? target.closest('.why') : null);
   document.addEventListener('mouseover', event => {
     const button = asWhy(event.target);
-    if (button) { button.type = 'button'; showInfo(button); }
+    if (button && !openButton) { button.type = 'button'; showInfo(button); }
   });
   document.addEventListener('mouseout', event => {
     if (asWhy(event.target) && !openButton) hideInfo();
   });
   document.addEventListener('focusin', event => {
     const button = asWhy(event.target);
-    if (button) showInfo(button);
+    if (button && !openButton) showInfo(button);
+  });
+  document.addEventListener('focusout', event => {
+    if (asWhy(event.target) && !openButton) hideInfo();
   });
   document.addEventListener('click', event => {
     const button = asWhy(event.target);
     if (!button) return;
     event.stopPropagation();
-    if (openButton === button) hideInfo(); else showInfo(button);
+    if (button.closest('summary')) event.preventDefault();
+    if (openButton === button) hideInfo(); else showInfo(button, true);
   }, true);
   // Chart segments get the same popover, on hover, with their own copy.
   document.addEventListener('mouseover', event => {
@@ -3769,6 +4207,7 @@ function wireEvents() {
 // The topbar search drives whichever view owns a search box.
 
 function init() {
+  restoreSegment();
   renderHero();
   renderTopPendingCards();
   renderDonut();
