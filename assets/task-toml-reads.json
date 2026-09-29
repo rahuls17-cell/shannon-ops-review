@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T07:41:15+00:00",
+ "generatedAt": "2026-09-29T08:00:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11101,6 +11101,72 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b49-f5-holdco-asset-thesis-review/61d60de675369fd446822438e46b8a635390225e4e74c3266e5395729ff4054a.zip",
    "bytesRead": 65138,
+   "readOn": "2026-09-29"
+  },
+  "ASTR_101447": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101447/3d9e2efa8cf3d41ff028609f38930657f864f5d3ec27f459d6eba98e8711f874.zip",
+   "bytesRead": 49030,
+   "readOn": "2026-09-29"
+  },
+  "edu-sca-b38-workplace-nvc-role-play-scheduling-v3": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b38-workplace-nvc-role-play-scheduling-v3/7f21d48db53990b15ad80bbe97c45aab63614ae98cb9cdba23bbbf3a678505e7.zip",
+   "bytesRead": 91340,
+   "readOn": "2026-09-29"
+  },
+  "edu-sca-b5-pitch-deck-cheat-sheet-condensation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b5-pitch-deck-cheat-sheet-condensation/444a9effa3616c07bafd7d207ff0a3b809252287a05800be2f0878a8acfad09f.zip",
+   "bytesRead": 130298,
+   "readOn": "2026-09-29"
+  },
+  "four-thousand-nine-hundred-and-twelve-ways-out-v7-20260929": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/four-thousand-nine-hundred-and-twelve-ways-out-v7-20260929/2e789840bcb5922b8cdf9e911ed8965a02f7ad8ee9c48660804882838b33a552.zip",
+   "bytesRead": 73452,
+   "readOn": "2026-09-29"
+  },
+  "law-l94-workplace-conduct-characterization-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-l94-workplace-conduct-characterization-audit/561f47770d7ef033bd54b43aec63cb558069eead68782a4c2104c67e6752a5ea.zip",
+   "bytesRead": 83718,
+   "readOn": "2026-09-29"
+  },
+  "three-unopened-threads-that-moved-on": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/three-unopened-threads-that-moved-on/1227a75b788f486f7d5bcd53ee36de7864dc9c7b3eeca21ace7e90557759a850.zip",
+   "bytesRead": 56086,
    "readOn": "2026-09-29"
   }
  }
