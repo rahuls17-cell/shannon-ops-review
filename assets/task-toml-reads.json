@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T07:10:59+00:00",
+ "generatedAt": "2026-09-29T07:20:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11059,6 +11059,28 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-endpoint-keeps-failing/84232f5772d7c9895e0ca25983db497c9ee23081d68e5c935128e25de744aed1.zip",
    "bytesRead": 52330,
+   "readOn": "2026-09-29"
+  },
+  "replies-with-nothing-above-them": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/replies-with-nothing-above-them/6150d913dcf3d40e329bf9e4dfd7da2ab1a4f31a645af7865fabae4f46a790f5.zip",
+   "bytesRead": 47390,
+   "readOn": "2026-09-29"
+  },
+  "tech-b53-t9-water-system-fitting-takeoff": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t9-water-system-fitting-takeoff/b809f8572f6c608880c8e64bf0ccab930ba41df025e9cea8d29795a60013b68c.zip",
+   "bytesRead": 72389,
    "readOn": "2026-09-29"
   }
  }
