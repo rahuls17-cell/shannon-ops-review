@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T16:11:01+00:00",
+ "generatedAt": "2026-09-29T16:21:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11865,6 +11865,80 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b56-a9-ownership-stake-variance-attribution/c6779aa8db9ba8582cd7fede5d44b9723d54be888aa791438a132e9975aee128.zip",
    "bytesRead": 112530,
+   "readOn": "2026-09-29"
+  },
+  "bus-b22-b20-destination-rfp-partner-screen": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b22-b20-destination-rfp-partner-screen/c147e79ecfc8164f4b3f44c2f06399d2770ce40f095819758fee351d9e6f98b3.zip",
+   "bytesRead": 69826,
+   "readOn": "2026-09-29"
+  },
+  "bus-b53-b5-edo-site-outreach-email-compliance": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b53-b5-edo-site-outreach-email-compliance/946fe9e87136efaa59589ff21e2b4e76408b678c195bf097c7222b7e56ebdc4e.zip",
+   "bytesRead": 118691,
+   "readOn": "2026-09-29"
+  },
+  "bus-b55-b8-landing-copy-block-review": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b55-b8-landing-copy-block-review/dc3a0c26ea61e0d64d8b42e61a8c473ce9526533bfcc4511bd1f712daebb2a96.zip",
+   "bytesRead": 120879,
+   "readOn": "2026-09-29"
+  },
+  "sci-sc09-a4-vti-task-000835": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc09-a4-vti-task-000835/478e6e9bb842df701ac68d5f121032d34ee8fc11f79e68e4cfc55abd9e08ec00.zip",
+   "bytesRead": 63987,
+   "readOn": "2026-09-29"
+  },
+  "tech-b53-t9-tool-support-matrix-shortlist": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t9-tool-support-matrix-shortlist/543ccaa33c27c6e4e723bac387e6d9ee86a9455726bcb100fc2bfaeca4d09d90.zip",
+   "bytesRead": 71691,
+   "readOn": "2026-09-29"
+  },
+  "the-estate-handover": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-estate-handover/f65060c4cd534ca3aaacce96b5946a5ad2ffb8dc3bc29877bcfee0f3e78abe76.zip",
+   "bytesRead": 47534,
+   "readOn": "2026-09-29"
+  },
+  "workspace-access-governance-roster": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/workspace-access-governance-roster/375e3e300bb12dea4f4c19dc75b29ec9be204ad7d2108b18b78cb156ea61dfd8.zip",
+   "bytesRead": 51963,
    "readOn": "2026-09-29"
   }
  }
