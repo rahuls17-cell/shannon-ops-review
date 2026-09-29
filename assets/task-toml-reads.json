@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T16:31:02+00:00",
+ "generatedAt": "2026-09-29T16:41:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11971,6 +11971,62 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-quarter-nobody-asked-for/00b90ad99e6ebd0f040975bd69b0f417a71819378b8e81697c663d1641e7a6ca.zip",
    "bytesRead": 50307,
+   "readOn": "2026-09-29"
+  },
+  "bus-b54-b4-executive-draft-style-conformance": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b54-b4-executive-draft-style-conformance/cbaaaddd93ae04292a5fdaf8ed9d1a09616f752720bb69af71e0516fc380ad95.zip",
+   "bytesRead": 122121,
+   "readOn": "2026-09-29"
+  },
+  "health-tdt3-a10-laying-flock-egg-withdrawal-compliance": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt3-a10-laying-flock-egg-withdrawal-compliance/4742a8e610a614251f45d5b9924dd4b2fb5c1a3c97b220746db7dd90e4a5c557.zip",
+   "bytesRead": 71602,
+   "readOn": "2026-09-29"
+  },
+  "the-two-things-that-slipped-through": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-two-things-that-slipped-through/2cff117626c03a089896e88e7fd7e84c67a24823de868e2b62f8cfacd3822ff0.zip",
+   "bytesRead": 56022,
+   "readOn": "2026-09-29"
+  },
+  "the-week-ahead-and-what-is-still-open": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-week-ahead-and-what-is-still-open/31f84248eaa2849f1f377327911d07b4b5b0f83d34183e89db29c986d1ac97ce.zip",
+   "bytesRead": 61021,
+   "readOn": "2026-09-29"
+  },
+  "which-jj-do-you-mean": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-jj-do-you-mean/23c5f6a880aa4ea00c340e4162db15cc27e2079f037eb8175607439912872e1b.zip",
+   "bytesRead": 47362,
    "readOn": "2026-09-29"
   }
  }
