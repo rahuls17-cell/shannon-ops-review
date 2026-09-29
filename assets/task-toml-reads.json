@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T10:01:17+00:00",
+ "generatedAt": "2026-09-29T10:11:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11393,6 +11393,28 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-standup-that-cloned-itself/470a0b2b8a0cd79954f1753291d0394ee08468a4fcad6505399361fc8d4c8837.zip",
    "bytesRead": 55829,
+   "readOn": "2026-09-29"
+  },
+  "bus-b53-b6-pipeline-project-disclosure-comparison": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b53-b6-pipeline-project-disclosure-comparison/aa47c78b2a2226915948f77b711a4550bf65701daf87fa2e88daa295d6b038f1.zip",
+   "bytesRead": 77168,
+   "readOn": "2026-09-29"
+  },
+  "the-guests-who-can-never-be-reached": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guests-who-can-never-be-reached/ae7c8dddc495f613e9f8a71a033f747552e53a7d00d39bf2f2697179b85528cb.zip",
+   "bytesRead": 63802,
    "readOn": "2026-09-29"
   }
  }
