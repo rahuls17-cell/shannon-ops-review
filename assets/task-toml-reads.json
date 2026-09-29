@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T14:21:02+00:00",
+ "generatedAt": "2026-09-29T14:41:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11783,6 +11783,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b4-municipal-officials-contact-table-fill/631ae97c85723e7b547d6c28d3f9ff8064236e64cb2782a746f651e01b108da4.zip",
    "bytesRead": 78657,
+   "readOn": "2026-09-29"
+  },
+  "fin-b54-f7-mobile-bill-promotion-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b54-f7-mobile-bill-promotion-audit/c5a5393d85f82862403ad79864376d8fe02c683f460d6c54d0e75070b0b03c9a.zip",
+   "bytesRead": 74669,
+   "readOn": "2026-09-29"
+  },
+  "tech-b51-t6-tool-exception-intake-triage": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t6-tool-exception-intake-triage/b5fc066278bad0701096a7bad41508abafc24e7c710261c04fa8c47f146c9f8d.zip",
+   "bytesRead": 89543,
    "readOn": "2026-09-29"
   }
  }
