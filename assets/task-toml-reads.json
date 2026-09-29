@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T04:51:29+00:00",
+ "generatedAt": "2026-09-29T05:11:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10784,6 +10784,30 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1137-closing-entries-reconciliation-audit-D-37080f-v6-sna-bhgz/347e7f20bbc636fc8bfc9c73feeaaf1150c4dcce17226520d088424bf8adb053.zip",
    "bytesRead": 82866,
+   "readOn": "2026-09-29"
+  },
+  "blocker-picture-before-planning": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/blocker-picture-before-planning/eff16c0e2dad6f167150c81608910684677dac9de965cd7737c387e0d853e476.zip",
+   "bytesRead": 53269,
+   "readOn": "2026-09-29"
+  },
+  "where-the-calls-happen": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-the-calls-happen/ffc45ddf02e9d00311e6e6af1a9c5b8eb1248fea2f935d8441423f4d63b50406.zip",
+   "bytesRead": 43198,
    "readOn": "2026-09-29"
   }
  }
