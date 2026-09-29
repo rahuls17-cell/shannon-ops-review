@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T01:20:58+00:00",
+ "generatedAt": "2026-09-29T01:30:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10552,6 +10552,48 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/three-of-nineteen-shipped-unsized/c78afba6deb639cec5b2e19c2de09351cf74f78587eb4c97e6ff302e187f0773.zip",
    "bytesRead": 50325,
+   "readOn": "2026-09-29"
+  },
+  "ASTR_101226": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101226/b0db68271e1492628117b01e342b906394b4d5e5d460535ba023bfc1714f132c.zip",
+   "bytesRead": 41694,
+   "readOn": "2026-09-29"
+  },
+  "ASTR_101551": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101551/0f604f585e1f12d1ccf9315cb856ecbdc84c8548cf3c57b77cf5f6064745c9eb.zip",
+   "bytesRead": 40625,
+   "readOn": "2026-09-29"
+  },
+  "verify-oon-atm-fee-on-june-2022-withdrawal-card--631831-v3": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/verify-oon-atm-fee-on-june-2022-withdrawal-card--631831-v3/de9129112d66d813328a45f0c2dc7dc5b24122f0f30073527f3481e7389ee363.zip",
+   "bytesRead": 66202,
    "readOn": "2026-09-29"
   }
  }
