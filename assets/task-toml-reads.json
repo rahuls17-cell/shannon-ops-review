@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T18:01:04+00:00",
+ "generatedAt": "2026-09-29T18:11:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12222,6 +12222,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/rebuild-the-design-cycle-report/76273562ba95d36ef20e4500f05e0e876886e9cc317418a0134d9c2269c29cf0.zip",
    "bytesRead": 50589,
+   "readOn": "2026-09-29"
+  },
+  "bus-b55-b3-onboarding-week-session-schedule": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b55-b3-onboarding-week-session-schedule/ddb20693ed4f804b666d18396ed171dfcb9dfc72d43fc3ab39be2a4fcaac2033.zip",
+   "bytesRead": 73327,
    "readOn": "2026-09-29"
   }
  }
