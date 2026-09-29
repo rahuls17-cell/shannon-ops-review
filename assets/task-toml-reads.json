@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T11:31:01+00:00",
+ "generatedAt": "2026-09-29T11:40:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11585,6 +11585,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sch-a9-csat-regular-round-cutoff-eligibility/b30233a6ac873c4edd92dd81eb938473f1ef3109ad08711f37346d496c17ade6.zip",
    "bytesRead": 71850,
+   "readOn": "2026-09-29"
+  },
+  "gen-g727-multi-stream-revenue-recognition-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g727-multi-stream-revenue-recognition-audit/4731de6f2dd6f57271b8aed805688f129a0883f1b8a894d3a68050f01f161391.zip",
+   "bytesRead": 89904,
    "readOn": "2026-09-29"
   }
  }
