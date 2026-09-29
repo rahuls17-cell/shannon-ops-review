@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T10:11:00+00:00",
+ "generatedAt": "2026-09-29T10:40:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11415,6 +11415,56 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guests-who-can-never-be-reached/ae7c8dddc495f613e9f8a71a033f747552e53a7d00d39bf2f2697179b85528cb.zip",
    "bytesRead": 63802,
+   "readOn": "2026-09-29"
+  },
+  "bus-b44-b4-security-training-seat-price-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b4-security-training-seat-price-recompute/e135a35c5b42d30b8c264268d068b3317f3c7ccdbdf9861916a5f72c4547d094.zip",
+   "bytesRead": 70034,
+   "readOn": "2026-09-29"
+  },
+  "bus-b50-b6-resume-portfolio-figure-reconciliation-director-role": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b50-b6-resume-portfolio-figure-reconciliation-director-role/be43f850a80c57237eb43b285f31473640ebb667eb15da832eca8bb8501178ce.zip",
+   "bytesRead": 140593,
+   "readOn": "2026-09-29"
+  },
+  "code-c618-audio-plugin-qa-bug-remediation-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c618-audio-plugin-qa-bug-remediation-audit/8789769e1f2459ff57cd955ff2b5992ca6321ed9c6e8f69090316825e98e1b69.zip",
+   "bytesRead": 74731,
+   "readOn": "2026-09-29"
+  },
+  "edu-mg-edu-b14-a10-literaturliste-belegstatus-rueckfrage": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-mg-edu-b14-a10-literaturliste-belegstatus-rueckfrage/1bed550d3183efd7f85d550fe6a490081f898c88ed6a5bee97f1a60b9c0b9b01.zip",
+   "bytesRead": 73125,
+   "readOn": "2026-09-29"
+  },
+  "gen-g405-placename-concordance-reconciliation-d85e79-v3-sna-qsgq": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g405-placename-concordance-reconciliation-d85e79-v3-sna-qsgq/39ae14763516034363287f3e489ae8635621b7e0ccdfae5eb42b0f7a8903993f.zip",
+   "bytesRead": 94977,
    "readOn": "2026-09-29"
   }
  }
