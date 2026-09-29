@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T06:51:00+00:00",
+ "generatedAt": "2026-09-29T07:00:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11003,6 +11003,50 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g158-hoa-special-assessment-recompute-82b521-v1-s100-ckkn/f5093431a6cf70634c51be06f5c2a8c03febb82282abae17fe6b172d248203cb.zip",
    "bytesRead": 86342,
+   "readOn": "2026-09-29"
+  },
+  "ASTR_101580": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101580/0e2d1cac6271af17970e5ab037a763788bf9d5baacab363a1886fa705e226068.zip",
+   "bytesRead": 46584,
+   "readOn": "2026-09-29"
+  },
+  "bus-b44-b5-nurture-email-field-normalization": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b5-nurture-email-field-normalization/1e599e057463dc130368848cadad1b3b52eb56988cef1968c2028b77e92c431e.zip",
+   "bytesRead": 82728,
+   "readOn": "2026-09-29"
+  },
+  "bus-b54-b9-job-proposal-cost-rollup": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b54-b9-job-proposal-cost-rollup/2eac7b6aa60df3f70e217a04b89de5d5dad1e172d71c5e5f0542e24cbfc5deed.zip",
+   "bytesRead": 73676,
+   "readOn": "2026-09-29"
+  },
+  "the-response-i-never-gave": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-response-i-never-gave/32fc3c1e3e64d8f91ea8b6324204d143634a09398040a806a0a129337f08a8b2.zip",
+   "bytesRead": 57494,
    "readOn": "2026-09-29"
   }
  }
