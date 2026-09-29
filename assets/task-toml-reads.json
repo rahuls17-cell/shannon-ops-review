@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T21:21:05+00:00",
+ "generatedAt": "2026-09-29T21:31:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12384,6 +12384,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-mg-edu-b13-a9-holiday-weekend-reply-day-check/ef4e7ce3bce3404f8a82e3e666bddd518610a39487ea8379bb9be8575d52c2b1.zip",
    "bytesRead": 67739,
+   "readOn": "2026-09-29"
+  },
+  "bus-b44-b10-cod-shipping-method-config-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b44-b10-cod-shipping-method-config-audit/4030734803f5b9946850eee3ce8ec490aa12b20a647e8f64b358294995867629.zip",
+   "bytesRead": 107821,
+   "readOn": "2026-09-29"
+  },
+  "bus-b58-t9-competitor-required-list-coverage": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b58-t9-competitor-required-list-coverage/9f109bdf473296d0b41ce9be78ca20fd751b44051589c5197add10e5f0a49ed3.zip",
+   "bytesRead": 68832,
    "readOn": "2026-09-29"
   }
  }
