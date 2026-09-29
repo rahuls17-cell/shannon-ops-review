@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T03:01:10+00:00",
+ "generatedAt": "2026-09-29T03:21:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10656,6 +10656,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b48-l1-tsca-import-conformance-declaration/b8b91bff3547f8ca8fc3880f4e728aef03493dee5bfacb6d8dc618f3cf5777bf.zip",
    "bytesRead": 73805,
+   "readOn": "2026-09-29"
+  },
+  "fin-b46-a2-vessel-cash-waterfall": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b46-a2-vessel-cash-waterfall/64a815500e288bc2d35b246bb58ffa8e1688722301a76858e58e22318d191474.zip",
+   "bytesRead": 167313,
+   "readOn": "2026-09-29"
+  },
+  "reviews-that-lost-their-original": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/reviews-that-lost-their-original/7e3533a7145798927c7ccea7fd5a2a15fa7a175550f0e7e6542a81eaa823067e.zip",
+   "bytesRead": 51878,
    "readOn": "2026-09-29"
   }
  }
