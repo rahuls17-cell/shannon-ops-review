@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T13:11:03+00:00",
+ "generatedAt": "2026-09-29T13:21:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11691,6 +11691,38 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/labels-cincinnati-keeps-reusing/aa7bee00acf79a1802497b46330f208e7bf7cef07166c9b0089700a8fbeceedd.zip",
    "bytesRead": 46422,
+   "readOn": "2026-09-29"
+  },
+  "bus-b56-a4-lift-quote-ledger-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b56-a4-lift-quote-ledger-recompute/e49881c9466b702bb20c60ebcd46cdfe97936a8937a3ce045ab2e692a4a609cb.zip",
+   "bytesRead": 65149,
+   "readOn": "2026-09-29"
+  },
+  "gen-g847-cpe-verbatim-documentation-audit-9d17aa-v7-sna-pgjg": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g847-cpe-verbatim-documentation-audit-9d17aa-v7-sna-pgjg/ee06a9d7ea61e4cf130f088e9f4ccadf026bf98d2e74b87a6fa87dc37f60e321.zip",
+   "bytesRead": 87338,
+   "readOn": "2026-09-29"
+  },
+  "meeting-declines-for-my-leave": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/meeting-declines-for-my-leave/7eb0d11fad4c424a51525a65cb994bd7b7d3ad941e803403eb111b33b61448e8.zip",
+   "bytesRead": 56331,
    "readOn": "2026-09-29"
   }
  }
