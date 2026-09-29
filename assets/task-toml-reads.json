@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T19:51:05+00:00",
+ "generatedAt": "2026-09-29T20:01:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12300,6 +12300,28 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pin-that-never-got-closed-out/486f2e68876a16c77ea6a7a99c7c750cbe5b2297a9901feaae2debfee9d6ee55.zip",
    "bytesRead": 54491,
+   "readOn": "2026-09-29"
+  },
+  "bus-b55-b1-predevelopment-fee-rollup": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b55-b1-predevelopment-fee-rollup/d42e0e2add12080948f49b0f14c6946ccb10a25aee18d23ad1d53bf032eacad7.zip",
+   "bytesRead": 64801,
+   "readOn": "2026-09-29"
+  },
+  "the-completeness-review": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-completeness-review/fede308f6479198eccf6b9c94f337d2e75c89548aba65988b62a489c8cbdf370.zip",
+   "bytesRead": 48304,
    "readOn": "2026-09-29"
   }
  }
