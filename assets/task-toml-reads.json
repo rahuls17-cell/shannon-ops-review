@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T04:31:20+00:00",
+ "generatedAt": "2026-09-29T04:51:29+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10764,6 +10764,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c375-polish-review-ticket-closure-audit/e221bd9a1145aac1578be45460bfadbb9d4d3f132f8c753b68c5e467ec9ba90c.zip",
    "bytesRead": 83521,
+   "readOn": "2026-09-29"
+  },
+  "bus-b43-b2-risk-policy-rebrand-change-log": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b43-b2-risk-policy-rebrand-change-log/8b5ebf58f89f2dc66ff8abe6e0fe8904ff919c2db6df45770c18e80630b3bccc.zip",
+   "bytesRead": 82995,
+   "readOn": "2026-09-29"
+  },
+  "gen-g1137-closing-entries-reconciliation-audit-D-37080f-v6-sna-bhgz": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1137-closing-entries-reconciliation-audit-D-37080f-v6-sna-bhgz/347e7f20bbc636fc8bfc9c73feeaaf1150c4dcce17226520d088424bf8adb053.zip",
+   "bytesRead": 82866,
    "readOn": "2026-09-29"
   }
  }
