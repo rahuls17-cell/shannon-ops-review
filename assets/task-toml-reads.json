@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T14:50:59+00:00",
+ "generatedAt": "2026-09-29T15:01:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11813,6 +11813,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g882-church-partner-flyer-brand-audit-v1-f897d3-v4-sna-rbje/37058839980e8d5d9d0a0dcbca106cbcaa4d846786af543ae3d2742187fcb577.zip",
    "bytesRead": 82803,
+   "readOn": "2026-09-29"
+  },
+  "gen-g63-environmental-permit-audit-6c589b-v8-sna-oytt": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g63-environmental-permit-audit-6c589b-v8-sna-oytt/d0f0e0f0eaea51de5340f1e408bfc429e8c727234b546ae3723f92080e31f0f4.zip",
+   "bytesRead": 75052,
+   "readOn": "2026-09-29"
+  },
+  "gen-g980-greenhouse-as-built-compliance-audit-v3-4d7a1c-v2-sna-qcqn": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g980-greenhouse-as-built-compliance-audit-v3-4d7a1c-v2-sna-qcqn/10067b28033a8aa3b3fc0308c0d9f86dd68e73015e1a52fdc78776fa4cf04dd1.zip",
+   "bytesRead": 83114,
    "readOn": "2026-09-29"
   }
  }
