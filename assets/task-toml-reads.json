@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T22:51:01+00:00",
+ "generatedAt": "2026-09-29T23:01:21+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12544,6 +12544,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-an-import-left-on-two-calendars/ba7595de9e8164d9ff6232ab223365ca5701b0fabd7a66e36bef0a533689eb2d.zip",
    "bytesRead": 58029,
+   "readOn": "2026-09-29"
+  },
+  "the-outsiders-reviewing-our-code": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-outsiders-reviewing-our-code/abc2c8d413055dae10f34ee718b7aa6b97b0c0c008b286832dd9fb3785812278.zip",
+   "bytesRead": 46020,
+   "readOn": "2026-09-29"
+  },
+  "the-small-projects-that-never-got-scheduled": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-small-projects-that-never-got-scheduled/35ba40da745d96f9e9a7eff2ded8ff9e3e51d6ba8402285d3a467688c0d46a9b.zip",
+   "bytesRead": 50556,
+   "readOn": "2026-09-29"
+  },
+  "the-task-summaries-that-went-stale": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-task-summaries-that-went-stale/a56900a647f1fc82312a5c488e710d06fac68fbee65a2580fc321a2406a5ce63.zip",
+   "bytesRead": 47876,
    "readOn": "2026-09-29"
   }
  }
