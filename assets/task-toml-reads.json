@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T17:01:14+00:00",
+ "generatedAt": "2026-09-29T17:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12061,6 +12061,38 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-is-still-talking-in-here/4e8d3313270475d61f181a1b5772a5e4a4b4ca937a052c51a861a53d8ea84a2d.zip",
    "bytesRead": 48819,
+   "readOn": "2026-09-29"
+  },
+  "asked-once-and-never-answered": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/asked-once-and-never-answered/140ade8af537bcc470ccec569ee0efe67fb1575f31a18ea32ff079748fefe5d0.zip",
+   "bytesRead": 51035,
+   "readOn": "2026-09-29"
+  },
+  "bus-b53-b7-in-domain-ten-year-registrar-cost-comparison": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b53-b7-in-domain-ten-year-registrar-cost-comparison/d04bc46c11d653a8772bcdd44a97c91eae1f0e0ce644a7c3cb9c795e83cc92cd.zip",
+   "bytesRead": 119023,
+   "readOn": "2026-09-29"
+  },
+  "health-h25-medication-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h25-medication-reconciliation/72df25eaf1342dab15c84e4f5a5e028cfd71c7c34c2ef684e3cb9c11d0bce9e9.zip",
+   "bytesRead": 73427,
    "readOn": "2026-09-29"
   }
  }
