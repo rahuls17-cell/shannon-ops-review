@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T06:11:21+00:00",
+ "generatedAt": "2026-09-29T06:21:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10936,6 +10936,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-is-actually-in-my-diary/ac71c8ad7b4446c73c231b24e44d725f8730c392e4522fb579f664b4673884cb.zip",
    "bytesRead": 55804,
+   "readOn": "2026-09-29"
+  },
+  "which-lead-lists-hold-real-numbers": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-lead-lists-hold-real-numbers/65385678795639b35615bcf7accb4abb0dab6ef12b953e405af44ad42a972237.zip",
+   "bytesRead": 58767,
    "readOn": "2026-09-29"
   }
  }
