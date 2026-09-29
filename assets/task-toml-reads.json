@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T01:30:58+00:00",
+ "generatedAt": "2026-09-29T01:40:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10594,6 +10594,16 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/verify-oon-atm-fee-on-june-2022-withdrawal-card--631831-v3/de9129112d66d813328a45f0c2dc7dc5b24122f0f30073527f3481e7389ee363.zip",
    "bytesRead": 66202,
+   "readOn": "2026-09-29"
+  },
+  "edu-sc07-a10-mantra-register": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc07-a10-mantra-register/b0b463b1e5cbd2a8d65bb7bade0c8e4a2d6ffc395763f3111ecb2cd10c0c1fc7.zip",
+   "bytesRead": 87158,
    "readOn": "2026-09-29"
   }
  }
