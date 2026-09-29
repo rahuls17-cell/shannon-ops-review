@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T06:31:01+00:00",
+ "generatedAt": "2026-09-29T06:41:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10970,6 +10970,29 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-reports-safe-to-switch-back-on-v2/d9290da15b7eaff78d72879cb4d53c8ac239d297c196ee89d5cbc743d4332030.zip",
    "bytesRead": 50710,
+   "readOn": "2026-09-29"
+  },
+  "gen-g58-course-prerequisite-audit-m-v1-9351c1-v4-sna-ktul": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g58-course-prerequisite-audit-m-v1-9351c1-v4-sna-ktul/a3809fe63604dc5d133da4445e4c63732408d70df640d1e928a6cfb3c0d85550.zip",
+   "bytesRead": 79638,
+   "readOn": "2026-09-29"
+  },
+  "tracker-feed-revival-followup-audit": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tracker-feed-revival-followup-audit/6080c07d9be49955f1b3749cb55edf642779f7e9c7428512de5752bb7130b08c.zip",
+   "bytesRead": 56029,
    "readOn": "2026-09-29"
   }
  }
