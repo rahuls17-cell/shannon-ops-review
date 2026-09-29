@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T00:30:58+00:00",
+ "generatedAt": "2026-09-29T00:40:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10468,6 +10468,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b59-t1-resort-unit-mix-revenue/5ddd71f5a9ef77b856e200e98111c1fe1184202e3cdc371bfe49a0ce49a1a70c.zip",
    "bytesRead": 71917,
+   "readOn": "2026-09-29"
+  },
+  "bus-b108-b6-nnn-property-cash-out-refinance-recompute": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b108-b6-nnn-property-cash-out-refinance-recompute/d99bf2cc79a7c31e98e0d8087a0b9e28494688d811ade44bc2a7f47307f80977.zip",
+   "bytesRead": 119628,
+   "readOn": "2026-09-29"
+  },
+  "edu-b21-g14-iep-academic-services-roster": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b21-g14-iep-academic-services-roster/ea0bf15f2035a98c888f822b6f32c6a2747bbbc8f0f6bfb2696b3f13d34f8bce.zip",
+   "bytesRead": 69002,
+   "readOn": "2026-09-29"
+  },
+  "the-emails-hiding-in-support": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-emails-hiding-in-support/63c0add7d5342af480aa102787beb3805eaf515536ef72f167ef3c3b2779f43c.zip",
+   "bytesRead": 52427,
    "readOn": "2026-09-29"
   }
  }
