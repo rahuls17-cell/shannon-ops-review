@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T04:21:00+00:00",
+ "generatedAt": "2026-09-29T04:31:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10742,6 +10742,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b44-h9-communication-practice-plan-constraints/62c191f72d54651797e7cdfbd4e1e8913a0b6b5d7b62b7cc18146e3c1ad8d42a.zip",
    "bytesRead": 104761,
+   "readOn": "2026-09-29"
+  },
+  "ASTR_101252": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101252/7d393e983cb5207b0e3cd91f81aef5f546e8c909b98290f92ab2958984058a28.zip",
+   "bytesRead": 42007,
+   "readOn": "2026-09-29"
+  },
+  "code-c375-polish-review-ticket-closure-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c375-polish-review-ticket-closure-audit/e221bd9a1145aac1578be45460bfadbb9d4d3f132f8c753b68c5e467ec9ba90c.zip",
+   "bytesRead": 83521,
    "readOn": "2026-09-29"
   }
  }
