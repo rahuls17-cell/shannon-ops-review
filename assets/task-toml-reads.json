@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T00:50:57+00:00",
+ "generatedAt": "2026-09-29T01:10:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10510,6 +10510,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g355-quickref-table-integrity-audit-v3-bfa808-v1-sna-znno/666eef14f1f41f1079eba6ed4e8e399f9131b5704dbad561a55d445d6616e54c.zip",
    "bytesRead": 91211,
+   "readOn": "2026-09-29"
+  },
+  "bus-b55-b5-guest-workflow-tool-selection": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b55-b5-guest-workflow-tool-selection/febac03f4653b8e8e5293dd9bf073c9b3e1a2302352b69acd2617f8422868928.zip",
+   "bytesRead": 99261,
+   "readOn": "2026-09-29"
+  },
+  "gen-g1123-governance-workshop-outline-audit-165d5b-v1-sna-fuvo": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1123-governance-workshop-outline-audit-165d5b-v1-sna-fuvo/f2feba9a5696c5abeb3db894917eb099612a98e69098fa4c66e9bedc354fefa4.zip",
+   "bytesRead": 90848,
+   "readOn": "2026-09-29"
+  },
+  "gen-g353-brand-asset-usage-audit-231ce6-v1-sna-vvgl": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g353-brand-asset-usage-audit-231ce6-v1-sna-vvgl/3441359e3bb451d57367274ebab97bd158d598e16f780ed6c63d75c25b172b6f.zip",
+   "bytesRead": 146891,
    "readOn": "2026-09-29"
   }
  }
