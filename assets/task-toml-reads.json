@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T22:41:03+00:00",
+ "generatedAt": "2026-09-29T22:51:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12532,6 +12532,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g856-internal-messaging-tone-register-audit-7d8ac1-v11-sna-ozrq/14720b50f03feab4b8342a3c700ec65a147eab2af92d8d1ece3e8fc1e3b2d708.zip",
    "bytesRead": 99799,
+   "readOn": "2026-09-29"
+  },
+  "the-meetings-an-import-left-on-two-calendars": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-an-import-left-on-two-calendars/ba7595de9e8164d9ff6232ab223365ca5701b0fabd7a66e36bef0a533689eb2d.zip",
+   "bytesRead": 58029,
    "readOn": "2026-09-29"
   }
  }
