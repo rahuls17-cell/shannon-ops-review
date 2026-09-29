@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T17:31:03+00:00",
+ "generatedAt": "2026-09-29T17:41:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12168,6 +12168,28 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-people-who-were-only-ever-copied/6aa2cc23d93cd00db82c235e9ccd8d05996b65838170ea5f80a7e6eeed5cbd70.zip",
    "bytesRead": 61625,
+   "readOn": "2026-09-29"
+  },
+  "ASTR_101364": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101364/226c854addbefff20d228cfa5f488559b414ec28b9e2bd2abfd5ee91dcf53394.zip",
+   "bytesRead": 49569,
+   "readOn": "2026-09-29"
+  },
+  "sci-sc09-a2-chart-register": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc09-a2-chart-register/25df9fb0b02232438ad9aff6341de9ebe0e5be22d763d7e4bb86f9bcd816c5f6.zip",
+   "bytesRead": 63264,
    "readOn": "2026-09-29"
   }
  }
