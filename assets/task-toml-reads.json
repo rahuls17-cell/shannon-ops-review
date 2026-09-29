@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T20:41:01+00:00",
+ "generatedAt": "2026-09-29T21:11:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12364,6 +12364,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b52-t2-fuel-site-inspection-cadence/4b881aee027b1d325a8eab4b0ad0333babfa1a8659b819884d5ef2cd6cf058a4.zip",
    "bytesRead": 139846,
+   "readOn": "2026-09-29"
+  },
+  "bus-b55-b6-escalation-index-coverage-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b55-b6-escalation-index-coverage-audit/7e36dfe3707f86d94da4af14f62534aefd5586ac093c8ba97d0341d4e5182939.zip",
+   "bytesRead": 142480,
    "readOn": "2026-09-29"
   }
  }
