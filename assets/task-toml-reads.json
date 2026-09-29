@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T05:30:59+00:00",
+ "generatedAt": "2026-09-29T05:51:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10880,6 +10880,50 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b59-t3-research-skill-sequence-audit/eb7ce5f3dfd036c5e2f9dc1d87f9a1c038302b3893267c7055e9056780c5579c.zip",
    "bytesRead": 73567,
+   "readOn": "2026-09-29"
+  },
+  "bus-b48-b3-attainment-gap-variance-attribution": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b48-b3-attainment-gap-variance-attribution/68a92064eca3800f8c1f167646c5b334eb542ea06a6f1fcda5effbcd291dcff8.zip",
+   "bytesRead": 71457,
+   "readOn": "2026-09-29"
+  },
+  "edu-b21-g20-head-to-toe-assessment-grading": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b21-g20-head-to-toe-assessment-grading/48d7b4a589280224203ced6b6078d8196e464ed2cd588169958cfe2c4cfc8041.zip",
+   "bytesRead": 97122,
+   "readOn": "2026-09-29"
+  },
+  "the-card-that-came-last": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-card-that-came-last/a7e8b4dc0605e4472dcd0e60dcdb8fec3e04c365899e34373317e7246c9841b1.zip",
+   "bytesRead": 50201,
+   "readOn": "2026-09-29"
+  },
+  "the-invites-with-gaps": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-invites-with-gaps/5819d8cf9c6920b87fd0e73eab781cdbead7d19831934ad604d9e6a3a55a3332.zip",
+   "bytesRead": 48562,
    "readOn": "2026-09-29"
   }
  }
