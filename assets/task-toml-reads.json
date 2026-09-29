@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T06:41:22+00:00",
+ "generatedAt": "2026-09-29T06:51:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10993,6 +10993,16 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tracker-feed-revival-followup-audit/6080c07d9be49955f1b3749cb55edf642779f7e9c7428512de5752bb7130b08c.zip",
    "bytesRead": 56029,
+   "readOn": "2026-09-29"
+  },
+  "gen-g158-hoa-special-assessment-recompute-82b521-v1-s100-ckkn": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g158-hoa-special-assessment-recompute-82b521-v1-s100-ckkn/f5093431a6cf70634c51be06f5c2a8c03febb82282abae17fe6b172d248203cb.zip",
+   "bytesRead": 86342,
    "readOn": "2026-09-29"
   }
  }
