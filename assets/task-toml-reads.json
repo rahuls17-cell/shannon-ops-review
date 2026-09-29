@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T18:11:01+00:00",
+ "generatedAt": "2026-09-29T18:31:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12232,6 +12232,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b55-b3-onboarding-week-session-schedule/ddb20693ed4f804b666d18396ed171dfcb9dfc72d43fc3ab39be2a4fcaac2033.zip",
    "bytesRead": 73327,
+   "readOn": "2026-09-29"
+  },
+  "health-b43-h3-methylation-meal-plan-nutrient-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b43-h3-methylation-meal-plan-nutrient-ledger/0c93f5a7c370d2fd92c3447d0e7c6a614e8ba3e5b53cb3381ab9a19f655ba523.zip",
+   "bytesRead": 71435,
    "readOn": "2026-09-29"
   }
  }
