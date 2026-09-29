@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T21:51:00+00:00",
+ "generatedAt": "2026-09-29T22:11:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12436,6 +12436,40 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g77-price-tag-accuracy-reconcile-solution-dr-3278f7-v1-sna-lzju/46deab9f994689b6a2ac95899e7796e24a8868c1773d30657bc348f8f6592751.zip",
    "bytesRead": 90551,
+   "readOn": "2026-09-29"
+  },
+  "gen-g834-newsletter-prepress-qc-audit-7e475e-v5-sna-ifuv": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g834-newsletter-prepress-qc-audit-7e475e-v5-sna-ifuv/6ff470e8d587ac13de313c80628aaa5f70c76f6a3134dc079fb3fefe10196b03.zip",
+   "bytesRead": 82246,
+   "readOn": "2026-09-29"
+  },
+  "the-seat-my-invitations-put-me-in": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-seat-my-invitations-put-me-in/3dc0dcb75d517cd70a3c99de5a61573e9e06f5509952894cb54d629323594f82.zip",
+   "bytesRead": 51218,
+   "readOn": "2026-09-29"
+  },
+  "year-end-lab-statement-sweep": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/year-end-lab-statement-sweep/f9729bf4721a0411151713ba98f8c536dbf42ad998ade25e23b65e938d0211e2.zip",
+   "bytesRead": 45925,
    "readOn": "2026-09-29"
   }
  }
