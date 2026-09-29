@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T13:30:59+00:00",
+ "generatedAt": "2026-09-29T13:51:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11733,6 +11733,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b21-g6-rite-question-bank-assembly/4e9b4a0b188572f96189ab1e99b3513cb6273f62937625bbbafc9fa8743ba223.zip",
    "bytesRead": 69898,
+   "readOn": "2026-09-29"
+  },
+  "gen-g63-environmental-permit-audit-6c589b-v3-sna-qzad": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g63-environmental-permit-audit-6c589b-v3-sna-qzad/dc8c9b56f659b4b3a924af7e51d4dfc1b02789609d59879363f5172b9ac1988f.zip",
+   "bytesRead": 72561,
+   "readOn": "2026-09-29"
+  },
+  "health-h80-trial-monitoring-visit-cadence-audit-d3fbb5-v1-sna-jwvu": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:9c47360a2a0355e2da18516d0b1c2126ec22c195d2185e97347c9d98398c5bef",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h80-trial-monitoring-visit-cadence-audit-d3fbb5-v1-sna-jwvu/05f8bc6c3310bfb546a285c0605a1659ffafd7da78b340c30351691fb78459a9.zip",
+   "bytesRead": 84614,
    "readOn": "2026-09-29"
   }
  }
