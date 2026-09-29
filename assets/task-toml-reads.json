@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T11:40:58+00:00",
+ "generatedAt": "2026-09-29T11:50:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11595,6 +11595,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g727-multi-stream-revenue-recognition-audit/4731de6f2dd6f57271b8aed805688f129a0883f1b8a894d3a68050f01f161391.zip",
    "bytesRead": 89904,
+   "readOn": "2026-09-29"
+  },
+  "tech-b52-t4-notebook-share-link-retrieval": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b52-t4-notebook-share-link-retrieval/2fc7118d2bcc1bf31d805d397d221464a68b21703792d538b4d69de88af542aa.zip",
+   "bytesRead": 76943,
    "readOn": "2026-09-29"
   }
  }
