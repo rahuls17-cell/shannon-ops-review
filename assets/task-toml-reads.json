@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T02:00:58+00:00",
+ "generatedAt": "2026-09-29T02:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10614,6 +10614,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b47-b5-sop-clause-criteria-adjudication/0131a19b75c7f851153f5ed468db0e2ca348501bb6c17b445446f6a67335a99b.zip",
    "bytesRead": 85993,
+   "readOn": "2026-09-29"
+  },
+  "fin-b49-f3-lp-briefing-fund-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b49-f3-lp-briefing-fund-reconciliation/38fe01f0d65a743e508203df4f1db14bee225b13cb6f63a275186273ad7ed44b.zip",
+   "bytesRead": 151475,
    "readOn": "2026-09-29"
   }
  }
