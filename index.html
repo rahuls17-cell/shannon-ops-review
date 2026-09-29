@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Shannon Ops Review</title>
+    <title>Delivery</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -11,10 +11,9 @@
     <div class="app">
       <aside class="sidebar">
         <div class="side-brand">
-          <span class="brand-mark">SO</span>
+          <span class="brand-mark">D</span>
           <span class="brand-text">
-            <strong>Shannon Ops</strong>
-            <span>Review</span>
+            <strong>Delivery</strong>
           </span>
         </div>
         <nav class="viewnav" role="tablist" aria-label="Views">
@@ -65,7 +64,6 @@
         <section class="view is-active" id="view-command" role="tabpanel" aria-labelledby="command-title">
           <header class="view-head">
             <div>
-              <p class="kicker">Operations</p>
               <h1 id="command-title">Overview</h1>
             </div>
             <div class="rangectl" data-toolbar>
@@ -230,7 +228,6 @@
         <section class="view" id="view-payouts" role="tabpanel" aria-labelledby="payouts-title">
           <header class="view-head">
             <div>
-              <p class="kicker">Money</p>
               <h1 id="payouts-title">Payouts</h1>
             </div>
           </header>
@@ -372,61 +369,58 @@
         <section class="view" id="view-delivery" role="tabpanel" aria-labelledby="delivery-title">
           <header class="view-head">
             <div>
-              <p class="kicker">Task audit</p>
               <h1 id="delivery-title">Delivery</h1>
             </div>
-            <div class="sourcestrip" data-sources="delivery"></div>
           </header>
           <p class="rangeecho" data-range="delivery"></p>
 
-          <div id="planSummary" class="kpirow"></div>
-
-          <section class="panel">
-            <header class="panel-head">
-              <div><h2>Plan against actual<button class="why" data-info="workbook" aria-label="Scope of the plan figures">?</button></h2><p class="panel-note" id="planNote"></p></div>
-              <div class="chart-key"><span class="key-item is-plan">Planned</span><span class="key-item is-actual">Delivered</span></div>
-            </header>
-            <div class="panel-body"><div id="planCharts" class="plan-grid"></div></div>
-          </section>
-
-          <p class="provenance" id="auditStatus">Loading the task audit&hellip;</p>
-
-          <div id="auditFigures" class="status-grid"></div>
-
-          <section class="panel">
-            <header class="panel-head">
-              <div>
-                <h2>Composition<button class="why" data-info="auditComposition" aria-label="How these are grouped">?</button></h2>
-                <p class="panel-note">One dimension at a time. Pick a lens, then click a row or a square to filter the inventory.</p>
+          <div class="delivery-layout">
+            <aside class="delivery-rail">
+              <section class="rail-card">
+                <h2>Batch scope</h2>
+                <p class="rail-note">Switch the whole page by batch.</p>
+                <div id="auditBatchTabs" class="batchlist" role="group" aria-label="Batch"></div>
+                <div id="batchPager" class="batchpager" hidden></div>
+              </section>
+              <section class="rail-card">
+                <h2>Trainer coverage</h2>
+                <div class="coverbar"><i id="coverageFill" style="--pct:0"></i></div>
+                <p class="rail-note" id="coverageNote"></p>
+                <div class="rail-chips" id="coverageChips"></div>
+              </section>
+            </aside>
+            <div class="delivery-main">
+              <div class="viewstrip" id="auditView"></div>
+              <div id="auditFigures" class="status-grid"></div>
+              <div class="chart-duo">
+                <section class="panel chartcard">
+                  <header class="chart-head"><div><h2>Category mix</h2><p class="chart-sub">Click a category to filter</p></div><span class="chart-side" id="catNote"></span></header>
+                  <div id="catBars" class="hbars"></div>
+                </section>
+                <section class="panel chartcard">
+                  <header class="chart-head"><div><h2>GLM success across four trials</h2><p class="chart-sub">How many of four trial runs solved the task</p></div><span class="chart-side">click a score to filter</span></header>
+                  <div id="glmBars" class="hbars"></div>
+                </section>
               </div>
-              <div class="segmented lens" id="auditLens" role="group" aria-label="Dimension">
-                <button type="button" class="segbtn is-on" data-lens="category">Category</button>
-                <button type="button" class="segbtn" data-lens="acceptance">Verdict</button>
-                <button type="button" class="segbtn" data-lens="batch">Batch</button>
-                <button type="button" class="segbtn" data-lens="glm">GLM</button>
-                <button type="button" class="segbtn" data-lens="difficulty">Difficulty</button>
-                <button type="button" class="segbtn" data-lens="source">Attribution</button>
+              <div class="chart-duo">
+                <section class="panel chartcard">
+                  <header class="chart-head"><div><h2>Category &times; GLM</h2><p class="chart-sub">Click a cell to filter on both</p></div></header>
+                  <div id="catGlm" class="heat"></div>
+                </section>
+                <section class="panel chartcard">
+                  <header class="chart-head"><div><h2>Trainer concentration</h2><p class="chart-sub">Top accounts, contested attributions excluded</p></div><span class="chart-side" id="trainerNote"></span></header>
+                  <div id="trainerBars" class="hbars"></div>
+                </section>
               </div>
-            </header>
-            <div class="panel-body comp">
-              <div class="comp-list">
-                <p class="subhead" id="auditListTitle"></p>
-                <div id="auditList" class="dimlist"></div>
-                <p class="comp-insight" id="auditInsight"></p>
-              </div>
-              <div class="comp-map">
-                <p class="subhead">Every audited task<em id="auditMapNote"></em></p>
-                <div id="auditWaffle" class="waffle" aria-label="One square per audited task"></div>
-              </div>
-            </div>
-          </section>
+              <section class="panel chartcard">
+                <header class="chart-head"><div><h2>Verdicts by batch</h2><p class="chart-sub">Accepted, rejected and pending, one bar per batch</p></div><div class="chart-key"><span class="key-item is-acc">Accepted</span><span class="key-item is-rej">Rejected</span><span class="key-item is-pen">Pending</span></div></header>
+                <div id="batchStacks" class="stacks"></div>
+              </section>
 
-          <section class="panel">
-            <header class="panel-head"><div><h2>Teams</h2></div></header>
-            <div class="panel-body"><div id="teamGrid" class="team-grid"></div></div>
-          </section>
-
-
+              <section class="panel">
+                <header class="panel-head"><div><h2>Teams</h2></div></header>
+                <div class="panel-body"><div id="teamGrid" class="team-grid"></div></div>
+              </section>
 
           <section class="panel inventory">
             <header class="panel-head">
@@ -453,7 +447,6 @@
                 <select id="aBatch" class="sr-only" aria-hidden="true" tabindex="-1"></select>
               </div>
             </header>
-            <div id="auditBatchTabs" class="batchtabs" role="group" aria-label="Batch"></div>
             <div class="panel-body">
               <div class="chips-row"><div id="auditChips" class="chips"></div></div>
               <div class="table-wrap">
@@ -482,14 +475,27 @@
             </div>
           </section>
 
-
+              <details class="panel fold" id="planFold">
+                <summary>
+                  <span class="fold-title">Plan against actual<button class="why" data-info="workbook" aria-label="Scope of the plan figures">?</button></span>
+                  <span class="fold-sum" id="planFoldSum"></span>
+                  <span class="fold-caret" aria-hidden="true"></span>
+                </summary>
+                <div class="fold-body">
+                  <div id="planSummary" class="kpirow"></div>
+                  <div class="chart-key"><span class="key-item is-plan">Planned</span><span class="key-item is-actual">Delivered</span></div>
+                  <p class="panel-note" id="planNote"></p>
+                  <div id="planCharts" class="plan-grid"></div>
+                </div>
+              </details>
+            </div>
+          </div>
         </section>
 
         <!-- PIPELINE (derived from the GCS bucket) ---------------------- -->
         <section class="view" id="view-pipeline" role="tabpanel" aria-labelledby="pipeline-title">
           <header class="view-head">
             <div>
-              <p class="kicker">Delivery pipeline</p>
               <h1 id="pipeline-title">Pipeline<button class="why" data-info="scope" aria-label="What is counted here">?</button></h1>
             </div>
             <div class="view-actions">
@@ -697,7 +703,6 @@
         <section class="view" id="view-carried" role="tabpanel" aria-labelledby="carried-title">
           <header class="view-head">
             <div>
-              <p class="kicker">Backlog</p>
               <h1 id="carried-title">Carried over</h1>
               <p class="lede">Tasks first decided before 5 September that the pipeline running today has since settled. Not new work, and not closed history &mdash; they are counted inside the Pipeline figures, and this is a lens on that population rather than a separate universe.</p>
             </div>
@@ -790,7 +795,6 @@
         <section class="view" id="view-explorer" role="tabpanel" aria-labelledby="explorer-title">
           <header class="view-head">
             <div>
-              <p class="kicker">Storage</p>
               <h1 id="explorer-title">Bucket</h1>
               <p class="lede">A file explorer over <code>gs://obi-harbor-pipeline</code>. Metadata only &mdash; names, sizes and timestamps. No object contents are ever fetched, and nothing here writes to the bucket.</p>
             </div>

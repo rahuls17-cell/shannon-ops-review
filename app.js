@@ -633,7 +633,7 @@ async function loadDeliveryAudit() {
     renderAudit();
   } catch (error) {
     audit = null;
-    setText('auditStatus', `The task audit could not be loaded: ${error.message}. ` +
+    setText('auditAudit', `The task audit could not be loaded: ${error.message}. ` +
       'Rebuild it with tools/build_delivery_audit.py.');
   }
   renderSources();
@@ -891,6 +891,77 @@ function renderAuditChips(filters) {
     : '<span class="chips-empty">No filters applied · click any figure, square or bar above to filter</span>';
 }
 
+
+// The Delivery page is read one batch at a time. The rail on the left picks
+// the batch; everything on the right follows the filters, and every bar,
+// cell and row is a filter of its own.
+const GLM_ORDER = ['0/4', '1/4', '2/4', '3/4', '4/4'];
+function renderDeliveryCharts(rows, result, filters, shown, total) {
+  const short = email => String(email || '').split('@')[0];
+  const isOn = (id, value) => byId(id)?.value === value;
+  const bar = (filter, value, label, n, max, tone, index, extra = '') =>
+    `<button type="button" class="hbar${isOn(filter, value) ? ' is-on' : ''}" style="--c:${tone};--i:${index}" data-filter="${filter}" data-value="${esc(value)}" data-tip="${esc(label)}: ${fmt(n)} of ${fmt(shown)} (${shown ? Math.round((n / shown) * 100) : 0}%)">
+      <span class="hbar-label">${label}</span><span class="hbar-track"><i style="--pct:${max ? Math.round((n / max) * 100) : 0}"></i></span><b class="hbar-n" data-count="${n}" data-key="hb:${filter}:${esc(value)}">${fmt(n)}</b>${extra}</button>`;
+
+  // Category mix
+  const cats = Object.entries(groupBy(rows, r => r.category || window.DELIVERY_AUDIT_UNSET)).map(([k, l]) => [k, l.length]).sort((a, b) => b[1] - a[1]);
+  const catMax = Math.max(1, ...cats.map(c => c[1]));
+  const catTone = k => `var(${AUDIT_TONES.category[k] || '--slate'})`;
+  byId('catBars').innerHTML = cats.length ? cats.map(([k, n], i) => bar('aCategory', k, esc(k), n, catMax, catTone(k), i)).join('') : '<p class="empty">No tasks match these filters.</p>';
+  setText('catNote', filters.category ? `filtered to ${filters.category}` : `${fmt(shown)} tasks`);
+
+  // GLM success
+  const glm = GLM_ORDER.map(k => [k, rows.filter(r => r.glmBucket === k).length]).filter(([, n], i) => n || i < 5);
+  const glmMax = Math.max(1, ...glm.map(g => g[1]));
+  byId('glmBars').innerHTML = glm.map(([k, n], i) => bar('aGlm', k, glmDots(k), n, glmMax, `var(${AUDIT_TONES.glm[k] || '--slate'})`, i)).join('');
+
+  // Category x GLM heat map
+  const cols = GLM_ORDER.filter(k => rows.some(r => r.glmBucket === k));
+  const cellMax = Math.max(1, ...cats.flatMap(([k]) => cols.map(c => rows.filter(r => (r.category || window.DELIVERY_AUDIT_UNSET) === k && r.glmBucket === c).length)));
+  byId('catGlm').innerHTML = cats.length && cols.length ? `
+    <div class="heat-row" style="--cols:${cols.length}"><span></span>${cols.map(c => `<span class="heat-head">${esc(c)}</span>`).join('')}</div>` +
+    cats.map(([k]) => `<div class="heat-row" style="--cols:${cols.length}"><span class="heat-label">${esc(k)}</span>${cols.map(c => {
+      const n = rows.filter(r => (r.category || window.DELIVERY_AUDIT_UNSET) === k && r.glmBucket === c).length;
+      const on = isOn('aCategory', k) && isOn('aGlm', c);
+      return `<button type="button" class="heat-cell${on ? ' is-on' : ''}${n ? '' : ' is-zero'}" style="--c:${catTone(k)};--t:${Math.round((n / cellMax) * 70)}" data-filter="aCategory" data-value="${esc(k)}" data-filter2="aGlm" data-value2="${esc(c)}" data-tip="${esc(k)} at ${esc(c)}: ${fmt(n)}">${fmt(n)}</button>`;
+    }).join('')}</div>`).join('') : '<p class="empty">No tasks match these filters.</p>';
+
+  // Trainer concentration
+  const people = Object.entries(groupBy(rows.filter(r => r.trainer && /@/.test(r.trainer)), r => r.trainer)).map(([k, l]) => [k, l.length]).sort((a, b) => b[1] - a[1]);
+  const top = people.slice(0, 8);
+  const topMax = Math.max(1, ...top.map(t => t[1]));
+  byId('trainerBars').innerHTML = top.length ? top.map(([k, n], i) => bar('aTrainer', k, esc(short(k)), n, topMax, 'var(--violet)', i)).join('') : '<p class="empty">No attributed tasks match.</p>';
+  setText('trainerNote', `${fmt(people.length)} accounts`);
+
+  // Verdicts by batch
+  const order = (a, b) => parseFloat(String(a).replace(/[^\d.]/g, '')) - parseFloat(String(b).replace(/[^\d.]/g, ''));
+  const batches = [...new Set(rows.map(r => r.batch || window.DELIVERY_AUDIT_UNSET))].sort(order);
+  byId('batchStacks').innerHTML = batches.length ? batches.map((batch, i) => {
+    const list = rows.filter(r => (r.batch || window.DELIVERY_AUDIT_UNSET) === batch);
+    const v = verdicts(list);
+    return `<button type="button" class="stack-row${isOn('aBatch', batch) ? ' is-on' : ''}" style="--i:${i}" data-filter="aBatch" data-value="${esc(batch)}">
+      <span class="stack-label">${esc(batch)}</span>${verdictBar(v.acc, v.rej, v.pen, list.length)}<span class="stack-n"><b data-count="${list.length}" data-key="stack:${esc(batch)}">${fmt(list.length)}</b><small>${v.rate == null ? 'pending' : `${v.rate}% acc.`}</small></span>
+    </button>`;
+  }).join('') : '<p class="empty">No tasks match these filters.</p>';
+
+  // Current view strip and the coverage card in the rail
+  const attributed = result.attributed, coverage = shown ? Math.round((attributed / shown) * 100) : 0;
+  const contested = rows.filter(r => r.trainer === 'Contested' || r.ambiguous).length;
+  const unverified = rows.filter(r => r.unverified).length;
+  byId('auditView').innerHTML = `
+    <div class="viewstrip-title"><b>Current view</b><span>Everything on this page follows the filters</span></div>
+    <div class="viewtile"><b data-count="${shown}" data-key="view:shown">${fmt(shown)}</b><span>visible tasks</span></div>
+    <div class="viewtile" style="--c:var(--aqua)"><b data-count="${coverage}" data-kind="pct" data-key="view:cov">${coverage}%</b><span>trainer coverage</span></div>
+    <div class="viewtile" style="--c:var(--aqua)"><b data-count="${result.accepted}" data-key="view:acc">${fmt(result.accepted)}</b><span>accepted</span></div>
+    <div class="viewtile" style="--c:var(--red)"><b data-count="${result.rejected}" data-key="view:rej">${fmt(result.rejected)}</b><span>rejected</span></div>
+    <div class="viewtile" style="--c:var(--yellow)"><b data-count="${result.pending}" data-key="view:pen">${fmt(result.pending)}</b><span>pending</span></div>`;
+  byId('coverageFill').style.setProperty('--pct', coverage);
+  setText('coverageNote', `${fmt(attributed)} of ${fmt(shown)} tasks have a confirmed trainer; ${fmt(contested)} contested, ${fmt(shown - attributed)} unattributed.`);
+  byId('coverageChips').innerHTML = [[contested, 'contested'], [unverified, 'unverified'], [result.trainers, 'trainers']]
+    .map(([n, label]) => `<span class="rail-chip"><b>${fmt(n)}</b> ${label}</span>`).join('');
+  ['catBars', 'glmBars', 'trainerBars', 'batchStacks', 'auditView'].forEach(id => animateCounts(byId(id)));
+}
+
 function renderAudit() {
   if (!audit) return;
   const filters = auditFilters();
@@ -931,78 +1002,24 @@ function renderAudit() {
   }).join('');
   animateCounts(figuresHost);
 
-  // Composition: one dimension at a time. The list is the legend, each row
-  // carrying its count, share, verdict mix and acceptance of decided tasks;
-  // the map colours every task by the same dimension.
-  const lens = auditLens;
-  document.querySelectorAll('#auditLens [data-lens]').forEach(button => button.classList.toggle('is-on', button.dataset.lens === lens));
-  const groups = Object.entries(groupBy(rows, row => lensValue(row, lens))).map(([key, list]) => ({key, list, n: list.length, ...verdicts(list)}));
-  const orderFor = {
-    batch: (a, b) => parseFloat(String(a.key).replace(/[^\d.]/g, '')) - parseFloat(String(b.key).replace(/[^\d.]/g, '')),
-    glm: (a, b) => parseInt(b.key, 10) - parseInt(a.key, 10),
-    acceptance: (a, b) => ['Accepted', 'Rejected', 'Pending'].indexOf(a.key) - ['Accepted', 'Rejected', 'Pending'].indexOf(b.key),
-    difficulty: (a, b) => ['Easier', 'Harder'].indexOf(a.key) - ['Easier', 'Harder'].indexOf(b.key),
-  };
-  groups.sort(orderFor[lens] || ((a, b) => b.n - a.n));
-  const SOURCE_TONES = ['--accent', '--blue', '--aqua', '--violet', '--magenta', '--orange', '--yellow', '--slate', '--red'];
-  const toneFor = key => {
-    if (AUDIT_TONES[lens]?.[key]) return `var(${AUDIT_TONES[lens][key]})`;
-    return `var(${SOURCE_TONES[groups.findIndex(g => g.key === key) % SOURCE_TONES.length]})`;
-  };
-  const lensFilter = AUDIT_LENS_FILTER[lens];
-  const lensTitle = {category: 'By category', acceptance: 'By verdict', batch: 'By batch', glm: 'By GLM score', difficulty: 'By difficulty', type: 'By type', source: 'By attribution'}[lens];
-  const maxN = Math.max(1, ...groups.map(g => g.n));
-  setText('auditListTitle', `${lensTitle} · ${fmt(groups.length)} group${groups.length === 1 ? '' : 's'}`);
-  let previousRate = null;
-  byId('auditList').innerHTML = groups.length ? groups.map((g, index) => {
-    const on = byId(lensFilter)?.value === g.key;
-    const trend = lens === 'batch' && g.rate != null && previousRate != null
-      ? (g.rate > previousRate ? '<em class="trend up" data-tip="Up on the batch before">↑</em>' : g.rate < previousRate ? '<em class="trend down" data-tip="Down on the batch before">↓</em>' : '<em class="trend flat">→</em>')
-      : '';
-    if (lens === 'batch' && g.rate != null) previousRate = g.rate;
-    return `<button type="button" class="dim-row${on ? ' is-on' : ''}" style="--i:${index};--c:${toneFor(g.key)}" data-filter="${lensFilter}" data-value="${esc(g.key)}" data-v="${esc(g.key)}">
-      <span class="dim-swatch"><i></i></span>
-      <span class="dim-label">${lens === 'glm' ? glmDots(g.key) : esc(g.key)}</span>
-      <b class="dim-n" data-count="${g.n}" data-key="dim:${lens}:${esc(g.key)}">${fmt(g.n)}</b>
-      <span class="dim-share"><i style="--pct:${Math.round((g.n / maxN) * 100)}"></i><small>${Math.round((g.n / (shown || 1)) * 100)}%</small></span>
-      ${lens === 'acceptance' ? '<span></span><span></span>' : `${verdictBar(g.acc, g.rej, g.pen, g.n)}<span class="dim-rate">${g.rate == null ? '<small>no decisions</small>' : `<b>${g.rate}%</b>${trend}`}</span>`}
-    </button>`;
-  }).join('') : '<p class="empty">No tasks match these filters.</p>';
-  animateCounts(byId('auditList'));
-
-  const largest = groups[0] && [...groups].sort((a, b) => b.n - a.n)[0];
-  const decided = groups.filter(g => g.rate != null && g.acc + g.rej >= 5);
-  const best = decided.length ? decided.reduce((b, g) => g.rate > b.rate ? g : b) : null;
-  const worst = decided.length > 1 ? decided.reduce((b, g) => g.rate < b.rate ? g : b) : null;
-  setText('auditInsight', !largest ? '' : lens === 'acceptance'
-    ? `${fmt(result.accepted + result.rejected)} of ${fmt(shown)} shown have a decision; ${fmt(result.pending)} are still pending.`
-    : `Largest group ${largest.key} (${fmt(largest.n)}, ${Math.round((largest.n / (shown || 1)) * 100)}%)` +
-      (best ? ` · highest acceptance of decided tasks ${best.key} (${best.rate}%)` : '') +
-      (worst && worst !== best ? ` · lowest ${worst.key} (${worst.rate}%)` : '') + '. Acceptance counts decided tasks only.');
-
-  const rank = key => groups.findIndex(g => g.key === key);
-  const grouped = [...rows].sort((a, b) => rank(lensValue(a, lens)) - rank(lensValue(b, lens)) || String(a.task).localeCompare(String(b.task)));
-  byId('auditWaffle').innerHTML = grouped.map((row, index) => {
-    const v = lensValue(row, lens);
-    return `<i class="sq" role="button" tabindex="0" data-task="${esc(row.task)}" data-v="${esc(v)}" style="--c:${toneFor(v)};--i:${Math.min(index, 60)}" data-tip="${esc(row.task)} · ${esc(row.category || '-')} · ${esc(row.acceptance || '-')} · GLM ${esc(row.glmBucket)} · ${esc(row.difficulty || '-')} · ${esc(row.batch || '-')}"></i>`;
-  }).join('') || '<p class="empty">No tasks match these filters.</p>';
-  setText('auditMapNote', `${fmt(shown)} of ${fmt(total)} · hover a row to light its tasks · click a square to find it below`);
-  fitWaffle();
+  renderDeliveryCharts(rows, result, filters, shown, total);
 
   const built = audit.dataGeneratedAt
     ? new Date(audit.dataGeneratedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})
     : 'unknown';
-  setText('auditStatus', `The Computer Bench task audit: ${fmt(audit.rows.length)} tasks across batches 1 to 4.1, built ${built}. ` +
-    'A different population from Pipeline, judged by the audit workbook rather than by the GCS verdicts, so the two will not agree task for task.');
   setText('auditAudit', `${fmt(shown)} of ${fmt(audit.rows.length)} tasks · ` +
     `${fmt(result.harder)} rated Harder · ${fmt(result.trainers)} trainers · ${result.megabytes.toFixed(0)} MB`);
   renderAuditChips(filters);
   renderBatchTabs(filters);
   renderAuditRows(rows);
+  const plan = [...document.querySelectorAll('#planSummary .kpi')].slice(0, 2).map(k => `${k.querySelector('strong')?.textContent} ${k.querySelector('h3')?.textContent.toLowerCase()}`);
+  setTextIfPresent('planFoldSum', plan.join(' \u00b7 '));
 }
 
 // Batch is the first cut anyone makes here, so it gets tabs of its own with a
 // count and verdict mix each; the other filters still apply to those counts.
+let batchPage = 0;
+const BATCH_PAGE = 5;
 function renderBatchTabs(filters) {
   const host = byId('auditBatchTabs');
   if (!host) return;
@@ -1010,17 +1027,27 @@ function renderBatchTabs(filters) {
   const order = (a, b) => parseFloat(String(a).replace(/[^\d.]/g, '')) - parseFloat(String(b).replace(/[^\d.]/g, ''));
   const batches = [...new Set(auditRows().map(row => row.batch || window.DELIVERY_AUDIT_UNSET))].sort(order);
   const current = byId('aBatch').value;
-  const tab = (value, label, list, index) => {
+  // The chosen batch is always on the page that is showing.
+  const pages = Math.max(1, Math.ceil(batches.length / BATCH_PAGE));
+  if (current && batches.includes(current)) batchPage = Math.floor(batches.indexOf(current) / BATCH_PAGE);
+  batchPage = Math.min(Math.max(0, batchPage), pages - 1);
+  const shownBatches = batches.slice(batchPage * BATCH_PAGE, batchPage * BATCH_PAGE + BATCH_PAGE);
+  const row = (value, label, list, index) => {
     const v = verdicts(list);
-    return `<button type="button" class="batchtab${current === value ? ' is-on' : ''}" style="--i:${index}" data-filter="aBatch" data-value="${esc(value)}" aria-pressed="${current === value}" data-tip="${esc(label)}: ${fmt(list.length)} tasks${v.acc + v.rej ? ` \u00b7 ${v.rate}% of the ${fmt(v.acc + v.rej)} decided were accepted` : ' \u00b7 nothing decided yet'}">
-      <span class="batchtab-name">${esc(label)}</span>
-      <b class="batchtab-n" data-count="${list.length}" data-key="btab:${esc(value)}">${fmt(list.length)}</b>
+    return `<button type="button" class="batchrow${current === value ? ' is-on' : ''}" style="--i:${index}" data-filter="aBatch" data-value="${esc(value)}" aria-pressed="${current === value}">
+      <span class="batchrow-name">${esc(label)}</span>
+      <b class="batchrow-n" data-count="${list.length}" data-key="btab:${esc(value)}">${fmt(list.length)}</b>
+      <span class="batchrow-sub">${v.rate == null ? (list.length ? 'awaiting decisions' : 'no tasks') : `${v.rate}% accepted`}</span>
       ${list.length ? verdictBar(v.acc, v.rej, v.pen, list.length) : '<span class="vbar"></span>'}
-      <span class="batchtab-rate">${v.rate == null ? (list.length ? 'awaiting decisions' : 'no tasks') : `<b>${v.rate}%</b> accepted`}</span>
     </button>`;
   };
-  host.innerHTML = tab('', 'All batches', pool, 0) +
-    batches.map((batch, index) => tab(batch, batch, pool.filter(row => (row.batch || window.DELIVERY_AUDIT_UNSET) === batch), index + 1)).join('');
+  host.innerHTML = row('', 'All batches', pool, 0) +
+    shownBatches.map((batch, index) => row(batch, batch, pool.filter(r => (r.batch || window.DELIVERY_AUDIT_UNSET) === batch), index + 1)).join('');
+  const pager = byId('batchPager');
+  if (pager) {
+    pager.hidden = pages <= 1;
+    pager.innerHTML = `<button type="button" class="ghost" data-bpage="-1" ${batchPage === 0 ? 'disabled' : ''} aria-label="Earlier batches">\u2039</button><span>${fmt(batchPage * BATCH_PAGE + 1)}\u2013${fmt(batchPage * BATCH_PAGE + shownBatches.length)} of ${fmt(batches.length)} batches</span><button type="button" class="ghost" data-bpage="1" ${batchPage >= pages - 1 ? 'disabled' : ''} aria-label="Later batches">\u203a</button>`;
+  }
   animateCounts(host);
 }
 
@@ -3755,8 +3782,24 @@ function wireDelivery() {
     const node = event.target.closest('[data-filter][data-value]');
     if (!node || event.target.closest('a')) return;
     event.preventDefault();
+    if (node.dataset.filter2) {
+      // A heat-map cell sets two filters at once; the same cell again clears both.
+      const a = byId(node.dataset.filter), b = byId(node.dataset.filter2);
+      const on = a.value === node.dataset.value && b.value === node.dataset.value2;
+      b.value = on ? '' : node.dataset.value2;
+      a.value = on ? '' : node.dataset.value;
+      auditPage = 0;
+      a.dispatchEvent(new Event('change', {bubbles: true}));
+      return;
+    }
     setFilter(node.dataset.filter, node.dataset.value);
   };
+  byId('batchPager')?.addEventListener('click', event => {
+    const step = event.target.closest('[data-bpage]');
+    if (!step || step.disabled) return;
+    batchPage += Number(step.dataset.bpage);
+    renderBatchTabs(auditFilters());
+  });
   panel.addEventListener('click', pick);
   panel.addEventListener('keydown', event => { if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-filter][data-value]')) pick(event); });
 
@@ -4115,6 +4158,7 @@ function wireEvents() {
     const button = asWhy(event.target);
     if (!button) return;
     event.stopPropagation();
+    if (button.closest('summary')) event.preventDefault();
     if (openButton === button) hideInfo(); else showInfo(button, true);
   }, true);
   // Chart segments get the same popover, on hover, with their own copy.
