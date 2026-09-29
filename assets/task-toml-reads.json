@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T10:50:58+00:00",
+ "generatedAt": "2026-09-29T11:01:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11487,6 +11487,28 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-my-calendar-costs-everyone-else/b99b69e2bed7990bc14efac5643d7b88933d6150932609d774ac4e7970128327.zip",
    "bytesRead": 152131,
+   "readOn": "2026-09-29"
+  },
+  "ASTR_101358": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101358/6754a86ae2b1a69e6ab40b79872955361db8658ccd82886896f77e36d9f3b576.zip",
+   "bytesRead": 51680,
+   "readOn": "2026-09-29"
+  },
+  "harbor-single-task-z1l7s4cn": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-z1l7s4cn/688919c4d04422f0de9f4dc0158eccff87eae3ad6f7b17450b335b8b7392759d.zip",
+   "bytesRead": 122458,
    "readOn": "2026-09-29"
   }
  }
