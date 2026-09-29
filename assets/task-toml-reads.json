@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T09:41:02+00:00",
+ "generatedAt": "2026-09-29T09:51:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11315,6 +11315,30 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1258-audio-mastering-loudness-audit-db27d1-v1-sna-gmil/16ec6818145b1893f956ddf590941854d4ef4858ed91e3b1da86e707c6b11b8c.zip",
    "bytesRead": 85381,
+   "readOn": "2026-09-29"
+  },
+  "eighteen-bare-addresses-five-names": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/eighteen-bare-addresses-five-names/fd708a9cd150ae2e8f4601dec8549384a55294060db645789ee7b5b6b1c81db6.zip",
+   "bytesRead": 94974,
+   "readOn": "2026-09-29"
+  },
+  "twenty-three-dropped-twenty-one-say-so": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/twenty-three-dropped-twenty-one-say-so/14501510ff5425258b9e03c808b65b2007b83941a26c6c29da30c1d77fbea4f5.zip",
+   "bytesRead": 55741,
    "readOn": "2026-09-29"
   }
  }
