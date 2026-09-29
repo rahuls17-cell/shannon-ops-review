@@ -98,10 +98,10 @@ const infoCopy = {
   consoleCounts: 'The Harbor Console is the source of truth for finalisation. Its counts are shown here as pulled, not recomputed. Our bucket scan lists what is physically stored under tasks/, and that prefix is reorganised and pruned - of 194 folders that left the accepted cohorts overnight, 172 were still in the console and 171 still accepted. So a folder count under-reports accepted work and the console figure is the one to quote. Legacy is the console\u2019s own bucket for anything before 5 September. The console sits behind IAP, so this is a pull through an authenticated browser session rather than a live read.',
   basis: 'The Harbor Console lists one row per submission, and its cards count those rows. This page lists one row per task, taken at its latest submission, because a task resubmitted five times is still one piece of work and counting it five times would overstate delivery and pay. Neither number is wrong: subtract the re-submissions from the console figure and you get this page. The residual few are the console filter starting at a time of day where ours starts at midnight, and anything submitted since the last pull.',
   explorerScope: 'A metadata-only mirror of the delivery prefixes of the GCS bucket: the seven finalisation cohorts and the trainer evaluation records. It holds names, sizes and timestamps, never object contents, and it never writes to the bucket. The whole bucket is far larger - over 22 million objects and 9 million folders - which cannot be mirrored into a static page, so prefixes outside this scope are deliberately absent rather than silently empty.',
-  auditComposition: 'The audited batches broken down four ways. These are the 412 tasks the Computer Bench audit covered - batches 1 to 4.1 - not the whole bucket, so this is a different population from the Pipeline tab and the two will not add up to each other.',
+  auditComposition: 'The delivered batches broken down four ways: batches 1 to 4.1 from the Computer Bench audit, and every later batch from the manifest.json in its Drive folder. That is what was handed over, not the whole bucket, so this is a different population from the Pipeline tab and the two will not add up to each other.',
   auditGlm: 'How many of four OpenCode GLM trials solved the task. 0/4 means no trial solved it and 4/4 means every trial did; a task is a useful benchmark when some trials succeed and some fail, so the middle buckets are the valuable ones. This score exists only for audited tasks - the pipeline itself records no difficulty score.',
-  auditDifficulty: 'The audit workbook rating of Harder or Easier. It comes from the audit, not from Harbor: the pipeline records no difficulty field at all, which is why this rating exists nowhere else on this dashboard.',
-  auditAcceptance: 'Accepted, Rejected or Pending as recorded by the audit workbook, not by the GCS verdicts the Pipeline tab reads. The two are different sources judged at different times, so a task can read Accepted here and Rejected there. The status line above gives the date this snapshot was built.',
+  auditDifficulty: 'Harder or Easier as the delivery recorded it: the audit workbook for batches 1 to 4.1, the batch manifest for every later batch. It does not come from Harbor: the pipeline records no difficulty field at all, which is why this rating exists nowhere else on this dashboard.',
+  auditAcceptance: 'Accepted, Rejected or Pending as recorded by the audit workbook, not by the GCS verdicts the Pipeline tab reads. The two are different sources judged at different times, so a task can read Accepted here and Rejected there. Batches read from Drive manifests are Pending until the client decides on them. The status line above gives the date this snapshot was built.',
   auditSource: 'How the task was attributed to a trainer. Accepted portal and Trainer records are direct. QC run owner is inferred from who ran the QC, and unverified means that inference was not confirmed. Contested means more than one trainer claims it, and Unattributed means nobody could be identified.',
   auditFlags: 'Three quality caveats carried per task: contested owner - more than one trainer claims it; unverified - the attribution was inferred and not confirmed; version dependent - the result changes between task versions.',
   manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. To cut a second round, load the first manifest back in and its tasks are left out.',
@@ -620,7 +620,14 @@ async function loadDeliveryAudit() {
   try {
     const response = await fetch(`assets/delivery-audit.json?t=${Date.now()}`, {cache: 'no-store'});
     if (!response.ok) throw new Error(`asset returned ${response.status}`);
-    audit = window.prepareDeliveryAudit(await response.json());
+    // Batches after 4.1 come from their Drive manifests. Optional: without the
+    // asset the tab still shows the audited batches, and says the rest are missing.
+    let drive = null;
+    try {
+      const dr = await fetch(`assets/drive-deliveries.json?t=${Date.now()}`, {cache: 'no-store'});
+      if (dr.ok) drive = await dr.json();
+    } catch (ignored) { drive = null; }
+    audit = window.prepareDeliveryAudit(await response.json(), drive);
     populateAuditFilters();
     renderAudit();
   } catch (error) {
@@ -820,7 +827,7 @@ function renderAuditRows(rows) {
       <td class="num serial">${fmt(from + index + 1)}</td>
       <td><div class="taskcell"><span class="taskname" title="${esc(row.task)}">${esc(row.task)}</span>
         ${row.flags.map(f => `<span class="flag flag-warn" title="${esc(f)}">${AUDIT_FLAG_CODES[f] || esc(f)}</span>`).join('')}</div></td>
-      <td><span class="batch-chip">${esc(String(row.batch || '-').replace(/^Batch\s*/i, 'B'))}</span></td>
+      <td><span class="batch-chip">${esc(String(row.batch || '-').replace(/^Batch\s*/i, 'B').replace(/^CompanyBench\s*/i, 'CB'))}</span></td>
       <td><span class="cat" style="--c:${auditTone('category', row.category)}"><i></i>${esc(row.category || '-')}</span></td>
       <td>${glmDots(row.glmBucket)}</td>
       <td><span class="diff" style="--c:${auditTone('difficulty', row.difficulty)}">${esc(row.difficulty || '-')}</span></td>
@@ -832,6 +839,8 @@ function renderAuditRows(rows) {
     </tr>
     <tr class="drill" id="${id}" hidden><td colspan="10">
       <dl class="drill-grid">
+        ${row.declaredName ? `<dt>Declared name</dt><dd>${esc(row.declaredName)}</dd>` : ''}
+        ${row.fromManifest ? `<dt>Package</dt><dd><code>${esc(row.packagePath || '-')}</code></dd>` : ''}
         <dt>SHA</dt><dd><code>${esc(row.sha || '-')}</code></dd>
         <dt>Size</dt><dd>${row.size_mb ? `${Number(row.size_mb).toFixed(2)} MB` : '-'}</dd>
         <dt>Versions</dt><dd>${esc(String(row.versions || '1'))}</dd>
@@ -888,6 +897,14 @@ function renderAuditChips(filters) {
 // the batch; everything on the right follows the filters, and every bar,
 // cell and row is a filter of its own.
 const GLM_ORDER = ['0/4', '1/4', '2/4', '3/4', '4/4'];
+// Shannon's own batches first, then CompanyBench, each by number. Sorting on the
+// number alone would put CompanyBench 1 beside Batch 1 as if they were one series.
+const BATCH_SERIES = [/^batch\b/i, /^companybench\b/i];
+function batchOrder(a, b) {
+  const series = v => { const i = BATCH_SERIES.findIndex(re => re.test(String(v))); return i < 0 ? BATCH_SERIES.length : i; };
+  const number = v => parseFloat(String(v).replace(/[^\d.]/g, '')) || 0;
+  return series(a) - series(b) || number(a) - number(b) || String(a).localeCompare(String(b));
+}
 function renderDeliveryCharts(rows, result, filters, shown, total) {
   const short = email => String(email || '').split('@')[0];
   const isOn = (id, value) => byId(id)?.value === value;
@@ -904,6 +921,10 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
 
   // GLM success
   const glm = GLM_ORDER.map(k => [k, rows.filter(r => r.glmBucket === k).length]).filter(([, n], i) => n || i < 5);
+  // A manifest that records no trials still delivered its tasks; count them
+  // rather than let the chart quietly add up to fewer than are shown.
+  const unscored = rows.filter(r => r.glmBucket === window.DELIVERY_AUDIT_UNSET).length;
+  if (unscored) glm.push([window.DELIVERY_AUDIT_UNSET, unscored]);
   const glmMax = Math.max(1, ...glm.map(g => g[1]));
   byId('glmBars').innerHTML = glm.map(([k, n], i) => bar('aGlm', k, glmDots(k), n, glmMax, `var(${AUDIT_TONES.glm[k] || '--slate'})`, i)).join('');
 
@@ -926,7 +947,7 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
   setText('trainerNote', `${fmt(people.length)} accounts`);
 
   // Verdicts by batch
-  const order = (a, b) => parseFloat(String(a).replace(/[^\d.]/g, '')) - parseFloat(String(b).replace(/[^\d.]/g, ''));
+  const order = batchOrder;
   const batches = [...new Set(rows.map(r => r.batch || window.DELIVERY_AUDIT_UNSET))].sort(order);
   byId('batchStacks').innerHTML = batches.length ? batches.map((batch, i) => {
     const list = rows.filter(r => (r.batch || window.DELIVERY_AUDIT_UNSET) === batch);
@@ -964,7 +985,7 @@ function renderAudit() {
 
   // Figures: each one filters on click.
   const figures = [
-    ['Audited tasks', shown, `of ${fmt(total)} in the audit`, 'slate', null, null, total ? Math.round((shown / total) * 100) : 0],
+    ['Delivered tasks', shown, `of ${fmt(total)} delivered`, 'slate', null, null, total ? Math.round((shown / total) * 100) : 0],
     ['Accepted', result.accepted, 'by the audit workbook', 'aqua', 'aAcceptance', 'Accepted', shown ? Math.round((result.accepted / shown) * 100) : 0],
     ['Rejected', result.rejected, 'by the audit workbook', 'red', 'aAcceptance', 'Rejected', shown ? Math.round((result.rejected / shown) * 100) : 0],
     ['Pending', result.pending, 'no decision recorded', 'yellow', 'aAcceptance', 'Pending', shown ? Math.round((result.pending / shown) * 100) : 0],
@@ -976,9 +997,12 @@ function renderAudit() {
   // and the two are different claims.
   const co = cohortIndex ? cohortIndex.counts : null;
   if (co) {
+    // The cohort index checks the audited batches only; the Drive batches are
+    // not in it, so the share is of the audit, not of everything delivered.
+    const audited = audit.auditedCount || total;
     figures.splice(1, 0, ['Verified in the bucket', co.delivered,
-      `of the ${fmt(total)} audited, still a folder in the finalisation prefix`,
-      'green', null, null, total ? Math.round((co.delivered / total) * 100) : 0]);
+      `of the ${fmt(audited)} audited, still a folder in the finalisation prefix`,
+      'green', null, null, audited ? Math.round((co.delivered / audited) * 100) : 0]);
   }
   const figuresHost = byId('auditFigures');
   figuresHost.innerHTML = figures.map(([label, value, note, tone, filter, filterValue, pct], index) => {
@@ -999,8 +1023,18 @@ function renderAudit() {
   const built = audit.dataGeneratedAt
     ? new Date(audit.dataGeneratedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})
     : 'unknown';
+  const drive = audit.drive;
+  const skipped = drive && drive.skipped.length
+    ? ` · ${fmt(drive.skipped.length)} Drive folder${drive.skipped.length === 1 ? '' : 's'} not read: ` +
+      drive.skipped.map(s => `${s.name} (${s.reason})`).join('; ')
+    : '';
+  const fromDrive = drive
+    ? ` · ${fmt(drive.rows)} from ${fmt(drive.batches.length)} Drive manifests, read ` +
+      new Date(drive.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})
+    : ' · Drive manifests not loaded';
   setText('auditAudit', `${fmt(shown)} of ${fmt(audit.rows.length)} tasks · ` +
-    `${fmt(result.harder)} rated Harder · ${fmt(result.trainers)} trainers · ${result.megabytes.toFixed(0)} MB`);
+    `${fmt(result.harder)} rated Harder · ${fmt(result.trainers)} trainers · ${result.megabytes.toFixed(0)} MB` +
+    fromDrive + skipped);
   renderAuditChips(filters);
   renderBatchTabs(filters);
   renderAuditRows(rows);
@@ -1016,7 +1050,7 @@ function renderBatchTabs(filters) {
   const host = byId('auditBatchTabs');
   if (!host) return;
   const pool = window.filterDeliveryAudit(auditRows(), {...filters, batch: ''}).rows;
-  const order = (a, b) => parseFloat(String(a).replace(/[^\d.]/g, '')) - parseFloat(String(b).replace(/[^\d.]/g, ''));
+  const order = batchOrder;
   const batches = [...new Set(auditRows().map(row => row.batch || window.DELIVERY_AUDIT_UNSET))].sort(order);
   const current = byId('aBatch').value;
   // The chosen batch is always on the page that is showing.
@@ -2863,6 +2897,13 @@ function sourceState(source) {
     return payoutLedger
       ? {tone: 'snapshot', label: 'Snapshot', detail: `Ledger built ${new Date(payoutLedger.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}`}
       : {tone: 'warn', label: 'Not loaded', detail: 'The payout ledger did not load in this visit.'};
+  }
+  if (source.id === 'drive-deliveries') {
+    const drive = audit && audit.drive;
+    if (!drive) return {tone: 'warn', label: 'Not loaded', detail: 'The Drive manifests did not load in this visit.'};
+    const skipped = drive.skipped.length ? ` / ${fmt(drive.skipped.length)} folder${drive.skipped.length === 1 ? '' : 's'} skipped` : '';
+    return {tone: drive.skipped.length ? 'warn' : 'snapshot', label: 'Snapshot',
+      detail: `${fmt(drive.batches.length)} batches, ${fmt(drive.rows)} tasks, read ${new Date(drive.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}${skipped}`};
   }
   if (source.id === 'harbor-240') {
     if (!clientAcceptance) return {tone: 'warn', label: 'Not loaded', detail: 'The 240 dashboard could not be read and no snapshot was available.'};

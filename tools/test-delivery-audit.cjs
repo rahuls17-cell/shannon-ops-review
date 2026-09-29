@@ -108,4 +108,46 @@ if (fs.existsSync(asset)) {
     `${live.rows.filter(r => (r.pipelineOwners || []).length > 1).length} left contested`);
   console.log(`  data built ${live.dataGeneratedAt}, status ${live.statusGeneratedAt.slice(0, 10)}`);
 }
+// Drive batches join the audit without replacing any of it.
+{
+  const drive = {
+    generatedAt: '2026-09-29T00:00:00+00:00', batches: [{batch: 'Batch 5.1', tasks: 2}],
+    skipped: [{name: '10-01 Batch 10.1', reason: 'no manifest.json at the top of the folder'}],
+    rows: [
+      {id: 'B51-001', task: 'epsilon', declaredName: 'harbor-name', batch: 'Batch 5.1',
+       category: 'Connector', type: 'Connector', difficulty: 'Easier', glm: 3, bucket: '3/4',
+       trainer: 'Unattributed', source: 'Delivery manifest', acceptance: 'Pending', connectors: []},
+      {id: 'B51-002', task: 'zeta', batch: 'Batch 5.1', category: 'Company Bench Zeta',
+       type: 'Connector', difficulty: null, glm: null, bucket: null,
+       trainer: 'Unattributed', source: 'Delivery manifest', acceptance: 'Pending', connectors: []},
+      // A batch the audit already covers must never be taken from Drive too.
+      {id: 'B1-001', task: 'alpha-again', batch: 'Batch 1', trainer: 'Unattributed', acceptance: 'Pending'},
+    ],
+  };
+  const merged = prepareDeliveryAudit(base, drive);
+  assert.equal(merged.rows.length, base.rows.length + 2, 'Drive rows are added, audited batches are not');
+  assert.equal(merged.auditedCount, base.rows.length);
+  assert.equal(merged.drive.rows, 2);
+  assert.equal(merged.drive.skipped.length, 1, 'skipped folders reach the page');
+  const r = filterDeliveryAudit(merged.rows, {batch: 'Batch 5.1'});
+  assert.equal(r.rows.length, 2);
+  assert.equal(r.pending, 2, 'a manifest records no decision');
+  assert.equal(r.attributed, 0, 'a manifest names no trainer');
+  assert.equal(r.byGlm[UNSET], 1, 'no trials recorded reads as not recorded, not 0/4');
+  assert.equal(filterDeliveryAudit(merged.rows, {search: 'harbor-name'}).rows.length, 1,
+    'search reaches the declared name');
+  assert.equal(prepareDeliveryAudit(base, null).rows.length, base.rows.length,
+    'without the Drive asset the audit still loads');
+}
+
+// The published pair: every Drive batch is new to the audit.
+const driveAsset = path.join(__dirname, '..', 'assets', 'drive-deliveries.json');
+if (fs.existsSync(driveAsset) && fs.existsSync(asset)) {
+  const live = prepareDeliveryAudit(JSON.parse(fs.readFileSync(asset, 'utf8')),
+    JSON.parse(fs.readFileSync(driveAsset, 'utf8')));
+  const all = filterDeliveryAudit(live.rows, {});
+  assert.equal(live.rows.length, live.auditedCount + live.drive.rows, 'no Drive row was dropped');
+  console.log(`with Drive: ${live.rows.length} tasks in ${Object.keys(all.byBatch).length} batches ` +
+    `(${live.auditedCount} audited + ${live.drive.rows} from manifests)`);
+}
 console.log('delivery audit checks passed: attribution, partition, buckets, filters');

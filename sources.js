@@ -121,6 +121,17 @@
       how: 'Fetched live at page load - it is same origin on Pages - and falls back to assets/client-acceptance.json, a counts-only snapshot.',
       views: ['acceptance'],
     },
+    {
+      id: 'drive-deliveries',
+      name: 'Deliveries folder',
+      kind: 'Drive',
+      location: 'one manifest.json per delivered batch folder, from Batch 5.1 and CompanyBench 1',
+      href: 'https://drive.google.com/drive/folders/1_ZA8ckJfXtaGV4OpqZ0a4f5XZbx4brXO',
+      what: 'The manifest shipped with each delivered batch: the receipt of which packages went to the client, with each one\'s hash, size, category, difficulty and GLM trials.',
+      why: 'Batches after 4.1 are recorded nowhere else. The manifest is what was handed over, so it is reproduced rather than corrected.',
+      how: 'tools/build_drive_deliveries.py reads the folder read-only on the VM and writes assets/drive-deliveries.json. Folders that are not delivered batches - shipments, meta, knowledge work, deprecated cuts, shortcuts - are left out and listed with the reason.',
+      views: ['delivery'],
+    },
   ];
 
   function sourcesFor(view) {

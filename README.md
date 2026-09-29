@@ -16,7 +16,7 @@ Static HTML, CSS and vanilla JavaScript. No bundler, no framework, no
 |---|---|---|
 | **Overview** | headline position across all workstreams | workbook + bucket scan |
 | **Payouts** | who was paid, for what | workbook |
-| **Delivery** | plan versus actual, by bench | workbook |
+| **Delivery** | what was delivered, batch by batch; plan versus actual | delivery audit (batches 1–4.1) + Drive manifests (5.1 on, CompanyBench), workbook |
 | **Pipeline** | what the pipeline says about every task | **GCS verdicts** |
 | **Carried over** | pre-cut backlog settled by the current pipeline | GCS verdicts |
 | **Bucket** | file explorer over the storage bucket, metadata only | GCS listing |
