@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T18:51:13+00:00",
+ "generatedAt": "2026-09-29T19:41:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12266,6 +12266,28 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-vendor-notes-nobody-read/2f20ed8e8cc59ce1e4639a9d9d72882be695b707ae3c5e1f3731182033ede06b.zip",
    "bytesRead": 50324,
+   "readOn": "2026-09-29"
+  },
+  "gen-g478-apparel-finishing-qc-audit-20260903T165-65bb21-v2-sna-fhyp": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g478-apparel-finishing-qc-audit-20260903T165-65bb21-v2-sna-fhyp/7c87c2fa39805399055262e727ba0a677ac0fa9adc8b5e3cf32b2e84cdf57c8c.zip",
+   "bytesRead": 96231,
+   "readOn": "2026-09-29"
+  },
+  "the-calendar-i-should-be-booking-on": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-calendar-i-should-be-booking-on/d160b91866e8d69be598ec090cb8e58a05ca5aefd3288df0a2d4da1aa31fe05c.zip",
+   "bytesRead": 54732,
    "readOn": "2026-09-29"
   }
  }
