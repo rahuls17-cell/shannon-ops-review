@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T09:31:00+00:00",
+ "generatedAt": "2026-09-29T09:41:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11295,6 +11295,26 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-places-my-diary-would-not-hand-over/62d768e18622a50665a1a01b045367d3268363910816b28ba2d63cfc1023c31b.zip",
    "bytesRead": 60436,
+   "readOn": "2026-09-29"
+  },
+  "edu-mg-edu-b13-a5-matrix-test-mark-sheet-recount": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-mg-edu-b13-a5-matrix-test-mark-sheet-recount/a7713fb02fa5398fc5c395d87d38ff6ff2e22dee9957f851b74cd1a723f95c05.zip",
+   "bytesRead": 83655,
+   "readOn": "2026-09-29"
+  },
+  "gen-g1258-audio-mastering-loudness-audit-db27d1-v1-sna-gmil": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1258-audio-mastering-loudness-audit-db27d1-v1-sna-gmil/16ec6818145b1893f956ddf590941854d4ef4858ed91e3b1da86e707c6b11b8c.zip",
+   "bytesRead": 85381,
    "readOn": "2026-09-29"
   }
  }
