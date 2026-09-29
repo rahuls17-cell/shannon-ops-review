@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T03:51:03+00:00",
+ "generatedAt": "2026-09-29T04:10:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10698,6 +10698,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-mg-edu-b14-a3-board-chapter-coverage-plan/f1aac3270c95505c9319deb8c3a8bad2af79349c4da8c428b3da7fd269e2e52d.zip",
    "bytesRead": 80704,
+   "readOn": "2026-09-29"
+  },
+  "bus-b43-b6-account-status-timeline-reconstruction": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b43-b6-account-status-timeline-reconstruction/788b8d763b7bb30561546a4d8295dd0a748a6c3f81120cd8163edd8986b914e9.zip",
+   "bytesRead": 71425,
+   "readOn": "2026-09-29"
+  },
+  "two-dropped-three-unsized-one-open": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/two-dropped-three-unsized-one-open/adc8ced750b8385ff6706764ff206990935e0b71182f6439988ec86ee6c11b4a.zip",
+   "bytesRead": 45647,
    "readOn": "2026-09-29"
   }
  }
