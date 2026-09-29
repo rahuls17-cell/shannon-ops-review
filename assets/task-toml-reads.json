@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T11:01:04+00:00",
+ "generatedAt": "2026-09-29T11:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11509,6 +11509,42 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-z1l7s4cn/688919c4d04422f0de9f4dc0158eccff87eae3ad6f7b17450b335b8b7392759d.zip",
    "bytesRead": 122458,
+   "readOn": "2026-09-29"
+  },
+  "honest-completion-figure": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/honest-completion-figure/bfee2fb7466159558c6cdce95d5356858b8cb3c075f1606cf1978b22b62ab9e9.zip",
+   "bytesRead": 51657,
+   "readOn": "2026-09-29"
+  },
+  "how-often-we-shipped": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-often-we-shipped/227c5e0e39ccde3623a8c58ccacad02afb604be0477b248920b970f404217e96.zip",
+   "bytesRead": 43957,
+   "readOn": "2026-09-29"
+  },
+  "the-subdomain-rollout-that-skipped-a-tier": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-subdomain-rollout-that-skipped-a-tier/2182c96872182eafe876b1d48cb8730b36a5637bddf151be4227c7278f7253de.zip",
+   "bytesRead": 65878,
    "readOn": "2026-09-29"
   }
  }
