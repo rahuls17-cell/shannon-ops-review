@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T18:31:07+00:00",
+ "generatedAt": "2026-09-29T18:51:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12242,6 +12242,30 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-b43-h3-methylation-meal-plan-nutrient-ledger/0c93f5a7c370d2fd92c3447d0e7c6a614e8ba3e5b53cb3381ab9a19f655ba523.zip",
    "bytesRead": 71435,
+   "readOn": "2026-09-29"
+  },
+  "the-body-said-otherwise": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-body-said-otherwise/cd753bd6149c87d204e7b086d32d9c09ed4f2246b24c212c780f0a12053aedcf.zip",
+   "bytesRead": 50405,
+   "readOn": "2026-09-29"
+  },
+  "the-vendor-notes-nobody-read": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-vendor-notes-nobody-read/2f20ed8e8cc59ce1e4639a9d9d72882be695b707ae3c5e1f3731182033ede06b.zip",
+   "bytesRead": 50324,
    "readOn": "2026-09-29"
   }
  }
