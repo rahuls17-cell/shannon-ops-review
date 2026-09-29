@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T00:11:03+00:00",
+ "generatedAt": "2026-09-29T00:30:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10448,6 +10448,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc07-b8-admissions-rate-recompute/8d0c8ffaacc5628b43a94b8d00172925cbc5a88e32bce7c8d57b131829887ebb.zip",
    "bytesRead": 117633,
+   "readOn": "2026-09-29"
+  },
+  "bus-b54-b1-outreach-principle-instruction-rollout": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b54-b1-outreach-principle-instruction-rollout/59d7159c2299eb8dbad4f924c61efbd0170df2ff1fb186ce3db2e82b0d810763.zip",
+   "bytesRead": 113220,
+   "readOn": "2026-09-29"
+  },
+  "bus-b59-t1-resort-unit-mix-revenue": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b59-t1-resort-unit-mix-revenue/5ddd71f5a9ef77b856e200e98111c1fe1184202e3cdc371bfe49a0ce49a1a70c.zip",
+   "bytesRead": 71917,
    "readOn": "2026-09-29"
   }
  }
