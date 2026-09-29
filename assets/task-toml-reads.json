@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T22:21:34+00:00",
+ "generatedAt": "2026-09-29T22:31:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12502,6 +12502,26 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-social-posts-filed-twice/3c6621b1ba833e7200bd825fd769d45dc10882e3b2ed9572b985293f687571c6.zip",
    "bytesRead": 49365,
+   "readOn": "2026-09-29"
+  },
+  "gen-g1191-newsletter-referral-reward-recompute-634227-v4-sna-uoby": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1191-newsletter-referral-reward-recompute-634227-v4-sna-uoby/348de15583bdafee37ea0f28b18955ae36efd94c48acbd215e1d194baa54768b.zip",
+   "bytesRead": 85140,
+   "readOn": "2026-09-29"
+  },
+  "gen-g1247-basement-bedroom-egress-compliance-aud-deb580-v1-sna-exvu": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:0f5b26b9518d002b6173fd61daad821fa340635ebfec5bba471013f9ca114579",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1247-basement-bedroom-egress-compliance-aud-deb580-v1-sna-exvu/087e468aca0b38f9124f869c1dac24ec14bc6cca59bf0743706bb98ab9e59b3b.zip",
+   "bytesRead": 95351,
    "readOn": "2026-09-29"
   }
  }
