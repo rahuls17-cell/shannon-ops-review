@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T05:11:12+00:00",
+ "generatedAt": "2026-09-29T05:21:40+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10808,6 +10808,46 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-the-calls-happen/ffc45ddf02e9d00311e6e6af1a9c5b8eb1248fea2f935d8441423f4d63b50406.zip",
    "bytesRead": 43198,
+   "readOn": "2026-09-29"
+  },
+  "bus-b58-t3-distributor-category-grounding": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b58-t3-distributor-category-grounding/4a218f2b6beafaaad67bd4438ae1a9192f5bef02bc7a5170b42a4576dfe0d9a9.zip",
+   "bytesRead": 68163,
+   "readOn": "2026-09-29"
+  },
+  "career-b49-l4-employment-counter-position-board": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/career-b49-l4-employment-counter-position-board/1dfcea20069dcf2953e406fbc33d3931966cc6c0cd4381b329545926b68dcde3.zip",
+   "bytesRead": 100300,
+   "readOn": "2026-09-29"
+  },
+  "code-c310-k2-module-qa-defect-closure-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c310-k2-module-qa-defect-closure-audit/35148ea46f5fea6c3cfa056c0ca6e3216046ab3a4812d290d5d23f1577ea9819.zip",
+   "bytesRead": 85505,
+   "readOn": "2026-09-29"
+  },
+  "code-c352-agent-shakedown-gate-completion-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c352-agent-shakedown-gate-completion-audit/b7bf8cfb3ea63bd537e9b7787253b39940d8c3e68f931e2caee308d36f19d769.zip",
+   "bytesRead": 67765,
    "readOn": "2026-09-29"
   }
  }
