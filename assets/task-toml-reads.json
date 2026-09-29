@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T17:11:04+00:00",
+ "generatedAt": "2026-09-29T17:21:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12093,6 +12093,57 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h25-medication-reconciliation/72df25eaf1342dab15c84e4f5a5e028cfd71c7c34c2ef684e3cb9c11d0bce9e9.zip",
    "bytesRead": 73427,
+   "readOn": "2026-09-29"
+  },
+  "100677-determine-next-step-for-plaid-linked-acco-89fc39-v6": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "docker.io/kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/100677-determine-next-step-for-plaid-linked-acco-89fc39-v6/6add36fd0d643627f7f8e746e6b0651094d6f76e6ebcc4a7f661033a0b884285.zip",
+   "bytesRead": 57876,
+   "readOn": "2026-09-29"
+  },
+  "edu-b21-g18-school-supply-consolidation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b21-g18-school-supply-consolidation/feed47f036569a1248c9846f4be61a4a3062d7dfd36ce122e1dbb271b4d698d8.zip",
+   "bytesRead": 70162,
+   "readOn": "2026-09-29"
+  },
+  "nobody-on-the-calendar-queue": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nobody-on-the-calendar-queue/fcd1a3ba1a99aa11e01767fd13030a3224003a0841006cc9ddd6dc54cf594aea.zip",
+   "bytesRead": 47104,
+   "readOn": "2026-09-29"
+  },
+  "sci-b50-s3-comparative-economics-claim-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-b50-s3-comparative-economics-claim-audit/14cc2285ae88a1bd99874037f2f5226b4436969c8e1321efc877b4edaffade47.zip",
+   "bytesRead": 66926,
    "readOn": "2026-09-29"
   }
  }
