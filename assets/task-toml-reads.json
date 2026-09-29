@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T14:41:00+00:00",
+ "generatedAt": "2026-09-29T14:50:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11803,6 +11803,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t6-tool-exception-intake-triage/b5fc066278bad0701096a7bad41508abafc24e7c710261c04fa8c47f146c9f8d.zip",
    "bytesRead": 89543,
+   "readOn": "2026-09-29"
+  },
+  "gen-g882-church-partner-flyer-brand-audit-v1-f897d3-v4-sna-rbje": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g882-church-partner-flyer-brand-audit-v1-f897d3-v4-sna-rbje/37058839980e8d5d9d0a0dcbca106cbcaa4d846786af543ae3d2742187fcb577.zip",
+   "bytesRead": 82803,
    "readOn": "2026-09-29"
   }
  }
