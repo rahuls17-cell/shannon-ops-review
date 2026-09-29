@@ -383,25 +383,18 @@
                 <div id="batchPager" class="batchpager" hidden></div>
               </section>
               <section class="rail-card">
-                <h2>Trainer coverage</h2>
-                <div class="coverbar"><i id="coverageFill" style="--pct:0"></i></div>
-                <p class="rail-note" id="coverageNote"></p>
-                <div class="rail-chips" id="coverageChips"></div>
+                <h2>GLM success</h2>
+                <p class="rail-note">How many of four trial runs solved the task. Click a score to filter.</p>
+                <div id="glmBars" class="hbars is-rail"></div>
               </section>
             </aside>
             <div class="delivery-main">
               <div class="viewstrip" id="auditView"></div>
               <div id="auditFigures" class="status-grid"></div>
-              <div class="chart-duo">
-                <section class="panel chartcard">
-                  <header class="chart-head"><div><h2>Category mix</h2><p class="chart-sub">Click a category to filter</p></div><span class="chart-side" id="catNote"></span></header>
-                  <div id="catBars" class="hbars"></div>
-                </section>
-                <section class="panel chartcard">
-                  <header class="chart-head"><div><h2>GLM success across four trials</h2><p class="chart-sub">How many of four trial runs solved the task</p></div><span class="chart-side">click a score to filter</span></header>
-                  <div id="glmBars" class="hbars"></div>
-                </section>
-              </div>
+              <section class="panel chartcard">
+                <header class="chart-head"><div><h2>Category mix</h2><p class="chart-sub">Click a category to filter</p></div><span class="chart-side" id="catNote"></span></header>
+                <div id="catBars" class="hbars is-split"></div>
+              </section>
               <div class="chart-duo">
                 <section class="panel chartcard">
                   <header class="chart-head"><div><h2>Category &times; GLM</h2><p class="chart-sub">Click a cell to filter on both</p></div></header>

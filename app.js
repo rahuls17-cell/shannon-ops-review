@@ -682,7 +682,8 @@ const DOMAIN_TONES = {
 };
 
 const AUDIT_TONES = {
-  category: {Code: '--blue', 'Other/unclassified': '--slate', General: '--violet', Connector: '--aqua', Health: '--magenta', Law: '--orange', Finance: '--yellow'},
+  category: {Code: '--blue', 'Other/unclassified': '--slate', General: '--violet', Connector: '--aqua', Health: '--magenta', Law: '--orange', Finance: '--yellow',
+             'Real Connector': '--green', Synthetic: '--accent', 'Company Bench Zeta': '--violet', CompanyBench: '--violet', Legal: '--orange', Engineering: '--blue', Other: '--slate'},
   acceptance: {Accepted: '--aqua', Rejected: '--red', Pending: '--yellow'},
   glm: {'0/4': '--slate', '1/4': '--blue', '2/4': '--violet', '3/4': '--accent', '4/4': '--aqua'},
   difficulty: {Easier: '--aqua', Harder: '--orange'},
@@ -889,7 +890,7 @@ function renderAuditChips(filters) {
   byId('auditChips').innerHTML = active.length
     ? active.map(([id, value]) => `<button type="button" class="chipbtn" data-clear="${id}" title="Remove this filter"><span>${labels[id]}</span>${esc(id === 'aFlagged' ? (value === 'yes' ? 'Flagged' : 'Not flagged') : value)}<i aria-hidden="true">×</i></button>`).join('')
       + `<button type="button" class="chipbtn is-clear" data-clear="aReset-all">Clear all</button>`
-    : '<span class="chips-empty">No filters applied · click any figure, square or bar above to filter</span>';
+    : '';
 }
 
 
@@ -897,6 +898,15 @@ function renderAuditChips(filters) {
 // the batch; everything on the right follows the filters, and every bar,
 // cell and row is a filter of its own.
 const GLM_ORDER = ['0/4', '1/4', '2/4', '3/4', '4/4'];
+// A manifest category such as "Non-Connector · Health" takes the tone of its
+// last part, so the same domain reads the same colour whichever batch named it.
+const categoryTone = key => {
+  const table = AUDIT_TONES.category;
+  const tail = String(key).split('\u00b7').pop().trim();
+  const hit = table[key] || table[tail] || Object.keys(table).find(k => tail.toLowerCase().startsWith(k.toLowerCase()));
+  return `var(${hit ? (table[hit] || hit) : '--slate'})`;
+};
+
 // Shannon's own batches first, then CompanyBench, each by number. Sorting on the
 // number alone would put CompanyBench 1 beside Batch 1 as if they were one series.
 const BATCH_SERIES = [/^batch\b/i, /^companybench\b/i];
@@ -915,9 +925,10 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
   // Category mix
   const cats = Object.entries(groupBy(rows, r => r.category || window.DELIVERY_AUDIT_UNSET)).map(([k, l]) => [k, l.length]).sort((a, b) => b[1] - a[1]);
   const catMax = Math.max(1, ...cats.map(c => c[1]));
-  const catTone = k => `var(${AUDIT_TONES.category[k] || '--slate'})`;
+  const catTone = categoryTone;
+  // Two columns, filled row by row, so the ranking reads left to right.
   byId('catBars').innerHTML = cats.length ? cats.map(([k, n], i) => bar('aCategory', k, esc(k), n, catMax, catTone(k), i)).join('') : '<p class="empty">No tasks match these filters.</p>';
-  setText('catNote', filters.category ? `filtered to ${filters.category}` : `${fmt(shown)} tasks`);
+  setText('catNote', filters.category ? `filtered to ${filters.category}` : `${fmt(cats.length)} categories \u00b7 ${fmt(shown)} tasks`);
 
   // GLM success
   const glm = GLM_ORDER.map(k => [k, rows.filter(r => r.glmBucket === k).length]).filter(([, n], i) => n || i < 5);
@@ -941,7 +952,8 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
 
   // Trainer concentration
   const people = Object.entries(groupBy(rows.filter(r => r.trainer && /@/.test(r.trainer)), r => r.trainer)).map(([k, l]) => [k, l.length]).sort((a, b) => b[1] - a[1]);
-  const top = people.slice(0, 8);
+  // As many accounts as the heat map has rows, so the two cards stay level.
+  const top = people.slice(0, Math.max(8, cats.length));
   const topMax = Math.max(1, ...top.map(t => t[1]));
   byId('trainerBars').innerHTML = top.length ? top.map(([k, n], i) => bar('aTrainer', k, esc(short(k)), n, topMax, 'var(--violet)', i)).join('') : '<p class="empty">No attributed tasks match.</p>';
   setText('trainerNote', `${fmt(people.length)} accounts`);
@@ -959,8 +971,6 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
 
   // Current view strip and the coverage card in the rail
   const attributed = result.attributed, coverage = shown ? Math.round((attributed / shown) * 100) : 0;
-  const contested = rows.filter(r => r.trainer === 'Contested' || r.ambiguous).length;
-  const unverified = rows.filter(r => r.unverified).length;
   byId('auditView').innerHTML = `
     <div class="viewstrip-title"><b>Current view</b><span>Everything on this page follows the filters</span></div>
     <div class="viewtile"><b data-count="${shown}" data-key="view:shown">${fmt(shown)}</b><span>visible tasks</span></div>
@@ -968,10 +978,6 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
     <div class="viewtile" style="--c:var(--aqua)"><b data-count="${result.accepted}" data-key="view:acc">${fmt(result.accepted)}</b><span>accepted</span></div>
     <div class="viewtile" style="--c:var(--red)"><b data-count="${result.rejected}" data-key="view:rej">${fmt(result.rejected)}</b><span>rejected</span></div>
     <div class="viewtile" style="--c:var(--yellow)"><b data-count="${result.pending}" data-key="view:pen">${fmt(result.pending)}</b><span>pending</span></div>`;
-  byId('coverageFill').style.setProperty('--pct', coverage);
-  setText('coverageNote', `${fmt(attributed)} of ${fmt(shown)} tasks have a confirmed trainer; ${fmt(contested)} contested, ${fmt(shown - attributed)} unattributed.`);
-  byId('coverageChips').innerHTML = [[contested, 'contested'], [unverified, 'unverified'], [result.trainers, 'trainers']]
-    .map(([n, label]) => `<span class="rail-chip"><b>${fmt(n)}</b> ${label}</span>`).join('');
   ['catBars', 'glmBars', 'trainerBars', 'batchStacks', 'auditView'].forEach(id => animateCounts(byId(id)));
 }
 
@@ -1032,9 +1038,7 @@ function renderAudit() {
     ? ` · ${fmt(drive.rows)} from ${fmt(drive.batches.length)} Drive manifests, read ` +
       new Date(drive.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})
     : ' · Drive manifests not loaded';
-  setText('auditAudit', `${fmt(shown)} of ${fmt(audit.rows.length)} tasks · ` +
-    `${fmt(result.harder)} rated Harder · ${fmt(result.trainers)} trainers · ${result.megabytes.toFixed(0)} MB` +
-    fromDrive + skipped);
+  setText('auditAudit', `${fmt(shown)} of ${fmt(audit.rows.length)} tasks`);
   renderAuditChips(filters);
   renderBatchTabs(filters);
   renderAuditRows(rows);
