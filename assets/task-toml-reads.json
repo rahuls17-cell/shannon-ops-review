@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T07:20:58+00:00",
+ "generatedAt": "2026-09-29T07:30:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11081,6 +11081,16 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t9-water-system-fitting-takeoff/b809f8572f6c608880c8e64bf0ccab930ba41df025e9cea8d29795a60013b68c.zip",
    "bytesRead": 72389,
+   "readOn": "2026-09-29"
+  },
+  "bus-b55-b9-company-profile-lineage-claims": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b55-b9-company-profile-lineage-claims/4ef15731c76e4203a75a74a16268dfe32b76f1f12ef6fa58bd2b0082a27a6a0d.zip",
+   "bytesRead": 72571,
    "readOn": "2026-09-29"
   }
  }
