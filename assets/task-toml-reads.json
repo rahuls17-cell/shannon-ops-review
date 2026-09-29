@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T00:40:57+00:00",
+ "generatedAt": "2026-09-29T00:50:57+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10500,6 +10500,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-emails-hiding-in-support/63c0add7d5342af480aa102787beb3805eaf515536ef72f167ef3c3b2779f43c.zip",
    "bytesRead": 52427,
+   "readOn": "2026-09-29"
+  },
+  "gen-g355-quickref-table-integrity-audit-v3-bfa808-v1-sna-znno": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:9c47360a2a0355e2da18516d0b1c2126ec22c195d2185e97347c9d98398c5bef",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g355-quickref-table-integrity-audit-v3-bfa808-v1-sna-znno/666eef14f1f41f1079eba6ed4e8e399f9131b5704dbad561a55d445d6616e54c.zip",
+   "bytesRead": 91211,
    "readOn": "2026-09-29"
   }
  }
