@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T13:51:00+00:00",
+ "generatedAt": "2026-09-29T14:01:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11753,6 +11753,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h80-trial-monitoring-visit-cadence-audit-d3fbb5-v1-sna-jwvu/05f8bc6c3310bfb546a285c0605a1659ffafd7da78b340c30351691fb78459a9.zip",
    "bytesRead": 84614,
+   "readOn": "2026-09-29"
+  },
+  "bus-b66-b1-podcast-sponsor-entitlement-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b66-b1-podcast-sponsor-entitlement-audit/118013a0d929331ed7c6b94eddc31e3dab8874f1f438a6aaa748ce8031c64b11.zip",
+   "bytesRead": 105706,
+   "readOn": "2026-09-29"
+  },
+  "writing-b49-l6-cohort-consent-clause-review": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-b49-l6-cohort-consent-clause-review/368a6fe6062db9995fba7b5c3d4a4834eb5fe0bb4dd9ca3eed841c24ee7875a7.zip",
+   "bytesRead": 96059,
    "readOn": "2026-09-29"
   }
  }
