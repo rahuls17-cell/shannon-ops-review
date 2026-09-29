@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T12:50:59+00:00",
+ "generatedAt": "2026-09-29T13:11:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11679,6 +11679,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b21-g13-ib-reading-reflection-log/23971550e4ce8dcd409d05d1b6d19b294c07f45ce33af3f1647c7d1392378f65.zip",
    "bytesRead": 81622,
+   "readOn": "2026-09-29"
+  },
+  "labels-cincinnati-keeps-reusing": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/labels-cincinnati-keeps-reusing/aa7bee00acf79a1802497b46330f208e7bf7cef07166c9b0089700a8fbeceedd.zip",
+   "bytesRead": 46422,
    "readOn": "2026-09-29"
   }
  }
