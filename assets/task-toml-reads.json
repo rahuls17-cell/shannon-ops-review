@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T08:00:58+00:00",
+ "generatedAt": "2026-09-29T08:10:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11167,6 +11167,40 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/three-unopened-threads-that-moved-on/1227a75b788f486f7d5bcd53ee36de7864dc9c7b3eeca21ace7e90557759a850.zip",
    "bytesRead": 56086,
+   "readOn": "2026-09-29"
+  },
+  "edu-mg-edu-b14-a7-listening-key-synonym-marking": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-mg-edu-b14-a7-listening-key-synonym-marking/dc1722262e02c8ee34b0971893841fe1a646213747b8c1b844416985adabe879.zip",
+   "bytesRead": 80462,
+   "readOn": "2026-09-29"
+  },
+  "the-decisions-nobody-wrote-down": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-decisions-nobody-wrote-down/6aad06bfb84baeaee6094fdcbcf02e05816078881d27b747c29d5cafcd39c99c.zip",
+   "bytesRead": 47029,
+   "readOn": "2026-09-29"
+  },
+  "two-of-eighteen-carry-a-file": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/two-of-eighteen-carry-a-file/91fc0599bcbd577b4d1101fa355435d5e1dc7b34102ab45d0534b2d353b9d517.zip",
+   "bytesRead": 48907,
    "readOn": "2026-09-29"
   }
  }
