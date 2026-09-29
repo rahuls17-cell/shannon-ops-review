@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T05:21:40+00:00",
+ "generatedAt": "2026-09-29T05:30:59+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10848,6 +10848,38 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c352-agent-shakedown-gate-completion-audit/b7bf8cfb3ea63bd537e9b7787253b39940d8c3e68f931e2caee308d36f19d769.zip",
    "bytesRead": 67765,
+   "readOn": "2026-09-29"
+  },
+  "ASTR_101459": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101459/0aae7d6b0cf72681a6c4653d3e8a2c6e3cb99017fca575bfdd05c8cb90ba35b1.zip",
+   "bytesRead": 42237,
+   "readOn": "2026-09-29"
+  },
+  "bus-b23-b17-privacy-film-project-selection": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b23-b17-privacy-film-project-selection/de1461a05c0d3614850bb85090a572ccbba0921cadf5f95b1cd9470940a01c6f.zip",
+   "bytesRead": 121814,
+   "readOn": "2026-09-29"
+  },
+  "bus-b59-t3-research-skill-sequence-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b59-t3-research-skill-sequence-audit/eb7ce5f3dfd036c5e2f9dc1d87f9a1c038302b3893267c7055e9056780c5579c.zip",
+   "bytesRead": 73567,
    "readOn": "2026-09-29"
   }
  }
