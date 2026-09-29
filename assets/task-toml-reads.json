@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T09:51:02+00:00",
+ "generatedAt": "2026-09-29T10:01:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11339,6 +11339,60 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/twenty-three-dropped-twenty-one-say-so/14501510ff5425258b9e03c808b65b2007b83941a26c6c29da30c1d77fbea4f5.zip",
    "bytesRead": 55741,
+   "readOn": "2026-09-29"
+  },
+  "edu-sc09-a8-vti-task-000242": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sc09-a8-vti-task-000242/873a16ab0d52295b80256aeeebb456c4f695621ab1e5fde2d00deaebd30333d7.zip",
+   "bytesRead": 69887,
+   "readOn": "2026-09-29"
+  },
+  "gen-g603-curbside-cart-conversion-verification-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g603-curbside-cart-conversion-verification-audit/c65fd8f08a59ba11d455cc1851f37dda0e1e48fd32fe8e3ceeb2f1e6cc5bc391.zip",
+   "bytesRead": 68632,
+   "readOn": "2026-09-29"
+  },
+  "tech-mg-it-b9-a9-assistant-platform-database-explainer": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b9-a9-assistant-platform-database-explainer/6f4b991d45c4d5913967e608219e1691440cb22dcabeb7286a2a954943727185.zip",
+   "bytesRead": 97100,
+   "readOn": "2026-09-29"
+  },
+  "the-finance-marts-running-on-broken-inputs": {
+   "connector": true,
+   "services": [
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-finance-marts-running-on-broken-inputs/f38e3bc486b0e4fb906f9c5b571124acd1bb5ba008320f27a83f2bc499153227.zip",
+   "bytesRead": 50931,
+   "readOn": "2026-09-29"
+  },
+  "the-standup-that-cloned-itself": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-standup-that-cloned-itself/470a0b2b8a0cd79954f1753291d0394ee08468a4fcad6505399361fc8d4c8837.zip",
+   "bytesRead": 55829,
    "readOn": "2026-09-29"
   }
  }
