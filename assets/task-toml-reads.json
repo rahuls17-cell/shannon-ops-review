@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T16:51:04+00:00",
+ "generatedAt": "2026-09-29T17:01:14+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12037,6 +12037,30 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b108-b17-entry-level-resume-profile-normalization/cbdc36969a5a120e9c107175eeff92723126ee3e5cf324db03a8e58cd196753c.zip",
    "bytesRead": 75895,
+   "readOn": "2026-09-29"
+  },
+  "ASTR_101567": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101567/2ff3537d9521ce60628fc8db52411e9f991a22db84f26c4273e631626bad6574.zip",
+   "bytesRead": 41459,
+   "readOn": "2026-09-29"
+  },
+  "who-is-still-talking-in-here": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-is-still-talking-in-here/4e8d3313270475d61f181a1b5772a5e4a4b4ca937a052c51a861a53d8ea84a2d.zip",
+   "bytesRead": 48819,
    "readOn": "2026-09-29"
   }
  }
