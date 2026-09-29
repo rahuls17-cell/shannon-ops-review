@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T16:21:06+00:00",
+ "generatedAt": "2026-09-29T16:31:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11939,6 +11939,38 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/workspace-access-governance-roster/375e3e300bb12dea4f4c19dc75b29ec9be204ad7d2108b18b78cb156ea61dfd8.zip",
    "bytesRead": 51963,
+   "readOn": "2026-09-29"
+  },
+  "bus-b54-b7-service-journey-inventory-normalisation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b54-b7-service-journey-inventory-normalisation/eab5710f2d2fea9f65437e426ec26a478be9ddfc4a0726a0958a04f01edae08f.zip",
+   "bytesRead": 116197,
+   "readOn": "2026-09-29"
+  },
+  "gen-g700-data-platform-decision-signoff-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g700-data-platform-decision-signoff-audit/c11148f9460f2412e8e0c7567e57edd1295b2b24388ca2946e0aa12f17d58132.zip",
+   "bytesRead": 71562,
+   "readOn": "2026-09-29"
+  },
+  "the-quarter-nobody-asked-for": {
+   "connector": true,
+   "services": [
+    "microsoft-teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-quarter-nobody-asked-for/00b90ad99e6ebd0f040975bd69b0f417a71819378b8e81697c663d1641e7a6ca.zip",
+   "bytesRead": 50307,
    "readOn": "2026-09-29"
   }
  }
