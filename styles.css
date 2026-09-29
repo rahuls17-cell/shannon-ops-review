@@ -2587,3 +2587,22 @@ button.stat[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 18%, 
 .hbars.is-rail .hbar-track { height: 9px; }
 .hbars.is-rail .hbar-n { font-size: 12px; }
 .inventory .chips-row:has(.chips:empty) { display: none; }
+
+/* ---------- Delivery: export button and table colour ---------- */
+.export-btn { background: var(--green); border-color: var(--green); color: #fff; font-weight: 600; box-shadow: 0 4px 12px color-mix(in srgb, var(--green) 35%, transparent); }
+.export-btn:hover { background: var(--green-ink); border-color: var(--green-ink); color: #fff; }
+.export-btn::before { content: "\2913"; margin-right: 6px; font-size: 13px; }
+.inventory .grid thead th { background: color-mix(in srgb, var(--accent) 7%, var(--panel-2)); color: var(--ink); }
+.inventory .grid tbody tr.drill-head:nth-child(4n+1) td { background: color-mix(in srgb, var(--accent) 3%, var(--panel)); }
+.inventory .grid tbody tr.drill-head:hover td { background: color-mix(in srgb, var(--accent) 8%, var(--panel)); }
+.batch-chip[data-series="batch"] { background: color-mix(in srgb, var(--blue) 14%, var(--panel)); color: var(--blue-ink); }
+.batch-chip[data-series="company"] { background: color-mix(in srgb, var(--violet) 14%, var(--panel)); color: var(--violet-ink); }
+.cat { padding: 2px 8px 2px 6px; border-radius: 999px; background: color-mix(in srgb, var(--c) 10%, var(--panel)); color: color-mix(in srgb, var(--c) 70%, var(--ink)); font-weight: 600; }
+.cat i { box-shadow: none; }
+.verdict { display: inline-block; padding: 2px 9px; border-radius: 999px; font-size: 11px; font-weight: 650; }
+.verdict-accepted { background: color-mix(in srgb, var(--green) 14%, var(--panel)); color: var(--green-ink); }
+.verdict-rejected { background: color-mix(in srgb, var(--red) 12%, var(--panel)); color: var(--red-ink); }
+.verdict-pending { background: color-mix(in srgb, var(--yellow) 16%, var(--panel)); color: var(--yellow-ink); }
+.verdict-none { color: var(--muted); }
+.mb i::after { background: linear-gradient(90deg, var(--aqua-ink), var(--aqua)); }
+.glm-dots i.is-on { background: var(--violet); }

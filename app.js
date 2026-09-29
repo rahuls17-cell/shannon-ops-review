@@ -782,7 +782,7 @@ function restoreSegment() {
 let auditLens = 'category';
 let auditSort = {key: 'task', dir: 1};
 
-const auditTone = (lens, key) => `var(${(AUDIT_TONES[lens] || {})[key] || '--slate'})`;
+const auditTone = (lens, key) => (lens === 'category' ? categoryTone(key) : `var(${(AUDIT_TONES[lens] || {})[key] || '--slate'})`);
 const lensValue = (row, lens) => lens === 'glm' ? row.glmBucket : (row[lens] || window.DELIVERY_AUDIT_UNSET);
 const verdictBar = (acc, rej, pen, total) => `<span class="vbar" aria-hidden="true">
   ${acc ? `<i class="is-accepted" style="flex:${acc}" data-tip="Accepted ${fmt(acc)} (${Math.round((acc / total) * 100)}%)"></i>` : ''}
@@ -800,14 +800,18 @@ const glmDots = bucket => {
 };
 const initials = email => String(email || '').split('@')[0].split(/[._-]/).filter(Boolean).slice(0, 2).map(part => part[0].toUpperCase()).join('') || '?';
 
-function renderAuditRows(rows) {
-  const size = pageSize('auditPageSize');
-  const sorted = [...rows].sort((a, b) => {
+// The table's current sort, shared with the export so the file reads like the page.
+function sortedAuditRows(rows) {
+  return [...rows].sort((a, b) => {
     const key = auditSort.key;
     const va = key === 'glm' ? Number(String(a.glmBucket).split('/')[0]) : key === 'size_mb' ? Number(a.size_mb) || 0 : String(a[key] || '');
     const vb = key === 'glm' ? Number(String(b.glmBucket).split('/')[0]) : key === 'size_mb' ? Number(b.size_mb) || 0 : String(b[key] || '');
     return (va < vb ? -1 : va > vb ? 1 : 0) * auditSort.dir || String(a.task).localeCompare(String(b.task));
   });
+}
+function renderAuditRows(rows) {
+  const size = pageSize('auditPageSize');
+  const sorted = sortedAuditRows(rows);
   const pages = Math.max(Math.ceil(sorted.length / size), 1);
   auditPage = Math.min(auditPage, pages - 1);
   const from = auditPage * size;
@@ -828,17 +832,14 @@ function renderAuditRows(rows) {
       <td class="num serial">${fmt(from + index + 1)}</td>
       <td><div class="taskcell"><span class="taskname" title="${esc(row.task)}">${esc(row.task)}</span>
         ${row.flags.map(f => `<span class="flag flag-warn" title="${esc(f)}">${AUDIT_FLAG_CODES[f] || esc(f)}</span>`).join('')}</div></td>
-      <td><span class="batch-chip">${esc(String(row.batch || '-').replace(/^Batch\s*/i, 'B').replace(/^CompanyBench\s*/i, 'CB'))}</span></td>
+      <td><span class="batch-chip" data-series="${/^companybench/i.test(String(row.batch)) ? 'company' : 'batch'}">${esc(String(row.batch || '-').replace(/^Batch\s*/i, 'B').replace(/^CompanyBench\s*/i, 'CB'))}</span></td>
       <td><span class="cat" style="--c:${auditTone('category', row.category)}"><i></i>${esc(row.category || '-')}</span></td>
       <td>${glmDots(row.glmBucket)}</td>
       <td><span class="diff" style="--c:${auditTone('difficulty', row.difficulty)}">${esc(row.difficulty || '-')}</span></td>
-      <td>${row.trainer
-        ? `<span class="who"><i class="avatar">${esc(initials(row.trainer))}</i><span>${esc(row.trainer)}</span>${row.resolvedFromPipeline ? '<em class="chip" title="The audit workbook left this unattributed; this owner is the one the GCS verdicts record for the task.">from verdicts</em>' : ''}</span>`
-        : '<span class="who is-none"><i class="avatar">?</i><span>Unattributed</span></span>'}</td>
-      <td><span class="state state-${esc(String(row.acceptance || '').toLowerCase())}">${esc(row.acceptance || '-')}</span></td>
+      <td><span class="verdict verdict-${esc(String(row.acceptance || 'none').toLowerCase())}">${esc(row.acceptance || '-')}</span></td>
       <td class="num"><span class="mb"><i style="--pct:${Math.round(((Number(row.size_mb) || 0) / maxMb) * 100)}"></i>${row.size_mb ? Number(row.size_mb).toFixed(1) : '-'}</span></td>
     </tr>
-    <tr class="drill" id="${id}" hidden><td colspan="10">
+    <tr class="drill" id="${id}" hidden><td colspan="9">
       <dl class="drill-grid">
         ${row.declaredName ? `<dt>Declared name</dt><dd>${esc(row.declaredName)}</dd>` : ''}
         ${row.fromManifest ? `<dt>Package</dt><dd><code>${esc(row.packagePath || '-')}</code></dd>` : ''}
@@ -854,7 +855,7 @@ function renderAuditRows(rows) {
         <dt>Feedback</dt><dd>${row.feedback_url ? `<a href="${esc(row.feedback_url)}" target="_blank" rel="noopener">Open the feedback sheet</a>` : '-'}</dd>
       </dl>
     </td></tr>`;
-  }).join('') : '<tr><td colspan="10" class="empty">No tasks match these filters.</td></tr>';
+  }).join('') : '<tr><td colspan="9" class="empty">No tasks match these filters.</td></tr>';
   setText('auditPage', `${fmt(sorted.length ? from + 1 : 0)}–${fmt(from + slice.length)} of ${fmt(sorted.length)}`);
   byId('auditPrev').disabled = auditPage === 0;
   byId('auditNext').disabled = auditPage >= pages - 1;
@@ -2201,6 +2202,34 @@ function renderExportButton(result) {
     ? `Download the ${fmt(count)} ${result && result.collapsed ? 'tasks' : 'rows'} `
       + 'currently shown, with the drill-down evidence as columns'
     : 'Nothing matches these filters';
+}
+
+// The Delivery export writes the tasks the filters currently show, in the
+// table's own order, one row per task.
+const AUDIT_CSV_COLUMNS = [
+  ['task', r => r.task], ['batch', r => r.batch], ['category', r => r.category], ['type', r => r.type],
+  ['glm', r => r.glmBucket], ['difficulty', r => r.difficulty], ['priority', r => r.priority],
+  ['acceptance', r => r.acceptance], ['trainer', r => r.trainer], ['source', r => r.source],
+  ['sha', r => r.sha], ['size_mb', r => r.size_mb], ['versions', r => r.versions],
+  ['connectors', r => (r.connectorList || []).map(c => (typeof c === 'string' ? c : c.name || c.service || c.id || ''))],
+  ['flags', r => r.flags], ['feedback_url', r => r.feedback_url],
+];
+function downloadAuditCsv() {
+  if (!audit) return;
+  const rows = sortedAuditRows(window.filterDeliveryAudit(auditRows(), auditFilters()).rows);
+  if (!rows.length) return;
+  const lines = [AUDIT_CSV_COLUMNS.map(([name]) => name).join(',')]
+    .concat(rows.map(row => AUDIT_CSV_COLUMNS.map(([, read]) => window.csvCell(read(row))).join(',')));
+  const stamp = new Date().toISOString().slice(0, 19).replace('T', '-').replace(/:/g, '');
+  const blob = new Blob(['\ufeff' + lines.join('\r\n') + '\r\n'], {type: 'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `delivery-${rows.length}-${stamp}.csv`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 function downloadTruthCsv() {
@@ -3967,6 +3996,7 @@ function wireEvents() {
   TRUTH_FILTERS.forEach(id => byId(id)?.addEventListener('change', () => { truthPage = 0; renderTruth(); }));
   byId('tSearch')?.addEventListener('input', () => { truthPage = 0; renderTruth(); });
   byId('tExport')?.addEventListener('click', downloadTruthCsv);
+  ['aExport', 'aExportTop'].forEach(id => byId(id)?.addEventListener('click', downloadAuditCsv));
   byId('view-pipeline')?.addEventListener('click', event => {
     const pick = event.target.closest('.fchip[data-tfilter]');
     if (pick) {
