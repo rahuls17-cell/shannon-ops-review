@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T12:11:00+00:00",
+ "generatedAt": "2026-09-29T12:31:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11649,6 +11649,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b53-t10-app-advert-claim-diligence/6f3631a6da232b3956d78f800ebad9b64aeca78f4de6fbb05eef757c4dd79055.zip",
    "bytesRead": 68418,
+   "readOn": "2026-09-29"
+  },
+  "bus-b67-b8-grant-research-project-schedule": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b67-b8-grant-research-project-schedule/3f20927a878258fe173c28b903ba79707560e1d5ee8846ac95fa61b2774689d2.zip",
+   "bytesRead": 80089,
+   "readOn": "2026-09-29"
+  },
+  "tech-b51-t1-tooling-resource-approval-register": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t1-tooling-resource-approval-register/2283372d92863fbf790d9dbc55d1b80039e1f72d12393309c693c0d13bac3d45.zip",
+   "bytesRead": 72479,
    "readOn": "2026-09-29"
   }
  }
