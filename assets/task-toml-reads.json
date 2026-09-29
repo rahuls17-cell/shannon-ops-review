@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-28T23:50:55+00:00",
+ "generatedAt": "2026-09-29T00:00:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10415,6 +10415,18 @@
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c322-directory-listing-billing-audit/924ffa9163400b4c03c6f131685ecd16603093c805c6efd4830e136c8acd27bc.zip",
    "bytesRead": 82302,
    "readOn": "2026-09-28"
+  },
+  "the-all-day-bookings-that-are-not-days": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-all-day-bookings-that-are-not-days/d2b19435f405ff3cad47ec89d0c6f0505fbac6dc3fd8a30ea8b60f1dad25d594.zip",
+   "bytesRead": 58562,
+   "readOn": "2026-09-29"
   }
  }
 }
