@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T01:10:58+00:00",
+ "generatedAt": "2026-09-29T01:20:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -10540,6 +10540,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g353-brand-asset-usage-audit-231ce6-v1-sna-vvgl/3441359e3bb451d57367274ebab97bd158d598e16f780ed6c63d75c25b172b6f.zip",
    "bytesRead": 146891,
+   "readOn": "2026-09-29"
+  },
+  "three-of-nineteen-shipped-unsized": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/three-of-nineteen-shipped-unsized/c78afba6deb639cec5b2e19c2de09351cf74f78587eb4c97e6ff302e187f0773.zip",
+   "bytesRead": 50325,
    "readOn": "2026-09-29"
   }
  }
