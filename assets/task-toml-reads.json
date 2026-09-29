@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T10:40:59+00:00",
+ "generatedAt": "2026-09-29T10:50:58+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11465,6 +11465,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g405-placename-concordance-reconciliation-d85e79-v3-sna-qsgq/39ae14763516034363287f3e489ae8635621b7e0ccdfae5eb42b0f7a8903993f.zip",
    "bytesRead": 94977,
+   "readOn": "2026-09-29"
+  },
+  "law-b39-l13-vendor-contract-status-register": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4c50375fc4b8ea5ca06ac9485186ccb50171c99390b0e9300c2bac871cc2dc3e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/law-b39-l13-vendor-contract-status-register/1e603a1935e640fb0a87dfb7ac792e1718e164b6e3073d7b31a42bb9b7dbc271.zip",
+   "bytesRead": 73331,
+   "readOn": "2026-09-29"
+  },
+  "what-my-calendar-costs-everyone-else": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-my-calendar-costs-everyone-else/b99b69e2bed7990bc14efac5643d7b88933d6150932609d774ac4e7970128327.zip",
+   "bytesRead": 152131,
    "readOn": "2026-09-29"
   }
  }
