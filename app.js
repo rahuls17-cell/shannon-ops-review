@@ -116,9 +116,8 @@ const infoCopy = {
     if (!c) return 'The bucket listing has not loaded.';
     const shipped = (truth.deliveredIndex && truth.deliveredIndex.counts.manifestTasks) || 412;
     return 'Counted by bucket folder rather than by verdict row, which is why these four add up. '
-      + 'These four count FOLDERS. Several folders can hold one task - a re-cut after review gets a '
-      + 'new folder name - and the Accepted card above counts tasks, using the [task] name inside each '
-      + 'package, so the two differ by the extra copies. That prefix IS the '
+      + 'Under the accepted prefix one folder is one task: the storage layout already did the '
+      + 'deduplication, so nothing here had to guess an identity from a name. That prefix IS the '
       + 'acceptance decision - a package sits there because client QC accepted it - and all '
       + fmt(shipped) + ' deliveries were cut from it and no other, which is why no other cohort '
       + 'belongs in the figure. The verdicts then say what happened to each folder, most recent '
@@ -142,17 +141,13 @@ const infoCopy = {
   truthSplit: () => {
     const c = cohortIndex && cohortIndex.counts;
     if (!c) return 'The bucket listing has not loaded, so this strip is not drawn.';
-    const tc = truth && truth.cohortRows ? window.acceptedTaskCounts(truth.cohortRows) : null;
     return 'The same population as the Accepted card above, split the one way that matters '
-      + 'operationally: has it gone out or not. '
-      + (tc ? fmt(tc.delivered) + ' + ' + fmt(tc.toDeliver) + ' = ' + fmt(tc.tasks) + ' tasks, ' : '')
-      + 'because a task has been handed over or it has not and there is no third thing. It is counted '
-      + 'in TASKS: the [task] name inside each package says which folders are the same task, and a task '
-      + 'counts as delivered if ANY of its folders went out. Counting folders listed tasks that had already '
-      + 'gone out under another folder name as still to deliver. Delivered is settled by the manifests, which '
-      + 'record the folder each package was cut from. A folder whose declared name was delivered by a '
-      + 'DIFFERENT trainer is not counted as delivered; it carries CK instead, because task names are not '
-      + 'unique per person. One caution before shipping: ' + fmt(c.latestRejected) + ' of these hold an accepted '
+      + 'operationally: has it gone out or not. ' + fmt(c.delivered) + ' + ' + fmt(c.notDelivered)
+      + ' = ' + fmt(c.packages) + ', on its face, because a package has been handed over or it has '
+      + 'not and there is no third thing. It is counted in bucket folders - one folder is one task - '
+      + 'so nothing here had to be deduplicated by name. Delivered is settled by the manifests, which '
+      + 'record the folder each package was cut from, so that join cannot be wrong about which task it '
+      + 'means. One caution before shipping: ' + fmt(c.latestRejected) + ' of these hold an accepted '
       + 'package whose LATER resubmission came back rejected - the package is still accepted and still '
       + 'there, a different run of the same task failed. The Rejected card counts verdict rows, a '
       + 'different unit, so the two cannot be added together.';
@@ -177,7 +172,7 @@ const infoCopy = {
              + fmt(c.connectorUnknown) + ' not read' : '')
       + '.';
   },
-  truthFlags: 'Short codes so the task name is never squeezed out of its column. DL - already delivered, covered by the Delivery tab, or the same task delivered under another folder name. Times-N - the same task appears N times in the pipeline and is counted once while the Delivered filter is on. CK - check before shipping: the identifier names a task the audit already covers although the name does not match, or a different trainer already delivered a task with the same declared name. MIX - the folder holds archives that declare different tasks. DUP - another task shares its name and trainer, so it is probably the same work counted twice; red when the date and outcome match too. UM - unmerged: it arrived with no family id, so repeat runs of it may be counted separately. CO - carried over: first decided before the cut and settled after it. Hover any code for the full explanation for that row, and open the row with + for its evidence.',
+  truthFlags: 'Short codes so the task name is never squeezed out of its column. DL - already delivered, covered by the Delivery tab. Times-N - the same task appears N times in the pipeline and is counted once while the Delivered filter is on. CK - check before shipping: the identifier names a task the audit already covers although the name does not match. DUP - another task shares its name and trainer, so it is probably the same work counted twice; red when the date and outcome match too. UM - unmerged: it arrived with no family id, so repeat runs of it may be counted separately. CO - carried over: first decided before the cut and settled after it. Hover any code for the full explanation for that row, and open the row with + for its evidence.',
   truthVersions: () => {
     const c = truth && truth.deliveredIndex && truth.deliveredIndex.counts;
     return 'A task submitted more than once is counted once here'
@@ -229,13 +224,10 @@ const infoCopy = {
     const c = cohortIndex && cohortIndex.counts;
     if (!c) return 'The bucket listing has not loaded, so this falls back to counting accepted '
       + 'verdict rows, which is a different unit from the Pipeline tab.';
-    const tc = truth && truth.cohortRows ? window.acceptedTaskCounts(truth.cohortRows) : null;
-    return 'The same figure the Pipeline tab shows, read the same way: the tasks held by the '
-      + fmt(c.packages) + ' folders under finalisation_client_qc_accepted_iteration_2. A package sits there '
+    return 'The same figure the Pipeline tab shows, read the same way: the ' + fmt(c.packages)
+      + ' task folders under finalisation_client_qc_accepted_iteration_2. A package sits there '
       + 'because client QC accepted it, and every delivery was cut from that prefix, so the folders '
-      + 'are the accepted work. Several folders can hold one task - it is re-cut under a new folder name '
-      + 'after a review - so the [task] name inside each package decides which folders are one task'
-      + (tc ? ` (${fmt(tc.folders)} folders, ${fmt(tc.tasks)} tasks)` : '') + '. It used '
+      + 'are the accepted work. One folder is one task, so nothing is deduplicated by name. It used '
       + 'to count accepted verdict rows instead, which is a different population and a different '
       + 'unit - a task submitted three times counted three times - and the two pages showed different '
       + 'numbers for the same word.';
@@ -749,8 +741,8 @@ const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filt
 // A search with no state chosen also reaches the accepted folders that have no
 // verdict inside the window; otherwise they are listed only under Accepted.
 const truthSearchRows = () => { const cohort = truthCohortRows(); return cohort ? truthRows().concat(cohort.filter(row => row.noVerdict)) : truthRows(); };
-// Under Accepted the rows are bucket folders; every headline counts the tasks they fold into.
-const shownTasks = rows => (truthByBucket ? window.acceptedTaskCounts(rows).tasks : rows.length);
+// Under Accepted the rows are bucket folders; every headline counts them, one folder per task.
+const shownTasks = rows => rows.length;
 const auditRows = () => (audit ? audit.rows.filter(row => inSegment(row.trainer, typeFlag(row.type))) : []);
 const ledgerRows = () => payoutLedgerTasks.filter(task => inSegment(task.email, typeFlag(task.filterType)));
 
@@ -1404,9 +1396,9 @@ function renderTruthFilterChips(filters, filtered) {
     `<button type="button" class="fchip${on ? ' is-on' : ''}${!count && !on ? ' is-zero' : ''}" style="--c:${tone}" data-tfilter="${filter}" data-value="${esc(value)}" aria-pressed="${on}">${esc(label)}<b>${fmt(count)}</b></button>`;
 
   const byState = window.filterTruth(verdictRows, {...filters, state: ''});
-  // Accepted is decided by the bucket, so its chip counts the bucket's tasks like the card does.
+  // Accepted is decided by the bucket, so its chip counts the bucket's folders like the card does.
   const stateCount = st => (st === 'accepted' && cohort
-    ? window.acceptedTaskCounts(window.filterTruth(cohort, {...filters, state: ''}).rows).tasks
+    ? window.filterTruth(cohort, {...filters, state: ''}).rows.length
     : byState.rows.filter(r => r.state === st).length);
   // Every state stays listed, at zero if nothing matches, so a filter can always be changed.
   const states = ['accepted', 'rejected', 'error', 'running', 'legacy accepted'];
@@ -1460,18 +1452,12 @@ function renderTruthFigures(result, filtered) {
   // they no longer produce it, because producing it meant counting verdict
   // rows and guessing an identity from a name, which has been wrong every
   // time.
-  //
-  // Counted in TASKS, not folders: the same task is re-cut under a new folder
-  // name after a review, and the [task] name inside each package says which
-  // folders are one task. Counting folders counted those tasks more than once.
-  const acceptedFromBucket = acceptedShown !== null ? acceptedShown.tasks
+  const acceptedFromBucket = acceptedShown !== null ? acceptedShown
     : (cohortIndex ? cohortIndex.counts.packages : null);
   const cards = [
     ['Accepted', acceptedFromBucket === null ? result.accepted : acceptedFromBucket,
       acceptedFromBucket === null ? 'package at the current bar'
-        : acceptedShown && acceptedShown.extraFolders
-          ? `${fmt(acceptedShown.folders)} folders, ${fmt(acceptedShown.extraFolders)} extra copies`
-          : 'accepted tasks in the bucket', 'aqua'],
+        : 'accepted packages in the bucket', 'aqua'],
     ['Rejected', result.rejected, 'failed a QC decision', 'yellow'],
     ['No QC decision', result.undecided, 'parked, crashed or never decided', 'orange'],
     ['Running', result.running, 'in a stage', 'violet'],
@@ -1626,30 +1612,24 @@ function renderTruthFigures(result, filtered) {
   // operationally: has it gone out or not. Folder-based, like the card, so
   // 1,125 = delivered + still to deliver holds on its face. The verdict view of
   // the same tasks is in the cohort strip below.
-  // Counted in tasks: a task went out if ANY of its folders went out. Counting
-  // folders listed a task as "still to deliver" when it had already been
-  // delivered under a different folder name - an invitation to send it twice.
   const cx = cohortIndex ? cohortIndex.counts : null;
-  const tx = truth.cohortRows ? window.acceptedTaskCounts(truth.cohortRows) : null;
-  byId('truthSplit').innerHTML = cx && tx
-    ? stat('accepted tasks', tx.tasks, 0,
-        tip(`Every task with a folder in the finalisation prefix: ${fmt(tx.folders)} folders hold ${fmt(tx.tasks)} tasks.`,
-          `Listed ${esc(cohortIndex.folderSource)}, then read the [task] name inside each package's task.toml to see which folders are the same task. ${fmt(tx.extraFolders)} folders are extra copies of a task that already has one.`,
-          `${fmt(tx.delivered)} + ${fmt(tx.toDeliver)} = ${fmt(tx.tasks)}. A task has gone out or it has not; there is no third thing.`,
+  byId('truthSplit').innerHTML = cx
+    ? stat('accepted packages', cx.packages, 0,
+        tip('Every task folder in the finalisation prefix.',
+          `Listed ${esc(cohortIndex.folderSource)}. One folder is one task, so nothing had to be deduplicated by name.`,
+          `${fmt(cx.delivered)} + ${fmt(cx.notDelivered)} = ${fmt(cx.packages)}. A package has gone out or it has not; there is no third thing.`,
           'Not a count of submissions. The Rejected card beside it still counts verdict rows, which is why the two cannot be added together.'),
         null, 'green') +
-      stat('already delivered', tx.delivered, tx.tasks,
-        tip('Tasks with at least one folder named by a delivery manifest.',
-          `Read the folder each manifest packaged from, then counted its task as delivered. ${fmt(tx.deliveredViaSibling)} folders were never delivered themselves but hold a task that went out under another folder name; they count here, not below.`,
-          `${fmt(tx.delivered)} of the ${fmt(tx.tasks)} tasks here have been handed over.`,
+      stat('already delivered', cx.delivered, cx.packages,
+        tip('Folders named by one of the four delivery manifests.',
+          'Read the folder each manifest packaged from - no name matching, so this join cannot be wrong about which task it means.',
+          `${fmt(cx.delivered)} of the ${fmt(cx.packages)} packages here have been handed over.`,
           `Not the ${fmt(truth.deliveredIndex ? truth.deliveredIndex.counts.manifestTasks : 412)} in the join on the left. That is every task ever delivered; this is the ones whose folder is still in this prefix.`),
         null, 'blue') +
-      stat('still to deliver', tx.toDeliver, tx.tasks,
-        tip('Accepted tasks no manifest has claimed under any of their folders.',
-          'Took the tasks in the prefix and removed every one with a delivered folder.',
-          tx.toDeliverNeedsCheck
-            ? `This is the pool a new delivery is cut from. ${fmt(tx.toDeliverNeedsCheck)} carry CK: a different trainer already delivered a task with the same declared name, so check before shipping.`
-            : 'This is the pool a new delivery is cut from.',
+      stat('still to deliver', cx.notDelivered, cx.packages,
+        tip('Accepted packages no manifest has claimed.',
+          'Took the folders in the prefix and removed the ones a manifest names.',
+          'This is the pool a new delivery is cut from.',
           `Not a promise that all of them should go. ${fmt(cx.latestRejected)} hold an accepted package whose later resubmission was rejected, and that is worth a look before shipping.`),
         null, 'magenta')
     : stat('accepted at the bar', result.acceptedAtBarTasks, 0,
@@ -1663,14 +1643,23 @@ function renderTruthFigures(result, filtered) {
   // the two units in one strip is what made every earlier figure argue with
   // its neighbour.
   const co = cohortIndex ? cohortIndex.counts : null;
+  const tn = truth.cohortRows ? window.acceptedTaskNames(truth.cohortRows) : null;
   if (co && byId('truthCohort')) {
     byId('truthCohort').innerHTML =
       stat('packages in the cohort', co.packages, 0,
         tip('Every task folder under the accepted prefix.',
-          `Listed ${esc(cohortIndex.folderSource)} and counted the folders. A folder is one package, not always one task: a re-cut after review gets a new folder name.`,
-          `${fmt(co.packages)} accepted packages sit in ${esc(cohortIndex.cohort)}.`,
-          'Not a count of tasks. The Accepted card above counts tasks, using the [task] name inside each package to fold the extra copies.'),
+          `Listed ${esc(cohortIndex.folderSource)} and counted the folders. One folder is one task - the storage layout already did the deduplication, so no name had to be normalised to get here.`,
+          `This is the honest total: ${fmt(co.packages)} tasks have an accepted package sitting in ${esc(cohortIndex.cohort)}.`,
+          'Not a count of submissions, and not comparable to the Accepted card above, which counts verdict rows and can hold several per task.'),
         null, 'aqua') +
+      // Folded by the [task] name in each package's task.toml. Stated beside the
+      // folder count, not instead of it: every other figure here is in folders.
+      (tn ? stat('tasks by declared name', tn.tasks, 0,
+        tip('The folders in the cohort, folded by the [task] name declared in each package.',
+          `Read the [task] name from the task.toml inside each package and counted the distinct names. A folder whose package could not be read counts as its own task.`,
+          `${fmt(tn.folders)} folders hold ${fmt(tn.tasks)} distinct tasks, so ${fmt(tn.extraFolders)} folders are extra copies: a re-cut after review lands under a new folder name.`,
+          'Not the Accepted figure. Accepted and the rest of this strip count folders; this is the same folders counted by the name inside them.'),
+        null, 'magenta') : '') +
       stat('decided since the cut', co.decided, co.packages,
         tip(`Folders with a verdict dated on or after ${esc(cohortIndex.cut)}.`,
           'Joined each folder to the verdicts by the names its package declares, then kept the ones the pipeline window reaches.',
@@ -1708,10 +1697,8 @@ function renderChain(label, filtered) {
   panel.hidden = false;
   const co = cohortIndex ? cohortIndex.counts : null;
   const bucketSourced = label === 'Accepted' && co;
-  const tc = bucketSourced && truth.cohortRows ? window.acceptedTaskCounts(truth.cohortRows) : null;
   setText('truthChainTitle', bucketSourced
-    ? (tc ? `${chain.label}: ${fmt(tc.tasks)} tasks in ${fmt(co.packages)} bucket folders`
-          : `${chain.label}: ${fmt(co.packages)} packages in the bucket`)
+    ? `${chain.label}: ${fmt(co.packages)} packages in the bucket`
     : `${chain.label}: ${fmt(chain.value)}`);
   setText('truthChainNote', (bucketSourced
     ? `This figure is read from the bucket, not from the chain below.
@@ -1719,9 +1706,7 @@ function renderChain(label, filtered) {
 `
       + `${fmt(co.packages)} task folders sit under ${esc(cohortIndex.cohort)}, and every one of the `
       + `${fmt(truth.deliveredIndex ? truth.deliveredIndex.counts.manifestTasks : 412)} deliveries was cut from that prefix and no other, `
-      + `so those folders are the accepted population. A folder is one package, not always one task: `
-      + (tc ? `the [task] name inside each package shows ${fmt(tc.folders)} folders holding ${fmt(tc.tasks)} tasks, `
-            + `so ${fmt(tc.extraFolders)} folders are extra copies and are counted once. ` : '')
+      + `so those folders are the accepted population: one folder, one task, one accepted package. `
       + `The verdicts below are still read, but to describe those folders rather than to count them - `
       + `${fmt(co.decided)} have a verdict since ${esc(cohortIndex.cut)}, of which ${fmt(co.latestAccepted)} `
       + `have a latest verdict of accepted and ${fmt(co.latestRejected)} were rejected on a later run `
@@ -1752,11 +1737,7 @@ The steps below are the verdict chain. It counts submissions, and it is kept her
 const FLAGS = [
   {code: 'DL', tone: 'good', when: row => row.delivered,
    label: 'delivered',
-   tip: row => row.deliveredSibling
-     ? `This folder was not delivered itself, but it holds the same task as ${row.deliveredSibling.folder}` +
-       `${row.deliveredSibling.batch ? `, delivered in ${row.deliveredSibling.batch}` : ''}. ` +
-       'Read from the [task] name in both packages. Do not send it again.'
-     : 'Already covered by the delivery audit on the Delivery tab, matched by ' +
+   tip: row => 'Already covered by the delivery audit on the Delivery tab, matched by ' +
      (row.deliveredVia === 'normalised name'
        ? 'name once version and status suffixes were stripped'
        : row.deliveredVia === 'embedded in the verdict identifier'
@@ -1767,24 +1748,15 @@ const FLAGS = [
    tip: row => `This task has ${fmt(row.versions)} versions in the pipeline and is counted once ` +
      `while the Delivered filter is on. Showing the one ${row.chosenBecause}. The others: ` +
      row.otherVersions.map(v => `${v.name} (${v.state}${v.decided ? `, ${v.decided}` : ''})`).join('; ') + '.'},
-  {code: 'CK', tone: 'alert', when: row => row.maybeDelivered || row.sameNameDelivered,
+  {code: 'CK', tone: 'alert', when: row => row.maybeDelivered,
    label: 'check before shipping',
-   tip: row => row.sameNameDelivered
-     ? `A task with the same declared name was already delivered as ${row.sameNameDelivered.folder}` +
-       `${row.sameNameDelivered.batch ? ` (${row.sameNameDelivered.batch})` : ''}` +
-       `${row.sameNameDelivered.owner ? ` by ${row.sameNameDelivered.owner}` : ''}, a different trainer. ` +
-       'Task names are not unique per person, so this is not counted as delivered - look before shipping it.'
-     : `This task's identifier names "${row.maybeDelivered}", which the delivery audit ` +
+   tip: row => `This task's identifier names "${row.maybeDelivered}", which the delivery audit ` +
      'already covers, but its own name does not match it. It may be a second copy of work that has already gone out.'},
   {code: 'DUP', tone: 'alert', when: row => row.dupFolders,
    label: 'DUP  same task, another folder',
    tip: row => `This task is in the bucket under ${fmt(row.dupFolders.length)} folder names. ` +
      `Read from the [task] name in each package, not guessed from the folder. ` +
      `Click to see all ${fmt(row.dupFolders.length)}.`},
-  {code: 'MIX', tone: 'alert', when: row => row.mixedTasks,
-   label: 'MIX  the folder holds several tasks',
-   tip: row => `This folder holds ${fmt(row.mixedTasks.length)} archives that declare different tasks: ` +
-     `${row.mixedTasks.join(', ')}. It is counted once, under the first; check which one it is meant to be.`},
   {code: 'DUP', tone: row => (row.duplicateTier === 'likely' ? 'alert' : 'warn'),
    when: row => row.possibleDuplicate && !row.dupFolders,
    label: 'possible duplicate',
@@ -1898,20 +1870,6 @@ function glmCell(row) {
 
 const GLM_TONE = {'0/4': '--red', '1/4': '--blue', '2/4': '--violet', '3/4': '--aqua', '4/4': '--orange'};
 
-// The name a task is submitted under is whatever the submitting tool used - a
-// console placeholder, an autorun id, a trainer's folder name. The task's own
-// name is the [task] name in its task.toml. Show that one too when it differs,
-// so a placeholder row can still be recognised and searched.
-function declaredName(row) {
-  return row.packageTask || row.declaredName || '';
-}
-function declaredLine(row) {
-  const declared = declaredName(row);
-  const bare = value => String(value || '').trim().toLowerCase().replace(/^(harbor|obi)\//, '');
-  if (!declared || bare(declared) === bare(row.name)) return '';
-  return `<span class="declared" title="The [task] name declared in the package's task.toml">declared: ${esc(bare(declared))}</span>`;
-}
-
 let truthSort = {key: '', dir: 1};
 function renderTruthRows(rows) {
   const size = pageSize('truthPageSize');
@@ -1936,7 +1894,7 @@ function renderTruthRows(rows) {
     return `<tr class="drill-head" style="--i:${index}">
       <td><button class="drill-toggle" aria-expanded="false" aria-controls="${id}" aria-label="Evidence for ${esc(row.name)}">+</button></td>
       <td class="num serial">${fmt(from + index + 1)}</td>
-      <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span>${declaredLine(row)}</div></td>
+      <td><div class="taskcell"><span class="taskname" title="${esc(row.name)}">${esc(row.name)}</span></div></td>
       <td class="flagcell">${flagBadges(row, `dup-${id}`)}</td>
       <td><span class="statepill" style="--c:${stateTone(row.state)}">${esc(stateLabel(row.state))}</span></td>
       <td>${row.owner ? `<span class="who"><i class="avatar">${esc(initials(row.owner))}</i><span title="${esc(row.owner)}">${esc(row.owner)}</span></span>` : '<span class="who is-none"><i class="avatar">?</i><span>Not recorded</span></span>'}</td>
@@ -2061,10 +2019,11 @@ function renderTruth() {
   const result = byBucket
     ? window.filterTruth(cohort, {...filters, state: ''})
     : window.filterTruth(filters.search ? truthSearchRows() : truthRows(), filters);
-  // Accepted is a bucket figure counted over the same folders, narrowed the
-  // same way, so it equals the table whenever Accepted is the selected state.
+  // Accepted is a bucket figure, but it still has to answer the question the
+  // filters are asking. Counted over the same folders, narrowed the same way,
+  // so it equals the table whenever Accepted is the selected state.
   acceptedShown = cohort
-    ? window.acceptedTaskCounts(window.filterTruth(cohort, {...filters, state: ''}).rows)
+    ? window.filterTruth(cohort, {...filters, state: ''}).rows.length
     : null;
   renderTruthFilterChips(filters, filtered);
   renderTruthFigures(result, filtered);
@@ -2075,9 +2034,8 @@ function renderTruth() {
   const idx = truth.deliveredIndex;
   renderJoinGap(result);
   setText('truthCaveats', byBucket
-    ? `Accepted is the ${fmt(window.acceptedTaskCounts(cohort).tasks)} tasks held by the `
-      + `${fmt(cohort.length)} folders in ${esc(truth.cohortIndex.cohort)} - one row per folder below, `
-      + 'with DUP on folders that hold the same task - counted in the bucket rather than derived from the verdicts. '
+    ? `Accepted is the ${fmt(cohort.length)} task folders in ${esc(truth.cohortIndex.cohort)} - `
+      + 'one folder, one task, counted in the bucket rather than derived from the verdicts. '
       + `${fmt(cohort.filter(r => r.noVerdict).length)} of them have no verdict inside the pipeline window, `
       + 'so their trainer and dates are blank rather than borrowed from another run. '
       + `${fmt(cohort.filter(r => r.latestVerdict && r.latestVerdict !== 'accepted').length)} of them have had a later `
@@ -2816,10 +2774,7 @@ function renderHero() {
   // which is a different population: that said 775 while the Pipeline tab said
   // 1,081, and nothing on the page explained the gap. A figure called "pipeline
   // accepted" has to be the pipeline's own number.
-  // In tasks, like the Pipeline tab's Accepted card: several folders can hold
-  // one task, and the [task] name in each package says which.
-  const pipelineAccepted = truth && truth.cohortRows ? window.acceptedTaskCounts(truth.cohortRows).tasks
-    : cohortIndex ? cohortIndex.counts.packages
+  const pipelineAccepted = cohortIndex ? cohortIndex.counts.packages
     : (truth ? truth.rows.filter(row => row.state === 'accepted').length : null);
   const pipelineScope = cohortIndex ? cohortIndex.counts.packages
     : (truth ? truth.rows.length : null);
@@ -2827,7 +2782,7 @@ function renderHero() {
   const tiles = [
     ['Current evaluated tasks', current, null, 'aqua', 'of the evaluations feed'],
     ['Pipeline accepted', pipelineAccepted, null, 'green',
-     cohortIndex ? 'accepted tasks in the delivery prefix'
+     cohortIndex ? 'accepted packages in the delivery prefix'
        : `of ${fmt(pipelineScope || 0)} tasks the pipeline decided`],
     ['Accepted finalisation folders', finalisationRows.length ? snapshot.folders.length : null, null, 'blue', ''],
     ['Cross-cohort repeats excluded', snapshot.ready ? snapshot.duplicates : null, share(snapshot.ready ? snapshot.duplicates : null, snapshot.folders.length), 'amber', 'of folders'],
