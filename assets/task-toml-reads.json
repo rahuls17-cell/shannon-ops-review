@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T17:51:06+00:00",
+ "generatedAt": "2026-09-29T18:01:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12200,6 +12200,28 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-h84-malnutrition-f26e78-v10-sna-pien/fb292c33d3f3c29c79c3eebe2af3b3dc8ab51c417226e132493be1b5aad4fc42.zip",
    "bytesRead": 92781,
+   "readOn": "2026-09-29"
+  },
+  "health-tdt5-a2-canine-supplement-dose-sheet-v8": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt5-a2-canine-supplement-dose-sheet-v8/8a8e63307b4f89bf09c803b3b118ab3da73a65e82266a4c4eccb825527400106.zip",
+   "bytesRead": 67666,
+   "readOn": "2026-09-29"
+  },
+  "rebuild-the-design-cycle-report": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/rebuild-the-design-cycle-report/76273562ba95d36ef20e4500f05e0e876886e9cc317418a0134d9c2269c29cf0.zip",
+   "bytesRead": 50589,
    "readOn": "2026-09-29"
   }
  }
