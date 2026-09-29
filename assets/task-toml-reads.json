@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T08:10:56+00:00",
+ "generatedAt": "2026-09-29T08:20:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11201,6 +11201,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/two-of-eighteen-carry-a-file/91fc0599bcbd577b4d1101fa355435d5e1dc7b34102ab45d0534b2d353b9d517.zip",
    "bytesRead": 48907,
+   "readOn": "2026-09-29"
+  },
+  "tech-b51-t9-multi-model-pipeline-stage-eligibility-fr": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t9-multi-model-pipeline-stage-eligibility-fr/54a28894491e0f27c3272de6e1a07fd89a199b6cdae28ee5ba711f3d12896085.zip",
+   "bytesRead": 79520,
    "readOn": "2026-09-29"
   }
  }
