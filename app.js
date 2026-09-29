@@ -938,7 +938,6 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
   const unscored = rows.filter(r => r.glmBucket === window.DELIVERY_AUDIT_UNSET).length;
   if (unscored) glm.push([window.DELIVERY_AUDIT_UNSET, unscored]);
   const glmMax = Math.max(1, ...glm.map(g => g[1]));
-  byId('glmBars').innerHTML = glm.map(([k, n], i) => bar('aGlm', k, glmDots(k), n, glmMax, `var(${AUDIT_TONES.glm[k] || '--slate'})`, i)).join('');
 
   // Category x GLM heat map
   const cols = GLM_ORDER.filter(k => rows.some(r => r.glmBucket === k));
@@ -979,7 +978,7 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
     <div class="viewtile" style="--c:var(--aqua)"><b data-count="${result.accepted}" data-key="view:acc">${fmt(result.accepted)}</b><span>accepted</span></div>
     <div class="viewtile" style="--c:var(--red)"><b data-count="${result.rejected}" data-key="view:rej">${fmt(result.rejected)}</b><span>rejected</span></div>
     <div class="viewtile" style="--c:var(--yellow)"><b data-count="${result.pending}" data-key="view:pen">${fmt(result.pending)}</b><span>pending</span></div>`;
-  ['catBars', 'glmBars', 'trainerBars', 'batchStacks', 'auditView'].forEach(id => animateCounts(byId(id)));
+  ['catBars', 'trainerBars', 'batchStacks', 'auditView'].forEach(id => animateCounts(byId(id)));
 }
 
 function renderAudit() {
@@ -1049,20 +1048,12 @@ function renderAudit() {
 
 // Batch is the first cut anyone makes here, so it gets tabs of its own with a
 // count and verdict mix each; the other filters still apply to those counts.
-let batchPage = 0;
-const BATCH_PAGE = 5;
 function renderBatchTabs(filters) {
   const host = byId('auditBatchTabs');
   if (!host) return;
   const pool = window.filterDeliveryAudit(auditRows(), {...filters, batch: ''}).rows;
-  const order = batchOrder;
-  const batches = [...new Set(auditRows().map(row => row.batch || window.DELIVERY_AUDIT_UNSET))].sort(order);
+  const batches = [...new Set(auditRows().map(row => row.batch || window.DELIVERY_AUDIT_UNSET))].sort(batchOrder);
   const current = byId('aBatch').value;
-  // The chosen batch is always on the page that is showing.
-  const pages = Math.max(1, Math.ceil(batches.length / BATCH_PAGE));
-  if (current && batches.includes(current)) batchPage = Math.floor(batches.indexOf(current) / BATCH_PAGE);
-  batchPage = Math.min(Math.max(0, batchPage), pages - 1);
-  const shownBatches = batches.slice(batchPage * BATCH_PAGE, batchPage * BATCH_PAGE + BATCH_PAGE);
   const row = (value, label, list, index) => {
     const v = verdicts(list);
     return `<button type="button" class="batchrow${current === value ? ' is-on' : ''}" style="--i:${index}" data-filter="aBatch" data-value="${esc(value)}" aria-pressed="${current === value}">
@@ -1073,12 +1064,7 @@ function renderBatchTabs(filters) {
     </button>`;
   };
   host.innerHTML = row('', 'All batches', pool, 0) +
-    shownBatches.map((batch, index) => row(batch, batch, pool.filter(r => (r.batch || window.DELIVERY_AUDIT_UNSET) === batch), index + 1)).join('');
-  const pager = byId('batchPager');
-  if (pager) {
-    pager.hidden = pages <= 1;
-    pager.innerHTML = `<button type="button" class="ghost" data-bpage="-1" ${batchPage === 0 ? 'disabled' : ''} aria-label="Earlier batches">\u2039</button><span>${fmt(batchPage * BATCH_PAGE + 1)}\u2013${fmt(batchPage * BATCH_PAGE + shownBatches.length)} of ${fmt(batches.length)} batches</span><button type="button" class="ghost" data-bpage="1" ${batchPage >= pages - 1 ? 'disabled' : ''} aria-label="Later batches">\u203a</button>`;
-  }
+    batches.map((batch, index) => row(batch, batch, pool.filter(r => (r.batch || window.DELIVERY_AUDIT_UNSET) === batch), index + 1)).join('');
   animateCounts(host);
 }
 
@@ -3520,7 +3506,7 @@ function renderTeams() {
     .sort((a, b) => b.accepted - a.accepted || b.paid - a.paid);
   const top = Math.max(1, ...teams.map(t => t.accepted));
   byId('teamGrid').innerHTML = teams.map((t, index) => `
-        <article class="team-card${index === 0 ? ' is-champion' : ''}" role="button" tabindex="0" data-team="${esc(t.team)}" style="--i:${index}" data-tip="Open ${esc(t.team)} in Payouts">
+        <article class="team-card${index === 0 ? ' is-champion' : ''}" role="button" tabindex="0" data-team="${esc(t.team)}" style="--i:${index}" data-tip="See ${esc(t.team)} trainers">
           <div class="team-head">
             <h3>${esc(t.team)}</h3>
             <span class="medal medal-${Math.min(index + 1, 4)}">${index + 1}</span>
@@ -3723,6 +3709,23 @@ function fitDeck() {
   // Panes share one grid cell and the inactive ones collapse, so a deck is
   // always exactly as tall as the pane on show; nothing to measure.
 }
+const DOCK_ICONS = {
+  summary: '<rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/>',
+  chart: '<path d="M3 3v18h18M7 15l4-4 4 3 5-6"/>',
+  coins: '<ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/>',
+  delta: '<path d="M3 17l6-6 4 4 8-8M15 7h6v6"/>',
+  database: '<path d="M4 6h16M4 12h16M4 18h16M8 3v18M16 3v18"/>',
+  scale: '<path d="M12 3v18M5 21h14M12 6l7 4-3.5 6h-7L5 10z"/>',
+  user: '<circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/>',
+  users: '<circle cx="9" cy="8" r="3.5"/><path d="M2 20a7 7 0 0 1 14 0M16 4.5a3.5 3.5 0 0 1 0 7M22 20a6 6 0 0 0-4.5-5.8"/>',
+  table: '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M10 4v16"/>',
+  states: '<path d="M8 6h13M8 12h13M8 18h13"/><circle cx="4" cy="6" r="1.2"/><circle cx="4" cy="12" r="1.2"/><circle cx="4" cy="18" r="1.2"/>',
+  package: '<path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/>',
+  calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
+};
+const DOCK_TONES = ['#2e6edf,#00bbff', '#6d4de6,#a78bfa', '#0f9d6b,#34d399', '#e0651f,#fbbf24', '#475569,#94a3b8', '#be3f8f,#f472b6'];
+const DOCK_IDLE_MS = 2400;
+
 function makeDeck({view, deck: deckId, pager: pagerId, key}) {
   const deck = byId(deckId), pager = byId(pagerId);
   if (!deck || !pager) return null;
@@ -3730,15 +3733,40 @@ function makeDeck({view, deck: deckId, pager: pagerId, key}) {
   let index = 0;
   const renderPager = () => {
     const list = panes();
-    const prev = list[(index - 1 + list.length) % list.length], next = list[(index + 1) % list.length];
     pager.innerHTML = `
-      <button type="button" class="pager-step" data-step="-1"><span aria-hidden="true">‹</span>${esc(prev.dataset.title)}</button>
-      <div class="pager-mid">
-        <span class="pager-title">${esc(list[index]?.dataset.title || '')}</span>
-        <div class="pager-dots" role="tablist">${list.map((pane, i) => `<button type="button" role="tab" class="pager-dot${i === index ? ' is-on' : ''}" data-index="${i}" aria-selected="${i === index}" aria-label="${esc(pane.dataset.title)}" data-tip="${esc(pane.dataset.title)}"></button>`).join('')}</div>
-      </div>
-      <button type="button" class="pager-step" data-step="1">${esc(next.dataset.title)}<span aria-hidden="true">›</span></button>`;
+      <button type="button" class="dock-notch" aria-label="Show sections">${list.map((pane, i) => `<i class="${i === index ? 'is-on' : ''}"></i>`).join('')}</button>
+      <div class="dock" role="tablist">${list.map((pane, i) => `
+        <button type="button" role="tab" class="dock-item${i === index ? ' is-on' : ''}" data-index="${i}" aria-selected="${i === index}" aria-label="${esc(pane.dataset.title)}" style="--tone-a:${DOCK_TONES[i % DOCK_TONES.length].split(',')[0]};--tone-b:${DOCK_TONES[i % DOCK_TONES.length].split(',')[1]}">
+          <svg viewBox="0 0 24 24" aria-hidden="true">${DOCK_ICONS[pane.dataset.icon] || DOCK_ICONS.summary}</svg>
+          <span class="dock-label">${esc(pane.dataset.title)}</span>
+        </button>`).join('')}</div>`;
   };
+  // Dock rest state: after a pause it folds into a notch, and any pointer
+  // contact or pane change opens it again.
+  let idleTimer = 0;
+  const sleep = () => pager.classList.add('is-idle');
+  const wake = () => {
+    pager.classList.remove('is-idle');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(sleep, DOCK_IDLE_MS);
+  };
+  pager.addEventListener('pointerenter', () => { pager.classList.remove('is-idle'); clearTimeout(idleTimer); });
+  pager.addEventListener('pointerleave', wake);
+  pager.addEventListener('focusin', () => { pager.classList.remove('is-idle'); clearTimeout(idleTimer); });
+  pager.addEventListener('focusout', wake);
+  // Magnification: each icon scales by its distance from the pointer.
+  const magnify = event => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    pager.querySelectorAll('.dock-item').forEach(item => {
+      const box = item.getBoundingClientRect();
+      const distance = Math.abs(event.clientX - (box.left + box.width / 2));
+      const scale = 1 + 0.55 * Math.max(0, 1 - distance / 110);
+      item.style.setProperty('--s', scale.toFixed(3));
+    });
+  };
+  const relax = () => pager.querySelectorAll('.dock-item').forEach(item => item.style.removeProperty('--s'));
+  pager.addEventListener('pointermove', event => { if (event.target.closest('.dock')) magnify(event); });
+  pager.addEventListener('pointerleave', relax);
   const go = target => {
     const list = panes();
     if (!list.length) return;
@@ -3751,15 +3779,15 @@ function makeDeck({view, deck: deckId, pager: pagerId, key}) {
     });
     window.scrollTo({top: Math.min(window.scrollY, deck.getBoundingClientRect().top + window.scrollY - 90 || 0), behavior: 'smooth'});
     renderPager();
+    wake();
     try { localStorage.setItem(key, String(index)); } catch { /* storage may be unavailable */ }
   };
   try { index = Number(localStorage.getItem(key)) || 0; } catch { index = 0; }
   go(index);
   pager.addEventListener('click', event => {
-    const dot = event.target.closest('.pager-dot');
-    if (dot) { go(Number(dot.dataset.index)); return; }
-    const step = event.target.closest('.pager-step');
-    if (step) go(index + Number(step.dataset.step));
+    const item = event.target.closest('.dock-item');
+    if (item) { go(Number(item.dataset.index)); return; }
+    if (event.target.closest('.dock-notch')) wake();
   });
   // Swipe: a horizontal drag or a sideways wheel moves one pane.
   let start = null;
@@ -3787,12 +3815,13 @@ function makeDeck({view, deck: deckId, pager: pagerId, key}) {
   });
   return {go};
 }
+const decks = {};
 function wireDeck() {
   [
     {view: 'view-command', deck: 'overviewDeck', pager: 'overviewPager', key: 'overviewPane'},
     {view: 'view-pipeline', deck: 'pipelineDeck', pager: 'pipelinePager', key: 'pipelinePane'},
     {view: 'view-payouts', deck: 'payoutDeck', pager: 'payoutPager', key: 'payoutPane'},
-  ].forEach(makeDeck);
+  ].forEach(spec => { decks[spec.deck] = makeDeck(spec); });
 }
 
 function wireDelivery() {
@@ -3823,12 +3852,6 @@ function wireDelivery() {
     }
     setFilter(node.dataset.filter, node.dataset.value);
   };
-  byId('batchPager')?.addEventListener('click', event => {
-    const step = event.target.closest('[data-bpage]');
-    if (!step || step.disabled) return;
-    batchPage += Number(step.dataset.bpage);
-    renderBatchTabs(auditFilters());
-  });
   panel.addEventListener('click', pick);
   panel.addEventListener('keydown', event => { if ((event.key === 'Enter' || event.key === ' ') && event.target.matches('[data-filter][data-value]')) pick(event); });
 
@@ -3882,14 +3905,16 @@ function wireDelivery() {
     const toggle = head.querySelector('.drill-toggle'); if (toggle) toggle.textContent = open ? '−' : '+';
   });
 
-  // A team card opens that team in Payouts.
+  // A team card opens that team's trainers.
   const openTeam = card => {
-    switchView('payouts');
     const search = byId('personSearch');
     if (search) { search.value = card.dataset.team === 'Unassigned' ? '' : card.dataset.team; search.dispatchEvent(new Event('input', {bubbles: true})); }
+    const panes = [...document.querySelectorAll('#payoutTrack .deck-pane')];
+    decks.payoutDeck?.go(Math.max(0, panes.findIndex(pane => pane.dataset.title === 'By trainer')));
   };
-  panel.addEventListener('click', event => { const card = event.target.closest('.team-card[data-team]'); if (card) openTeam(card); });
-  panel.addEventListener('keydown', event => {
+  const teamsHost = byId('view-payouts') || panel;
+  teamsHost.addEventListener('click', event => { const card = event.target.closest('.team-card[data-team]'); if (card) openTeam(card); });
+  teamsHost.addEventListener('keydown', event => {
     const card = event.target.closest && event.target.closest('.team-card[data-team]');
     if (card && (event.key === 'Enter' || event.key === ' ')) { event.preventDefault(); openTeam(card); }
   });
@@ -4222,13 +4247,56 @@ function init() {
   // the same call that decides every later visit.
   applyPayoutLock();
   switchView(location.hash.slice(1) || 'command', false);
-  loadPayoutLedger();
-  loadClientAcceptance();
-  loadHarborConsole();
-  loadConsoleLive();
-  loadGcsPipeline();
-  loadTruth();
-  loadDeliveryAudit();
+  bootFeeds([
+    ['Payout ledger', loadPayoutLedger()],
+    ['Client acceptance', loadClientAcceptance()],
+    ['Harbor console', loadHarborConsole()],
+    ['Console live pull', loadConsoleLive()],
+    ['GCS pipeline', loadGcsPipeline()],
+    ['Pipeline truth', loadTruth()],
+    ['Delivery audit', loadDeliveryAudit()],
+  ]);
+}
+
+// Boot screen: the page stays veiled until every feed has settled, then the
+// numbers are rendered once and revealed together.
+const BOOT_CAP_MS = 12000;
+function bootFeeds(feeds) {
+  const boot = byId('boot');
+  if (!boot) return;
+  document.body.classList.add('is-booting');
+  boot.hidden = false;
+  const list = byId('bootFeeds');
+  const items = new Map(feeds.map(([label]) => {
+    const li = document.createElement('li');
+    li.innerHTML = `<i></i><span>${label}</span>`;
+    list.appendChild(li);
+    return [label, li];
+  }));
+  let done = 0;
+  let finished = false;
+  const tick = (label, ok) => {
+    done += 1;
+    const li = items.get(label);
+    li.classList.add(ok ? 'is-done' : 'is-skip');
+    const pct = Math.round((done / feeds.length) * 100);
+    byId('bootFill').style.width = `${pct}%`;
+    byId('bootPct').textContent = `${pct}%`;
+    byId('bootStatus').textContent = done < feeds.length ? `Loaded ${label}` : 'Rendering';
+  };
+  const finish = () => {
+    if (finished) return;
+    finished = true;
+    renderEverything();
+    setTimeout(() => {
+      boot.classList.add('is-leaving');
+      document.body.classList.remove('is-booting');
+      setTimeout(() => { boot.hidden = true; boot.classList.remove('is-leaving'); }, 520);
+    }, 20);
+  };
+  feeds.forEach(([label, promise]) => Promise.resolve(promise).then(() => tick(label, true), () => tick(label, false)));
+  Promise.allSettled(feeds.map(([, promise]) => promise)).then(finish);
+  setTimeout(finish, BOOT_CAP_MS);
 }
 
 init();

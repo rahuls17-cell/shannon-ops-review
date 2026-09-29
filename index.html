@@ -4,16 +4,29 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Delivery</title>
+    <link rel="icon" href="assets/turing.ico">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="boot" id="boot" hidden aria-live="polite" aria-label="Loading dashboard">
+      <div class="boot-card">
+        <div class="boot-brand">
+          <img src="assets/turing-mark.svg" alt="" width="40" height="41">
+          <span class="boot-name"><img src="assets/turing-wordmark-white.svg" alt="Turing" height="16"><span>Delivery</span></span>
+        </div>
+        <div class="boot-track"><div class="boot-fill" id="bootFill"></div></div>
+        <div class="boot-meta"><span id="bootStatus">Reading the data feeds</span><span id="bootPct">0%</span></div>
+        <ul class="boot-feeds" id="bootFeeds"></ul>
+      </div>
+    </div>
     <div class="app">
       <aside class="sidebar">
         <div class="side-brand">
-          <span class="brand-mark">D</span>
+          <img class="brand-mark" src="assets/turing-mark.svg" alt="Turing" width="28" height="29">
           <span class="brand-text">
-            <strong>Delivery</strong>
+            <img class="brand-word" src="assets/turing-wordmark-white.svg" alt="Turing" height="13">
+            <span class="brand-sub">Delivery</span>
           </span>
         </div>
         <nav class="viewnav" role="tablist" aria-label="Views">
@@ -92,7 +105,7 @@
 
           <div class="deck" id="overviewDeck">
             <div class="deck-track" id="overviewTrack">
-              <section class="deck-pane" data-title="Summary" aria-label="Summary">
+              <section class="deck-pane" data-title="Summary" data-icon="summary" aria-label="Summary">
           <section id="segmentStrip" class="segstrip" aria-label="The split by segment"></section>
 
           <p class="eyebrow">Delivery<span id="commandScopeNote"></span></p>
@@ -159,7 +172,7 @@
             </article>
           </div>
               </section>
-              <section class="deck-pane" data-title="Pipeline" aria-label="Pipeline">
+              <section class="deck-pane" data-title="Pipeline" data-icon="chart" aria-label="Pipeline">
           <div class="split">
             <section class="panel">
               <header class="panel-head">
@@ -179,7 +192,7 @@
             </section>
           </div>
               </section>
-              <section class="deck-pane" data-title="Payout balance" aria-label="Payout balance">
+              <section class="deck-pane" data-title="Payout balance" data-icon="coins" aria-label="Payout balance">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Payout balance<button class="why" data-info="pending" aria-label="How paid and upcoming are calculated">?</button></h2><p class="panel-note" id="payoutBalanceNote"></p></div>
@@ -198,7 +211,7 @@
             </div>
           </section>
               </section>
-              <section class="deck-pane" data-title="Daily delta" aria-label="Daily delta">
+              <section class="deck-pane" data-title="Daily delta" data-icon="delta" aria-label="Daily delta">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Daily delta<button class="why" data-info="dailyDelta" aria-label="What the daily delta counts">?</button></h2><p class="figure-src is-panel" data-source="gcs-evaluations"></p></div>
@@ -211,7 +224,7 @@
             </div>
           </section>
               </section>
-              <section class="deck-pane" data-title="Sources" aria-label="Sources">
+              <section class="deck-pane" data-title="Sources" data-icon="database" aria-label="Sources">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Where this data comes from<button class="why" data-info="sources" aria-label="How to read the source panel">?</button></h2><p class="panel-note" id="sourceNote"></p></div>
@@ -267,7 +280,7 @@
 
           <div class="deck" id="payoutDeck">
             <div class="deck-track" id="payoutTrack">
-              <div class="deck-pane" data-title="Settlement by bench">
+              <div class="deck-pane" data-title="Settlement by bench" data-icon="scale">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Settlement by bench<button class="why" data-info="bench" aria-label="How benches are defined">?</button></h2><p class="panel-note" id="payoutBenchNote"></p></div>
@@ -278,7 +291,13 @@
             </div>
           </section>
               </div>
-              <div class="deck-pane" data-title="By trainer">
+              <div class="deck-pane" data-title="Teams" data-icon="users">
+          <section class="panel">
+            <header class="panel-head"><div><h2>Teams</h2><p class="panel-note">Accepted work, payment and settlement by team. Click a team to see its trainers.</p></div></header>
+            <div class="panel-body"><div id="teamGrid" class="team-grid"></div></div>
+          </section>
+              </div>
+              <div class="deck-pane" data-title="By trainer" data-icon="user">
           <section class="panel">
             <header class="panel-head">
               <div><h2>By trainer<button class="why" data-info="payoutAccepted" aria-label="What counts as accepted">?</button></h2><p class="panel-note" id="payoutPeopleNote"></p></div>
@@ -315,7 +334,7 @@
             </div>
           </section>
               </div>
-              <div class="deck-pane" data-title="Tasks">
+              <div class="deck-pane" data-title="Tasks" data-icon="table">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Tasks<button class="why" data-info="ledgerPayment" aria-label="How payment state is decided">?</button></h2><p class="panel-note">Every accepted task in the ledger and where its payment stands. Click a cell above the table to filter.</p></div>
@@ -381,12 +400,6 @@
                 <h2>Batch scope</h2>
                 <p class="rail-note">Switch the whole page by batch.</p>
                 <div id="auditBatchTabs" class="batchlist" role="group" aria-label="Batch"></div>
-                <div id="batchPager" class="batchpager" hidden></div>
-              </section>
-              <section class="rail-card">
-                <h2>GLM success</h2>
-                <p class="rail-note">How many of four trial runs solved the task. Click a score to filter.</p>
-                <div id="glmBars" class="hbars is-rail"></div>
               </section>
             </aside>
             <div class="delivery-main">
@@ -409,11 +422,6 @@
               <section class="panel chartcard">
                 <header class="chart-head"><div><h2>Verdicts by batch</h2><p class="chart-sub">Accepted, rejected and pending, one bar per batch</p></div><div class="chart-key"><span class="key-item is-acc">Accepted</span><span class="key-item is-rej">Rejected</span><span class="key-item is-pen">Pending</span></div></header>
                 <div id="batchStacks" class="stacks"></div>
-              </section>
-
-              <section class="panel">
-                <header class="panel-head"><div><h2>Teams</h2></div></header>
-                <div class="panel-body"><div id="teamGrid" class="team-grid"></div></div>
               </section>
 
           <section class="panel inventory">
@@ -544,7 +552,7 @@
 
           <div class="deck" id="pipelineDeck">
             <div class="deck-track" id="pipelineTrack">
-              <section class="deck-pane is-active" data-title="States" aria-label="States">
+              <section class="deck-pane is-active" data-title="States" data-icon="states" aria-label="States">
           <div id="truthPartition" class="partition" aria-label="How the in-scope tasks split by state"></div>
           <div id="truthFigures" class="kpirow kpirow-5"></div>
           <div class="statstrip">
@@ -569,7 +577,7 @@
             <div class="panel-body"><ol class="chain" id="truthChain"></ol></div>
           </section>
               </section>
-              <section class="deck-pane" data-title="Delivery &amp; makeup" aria-label="Delivery and makeup">
+              <section class="deck-pane" data-title="Delivery &amp; makeup" data-icon="package" aria-label="Delivery and makeup">
           <div class="statstrip">
             <!-- Counted by bucket FOLDER, not by verdict row. One folder is
                  one task, so nothing here needs a name to be deduplicated -
@@ -594,7 +602,7 @@
             </div>
           </div>
               </section>
-              <section class="deck-pane" data-title="Outcomes by day" aria-label="Outcomes by day">
+              <section class="deck-pane" data-title="Outcomes by day" data-icon="calendar" aria-label="Outcomes by day">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Outcomes by day</h2><p class="panel-note" id="scopeNote"></p></div>
@@ -603,7 +611,7 @@
             <div class="panel-body"><figure class="daybars" id="scopeChart"></figure></div>
           </section>
               </section>
-              <section class="deck-pane" data-title="Tasks" aria-label="Tasks">
+              <section class="deck-pane" data-title="Tasks" data-icon="table" aria-label="Tasks">
           <section class="panel">
             <header class="panel-head">
               <div><h2>Tasks<button class="why" data-info="truthTasks" aria-label="What one row means">?</button></h2><p class="panel-note" id="truthCount"></p><p class="statusline" id="truthCaveats"></p></div>
