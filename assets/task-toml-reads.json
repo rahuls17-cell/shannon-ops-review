@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T08:20:56+00:00",
+ "generatedAt": "2026-09-29T08:40:56+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -11211,6 +11211,36 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t9-multi-model-pipeline-stage-eligibility-fr/54a28894491e0f27c3272de6e1a07fd89a199b6cdae28ee5ba711f3d12896085.zip",
    "bytesRead": 79520,
+   "readOn": "2026-09-29"
+  },
+  "edu-sca-b26-study-group-marginal-advantage-qa": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b26-study-group-marginal-advantage-qa/8b936d808c6768a172e3ab48dc163c19bcb83306bfa494cddf763b9274e045f9.zip",
+   "bytesRead": 71494,
+   "readOn": "2026-09-29"
+  },
+  "health-tdt11-a11-quiet-knee-protocol-lookup": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:356b0d18f9385f4bdcc673af60e1e64c9d1504952e4ec36ee32044c722a6bc4e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt11-a11-quiet-knee-protocol-lookup/9d566d6414ad4d1c708a896f9b783b7bd91d01a1bf120736ed2b2014897ec8b3.zip",
+   "bytesRead": 86909,
+   "readOn": "2026-09-29"
+  },
+  "sci-sc09-b5-vti-task-001118": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sci-sc09-b5-vti-task-001118/1e36a340ebf16539491f52e7e2f558244ad83a53b2ab43c808a0e131a9c731a1.zip",
+   "bytesRead": 62270,
    "readOn": "2026-09-29"
   }
  }
