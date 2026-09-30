@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T15:31:06+00:00",
+ "generatedAt": "2026-09-30T15:41:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13120,6 +13120,19 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bill-payment-send-dates-must-avoid-weekends-and-holidays/9753e12889f8c7eb93091d6a0435a29cd4ad35703309332dd77d9e1446e6a5ca.zip",
    "bytesRead": 61535,
+   "readOn": "2026-09-30"
+  },
+  "task_ephyra_january_shared_file_contention_audit": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness:real-data-v4@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+   "bench": "computer bench real",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/task_ephyra_january_shared_file_contention_audit/b9eb1d8615237420917173c76699f640b2db4bde65d35659af832ba427849171.zip",
+   "bytesRead": 56642,
    "readOn": "2026-09-30"
   }
  }
