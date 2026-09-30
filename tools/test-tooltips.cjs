@@ -46,9 +46,12 @@ gone.forEach(([text, why]) => assert.ok(!app.includes(text),
   `"${text}" is stale: ${why}`));
 
 // --- the Overview must not disagree with the Pipeline -----------------------
-const hero = app.slice(app.indexOf('const pipelineAccepted'), app.indexOf('const share ='));
-assert.ok(/cohortIndex \? cohortIndex\.counts\.packages/.test(hero),
-  'the Overview tile must read the same accepted figure the Pipeline shows');
+// Both count the accepted folders in the bucket over the same rows, so the
+// segment and date range move them together.
+assert.ok(/const cohort = truthCohortRows\(\);\s+const range = \{start: dateRange\.start, end: dateRange\.end\};\s+const pipelineAccepted = cohort \? window\.filterTruth\(cohort, range\)/.test(app),
+  'the Overview tile must read the same accepted figure the Pipeline shows, over the rows in the chosen segment');
+assert.ok(/acceptedShown = cohort\s*\?\s*window\.filterTruth\(cohort,/.test(app),
+  'the Pipeline Accepted card counts the same folders');
 
 console.log(`tooltips: ${new Set(used).size} buttons, all with copy; `
   + `${live.length} carry live figures and none is hardcoded`);

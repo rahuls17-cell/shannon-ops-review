@@ -230,7 +230,9 @@ const infoCopy = {
       + 'are the accepted work. One folder is one task, so nothing is deduplicated by name. It used '
       + 'to count accepted verdict rows instead, which is a different population and a different '
       + 'unit - a task submitted three times counted three times - and the two pages showed different '
-      + 'numbers for the same word.';
+      + 'numbers for the same word.'
+      + ((segment || dateRange.start || dateRange.end)
+        ? ' The segment and date range chosen above narrow it, as they narrow the Pipeline tab.' : '');
   },
   currentEvaluations: 'The latest evaluation of each task family in the GCS bucket, by status. It is the evidence feed rather than the console, so it answers what the pipeline last recorded about a family rather than what the task\u2019s decided state is - the Pipeline view carries that.',
   acceptanceScope: 'The date range is not applied to this half. The 240 audit sheet publishes counts only, with no per-task date to filter on, and the workbook records when a payment was made rather than when the work was done. Filtering would therefore cut what was paid while what was accepted stayed whole - and pending is accepted minus paid, so every outstanding balance on the page would quietly rise. The figures here are all-time, whatever range is set on the pipeline half.',
@@ -421,6 +423,9 @@ function renderEverything() {
   if (truth) { renderTruth(); renderCarried(); }
   if (audit) renderAudit();
   renderScopeFunnel();
+  // The delta is built from the rows in the segment, so a new segment needs a
+  // new model, not just a redraw of the old one.
+  buildDelta();
   populateDeltaFilter();
   renderDailyDelta();
   fitDeck();
@@ -2936,10 +2941,16 @@ function renderHero() {
   // which is a different population: that said 775 while the Pipeline tab said
   // 1,081, and nothing on the page explained the gap. A figure called "pipeline
   // accepted" has to be the pipeline's own number.
-  const pipelineAccepted = cohortIndex ? cohortIndex.counts.packages
-    : (truth ? truth.rows.filter(row => row.state === 'accepted').length : null);
-  const pipelineScope = cohortIndex ? cohortIndex.counts.packages
-    : (truth ? truth.rows.length : null);
+  // Counted the way the Pipeline tab's Accepted card counts it - the accepted
+  // folders in the bucket - and over the same rows: the segment and the date
+  // range narrow it here exactly as they do there. It used to read the
+  // bucket's total, which no segment could move.
+  const cohort = truthCohortRows();
+  const range = {start: dateRange.start, end: dateRange.end};
+  const pipelineAccepted = cohort ? window.filterTruth(cohort, range).rows.length
+    : (truth ? window.filterTruth(truthRows(), {...range, state: 'accepted'}).rows.length : null);
+  const pipelineScope = cohort ? pipelineAccepted
+    : (truth ? window.filterTruth(truthRows(), range).rows.length : null);
   const share = (value, base) => (value == null || !base) ? null : Math.round((value / base) * 100);
   const tiles = [
     ['Current evaluated tasks', current, null, 'aqua', 'of the evaluations feed'],
