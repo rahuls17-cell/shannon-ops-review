@@ -2888,15 +2888,15 @@ function commandSnapshot() {
 
 function renderHero() {
   const snapshot = commandSnapshot();
-  const rows = payoutRows();
+  const rows = segmentPayoutRows();
   // Published totals are displayed as published; per-row sums are the fallback.
   const totals = segment ? null : payoutLedger?.totals;
   const summary = {
     paidAmount: totals ? totals.paidAmount : sum(rows, 'paidAmount'),
     pendingAmount: totals ? totals.pendingAmount : sum(rows, 'pendingAmount'),
-    pendingTasks: totals ? totals.pendingTasks : sum(rows, 'pendingTasks'),
-    paidTasks: totals ? totals.paidTasks : sum(rows, 'paidTasks'),
-    acceptedTasks: totals ? totals.acceptedTasks : sum(rows, 'acceptedTasks'),
+    pendingTasks: totals ? totals.pendingTasks : Math.round(sum(rows, 'pendingTasks')),
+    paidTasks: totals ? totals.paidTasks : Math.round(sum(rows, 'paidTasks')),
+    acceptedTasks: totals ? totals.acceptedTasks : Math.round(sum(rows, 'acceptedTasks')),
     activeTrainers: (!segment && data.summary?.activeTrainers) || rows.filter(r => String(r.status).toLowerCase() === 'active').length,
     totalTrainers: (!segment && data.summary?.totalTrainers) || rows.length,
   };
@@ -2916,10 +2916,17 @@ function renderHero() {
   // range, rather than reading the cohort's static all-time total.
   const v2Folders = snapshot.folders.filter(row => row.cohort === 'finalisation_client_qc_accepted_iteration_2');
   const v2 = snapshot.ready ? {tasks: v2Folders.length} : null;
-  setCount('metricClientAccepted', clientAcceptance ? clientAcceptance.accepted : null);
-  setText('metricClientAcceptedNote', clientAcceptance
-    ? `Priority Low of ${fmt(clientAcceptance.tasks)} audited tasks${clientAcceptance.live ? '' : ' / saved snapshot'}${dated ? ' / all dates: the 240 dashboard snapshot carries counts only' : ''}${segment ? ' / not split by segment' : ''}`
-    : 'Harbor 240 dashboard unavailable');
+  // The 240 dashboard publishes a count; the delivery audit records the same
+  // decisions task by task (Accepted, priority Low), so under a segment the
+  // audit's accepted tasks in that segment are counted instead.
+  const auditAccepted = audit ? auditRows().filter(row => row.acceptance === 'Accepted').length : null;
+  const clientCount = segment ? auditAccepted : (clientAcceptance ? clientAcceptance.accepted : null);
+  setCount('metricClientAccepted', clientCount);
+  setText('metricClientAcceptedNote', segment
+    ? (audit ? `accepted by the client in the delivery audit, ${SEGMENTS[segment]}${dated ? ' / all dates: the audit records no decision date' : ''}` : 'Delivery audit not loaded')
+    : clientAcceptance
+      ? `Priority Low of ${fmt(clientAcceptance.tasks)} audited tasks${clientAcceptance.live ? '' : ' / saved snapshot'}${dated ? ' / all dates: the 240 dashboard snapshot carries counts only' : ''}`
+      : 'Harbor 240 dashboard unavailable');
   setCount('metricV2Accepted', v2 ? v2.tasks : null);
   setText('metricV2AcceptedNote', v2 ? `of ${fmt(finalisationRows.length)} accepted folders` : '');
   setCount('metricPaid', paid, 'money');
@@ -3139,7 +3146,10 @@ function renderExposureChart(rows) {
   // their team: someone with tasks on both benches counts on both.
   const benches = [['Company', 'company'], ['Computer', 'computer'], ['Unassigned', 'unassigned']]
     .map(([label, key]) => {
-      const part = field => rows.reduce((total, row) => total + (Number(row[field]) || 0) * benchShares(row.email)[key], 0);
+      // Inside a segment the rows are already that segment's share, and the
+      // segment names its bench.
+      const weight = row => (segment ? (segment.startsWith(key) ? 1 : 0) : benchShares(row.email)[key]);
+      const part = field => rows.reduce((total, row) => total + (Number(row[field]) || 0) * weight(row), 0);
       return {label, key, paid: part('paidAmount'), pending: part('pendingAmount'),
               paidTasks: Math.round(part('paidTasks')), pendingTasks: Math.round(part('pendingTasks'))};
     })
@@ -3183,8 +3193,8 @@ function renderTopPendingCards() {
     byId('topPendingCards').innerHTML = '<p class="empty">Waiting for pipeline and finalisation data.</p>';
     return;
   }
-  const rows = payoutRows()
-    .filter((row) => row.pendingTasks > 0)
+  const rows = segmentPayoutRows()
+    .filter((row) => row.pendingTasks >= 0.5)
     .sort((a, b) => b.pendingAmount - a.pendingAmount || b.acceptedTasks - a.acceptedTasks)
     .slice(0, 8);
   const max = Math.max(...rows.map((row) => row.pendingAmount), 1);
@@ -3202,7 +3212,7 @@ function renderTopPendingCards() {
           <div class="rank${index < 3 ? ` medal medal-${index + 1}` : ''}">${index + 1}</div>
           <div class="person">
             <strong>${open ? esc(who) : hiddenName()}</strong>
-            <span>${fmt(row.pendingTasks)} of ${fmt(row.acceptedTasks)} tasks unpaid · ${esc(row.team || 'no team')}</span>
+            <span>${fmt(Math.round(row.pendingTasks))} of ${fmt(Math.round(row.acceptedTasks))} tasks unpaid · ${esc(row.team || 'no team')}</span>
           </div>
           <div class="bar-track"><div class="bar-fill" style="width:${safePct(row.pendingAmount, max)}"></div></div>
           ${open ? `<div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${esc(row.email || row.name)}">${money(row.pendingAmount)}</div>` : `<div class="amount">${hiddenMoney()}</div>`}
@@ -3407,10 +3417,39 @@ function syncOverviewSlicer() {
 
 
 
-function payoutRows() {
+// The part of a person's accepted ledger tasks that sits in the chosen segment.
+// Money and task counts are kept per person, not per task, so a segment takes
+// that share of them: someone with 3 connector and 1 non-connector task has
+// three quarters of their pay under Connector and a quarter under Non-connector,
+// rather than all of it under both. Someone with no ledger tasks cannot be
+// placed, so they count under All only.
+function segmentShare(email) {
+  if (!segment) return 1;
+  const who = String(email || '').toLowerCase();
+  let all = 0, inside = 0;
+  payoutLedgerTasks.forEach(task => {
+    if (String(task.email || '').toLowerCase() !== who || !task.payable) return;
+    all += 1;
+    if (segmentMatches(taskSegment(task.bench, typeFlag(task.filterType)))) inside += 1;
+  });
+  return all ? inside / all : 0;
+}
+// Payout rows for the Overview's money figures: each person's share in the
+// segment, never their whole balance.
+function segmentPayoutRows() {
+  if (!segment) return payoutRows();
+  return payoutRows(true).map(row => {
+    const share = segmentShare(row.email);
+    const part = field => (Number(row[field]) || 0) * share;
+    return {...row, segmentShare: share, acceptedTasks: part('acceptedTasks'), paidTasks: part('paidTasks'),
+      paidAmount: part('paidAmount'), pendingTasks: part('pendingTasks'), pendingAmount: part('pendingAmount')};
+  }).filter(row => row.segmentShare > 0);
+}
+
+function payoutRows(everyone = false) {
   const acceptedByEmail = payoutLedger ? ledgerAcceptedByEmail() : new Map();
   const paidByEmail = new Map((data.paidOut || []).map(row => [String(row.email || '').toLowerCase(), row]));
-  return data.trainers.filter(personInSegment).map(row => {
+  return data.trainers.filter(row => everyone || personInSegment(row)).map(row => {
     const paid = paidByEmail.get(row.email.toLowerCase());
     const acceptedTasks = payoutLedger ? (acceptedByEmail.get(row.email.toLowerCase()) || 0) : row.acceptedTasks;
     const paidTasks = Number(paid?.approvedTasks) || 0;
