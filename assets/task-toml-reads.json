@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T19:21:06+00:00",
+ "generatedAt": "2026-09-30T19:31:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13174,6 +13174,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nine-shipped-twenty-four-points/17350fc7be90b5135c779e9b240733f2eb846949c3ea0fa8e3868b1650d81588.zip",
    "bytesRead": 52086,
+   "readOn": "2026-09-30"
+  },
+  "code-c406-fair-event-schedule-compliance-audit-fixed": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c406-fair-event-schedule-compliance-audit-fixed/56ad884c04681afdcad646fce8f372bf5b19de05e63f5b0037bb713a7af93e72.zip",
+   "bytesRead": 75019,
    "readOn": "2026-09-30"
   }
  }
