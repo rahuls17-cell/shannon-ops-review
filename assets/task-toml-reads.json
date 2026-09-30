@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T15:41:06+00:00",
+ "generatedAt": "2026-09-30T15:51:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13133,6 +13133,25 @@
    "bench": "computer bench real",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/task_ephyra_january_shared_file_contention_audit/b9eb1d8615237420917173c76699f640b2db4bde65d35659af832ba427849171.zip",
    "bytesRead": 56642,
+   "readOn": "2026-09-30"
+  },
+  "household-member-archival-request-verify-eligibility-for-member-in-hou-2": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "docker.io/kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/household-member-archival-request-verify-eligibility-for-member-in-hou-2/706945d9bf30b594ab9b7582b226e44f5ec09e50fe866f4c2355a51872fd627d.zip",
+   "bytesRead": 68091,
    "readOn": "2026-09-30"
   }
  }
