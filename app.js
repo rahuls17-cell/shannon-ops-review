@@ -1826,6 +1826,7 @@ function renderTruthFigures(result, filtered) {
   // its neighbour.
   const co = cohortIndex ? cohortIndex.counts : null;
   const tn = truth.cohortRows ? window.acceptedTaskNames(truth.cohortRows) : null;
+  const accTasks = acceptedTasksAllDates();
   const coSplit = truth.cohortRows && truth.deliveryJoin ? cohortSplit(truth.cohortRows)
     : {delivered: co ? co.delivered : 0, notDelivered: co ? co.notDelivered : 0};
   if (co && byId('truthCohort')) {
@@ -1836,13 +1837,13 @@ function renderTruthFigures(result, filtered) {
           `This is the honest total: ${fmt(co.packages)} tasks have an accepted package sitting in ${esc(cohortIndex.cohort)}.`,
           'Not a count of submissions, and not comparable to the Accepted card above, which counts verdict rows and can hold several per task.'),
         null, 'aqua') +
-      // Folded by the [task] name in each package's task.toml. Stated beside the
-      // folder count, not instead of it: every other figure here is in folders.
-      (tn ? stat('tasks by declared name', tn.tasks, 0,
-        tip('The folders in the cohort, folded by the [task] name declared in each package.',
-          `Read the [task] name from the task.toml inside each package and counted the distinct names. A folder whose package could not be read counts as its own task.`,
-          `${fmt(tn.folders)} folders hold ${fmt(tn.tasks)} distinct tasks, so ${fmt(tn.extraFolders)} folders are extra copies: a re-cut after review lands under a new folder name.`,
-          'Not the Accepted figure. Accepted and the rest of this strip count folders; this is the same folders counted by the name inside them.'),
+      // Distinct accepted tasks, counted exactly as the Overview's Accepted tasks
+      // card counts them - task names across all three accepted prefixes, in
+      // the segment - but over every date, since this strip has no date range.
+      // Stated beside the folder count, not instead of it: every other figure
+      // here is in folders.
+      (accTasks !== null ? stat('distinct accepted tasks', accTasks, 0,
+        tip(`Distinct task names across every accepted folder in the bucket - this cohort and the two earlier accepted prefixes - the same count as the Overview's Accepted tasks${segment ? ', in this segment' : ''}, over all dates. One task finalised into several folders or cohorts counts once.${tn ? ` Within this cohort alone, ${fmt(tn.folders)} folders hold ${fmt(tn.tasks)} tasks by the [task] name their package declares.` : ''}`),
         null, 'magenta') : '') +
       stat('decided since the cut', co.decided, co.packages,
         tip(`Folders with a verdict dated on or after ${esc(cohortIndex.cut)}.`,
@@ -2674,6 +2675,8 @@ async function loadGcsPipeline(manual = false) {
     connectorByName = null;
     loadFinalisation(); renderDonut(); renderTrainerRows();
     renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
+    // The Pipeline's distinct accepted tasks reads these folders too.
+    if (truth) renderTruth();
     if (manual) setTextIfPresent('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
   } catch (error) {
     setTextIfPresent('pipelineSourceStatus', `GCS export not loaded: ${error.message}`);
@@ -2920,6 +2923,16 @@ function switchView(viewName, push = true) {
   if (viewName === 'pipeline') fitDeck();
   if (push && location.hash.slice(1) !== viewName) history.pushState({viewName}, '', `#${viewName}`);
   window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+// The Overview's Accepted tasks rule - distinct task names over the accepted
+// folders in the segment - with no date range, for the Pipeline's cohort strip.
+// Kept in step with commandSnapshot(); null until the bucket scan has loaded.
+function acceptedTasksAllDates() {
+  if (!finalisationRows.length || !gcsPipeline) return null;
+  return new Set(finalisationRows
+    .filter(row => inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType)))
+    .map(row => row.name)).size;
 }
 
 function commandSnapshot() {

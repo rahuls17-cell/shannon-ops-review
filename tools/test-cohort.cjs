@@ -120,6 +120,22 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
     + `${c.notDelivered} still to deliver`);
 }
 
+// --- the Pipeline's distinct accepted tasks is the Overview's Accepted tasks --
+// Same folders, same segment test, same name; only the Overview's date range
+// is left out. If one rule changes without the other, the two cards disagree.
+{
+  const pick = name => {
+    const at = app.indexOf(`function ${name}(`);
+    const body = app.slice(at, app.indexOf('\n}\n', at));
+    return (body.match(/finalisationRows\s*\.filter\(row => ([^\n]+)\)/) || [])[1];
+  };
+  const overview = pick('commandSnapshot'), pipeline = pick('acceptedTasksAllDates');
+  assert.ok(overview && pipeline, 'both counts must filter the accepted folders');
+  assert.equal(pipeline.replace(/^inRange\(row\.date\) && /, ''), overview.replace(/^inRange\(row\.date\) && /, ''),
+    'the Pipeline tile must use the Overview segment rule');
+  assert.ok(/stat\('distinct accepted tasks', accTasks/.test(app), 'the cohort strip shows it');
+}
+
 // --- delivered covers every batch, not only the four audited manifests ------
 // The index is built from Batches 1 to 4.1, so on its own the split stopped the
 // day Batch 5.1 went out. The page joins every Delivery row to the folders:

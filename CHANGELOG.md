@@ -147,6 +147,15 @@ longer decides Company Bench anywhere on the dashboard.
     it had put a CompanyBench 2 connector task on Company Bench as
     non-connector. Pipeline tasks are now 813 / 4,348 / 3,740, 1 Computer Bench
     of unknown type, 79 unknown.
+- **In the accepted cohort: "tasks by declared name" is now "distinct accepted
+  tasks"**, counted the way the Overview's Accepted tasks card counts them:
+  distinct task names across every accepted folder in all three accepted
+  prefixes, in the segment. The old tile folded only this cohort's folders by
+  the [task] name in each package (2,239); it now reads 2,246 like the
+  Overview, and follows the segment (Computer Bench 197 + 1,716, Company Bench
+  333). It covers all dates, since the strip has no date range; the cohort-only
+  figure is kept in its tooltip. The Overview is unchanged, and a check fails
+  if the two rules drift apart.
 - The Drive reader keeps the source folder a manifest names (`sourcePrefix`,
   `sourceFolder`, `sourceKind`) so the join can read it. (`0af9d45`)
 
