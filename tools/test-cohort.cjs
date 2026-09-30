@@ -156,6 +156,17 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
   assert.equal(model.cohortRows.map(r => r.delivered).join(), first, 'joining twice must give the same answer');
 
   const rows = model.cohortRows;
+  // The cohort strip counts these rows per segment; under All they must give
+  // the index's own figures, so each row has to carry what its folder says.
+  const st = v => rows.filter(r => r.cohortState === v).length;
+  assert.equal(rows.filter(r => r.cohortState).length, c.decided, 'decided, from the rows');
+  assert.equal(st('accepted'), c.latestAccepted, 'latest accepted, from the rows');
+  assert.equal(st('rejected'), c.latestRejected, 'rejected later, from the rows');
+  assert.equal(st('legacy accepted'), c.latestLegacyAccepted, 'legacy accepted, from the rows');
+  assert.equal(rows.filter(r => (r.cohortStates || []).length > 1).length, c.disagreeAcrossRuns, 'runs disagree, from the rows');
+  assert.equal(rows.filter(r => r.cohortPlaceholder).length, c.placeholderNames, 'machine names, from the rows');
+  assert.ok(/const cohortInSegment = truthCohortRows\(\)/.test(app) && /cohortCounts\(cohortInSegment\)/.test(app),
+    'the cohort strip must count the folders in the segment');
   const shipped = rows.filter(r => r.delivered);
   assert.ok(rows.filter(r => r.indexDelivered).every(r => r.delivered),
     'every folder a manifest names stays delivered');

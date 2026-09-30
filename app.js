@@ -1602,6 +1602,21 @@ function renderTruthFilterChips(filters, filtered) {
     : '';
 }
 
+// The accepted cohort's figures over a set of folder rows - the segment's, on
+// the Pipeline tab. Same arithmetic as tools/build_cohort_index.py, so under
+// All they equal the index's own counts (a check holds them to it).
+function cohortCounts(rows) {
+  const state = s => rows.filter(r => r.cohortState === s).length;
+  const decided = rows.filter(r => r.cohortState).length;
+  const latestAccepted = state('accepted'), latestLegacyAccepted = state('legacy accepted'), latestRejected = state('rejected');
+  return {packages: rows.length, decided, beforeCut: rows.length - decided,
+          latestAccepted, latestLegacyAccepted, latestRejected,
+          latestOther: decided - latestAccepted - latestLegacyAccepted - latestRejected,
+          disagreeAcrossRuns: rows.filter(r => (r.cohortStates || []).length > 1).length,
+          placeholderNames: rows.filter(r => r.cohortPlaceholder).length,
+          plainTask: rows.some(r => String(r.cohortFolder).toLowerCase() === 'task')};
+}
+
 // The delivery join in figures. `found` and `missing` split `delivered` and
 // nothing else, and the three reasons split `missing`.
 function deliveryJoinCounts(traced) {
@@ -1824,17 +1839,20 @@ function renderTruthFigures(result, filtered) {
   // identity from names, this one does not have to guess at all, and mixing
   // the two units in one strip is what made every earlier figure argue with
   // its neighbour.
-  const co = cohortIndex ? cohortIndex.counts : null;
-  const tn = truth.cohortRows ? window.acceptedTaskNames(truth.cohortRows) : null;
+  // The folders in the segment, counted here rather than read off the index's
+  // totals, so every tile follows the segment switch like the rest of the tab.
+  const cohortInSegment = truthCohortRows();
+  const co = cohortInSegment ? cohortCounts(cohortInSegment) : null;
+  const tn = cohortInSegment ? window.acceptedTaskNames(cohortInSegment) : null;
   const accTasks = acceptedTasksAllDates();
-  const coSplit = truth.cohortRows && truth.deliveryJoin ? cohortSplit(truth.cohortRows)
-    : {delivered: co ? co.delivered : 0, notDelivered: co ? co.notDelivered : 0};
+  const coSplit = cohortInSegment && truth.deliveryJoin ? cohortSplit(cohortInSegment)
+    : {delivered: 0, notDelivered: co ? co.packages : 0};
   if (co && byId('truthCohort')) {
     byId('truthCohort').innerHTML =
       stat('packages in the cohort', co.packages, 0,
         tip('Every task folder under the accepted prefix.',
           `Listed ${esc(cohortIndex.folderSource)} and counted the folders. One folder is one task - the storage layout already did the deduplication, so no name had to be normalised to get here.`,
-          `This is the honest total: ${fmt(co.packages)} tasks have an accepted package sitting in ${esc(cohortIndex.cohort)}.`,
+          `This is the honest total: ${fmt(co.packages)} tasks${segment ? ' in this segment' : ''} have an accepted package sitting in ${esc(cohortIndex.cohort)}.`,
           'Not a count of submissions, and not comparable to the Accepted card above, which counts verdict rows and can hold several per task.'),
         null, 'aqua') +
       // Distinct accepted tasks, counted exactly as the Overview's Accepted tasks
@@ -1865,7 +1883,7 @@ function renderTruthFigures(result, filtered) {
       `${fmt(co.packages)} = ${fmt(co.decided)} decided since ${cohortIndex.cut} + ${fmt(co.beforeCut)} decided before it. ` +
       `Of the ${fmt(co.decided)}: ${fmt(co.latestAccepted)} accepted, ${fmt(co.latestRejected)} rejected on a later run, ${fmt(co.latestOther)} other. ` +
       `Separately, ${fmt(coSplit.delivered)} of the ${fmt(co.packages)} have been delivered. ` +
-      `${fmt(co.placeholderNames)} folders carry a machine name such as task2 or harbor-single-task-, and one is called simply "task" and matches 19 verdicts - those are counted here but their verdict join is the weakest. ` +
+      `${fmt(co.placeholderNames)} folders carry a machine name such as task2 or harbor-single-task-${co.plainTask ? ', and one is called simply "task" and matches 19 verdicts' : ''} - those are counted here but their verdict join is the weakest. ` +
       'There is no rejected figure in this strip on purpose: rejected work is never packaged, so it has no folder to count.');
   }
   animateCounts(byId('truthJoin')); animateCounts(byId('truthFlags'));
@@ -1877,7 +1895,8 @@ function renderChain(label, filtered) {
   if (!chain) { panel.hidden = true; return; }
   openChain = label;
   panel.hidden = false;
-  const co = cohortIndex ? cohortIndex.counts : null;
+  const inSegment = truthCohortRows();
+  const co = cohortIndex && inSegment ? cohortCounts(inSegment) : null;
   const bucketSourced = label === 'Accepted' && co;
   setText('truthChainTitle', bucketSourced
     ? `${chain.label}: ${fmt(co.packages)} packages in the bucket`

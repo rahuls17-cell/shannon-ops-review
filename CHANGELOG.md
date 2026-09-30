@@ -156,6 +156,16 @@ longer decides Company Bench anywhere on the dashboard.
   333). It covers all dates, since the strip has no date range; the cohort-only
   figure is kept in its tooltip. The Overview is unchanged, and a check fails
   if the two rules drift apart.
+- **The rest of "In the accepted cohort" follows the segment too.** Packages
+  in the cohort, decided since the cut, latest verdict accepted, already
+  delivered and the note under them read the bucket index's all-segment totals,
+  so only distinct accepted tasks moved with the switch. They are now counted
+  from the folders in the segment (each folder row carries its verdict state,
+  its runs and whether it has a machine name); under All they equal the index
+  (2,320 / 2,293 / 1,810 / 1,956), and packages always equals the Accepted card.
+  Computer Bench Connector 207 / 207 / 146 / 167, Non-connector 1,652 / 1,625 /
+  1,457 / 1,403, Company Bench 461 / 461 / 207 / 386. The Accepted card's "how
+  is this counted" note uses the same figures.
 - The Drive reader keeps the source folder a manifest names (`sourcePrefix`,
   `sourceFolder`, `sourceKind`) so the join can read it. (`0af9d45`)
 

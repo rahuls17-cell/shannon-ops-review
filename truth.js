@@ -335,7 +335,8 @@
                 latestDecided: entry.decided || match.decided,
                 delivered: Boolean(entry.delivered), deliveredVia: entry.delivered ? 'delivery manifest' : null,
                 cohortFolder: entry.folder, cohortDelivered: entry.delivered,
-                cohortState: entry.state || null, fromBucket: true};
+                cohortState: entry.state || null, cohortStates: entry.states || [],
+                cohortPlaceholder: Boolean(entry.placeholderName), fromBucket: true};
       }
       // Nothing in the window describes this folder. Say that rather than
       // borrowing another task's row to fill the columns.
@@ -353,6 +354,7 @@
         duplicateSiblings: 0, duplicateTier: '', source: `${cohortIndex.cohort}/${entry.folder}`,
         delivered: Boolean(entry.delivered), cohortFolder: entry.folder,
         cohortDelivered: entry.delivered, cohortState: entry.state || null,
+        cohortStates: entry.states || [], cohortPlaceholder: Boolean(entry.placeholderName),
         fromBucket: true, noVerdict: true, ...benchAt(entry.folder),
         ...dupOf(entry.folder),
       };
