@@ -196,9 +196,9 @@ const infoCopy = {
     const count = key => rows.filter(row => truthSegment(row) === key).length;
     return 'One split for the whole dashboard, applied like the date range, and decided by the task, never by who made it - people work on both benches and the roster moves. ' +
       'First the bench. Company Bench: where the task was delivered when it has been (the CompanyBench batches and the CompanyBench folder inside a Computer Bench batch), otherwise the base image in its Dockerfile; every other task is Computer Bench. ' +
-      'Then, within either bench, Connector or Non-connector by the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit. Choosing a bench shows both of its types. ' +
+      'Then, within Computer Bench, Connector or Non-connector by the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit; choosing Computer Bench shows both. Company Bench is connector work only, so it has no split. ' +
       `Right now, of ${fmt(rows.length)} pipeline tasks: Computer Bench ${fmt(count('computer-connector'))} connector and ${fmt(count('computer-non-connector'))} non-connector; ` +
-      `Company Bench ${fmt(count('company-connector'))} connector and ${fmt(count('company-non-connector'))} non-connector; ` +
+      `Company Bench ${fmt(count('company'))}; ` +
       `${fmt(rows.length - SEGMENT_LEAVES.reduce((total, key) => total + count(key), 0))} carry no bench or type yet and appear under All, or under their bench alone. ` +
       'A person counts in every segment they have tasks in, so someone who works on both benches shows under both. The 240 audit counts and the daily plan are not split, and say so.';
   },
@@ -404,7 +404,7 @@ function renderSegmentStrip() {
           <div><b data-count="${t.paid}" data-key="seg:${t.key}:paid">${fmt(t.paid)}</b><span>paid of ${fmt(t.ledger)}</span></div>
         </div>
       </button>`).join('')}
-      ${unknown ? `<div class="segtile is-unknown" style="--i:4;--c:var(--slate)" data-tip="These ${fmt(unknown)} carry no bench or no type yet - the pipeline learns a task's type once it reaches delivery - so they count under All, and under their bench when only that is known.">
+      ${unknown ? `<div class="segtile is-unknown" style="--i:3;--c:var(--slate)" data-tip="These ${fmt(unknown)} carry no bench or no type yet - the pipeline learns a task's type once it reaches delivery - so they count under All, and under their bench when only that is known.">
         <div class="segtile-head"><span class="segtile-name"><i></i>Bench or type not yet known</span></div>
         <div class="segtile-main"><b data-count="${unknown}" data-key="seg:unknown">${fmt(unknown)}</b><span>pipeline tasks<small>${Math.round((unknown / (rows.length || 1)) * 100)}% of all</small></span></div>
         <p class="segtile-why">No bench or no type yet. Shown under All, or under the bench alone.</p>
@@ -712,20 +712,23 @@ const AUDIT_FLAG_CODES = {'contested owner': 'CO', 'owner still contested': 'OC'
 // Company Bench is a task on the Company bench; any other task is split by its
 // connector flag. A task with neither bench nor flag is "not yet known" and
 // shows under All only.
-// Two levels: the bench, then the type within it. Both benches hold both kinds,
-// so a bench key selects both of its types and a leaf key one of them.
+// The bench first. Computer Bench holds both kinds of task, so it splits into
+// Connector and Non-connector; Company Bench is connector work only - its
+// images are connector harnesses and a non-connector task runs on the Computer
+// bench - so it is one segment with nothing beneath it.
 const SEGMENTS = {
   computer: 'Computer Bench', 'computer-connector': 'Computer Bench \u00b7 Connector',
   'computer-non-connector': 'Computer Bench \u00b7 Non-connector',
-  company: 'Company Bench', 'company-connector': 'Company Bench \u00b7 Connector',
-  'company-non-connector': 'Company Bench \u00b7 Non-connector',
+  company: 'Company Bench',
 };
-const SEGMENT_LEAVES = ['computer-connector', 'computer-non-connector', 'company-connector', 'company-non-connector'];
+const SEGMENT_LEAVES = ['computer-connector', 'computer-non-connector', 'company'];
 const SEGMENT_TONES = {computer: '--blue', 'computer-connector': '--aqua', 'computer-non-connector': '--blue',
-  company: '--violet', 'company-connector': '--violet', 'company-non-connector': '--magenta', unknown: '--slate'};
-// Links and saved choices from before the split named three flat segments;
-// outside Company Bench those were Computer Bench work.
-const LEGACY_SEGMENTS = {connector: 'computer-connector', 'non-connector': 'computer-non-connector'};
+  company: '--violet', unknown: '--slate'};
+// Links and saved choices from earlier versions: the flat segments were
+// Computer Bench work outside Company Bench, and the Company Bench types are
+// Company Bench.
+const LEGACY_SEGMENTS = {connector: 'computer-connector', 'non-connector': 'computer-non-connector',
+  'company-connector': 'company', 'company-non-connector': 'company'};
 const segmentMatches = key => !segment || key === segment || String(key).startsWith(`${segment}-`);
 let segment = '';
 // Which bench a task is on, strongest evidence first:
@@ -782,8 +785,8 @@ const truthConnector = row => (row.connector === true || row.connector === false
 // A leaf key - bench and type - when both are known; the bench alone when only
 // it is; 'unknown' when neither is.
 function taskSegment(bench, connector) {
-  const side = bench === 'company' ? 'company'
-    : bench === 'computer' || connector === true || connector === false ? 'computer' : null;
+  if (bench === 'company') return 'company';
+  const side = bench === 'computer' || connector === true || connector === false ? 'computer' : null;
   if (!side) return 'unknown';
   const kind = connector === true ? 'connector' : connector === false ? 'non-connector' : null;
   return kind ? `${side}-${kind}` : side;

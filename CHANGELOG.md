@@ -13,10 +13,14 @@ When you change what a figure means, add a line under **Unreleased**. When
 People work on both benches and the roster moves, so a trainer's roster team no
 longer decides Company Bench anywhere on the dashboard.
 
-- **Segment switch is two levels** - Computer Bench and Company Bench, each with
-  Connector and Non-connector. Choosing a bench shows both of its types. The
-  Overview strip has one tile per bench and type. Old links that named the flat
-  Connector / Non-connector segments open the Computer Bench ones. (`5f63d80`)
+- **Segment switch**: All - Computer Bench (Connector, Non-connector) - Company
+  Bench. Choosing Computer Bench shows both of its types. Company Bench is
+  connector work only (its images are connector harnesses, and a non-connector
+  task runs on the Computer bench), so it has no split. The Overview strip has
+  three tiles: Computer Bench Connector 838, Computer Bench Non-connector 4,347,
+  Company Bench 3,714 pipeline tasks. Old links and saved choices for the
+  earlier flat segments, or for Company Bench Connector / Non-connector, open
+  the matching segment. (`5f63d80`, then this change)
 - **How a task gets its bench**, strongest first: where it was delivered (the
   Drive folder its package sits in); otherwise the base image in its Dockerfile;
   otherwise an unambiguous name lookup. It drives every tab: segment tiles,
