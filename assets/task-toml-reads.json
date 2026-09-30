@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T10:31:04+00:00",
+ "generatedAt": "2026-09-30T10:41:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13077,6 +13077,18 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/diagnose-why-subscription-309-s-83-88-plan-invoice-ended-in-dunning-fa/60a0383557a5d365e4e60448a3c8fde908d7460bd91565f2d8d213e67617072d.zip",
    "bytesRead": 67651,
+   "readOn": "2026-09-30"
+  },
+  "how-far-each-order-got": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-far-each-order-got/c2e7a4e5dd7abd0cdff3326c6252dc08768c96aa7573ac120d97e6d94f9cd987.zip",
+   "bytesRead": 43987,
    "readOn": "2026-09-30"
   }
  }
