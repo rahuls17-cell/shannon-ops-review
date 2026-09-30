@@ -108,6 +108,13 @@ published asset. CI runs it on every push.
   whose tasks lack a `package_path`, `sha256` or `size_bytes`. The other batches
   still publish.
 
+Each batch folder's zips are listed with the Drive folder they sit in, and that
+folder decides the bench: anything in a `CompanyBench` folder is Company Bench,
+also inside a Computer Bench batch. 5.1, 6.1 and 7.1 file their Company Bench
+connectors there while their manifests call the same packages `Connector/`.
+Everything in a CompanyBench batch is Company Bench, except tasks its manifest
+marks as computer bench.
+
 Each row is named by the name the package's `task.toml` declares (the
 manifest's `task_name`); the package file name, sometimes an id such as
 `ASTR_101554`, is kept beside it and is searchable.

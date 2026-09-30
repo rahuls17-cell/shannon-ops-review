@@ -193,15 +193,15 @@ const infoCopy = {
   confidence: 'How runs were grouped into one task. Keyed by family uses the pipeline\'s own lineage id; unmerged means no family id, so repeat runs may be counted separately.',
   segment: () => {
     const rows = truth ? truth.rows : [];
-    const count = key => rows.filter(row => segmentOf(row.owner, row.connector) === key).length;
-    const both = rows.filter(row => benchOf(rosterTeam(row.owner)) === 'company' && row.connector === true).length;
-    return 'One split for the whole dashboard, applied like the date range. Company Bench: the owner\u2019s roster team is Company. ' +
-      'Connector and Non-connector: the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit - for owners outside Company Bench. ' +
+    const count = key => rows.filter(row => truthSegment(row) === key).length;
+    const both = rows.filter(row => truthSegment(row) === 'company' && truthConnector(row) === true).length;
+    return 'One split for the whole dashboard, applied like the date range, and decided by the task, never by who made it - people work on both benches and the roster moves. ' +
+      'Company Bench: a task on the Company bench - where it was delivered when it has been (the CompanyBench batches and the CompanyBench folder inside a Computer Bench batch), otherwise the base image in its Dockerfile. ' +
+      'Connector and Non-connector: every other task, by its connector flag - from the pipeline, the delivery folders, the payout ledger or the audit. ' +
       `Right now: Connector ${fmt(count('connector'))}, Non-connector ${fmt(count('non-connector'))}, Company Bench ${fmt(count('company'))} of ${fmt(rows.length)} pipeline tasks; ` +
       `${fmt(count('unknown'))} carry no flag yet (the pipeline learns the type at delivery) and appear under All only. ` +
       (both ? `${fmt(both)} Company Bench tasks are also connector tasks; they count under Company Bench. ` : '') +
-      'People follow the same rule: Company Bench by team, otherwise by the type of work they have accepted. The 240 audit counts and the daily plan are not split, and say so. ' +
-      'The Delivery tab is the exception: a delivered task knows where it was delivered, so there Company Bench is CompanyBench 1 to 3 and the CompanyBench folder inside a Computer Bench batch, whoever made the task - except tasks their own manifest marks as Computer Bench.';
+      'A person counts in every segment they have tasks in, so someone who works on both benches shows under both. The 240 audit counts and the daily plan are not split, and say so.';
   },
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
@@ -209,8 +209,8 @@ const infoCopy = {
   paid: 'Total Tasks Approved and Total Payment Amount from the Paid Out tab of the Ops Review workbook, cross-checked against the Live Import payment tracker and joined to people by child job number rather than email, because the tracker spells one address differently. These are workbook records, not live bank transactions.',
   pending: 'Per person: accepted tasks minus tasks already paid, never below zero, priced at $300 each. Accepted comes from the workbook task list after duplicate rows are collapsed. Payments already made stay as recorded, including three made against duplicate rows, so deduplication only prevents a task being paid twice from here on.',
   commandSources: 'Each number counts a different population and they overlap, so adding them is wrong. Current evaluations is the latest attempt per task family in the evaluation ledgers. Accepted folders is what physically exists in the finalisation cohorts. Most tasks accepted in the pipeline already have a finalisation folder.',
-  commandBench: 'Company is the Company team; Computer covers Computer A and Computer B. A task is assigned through its resolved owner, so anything with a contested or missing owner belongs to neither bench and is excluded from bench money.',
-  bench: 'Company bench is the Company team. Computer bench covers Computer A and Computer B. Everything else, including people with no team recorded, appears under Unassigned. This filter combines with the search and payment state controls and changes only what is shown, never how anything is calculated.',
+  commandBench: 'The bench of the task, not of the person who made it: where it was delivered when it has been - a CompanyBench batch or the CompanyBench folder inside a Computer Bench batch is Company - and otherwise the base image in its Dockerfile. People work on both benches, so a team says nothing about a task. A task whose bench cannot be told is Unassigned.',
+  bench: 'The bench of each task, not of its trainer: where it was delivered when it has been, otherwise the base image in its Dockerfile. A person with tasks on both benches has money on both, split by how many of their accepted tasks sit on each; one whose tasks cannot be placed appears under Unassigned. This filter combines with the search and payment state controls and changes only what is shown, never how anything is calculated.',
   payoutAccepted: 'Tasks listed for this person on the task wise tab of the Shannon PPT workbook, after rows repeating the same task for the same trainer are folded together. Every unique task counts, including the two rows the workbook marks Valid = 0. The Harbor 240 dashboard and the GCS bucket are deliberately not used for this number.',
   population: 'Three different populations of the same ledgers, never to be added together. Current work keeps only the latest attempt of each task family, so it answers where things stand now. Every attempt keeps the retries as separate records, so it answers how much work was done. Legacy QC runs are archived owner snapshots from before the current pipeline. Switching population rebuilds every filter below from that population.',
   ledgerPayment: 'Paid means the person was paid for at least as many tasks as this ledger lists for them, so every one of their tasks is covered. Not itemised means they were paid for fewer tasks than they have listed and no workbook column records which ones - Michael is the only such case, paid for 10 of 29. No payment recorded means no payment request exists for them at all.',
@@ -374,16 +374,16 @@ function renderSegmentStrip() {
   const ledger = payoutLedgerTasks;
   const keys = ['connector', 'non-connector', 'company'];
   const tiles = keys.map(key => {
-    const tasks = rows.filter(row => segmentOf(row.owner, row.connector) === key);
+    const tasks = rows.filter(row => truthSegment(row) === key);
     const v = {acc: tasks.filter(r => r.state === 'accepted').length, rej: tasks.filter(r => r.state === 'rejected').length};
     const legacy = tasks.filter(r => r.state === 'legacy accepted').length;
     const folk = people.filter(row => personSegments(row).has(key));
-    const money = ledger.filter(task => segmentOf(task.email, typeFlag(task.filterType)) === key);
+    const money = ledger.filter(task => taskSegment(task.bench, typeFlag(task.filterType)) === key);
     const paid = money.filter(t => t.paymentState === 'Paid' || t.paymentState === 'Not itemised').length;
     return {key, label: SEGMENTS[key], tasks: tasks.length, accepted: v.acc + legacy, rejected: v.rej, other: tasks.length - v.acc - legacy - v.rej,
             people: folk.length, ledger: money.length, paid};
   });
-  const unknown = rows.filter(row => segmentOf(row.owner, row.connector) === 'unknown').length;
+  const unknown = rows.filter(row => truthSegment(row) === 'unknown').length;
   const typed = rows.length - unknown;
   const lead = [...tiles].sort((a, b) => b.accepted - a.accepted)[0];
   host.innerHTML = `
@@ -504,6 +504,7 @@ async function loadPayoutLedger() {
     if (!response.ok) throw new Error('Payout ledger unavailable');
     const payload = await response.json();
     payoutLedgerTasks = window.preparePayoutLedger(payload, data.trainers);
+    resetTaskBenches();
     payoutLedger = payload;
     payoutLedgerError = null;
   } catch (error) {
@@ -636,6 +637,7 @@ async function loadDeliveryAudit() {
       if (ow && ow.ok) owners = await ow.json();
     } catch (ignored) { owners = null; }
     audit = window.prepareDeliveryAudit(await response.json(), drive, owners);
+    resetTaskBenches();
     populateAuditFilters();
     renderAudit();
   } catch (error) {
@@ -700,24 +702,78 @@ const AUDIT_TONES = {
 const AUDIT_LENS_FILTER = {category: 'aCategory', acceptance: 'aAcceptance', glm: 'aGlm', batch: 'aBatch', difficulty: 'aDifficulty', source: 'aSource'};
 const AUDIT_FLAG_CODES = {'contested owner': 'CO', 'owner still contested': 'OC', unverified: 'UV', 'version dependent': 'VD'};
 
-// The segment split, one definition for every feed: Company Bench is the
-// owner's roster team; otherwise the task's connector flag decides. A row whose
-// source carries no flag is "type not yet known" and only shows under All.
+// The segment split, one definition for every feed, and it is decided by the
+// task, never by who made it: people work on both benches and the roster
+// moves, so a trainer's team says nothing about the task in front of us.
+// Company Bench is a task on the Company bench; any other task is split by its
+// connector flag. A task with neither bench nor flag is "not yet known" and
+// shows under All only.
 const SEGMENTS = {connector: 'Connector', 'non-connector': 'Non-connector', company: 'Company Bench'};
 const SEGMENT_TONES = {connector: '--aqua', 'non-connector': '--blue', company: '--violet', unknown: '--slate'};
 let segment = '';
-let rosterTeams = null;
-function rosterTeam(email) {
-  if (!rosterTeams) rosterTeams = new Map((data.trainers || []).map(row => [String(row.email || '').toLowerCase(), row.team || '']));
-  return rosterTeams.get(String(email || '').toLowerCase()) || '';
+// Which bench a task is on, strongest evidence first:
+//   1. where it was delivered - the Drive folder behind each Delivery row;
+//   2. the base image in its own Dockerfile - the Pipeline row's benchSide.
+// A task named by nothing but its name is looked up the same way, and a name
+// that one source puts on both benches is left unknown rather than guessed.
+const benchKey = value => String(value || '').trim().toLowerCase().replace(/^(harbor|obi)\//, '');
+let taskBenchCache = null;
+function taskBenches() {
+  if (taskBenchCache) return taskBenchCache;
+  const index = pairs => {
+    const map = new Map();
+    pairs.forEach(([name, side]) => {
+      const key = benchKey(name);
+      if (!key || !side) return;
+      const was = map.get(key);
+      map.set(key, was === undefined || was === side ? side : null);
+    });
+    return map;
+  };
+  const delivered = index((audit ? audit.rows : []).flatMap(row => {
+    const side = row.bench === 'company' ? 'company' : 'computer';
+    return [[row.task, side], [row.packageName, side]];
+  }));
+  const built = index((truth ? truth.rows : []).map(row => [row.name, row.benchSide]));
+  taskBenchCache = {delivered, built};
+  return taskBenchCache;
 }
-function segmentOf(email, connector) {
-  if (benchOf(rosterTeam(email)) === 'company') return 'company';
+function benchOfTask(...names) {
+  const {delivered, built} = taskBenches();
+  for (const map of [delivered, built]) {
+    for (const name of names) {
+      const side = map.get(benchKey(name));
+      if (side) return side;
+    }
+  }
+  return null;
+}
+// A pipeline row carries its own bench; a delivered one takes where it was delivered.
+function truthBench(row) {
+  if (row.delivered && row.deliveredTask) {
+    const side = taskBenches().delivered.get(benchKey(row.deliveredTask));
+    if (side) return side;
+  }
+  return row.benchSide || benchOfTask(row.name);
+}
+// A pipeline row with no connector flag still says what it is through its image.
+const truthConnector = row => (row.connector === true || row.connector === false ? row.connector
+  : /non-connector/.test(row.bench || '') ? false : /computer bench (synth|real)/.test(row.bench || '') ? true : null);
+function taskSegment(bench, connector) {
+  if (bench === 'company') return 'company';
   if (connector === true) return 'connector';
   if (connector === false) return 'non-connector';
   return 'unknown';
 }
-const inSegment = (email, connector) => !segment || segmentOf(email, connector) === segment;
+const truthSegment = row => taskSegment(truthBench(row), truthConnector(row));
+const inTaskSegment = (bench, connector) => !segment || taskSegment(bench, connector) === segment;
+// Everything above is read from data that arrives at different times, so it
+// is rebuilt whenever the Delivery rows or the pipeline land.
+function resetTaskBenches() {
+  taskBenchCache = null;
+  personSegmentCache = null;
+  payoutLedgerTasks.forEach(task => { task.bench = benchOfTask(task.task) || 'unassigned'; });
+}
 const typeFlag = type => (type === 'Connector' ? true : type === 'Non-connector' ? false : null);
 // Delivery folders carry the connector flag; evaluation rows borrow it by task name.
 let connectorByName = null;
@@ -739,21 +795,47 @@ function evaluationConnector(row) {
   const flag = typeFlag(pipelineType(row));
   return flag === null ? connectorFor(row.task) : flag;
 }
-// A person is in a segment if they have work in it; Company Bench by team.
+// A person is in every segment they have work in - their payout ledger tasks
+// and the pipeline tasks they own, each by its own bench - so someone who works
+// on both benches counts under both. Their roster team plays no part.
+let personSegmentCache = null;
 function personSegments(row) {
-  if (benchOf(row.team) === 'company') return new Set(['company']);
-  const email = String(row.email || '').toLowerCase();
-  const ledger = payoutLedgerTasks.filter(task => String(task.email || '').toLowerCase() === email);
-  const con = (Number(row.sepConnectorAccepted) || 0) + (Number(row.projectConnectorAccepted) || 0) + ledger.filter(t => t.filterType === 'Connector').length;
-  const non = (Number(row.sepNonConnectorAccepted) || 0) + (Number(row.projectNonConnectorAccepted) || 0) + ledger.filter(t => t.filterType === 'Non-connector').length;
-  const set = new Set();
-  if (con) set.add('connector');
-  if (non) set.add('non-connector');
+  if (!personSegmentCache) {
+    personSegmentCache = new Map();
+    const add = (email, key) => {
+      const who = String(email || '').toLowerCase();
+      if (!who || key === 'unknown') return;
+      if (!personSegmentCache.has(who)) personSegmentCache.set(who, new Set());
+      personSegmentCache.get(who).add(key);
+    };
+    payoutLedgerTasks.forEach(task => add(task.email, taskSegment(task.bench, typeFlag(task.filterType))));
+    (truth ? truth.rows : []).forEach(task => add(task.owner, truthSegment(task)));
+  }
+  const set = new Set(personSegmentCache.get(String(row.email || '').toLowerCase()) || []);
+  // The workbook's own counts still say whether someone did connector work.
+  if ((Number(row.sepConnectorAccepted) || 0) + (Number(row.projectConnectorAccepted) || 0)) set.add('connector');
+  if ((Number(row.sepNonConnectorAccepted) || 0) + (Number(row.projectNonConnectorAccepted) || 0)) set.add('non-connector');
   return set;
 }
+// How a person's accepted ledger tasks split across the benches, for money
+// panels that have to divide one person's paid and pending between them.
+function benchShares(email) {
+  const who = String(email || '').toLowerCase();
+  const shares = {company: 0, computer: 0};
+  payoutLedgerTasks.forEach(task => {
+    if (String(task.email || '').toLowerCase() === who && task.payable && shares[task.bench] !== undefined) shares[task.bench] += 1;
+  });
+  const total = shares.company + shares.computer;
+  return total ? {company: shares.company / total, computer: shares.computer / total, unassigned: 0}
+    : {company: 0, computer: 0, unassigned: 1};
+}
+const benchLabel = email => {
+  const s = benchShares(email);
+  return s.unassigned ? 'unassigned' : s.company && s.computer ? 'company and computer' : s.company ? 'company' : 'computer';
+};
 const personInSegment = row => !segment || personSegments(row).has(segment);
-const truthRows = () => (truth ? truth.rows.filter(row => inSegment(row.owner, row.connector)) : []);
-const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filter(row => inSegment(row.owner, row.connector)) : null);
+const truthRows = () => (truth ? truth.rows.filter(row => !segment || truthSegment(row) === segment) : []);
+const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filter(row => !segment || truthSegment(row) === segment) : null);
 // A search with no state chosen also reaches the accepted folders that have no
 // verdict inside the window; otherwise they are listed only under Accepted.
 const truthSearchRows = () => { const cohort = truthCohortRows(); return cohort ? truthRows().concat(cohort.filter(row => row.noVerdict)) : truthRows(); };
@@ -769,7 +851,7 @@ function deliverySegment(row) {
   return flag === true ? 'connector' : flag === false ? 'non-connector' : 'unknown';
 }
 const auditRows = () => (audit ? audit.rows.filter(row => !segment || deliverySegment(row) === segment) : []);
-const ledgerRows = () => payoutLedgerTasks.filter(task => inSegment(task.email, typeFlag(task.filterType)));
+const ledgerRows = () => payoutLedgerTasks.filter(task => inTaskSegment(task.bench, typeFlag(task.filterType)));
 
 function setSegment(value) {
   segment = SEGMENTS[value] ? value : '';
@@ -1124,6 +1206,7 @@ async function loadTruth() {
     } catch (ignored) { taskNameIndex = null; }
     truth = window.prepareTruth(payload, deliveredIndex, connectorIndex, glmIndex, cohortIndex,
       benchIndex, taskNameIndex);
+    resetTaskBenches();
     truth.counts = payload.counts || null;
     populateTruthFilters();
     renderTruth();
@@ -2767,14 +2850,14 @@ function switchView(viewName, push = true) {
 }
 
 function commandSnapshot() {
-  const folders = finalisationRows.filter(row => inRange(row.date) && inSegment(row.trainer?.email, typeFlag(row.filterType)));
+  const folders = finalisationRows.filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType)));
   // One task can be finalised into several cohorts; the accepted count is task names, not folders.
   const tasks = new Set(folders.map(row => row.name));
   return {
     ready: Boolean(finalisationRows.length && gcsPipeline),
     folders,
     tasks,
-    current: (gcsPipeline?.current || []).filter(row => inRange(row.date) && inSegment(row.trainer, evaluationConnector(row))),
+    current: (gcsPipeline?.current || []).filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.task), evaluationConnector(row))),
     duplicates: folders.length - tasks.size,
     unassigned: folders.filter(row => !row.trainer).length,
   };
@@ -3023,11 +3106,13 @@ function renderSources() {
 
 function renderExposureChart(rows) {
   // Paid against owed per bench, all bars on one scale.
+  // Each person's money is split by the bench of their accepted tasks, not by
+  // their team: someone with tasks on both benches counts on both.
   const benches = [['Company', 'company'], ['Computer', 'computer'], ['Unassigned', 'unassigned']]
     .map(([label, key]) => {
-      const members = rows.filter(row => benchOf(row.team) === key);
-      return {label, key, paid: sum(members, 'paidAmount'), pending: sum(members, 'pendingAmount'),
-              paidTasks: sum(members, 'paidTasks'), pendingTasks: sum(members, 'pendingTasks')};
+      const part = field => rows.reduce((total, row) => total + (Number(row[field]) || 0) * benchShares(row.email)[key], 0);
+      return {label, key, paid: part('paidAmount'), pending: part('pendingAmount'),
+              paidTasks: Math.round(part('paidTasks')), pendingTasks: Math.round(part('pendingTasks'))};
     })
     .filter(bench => bench.paid || bench.pending);
   const scale = Math.max(...benches.map(bench => bench.paid + bench.pending), 1);
@@ -3084,7 +3169,7 @@ function renderTopPendingCards() {
       ? ` role="button" tabindex="0" data-person="${esc(who)}" data-tip="Open ${esc(who)} in Payouts"`
       : ' data-tip="Unlock Payouts to see who this is"';
     return `
-        <div class="leader-row${open ? '' : ' is-masked'}" data-bench="${benchOf(row.team)}" style="--i:${index}"${identity}>
+        <div class="leader-row${open ? '' : ' is-masked'}" data-bench="${benchShares(row.email).company > benchShares(row.email).computer ? 'company' : benchShares(row.email).unassigned ? 'unassigned' : 'computer'}" style="--i:${index}"${identity}>
           <div class="rank${index < 3 ? ` medal medal-${index + 1}` : ''}">${index + 1}</div>
           <div class="person">
             <strong>${open ? esc(who) : hiddenName()}</strong>
@@ -3174,15 +3259,12 @@ function toggleFocusStatus(status) {
 
 function renderBenchCards() {
   const snapshot = commandSnapshot();
-  const roster = new Map(data.trainers.map(row => [row.email.toLowerCase(), row]));
-  const bench = email => {
-    const team = roster.get(String(email || '').toLowerCase())?.team;
-    return team === 'Company' ? 'Company' : ['Computer A', 'Computer B'].includes(team) ? 'Computer' : 'Unassigned';
-  };
+  // By the task's own bench, not its trainer's team.
+  const label = side => (side === 'company' ? 'Company' : side === 'computer' ? 'Computer' : 'Unassigned');
   const benches = ['Computer', 'Company', 'Unassigned'].map(name => {
-    const tasks = snapshot.current.filter(row => bench(row.trainer) === name);
+    const tasks = snapshot.current.filter(row => label(benchOfTask(row.task)) === name);
     const accepted = tasks.filter(row => row.status === 'Accepted').length;
-    const groups = new Set(snapshot.folders.filter(row => bench(row.trainer?.email) === name).map(row => row.name)).size;
+    const groups = new Set(snapshot.folders.filter(row => label(benchOfTask(row.name, row.folder)) === name).map(row => row.name)).size;
     const mix = Object.entries(groupBy(tasks, row => row.status)).map(([status, rows]) => [status, rows.length]).sort((a, b) => b[1] - a[1]);
     return {name, tasks: tasks.length, accepted, groups, mix, rate: tasks.length ? (accepted / tasks.length) * 100 : 0};
   });
@@ -3295,9 +3377,6 @@ function syncOverviewSlicer() {
 }
 
 
-function benchOf(team) {
-  return team === 'Company' ? 'company' : ['Computer A', 'Computer B'].includes(team) ? 'computer' : 'unassigned';
-}
 
 function payoutRows() {
   const acceptedByEmail = payoutLedger ? ledgerAcceptedByEmail() : new Map();
@@ -3344,11 +3423,13 @@ function renderPayoutSummary(rows) {
 function renderPayoutPanels(rows) {
   const search = byId('personSearch').value.trim().toLowerCase();
   // Settlement by bench: how much of what each bench earned has been paid.
+  // Split by the bench of each person's accepted tasks, not their team.
   const benches = [['Company', 'company'], ['Computer', 'computer'], ['Unassigned', 'unassigned']].map(([label, key]) => {
-    const members = rows.filter(row => benchOf(row.team) === key);
-    const paid = sum(members, 'paidAmount'), owed = sum(members, 'pendingAmount');
-    return {label, key, paid, owed, people: members.filter(r => r.paidAmount || r.pendingAmount).length,
-            paidTasks: sum(members, 'paidTasks'), owedTasks: sum(members, 'pendingTasks'),
+    const part = field => rows.reduce((total, row) => total + (Number(row[field]) || 0) * benchShares(row.email)[key], 0);
+    const paid = part('paidAmount'), owed = part('pendingAmount');
+    return {label, key, paid, owed,
+            people: rows.filter(r => (r.paidAmount || r.pendingAmount) && benchShares(r.email)[key] > 0).length,
+            paidTasks: Math.round(part('paidTasks')), owedTasks: Math.round(part('pendingTasks')),
             settled: paid + owed ? Math.round((paid / (paid + owed)) * 100) : 0};
   }).filter(b => b.paid || b.owed);
   byId('payoutBenches').innerHTML = benches.length ? benches.map((b, index) => `
@@ -3449,7 +3530,7 @@ function renderTrainerRows() {
               ${requests.length ? `<ul class="minitasks">${requests.map(r => `<li><span class="batch-chip">${esc(r.requestedOn || '-')}</span><span>${fmt(r.paidTasks)} tasks</span><b>${money(r.paidAmount)}</b>${r.cj ? `<small class="muted">CJ ${esc(r.cj)}</small>` : ''}${String(r.emailMismatch) === 'true' || r.emailMismatch === true ? '<span class="pill is-warn">email mismatch</span>' : ''}</li>`).join('')}</ul>` : '<p class="muted">No payment request raised yet.</p>'}
               <dl class="drill-grid compact">
                 <dt>Status</dt><dd>${esc(row.status || '-')}</dd>
-                <dt>Bench</dt><dd>${esc(benchOf(row.team))}</dd>
+                <dt>Bench</dt><dd>${esc(benchLabel(row.email))}</dd>
                 <dt>Manager</dt><dd>${esc(row.managerName || '-')}${row.em ? ` · EM ${esc(row.em)}` : ''}</dd>
               </dl>
             </div>

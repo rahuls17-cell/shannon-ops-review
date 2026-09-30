@@ -90,6 +90,24 @@ for label, klass, declared, bench in [
         ('Batch 5.1', 'Non-Connector', None, 'computer')]:
     got = bench_of(label, klass, {'bench_type': declared} if declared else {})
     check(got == bench, f'{label} / {klass} / {declared}: expected {bench}, got {got}')
+# Where the zip actually sits on Drive decides inside a Computer Bench batch: 5.1,
+# 6.1 and 7.1 file their Company Bench connectors in CompanyBench/ while their
+# manifests say Connector/.
+for label, klass, location, bench in [
+        ('Batch 6.1', 'Connector', 'CompanyBench/Harder', 'company'),
+        ('Batch 5.1', 'Connector', 'Company Bench/Easier', 'company'),
+        ('Batch 5.1', 'Real Connector', 'Real Connector/Easier', 'computer'),
+        ('Batch 9.1', 'CompanyBench', 'Synthetic/Harder', 'computer'),
+        ('CompanyBench 1', 'Connector', 'Connector/Harder', 'company')]:
+    got = bench_of(label, klass, {}, location)
+    check(got == bench, f'{label} at {location}: expected {bench}, got {got}')
+from build_drive_deliveries import locate  # noqa: E402
+spots = locate([{'package_path': 'Connector/Easier/ASTR_1.zip', 'task_id': 'ASTR_1', 'task_name': 'harbor/nice-name'},
+                {'package_path': 'Connector/Easier/b.zip', 'original_filename': 'b-orig.zip'},
+                {'package_path': 'Connector/Easier/gone.zip'}],
+               [{'name': 'nice-name.zip', 'path': 'CompanyBench/Easier'}, {'name': 'b-orig.zip', 'path': 'Synthetic'}])
+check(spots == {0: 'CompanyBench/Easier', 1: 'Synthetic'},
+      f'a zip saved under its declared or original name is still found, got {spots}')
 
 # --- which folders are read -------------------------------------------------
 def folder(fid, name, manifest=True):
@@ -99,7 +117,7 @@ def folder(fid, name, manifest=True):
 
 def dedup(fid, name, packages):
     item = folder(fid, name)
-    item['packages'] = packages
+    item['files'] = [{'name': n, 'path': 'CompanyBench/Easier' if n == 'a.zip' else 'Synthetic'} for n in packages]
     return item
 
 
@@ -138,6 +156,9 @@ check(five['tasks'] == 2 and five['leftOut'] == ['b.zip'] and len(five['notes'])
       f'a package taken out of the dedup copy is left out and named, got {five}')
 ids = [r['id'] for r in out['rows'] if r['batch'] == 'Batch 5.1']
 check(ids == ['B51-001', 'B51-003'], f'ids keep the manifest numbering when a package is left out, got {ids}')
+benches = {r['packageName']: (r['bench'], r['driveFolder']) for r in out['rows'] if r['batch'] == 'Batch 5.1'}
+check(benches == {'a': ('company', 'CompanyBench/Easier'), 'c': ('computer', 'Synthetic')},
+      f'the Drive folder a zip sits in decides its bench, got {benches}')
 skipped = {s['name']: s['reason'] for s in out['skipped']}
 check('ComputerBench/10-01 Batch 10.1' in skipped, 'a batch folder with no manifest is reported, not dropped')
 check('ComputerBench/10-02 Batch 11.1' in skipped and 'ComputerBench/10-02 Batch11.1 v2' in skipped,
@@ -200,8 +221,8 @@ try:
         check(set(got) == {'m5', 'mcb1', 'mcbd'},
               'batch folders are opened, also one level inside a group; ignored folders are not')
         copy = next(c for c in listing['items'][2]['children'] if c['id'] == 'cbd')
-        check(copy.get('packages') == ['deep.zip', 'top.zip'],
-              f"a dedup copy's packages are listed at every depth, got {copy.get('packages')}")
+        check(copy.get('files') == [{'name': 'top.zip', 'path': ''}, {'name': 'deep.zip', 'path': 'Connector/Harder'}],
+              f"a batch folder's zips are listed at every depth with their folder, got {copy.get('files')}")
         bdd.save_snapshot(cache, listing, got)
         downloads = sum('alt=media' in c for c in calls)
         bdd.snapshot_from_drive('root', 'token', cache=cache)
@@ -225,12 +246,14 @@ if asset.exists():
           'published Drive rows carry no trainer and no decision')
     check(not any('@' in json.dumps(r) for r in blob['rows']), 'no email address in a Drive row')
     check(all(r.get('bench') in ('company', 'computer') for r in blob['rows']), 'every Drive row has a bench')
-    check(all(r['bench'] == 'company' for r in blob['rows']
-              if r['batch'].startswith('Batch') and r['class'] == 'CompanyBench'),
-          'a CompanyBench folder inside a Computer Bench batch is Company Bench')
-    check(all(r['bench'] == 'computer' for r in blob['rows']
-              if r['batch'].startswith('Batch') and r['class'] != 'CompanyBench'),
-          'everything else in a Computer Bench batch is Computer Bench')
+    for r in blob['rows']:
+        if not r['batch'].startswith('Batch'):
+            continue
+        where = (r.get('driveFolder') or r['packagePath']).split('/')[0]
+        expected = 'company' if where.lower().replace(' ', '').startswith('companybench') else 'computer'
+        if r['bench'] != expected:
+            check(False, f"{r['batch']} {r['task']} in {where} should be {expected}, is {r['bench']}")
+            break
     per = {}
     for r in blob['rows']:
         per.setdefault(r['batch'], set()).add(r.get('packageName') or r['task'])

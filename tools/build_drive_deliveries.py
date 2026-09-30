@@ -199,8 +199,7 @@ def snapshot_from_drive(folder_id, token, cache=None):
     def open_batch(folder):
         nonlocal reused
         folder['children'] = children(folder['id'], token)
-        if is_dedup(folder['name']):
-            folder['packages'] = sorted(zip_names(folder['id'], token))
+        folder['files'] = zip_files(folder['id'], token)
         for child in folder['children']:
             if child['name'] != 'manifest.json':
                 continue
@@ -258,16 +257,22 @@ def is_dedup(name):
     return 'dedup' in re.sub(r'[\s_\-]+', '', str(name).lower())
 
 
-def zip_names(folder_id, token):
-    """Every .zip file name under a folder, at any depth."""
-    names, pending = [], [folder_id]
+def zip_files(folder_id, token):
+    """Every .zip under a folder, at any depth, with the folder path it sits in.
+
+    The path is relative to the batch folder - "CompanyBench/Harder" - because
+    where a package was put on Drive is what says which bench it was delivered
+    as, and it does not always match the manifest's own package_path.
+    """
+    files, pending = [], [(folder_id, '')]
     while pending:
-        for entry in children(pending.pop(), token):
+        current, path = pending.pop()
+        for entry in children(current, token):
             if entry['mimeType'] == FOLDER_MIME:
-                pending.append(entry['id'])
+                pending.append((entry['id'], f"{path}/{entry['name']}".strip('/')))
             elif entry['name'].lower().endswith('.zip'):
-                names.append(entry['name'])
-    return names
+                files.append({'name': entry['name'], 'path': path})
+    return sorted(files, key=lambda f: (f['path'], f['name']))
 
 
 def folder_role(item):
@@ -298,12 +303,38 @@ def first(*values):
     return next((v for v in values if v not in (None, '')), None)
 
 
-def normalise(manifest, label, present=None):
+def drive_keys(task):
+    """The file names a task's zip can have on Drive, lower-cased.
+
+    Usually the manifest's package file; sometimes the zip was saved under the
+    declared name or its original filename instead.
+    """
+    declared = re.sub(r'^(harbor|obi)/', '', str(task.get('task_name') or '').strip())
+    names = {pathlib.PurePosixPath(str(task.get('package_path') or '')).name,
+             f"{task.get('task_id')}.zip" if task.get('task_id') else '',
+             f'{declared}.zip' if declared else '', str(task.get('original_filename') or '')}
+    return {n.lower() for n in names if n}
+
+
+def locate(tasks, files):
+    """{task index: Drive folder path} for the tasks whose zip was found."""
+    where = {f['name'].lower(): f.get('path', '') for f in files or []}
+    found = {}
+    for index, task in enumerate(tasks):
+        hit = next((where[k] for k in sorted(drive_keys(task)) if k in where), None)
+        if hit is not None:
+            found[index] = hit
+    return found
+
+
+def normalise(manifest, label, files=None, require_present=False):
     """Rows for one manifest, or (None, reason) when its layout is not usable.
 
-    With `present` - the zip names actually in a dedup copy - a task whose
-    package is not among them is left out. Ids keep the manifest's numbering,
-    so a row's id does not move when its neighbours are removed.
+    `files` are the zips actually in the batch folder on Drive; each task found
+    among them carries the folder it sits in, which decides its bench. With
+    `require_present` - a dedup copy - a task whose zip is not there is left out.
+    Ids keep the manifest's numbering, so a row's id does not move when its
+    neighbours are removed.
     """
     tasks = manifest.get('tasks') if isinstance(manifest, dict) else None
     if not isinstance(tasks, list) or not tasks:
@@ -317,10 +348,12 @@ def normalise(manifest, label, present=None):
                       f'size_bytes (first at index {bad[0]}); layout not recognised')
 
     prefix = ('CB' if label.startswith('CompanyBench') else 'B') + re.sub(r'\D', '', label)
+    located = locate(tasks, files) if files is not None else {}
     rows, seen = [], set()
     for index, task in enumerate(tasks, 1):
         parts = str(task['package_path']).split('/')
-        if present is not None and parts[-1] not in present:
+        location = located.get(index - 1)
+        if require_present and location is None:
             continue
         stem = pathlib.PurePosixPath(parts[-1]).stem
         package = first(task.get('task_id'), stem)
@@ -344,7 +377,8 @@ def normalise(manifest, label, present=None):
             'class': klass,
             'domain': domain,
             'type': 'Non-connector' if klass == 'Non-Connector' else 'Connector',
-            'bench': bench_of(label, klass, task),
+            'bench': bench_of(label, klass, task, location),
+            'driveFolder': location,
             'difficulty': band.capitalize() if band else None,
             'glm': glm,
             'bucket': f'{glm}/4' if glm is not None else None,
@@ -373,18 +407,27 @@ def normalise(manifest, label, present=None):
     return rows, None
 
 
-def bench_of(label, klass, task):
+COMPANY_FOLDER = re.compile(r'^company\s*bench', re.I)
+
+
+def bench_of(label, klass, task, location=None):
     """'company' or 'computer', by where the package was delivered.
 
     Company Bench is what was delivered as Company Bench: everything in a
-    CompanyBench batch, and the CompanyBench/ folder inside a Computer Bench
-    batch. The only exception is a task its own manifest calls a Computer Bench
-    one - the synthetic tasks shipped inside CompanyBench 3. Who made the task
-    plays no part: people work on both benches and the roster moves.
+    CompanyBench batch, and whatever sits in the CompanyBench/ folder of a
+    Computer Bench batch on Drive. That folder is read where the package was
+    found - 5.1, 6.1 and 7.1 file their Company Bench connectors there while
+    their manifests call the same packages Connector/. Only when the zip was
+    not found does the manifest's own folder stand in. The one exception is a
+    task its own manifest calls a Computer Bench one - the synthetic tasks
+    shipped inside CompanyBench 3. Who made the task plays no part: people work
+    on both benches and the roster moves.
     """
     declared = str(task.get('bench_type') or task.get('bench_family') or '').lower()
     if label.startswith('CompanyBench'):
         return 'computer' if 'computer' in declared else 'company'
+    if location is not None:
+        return 'company' if COMPANY_FOLDER.match(location.split('/')[0]) else 'computer'
     return 'company' if klass in ('CompanyBench', 'Company Bench Zeta') else 'computer'
 
 
@@ -476,20 +519,24 @@ def build(listing, manifests, audited_batches):
         except ValueError as error:
             skipped.append({'name': item['name'], 'batch': label, 'reason': f'manifest.json is not valid JSON: {error}'})
             continue
-        present = set(item['packages']) if isinstance(item.get('packages'), list) else None
-        if is_dedup(item['name']) and present is None:
+        files = item.get('files')
+        if files is None and isinstance(item.get('packages'), list):     # older snapshots
+            files = [{'name': n, 'path': ''} for n in item['packages']]
+        dedup_copy = is_dedup(item['name'])
+        if dedup_copy and files is None:
             skipped.append({'name': item['name'], 'batch': label,
                             'reason': 'a dedup copy whose packages were not listed; not published '
                                       'until they are, so a removed package is never shown'})
             continue
-        batch_rows, reason = normalise(blob, label, present)
+        batch_rows, reason = normalise(blob, label, files, require_present=dedup_copy)
         if batch_rows is None:
             skipped.append({'name': item['name'], 'batch': label, 'reason': reason})
             continue
         left_out = []
-        if present is not None:
-            left_out = sorted(pathlib.PurePosixPath(t['package_path']).name for t in blob['tasks']
-                              if pathlib.PurePosixPath(str(t['package_path'])).name not in present)
+        if dedup_copy:
+            found = locate(blob['tasks'], files)
+            left_out = sorted(pathlib.PurePosixPath(str(t['package_path'])).name
+                              for i, t in enumerate(blob['tasks']) if i not in found)
             if left_out:
                 notes.append(f'{len(left_out)} of the manifest\'s {len(blob["tasks"])} packages are not '
                              'in the dedup copy and are left out')
