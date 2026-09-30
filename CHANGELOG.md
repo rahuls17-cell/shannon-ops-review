@@ -124,9 +124,11 @@ longer decides Company Bench anywhere on the dashboard.
   declares) - 76 folders are re-cut copies of a task already counted. From the
   other side, 1,893 found + 3 of the Batch 1 to 4.1 "gone" (their exact archive
   is gone but the same task is still in the prefix) = 1,896 deliveries that
-  reach a folder; 17 tasks went out twice (9 in Batch 5.1 again after Batches 1
-  to 4.1, 4 in both 5.1 and CompanyBench 2, 3 in both Batch 2 and 6.1, 1 pair
-  across 9.1 and 10.1 with crossed names), so they come to the same 1,880 tasks.
+  reach a folder; 16 tasks went out twice (9 in Batch 5.1 again after Batches 1
+  to 4.1, 4 in both 5.1 and CompanyBench 2, 3 in both Batch 2 and 6.1), so they
+  come to the same 1,896 - 16 = 1,880 tasks. (One pair in 9.1 and 10.1 has
+  crossed names - each package's name is the other's declared task - and is
+  two deliveries of two tasks.)
 - **Delivery & makeup, "What the shown tasks are"**:
   - Connector / Non-connector / Not known now use the segment switch's rule,
     so they split what is shown: under Computer Bench Connector it read 299
