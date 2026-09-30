@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T09:41:04+00:00",
+ "generatedAt": "2026-09-30T09:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13028,6 +13028,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/whose-spend-is-whose/75eace5c67425b4fde34f715a026b5f0acf2d7e27bb5652e29c5e2b327ff2a11.zip",
    "bytesRead": 49427,
+   "readOn": "2026-09-30"
+  },
+  "comparable-patient-export-paths": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/comparable-patient-export-paths/ed03ec53ff20af7eeae98efa273fc81114acc290275e4df217cbae3d1b0c24fb.zip",
+   "bytesRead": 47789,
    "readOn": "2026-09-30"
   }
  }
