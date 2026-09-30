@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T07:01:06+00:00",
+ "generatedAt": "2026-09-30T07:11:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12644,6 +12644,78 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/winter-lab-result-turnaround/8df14c4513aaea9130ece904dd19cb1a6be9dcd000249b3c1b9e6635502fc69f.zip",
    "bytesRead": 43723,
+   "readOn": "2026-09-30"
+  },
+  "crowded-review-that-went-wide": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/crowded-review-that-went-wide/87e4ce660b28522db58fa64eb93107f20769536d1b982c7d186bb0f39da37a41.zip",
+   "bytesRead": 46442,
+   "readOn": "2026-09-30"
+  },
+  "the-archive-march-and-who-filled-it": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-archive-march-and-who-filled-it/e818a0837adb4876f8234e0667c466b2c4544f913552812491389f04d77906bf.zip",
+   "bytesRead": 65912,
+   "readOn": "2026-09-30"
+  },
+  "the-conversations-that-went-somewhere": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-conversations-that-went-somewhere/85066ae9591b1dee9a60625aeeca0a3f62a8df132e88dfa8e9f1f83e474dac4e.zip",
+   "bytesRead": 50078,
+   "readOn": "2026-09-30"
+  },
+  "the-money-nobody-signed-for": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-money-nobody-signed-for/9dcfbb4a3f1cf34959c27fcf4f5830cc21c17c3add64fc650ccd0ba60d676013.zip",
+   "bytesRead": 51216,
+   "readOn": "2026-09-30"
+  },
+  "the-sign-ups-that-needed-chasing": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-sign-ups-that-needed-chasing/a5c52f381e4e7fb5199ff3df7f2b55639f034cbd4e1111a00a79a122659c2c9b.zip",
+   "bytesRead": 46992,
+   "readOn": "2026-09-30"
+  },
+  "what-reviewers-asked-us-to-write-down": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-reviewers-asked-us-to-write-down/a2a6985709bff09f8d7ba948d468a9fa0daf5d7c0949c827f32de82b1507f68b.zip",
+   "bytesRead": 49958,
    "readOn": "2026-09-30"
   }
  }
