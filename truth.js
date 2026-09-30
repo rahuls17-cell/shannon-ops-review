@@ -497,6 +497,8 @@
         (!f.connector || (f.connector === 'yes' ? connectorType(row) === true
           : f.connector === 'no' ? connectorType(row) === false
           : connectorType(row) === null)) &&
+        // The bench side is stamped on the row by the page.
+        (!f.side || row.side === f.side) &&
         // The band is a property of the run, so a row with no trials is
         // excluded from every band filter rather than counted as 0.
         // A row never read for a bench is excluded from every bench filter

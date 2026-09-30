@@ -56,7 +56,7 @@ assert.ok(/^ {2}cohort: \(\) => \{/m.test(app),
 assert.ok(/Counted by bucket folder/.test(app),
   'and it must still say what makes this strip different from the others');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-assert.ok(/id="truthCohort"/.test(html) && /id="truthCohortNote"/.test(html));
+assert.ok(/id="truthCohort"/.test(html));
 
 console.log(`cohort: ${c.packages.toLocaleString()} packages = ${c.decided.toLocaleString()} decided since ${idx.cut}`
   + ` + ${c.beforeCut} before it`);
@@ -133,7 +133,7 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
   assert.ok(overview && pipeline, 'both counts must filter the accepted folders');
   assert.equal(pipeline.replace(/^inRange\(row\.date\) && /, ''), overview.replace(/^inRange\(row\.date\) && /, ''),
     'the Pipeline tile must use the Overview segment rule');
-  assert.ok(/stat\('distinct accepted tasks', accTasks/.test(app), 'the cohort strip shows it');
+  assert.ok(/\$\{fmt\(accTasks\)\} distinct accepted tasks/.test(app), 'the cohort card shows it');
 }
 
 // --- delivered covers every batch, not only the four audited manifests ------

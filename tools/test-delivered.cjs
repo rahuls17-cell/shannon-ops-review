@@ -264,7 +264,7 @@ assert.equal((jc.manifestMissing || []).length, jc.manifestLiveMissing,
 assert.ok(!/result\.delivered\b/.test(join),
   'the join tiles must not be driven by the filtered result');
 const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-assert.ok(/id="truthJoin" class="stats stats-3"/.test(html), 'the join strip holds three tiles');
+assert.ok(/id="truthJoin"/.test(html), 'the join has its own host');
 
 console.log(`delivery join reconciles: ${jc.auditedTasks} audited = ${jc.auditedMatched} found + ${jc.auditedUnmatched} not found`);
 console.log(`  the ${jc.auditedMatched} found stand on ${jc.deliveredRows} pipeline rows`);
@@ -294,7 +294,7 @@ assert.ok(cohortTotal >= jc.unmatchedInBucket,
   'cohort counts overlap; they cannot come to less than the tasks');
 
 const appJoin = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
-const tile = appJoin.slice(appJoin.indexOf("stat('not found there'"),
+const tile = appJoin.slice(appJoin.indexOf("byId('truthJoin').innerHTML"),
                            appJoin.indexOf("byId('truthMakeup').innerHTML"));
 assert.ok(/join\.gone/.test(tile) && /join\.elsewhere/.test(tile),
   'the tile must say which were cut from the prefix and which came from elsewhere');
@@ -335,7 +335,7 @@ Object.entries(jc.unmatchedCohorts).forEach(([c, n]) => console.log(`    ${Strin
     'sanity: repeat submissions exist, or the fold proves nothing');
 
   const htmlSplit = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-  assert.ok(/id="truthSplit" class="stats stats-3"/.test(htmlSplit), 'the split holds three tiles');
+  assert.ok(/id="truthSplit"/.test(htmlSplit), 'the split has its own host');
   const appSplit = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
   assert.ok(/truthSplit:/.test(appSplit), 'the split needs its own explanation, not the join’s');
   const flagsBlock = appSplit.slice(appSplit.indexOf("byId('truthFlags').innerHTML"),

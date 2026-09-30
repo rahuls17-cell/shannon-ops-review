@@ -67,6 +67,7 @@
               </span>
             </div>
           </div>
+          <div class="gfilters" id="globalFilters" aria-label="Active filters"></div>
           <div class="topbar-actions">
             <dl class="freshness">
               <dt>Workbook</dt>
@@ -110,39 +111,46 @@
 
           <div class="deck" id="overviewDeck">
             <div class="deck-track" id="overviewTrack">
-              <section class="deck-pane" data-title="Summary" data-icon="summary" aria-label="Summary">
+              <section class="deck-pane calm" data-title="Summary" data-icon="summary" aria-label="Summary">
           <section id="segmentStrip" class="segstrip" aria-label="The split by segment"></section>
 
           <p class="eyebrow">Delivery<span id="commandScopeNote"></span></p>
-          <div class="kpirow">
-            <article class="kpi" data-tone="violet" data-expand aria-expanded="false" tabindex="0">
-              <div class="kpi-top"><h3>In scope<button class="why" data-info="scopeFunnel" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg></i></div>
-              <strong id="countFunnel">-</strong>
-              <p class="kpi-note">tasks</p>
+          <div class="kpirow is-delivery">
+            <article class="kpi kpi-trend" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>In scope<button class="why" data-info="scopeFunnel" aria-label="How this is counted">?</button></h3><span class="kpi-tag" id="scopeTrendTag"></span></div>
+              <div class="kpi-row">
+                <div><strong id="countFunnel">-</strong><p class="kpi-note">tasks decided in the pipeline</p></div>
+                <figure class="spark" id="sparkScope" aria-label="Tasks decided per day, last 14 days"></figure>
+              </div>
               <div class="kpi-more"><div class="kpi-detail" id="detailScope"></div></div>
               <p class="figure-src" data-source="gcs-evaluations"></p>
               <span class="kpi-caret" aria-hidden="true"></span>
             </article>
-            <article class="kpi" data-tone="aqua" data-expand aria-expanded="false" tabindex="0">
-              <div class="kpi-top"><h3>Accepted tasks<button class="why" data-info="accepted" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m8.5 12 2.5 2.5 5-5"/></svg></i></div>
-              <strong id="metricAccepted">-</strong>
-              <p class="kpi-note">distinct tasks</p>
+            <article class="kpi kpi-ring" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Accepted tasks<button class="why" data-info="accepted" aria-label="How this is counted">?</button></h3></div>
+              <div class="kpi-row">
+                <div><strong id="metricAccepted">-</strong><p class="kpi-note" id="metricAcceptedNote">distinct tasks</p></div>
+                <div class="ring" id="ringAccepted" style="--pct:0"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" cx="18" cy="18" r="15.5"/></svg><b>-</b></div>
+              </div>
               <div class="kpi-more"><div class="kpi-detail" id="detailAccepted"></div></div>
               <p class="figure-src" data-source="gcs-finalisation"></p>
               <span class="kpi-caret" aria-hidden="true"></span>
             </article>
-            <article class="kpi" data-tone="blue" data-expand aria-expanded="false" tabindex="0">
-              <div class="kpi-top"><h3>Client accepted<button class="why" data-info="clientAccepted" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 14.4 7.2 16.9l.9-5.4L4.2 7.7l5.4-.8z"/></svg></i></div>
-              <strong id="metricClientAccepted">-</strong>
-              <p class="kpi-note" id="metricClientAcceptedNote">-</p>
+            <article class="kpi kpi-ring" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Client accepted<button class="why" data-info="clientAccepted" aria-label="How this is counted">?</button></h3></div>
+              <div class="kpi-row">
+                <div><strong id="metricClientAccepted">-</strong><p class="kpi-note" id="metricClientAcceptedNote">-</p></div>
+                <div class="ring" id="ringClient" style="--pct:0"><svg viewBox="0 0 36 36" aria-hidden="true"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" cx="18" cy="18" r="15.5"/></svg><b>-</b></div>
+              </div>
               <div class="kpi-more"><div class="kpi-detail" id="detailClient"></div></div>
               <p class="figure-src" data-source="harbor-240"></p>
               <span class="kpi-caret" aria-hidden="true"></span>
             </article>
-            <article class="kpi" data-tone="magenta" data-expand aria-expanded="false" tabindex="0">
-              <div class="kpi-top"><h3>Finalisation v2<button class="why" data-info="v2Accepted" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21 8 12 3 3 8v8l9 5 9-5z"/><path d="M3 8l9 5 9-5M12 13v8"/></svg></i></div>
+            <article class="kpi kpi-bar" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Finalisation v2<button class="why" data-info="v2Accepted" aria-label="How this is counted">?</button></h3><span class="kpi-tag" id="metricV2Pct"></span></div>
               <strong id="metricV2Accepted">-</strong>
               <p class="kpi-note" id="metricV2AcceptedNote">-</p>
+              <span class="track" id="barV2" style="--pct:0"><i></i></span>
               <div class="kpi-more"><div class="kpi-detail" id="detailV2"></div></div>
               <p class="figure-src" data-source="gcs-finalisation"></p>
               <span class="kpi-caret" aria-hidden="true"></span>
@@ -150,28 +158,25 @@
           </div>
 
           <p class="eyebrow">Payouts<span>all dates &mdash; the date range is not applied</span><button class="why" data-info="acceptanceScope" aria-label="Why the date range is not applied here">?</button></p>
-          <div class="kpirow kpirow-3">
-            <article class="kpi" data-tone="orange" data-expand aria-expanded="false" tabindex="0">
-              <div class="kpi-top"><h3>Active trainers</h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></i></div>
+          <div class="kpirow is-payouts">
+            <article class="kpi kpi-balance" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Payout balance<button class="why" data-info="paid" aria-label="How this is counted">?</button></h3><span class="kpi-tag" id="balanceTag"></span></div>
+              <div class="balance">
+                <div class="balance-side"><strong id="metricPaid">-</strong><p class="kpi-note" id="metricPaidNote">paid</p></div>
+                <div class="balance-side is-upcoming"><strong id="metricUpcoming">-</strong><p class="kpi-note" id="metricPending">-</p></div>
+              </div>
+              <span class="track is-split" id="balanceBar" style="--pct:0"><i></i></span>
+              <p class="kpi-note is-foot"><b id="metricPendingTasks">-</b> tasks awaiting payment at $300 a task</p>
+              <div class="kpi-more"><div><div class="kpi-detail" id="detailPaid"></div><div class="kpi-detail" id="detailPending"></div></div></div>
+              <p class="figure-src" data-source="ops-workbook"></p>
+              <span class="kpi-caret" aria-hidden="true"></span>
+            </article>
+            <article class="kpi kpi-bar" data-expand aria-expanded="false" tabindex="0">
+              <div class="kpi-top"><h3>Active trainers</h3><span class="kpi-tag" id="metricActivePct"></span></div>
               <strong id="metricActive">-</strong>
               <p class="kpi-note" id="metricRoster">-</p>
+              <span class="track" id="barActive" style="--pct:0"><i></i></span>
               <div class="kpi-more"><div class="kpi-detail" id="detailTrainers"></div></div>
-              <p class="figure-src" data-source="ops-workbook"></p>
-              <span class="kpi-caret" aria-hidden="true"></span>
-            </article>
-            <article class="kpi" data-tone="aqua" data-expand aria-expanded="false" tabindex="0">
-              <div class="kpi-top"><h3>Paid out<button class="why" data-info="paid" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="13" rx="2.5"/><path d="M2 10h20M16 15h2"/></svg></i></div>
-              <strong id="metricPaid">-</strong>
-              <p class="kpi-note">at $300 a task</p>
-              <div class="kpi-more"><div class="kpi-detail" id="detailPaid"></div></div>
-              <p class="figure-src" data-source="ops-workbook"></p>
-              <span class="kpi-caret" aria-hidden="true"></span>
-            </article>
-            <article class="kpi" data-tone="yellow" data-expand aria-expanded="false" tabindex="0">
-              <div class="kpi-top"><h3>Pending tasks<button class="why" data-info="pending" aria-label="How this is counted">?</button></h3><i class="kpi-chip" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i></div>
-              <strong id="metricPendingTasks">-</strong>
-              <p class="kpi-note" id="metricPending">-</p>
-              <div class="kpi-more"><div class="kpi-detail" id="detailPending"></div></div>
               <p class="figure-src" data-source="ops-workbook"></p>
               <span class="kpi-caret" aria-hidden="true"></span>
             </article>
@@ -519,33 +524,35 @@
               <label class="fsearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="tSearch" type="search" placeholder="Search tasks, trainers or reasons" /></label>
               <div class="filterbar-actions">
                 <span class="fcount" id="truthFilterCount"></span>
+                <button type="button" id="fmore" class="ghost fmore" aria-expanded="false" aria-controls="fdrawerBody"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/><circle cx="9" cy="6" r="2"/><circle cx="15" cy="12" r="2"/><circle cx="8" cy="18" r="2"/></svg>More filters<b class="fmore-count" id="fmoreCount"></b><i class="fdrawer-caret" aria-hidden="true"></i></button>
                 <button id="tReset" class="ghost">Clear</button>
                 <button id="tExport" class="ghost">Export CSV</button>
               </div>
             </div>
-            <div class="fgroup is-primary"><span class="fgroup-label">State</span><div class="fchips fseg" id="tStateChips" role="group" aria-label="State"></div></div>
-            <div class="filterbar-grid">
-              <div class="fgroup"><span class="fgroup-label">Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><button class="why" data-info="truthVersions" aria-label="Why versions are counted once">1x</button></span><div class="fchips fseg" id="tDeliveredChips" role="group" aria-label="Delivered"></div></div>
-              <div class="fgroup"><span class="fgroup-label">Connector<button class="why" data-info="truthConnector" aria-label="How connector status is decided">?</button></span><div class="fchips fseg" id="tConnectorChips" role="group" aria-label="Connector"></div></div>
-              <div class="fgroup"><span class="fgroup-label">Gate<button class="why" data-info="gateEra" aria-label="What the gates are">?</button></span><div class="fchips fseg" id="tGateChips" role="group" aria-label="Gate"></div></div>
-              <div class="fgroup"><span class="fgroup-label">Package</span><div class="fchips fseg" id="tDeliveryChips" role="group" aria-label="Package"></div></div>
+            <div class="frows">
+              <div class="fgroup"><span class="fgroup-label">State</span><div class="fchips" id="tStateChips" role="group" aria-label="State"></div></div>
+              <div class="fgroup"><span class="fgroup-label">Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button></span><div class="fchips" id="tDeliveredChips" role="group" aria-label="Delivered"></div></div>
+              <div class="fgroup"><span class="fgroup-label">Bench<button class="why" data-info="segment" aria-label="How the bench is decided">?</button></span><div class="fchips" id="tConnectorChips" role="group" aria-label="Bench"></div></div>
             </div>
-            <div class="fgroup fgroup-selects">
-              <span class="fgroup-label">More</span>
-              <div class="fselects">
+            <div class="fdrawer-body" id="fdrawerBody" hidden>
+              <div class="fdrawer-col">
+                <p class="fdrawer-head">Pipeline</p>
+                <div class="fgroup is-stack"><span class="fgroup-label">Gate<button class="why" data-info="gateEra" aria-label="What the gates are">?</button></span><div class="fchips" id="tGateChips" role="group" aria-label="Gate"></div></div>
+                <div class="fgroup is-stack"><span class="fgroup-label">Package</span><div class="fchips" id="tDeliveryChips" role="group" aria-label="Package"></div></div>
+              </div>
+              <div class="fdrawer-col">
+                <p class="fdrawer-head">Evidence</p>
                 <label class="field"><span>GLM<button class="why" data-info="glm" aria-label="What the GLM band is">?</button></span><select id="tGlm"><option value="">Any</option><option value="band">In the 1-3 band</option><option value="0">0 of 4</option><option value="1">1 of 4</option><option value="2">2 of 4</option><option value="3">3 of 4</option><option value="4">4 of 4</option><option value="none">Not recorded</option></select></label>
-                <label class="field"><span>Bench<button class="why" data-info="bench2" aria-label="How the bench is decided">?</button></span><select id="tBench"></select></label>
+                <label class="field"><span>Harness<button class="why" data-info="bench2" aria-label="How the harness is decided">?</button></span><select id="tBench"></select></label>
                 <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What a finding is">?</button></span><select id="tFinding"></select></label>
-                <details class="morefilters">
-                  <summary class="ghost">More filters</summary>
-                  <div class="morefilters-body">
-                    <label class="field"><span>Domain</span><select id="tDomain"></select></label>
-                    <label class="field"><span>Trainer</span><select id="tOwner"></select></label>
-                    <label class="field"><span>Carried over</span><select id="tCarried"><option value="">All</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
-                    <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">All</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
-                    <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">All</option><option value="yes">Flagged</option><option value="likely">Likely</option><option value="no">Not flagged</option></select></label>
-                  </div>
-                </details>
+              </div>
+              <div class="fdrawer-col">
+                <p class="fdrawer-head">Task</p>
+                <label class="field"><span>Domain</span><select id="tDomain"></select></label>
+                <label class="field"><span>Trainer</span><select id="tOwner"></select></label>
+                <label class="field"><span>Carried over</span><select id="tCarried"><option value="">All</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
+                <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">All</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
+                <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">All</option><option value="yes">Flagged</option><option value="likely">Likely</option><option value="no">Not flagged</option></select></label>
               </div>
             </div>
             <div class="chips-row"><div id="truthChips" class="chips"></div></div>
@@ -553,27 +560,18 @@
             <select id="tGate" class="sr-only" aria-hidden="true" tabindex="-1"></select>
             <select id="tDelivery" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">All</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting re-gate</option><option value="none">No package</option></select>
             <select id="tDelivered" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">Any</option><option value="yes">Already delivered</option><option value="ready">Ready for delivery</option><option value="no">Not delivered</option></select>
-            <select id="tConnector" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">Any</option><option value="yes">Connector</option><option value="no">Non-connector</option><option value="unknown">Not known</option></select>
+            <select id="tConnector" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">Any</option><option value="connector">Connector</option><option value="non-connector">Non-connector</option><option value="company">Company bench</option><option value="unknown">Not known</option></select>
           </section>
 
           <div class="deck" id="pipelineDeck">
             <div class="deck-track" id="pipelineTrack">
               <section class="deck-pane is-active" data-title="States" data-icon="states" aria-label="States">
-          <div id="truthPartition" class="partition" aria-label="How the in-scope tasks split by state"></div>
-          <div id="truthFigures" class="kpirow kpirow-5"></div>
-          <div class="statstrip">
-            <div class="statgroup">
-              <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>every delivered batch against the bucket</em></p>
-              <div id="truthJoin" class="stats stats-3"></div>
-            </div>
-            <!-- The one place on this tab where the figures genuinely partition:
-                 a task accepted with a collectable package has either gone out
-                 or is waiting to. Kept apart from the flags beside it, which
-                 overlap and do not add up to anything. -->
-            <div class="statgroup">
-              <p class="eyebrow">Accepted packages<button class="why" data-info="truthSplit" aria-label="How this splits">?</button><em>delivered + still to deliver is all of it</em></p>
-              <div id="truthSplit" class="stats stats-3"></div>
-            </div>
+          <div id="truthPartition" class="partition" aria-label="How the in-scope tasks split by state" hidden></div>
+          <div id="truthFigures" class="kpirow is-states calm"></div>
+          <div class="kpirow is-states2 calm">
+            <article class="kpi kpi-balance" id="truthJoin"></article>
+            <article class="kpi kpi-bar" id="truthSplit"></article>
+            <div id="truthMinor" class="kpi-slots"></div>
           </div>
           <section class="panel" id="truthChainPanel" hidden>
             <header class="panel-head">
@@ -584,28 +582,13 @@
           </section>
               </section>
               <section class="deck-pane" data-title="Delivery &amp; makeup" data-icon="package" aria-label="Delivery and makeup">
-          <div class="statstrip">
-            <!-- Counted by bucket FOLDER, not by verdict row. One folder is
-                 one task, so nothing here needs a name to be deduplicated -
-                 which is the whole reason these four can be stated as one
-                 arithmetic. It does not follow the filters. -->
-            <div class="statgroup statgroup-wide">
-              <p class="eyebrow">In the accepted cohort<button class="why" data-info="cohort" aria-label="How the cohort is counted">?</button><em>counted by bucket folder; several folders can hold one task</em></p>
-              <div id="truthCohort" class="stats stats-5"></div>
-              <p class="muted footnote" id="truthCohortNote"></p>
-            </div>
-            <div class="statgroup statgroup-wide">
-              <p class="eyebrow">Flags on the shown tasks<em>overlapping, not a split</em></p>
-              <div id="truthFlags" class="stats stats-4"></div>
-            </div>
-            <!-- Connector is read from the package; domain is read from the task
-                 name. Two different kinds of evidence, so they are labelled
-                 separately rather than presented as one classification. -->
-            <div class="statgroup statgroup-wide">
-              <p class="eyebrow">What the shown tasks are<button class="why" data-info="truthMakeup" aria-label="How connector and domain are decided">?</button><em>connector from the package, domain from the name</em></p>
-              <div id="truthMakeup" class="stats stats-4"></div>
-              <div id="truthDomains" class="dimstrip"></div>
-            </div>
+          <div class="kpirow is-two calm">
+            <article class="kpi kpi-tracks" id="truthCohort"></article>
+            <article class="kpi kpi-mix" id="truthMakeup"></article>
+          </div>
+          <div class="kpirow is-four calm" id="truthFlags"></div>
+          <div class="kpirow is-one calm">
+            <article class="kpi kpi-tracks" id="truthDomains"></article>
           </div>
               </section>
               <section class="deck-pane" data-title="Outcomes by day" data-icon="calendar" aria-label="Outcomes by day">

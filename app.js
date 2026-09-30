@@ -183,7 +183,8 @@ const infoCopy = {
     const j = traced ? deliveryJoinCounts(traced) : null;
     return 'Delivered means handed over in any batch on the Delivery tab - the audited Batches 1 to 4.1 and every Drive batch after them'
       + (j ? ': ' + fmt(j.delivered) + ' tasks' + (segment ? ' in this segment' : '') + ', ' + fmt(j.found) + ' of them found in the accepted prefix today' : '')
-      + '. A new batch on Drive is counted as soon as the Delivery tab lists it. Ready means accepted with a package at the current bar and not yet delivered.';
+      + '. A new batch on Drive is counted as soon as the Delivery tab lists it. Ready means accepted with a package at the current bar and not yet delivered.'
+      + ' A task delivered in several versions is counted once.';
   },
   truthTasks: 'One row is one task, not one submission. Runs of the same task are grouped by the family the pipeline assigned them, and the row shows the canonical run: the one that got furthest, breaking ties on outcome and then on decision time. Every other run stays attached under the row. The State column carries the predicate that decided it, and the source is the verdict object it was read from.',
   finding: 'What the gate objected to, on any run of the task. A task that was fixed and later accepted still shows the earlier finding, marked as from an earlier run.',
@@ -308,6 +309,7 @@ function renderScopeFunnel() {
   setTextIfPresent('commandScopeNote', `since ${truth.cut}${segment ? ` · ${SEGMENTS[segment]} only` : ''}`);
   const node = byId('detailScope');
   if (node) node.innerHTML = shared.map(step => `<div><span>${esc(step.step)}</span><b>${fmt(step.count)}</b></div>`).join('');
+  renderScopeSpark();
 }
 
 let deltaModel = null;
@@ -394,9 +396,8 @@ function renderSegmentStrip() {
     </div>
     <div class="segtiles">
       ${tiles.map((t, index) => `<button type="button" class="segtile${segment === t.key ? ' is-on' : ''}${lead && lead.key === t.key && t.accepted ? ' is-lead' : ''}" style="--i:${index};--c:var(${SEGMENT_TONES[t.key]})" data-seg="${t.key}" aria-pressed="${segment === t.key}" data-tip="${esc(t.label)}: ${fmt(t.tasks)} pipeline tasks, ${fmt(t.accepted)} accepted · ${fmt(t.people)} people · ${fmt(t.ledger)} ledger tasks, ${fmt(t.paid)} paid">
-        <div class="segtile-head"><span class="segtile-name"><i></i>${esc(t.label)}</span>${lead && lead.key === t.key && t.accepted ? '<span class="medal medal-1" data-tip="Most accepted tasks">1</span>' : ''}</div>
-        <div class="segtile-main"><b data-count="${t.tasks}" data-key="seg:${t.key}:tasks">${fmt(t.tasks)}</b><span>pipeline tasks<small>${typed ? Math.round((t.tasks / typed) * 100) : 0}% of typed</small></span></div>
-        <span class="segtile-share"><i style="--pct:${typed ? Math.round((t.tasks / typed) * 100) : 0}"></i></span>
+        <div class="segtile-head"><span class="segtile-name"><i></i>${esc(t.label)}</span><span class="kpi-tag">${typed ? Math.round((t.tasks / typed) * 100) : 0}% of typed</span></div>
+        <div class="segtile-main"><b data-count="${t.tasks}" data-key="seg:${t.key}:tasks">${fmt(t.tasks)}</b><span>pipeline tasks</span></div>
         ${t.tasks ? verdictBar(t.accepted, t.rejected, t.other, t.tasks) : '<span class="vbar"></span>'}
         <div class="segtile-facts">
           <div><b data-count="${t.accepted}" data-key="seg:${t.key}:acc">${fmt(t.accepted)}</b><span>accepted</span></div>
@@ -406,7 +407,7 @@ function renderSegmentStrip() {
       </button>`).join('')}
       ${unknown ? `<div class="segtile is-unknown" style="--i:3;--c:var(--slate)" data-tip="These ${fmt(unknown)} carry no bench or no type yet - the pipeline learns a task's type once it reaches delivery - so they count under All, and under their bench when only that is known.">
         <div class="segtile-head"><span class="segtile-name"><i></i>Bench or type not yet known</span></div>
-        <div class="segtile-main"><b data-count="${unknown}" data-key="seg:unknown">${fmt(unknown)}</b><span>pipeline tasks<small>${Math.round((unknown / (rows.length || 1)) * 100)}% of all</small></span></div>
+        <div class="segtile-main"><b data-count="${unknown}" data-key="seg:unknown">${fmt(unknown)}</b><span>pipeline tasks \u00b7 ${Math.round((unknown / (rows.length || 1)) * 100)}% of all</span></div>
         <p class="segtile-why">No bench or no type yet. Shown under All, or under the bench alone.</p>
       </div>` : ''}
     </div>`;
@@ -429,6 +430,7 @@ function renderEverything() {
   populateDeltaFilter();
   renderDailyDelta();
   fitDeck();
+  queueGlobalFilters();
 }
 
 // The bucket is no longer a view of its own - it is the delivery evidence
@@ -794,6 +796,12 @@ function taskSegment(bench, connector) {
 }
 const truthSegment = row => taskSegment(truthBench(row), truthConnector(row));
 const inTaskSegment = (bench, connector) => segmentMatches(taskSegment(bench, connector));
+// Each pipeline row carries its bench side so the Bench filter can test it directly.
+const SIDE_OF = {'computer-connector': 'connector', 'computer-non-connector': 'non-connector', company: 'company'};
+function stampSides() {
+  if (!truth) return;
+  [truth.rows, truth.cohortRows].forEach(list => (list || []).forEach(row => { row.side = SIDE_OF[truthSegment(row)] || 'unknown'; }));
+}
 // Everything above is read from data that arrives at different times, so it
 // is rebuilt whenever the Delivery rows or the pipeline land.
 function resetTaskBenches() {
@@ -801,6 +809,7 @@ function resetTaskBenches() {
   taskBenchCache = null;
   personSegmentCache = null;
   payoutLedgerTasks.forEach(task => { task.bench = benchOfTask(task.task) || 'unassigned'; });
+  stampSides();
 }
 const typeFlag = type => (type === 'Connector' ? true : type === 'Non-connector' ? false : null);
 // Which accepted folders have gone out, over every batch the Delivery tab
@@ -1405,7 +1414,7 @@ function truthFilters() {
     state: byId('tState').value, gateEra: byId('tGate').value,
     finding: byId('tFinding').value, delivery: byId('tDelivery').value,
     delivered: byId('tDelivered') ? byId('tDelivered').value : '',
-    connector: byId('tConnector') ? byId('tConnector').value : '',
+    side: byId('tConnector') ? byId('tConnector').value : '',
     glm: byId('tGlm') ? byId('tGlm').value : '',
     bench: byId('tBench') ? byId('tBench').value : '',
     carriedOver: byId('tCarried').value, confidence: byId('tConfidence').value,
@@ -1524,7 +1533,7 @@ function renderScope(result) {
     perDay.set(row.decided, (perDay.get(row.decided) || 0) + 1);
   }
   const max = Math.max(...perDay.values(), 1);
-  setText('scopeNote', `${fmt(result.rows.length)} tasks decided ${days[0]} to ${days.at(-1)}, by decision day`);
+  byId('scopeNote').innerHTML = `<b data-count="${result.rows.length}" data-key="scope:days">${fmt(result.rows.length)}</b> tasks decided ${days[0]} to ${days.at(-1)}, by decision day`;
 
   const active = byId('tState').value;
   byId('scopeKey').innerHTML = states.map(state =>
@@ -1572,10 +1581,11 @@ function renderTruthFilterChips(filters, filtered) {
     [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
       .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
 
-  const byConnector = without('connector').rows;
-  byId('tConnectorChips').innerHTML = chip('tConnector', '', 'Any', shownTasks(byConnector), 'var(--slate)', !filters.connector) +
-    [['yes', 'Connector', 'var(--aqua)', r => truthConnector(r) === true], ['no', 'Non-connector', 'var(--blue)', r => truthConnector(r) === false], ['unknown', 'Not known', 'var(--slate)', r => truthConnector(r) === null]]
-      .map(([v, l, tone, test]) => chip('tConnector', v, l, shownTasks(byConnector.filter(test)), tone, filters.connector === v)).join('');
+  const bySide = without('side').rows;
+  const sideCount = key => shownTasks(bySide.filter(r => r.side === key));
+  byId('tConnectorChips').innerHTML = chip('tConnector', '', 'Any', shownTasks(bySide), 'var(--slate)', !filters.side) +
+    [['connector', 'Connector', 'var(--aqua)'], ['non-connector', 'Non-connector', 'var(--blue)'], ['company', 'Company bench', 'var(--violet)'], ['unknown', 'Not known', 'var(--slate)']]
+      .map(([v, l, tone]) => chip('tConnector', v, l, sideCount(v), tone, filters.side === v)).join('');
 
   const byGate = without('gateEra').rows;
   const gates = [...new Set(byGate.map(r => r.gateEra).filter(Boolean))].sort((a, b) => byGate.filter(r => r.gateEra === b).length - byGate.filter(r => r.gateEra === a).length);
@@ -1591,8 +1601,11 @@ function renderTruthFilterChips(filters, filtered) {
 
   const shown = shownTasks(window.filterTruth(rows, truthByBucket ? {...filters, state: ''} : filters).rows);
   setText('truthFilterCount', filtered ? `${fmt(shown)} of ${fmt(truthRows().length)} tasks` : `${fmt(truthRows().length)} tasks`);
+  const drawerActive = ['tGate', 'tDelivery', 'tGlm', 'tBench', 'tFinding', 'tDomain', 'tOwner', 'tCarried', 'tConfidence', 'tDuplicate'].filter(id => byId(id)?.value).length;
+  setText('fmoreCount', drawerActive ? String(drawerActive) : '');
+  byId('fmore')?.classList.toggle('has-active', drawerActive > 0);
 
-  const labels = {tState: 'State', tGate: 'Gate', tFinding: 'Finding', tDelivery: 'Delivery', tDelivered: 'Delivered', tConnector: 'Connector', tGlm: 'GLM', tBench: 'Bench', tCarried: 'Carried over', tConfidence: 'Identity', tDomain: 'Domain', tOwner: 'Trainer', tDuplicate: 'Duplicates', tSearch: 'Search'};
+  const labels = {tState: 'State', tGate: 'Gate', tFinding: 'Finding', tDelivery: 'Delivery', tDelivered: 'Delivered', tConnector: 'Bench', tGlm: 'GLM', tBench: 'Harness', tCarried: 'Carried over', tConfidence: 'Identity', tDomain: 'Domain', tOwner: 'Trainer', tDuplicate: 'Duplicates', tSearch: 'Search'};
   const shownValue = id => { const node = byId(id); if (!node) return ''; if (node.tagName === 'SELECT') return (node.options[node.selectedIndex]?.textContent || node.value).replace(/\s*\(\d[\d,]*\)$/, ''); return node.value; };
   const active = [...TRUTH_FILTERS, 'tSearch'].filter(id => byId(id)?.value);
   const toneOf = id => byId(`${id}Chips`)?.querySelector('.fchip.is-on')?.style.getPropertyValue('--c') || 'var(--accent)';
@@ -1670,13 +1683,32 @@ function renderTruthFigures(result, filtered) {
     `<button class="part${openChain === label ? ' is-on' : ''}" style="flex:${value};--c:var(--${tone});--i:${index}" data-chain="${esc(label)}" aria-pressed="${openChain === label}" data-tip="${esc(label)}: ${fmt(value)} of ${fmt(total)} (${Math.round((value / total) * 100)}%)">
       ${value / total >= 0.07 ? `<span>${esc(label)}</span><b>${Math.round((value / total) * 100)}%</b>` : ''}
     </button>`).join('');
-  byId('truthFigures').innerHTML = cards.map(([label, value, hint, tone], index) => `
-    <button class="kpi kpi-button" data-tone="${tone}" data-chain="${esc(label)}" aria-pressed="${openChain === label}" style="--i:${index}">
-      <div class="kpi-top"><h3>${esc(label)}</h3></div>
-      <strong data-count="${value}" data-key="truth:${esc(label)}">${fmt(value)}</strong>
-      <p class="kpi-note">${esc(hint)}</p>
+  const splitTotal = split.reduce((n, [, v]) => n + (v || 0), 0) || 1;
+  const shareOf = (label, value) => Math.round(((label === 'Accepted' ? result.accepted : value) / splitTotal) * 100);
+  const ringSvg = '<svg viewBox="0 0 36 36" aria-hidden="true"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" cx="18" cy="18" r="15.5"/></svg>';
+  const stateCard = ([label, value, hint, tone], kind, index) => {
+    const pct = shareOf(label, value);
+    return `
+    <button class="kpi kpi-button ${kind === 'ring' ? 'kpi-ring' : 'kpi-bar'}" data-tone="${tone}" data-chain="${esc(label)}" aria-pressed="${openChain === label}" style="--i:${index};--c:var(--${tone})" data-tip="${esc(label)}: ${fmt(value)} · ${esc(hint)} · click for how it is counted">
+      <div class="kpi-top"><h3><i class="kpi-dot"></i>${esc(label)}</h3>${kind === 'ring' ? '' : `<span class="kpi-tag">${pct}%</span>`}</div>
+      ${kind === 'ring'
+        ? `<div class="kpi-row"><div><strong data-count="${value}" data-key="truth:${esc(label)}">${fmt(value)}</strong><p class="kpi-note">${esc(hint)}</p></div><div class="ring" style="--pct:${pct}">${ringSvg}<b>${pct}%</b></div></div>`
+        : `<strong data-count="${value}" data-key="truth:${esc(label)}">${fmt(value)}</strong><p class="kpi-note">${esc(hint)}</p><span class="track" style="--pct:${pct}"><i></i></span>`}
       <span class="kpi-cue">${cue}</span>
-    </button>`).join('');
+    </button>`;
+  };
+  byId('truthFigures').innerHTML = `
+    <article class="kpi kpi-trend">
+      <div class="kpi-top"><h3>In scope<button class="why" data-info="scope" aria-label="What is counted here">?</button></h3><span class="kpi-tag" id="pipeTrendTag"></span></div>
+      <div class="kpi-row">
+        <div><strong data-count="${splitTotal}" data-key="truth:scope">${fmt(splitTotal)}</strong><p class="kpi-note">tasks decided${filtered ? ' in this selection' : ''} · ${Math.round((result.accepted / splitTotal) * 100)}% accepted</p></div>
+        <figure class="spark" id="sparkPipe" aria-label="Tasks decided per day, last 14 days"></figure>
+      </div>
+    </article>` +
+    stateCard(cards[0], 'ring', 1) + stateCard(cards[1], 'ring', 2) + stateCard(cards[2], 'ring', 3);
+  const minor = byId('truthMinor');
+  if (minor) { minor.innerHTML = stateCard(cards[3], 'bar', 4) + stateCard(cards[4], 'bar', 5); animateCounts(minor); }
+  renderScopeSpark('sparkPipe', 'pipeTrendTag');
   animateCounts(byId('truthFigures'));
 
   // The same compact cell for the delivery join and the flags, so the second
@@ -1689,6 +1721,21 @@ function renderTruthFigures(result, filtered) {
       ${sub ? `<span class="stat-sub">${esc(sub)}</span>` : ''}
       ${base ? `<span class="stat-bar"><i style="--pct:${Math.min(100, Math.round((value / base) * 100))}"></i><small>${Math.round((value / base) * 100)}%</small></span>` : ''}
     </${chain || opens ? 'button' : 'div'}>`;
+  // A compact labelled track inside a card: label, bar against a base, count, share.
+  const trow = (label, value, base, tone, tip, attrs = '') => {
+    const pct = base ? Math.min(100, Math.round((value / base) * 100)) : 0;
+    return `<${attrs ? 'button type="button"' : 'div'} class="trow" ${attrs} style="--c:var(--${tone})" data-tip="${esc(tip)}"><span>${esc(label)}</span><span class="track"><i style="--pct:${pct}"></i></span><b data-count="${value}" data-key="trow:${esc(label)}">${fmt(value)}</b><small>${pct}%</small></${attrs ? 'button' : 'div'}>`;
+  };
+  // One line per figure: label, bar against a base, count and share.
+  const vrow = (label, value, base, tone, tip, attrs = '', tag = 'button') => {
+    const pct = base ? Math.min(100, Math.round((value / base) * 100)) : 0;
+    return `<${tag}${tag === 'button' ? ' type="button"' : ''} class="vrow" style="--c:var(--${tone})" ${attrs} data-tip="${esc(tip)}">
+      <span class="vrow-label">${esc(label)}</span>
+      <span class="vrow-bar"><i style="--pct:${pct}"></i></span>
+      <b class="vrow-n" data-count="${value}" data-key="vrow:${esc(label)}">${fmt(value)}</b>
+      <small class="vrow-pct">${base ? `${pct}%` : ''}</small>
+    </${tag}>`;
+  };
   // The delivery join is a reconciliation between two datasets - the Delivery
   // tab's audit and the whole pipeline - so all three figures are counts of
   // TASKS and none of them move with the filters. It used to show delivered
@@ -1707,56 +1754,53 @@ function renderTruthFigures(result, filtered) {
 
   const idx = truth?.deliveredIndex;
   const c = idx ? idx.counts : null;
-  // Every batch the Delivery tab lists, in the segment - not only the four
-  // manifests the delivered index was built from, which is what kept this at
-  // 412 after Batch 5.1 went out. Each delivery is looked for in the accepted
-  // prefix: Batches 1 to 4.1 by the exact object their manifests name, the
-  // Drive batches by the folder their manifest names or the folder whose
-  // package declares the same task. It is the delivery record against the
-  // bucket, so it follows the segment and none of the Pipeline filters.
+  // Every batch the Delivery tab lists, in the segment, each looked for in the
+  // accepted prefix: Batches 1 to 4.1 by the exact object their manifests name,
+  // the Drive batches by the folder their manifest names or the folder whose
+  // package declares the same task. It follows the segment, not the filters.
   const traced = tracedDeliveries();
   const join = traced ? deliveryJoinCounts(traced) : null;
+  const joinShare = join ? Math.round((join.found / (join.delivered || 1)) * 100) : 0;
+  const joinWhy = join ? [join.gone ? `${fmt(join.gone)} gone from the prefix` : '', join.elsewhere ? `${fmt(join.elsewhere)} packaged from elsewhere` : '',
+    join.unnamed ? `${fmt(join.unnamed)} with no source named` : ''].filter(Boolean).join(' \u00b7 ') : '';
   byId('truthJoin').innerHTML = join
-    ? stat('delivered', join.delivered, 0,
-        tip(`Every task on the Delivery tab${segment ? ' in this segment' : ''}: ${join.batches} batches, the audited Batches 1 to 4.1 and every Drive batch after them.`),
-        null, 'blue') +
-      stat('found in the bucket', join.found, join.delivered,
-        tip(`Delivered packages whose accepted folder is in ${esc(truth.deliveryJoin.prefix)} today: the object the manifest names, the folder it names, or the folder whose package declares the same task.`),
-        null, 'green') +
-      stat('not found there', join.missing, join.delivered,
-        tip(`${fmt(join.elsewhere)} were packaged from another source the manifest names (CompanyBench 1 to 3, and the staging copies 6.1 and 8.1 were cut from) and no accepted folder declares their task; ${fmt(join.gone)} were cut from the prefix and are gone from it; ${fmt(join.unnamed)} ${join.unnamed === 1 ? 'names no source and matches' : 'name no source and match'} no folder. Click for the list.`),
-        null, 'amber', 'unmatched',
-        [join.gone ? `${fmt(join.gone)} gone` : '', join.elsewhere ? `${fmt(join.elsewhere)} from elsewhere` : '',
-         join.unnamed ? `${fmt(join.unnamed)} no source` : ''].filter(Boolean).join(' \u00b7 '))
+    ? `<div class="kpi-top"><h3>Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button></h3><span class="kpi-tag">${joinShare}% found in the bucket</span></div>
+      <div class="balance">
+        <div class="balance-side" data-tip="Delivered packages whose accepted folder is in ${esc(truth.deliveryJoin.prefix)} today: the object the manifest names, the folder it names, or the folder whose package declares the same task."><strong data-count="${join.found}" data-key="join:found">${fmt(join.found)}</strong><p class="kpi-note">found in the bucket</p></div>
+        <button type="button" class="balance-side is-upcoming is-link" data-opens="unmatched" data-tip="${fmt(join.elsewhere)} were packaged from another source the manifest names (CompanyBench 1 to 3, and the staging copies 6.1 and 8.1 were cut from) and no accepted folder declares their task; ${fmt(join.gone)} were cut from the prefix and are gone from it; ${fmt(join.unnamed)} ${join.unnamed === 1 ? 'names no source and matches' : 'name no source and match'} no folder. None is a failed delivery. Click for the list."><strong data-count="${join.missing}" data-key="join:missing">${fmt(join.missing)}</strong><p class="kpi-note">not found there</p></button>
+      </div>
+      <span class="track is-split" style="--pct:${joinShare}"><i></i></span>
+      <p class="kpi-note is-foot"><b>${fmt(join.delivered)}</b> packages delivered across ${fmt(join.batches)} batches${segment ? ' in this segment' : ''}${joinWhy ? ` \u00b7 ${joinWhy}` : ''}</p>`
     : '<p class="empty">The delivered join waits for the Delivery tab and the bucket listing.</p>';
   // Connector is structural, read from the package. Domain is a name prefix.
   // They sit together because a reader wants both, but they are labelled apart
   // because one is evidence and the other is a naming convention.
+  // Parts of a whole, one visual grammar: label, bar on a shared axis, count, share.
+  const barList = (items, base, aria, key = []) => `<div class="barlist" role="img" aria-label="${esc(aria)}">${items.map(([label, value, tone, tip]) => `
+    <div class="brow${key && key.includes(label) ? ' is-key' : ''}" style="--w:${Math.max(1.5, (value / (base || 1)) * 100).toFixed(1)};--c:${tone}" data-tip="${esc(tip)}"><span class="brow-label">${esc(label)}</span><span class="brow-bar"><i></i></span><b>${fmt(value)}</b><small>${Math.round((value / (base || 1)) * 100)}%</small></div>`).join('')}</div>`;
   const shownBase = shownTasks(result.rows);
   const shownWhere = test => shownTasks(result.rows.filter(test));
-  // Connector by the same rule as the segment switch and the Connector filter,
-  // so the three tiles split what is shown; the sub line says how much of each
+  // Connector by the same rule as the segment switch and the Bench filter, so
+  // the three columns split what is shown; the tooltip says how much of each
   // was read from the package and how much from the image.
   const typed = value => result.rows.filter(r => truthConnector(r) === value);
   const fromToml = rows => shownTasks(rows.filter(r => r.connector === true || r.connector === false));
   const via = rows => {
     const toml = fromToml(rows), image = shownTasks(rows) - toml;
-    return image ? `${fmt(toml)} from task.toml \u00b7 ${fmt(image)} from its image` : '';
+    return image ? ` ${fmt(toml)} from task.toml, ${fmt(image)} from its image.` : '';
   };
   const [isConn, isNot, isUnknown] = [typed(true), typed(false), typed(null)];
-  byId('truthMakeup').innerHTML =
-    stat('connector', shownTasks(isConn), shownBase,
-      tip('The task mounts connector gyms - Slack, Jira, Drive and the rest: task.toml declares [[environment.mcp_servers]], or, for a package never scanned, its Dockerfile starts from a connector harness image (Company Bench, or synthetic or real Computer Bench).'),
-      null, 'aqua', null, via(isConn)) +
-    stat('non-connector', shownTasks(isNot), shownBase,
-      tip('The task declares no connector gyms, or its Dockerfile starts from a plain base image with no harness. These are the tasks the domain split below describes.'),
-      null, 'blue', null, via(isNot)) +
-    stat('not known', shownTasks(isUnknown), shownBase,
-      tip('Neither a package nor a Dockerfile has been read for these, so they are reported as unknown rather than guessed. Never inferred from the name.'),
-      null, 'slate') +
-    stat('named domain', shownWhere(r => r.domain && r.domain !== 'Not recorded'), shownBase,
-      tip('A non-connector task whose name starts with a domain prefix such as gen-, law- or code-. Read off the name, so it is a naming convention, not structure; a connector task never carries one, whatever its name starts with.'),
-      null, 'violet');
+  const mixParts = [
+    ['connector', shownTasks(isConn), 'aqua', `The task mounts connector gyms - Slack, Jira, Drive and the rest: task.toml declares [[environment.mcp_servers]], or, for a package never scanned, its Dockerfile starts from a connector harness image.${via(isConn)}`],
+    ['non-connector', shownTasks(isNot), 'blue', `The task declares no connector gyms, or its Dockerfile starts from a plain base image with no harness.${via(isNot)}`],
+    ['not known', shownTasks(isUnknown), 'slate', 'Neither a package nor a Dockerfile has been read for these, so they are reported as unknown rather than guessed. Never inferred from the name.'],
+  ];
+  byId('truthMakeup').innerHTML = `
+    <div class="kpi-top"><h3>What the shown tasks are<button class="why" data-info="truthMakeup" aria-label="How connector and domain are decided">?</button></h3><span class="kpi-tag">${shownBase ? Math.round((mixParts[0][1] / shownBase) * 100) : 0}% connector</span></div>
+    <div class="kpi-row is-chart">
+      <div><strong data-count="${shownBase}" data-key="mix:shown">${fmt(shownBase)}</strong><p class="kpi-note">shown tasks</p></div>
+      ${barList(mixParts.map(([label, n, tone, why]) => [label, n, `var(--${tone})`, `${label}: ${fmt(n)} of ${fmt(shownBase)}. ${why}`]), shownBase, 'Shown tasks split by connector type', ['connector'])}
+    </div>`;
   animateCounts(byId('truthMakeup'));
 
   // The domain split of whatever is shown, so filtering to non-connector
@@ -1766,17 +1810,12 @@ function renderTruthFigures(result, filtered) {
     .sort((a, b) => b[1] - a[1]);
   const domainTotal = domains.reduce((n, [, v]) => n + v, 0);
   const unnamed = (result.domains || {})['Not recorded'] || 0;
-  byId('truthDomains').innerHTML = domains.length
-    ? domains.map(([name, n], index) => `
-      <button type="button" class="dim-row" style="--i:${index};--c:var(${DOMAIN_TONES[name] || '--slate'})"
-        data-domain="${esc(name)}" data-tip="${esc(name)}: ${fmt(n)} of the ${fmt(domainTotal)} shown tasks that carry a domain prefix">
-        <span class="dim-swatch"><i></i></span>
-        <span class="dim-label">${esc(name)}</span>
-        <b class="dim-n">${fmt(n)}</b>
-        <span class="dim-share"><i style="--pct:${Math.round((n / (domainTotal || 1)) * 100)}"></i><small>${Math.round((n / (domainTotal || 1)) * 100)}%</small></span>
-      </button>`).join('') +
-      (unnamed ? `<p class="dim-foot">${fmt(unnamed)} of the ${fmt(result.rows.length)} shown carry no domain prefix in their name, so they are not in this split.</p>` : '')
-    : '<p class="empty">No task in this selection carries a domain prefix.</p>';
+  byId('truthDomains').innerHTML = `
+    <div class="kpi-top"><h3>Named domain</h3><span class="kpi-tag">${shownBase ? Math.round((domainTotal / shownBase) * 100) : 0}% of shown</span></div>
+    <div class="kpi-head"><strong data-count="${domainTotal}" data-key="dom:total">${fmt(domainTotal)}</strong><p class="kpi-note">tasks whose name starts with a domain prefix \u00b7 ${fmt(unnamed)} do not</p></div>
+    ${domains.length
+      ? columnsMarkup(domains.map(([name, n], i) => [name, n, `ramp-${Math.min(i, 5)}`, `${name}: ${fmt(n)} of the ${fmt(domainTotal)} named tasks`])).replace('<div class="cols"', '<div class="cols is-wide is-grid"')
+      : '<p class="empty">No task in this selection carries a domain prefix.</p>'}`;
 
   byId('truthFlags').innerHTML = [
     ['carried over', shownWhere(r => r.carriedOver), 'Carried over',
@@ -1799,8 +1838,20 @@ function renderTruthFigures(result, filtered) {
         'Checked each task against the current-bar listing of the bucket rather than trusting its verdict.',
         'Only these can be delivered at all, which is why ready is drawn from them.',
         'Not the same as accepted. A rejected task can have a collectable package, and an accepted one can have none.')],
-  ].map(([label, value, chain, copy]) => stat(label, value, shownBase, copy, chain,
-    {'carried over': 'violet', 'awaiting re-gate': 'amber', 'possible duplicates': 'red', 'packages at the bar': 'green'}[label] || 'slate')).join('');
+  ].map(([label, value, chain, copy], index) => {
+    const tone = {'carried over': 'violet', 'awaiting re-gate': 'caution', 'possible duplicates': 'concern', 'packages at the bar': 'good'}[label] || 'slate';
+    const test = {'carried over': r => r.carriedOver, 'awaiting re-gate': r => r.gateOnly, 'possible duplicates': r => r.possibleDuplicate, 'packages at the bar': r => r.atCurrentBar}[label];
+    const pct = shownBase ? Math.round((value / shownBase) * 100) : 0;
+    const series = dailySeries(result.rows.filter(test));
+    return `
+    <button class="kpi kpi-button kpi-trend" data-chain="${esc(chain)}" aria-pressed="${openChain === chain}" style="--i:${index};--c:var(--${tone})" data-tip="${esc(copy)} Flags overlap, so these four are not a split. Click for how it is counted.">
+      <div class="kpi-top"><h3><i class="kpi-dot"></i>${esc(label)}</h3><span class="kpi-tag">${pct}% of shown</span></div>
+      <div class="kpi-row">
+        <div><strong data-count="${value}" data-key="flag:${esc(label)}">${fmt(value)}</strong><p class="kpi-note">tasks</p></div>
+        ${series.length > 1 ? `<figure class="spark" aria-label="Flagged tasks decided per day, last 14 days">${sparkMarkup(series)}</figure>` : ''}
+      </div>
+    </button>`;
+  }).join('');
 
   // The question this answers is the one the strip above kept inviting and
   // could not answer: what is left to send. Accepted with a collectable
@@ -1815,23 +1866,18 @@ function renderTruthFigures(result, filtered) {
   // split by whether a delivery reached them, so the two always agree.
   const cohortShown = truth.cohortRows ? window.filterTruth(truthCohortRows(), {...truthFilters(), state: ''}).rows : null;
   const sx = cohortShown && truth.deliveryJoin ? cohortSplit(cohortShown) : null;
+  const splitShare = sx ? Math.round((sx.delivered / (sx.packages || 1)) * 100) : 0;
+  const splitCard = (value, note, tag, foot, tip) => `<div class="kpi-top"><h3>Accepted packages<button class="why" data-info="truthSplit" aria-label="How this splits">?</button></h3>${tag ? `<span class="kpi-tag">${tag}</span>` : ''}</div>
+      <strong data-count="${value}" data-key="split:delivered" data-tip="${esc(tip)}">${fmt(value)}</strong>
+      <p class="kpi-note">${note}</p>`;
   byId('truthSplit').innerHTML = sx
-    ? stat('accepted packages', sx.packages, 0,
-        tip(`The task folders in ${esc(cohortIndex.cohort)} the Accepted card counts, one folder one task. ${fmt(sx.delivered)} + ${fmt(sx.notDelivered)} = ${fmt(sx.packages)}.`),
-        null, 'green') +
-      stat('already delivered', sx.delivered, sx.packages,
-        tip(`Folders a delivery reached, in any batch: ${fmt(sx.byManifest)} named by a manifest as the source, ${fmt(sx.byName)} whose package declares a delivered task${sx.copies ? ` - ${fmt(sx.copies)} of those are another copy of a task that went out from a different folder` : ''}.`),
-        null, 'blue', null,
-        sx.byName ? `${fmt(sx.byManifest)} by folder \u00b7 ${fmt(sx.byName)} by task name` : '') +
-      stat('still to deliver', sx.notDelivered, sx.packages,
-        tip(`Accepted folders no delivery has reached, by folder or by task name. This is the pool a new delivery is cut from; ${fmt(sx.laterRejected)} of them hold an accepted package whose later resubmission was rejected, worth a look before shipping.`),
-        null, 'magenta')
+    ? splitCard(sx.delivered, `of ${fmt(sx.packages)} accepted packages delivered`, `${splitShare}%`, '',
+        `The task folders in ${cohortIndex.cohort} the Accepted card counts, one folder one task. ${fmt(sx.delivered)} + ${fmt(sx.notDelivered)} = ${fmt(sx.packages)}. Delivered means a delivery reached the folder, in any batch: ${fmt(sx.byManifest)} named by a manifest as the source, ${fmt(sx.byName)} whose package declares a delivered task${sx.copies ? ` (${fmt(sx.copies)} of those are another copy of a task that went out from a different folder)` : ''}.`) +
+      `<span class="track" style="--pct:${splitShare}"><i></i></span>
+      <p class="kpi-note is-foot"><b>${fmt(sx.notDelivered)}</b> still to deliver \u00b7 ${fmt(sx.laterRejected)} rejected on a later run${sx.byName ? ` \u00b7 ${fmt(sx.byManifest)} by folder, ${fmt(sx.byName)} by task name` : ''}</p>`
     : cohortIndex
-      ? stat('accepted packages', cohortIndex.counts.packages, 0,
-          'The Delivery tab has not loaded, so the delivered split waits for it.', null, 'slate')
-      : stat('accepted at the bar', result.acceptedAtBarTasks, 0,
-          'The bucket listing has not loaded, so this falls back to the verdict count.',
-          null, 'slate');
+      ? splitCard(cohortIndex.counts.packages, 'accepted packages \u00b7 the delivered split waits for the Delivery tab', '', '', 'The Delivery tab has not loaded, so the delivered split waits for it.')
+      : splitCard(result.acceptedAtBarTasks, 'accepted at the bar \u00b7 the bucket listing has not loaded', '', '', 'The bucket listing has not loaded, so this falls back to the verdict count.');
   animateCounts(byId('truthSplit'));
 
   // The accepted cohort, counted by bucket folder. Deliberately apart from
@@ -1848,43 +1894,24 @@ function renderTruthFigures(result, filtered) {
   const coSplit = cohortInSegment && truth.deliveryJoin ? cohortSplit(cohortInSegment)
     : {delivered: 0, notDelivered: co ? co.packages : 0};
   if (co && byId('truthCohort')) {
-    byId('truthCohort').innerHTML =
-      stat('packages in the cohort', co.packages, 0,
-        tip('Every task folder under the accepted prefix.',
-          `Listed ${esc(cohortIndex.folderSource)} and counted the folders. One folder is one task - the storage layout already did the deduplication, so no name had to be normalised to get here.`,
-          `This is the honest total: ${fmt(co.packages)} tasks${segment ? ' in this segment' : ''} have an accepted package sitting in ${esc(cohortIndex.cohort)}.`,
-          'Not a count of submissions, and not comparable to the Accepted card above, which counts verdict rows and can hold several per task.'),
-        null, 'aqua') +
-      // Distinct accepted tasks, counted exactly as the Overview's Accepted tasks
-      // card counts them - task names across all three accepted prefixes, in
-      // the segment - but over every date, since this strip has no date range.
-      // Stated beside the folder count, not instead of it: every other figure
-      // here is in folders.
-      (accTasks !== null ? stat('distinct accepted tasks', accTasks, 0,
-        tip(`Distinct task names across every accepted folder in the bucket - this cohort and the two earlier accepted prefixes - the same count as the Overview's Accepted tasks${segment ? ', in this segment' : ''}, over all dates. One task finalised into several folders or cohorts counts once.${tn ? ` Within this cohort alone, ${fmt(tn.folders)} folders hold ${fmt(tn.tasks)} tasks by the [task] name their package declares.` : ''}`),
-        null, 'magenta') : '') +
-      stat('decided since the cut', co.decided, co.packages,
-        tip(`Folders with a verdict dated on or after ${esc(cohortIndex.cut)}.`,
-          'Joined each folder to the verdicts by the names its package declares, then kept the ones the pipeline window reaches.',
-          `${fmt(co.beforeCut)} were decided earlier and fall outside the window this tab reads. They are not missing; the pipeline just does not go back that far.`,
-          'Not a filter you can change. The cut is where the published pipeline starts.'),
-        null, 'blue') +
-      stat('latest verdict accepted', co.latestAccepted, co.decided,
-        tip('Of those, the ones whose most recent run came back accepted.',
-          'Took every verdict that resolves to the folder and kept the most recent decision, then the run that got furthest.',
-          `${fmt(co.latestRejected)} hold an accepted package whose later resubmission was rejected, and ${fmt(co.latestOther)} ended some other way. ${fmt(co.disagreeAcrossRuns)} folders have runs that disagree.`,
-          'Not a contradiction of the total. The package was accepted when it was cut; a later run failing does not remove it from the bucket.'),
-        null, 'green') +
-      stat('already delivered', coSplit.delivered, co.packages,
-        tip(`Folders a delivery in any batch reached, by the folder its manifest names or the task its package declares. ${fmt(coSplit.notDelivered)} of the ${fmt(co.packages)} have not gone out yet.`),
-        null, 'violet');
+    // Distinct accepted tasks, counted exactly as the Overview's Accepted tasks
+    // card counts them - task names across all three accepted prefixes, in the
+    // segment - but over every date, since this card has no date range.
+    const steps = [
+      ['packages', co.packages, 'slate', `${fmt(co.packages)} task folders under ${cohortIndex.cohort}${segment ? ' in this segment' : ''}. One folder is one accepted package; not comparable to the Accepted card, which counts verdict rows.`],
+      ['decided', co.decided, 'blue', `${fmt(co.decided)} folders with a verdict dated on or after ${cohortIndex.cut}. ${fmt(co.beforeCut)} were decided earlier and fall outside the window.`],
+      ['accepted', co.latestAccepted, 'good', `${fmt(co.latestAccepted)} whose most recent run came back accepted. ${fmt(co.latestRejected)} were rejected on a later run, ${fmt(co.latestOther)} ended some other way, ${fmt(co.disagreeAcrossRuns)} have runs that disagree.`],
+      ['delivered', coSplit.delivered, 'violet', `${fmt(coSplit.delivered)} reached by a delivery in any batch, by the folder its manifest names or the task its package declares. ${fmt(coSplit.notDelivered)} have not gone out yet.`],
+    ];
+    const distinct = accTasks !== null ? `<span class="kpi-tag" data-tip="Distinct task names across every accepted folder in the bucket - this cohort and the two earlier accepted prefixes - the same count as the Overview's Accepted tasks${segment ? ', in this segment' : ''}, over all dates.${tn ? ` Within this cohort alone, ${fmt(tn.folders)} folders hold ${fmt(tn.tasks)} tasks by the [task] name their package declares.` : ''}">${fmt(accTasks)} distinct accepted tasks</span>` : '';
+    const shades = ['color-mix(in srgb, var(--blue) 30%, var(--panel-3))', 'color-mix(in srgb, var(--blue) 55%, var(--panel))', 'color-mix(in srgb, var(--blue) 78%, var(--panel))', 'var(--blue)'];
+    byId('truthCohort').innerHTML = `
+      <div class="kpi-top"><h3>In the accepted cohort<button class="why" data-info="cohort" aria-label="How the cohort is counted">?</button></h3>${distinct}</div>
+      <div class="kpi-row is-chart">
+        <div><strong data-count="${co.packages}" data-key="cohort:packages">${fmt(co.packages)}</strong><p class="kpi-note">packages in the cohort</p></div>
+        ${barList(steps.map(([label, value, , tip], i) => [label, value, shades[i], tip]), co.packages, 'Accepted packages, decided, accepted on the latest run, delivered, on one axis', ['accepted', 'delivered'])}
+      </div>`;
     animateCounts(byId('truthCohort'));
-    setText('truthCohortNote',
-      `${fmt(co.packages)} = ${fmt(co.decided)} decided since ${cohortIndex.cut} + ${fmt(co.beforeCut)} decided before it. ` +
-      `Of the ${fmt(co.decided)}: ${fmt(co.latestAccepted)} accepted, ${fmt(co.latestRejected)} rejected on a later run, ${fmt(co.latestOther)} other. ` +
-      `Separately, ${fmt(coSplit.delivered)} of the ${fmt(co.packages)} have been delivered. ` +
-      `${fmt(co.placeholderNames)} folders carry a machine name such as task2 or harbor-single-task-${co.plainTask ? ', and one is called simply "task" and matches 19 verdicts' : ''} - those are counted here but their verdict join is the weakest. ` +
-      'There is no rejected figure in this strip on purpose: rejected work is never packaged, so it has no folder to count.');
   }
   animateCounts(byId('truthJoin')); animateCounts(byId('truthFlags'));
 }
@@ -2968,6 +2995,63 @@ function commandSnapshot() {
   };
 }
 
+// Card visuals: a ring or a track filled to a share, and a 14-day sparkline.
+function setShare(id, pct, tagId) {
+  const node = byId(id);
+  if (node) { node.style.setProperty('--pct', pct == null ? 0 : pct); node.hidden = pct == null; }
+  if (tagId) setText(tagId, pct == null ? '' : `${pct}%`);
+}
+function setRing(id, pct) {
+  const node = byId(id);
+  if (!node) return;
+  node.style.setProperty('--pct', pct == null ? 0 : pct);
+  const label = node.querySelector ? node.querySelector('b') : null;
+  if (label) label.textContent = pct == null ? '-' : `${pct}%`;
+}
+function sparkMarkup(values, w = 120, h = 36) {
+  const max = Math.max(1, ...values);
+  const x = i => (i / (values.length - 1)) * w;
+  const y = v => h - 3 - (v / max) * (h - 6);
+  const points = values.map((v, i) => `${x(i).toFixed(1)},${y(v).toFixed(1)}`).join(' ');
+  const area = `M0,${h} L${points.split(' ').join(' L')} L${w},${h} Z`;
+  const last = values[values.length - 1];
+  return `<svg viewBox="0 0 ${w} ${h}" preserveAspectRatio="none"><path class="spark-area" d="${area}"/><polyline class="spark-line" points="${points}"/><circle class="spark-dot" cx="${x(values.length - 1).toFixed(1)}" cy="${y(last).toFixed(1)}" r="2.2"/></svg>`;
+}
+// Tasks per decision day over the last N days, ending on the latest day seen.
+function dailySeries(rows, days = 14) {
+  const dates = rows.map(row => String(row.decided || '').slice(0, 10)).filter(d => /^\d{4}-\d{2}-\d{2}$/.test(d));
+  if (!dates.length) return [];
+  const end = new Date(`${dates.sort().slice(-1)[0]}T00:00:00Z`);
+  const counts = new Map();
+  dates.forEach(d => counts.set(d, (counts.get(d) || 0) + 1));
+  return Array.from({length: days}, (_, i) => {
+    const day = new Date(end); day.setUTCDate(end.getUTCDate() - (days - 1 - i));
+    return counts.get(day.toISOString().slice(0, 10)) || 0;
+  });
+}
+// A compact column chart: value on top, bar, short label beneath.
+function columnsMarkup(items) {
+  const max = Math.max(1, ...items.map(([, v]) => v || 0));
+  return `<div class="cols" role="img">${items.map(([label, value, tone, tip]) => `
+    <div class="col" style="--c:var(--${tone})" data-tip="${esc(tip || `${label}: ${fmt(value)}`)}"><b>${fmt(value)}</b><span class="col-bar"><i style="--h:${Math.max(3, Math.round((value / max) * 100))}"></i></span><small>${esc(label)}</small></div>`).join('')}</div>`;
+}
+
+function renderScopeSpark(figureId = 'sparkScope', tagId = 'scopeTrendTag') {
+  const figure = byId(figureId);
+  if (!figure) return;
+  if (!deltaModel) { figure.innerHTML = ''; setText(tagId, ''); return; }
+  const result = window.filterDelta(deltaModel, {});
+  const days = result.days.slice(-14);
+  const values = days.map(day => result.states.reduce((n, state) => n + (result.series[state][day] || 0), 0));
+  if (values.length < 2) { figure.innerHTML = ''; setText(tagId, ''); return; }
+  figure.innerHTML = sparkMarkup(values);
+  const half = Math.floor(values.length / 2);
+  const avg = list => list.reduce((a, b) => a + b, 0) / (list.length || 1);
+  const earlier = avg(values.slice(0, half)), later = avg(values.slice(half));
+  const change = earlier ? Math.round(((later - earlier) / earlier) * 100) : null;
+  setText(tagId, `${fmt(Math.round(avg(values)))}/day${change == null ? '' : ` · ${change >= 0 ? '+' : ''}${change}%`}`);
+}
+
 function renderHero() {
   const snapshot = commandSnapshot();
   const rows = segmentPayoutRows();
@@ -2983,6 +3067,7 @@ function renderHero() {
     totalTrainers: (!segment && data.summary?.totalTrainers) || rows.length,
   };
   const generated = new Date(data.meta.generatedAt);
+  const part = (value, base) => (value == null || !base) ? null : Math.round((value / base) * 100);
   const paid = summary.paidAmount;
   const pending = summary.pendingAmount;
   const totalExposure = paid + pending;
@@ -3012,13 +3097,25 @@ function renderHero() {
   setCount('metricV2Accepted', v2 ? v2.tasks : null);
   setText('metricV2AcceptedNote', v2 ? `of ${fmt(finalisationRows.length)} accepted folders` : '');
   setCount('metricPaid', paid, 'money');
+  setCount('metricUpcoming', pending, 'money');
   setCount('metricPendingTasks', summary.pendingTasks);
   // Paid tasks that no record ties to a task cannot be put in any segment.
   const unplaced = segment ? unplacedPayout() : null;
-  setText("metricPending", `${money(pending)} pending` + (unplaced && unplaced.paidAmount
+  setText('metricPending', 'upcoming' + (unplaced && unplaced.paidAmount
     ? ` \u00b7 ${money(unplaced.paidAmount)} paid for ${fmt(unplaced.paidTasks)} task${unplaced.paidTasks === 1 ? '' : 's'} the ledger does not name, counted under All only` : ''));
+  setText('metricPaidNote', `paid \u00b7 ${fmt(summary.paidTasks)} tasks`);
+  setText('balanceTag', totalExposure ? `${paidPct}% settled` : '');
+  setShare('balanceBar', paidPct);
   setCount('metricActive', summary.activeTrainers);
-  setText("metricRoster", `${fmt(summary.totalTrainers)} total trainer records`);
+  setText("metricRoster", `of ${fmt(summary.totalTrainers)} roster records`);
+  setShare('barActive', part(summary.activeTrainers, summary.totalTrainers), 'metricActivePct');
+  // Fractions drawn on the cards: accepted against the pipeline in scope, the
+  // client's accepted against the audited set, v2 against every accepted folder.
+  const inScope = truth ? (segment ? truthRows().length : (truth.counts?.inScope ?? truth.rows.length)) : null;
+  setRing('ringAccepted', snapshot.ready ? part(snapshot.tasks.size, inScope) : null);
+  setText('metricAcceptedNote', snapshot.ready && inScope ? `of ${fmt(inScope)} in scope` : 'distinct tasks');
+  setRing('ringClient', clientAcceptance ? part(clientAcceptance.accepted, clientAcceptance.tasks) : null);
+  setShare('barV2', v2 ? part(v2.tasks, finalisationRows.length) : null, 'metricV2Pct');
   setText('commandSourceStatus', gcsPipeline
     ? `${fmt(snapshot.current.length)} evaluations \u00b7 ${fmt(snapshot.folders.length)} folders` +
       // Named because one tile in this panel now answers from the verdicts
@@ -4235,6 +4332,55 @@ function wireDelivery() {
   });
 }
 
+// Every filter in force anywhere, mirrored beside the segment switch. Each
+// page renders its own chips with a clear handler; the strip lists those
+// chips and forwards a click to the original, so clearing works the same way.
+const GLOBAL_FILTER_SOURCES = [
+  ['truthChips', 'Pipeline'], ['auditChips', 'Delivery'], ['payoutChips', 'Payouts'],
+  ['ledgerChips', 'Payouts'], ['carriedChips', 'Carried over'],
+];
+let globalFilterQueued = false;
+function renderGlobalFilters() {
+  const host = byId('globalFilters');
+  if (!host) return;
+  const chips = [];
+  if (segment) chips.push({page: 'Segment', label: '', value: SEGMENTS[segment], clear: () => setSegment('')});
+  if (dateRange.start || dateRange.end) chips.push({page: 'Range', label: '', value: rangeLabel(), clear: () => byId('clearDates')?.click()});
+  GLOBAL_FILTER_SOURCES.forEach(([id, page]) => {
+    byId(id)?.querySelectorAll('.chipbtn:not(.is-clear)').forEach(button => {
+      const label = button.querySelector('span')?.textContent || '';
+      const value = [...button.childNodes].filter(node => node.nodeType === 3).map(node => node.textContent).join('').trim();
+      chips.push({page, label, value, clear: () => button.click()});
+    });
+  });
+  globalFilterChips = chips;
+  host.innerHTML = chips.length
+    ? `<span class="gf-label">Filters</span>${chips.map((chip, i) => `<button type="button" class="gchip" data-gf="${i}" title="Clear this filter"><small>${esc(chip.page)}${chip.label ? ` \u00b7 ${esc(chip.label)}` : ''}</small>${esc(chip.value)}<i aria-hidden="true">\u00d7</i></button>`).join('')}<button type="button" class="gchip is-clear" data-gf="all">Clear all</button>`
+    : '<span class="gf-label is-empty">No filters</span>';
+}
+let globalFilterChips = [];
+function queueGlobalFilters() {
+  if (globalFilterQueued) return;
+  globalFilterQueued = true;
+  requestAnimationFrame(() => { globalFilterQueued = false; renderGlobalFilters(); });
+}
+function wireGlobalFilters() {
+  const host = byId('globalFilters');
+  if (!host) return;
+  host.addEventListener('click', event => {
+    const chip = event.target.closest('[data-gf]');
+    if (!chip) return;
+    if (chip.dataset.gf === 'all') {
+      [...globalFilterChips].reverse().forEach(c => c.clear());
+      GLOBAL_FILTER_SOURCES.forEach(([id]) => byId(id)?.querySelector('.chipbtn.is-clear')?.click());
+    } else {
+      globalFilterChips[Number(chip.dataset.gf)]?.clear();
+    }
+    queueGlobalFilters();
+  });
+  ['input', 'change', 'click', 'keyup'].forEach(type => document.addEventListener(type, queueGlobalFilters, true));
+}
+
 function wireEvents() {
   byId('deltaState').addEventListener('change', renderDailyDelta);
   document.addEventListener('click', event => {
@@ -4350,6 +4496,12 @@ function wireEvents() {
     if (clear.dataset.tclear === 'all') { byId('tReset').click(); return; }
     byId(clear.dataset.tclear).value = '';
     truthPage = 0; renderTruth();
+  });
+  byId('fmore')?.addEventListener('click', () => {
+    const button = byId('fmore'), body = byId('fdrawerBody');
+    const open = button.getAttribute('aria-expanded') !== 'true';
+    button.setAttribute('aria-expanded', String(open));
+    body.hidden = !open;
   });
   byId('tReset')?.addEventListener('click', () => {
     [...TRUTH_FILTERS, 'tSearch'].forEach(id => { if (byId(id)) byId(id).value = ''; });
@@ -4556,6 +4708,7 @@ function init() {
   renderTeams();
   renderPlan();
   wireEvents();
+  wireGlobalFilters();
   wirePayoutLock();
   applyRange();
   // Before the first switchView, so a load straight onto #payouts is gated by
