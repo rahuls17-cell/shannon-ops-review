@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T08:31:05+00:00",
+ "generatedAt": "2026-09-30T08:41:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12794,6 +12794,54 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1277-candle-substitute-mapping-audit/6f96a713f1543319ec4b66353b9ceab1ee590be30196e3dade2a466be5aa2520.zip",
    "bytesRead": 199484,
+   "readOn": "2026-09-30"
+  },
+  "five-merges-over-a-standing-objection": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/five-merges-over-a-standing-objection/8e0fb3406afe355c1dbc3312575e1e829d8ebc9747afa058475a1fa91484569e.zip",
+   "bytesRead": 54328,
+   "readOn": "2026-09-30"
+  },
+  "last-week-in-five-channels": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/last-week-in-five-channels/2ad5434b33cb5ac79277ef96797b93b8486d50a016305393ed8caa9ea01c9fdf.zip",
+   "bytesRead": 47056,
+   "readOn": "2026-09-30"
+  },
+  "plaintext-credentials-lockdown": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/plaintext-credentials-lockdown/10dd726c8cf545a4db5c43568f7550fa65e9fa227551b45252dce95609540ceb.zip",
+   "bytesRead": 46915,
+   "readOn": "2026-09-30"
+  },
+  "the-mockup-nobody-signed-off-on": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-mockup-nobody-signed-off-on/9058adfd67c9c75f23a7ca69640117ea775b8eecdfd4be92e19b34d5751cf6b3.zip",
+   "bytesRead": 50486,
    "readOn": "2026-09-30"
   }
  }
