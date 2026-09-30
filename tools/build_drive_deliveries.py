@@ -373,7 +373,12 @@ def normalise(manifest, label, files=None, require_present=False):
             'task': name,
             'packageName': package if package != name else None,
             'batch': label,
-            'category': f'Non-Connector · {domain}' if klass == 'Non-Connector' and domain else klass,
+            # A Company Bench package is CompanyBench, whatever the manifest's own
+            # folder calls it - CompanyBench 1 and 2 and the 5.1 to 7.1 Company
+            # Bench connectors say Connector/ - so the category never contradicts
+            # the bench it was delivered as.
+            'category': 'CompanyBench' if bench_of(label, klass, task, location) == 'company'
+                        else f'Non-Connector · {domain}' if klass == 'Non-Connector' and domain else klass,
             'class': klass,
             'domain': domain,
             'type': type_of(klass, location),

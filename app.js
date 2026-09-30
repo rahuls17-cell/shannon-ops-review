@@ -1120,7 +1120,6 @@ function renderAudit() {
     ['Accepted', result.accepted, 'by the audit workbook', 'aqua', 'aAcceptance', 'Accepted', shown ? Math.round((result.accepted / shown) * 100) : 0],
     ['Rejected', result.rejected, 'by the audit workbook', 'red', 'aAcceptance', 'Rejected', shown ? Math.round((result.rejected / shown) * 100) : 0],
     ['Pending', result.pending, 'no decision recorded', 'yellow', 'aAcceptance', 'Pending', shown ? Math.round((result.pending / shown) * 100) : 0],
-    ['Connector tasks', result.connectors, `${shown ? Math.round((result.connectors / shown) * 100) : 0}% of those shown`, 'blue', null, null, shown ? Math.round((result.connectors / shown) * 100) : 0],
     ['Trainers', result.trainers, `${fmt(shown - result.attributed)} unattributed`, 'violet', null, null, null],
   ];
   const figuresHost = byId('auditFigures');

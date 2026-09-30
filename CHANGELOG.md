@@ -40,6 +40,16 @@ longer decides Company Bench anywhere on the dashboard.
   manifest marks as computer bench (the 9 synthetic tasks in CompanyBench 3)
   stay Computer Bench. Now Company Bench 1,688, Computer Bench 172 connector /
   1,371 non-connector. (`23052a7`, `8fd7346`)
+- **Category agrees with the bench**: a Company Bench package's category is
+  CompanyBench. It used to take the manifest's folder name, so Company Bench
+  showed two categories - CompanyBench 1,101 (CompanyBench 3 and the 8.1 to 10.1
+  folders) and Connector 587 (CompanyBench 1 and 2, and the 5.1 to 7.1 Company
+  Bench connectors, which their manifests file under `Connector/`). Now Company
+  Bench is CompanyBench 1,688; Computer Bench connectors are Synthetic 86,
+  Connector 39, Real Connector 25, Other 22 (audit connectors labelled
+  Other/unclassified).
+- **Connector tasks card removed** from the Delivery scorecard; the segment
+  switch answers that question.
 - **Batch 5.1 comes from its dedup copy**, `09-25-Batch5.1 (dedup copy
   2026-09-30)`. Its manifest was copied unchanged, so the packages actually in
   the folder decide: 375 of the manifest's 397 (the rest were also delivered in

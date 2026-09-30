@@ -246,6 +246,8 @@ if asset.exists():
           'published Drive rows carry no trainer and no decision')
     check(not any('@' in json.dumps(r) for r in blob['rows']), 'no email address in a Drive row')
     check(all(r.get('bench') in ('company', 'computer') for r in blob['rows']), 'every Drive row has a bench')
+    check(all((r['category'] == 'CompanyBench') == (r['bench'] == 'company') for r in blob['rows']),
+          'a row is in the CompanyBench category exactly when it is a Company Bench task')
     for r in blob['rows']:
         if not r['batch'].startswith('Batch'):
             continue
