@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T16:31:06+00:00",
+ "generatedAt": "2026-09-30T16:41:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13162,6 +13162,18 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b46-b10-sales-vertical-backlog-quality-summary/d0d21b2599508432323713e75e4a20d4d545bcb30ee3bc5bab1c2e40488adddb.zip",
    "bytesRead": 98661,
+   "readOn": "2026-09-30"
+  },
+  "nine-shipped-twenty-four-points": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nine-shipped-twenty-four-points/17350fc7be90b5135c779e9b240733f2eb846949c3ea0fa8e3868b1650d81588.zip",
+   "bytesRead": 52086,
    "readOn": "2026-09-30"
   }
  }
