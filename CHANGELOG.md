@@ -20,7 +20,7 @@ longer decides Company Bench anywhere on the dashboard.
   three tiles: Computer Bench Connector 838, Computer Bench Non-connector 4,347,
   Company Bench 3,714 pipeline tasks. Old links and saved choices for the
   earlier flat segments, or for Company Bench Connector / Non-connector, open
-  the matching segment. (`5f63d80`, then this change)
+  the matching segment. (`5f63d80`, `a64b8ca`)
 - **How a task gets its bench**, strongest first: where it was delivered (the
   Drive folder its package sits in); otherwise the base image in its Dockerfile;
   otherwise an unambiguous name lookup. It drives every tab: segment tiles,
@@ -33,8 +33,10 @@ longer decides Company Bench anywhere on the dashboard.
   `Non-Connector` folder means non-connector). A pipeline task with no connector
   flag takes it from its image: Company Bench and synthetic/real Computer Bench
   images are connector harnesses. (`5f63d80`)
-- Pipeline tasks now split Computer Bench 838 connector / 4,347 non-connector,
-  Company Bench 3,714 / 0; 82 have no bench or type yet.
+- Pipeline tasks split Computer Bench 813 connector / 4,346 non-connector (4
+  more of unknown type), Company Bench 3,740; 78 have no bench or type yet.
+  (Was 838 / 4,347 / 3,714 / 82 until the delivered join below linked about 60
+  more folders to where they were delivered.)
 - **A non-connector task is always on the Computer bench.** The one "Company
   Bench non-connector" task, `gen-g414-press-release-prohibited-terms-audit`,
   was a misclassification: its Dockerfile starts from the `benchmark-base`
@@ -93,7 +95,7 @@ longer decides Company Bench anywhere on the dashboard.
   4.1 only; the VM rebuilds it every refresh, but from the same four manifests,
   so the figures never moved when 5.1 onward went out. The page now joins every
   Delivery row to the accepted folders itself, on load, so a new Drive batch
-  counts as soon as the Delivery tab lists it.
+  counts as soon as the Delivery tab lists it. (`0af9d45`)
 - **How a delivery reaches a folder**: the folder its manifest names as the
   source (1 to 4.1, 7.1, 9.1, 10.1), or a folder whose package declares the
   same [task] name, compared exactly (5.1, 6.1 and 8.1 name no folder). A folder
@@ -116,7 +118,7 @@ longer decides Company Bench anywhere on the dashboard.
   pipeline tasks 813 / 4,346 / 3,740, 4 Computer Bench of unknown type, 78
   unknown.
 - The Drive reader keeps the source folder a manifest names (`sourcePrefix`,
-  `sourceFolder`, `sourceKind`) so the join can read it.
+  `sourceFolder`, `sourceKind`) so the join can read it. (`0af9d45`)
 
 ### Overview
 - **Pipeline accepted** follows the segment and date range, counting the same
