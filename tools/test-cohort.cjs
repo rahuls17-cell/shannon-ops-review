@@ -103,8 +103,6 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
   assert.ok(/Delivered against plan/.test(app),
     'the plan card must not be called Delivered next to a package count');
   assert.ok(!/card\('Delivered',/.test(app), 'the bare label must be gone');
-  assert.ok(/Verified in the bucket/.test(app),
-    'the audit row must show how many audited tasks still have a folder');
 
   // The Pipeline split is now the same population as the Accepted card, so it
   // has to be folder-based too or the two argue on one screen.

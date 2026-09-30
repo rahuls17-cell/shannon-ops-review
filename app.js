@@ -836,10 +836,13 @@ function renderAuditRows(rows) {
       <td><span class="cat" style="--c:${auditTone('category', row.category)}"><i></i>${esc(row.category || '-')}</span></td>
       <td>${glmDots(row.glmBucket)}</td>
       <td><span class="diff" style="--c:${auditTone('difficulty', row.difficulty)}">${esc(row.difficulty || '-')}</span></td>
+      <td>${row.trainer
+        ? `<span class="who"><i class="avatar">${esc(initials(row.trainer))}</i><span>${esc(row.trainer)}</span>${row.resolvedFromPipeline ? '<em class="chip" title="The audit workbook left this unattributed; this owner is the one the GCS verdicts record for the task.">from verdicts</em>' : ''}</span>`
+        : '<span class="who is-none"><i class="avatar">?</i><span>Unattributed</span></span>'}</td>
       <td><span class="verdict verdict-${esc(String(row.acceptance || 'none').toLowerCase())}">${esc(row.acceptance || '-')}</span></td>
       <td class="num"><span class="mb"><i style="--pct:${Math.round(((Number(row.size_mb) || 0) / maxMb) * 100)}"></i>${row.size_mb ? Number(row.size_mb).toFixed(1) : '-'}</span></td>
     </tr>
-    <tr class="drill" id="${id}" hidden><td colspan="9">
+    <tr class="drill" id="${id}" hidden><td colspan="10">
       <dl class="drill-grid">
         ${row.declaredName ? `<dt>Declared name</dt><dd>${esc(row.declaredName)}</dd>` : ''}
         ${row.fromManifest ? `<dt>Package</dt><dd><code>${esc(row.packagePath || '-')}</code></dd>` : ''}
@@ -855,7 +858,7 @@ function renderAuditRows(rows) {
         <dt>Feedback</dt><dd>${row.feedback_url ? `<a href="${esc(row.feedback_url)}" target="_blank" rel="noopener">Open the feedback sheet</a>` : '-'}</dd>
       </dl>
     </td></tr>`;
-  }).join('') : '<tr><td colspan="9" class="empty">No tasks match these filters.</td></tr>';
+  }).join('') : '<tr><td colspan="10" class="empty">No tasks match these filters.</td></tr>';
   setText('auditPage', `${fmt(sorted.length ? from + 1 : 0)}–${fmt(from + slice.length)} of ${fmt(sorted.length)}`);
   byId('auditPrev').disabled = auditPage === 0;
   byId('auditNext').disabled = auditPage >= pages - 1;
@@ -998,18 +1001,6 @@ function renderAudit() {
     ['Connector tasks', result.connectors, `${shown ? Math.round((result.connectors / shown) * 100) : 0}% of those shown`, 'blue', null, null, shown ? Math.round((result.connectors / shown) * 100) : 0],
     ['Trainers', result.trainers, `${fmt(shown - result.attributed)} unattributed`, 'violet', null, null, null],
   ];
-  // What the bucket can still show for the audit. The workbook records what was
-  // handed over; only a listing of the bucket says the package is still there,
-  // and the two are different claims.
-  const co = cohortIndex ? cohortIndex.counts : null;
-  if (co) {
-    // The cohort index checks the audited batches only; the Drive batches are
-    // not in it, so the share is of the audit, not of everything delivered.
-    const audited = audit.auditedCount || total;
-    figures.splice(1, 0, ['Verified in the bucket', co.delivered,
-      `of the ${fmt(audited)} audited, still a folder in the finalisation prefix`,
-      'green', null, null, audited ? Math.round((co.delivered / audited) * 100) : 0]);
-  }
   const figuresHost = byId('auditFigures');
   figuresHost.innerHTML = figures.map(([label, value, note, tone, filter, filterValue, pct], index) => {
     const pressed = filter ? byId(filter)?.value === filterValue : false;
