@@ -344,6 +344,7 @@ def normalise(manifest, label, present=None):
             'class': klass,
             'domain': domain,
             'type': 'Non-connector' if klass == 'Non-Connector' else 'Connector',
+            'bench': bench_of(label, klass, task),
             'difficulty': band.capitalize() if band else None,
             'glm': glm,
             'bucket': f'{glm}/4' if glm is not None else None,
@@ -370,6 +371,21 @@ def normalise(manifest, label, present=None):
             'sourceObject': source_object(task),
         })
     return rows, None
+
+
+def bench_of(label, klass, task):
+    """'company' or 'computer', by where the package was delivered.
+
+    Company Bench is what was delivered as Company Bench: everything in a
+    CompanyBench batch, and the CompanyBench/ folder inside a Computer Bench
+    batch. The only exception is a task its own manifest calls a Computer Bench
+    one - the synthetic tasks shipped inside CompanyBench 3. Who made the task
+    plays no part: people work on both benches and the roster moves.
+    """
+    declared = str(task.get('bench_type') or task.get('bench_family') or '').lower()
+    if label.startswith('CompanyBench'):
+        return 'computer' if 'computer' in declared else 'company'
+    return 'company' if klass in ('CompanyBench', 'Company Bench Zeta') else 'computer'
 
 
 def source_object(task):

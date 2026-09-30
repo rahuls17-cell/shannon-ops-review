@@ -14,7 +14,7 @@ import pathlib
 import sys
 
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
-from build_drive_deliveries import FOLDER_MIME, batch_label, build, normalise  # noqa: E402
+from build_drive_deliveries import FOLDER_MIME, batch_label, bench_of, build, normalise  # noqa: E402
 
 failures = []
 
@@ -76,6 +76,20 @@ for manifest, why in [({}, 'no task list'),
                       ({'tasks': [task('Connector/Easier/x.zip'), task('Connector/Harder/x.zip')]},
                        'the same package twice')]:
     check(normalise(manifest, 'Batch 5.1')[0] is None, f'must refuse {why}')
+
+# --- which bench a delivered task belongs to --------------------------------
+# By where it was delivered, never by who made it.
+for label, klass, declared, bench in [
+        ('CompanyBench 1', 'Connector', 'Company Bench', 'company'),
+        ('CompanyBench 3', 'Company Bench Zeta', 'company bench zeta', 'company'),
+        ('CompanyBench 3', 'Synthetic', 'computer bench synth', 'computer'),  # its manifest says so
+        ('CompanyBench 2', 'Connector', None, 'company'),
+        ('Batch 9.1', 'CompanyBench', 'company bench aster', 'company'),
+        ('Batch 6.1', 'Connector', 'company bench aster', 'computer'),       # a Computer Bench delivery
+        ('Batch 5.1', 'Real Connector', None, 'computer'),
+        ('Batch 5.1', 'Non-Connector', None, 'computer')]:
+    got = bench_of(label, klass, {'bench_type': declared} if declared else {})
+    check(got == bench, f'{label} / {klass} / {declared}: expected {bench}, got {got}')
 
 # --- which folders are read -------------------------------------------------
 def folder(fid, name, manifest=True):
@@ -210,6 +224,13 @@ if asset.exists():
     check(all(r['trainer'] == 'Unattributed' and r['acceptance'] == 'Pending' for r in blob['rows']),
           'published Drive rows carry no trainer and no decision')
     check(not any('@' in json.dumps(r) for r in blob['rows']), 'no email address in a Drive row')
+    check(all(r.get('bench') in ('company', 'computer') for r in blob['rows']), 'every Drive row has a bench')
+    check(all(r['bench'] == 'company' for r in blob['rows']
+              if r['batch'].startswith('Batch') and r['class'] == 'CompanyBench'),
+          'a CompanyBench folder inside a Computer Bench batch is Company Bench')
+    check(all(r['bench'] == 'computer' for r in blob['rows']
+              if r['batch'].startswith('Batch') and r['class'] != 'CompanyBench'),
+          'everything else in a Computer Bench batch is Computer Bench')
     per = {}
     for r in blob['rows']:
         per.setdefault(r['batch'], set()).add(r.get('packageName') or r['task'])

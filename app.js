@@ -200,7 +200,8 @@ const infoCopy = {
       `Right now: Connector ${fmt(count('connector'))}, Non-connector ${fmt(count('non-connector'))}, Company Bench ${fmt(count('company'))} of ${fmt(rows.length)} pipeline tasks; ` +
       `${fmt(count('unknown'))} carry no flag yet (the pipeline learns the type at delivery) and appear under All only. ` +
       (both ? `${fmt(both)} Company Bench tasks are also connector tasks; they count under Company Bench. ` : '') +
-      'People follow the same rule: Company Bench by team, otherwise by the type of work they have accepted. The 240 audit counts and the daily plan are not split, and say so.';
+      'People follow the same rule: Company Bench by team, otherwise by the type of work they have accepted. The 240 audit counts and the daily plan are not split, and say so. ' +
+      'The Delivery tab is the exception: a delivered task knows where it was delivered, so there Company Bench is CompanyBench 1 to 3 and the CompanyBench folder inside a Computer Bench batch, whoever made the task - except tasks their own manifest marks as Computer Bench.';
   },
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
@@ -758,7 +759,16 @@ const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filt
 const truthSearchRows = () => { const cohort = truthCohortRows(); return cohort ? truthRows().concat(cohort.filter(row => row.noVerdict)) : truthRows(); };
 // Under Accepted the rows are bucket folders; every headline counts them, one folder per task.
 const shownTasks = rows => rows.length;
-const auditRows = () => (audit ? audit.rows.filter(row => inSegment(row.trainer, typeFlag(row.type))) : []);
+// Delivered tasks know their bench, so the Delivery tab segments by the task,
+// not by its trainer's roster team: people work on both benches and the roster
+// moves. A row with no bench recorded - the audited batches 1 to 4.1 - is a
+// Computer Bench task, split by its connector flag.
+function deliverySegment(row) {
+  if (row.bench === 'company') return 'company';
+  const flag = typeFlag(row.type);
+  return flag === true ? 'connector' : flag === false ? 'non-connector' : 'unknown';
+}
+const auditRows = () => (audit ? audit.rows.filter(row => !segment || deliverySegment(row) === segment) : []);
 const ledgerRows = () => payoutLedgerTasks.filter(task => inSegment(task.email, typeFlag(task.filterType)));
 
 function setSegment(value) {
