@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T10:21:03+00:00",
+ "generatedAt": "2026-09-30T10:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13064,6 +13064,19 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-people-on-both-sides-of-my-account/f1c29588b2d64cf02ebc969c8aff13413522e3126c4dc8cad6ba61c10c3ffcf3.zip",
    "bytesRead": 70275,
+   "readOn": "2026-09-30"
+  },
+  "diagnose-why-subscription-309-s-83-88-plan-invoice-ended-in-dunning-fa": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/diagnose-why-subscription-309-s-83-88-plan-invoice-ended-in-dunning-fa/60a0383557a5d365e4e60448a3c8fde908d7460bd91565f2d8d213e67617072d.zip",
+   "bytesRead": 67651,
    "readOn": "2026-09-30"
   }
  }
