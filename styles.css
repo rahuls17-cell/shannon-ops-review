@@ -2563,6 +2563,13 @@ button.stat[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 18%, 
 .heat-cell:hover { transform: translateY(-1px); box-shadow: 0 0 0 2px color-mix(in srgb, var(--c) 45%, transparent); }
 .heat-cell.is-on { box-shadow: 0 0 0 2px var(--c); }
 .heat-cell.is-zero { color: var(--muted); font-weight: 500; }
+/* No GLM run is not a score: kept in the grid, but set apart from 0/4 to 4/4. */
+.heat-head.is-unset { text-transform: none; letter-spacing: 0; }
+.heat-cell.is-unset { background-image: repeating-linear-gradient(135deg, transparent 0 6px, rgba(16,23,32,.04) 6px 8px); }
+/* The row total reads as a total, not as one more shade of the heat map. */
+.heat-head.is-sum { color: var(--ink-2); }
+.heat-cell.is-sum { background: var(--panel); color: var(--ink); box-shadow: inset 0 0 0 1px var(--line); }
+.heat-cell.is-sum.is-on { box-shadow: 0 0 0 2px var(--c); }
 .stacks { display: grid; gap: 8px; }
 .stack-row { display: grid; grid-template-columns: 110px minmax(0, 1fr) 84px; gap: 12px; align-items: center; padding: 6px 8px; margin: 0 -8px; border: 0; border-radius: 9px; background: transparent; font: inherit; text-align: left; color: var(--ink-2); cursor: pointer; animation: fade-up var(--t-slow) var(--ease) both; animation-delay: calc(var(--i, 0) * 40ms); transition: background var(--t-fast) var(--ease); }
 .stack-row:hover, .stack-row.is-on { background: var(--panel-2); color: var(--ink); }

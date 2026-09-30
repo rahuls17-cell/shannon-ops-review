@@ -1064,16 +1064,21 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
   if (unscored) glm.push([window.DELIVERY_AUDIT_UNSET, unscored]);
   const glmMax = Math.max(1, ...glm.map(g => g[1]));
 
-  // Category x GLM heat map
-  const cols = GLM_ORDER.filter(k => rows.some(r => r.glmBucket === k));
-  const cellMax = Math.max(1, ...cats.flatMap(([k]) => cols.map(c => rows.filter(r => (r.category || window.DELIVERY_AUDIT_UNSET) === k && r.glmBucket === c).length)));
-  byId('catGlm').innerHTML = cats.length && cols.length ? `
-    <div class="heat-row" style="--cols:${cols.length}"><span></span>${cols.map(c => `<span class="heat-head">${esc(c)}</span>`).join('')}</div>` +
-    cats.map(([k]) => `<div class="heat-row" style="--cols:${cols.length}"><span class="heat-label">${esc(k)}</span>${cols.map(c => {
-      const n = rows.filter(r => (r.category || window.DELIVERY_AUDIT_UNSET) === k && r.glmBucket === c).length;
+  // Category x GLM heat map. A Not recorded column holds the tasks with no GLM
+  // run - CompanyBench 3 ships none - so a row still adds up to its category,
+  // and a Sum column says what that total is.
+  const unset = window.DELIVERY_AUDIT_UNSET;
+  const cols = GLM_ORDER.filter(k => rows.some(r => r.glmBucket === k)).concat([unset]);
+  const inCell = (k, c) => rows.filter(r => (r.category || unset) === k && r.glmBucket === c).length;
+  const cellMax = Math.max(1, ...cats.flatMap(([k]) => cols.map(c => inCell(k, c))));
+  const head = c => (c === unset ? 'Not recorded' : c);
+  byId('catGlm').innerHTML = cats.length ? `
+    <div class="heat-row" style="--cols:${cols.length + 1}"><span></span>${cols.map(c => `<span class="heat-head${c === unset ? ' is-unset' : ''}">${esc(head(c))}</span>`).join('')}<span class="heat-head is-sum">Sum</span></div>` +
+    cats.map(([k, total]) => `<div class="heat-row" style="--cols:${cols.length + 1}"><span class="heat-label">${esc(k)}</span>${cols.map(c => {
+      const n = inCell(k, c);
       const on = isOn('aCategory', k) && isOn('aGlm', c);
-      return `<button type="button" class="heat-cell${on ? ' is-on' : ''}${n ? '' : ' is-zero'}" style="--c:${catTone(k)};--t:${Math.round((n / cellMax) * 70)}" data-filter="aCategory" data-value="${esc(k)}" data-filter2="aGlm" data-value2="${esc(c)}" data-tip="${esc(k)} at ${esc(c)}: ${fmt(n)}">${fmt(n)}</button>`;
-    }).join('')}</div>`).join('') : '<p class="empty">No tasks match these filters.</p>';
+      return `<button type="button" class="heat-cell${on ? ' is-on' : ''}${n ? '' : ' is-zero'}${c === unset ? ' is-unset' : ''}" style="--c:${catTone(k)};--t:${Math.round((n / cellMax) * 70)}" data-filter="aCategory" data-value="${esc(k)}" data-filter2="aGlm" data-value2="${esc(c)}" data-tip="${esc(k)}, ${c === unset ? 'no GLM run recorded' : `at ${esc(c)}`}: ${fmt(n)}">${fmt(n)}</button>`;
+    }).join('')}<button type="button" class="heat-cell is-sum${isOn('aCategory', k) && !byId('aGlm')?.value ? ' is-on' : ''}" style="--c:${catTone(k)}" data-filter="aCategory" data-value="${esc(k)}" data-filter2="aGlm" data-value2="" data-tip="${esc(k)}: ${fmt(total)} tasks in all">${fmt(total)}</button></div>`).join('') : '<p class="empty">No tasks match these filters.</p>';
 
   // Trainer concentration
   const people = Object.entries(groupBy(rows.filter(r => r.trainer && /@/.test(r.trainer)), r => r.trainer)).map(([k, l]) => [k, l.length]).sort((a, b) => b[1] - a[1]);

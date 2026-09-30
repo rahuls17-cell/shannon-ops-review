@@ -50,6 +50,11 @@ longer decides Company Bench anywhere on the dashboard.
   Other/unclassified).
 - **Connector tasks card removed** from the Delivery scorecard; the segment
   switch answers that question.
+- **Category x GLM** gains a **Not recorded** column - tasks with no GLM run,
+  such as CompanyBench 3's 963 - and a **Sum** column with the row total, so
+  each row adds up to its category (CompanyBench 178 + 162 + 191 + 194 + 963 =
+  1,688). Not recorded filters to that category with no run; Sum filters to
+  the category alone.
 - **Batch 5.1 comes from its dedup copy**, `09-25-Batch5.1 (dedup copy
   2026-09-30)`. Its manifest was copied unchanged, so the packages actually in
   the folder decide: 375 of the manifest's 397 (the rest were also delivered in
