@@ -29,8 +29,16 @@ longer decides Company Bench anywhere on the dashboard.
   `Non-Connector` folder means non-connector). A pipeline task with no connector
   flag takes it from its image: Company Bench and synthetic/real Computer Bench
   images are connector harnesses. (`5f63d80`)
-- Pipeline tasks now split Computer Bench 838 connector / 4,346 non-connector,
-  Company Bench 3,714 / 1; 82 have no bench or type yet.
+- Pipeline tasks now split Computer Bench 838 connector / 4,347 non-connector,
+  Company Bench 3,714 / 0; 82 have no bench or type yet.
+- **A non-connector task is always on the Computer bench.** The one "Company
+  Bench non-connector" task, `gen-g414-press-release-prohibited-terms-audit`,
+  was a misclassification: its Dockerfile starts from the `benchmark-base`
+  image, which the image-to-bench rule reads as Company Bench Zeta, but that
+  rule is written for connector tasks and this one declares no MCP servers.
+  Its 1,368 `gen-g` siblings are all Computer Bench non-connector. The image's
+  reading is kept on the row as `benchFromImage`; a check now fails if any
+  non-connector task lands on the Company bench. (`truth.js`)
 
 ### Delivery tab
 - **Company Bench** = everything in CompanyBench 1-3, plus any package sitting in

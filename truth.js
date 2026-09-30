@@ -113,14 +113,11 @@
           ...glmOf(row.id),
           ...benchAt(row.id, row.name),
         }))
-        // A non-connector task runs on the Computer bench. A plain base image in
-        // the Dockerfile (python, node and the like) is the same evidence: no
-        // harness, so no connector. Only a task never read is left without one.
-        .map(row => (row.bench || (row.connector !== false && !row.benchRead) ? row
-          : {...row, bench: 'computer bench non-connector', benchSide: 'computer'}))
+        .map(onComputerIfNotConnector)
       : payload.tasks;
 
     const cohort = cohortRows(rows, cohortIndex, benchAt, dupOf);
+    if (cohort) cohort.forEach((row, index) => { cohort[index] = onComputerIfNotConnector(row); });
     carryDuplicateFolders(rows, cohort);
 
     return {
@@ -270,6 +267,21 @@
   // Each folder gets the verdict row that best describes it, so the table keeps
   // its trainer, dates, GLM band and drill-down. A folder with no verdict row
   // still appears, carrying what the bucket knows and nothing invented.
+  // A non-connector task runs on the Computer bench, whatever image its
+  // Dockerfile starts from: the image-to-bench rule (tools/read_task_toml.py
+  // bench_type) is written for connector tasks, and applied to a non-connector
+  // it names a bench the task does not run on - gen-g414 sits on a
+  // benchmark-base image and read as Company Bench Zeta. A plain base image
+  // (python, node and the like) is the same evidence: no harness, so no
+  // connector. Only a task never read is left without a bench.
+  function onComputerIfNotConnector(row) {
+    if (row.connector === false || (!row.bench && row.benchRead)) {
+      return {...row, bench: 'computer bench non-connector', benchSide: 'computer',
+              benchFromImage: row.bench && row.bench !== 'computer bench non-connector' ? row.bench : null};
+    }
+    return row;
+  }
+
   function cohortRows(rows, cohortIndex, benchAt, dupOf) {
     if (!cohortIndex || !cohortIndex.folders) return null;
     const byName = new Map();

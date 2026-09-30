@@ -168,3 +168,34 @@ console.log('truth checks passed: partition, filters, chains, refusal to render 
       JSON.stringify(gc.band), `| ${blank.length.toLocaleString()} have no trials recorded`);
   }
 }
+
+// A non-connector task runs on the Computer bench, whatever image its
+// Dockerfile starts from: the image-to-bench rule is written for connector
+// tasks. gen-g414 sits on a benchmark-base image and once read as Company
+// Bench Zeta.
+{
+  const rows = [
+    {id: 'a', name: 'gen-g414', state: 'accepted', cohorts: [], owner: 'x@t.com'},
+    {id: 'b', name: 'conn', state: 'accepted', cohorts: [], owner: 'x@t.com'},
+  ];
+  const payload = {...base, tasks: rows, reconciles: true};
+  const benches = {bench: {a: {image: 'us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base:latest', bench: 'company bench zeta'},
+                           b: {image: 'kuzphi/company-bench-private@sha256:0', bench: 'company bench zeta'}}};
+  const connectors = {connector: {a: {isConnector: false, via: 'test'}, b: {isConnector: true, via: 'test'}}};
+  let model;
+  try { model = prepareTruth(payload, null, connectors, null, null, benches, null); } catch (e) { model = null; }
+  if (model) {
+    const by = Object.fromEntries(model.rows.map(r => [r.id, r]));
+    assert.equal(by.a.benchSide, 'computer', 'a non-connector task is on the Computer bench');
+    assert.equal(by.a.benchFromImage, 'company bench zeta', 'and the image reading is kept beside it');
+    assert.equal(by.b.benchSide, 'company', 'a connector task keeps the bench its image names');
+  }
+  const asset = path.join(__dirname, '..', 'assets', 'pipeline-truth.json');
+  if (fs.existsSync(asset)) {
+    const read = f => JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'assets', f), 'utf8'));
+    const live = prepareTruth(read('pipeline-truth.json'), read('delivered-index.json'), read('connector-index.json'),
+      read('glm-index.json'), read('cohort-index.json'), read('bench-index.json'), read('task-names.json'));
+    const wrong = live.rows.concat(live.cohortRows || []).filter(r => r.benchSide === 'company' && r.connector === false);
+    assert.equal(wrong.length, 0, `non-connector tasks on the Company bench: ${wrong.map(r => r.name).join(', ')}`);
+  }
+}
