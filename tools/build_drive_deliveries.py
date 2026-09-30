@@ -34,10 +34,16 @@ is read only when all of these hold:
   * it has a manifest.json at its top level.
 
 Anything else is listed in the output with the reason, so a folder that was
-left out can be seen to have been left out. Two folders claiming one batch are
-read once when their manifests are byte-identical - a copy made while tidying
-the folder - and skipped with a warning when they differ, because then there is
-no telling which is the receipt.
+left out can be seen to have been left out. When two folders claim one batch
+and one of them is a dedup copy ("dedup" in its name), the dedup copy is the
+batch. Otherwise they are read once when their manifests are byte-identical - a
+copy made while tidying the folder - and skipped with a warning when they
+differ, because then there is no telling which is the receipt.
+
+A dedup copy has had packages taken out of it while its manifest.json was
+copied unchanged, so for a dedup copy the packages actually in the folder
+decide: a manifest row is published only when its zip is still there, and the
+rows left out are listed on the batch.
 
 What each row says
 ------------------
@@ -193,6 +199,8 @@ def snapshot_from_drive(folder_id, token, cache=None):
     def open_batch(folder):
         nonlocal reused
         folder['children'] = children(folder['id'], token)
+        if is_dedup(folder['name']):
+            folder['packages'] = sorted(zip_names(folder['id'], token))
         for child in folder['children']:
             if child['name'] != 'manifest.json':
                 continue
@@ -246,6 +254,22 @@ def walk(items):
 
 # ------------------------------------------------------------ interpretation
 
+def is_dedup(name):
+    return 'dedup' in re.sub(r'[\s_\-]+', '', str(name).lower())
+
+
+def zip_names(folder_id, token):
+    """Every .zip file name under a folder, at any depth."""
+    names, pending = [], [folder_id]
+    while pending:
+        for entry in children(pending.pop(), token):
+            if entry['mimeType'] == FOLDER_MIME:
+                pending.append(entry['id'])
+            elif entry['name'].lower().endswith('.zip'):
+                names.append(entry['name'])
+    return names
+
+
 def folder_role(item):
     """'batch', 'group' (a folder of batches, looked into once) or None."""
     if item['mimeType'] != FOLDER_MIME:
@@ -274,8 +298,13 @@ def first(*values):
     return next((v for v in values if v not in (None, '')), None)
 
 
-def normalise(manifest, label):
-    """Rows for one manifest, or (None, reason) when its layout is not usable."""
+def normalise(manifest, label, present=None):
+    """Rows for one manifest, or (None, reason) when its layout is not usable.
+
+    With `present` - the zip names actually in a dedup copy - a task whose
+    package is not among them is left out. Ids keep the manifest's numbering,
+    so a row's id does not move when its neighbours are removed.
+    """
     tasks = manifest.get('tasks') if isinstance(manifest, dict) else None
     if not isinstance(tasks, list) or not tasks:
         return None, 'manifest has no task list'
@@ -291,6 +320,8 @@ def normalise(manifest, label):
     rows, seen = [], set()
     for index, task in enumerate(tasks, 1):
         parts = str(task['package_path']).split('/')
+        if present is not None and parts[-1] not in present:
+            continue
         stem = pathlib.PurePosixPath(parts[-1]).stem
         package = first(task.get('task_id'), stem)
         if package in seen:
@@ -396,6 +427,14 @@ def build(listing, manifests, audited_batches):
 
     for label, found in sorted(candidates.items()):
         notes = []
+        dedup = [pair for pair in found if is_dedup(pair[0]['name'])]
+        if len(found) > 1 and len(dedup) == 1:
+            # The dedup copy is the batch with duplicates taken out; the folder
+            # it was copied from is not delivered as well.
+            notes.append('the dedup copy is used; ' +
+                         ', '.join(i['name'] for i, _ in found if i is not dedup[0][0]) +
+                         ' also claims ' + label + ' and is not read')
+            found = dedup
         if len(found) > 1:
             # A copy made while tidying the folder carries the same receipt, so
             # it is read once. Different receipts for one batch cannot both be
@@ -421,15 +460,28 @@ def build(listing, manifests, audited_batches):
         except ValueError as error:
             skipped.append({'name': item['name'], 'batch': label, 'reason': f'manifest.json is not valid JSON: {error}'})
             continue
-        batch_rows, reason = normalise(blob, label)
+        present = set(item['packages']) if isinstance(item.get('packages'), list) else None
+        if is_dedup(item['name']) and present is None:
+            skipped.append({'name': item['name'], 'batch': label,
+                            'reason': 'a dedup copy whose packages were not listed; not published '
+                                      'until they are, so a removed package is never shown'})
+            continue
+        batch_rows, reason = normalise(blob, label, present)
         if batch_rows is None:
             skipped.append({'name': item['name'], 'batch': label, 'reason': reason})
             continue
+        left_out = []
+        if present is not None:
+            left_out = sorted(pathlib.PurePosixPath(t['package_path']).name for t in blob['tasks']
+                              if pathlib.PurePosixPath(str(t['package_path'])).name not in present)
+            if left_out:
+                notes.append(f'{len(left_out)} of the manifest\'s {len(blob["tasks"])} packages are not '
+                             'in the dedup copy and are left out')
         models = collections.Counter(
             (t.get('trial_evidence') or {}).get('model') for t in blob['tasks']
             if isinstance(t.get('trial_evidence'), dict) and t['trial_evidence'].get('model'))
         stated = declared_total(blob)
-        if stated is not None and stated != len(batch_rows):
+        if stated is not None and stated != len(batch_rows) + len(left_out):
             notes.append(f'summary states {stated} tasks, the task list holds {len(batch_rows)}')
         batches.append({
             'batch': label, 'folder': item['name'], 'folderId': item['id'],
@@ -437,6 +489,7 @@ def build(listing, manifests, audited_batches):
             'manifestId': manifest['id'], 'manifestModified': manifest.get('modifiedTime'),
             'schema': first(blob.get('schema'), blob.get('schema_version')),
             'tasks': len(batch_rows), 'glmModels': dict(models), 'notes': notes,
+            'leftOut': left_out,
         })
         rows.extend(batch_rows)
 

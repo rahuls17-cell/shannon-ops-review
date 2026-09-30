@@ -76,7 +76,7 @@ DRIVE_CREDENTIALS=/root/shannon-refresh/drive-reader.json \
 ```
 
 It prints one line per batch it read, every folder it skipped and why, and the
-row count. On 2026-09-30 the folder gave 9 batches and 2,841 tasks: Batch 5.1 to
+row count. On 2026-09-30 the folder gave 9 batches and 2,826 tasks: Batch 5.1 to
 10.1 and CompanyBench 1 to 3. One folder was skipped:
 `09-28 Batch3 CompanyBench - 9 Synthetic Tasks` has no `manifest.json`, and its 9
 tasks are already inside the CompanyBench 3 manifest.
@@ -95,8 +95,14 @@ published asset. CI runs it on every push.
   KnowledgeWork, EKW or SVC, together with everything inside such a group; files;
   shortcuts; and any batch the delivery audit already covers (Batches 1 to 4.1,
   which keep their audited rows).
+- **Dedup copies win:** when a folder with "dedup" in its name claims the same
+  batch as another, the dedup copy is the batch and the other is not read. Its
+  `manifest.json` may still be the pre-dedup one, so only the manifest rows whose
+  zip is actually in the dedup copy are published, and the rest are listed on the
+  batch. `09-25-Batch5.1 (dedup copy 2026-09-30)` holds 382 of its manifest's 397
+  packages; the 15 taken out were also delivered in CompanyBench 2 and 3.
 - **Read once:** two folders claiming one batch with byte-identical manifests,
-  such as `09-25-Batch5.1` and `09-25-Batch5.1 (dedup copy 2026-09-30)`.
+  when neither is a dedup copy.
 - **Skipped, with a warning on the page:** a batch folder with no manifest yet,
   two folders claiming the same batch with different manifests, or a manifest
   whose tasks lack a `package_path`, `sha256` or `size_bytes`. The other batches

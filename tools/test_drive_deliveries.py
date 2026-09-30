@@ -83,15 +83,24 @@ def folder(fid, name, manifest=True):
     return {'id': fid, 'name': name, 'mimeType': FOLDER_MIME, 'children': kids}
 
 
+def dedup(fid, name, packages):
+    item = folder(fid, name)
+    item['packages'] = packages
+    return item
+
+
 def group(fid, name, *inside):
     return {'id': fid, 'name': name, 'mimeType': FOLDER_MIME, 'children': list(inside)}
 
 
 good = json.dumps({'tasks': [task('Connector/Easier/p.zip')]}).encode()
 other = json.dumps({'tasks': [task('Connector/Easier/q.zip')]}).encode()
+three = json.dumps({'tasks': [task('Connector/Easier/a.zip'), task('Connector/Easier/b.zip'),
+                              task('Synthetic/Harder/c.zip')]}).encode()
 listing = {'folder': {'id': 'root', 'name': 'Deliveries'}, 'items': [
     group('g1', 'ComputerBench',
-          folder('1', '09-25-Batch5.1'), folder('1c', '09-25-Batch5.1 (dedup copy 2026-09-30)'),
+          folder('1', '09-25-Batch5.1'), dedup('1c', '09-25-Batch5.1 (dedup copy 2026-09-30)', ['a.zip', 'c.zip']),
+          folder('14', '10-05 Batch 14.1'), folder('14c', '10-05 Batch 14.1 dedup'),  # packages never listed
           folder('3', '09-16-Batch4.1'),                    # the audit already has 4.1
           folder('4', '10-01 Batch 10.1', manifest=False),  # upload still in progress
           folder('5', '10-02 Batch 11.1'), folder('6', '10-02 Batch11.1 v2'),
@@ -102,19 +111,26 @@ listing = {'folder': {'id': 'root', 'name': 'Deliveries'}, 'items': [
     group('g4', 'EKW / SVC'), group('g5', '[Meta] Meta - 0919'), group('g6', 'Empty group'),
     folder('10', '10-04 Batch 13.1'),                      # a batch still at the top level
 ]}
-manifests = {'m1': good, 'm1c': good, 'm5': good, 'm6': other, 'm9': good, 'm10': good,
+manifests = {'m1': three, 'm1c': three, 'm14': good, 'm14c': good,
+             'm5': good, 'm6': other, 'm9': good, 'm10': good,
              'm7': b'{"tasks": [{"task_name": "x"}]}'}
 out = build(listing, manifests, audited_batches={'Batch 4.1'})
-check(list(out['counts']['batches']) == ['Batch 13.1', 'Batch 5.1', 'CompanyBench 1'],
+check(sorted(out['counts']['batches']) == ['Batch 13.1', 'Batch 5.1', 'CompanyBench 1'],
       f'batches inside group folders and at the top level publish, got {out["counts"]}')
 five = next(b for b in out['batches'] if b['batch'] == 'Batch 5.1')
-check(five['folder'] == 'ComputerBench/09-25-Batch5.1' and five['notes'],
-      'an identical copy is read once, from the plainer name, and noted')
+check(five['folder'] == 'ComputerBench/09-25-Batch5.1 (dedup copy 2026-09-30)',
+      'the dedup copy is the batch, over the folder it was copied from')
+check(five['tasks'] == 2 and five['leftOut'] == ['b.zip'] and len(five['notes']) == 2,
+      f'a package taken out of the dedup copy is left out and named, got {five}')
+ids = [r['id'] for r in out['rows'] if r['batch'] == 'Batch 5.1']
+check(ids == ['B51-001', 'B51-003'], f'ids keep the manifest numbering when a package is left out, got {ids}')
 skipped = {s['name']: s['reason'] for s in out['skipped']}
 check('ComputerBench/10-01 Batch 10.1' in skipped, 'a batch folder with no manifest is reported, not dropped')
 check('ComputerBench/10-02 Batch 11.1' in skipped and 'ComputerBench/10-02 Batch11.1 v2' in skipped,
       'two folders with different manifests for one batch publish neither')
 check('ComputerBench/10-03 Batch 12.1' in skipped, 'an unrecognised layout is skipped with a reason')
+check('ComputerBench/10-05 Batch 14.1 dedup' in skipped and 'Batch 14.1' not in out['counts']['batches'],
+      'a dedup copy whose packages were not listed is not published, and its original is not used instead')
 ignored = {i['name'] for i in out['ignored']}
 check({'[Deprecated] Dupes or Partial', 'EKW / SVC', '[Meta] Meta - 0919', 'Empty group',
        'ComputerBench/09-16-Batch4.1', 'ComputerBench/09-08-Batch1'} <= ignored,
@@ -134,7 +150,13 @@ tree = {'root': [{'id': 'b5', 'name': '09-25-Batch5.1', 'mimeType': FOLDER_MIME,
                  {'id': 'meta', 'name': 'Meta - 0919', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'},
                  {'id': 'cb', 'name': 'CompanyBench', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
         'b5': [{'id': 'm5', 'name': 'manifest.json', 'mimeType': 'application/json', 'modifiedTime': 'v1'}],
-        'cb': [{'id': 'cb1', 'name': '09-27 Batch1 CompanyBench 267', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
+        'cb': [{'id': 'cb1', 'name': '09-27 Batch1 CompanyBench 267', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'},
+               {'id': 'cbd', 'name': '09-27 Batch2 CompanyBench 110 (dedup copy)', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
+        'cbd': [{'id': 'mcbd', 'name': 'manifest.json', 'mimeType': 'application/json', 'modifiedTime': 'v1'},
+                {'id': 'sub', 'name': 'Connector', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'},
+                {'id': 'z0', 'name': 'top.zip', 'mimeType': 'application/zip', 'modifiedTime': 't'}],
+        'sub': [{'id': 'sub2', 'name': 'Harder', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
+        'sub2': [{'id': 'z1', 'name': 'deep.zip', 'mimeType': 'application/zip', 'modifiedTime': 't'}],
         'cb1': [{'id': 'mcb1', 'name': 'manifest.json', 'mimeType': 'application/json', 'modifiedTime': 'v1'}],
         'meta': [{'id': 'nope', 'name': 'manifest.json', 'mimeType': 'application/json', 'modifiedTime': 'v1'}]}
 calls = []
@@ -161,8 +183,11 @@ try:
         listing, got = bdd.snapshot_from_drive('root', 'token', cache=cache)
         check([i['name'] for i in listing['items']] == ['09-25-Batch5.1', 'Meta - 0919', 'CompanyBench'],
               'both pages of the folder listing are read')
-        check(set(got) == {'m5', 'mcb1'},
+        check(set(got) == {'m5', 'mcb1', 'mcbd'},
               'batch folders are opened, also one level inside a group; ignored folders are not')
+        copy = next(c for c in listing['items'][2]['children'] if c['id'] == 'cbd')
+        check(copy.get('packages') == ['deep.zip', 'top.zip'],
+              f"a dedup copy's packages are listed at every depth, got {copy.get('packages')}")
         bdd.save_snapshot(cache, listing, got)
         downloads = sum('alt=media' in c for c in calls)
         bdd.snapshot_from_drive('root', 'token', cache=cache)
