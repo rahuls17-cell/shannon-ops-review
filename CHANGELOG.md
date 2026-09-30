@@ -86,6 +86,38 @@ longer decides Company Bench anywhere on the dashboard.
 - **Batch 10.1** (144 tasks) added. Connectors that some manifests list as
   objects now show their names instead of `[object Object]`. (`9649fd2`)
 
+### Pipeline tab
+- **Delivered now covers every batch**, not only the four manifests the
+  delivered index was built from. The Delivery join and Accepted packages cards
+  sat at 412 / 394 / 18 and 396 / 1,909 because that index reads Batches 1 to
+  4.1 only; the VM rebuilds it every refresh, but from the same four manifests,
+  so the figures never moved when 5.1 onward went out. The page now joins every
+  Delivery row to the accepted folders itself, on load, so a new Drive batch
+  counts as soon as the Delivery tab lists it.
+- **How a delivery reaches a folder**: the folder its manifest names as the
+  source (1 to 4.1, 7.1, 9.1, 10.1), or a folder whose package declares the
+  same [task] name, compared exactly (5.1, 6.1 and 8.1 name no folder). A folder
+  reached only by name while another folder of the same task was the one sent
+  is a re-cut copy; it has gone out as a task, so it is not left to deliver.
+- **Accepted packages**: 2,305 = 1,956 already delivered (1,108 by folder, 848
+  by task name) + 349 still to deliver. It follows the segment and the filters,
+  like the Accepted card beside it, so the two always agree: Computer Bench
+  167 + 38 connector, 1,403 + 248 non-connector; Company Bench 386 + 63.
+- **Delivery join**: 3,231 delivered (every batch on the Delivery tab) = 1,893
+  found in the accepted prefix + 1,338 not found: 18 gone from it (Batches 1
+  to 4.1, as before), 1,319 packaged from another source (CompanyBench 1 to 3
+  were packaged outside the pipeline), 1 with no source recorded. It follows the
+  segment; the list behind it names every one, gone first.
+- Pipeline rows take the Delivered / Ready / Not delivered flags from the same
+  join (by the Drive batches' declared names; 1 to 4.1 keep the index's
+  answer). A folder now linked to its delivery takes that delivery's bench, as
+  the bench rule says, so about 60 accepted folders changed bench: Overview
+  Pipeline accepted is now Computer Bench 205 + 1,651, Company Bench 449;
+  pipeline tasks 813 / 4,346 / 3,740, 4 Computer Bench of unknown type, 78
+  unknown.
+- The Drive reader keeps the source folder a manifest names (`sourcePrefix`,
+  `sourceFolder`, `sourceKind`) so the join can read it.
+
 ### Overview
 - **Pipeline accepted** follows the segment and date range, counting the same
   accepted folders as the Pipeline tab's Accepted card: all 2,305, Computer
@@ -129,8 +161,6 @@ longer decides Company Bench anywhere on the dashboard.
 ### Still open
 - The VM steps in `tools/VM-drive-patch.md` (service account and one line in
   `publish.sh`) are not done, so Drive data is the snapshot last committed.
-- The Pipeline tab's delivered / ready-for-delivery join counts only Batches 1
-  to 4.1 as delivered.
 - The Payouts per-person table still shows a person's whole balance under a
   segment.
 

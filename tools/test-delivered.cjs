@@ -248,11 +248,10 @@ assert.equal(unfiltered.readyTasks, filterTruth(prepared.rows, {delivered: 'read
 // to the filtered result - that would read "not found here" for tasks that are
 // merely filtered out.
 const appSrc = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
-const join = appSrc.slice(appSrc.indexOf("byId('truthJoin').innerHTML"),
+const join = appSrc.slice(appSrc.indexOf('const traced = tracedDeliveries();'),
                           appSrc.indexOf("byId('truthMakeup').innerHTML"));
-assert.ok(/c\.manifestTasks/.test(join) && /c\.manifestLiveConfirmed/.test(join)
-  && /c\.manifestLiveMissing/.test(join),
-  'the three tiles must reconcile the manifests against the bucket');
+assert.ok(/tracedDeliveries\(\)/.test(join) && /join\.found/.test(join) && /join\.missing/.test(join),
+  'the three tiles must reconcile every delivered batch against the bucket');
 assert.equal(jc.manifestLiveConfirmed + jc.manifestLiveMissing, jc.manifestTasks,
   'still in the bucket + no longer there must be every delivered task');
 assert.equal((jc.manifestMissing || []).length, jc.manifestLiveMissing,
@@ -295,12 +294,12 @@ assert.ok(cohortTotal >= jc.unmatchedInBucket,
   'cohort counts overlap; they cannot come to less than the tasks');
 
 const appJoin = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
-const tile = appJoin.slice(appJoin.indexOf("stat('no longer there'"),
+const tile = appJoin.slice(appJoin.indexOf("stat('not found there'"),
                            appJoin.indexOf("byId('truthMakeup').innerHTML"));
-assert.ok(/all three accepted prefixes/.test(tile),
-  'the tile must say it looked beyond the prefix the package was cut from');
-assert.ok(/Not a failed delivery/.test(tile),
-  'and it must say what a missing copy does not mean');
+assert.ok(/join\.gone/.test(tile) && /join\.elsewhere/.test(tile),
+  'the tile must say which were cut from the prefix and which came from elsewhere');
+assert.ok(/None is a failed delivery/.test(appJoin),
+  'and the list must say what a missing copy does not mean');
 
 console.log(`the ${jc.auditedUnmatched} not found here: ${jc.unmatchedInBucket} have an accepted package in the bucket, `
   + `${jc.unmatchedClaimed} name collision, ${jc.unmatchedAbsent} missing outright`);

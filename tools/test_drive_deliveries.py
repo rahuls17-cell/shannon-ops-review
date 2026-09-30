@@ -261,8 +261,25 @@ if asset.exists():
         per.setdefault(r['batch'], set()).add(r.get('packageName') or r['task'])
     for b in blob['batches']:
         check(len(per.get(b['batch'], ())) == b['tasks'], f"{b['batch']}: one row per package")
+    # The source folder is what the Pipeline tab's delivered join reads first.
+    for r in blob['rows']:
+        if r.get('sourceFolder'):
+            check(r.get('sourceKind') == 'pipeline' and r.get('sourcePrefix'),
+                  f"{r['batch']} {r['task']}: a source folder must come with its prefix")
+    check(any(r.get('sourceFolder') for r in blob['rows']), 'some manifest names the folder it was cut from')
     print(f"published: {len(blob['rows']):,} rows from {len(blob['batches'])} batches, "
           f"{len(blob['skipped'])} skipped, {len(blob['ignored'])} ignored")
+
+# --- the folder a package was cut from -------------------------------------
+check(bdd.source_folder({'source_uri': 'gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_1/'
+                                       + 'a' * 64 + '.zip'}) == ('finalisation_client_qc_accepted_iteration_2', 'ASTR_1'),
+      'a pipeline source names its prefix and folder')
+check(bdd.source_folder({'source_uri': 'gs://yogesh-harbor-deliveries/ready-for-delivery/x.zip'}) == (None, None),
+      'another bucket names no pipeline folder')
+check(bdd.source_kind({'source_uri': 'gs://yogesh-harbor-deliveries/ready-for-delivery/x.zip'}) == 'elsewhere',
+      'another bucket is elsewhere')
+check(bdd.source_kind({'source': 'Final DELIVERY.zip : batch_0/x/'}) == 'elsewhere', 'a named archive is elsewhere')
+check(bdd.source_kind({}) is None, 'no source is no source')
 
 if failures:
     print('\n'.join(f'FAIL {f}' for f in failures))

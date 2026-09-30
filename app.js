@@ -139,18 +139,17 @@ const infoCopy = {
       + (b ? ' ' + fmt(b.known) + ' Dockerfiles read so far.' : '');
   },
   truthSplit: () => {
-    const c = cohortIndex && cohortIndex.counts;
-    if (!c) return 'The bucket listing has not loaded, so this strip is not drawn.';
-    return 'The same population as the Accepted card above, split the one way that matters '
-      + 'operationally: has it gone out or not. ' + fmt(c.delivered) + ' + ' + fmt(c.notDelivered)
-      + ' = ' + fmt(c.packages) + ', on its face, because a package has been handed over or it has '
-      + 'not and there is no third thing. It is counted in bucket folders - one folder is one task - '
-      + 'so nothing here had to be deduplicated by name. Delivered is settled by the manifests, which '
-      + 'record the folder each package was cut from, so that join cannot be wrong about which task it '
-      + 'means. One caution before shipping: ' + fmt(c.latestRejected) + ' of these hold an accepted '
-      + 'package whose LATER resubmission came back rejected - the package is still accepted and still '
-      + 'there, a different run of the same task failed. The Rejected card counts verdict rows, a '
-      + 'different unit, so the two cannot be added together.';
+    const cohort = truthCohortRows();
+    if (!cohort || !truth.deliveryJoin) return 'Waits for the bucket listing and the Delivery tab.';
+    const x = cohortSplit(window.filterTruth(cohort, {...truthFilters(), state: ''}).rows);
+    return 'The same folders as the Accepted card, in the same segment and filters, split the one way that matters '
+      + 'operationally: has it gone out or not. ' + fmt(x.delivered) + ' + ' + fmt(x.notDelivered) + ' = ' + fmt(x.packages)
+      + '. A folder has gone out when a delivery in any batch reached it: the folder its manifest names as the source '
+      + '(Batches 1 to 4.1, 7.1, 9.1 and 10.1 record one), or a folder whose package declares the same [task] name as a '
+      + 'delivered task, compared exactly (5.1, 6.1 and 8.1 record no folder). ' + fmt(x.copies) + ' of the delivered are '
+      + 'another copy of a task that went out from a different folder - a re-cut under a new folder name - so they are not '
+      + 'left to deliver. It follows every new batch on Drive by itself. One caution before shipping: ' + fmt(x.laterRejected)
+      + ' of the still to deliver hold an accepted package whose later resubmission came back rejected.';
   },
   truthMakeup: () => {
     const c = cohortIndex && cohortIndex.counts;
@@ -180,10 +179,11 @@ const infoCopy = {
       + '. The \u00d7N badge says how many versions a row stands for.';
   },
   truthDelivered: () => {
-    const c = truth && truth.deliveredIndex && truth.deliveredIndex.counts;
-    return 'Delivered means handed over in one of the four delivery manifests'
-      + (c ? ': ' + fmt(c.manifestTasks) + ' tasks' : '')
-      + '. Ready means accepted with a package at the current bar and not yet delivered.';
+    const traced = truth && truth.deliveryJoin ? tracedDeliveries() : null;
+    const j = traced ? deliveryJoinCounts(traced) : null;
+    return 'Delivered means handed over in any batch on the Delivery tab - the audited Batches 1 to 4.1 and every Drive batch after them'
+      + (j ? ': ' + fmt(j.delivered) + ' tasks' + (segment ? ' in this segment' : '') + ', ' + fmt(j.found) + ' of them found in the accepted prefix today' : '')
+      + '. A new batch on Drive is counted as soon as the Delivery tab lists it. Ready means accepted with a package at the current bar and not yet delivered.';
   },
   truthTasks: 'One row is one task, not one submission. Runs of the same task are grouped by the family the pipeline assigned them, and the row shows the canonical run: the one that got furthest, breaking ties on outcome and then on decision time. Every other run stays attached under the row. The State column carries the predicate that decided it, and the source is the verdict object it was read from.',
   finding: 'What the gate objected to, on any run of the task. A task that was fixed and later accepted still shows the earlier finding, marked as from an earlier run.',
@@ -644,6 +644,9 @@ async function loadDeliveryAudit() {
     resetTaskBenches();
     populateAuditFilters();
     renderAudit();
+    // The Pipeline's delivered figures join these rows; if the pipeline got
+    // here first it was drawn without them.
+    if (truth) { renderTruth(); renderHero(); renderSegmentStrip(); }
   } catch (error) {
     audit = null;
     setText('auditAudit', `The task audit could not be loaded: ${error.message}. ` +
@@ -796,11 +799,25 @@ const inTaskSegment = (bench, connector) => segmentMatches(taskSegment(bench, co
 // Everything above is read from data that arrives at different times, so it
 // is rebuilt whenever the Delivery rows or the pipeline land.
 function resetTaskBenches() {
+  applyDeliveryJoin();
   taskBenchCache = null;
   personSegmentCache = null;
   payoutLedgerTasks.forEach(task => { task.bench = benchOfTask(task.task) || 'unassigned'; });
 }
 const typeFlag = type => (type === 'Connector' ? true : type === 'Non-connector' ? false : null);
+// Which accepted folders have gone out, over every batch the Delivery tab
+// lists: the audited Batches 1 to 4.1 and every Drive batch after them. Both
+// halves arrive at different times, so it is joined again whenever one lands;
+// truth.js recomputes from its own starting point, so a second run is the same.
+function applyDeliveryJoin() {
+  if (!truth || !audit || typeof window.joinDeliveries !== 'function') return;
+  window.joinDeliveries(truth, audit.rows.map(row => ({...row, audited: !row.fromManifest})),
+    (truth.deliveredIndex && truth.deliveredIndex.counts.manifestMissing) || []);
+}
+// The join's deliveries in the segment, each with whether its accepted folder
+// is in the bucket today.
+const tracedDeliveries = () => (truth && truth.deliveryJoin
+  ? truth.deliveryJoin.traced.filter(t => segmentMatches(deliverySegment(t.delivery))) : null);
 // Delivery folders carry the connector flag; evaluation rows borrow it by task name.
 let connectorByName = null;
 function connectorFor(task) {
@@ -1587,6 +1604,29 @@ function renderTruthFilterChips(filters, filtered) {
     : '';
 }
 
+// The delivery join in figures. `found` and `missing` split `delivered` and
+// nothing else, and the three reasons split `missing`.
+function deliveryJoinCounts(traced) {
+  const missing = traced.filter(t => !t.found);
+  const why = reason => missing.filter(t => t.reason === reason).length;
+  return {delivered: traced.length, found: traced.length - missing.length, missing: missing.length,
+          gone: why('gone'), elsewhere: why('elsewhere'), unnamed: why('unnamed'),
+          batches: new Set(traced.map(t => t.delivery.batch)).size};
+}
+// Accepted folders split by whether a delivery reached them. A folder reached
+// only by its declared task, while that task's other folder is the one a
+// manifest names, is another copy of delivered work.
+function cohortSplit(rows) {
+  const delivered = rows.filter(row => row.delivered);
+  const byName = delivered.filter(row => row.deliveredBy === 'name');
+  const named = new Set(delivered.filter(row => row.deliveredBy !== 'name' && row.packageTask)
+    .map(row => String(row.packageTask).toLowerCase()));
+  return {packages: rows.length, delivered: delivered.length, notDelivered: rows.length - delivered.length,
+          byManifest: delivered.length - byName.length, byName: byName.length,
+          copies: byName.filter(row => row.packageTask && named.has(String(row.packageTask).toLowerCase())).length,
+          laterRejected: rows.filter(row => !row.delivered && row.latestVerdict === 'rejected').length};
+}
+
 function renderTruthFigures(result, filtered) {
   const cue = filtered ? 'filtered' : 'how is this counted?';
   // Accepted comes from the bucket, and only Accepted.
@@ -1654,26 +1694,28 @@ function renderTruthFigures(result, filtered) {
 
   const idx = truth?.deliveredIndex;
   const c = idx ? idx.counts : null;
-  byId('truthJoin').innerHTML = idx
-    ? stat('delivered', c.manifestTasks || c.auditedTasks, 0,
-        tip('Every task the four delivery manifests handed over.',
-          'Read the manifests themselves - the files that were sent - and checked them against the Delivery tab. Same names, same batch split, nothing in one and not the other.',
-          `The two figures beside it split this number and nothing else: ${fmt(c.manifestLiveConfirmed)} + ${fmt(c.manifestLiveMissing)} = ${fmt(c.manifestTasks)}.`,
-          'Not a count of what is on screen. This is a fixed record of what went out, and it does not follow the filters.'),
+  // Every batch the Delivery tab lists, in the segment - not only the four
+  // manifests the delivered index was built from, which is what kept this at
+  // 412 after Batch 5.1 went out. Each delivery is looked for in the accepted
+  // prefix: Batches 1 to 4.1 by the exact object their manifests name, the
+  // Drive batches by the folder their manifest names or the folder whose
+  // package declares the same task. It is the delivery record against the
+  // bucket, so it follows the segment and none of the Pipeline filters.
+  const traced = tracedDeliveries();
+  const join = traced ? deliveryJoinCounts(traced) : null;
+  byId('truthJoin').innerHTML = join
+    ? stat('delivered', join.delivered, 0,
+        tip(`Every task on the Delivery tab${segment ? ' in this segment' : ''}: ${join.batches} batches, the audited Batches 1 to 4.1 and every Drive batch after them.`),
         null, 'blue') +
-      stat('still in the bucket', c.manifestLiveConfirmed, c.manifestTasks,
-        tip('Delivered packages whose archive is still there.',
-          `Listed the finalisation prefix on ${esc(c.manifestLiveCheckedOn)} and looked for the exact object each manifest names.`,
-          'The delivered work can still be produced on demand: the archive is at its path, or moved within its own folder.',
-          'Not a claim that it is unchanged since delivery - only that the object the manifest named is still there.'),
+      stat('found in the bucket', join.found, join.delivered,
+        tip(`Delivered packages whose accepted folder is in ${esc(truth.deliveryJoin.prefix)} today: the object the manifest names, the folder it names, or the folder whose package declares the same task.`),
         null, 'green') +
-      stat('no longer there', c.manifestLiveMissing, c.manifestTasks,
-        tip('Delivered packages the bucket can no longer show.',
-          'Same listing, checked across all three accepted prefixes rather than only the one it was cut from.',
-          `${fmt(c.manifestLiveMissing)} of the ${fmt(c.manifestTasks)} cannot be produced from the bucket today. Click for the list.`,
-          'Not a failed delivery. These went out and were verified at the time; what is gone is the copy in the bucket.'),
-        null, 'amber', 'unmatched')
-    : '<p class="empty">The delivered index is not loaded.</p>';
+      stat('not found there', join.missing, join.delivered,
+        tip(`${fmt(join.elsewhere)} were packaged from another source the manifest names (CompanyBench 1 to 3, and the staging copies 6.1 and 8.1 were cut from) and no accepted folder declares their task; ${fmt(join.gone)} were cut from the prefix and are gone from it; ${fmt(join.unnamed)} ${join.unnamed === 1 ? 'names no source and matches' : 'name no source and match'} no folder. Click for the list.`),
+        null, 'amber', 'unmatched',
+        [join.gone ? `${fmt(join.gone)} gone` : '', join.elsewhere ? `${fmt(join.elsewhere)} from elsewhere` : '',
+         join.unnamed ? `${fmt(join.unnamed)} no source` : ''].filter(Boolean).join(' \u00b7 '))
+    : '<p class="empty">The delivered join waits for the Delivery tab and the bucket listing.</p>';
   // Connector is structural, read from the package. Domain is a name prefix.
   // They sit together because a reader wants both, but they are labelled apart
   // because one is evidence and the other is a naming convention.
@@ -1758,29 +1800,27 @@ function renderTruthFigures(result, filtered) {
   // operationally: has it gone out or not. Folder-based, like the card, so
   // 1,125 = delivered + still to deliver holds on its face. The verdict view of
   // the same tasks is in the cohort strip below.
-  const cx = cohortIndex ? cohortIndex.counts : null;
-  byId('truthSplit').innerHTML = cx
-    ? stat('accepted packages', cx.packages, 0,
-        tip('Every task folder in the finalisation prefix.',
-          `Listed ${esc(cohortIndex.folderSource)}. One folder is one task, so nothing had to be deduplicated by name.`,
-          `${fmt(cx.delivered)} + ${fmt(cx.notDelivered)} = ${fmt(cx.packages)}. A package has gone out or it has not; there is no third thing.`,
-          'Not a count of submissions. The Rejected card beside it still counts verdict rows, which is why the two cannot be added together.'),
+  // The folders the Accepted card counts - the segment and the filters -
+  // split by whether a delivery reached them, so the two always agree.
+  const cohortShown = truth.cohortRows ? window.filterTruth(truthCohortRows(), {...truthFilters(), state: ''}).rows : null;
+  const sx = cohortShown && truth.deliveryJoin ? cohortSplit(cohortShown) : null;
+  byId('truthSplit').innerHTML = sx
+    ? stat('accepted packages', sx.packages, 0,
+        tip(`The task folders in ${esc(cohortIndex.cohort)} the Accepted card counts, one folder one task. ${fmt(sx.delivered)} + ${fmt(sx.notDelivered)} = ${fmt(sx.packages)}.`),
         null, 'green') +
-      stat('already delivered', cx.delivered, cx.packages,
-        tip('Folders named by one of the four delivery manifests.',
-          'Read the folder each manifest packaged from - no name matching, so this join cannot be wrong about which task it means.',
-          `${fmt(cx.delivered)} of the ${fmt(cx.packages)} packages here have been handed over.`,
-          `Not the ${fmt(truth.deliveredIndex ? truth.deliveredIndex.counts.manifestTasks : 412)} in the join on the left. That is every task ever delivered; this is the ones whose folder is still in this prefix.`),
-        null, 'blue') +
-      stat('still to deliver', cx.notDelivered, cx.packages,
-        tip('Accepted packages no manifest has claimed.',
-          'Took the folders in the prefix and removed the ones a manifest names.',
-          'This is the pool a new delivery is cut from.',
-          `Not a promise that all of them should go. ${fmt(cx.latestRejected)} hold an accepted package whose later resubmission was rejected, and that is worth a look before shipping.`),
+      stat('already delivered', sx.delivered, sx.packages,
+        tip(`Folders a delivery reached, in any batch: ${fmt(sx.byManifest)} named by a manifest as the source, ${fmt(sx.byName)} whose package declares a delivered task${sx.copies ? ` - ${fmt(sx.copies)} of those are another copy of a task that went out from a different folder` : ''}.`),
+        null, 'blue', null,
+        sx.byName ? `${fmt(sx.byManifest)} by folder \u00b7 ${fmt(sx.byName)} by task name` : '') +
+      stat('still to deliver', sx.notDelivered, sx.packages,
+        tip(`Accepted folders no delivery has reached, by folder or by task name. This is the pool a new delivery is cut from; ${fmt(sx.laterRejected)} of them hold an accepted package whose later resubmission was rejected, worth a look before shipping.`),
         null, 'magenta')
-    : stat('accepted at the bar', result.acceptedAtBarTasks, 0,
-        'The bucket listing has not loaded, so this falls back to the verdict count.',
-        null, 'slate');
+    : cohortIndex
+      ? stat('accepted packages', cohortIndex.counts.packages, 0,
+          'The Delivery tab has not loaded, so the delivered split waits for it.', null, 'slate')
+      : stat('accepted at the bar', result.acceptedAtBarTasks, 0,
+          'The bucket listing has not loaded, so this falls back to the verdict count.',
+          null, 'slate');
   animateCounts(byId('truthSplit'));
 
   // The accepted cohort, counted by bucket folder. Deliberately apart from
@@ -1790,6 +1830,8 @@ function renderTruthFigures(result, filtered) {
   // its neighbour.
   const co = cohortIndex ? cohortIndex.counts : null;
   const tn = truth.cohortRows ? window.acceptedTaskNames(truth.cohortRows) : null;
+  const coSplit = truth.cohortRows && truth.deliveryJoin ? cohortSplit(truth.cohortRows)
+    : {delivered: co ? co.delivered : 0, notDelivered: co ? co.notDelivered : 0};
   if (co && byId('truthCohort')) {
     byId('truthCohort').innerHTML =
       stat('packages in the cohort', co.packages, 0,
@@ -1818,17 +1860,14 @@ function renderTruthFigures(result, filtered) {
           `${fmt(co.latestRejected)} hold an accepted package whose later resubmission was rejected, and ${fmt(co.latestOther)} ended some other way. ${fmt(co.disagreeAcrossRuns)} folders have runs that disagree.`,
           'Not a contradiction of the total. The package was accepted when it was cut; a later run failing does not remove it from the bucket.'),
         null, 'green') +
-      stat('already delivered', co.delivered, co.packages,
-        tip('Folders named by one of the four delivery manifests.',
-          'Read the folder each manifest packaged from. No name matching at all - the manifest records the folder itself, so this join cannot be wrong about which task it means.',
-          `${fmt(co.notDelivered)} of the ${fmt(co.packages)} have not gone out yet.`,
-          `Not everything that has been delivered: ${fmt(idx ? idx.counts.manifestTasks : 0)} tasks went out in total, and these are only the ones cut from this cohort.`),
+      stat('already delivered', coSplit.delivered, co.packages,
+        tip(`Folders a delivery in any batch reached, by the folder its manifest names or the task its package declares. ${fmt(coSplit.notDelivered)} of the ${fmt(co.packages)} have not gone out yet.`),
         null, 'violet');
     animateCounts(byId('truthCohort'));
     setText('truthCohortNote',
       `${fmt(co.packages)} = ${fmt(co.decided)} decided since ${cohortIndex.cut} + ${fmt(co.beforeCut)} decided before it. ` +
       `Of the ${fmt(co.decided)}: ${fmt(co.latestAccepted)} accepted, ${fmt(co.latestRejected)} rejected on a later run, ${fmt(co.latestOther)} other. ` +
-      `Separately, ${fmt(co.delivered)} of the ${fmt(co.packages)} have been delivered. ` +
+      `Separately, ${fmt(coSplit.delivered)} of the ${fmt(co.packages)} have been delivered. ` +
       `${fmt(co.placeholderNames)} folders carry a machine name such as task2 or harbor-single-task-, and one is called simply "task" and matches 19 verdicts - those are counted here but their verdict join is the weakest. ` +
       'There is no rejected figure in this strip on purpose: rejected work is never packaged, so it has no folder to count.');
   }
@@ -1850,8 +1889,7 @@ function renderChain(label, filtered) {
     ? `This figure is read from the bucket, not from the chain below.
 
 `
-      + `${fmt(co.packages)} task folders sit under ${esc(cohortIndex.cohort)}, and every one of the `
-      + `${fmt(truth.deliveredIndex ? truth.deliveredIndex.counts.manifestTasks : 412)} deliveries was cut from that prefix and no other, `
+      + `${fmt(co.packages)} task folders sit under ${esc(cohortIndex.cohort)}, the prefix the pipeline's deliveries are cut from, `
       + `so those folders are the accepted population: one folder, one task, one accepted package. `
       + `The verdicts below are still read, but to describe those folders rather than to count them - `
       + `${fmt(co.decided)} have a verdict since ${esc(cohortIndex.cut)}, of which ${fmt(co.latestAccepted)} `
@@ -2096,59 +2134,68 @@ function renderTruthRows(rows) {
 function renderJoinGap(result) {
   const note = byId('truthJoinNote');
   if (!note) return;
-  const idx = truth?.deliveredIndex;
-  if (!idx) {
+  const traced = tracedDeliveries();
+  if (!traced) {
     note.hidden = true;
     byId('unmatchedPanel').hidden = true;
     byId('unmatchedShow').setAttribute('aria-expanded', 'false');
     return;
   }
-  const c = idx.counts;
+  const j = deliveryJoinCounts(traced);
+  const byBatch = {};
+  traced.forEach(t => { byBatch[t.delivery.batch] = (byBatch[t.delivery.batch] || 0) + 1; });
+  const cohort = truthCohortRows();
+  const sx = cohort ? cohortSplit(cohort) : null;
   note.hidden = false;
-  const narrowed = result.rows.length !== result.population.length;
   setText('truthJoinText',
-    `The ${fmt(c.manifestTasks)} delivered tasks come from the four handover manifests ` +
-    `(${Object.entries(c.manifestBatches || {}).map(([b, n]) => `${b} ${fmt(n)}`).join(', ')}), ` +
-    `which agree with the Delivery tab exactly, and every one was cut from this prefix and no other. ` +
-    (c.manifestLiveCheckedOn
-      ? `${fmt(c.manifestLiveConfirmed)} of their packages were still in the bucket when it was listed ` +
-        `on ${c.manifestLiveCheckedOn}` +
-        (c.manifestLiveMissing ? `; ${fmt(c.manifestLiveMissing)} were not, and those cannot be reproduced on demand` : '') + '. '
-      : '') +
-    (cohortIndex
-      ? `Against the ${fmt(cohortIndex.counts.packages)} accepted packages in that prefix, ` +
-        `${fmt(cohortIndex.counts.delivered)} have gone out and ${fmt(cohortIndex.counts.notDelivered)} have not. `
-      : '') +
-    (c.manifestClaimed
-      ? `${fmt(c.manifestClaimed)} pipeline rows were placed only through the bucket folder a manifest names - ` +
-        `rows recorded under machine names - and ${fmt(c.manifestFlagged)} more look like versions of delivered ` +
-        `work and are flagged rather than counted. `
-      : '') +
-    `These three figures are the delivery record checked against the bucket, so they do not follow the filters.`);
+    `The ${fmt(j.delivered)} delivered tasks are every batch on the Delivery tab` +
+    `${segment ? ' in this segment' : ''} (${Object.keys(byBatch).sort(batchOrder).map(b => `${b} ${fmt(byBatch[b])}`).join(', ')}). ` +
+    `${fmt(j.found)} were found in the accepted prefix today and ${fmt(j.missing)} were not` +
+    (j.missing ? `: ${[j.elsewhere ? `${fmt(j.elsewhere)} were packaged from another source the manifest names` : '',
+      j.gone ? `${fmt(j.gone)} were cut from the prefix and are gone from it` : '',
+      j.unnamed ? `${fmt(j.unnamed)} ${j.unnamed === 1 ? 'names no source and matches' : 'name no source and match'} no folder` : ''].filter(Boolean).join(', ')}. ` : '. ') +
+    (sx ? `Against the ${fmt(sx.packages)} accepted packages in the prefix, ${fmt(sx.delivered)} have gone out and ${fmt(sx.notDelivered)} have not. ` : '') +
+    'These figures are the delivery record checked against the bucket, so they follow the segment but not the filters.');
   const open = byId('unmatchedPanel').hidden === false;
-  setText('unmatchedShow', open ? 'Hide them' : `Show the ${fmt(c.manifestLiveMissing)} no longer in the bucket`);
+  setText('unmatchedShow', open ? 'Hide them' : `Show the ${fmt(j.missing)} not found in the bucket`);
 }
 
+const UNMATCHED_WHY = {
+  gone: ['gone', 'cut from the prefix; no longer there'],
+  elsewhere: ['from elsewhere', 'packaged from another source; no accepted folder declares this task'],
+  unnamed: ['no source', 'the manifest names no source; no accepted folder declares this task'],
+};
+const UNMATCHED_ORDER = ['gone', 'unnamed', 'elsewhere'];
 function renderUnmatched() {
+  const traced = tracedDeliveries() || [];
   const idx = truth?.deliveredIndex;
-  const rows = (idx && idx.counts.manifestMissing) || [];
+  const uri = new Map(((idx && idx.counts.manifestMissing) || []).map(m => [`${m.batch}|${String(m.task).toLowerCase()}`, m]));
+  const rows = traced.filter(t => !t.found)
+    // Gone first: those are the ones that can no longer be reproduced.
+    .sort((a, b) => UNMATCHED_ORDER.indexOf(a.reason) - UNMATCHED_ORDER.indexOf(b.reason) || batchOrder(a.delivery.batch, b.delivery.batch)
+      || String(a.delivery.task).localeCompare(String(b.delivery.task)));
   setText('unmatchedNote', rows.length
-    ? `These ${fmt(rows.length)} of the ${fmt(idx.counts.manifestTasks)} delivered packages cannot be `
-      + `produced from ${esc(truth.bucket)} today. The bucket was listed on ${esc(idx.counts.manifestLiveCheckedOn)} `
-      + 'and each one was looked for across all three accepted prefixes, not only the one it was cut from. '
-      + 'They are not failed deliveries: they went out, and the manifest records the exact object that was sent. '
-      + 'What is gone is the copy in the bucket, which means that delivery can no longer be reproduced on demand.'
-    : 'Every delivered package is still in the bucket.');
-  byId('unmatchedRows').innerHTML = rows.length ? rows.map(row => `
+    ? `These ${fmt(rows.length)} of the ${fmt(traced.length)} delivered tasks have no accepted folder in ${esc(truth.bucket)} today. `
+      + (idx && idx.counts.manifestLiveCheckedOn ? `Batches 1 to 4.1 were looked for object by object in a listing of ${esc(idx.counts.manifestLiveCheckedOn)}, across all three accepted prefixes; ` : '')
+      + (cohortIndex ? `the later batches against the folders listed ${esc(String(cohortIndex.generatedAt || '').slice(0, 10))}. ` : '')
+      + 'None is a failed delivery: they went out, and their manifest records what was sent. Gone means it was cut from the prefix and '
+      + 'that copy is no longer there, so it cannot be reproduced on demand. From elsewhere means the manifest names another source - '
+      + 'CompanyBench 1 to 3 were packaged outside the pipeline, and 6.1 and 8.1 from a staging copy - and no folder in the prefix declares the task.'
+    : 'Every delivered package was found in the bucket.');
+  byId('unmatchedRows').innerHTML = rows.length ? rows.map(t => {
+    const d = t.delivery;
+    const m = uri.get(`${d.batch}|${String(d.task).toLowerCase()}`);
+    const [state, what] = UNMATCHED_WHY[t.reason] || ['-', ''];
+    const source = m ? m.sourceUri : d.sourceFolder ? `${d.sourcePrefix}/${d.sourceFolder}/` : d.sourceKind === 'elsewhere' ? 'another source, named in the manifest' : '';
+    return `
     <tr>
-      <td><div class="taskcell"><span class="taskname" title="${esc(row.task)}">${esc(row.task)}</span></div></td>
-      <td>${esc(row.batch || '-')}</td>
-      <td><span class="state state-${esc(String(row.state || '').toLowerCase())}">${row.state === 'absent' ? 'no folder' : esc(row.state || '-')}</span></td>
-      <td>${row.state === 'absent'
-        ? '<span class="muted">no folder of this name in any accepted prefix</span>'
-        : '<span class="muted">the folder is there, that archive is not</span>'}</td>
-      <td class="muted"><code>${esc(row.sourceUri || '')}</code></td>
-    </tr>`).join('') : '<tr><td colspan="5" class="empty">Every delivered package is still in the bucket.</td></tr>';
+      <td><div class="taskcell"><span class="taskname" title="${esc(d.task)}">${esc(d.task)}</span></div></td>
+      <td>${esc(d.batch || '-')}</td>
+      <td><span class="state state-${esc(t.reason)}">${esc(state)}</span></td>
+      <td><span class="muted">${esc(what)}</span></td>
+      <td class="muted"><code>${esc(source)}</code></td>
+    </tr>`;
+  }).join('') : '<tr><td colspan="5" class="empty">Every delivered package was found in the bucket.</td></tr>';
 }
 
 function renderTruth() {

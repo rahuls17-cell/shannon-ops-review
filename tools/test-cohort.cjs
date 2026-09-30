@@ -108,8 +108,9 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
   // has to be folder-based too or the two argue on one screen.
   const splitBlock = app.slice(app.indexOf("byId('truthSplit').innerHTML"),
                                app.indexOf("animateCounts(byId('truthSplit'))"));
-  assert.ok(/cx\.packages/.test(splitBlock) && /cx\.delivered/.test(splitBlock),
-    'the split must read the cohort, not the verdict tallies');
+  assert.ok(/truthCohortRows\(\)/.test(app.slice(app.indexOf('const cohortShown'), app.indexOf("byId('truthSplit').innerHTML")))
+    && /sx\.packages/.test(splitBlock) && /sx\.delivered/.test(splitBlock),
+    'the split must read the cohort folders, not the verdict tallies');
   assert.ok(/acceptedAtBarTasks/.test(splitBlock),
     'and it must still fall back to the verdict count when the listing is absent');
   assert.equal(c.delivered + c.notDelivered, c.packages,
@@ -117,6 +118,52 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
 
   console.log(`delivered reads the same everywhere: ${c.delivered} of ${c.packages} packages, `
     + `${c.notDelivered} still to deliver`);
+}
+
+// --- delivered covers every batch, not only the four audited manifests ------
+// The index is built from Batches 1 to 4.1, so on its own the split stopped the
+// day Batch 5.1 went out. The page joins every Delivery row to the folders:
+// by the folder a manifest names, or by the [task] name a package declares,
+// compared exactly.
+{
+  const read = f => JSON.parse(fs.readFileSync(path.join(root, 'assets', f), 'utf8'));
+  const T = require(path.join(root, 'truth.js'));
+  const A = require(path.join(root, 'delivery-audit.js'));
+  const delivered = read('delivered-index.json');
+  const model = T.prepareTruth(read('pipeline-truth.json'), delivered, read('connector-index.json'),
+    read('glm-index.json'), idx, read('bench-index.json'), read('task-names.json'));
+  const audit = A.prepareDeliveryAudit(read('delivery-audit.json'), read('drive-deliveries.json'), read('drive-owners.json'));
+  const deliveries = audit.rows.map(row => ({...row, audited: !row.fromManifest}));
+  const once = T.joinDeliveries(model, deliveries, delivered.counts.manifestMissing);
+  const first = model.cohortRows.map(r => r.delivered).join();
+  T.joinDeliveries(model, deliveries, delivered.counts.manifestMissing);
+  assert.equal(model.cohortRows.map(r => r.delivered).join(), first, 'joining twice must give the same answer');
+
+  const rows = model.cohortRows;
+  const shipped = rows.filter(r => r.delivered);
+  assert.ok(rows.filter(r => r.indexDelivered).every(r => r.delivered),
+    'every folder a manifest names stays delivered');
+  assert.ok(shipped.length > c.delivered, 'the Drive batches must reach folders the index does not');
+  shipped.forEach(r => assert.ok(['manifest', 'folder', 'name'].includes(r.deliveredBy), `${r.cohortFolder} delivered with no route`));
+  const tn = read('task-names.json').task;
+  const names = new Set(deliveries.flatMap(d => [d.task, d.packageName]).filter(Boolean)
+    .map(n => String(n).toLowerCase().replace(/^(harbor|obi)\//, '')));
+  rows.filter(r => r.deliveredBy === 'name').forEach(r => {
+    const declared = String(tn[r.cohortFolder] || '').toLowerCase().replace(/^(harbor|obi)\//, '');
+    assert.ok(names.has(declared) || names.has(r.cohortFolder.toLowerCase()),
+      `${r.cohortFolder} was reached by a name no delivery carries exactly`);
+  });
+  // Every Delivery row is traced once, and found + not found is all of them.
+  assert.equal(once.traced.length, audit.rows.length, 'every delivered task is traced');
+  const missing = once.traced.filter(t => !t.found);
+  missing.forEach(t => assert.ok(['gone', 'elsewhere', 'unnamed'].includes(t.reason), `${t.delivery.task} not found with no reason`));
+  const goneAudited = missing.filter(t => t.delivery.audited).length;
+  assert.equal(goneAudited, delivered.counts.manifestLiveMissing,
+    'Batches 1 to 4.1 keep the answer the index gives about what is gone');
+  console.log(`delivered over every batch: ${shipped.length} of ${rows.length} folders `
+    + `(${rows.filter(r => r.deliveredBy === 'manifest').length} manifest, ${rows.filter(r => r.deliveredBy === 'folder').length} folder, `
+    + `${rows.filter(r => r.deliveredBy === 'name').length} task name), ${rows.length - shipped.length} still to deliver; `
+    + `${once.traced.length - missing.length} of ${once.traced.length} deliveries found in the prefix`);
 }
 
 // --- Accepted lists the bucket, not a selection of verdict rows -------------

@@ -563,7 +563,7 @@
           <div id="truthFigures" class="kpirow kpirow-5"></div>
           <div class="statstrip">
             <div class="statgroup">
-              <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>the manifests against the bucket</em></p>
+              <p class="eyebrow">Delivery join<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button><em>every delivered batch against the bucket</em></p>
               <div id="truthJoin" class="stats stats-3"></div>
             </div>
             <!-- The one place on this tab where the figures genuinely partition:
@@ -652,7 +652,7 @@
                 <span id="truthJoinText"></span>
                 <button id="unmatchedShow" class="linkish" aria-expanded="false" aria-controls="unmatchedPanel"></button>
               </p>
-              <section id="unmatchedPanel" class="unmatched" hidden aria-label="Delivered packages no longer in the bucket">
+              <section id="unmatchedPanel" class="unmatched" hidden aria-label="Delivered packages not found in the bucket">
                 <p class="panel-note" id="unmatchedNote"></p>
                 <div class="table-wrap">
                   <table class="grid">
@@ -662,7 +662,7 @@
                         <th scope="col">Batch</th>
                         <th scope="col">In the bucket</th>
                         <th scope="col">What was looked for</th>
-                        <th scope="col">The object the manifest names</th>
+                        <th scope="col">Where the manifest says it came from</th>
                       </tr>
                     </thead>
                     <tbody id="unmatchedRows"></tbody>

@@ -337,6 +337,85 @@
     });
   }
 
+  // Which accepted folders have gone out, over every batch on the Delivery tab.
+  //
+  // The delivered index answers this for the four manifests it was built from
+  // (Batches 1 to 4.1), so without this the split stopped the day Batch 5.1
+  // went out. A delivery reaches a folder two ways, both read rather than
+  // guessed: the folder its manifest names as the source (7.1, 9.1 and 10.1
+  // record one), or a folder whose package declares the same [task] name as the
+  // delivered one (every other batch records no folder). The name is compared
+  // exactly - never stripped of suffixes - because a loose rule joins separate
+  // tasks. A folder the declared name reaches that no manifest names is another
+  // copy of a delivered task, a re-cut under a new folder name; it has gone out
+  // as a task, so it is not left to deliver, and it is counted apart.
+  //
+  // Recomputed from what prepareTruth set, so running it again after the
+  // Delivery rows change gives the same answer rather than accumulating.
+  function joinDeliveries(prepared, deliveries, missing) {
+    if (!prepared) return null;
+    const cohort = prepared.cohortRows || [];
+    const prefix = prepared.cohortIndex ? prepared.cohortIndex.cohort : null;
+    const add = (map, k, v) => { if (k) (map.get(k) || map.set(k, []).get(k)).push(v); };
+    const byFolder = new Map(), byName = new Map(), driveByName = new Map();
+    (deliveries || []).forEach(d => {
+      if (d.sourcePrefix === prefix && d.sourceFolder) add(byFolder, keyOf(d.sourceFolder), d);
+      [d.task, d.packageName].forEach(n => {
+        add(byName, keyOf(n), d);
+        if (!d.audited) add(driveByName, keyOf(n), d);
+      });
+    });
+    const folders = new Map(cohort.map(row => [keyOf(row.cohortFolder), row]));
+    const reached = new Map();
+    const reach = (d, row) => { if (!reached.has(d)) reached.set(d, row); };
+    cohort.forEach(row => {
+      if (row.indexDelivered === undefined) row.indexDelivered = Boolean(row.delivered);
+      const exact = byFolder.get(keyOf(row.cohortFolder)) || [];
+      const named = [...new Set([...(byName.get(keyOf(row.cohortFolder)) || []),
+        ...(byName.get(keyOf(row.packageTask)) || [])])];
+      exact.concat(named).forEach(d => reach(d, row));
+      const by = row.indexDelivered ? 'manifest' : exact.length ? 'folder' : named.length ? 'name' : null;
+      const first = exact[0] || named[0] || null;
+      row.delivered = Boolean(by);
+      row.cohortDelivered = row.delivered;
+      row.deliveredBy = by;
+      row.deliveredBatch = first ? first.batch : row.deliveredBatch || null;
+      row.deliveredVia = by === 'manifest' ? 'delivery manifest'
+        : by === 'folder' ? `${first.batch}: the folder its manifest names`
+        : by === 'name' ? `${first.batch}: the task its package declares` : null;
+      if (by && by !== 'manifest' && !row.deliveredTask) row.deliveredTask = first.task;
+    });
+    // A pipeline row is a submission, not a folder. It is marked by the Drive
+    // batches' declared names only; Batches 1 to 4.1 were joined to these rows
+    // by the delivered index, which refused 8 look-alikes that a name would take.
+    (prepared.rows || []).forEach(row => {
+      if (row.indexDelivered === undefined) {
+        row.indexDelivered = Boolean(row.delivered);
+        row.indexDeliveredTask = row.deliveredTask || null;
+      }
+      const hit = row.indexDelivered || row.maybeDelivered ? null
+        : (driveByName.get(keyOf(row.name)) || driveByName.get(keyOf(row.packageTask)) || [])[0];
+      row.delivered = row.indexDelivered || Boolean(hit);
+      row.deliveredTask = hit ? hit.task : row.indexDeliveredTask;
+      if (hit) row.deliveredVia = `${hit.batch}: the task name it carries`;
+    });
+    const gone = new Set((missing || []).map(m => `${m.batch}|${keyOf(m.task)}`));
+    const traced = (deliveries || []).map(d => {
+      const folder = reached.get(d) || null;
+      let found = Boolean(folder), reason = null;
+      if (d.audited) {
+        found = !gone.has(`${d.batch}|${keyOf(d.task)}`);
+        if (!found) reason = 'gone';
+      } else if (!found) {
+        reason = d.sourcePrefix === prefix && d.sourceFolder && !folders.has(keyOf(d.sourceFolder)) ? 'gone'
+          : d.sourceKind === 'elsewhere' ? 'elsewhere' : 'unnamed';
+      }
+      return {delivery: d, found, folder: folder ? folder.cohortFolder : null, reason};
+    });
+    prepared.deliveryJoin = {prefix, traced, deliveries: (deliveries || []).length};
+    return prepared.deliveryJoin;
+  }
+
   // The accepted folders folded by the [task] name declared in each package's
   // task.toml. A re-cut after review lands under a new folder name, so several
   // folders can hold one task. A folder whose package could not be read is its
@@ -493,5 +572,6 @@
   root.filterTruth = filterTruth;
   root.chainFor = chainFor;
   root.acceptedTaskNames = acceptedTaskNames;
-  if (typeof module !== 'undefined') module.exports = {prepareTruth, filterTruth, collapseByTask, chainFor, acceptedTaskNames, UNDECIDED};
+  root.joinDeliveries = joinDeliveries;
+  if (typeof module !== 'undefined') module.exports = {prepareTruth, filterTruth, collapseByTask, chainFor, acceptedTaskNames, joinDeliveries, UNDECIDED};
 })(typeof window === 'undefined' ? globalThis : window);

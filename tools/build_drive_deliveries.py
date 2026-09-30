@@ -105,6 +105,10 @@ BATCH = re.compile(r'batch\s*(\d+(?:\.\d+)?)', re.I)
 SHA256 = re.compile(r'^[0-9a-f]{64}$')
 # The bucket object a package was cut from: gs://.../tasks/<prefix>/<folder>/<hash>.zip
 SOURCE_OBJECT = re.compile(r'/([0-9a-f]{64})\.zip$')
+# The pipeline bucket's own layout, tasks/<prefix>/<folder>/<archive>. A package
+# cut from there names the very folder it came from, which is how the Pipeline
+# tab tells an accepted folder that has gone out from one that has not.
+SOURCE_FOLDER = re.compile(r'^gs://obi-harbor-pipeline/tasks/([^/]+)/([^/]+)/[^/]+$')
 
 # The first level of the Drive layout, spelled the way the manifests spell it.
 CLASSES = {'connector': 'Connector', 'real connector': 'Real Connector',
@@ -408,6 +412,12 @@ def normalise(manifest, label, files=None, require_present=False):
             # Where the manifest says the package came from, when it says. The
             # owner index joins on it: it names one archive, not one task name.
             'sourceObject': source_object(task),
+            # The pipeline folder it was cut from, when the manifest names one;
+            # 'elsewhere' when it names another bucket or an archive handed over
+            # outside the pipeline, so "not in the prefix" can say which.
+            'sourcePrefix': source_folder(task)[0],
+            'sourceFolder': source_folder(task)[1],
+            'sourceKind': source_kind(task),
         })
     return rows, None
 
@@ -454,6 +464,22 @@ def source_object(task):
         return version
     match = SOURCE_OBJECT.search(str(task.get('source_uri') or ''))
     return match.group(1) if match else None
+
+
+def source_folder(task):
+    """(prefix, folder) in the pipeline bucket this package was cut from, or
+    (None, None) when the manifest names another bucket or no source at all."""
+    match = SOURCE_FOLDER.match(str(task.get('source_uri') or '').strip())
+    return (match.group(1), match.group(2)) if match else (None, None)
+
+
+def source_kind(task):
+    """'pipeline' when the package names a folder in the pipeline bucket,
+    'elsewhere' when it names some other source, None when it names none."""
+    if source_folder(task)[0]:
+        return 'pipeline'
+    named = str(task.get('source_uri') or task.get('source') or '').strip()
+    return 'elsewhere' if named else None
 
 
 def declared_total(manifest):
