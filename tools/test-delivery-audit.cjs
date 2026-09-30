@@ -114,7 +114,7 @@ if (fs.existsSync(asset)) {
     generatedAt: '2026-09-29T00:00:00+00:00', batches: [{batch: 'Batch 5.1', tasks: 2}],
     skipped: [{name: '10-01 Batch 10.1', reason: 'no manifest.json at the top of the folder'}],
     rows: [
-      {id: 'B51-001', task: 'epsilon', declaredName: 'harbor-name', batch: 'Batch 5.1',
+      {id: 'B51-001', task: 'epsilon', packageName: 'harbor-name', batch: 'Batch 5.1',
        category: 'Connector', type: 'Connector', difficulty: 'Easier', glm: 3, bucket: '3/4',
        trainer: 'Unattributed', source: 'Delivery manifest', acceptance: 'Pending', connectors: []},
       {id: 'B51-002', task: 'zeta', batch: 'Batch 5.1', category: 'Company Bench Zeta',
@@ -135,7 +135,7 @@ if (fs.existsSync(asset)) {
   assert.equal(r.attributed, 0, 'a manifest names no trainer');
   assert.equal(r.byGlm[UNSET], 1, 'no trials recorded reads as not recorded, not 0/4');
   assert.equal(filterDeliveryAudit(merged.rows, {search: 'harbor-name'}).rows.length, 1,
-    'search reaches the declared name');
+    'search reaches the package name');
   assert.equal(prepareDeliveryAudit(base, null).rows.length, base.rows.length,
     'without the Drive asset the audit still loads');
 }

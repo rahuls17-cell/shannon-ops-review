@@ -76,8 +76,8 @@ DRIVE_CREDENTIALS=/root/shannon-refresh/drive-reader.json \
 ```
 
 It prints one line per batch it read, every folder it skipped and why, and the
-row count. On 2026-09-29 the folder gave 8 batches and 2,697 tasks: Batch 5.1 to
-9.1 and CompanyBench 1 to 3. One folder was skipped:
+row count. On 2026-09-30 the folder gave 9 batches and 2,841 tasks: Batch 5.1 to
+10.1 and CompanyBench 1 to 3. One folder was skipped:
 `09-28 Batch3 CompanyBench - 9 Synthetic Tasks` has no `manifest.json`, and its 9
 tasks are already inside the CompanyBench 3 manifest.
 
@@ -88,10 +88,20 @@ published asset. CI runs it on every push.
 
 - **Read:** a folder (not a shortcut) whose name says which batch it is, such as
   `09-29 Batch 9.1`, or `09-27 Batch1 CompanyBench 267`, which is read as
-  `CompanyBench 1`, and that has a `manifest.json` at its top level.
-- **Ignored:** names containing deprecated, partial, shipment, meta,
-  KnowledgeWork or EKWBench; files; shortcuts; and any batch the delivery audit
-  already covers (Batches 1 to 4.1, which keep their audited rows).
+  `CompanyBench 1`, and that has a `manifest.json` at its top level. It can sit
+  at the top of Deliveries or one level down in a group folder: since
+  2026-09-30 the batches live in `ComputerBench/` and `CompanyBench/`.
+- **Ignored:** names containing deprecated, partial, dupes, shipment, meta,
+  KnowledgeWork, EKW or SVC, together with everything inside such a group; files;
+  shortcuts; and any batch the delivery audit already covers (Batches 1 to 4.1,
+  which keep their audited rows).
+- **Read once:** two folders claiming one batch with byte-identical manifests,
+  such as `09-25-Batch5.1` and `09-25-Batch5.1 (dedup copy 2026-09-30)`.
 - **Skipped, with a warning on the page:** a batch folder with no manifest yet,
-  two folders claiming the same batch, or a manifest whose tasks lack a
-  `package_path`, `sha256` or `size_bytes`. The other batches still publish.
+  two folders claiming the same batch with different manifests, or a manifest
+  whose tasks lack a `package_path`, `sha256` or `size_bytes`. The other batches
+  still publish.
+
+Each row is named by the name the package's `task.toml` declares (the
+manifest's `task_name`); the package file name, sometimes an id such as
+`ASTR_101554`, is kept beside it and is searchable.

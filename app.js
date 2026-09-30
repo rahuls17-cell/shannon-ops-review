@@ -851,7 +851,7 @@ function renderAuditRows(rows) {
     </tr>
     <tr class="drill" id="${id}" hidden><td colspan="10">
       <dl class="drill-grid">
-        ${row.declaredName ? `<dt>Declared name</dt><dd>${esc(row.declaredName)}</dd>` : ''}
+        ${row.packageName ? `<dt>Package name</dt><dd><code>${esc(row.packageName)}</code></dd>` : ''}
         ${row.fromManifest ? `<dt>Package</dt><dd><code>${esc(row.packagePath || '-')}</code></dd>` : ''}
         <dt>SHA</dt><dd><code>${esc(row.sha || '-')}</code></dd>
         <dt>Size</dt><dd>${row.size_mb ? `${Number(row.size_mb).toFixed(2)} MB` : '-'}</dd>

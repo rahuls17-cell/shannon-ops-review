@@ -106,7 +106,7 @@
   function filterDeliveryAudit(rows, filters) {
     const f = filters || {};
     const matched = rows.filter(row => {
-      const text = [row.task, row.declaredName, row.sha, row.trainer, row.category, row.batch]
+      const text = [row.task, row.packageName, row.sha, row.trainer, row.category, row.batch]
         .join(' ').toLowerCase();
       return (!f.batch || f.batch === value(row.batch)) &&
         (!f.category || f.category === value(row.category)) &&

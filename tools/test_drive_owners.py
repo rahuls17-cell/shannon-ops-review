@@ -46,8 +46,10 @@ check(attribute({'task': 'pkg-one', 'sourceObject': H}, *ix) == ('object', ['one
       'the exact source archive decides first, over trainer records')
 check(attribute({'task': 'pkg-one'}, *ix) == ('records', ['records@turing.com']),
       'without a source object, trainer records by name')
-check(attribute({'task': 'renamed', 'declaredName': 'declared-name'}, *ix) == ('records', ['declared@turing.com']),
-      'the task.toml declared name is matched too, without its harbor/ prefix')
+check(attribute({'task': 'declared-name', 'packageName': 'ASTR_1'}, *ix) == ('records', ['declared@turing.com']),
+      'the declared name matches records written with a harbor/ prefix')
+check(attribute({'task': 'something-else', 'packageName': 'pkg-one'}, *ix) == ('records', ['records@turing.com']),
+      'the package name is matched too')
 check(attribute({'task': 'shared'}, *ix) == ('records', ['x@turing.com', 'y@turing.com']),
       'several people in the records are all kept, and verdicts do not add a third')
 check(attribute({'task': 'verdict-only'}, *ix) == ('verdict', ['verdict@turing.com']),

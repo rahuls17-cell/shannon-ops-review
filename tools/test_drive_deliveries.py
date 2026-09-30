@@ -38,7 +38,8 @@ for name in ['[Deprecated] 09-25 Batch5.1 - Partial v1', '08-14-Shipment-V2',
 
 # --- what a row may say -----------------------------------------------------
 def task(path, **extra):
-    return {'task_id': pathlib.PurePosixPath(path).stem, 'task_name': 'harbor/declared',
+    stem = pathlib.PurePosixPath(path).stem
+    return {'task_id': stem, 'task_name': f'harbor/{stem}-name',
             'package_path': path, 'sha256': 'a' * 64, 'size_bytes': 2_500_000,
             'difficulty': 'harder', 'trial_evidence': {'successes': 1}, **extra}
 
@@ -48,7 +49,7 @@ rows, reason = normalise({'tasks': [task('Non-Connector/Harder/Legal/x.zip'),
                                     task('Company Bench Zeta/z.zip', difficulty=None, trial_evidence={})]},
                          'Batch 5.1')
 check(reason is None, f'a well-formed manifest must be accepted: {reason}')
-by = {r['task']: r for r in rows or []}
+by = {r['packageName']: r for r in rows or []}
 check(by['x']['category'] == 'Non-Connector · Legal' and by['x']['type'] == 'Non-connector',
       'Non-Connector keeps its domain as the second level')
 check(by['y']['category'] == 'Real Connector' and by['y']['type'] == 'Connector',
@@ -56,7 +57,13 @@ check(by['y']['category'] == 'Real Connector' and by['y']['type'] == 'Connector'
 check(by['z']['difficulty'] is None and by['z']['glm'] is None and by['z']['bucket'] is None,
       'no difficulty or trials recorded means none claimed, not zero')
 check(by['x']['glm'] == 1 and by['x']['bucket'] == '1/4', 'GLM successes carried through')
-check(by['x']['declaredName'] == 'declared', 'declared name kept without the harbor/ prefix')
+check(by['x']['task'] == 'x-name',
+      'a row is named by its declared name, without the harbor/ prefix, and keeps the package name')
+same, _ = normalise({'tasks': [task('Connector/Easier/same.zip', task_name='same')]}, 'Batch 5.1')
+check(same[0]['task'] == 'same' and same[0]['packageName'] is None,
+      'no package name is kept when it is the declared name')
+unnamed, _ = normalise({'tasks': [task('Connector/Easier/ASTR_1.zip', task_name=None)]}, 'Batch 5.1')
+check(unnamed[0]['task'] == 'ASTR_1', 'without a declared name the package name is used')
 for r in rows or []:
     check(r['trainer'] == 'Unattributed' and r['acceptance'] == 'Pending', 'no trainer, no decision')
     check(r['dates'] == [] and r['priority'] is None and r['qc_result'] is None
@@ -76,27 +83,44 @@ def folder(fid, name, manifest=True):
     return {'id': fid, 'name': name, 'mimeType': FOLDER_MIME, 'children': kids}
 
 
+def group(fid, name, *inside):
+    return {'id': fid, 'name': name, 'mimeType': FOLDER_MIME, 'children': list(inside)}
+
+
 good = json.dumps({'tasks': [task('Connector/Easier/p.zip')]}).encode()
+other = json.dumps({'tasks': [task('Connector/Easier/q.zip')]}).encode()
 listing = {'folder': {'id': 'root', 'name': 'Deliveries'}, 'items': [
-    folder('1', '09-25-Batch5.1'),
-    folder('2', '[Deprecated] 09-25 Batch5.1 - Partial v1'),
-    folder('3', '09-16-Batch4.1'),                       # the audit already has 4.1
-    folder('4', '10-01 Batch 10.1', manifest=False),      # upload still in progress
-    folder('5', '10-02 Batch 11.1'), folder('6', '10-02 Batch11.1 copy'),
-    folder('7', '10-03 Batch 12.1'),
-    {'id': '8', 'name': '09-08-Batch1', 'mimeType': 'application/vnd.google-apps.shortcut'},
+    group('g1', 'ComputerBench',
+          folder('1', '09-25-Batch5.1'), folder('1c', '09-25-Batch5.1 (dedup copy 2026-09-30)'),
+          folder('3', '09-16-Batch4.1'),                    # the audit already has 4.1
+          folder('4', '10-01 Batch 10.1', manifest=False),  # upload still in progress
+          folder('5', '10-02 Batch 11.1'), folder('6', '10-02 Batch11.1 v2'),
+          folder('7', '10-03 Batch 12.1'),
+          {'id': '8', 'name': '09-08-Batch1', 'mimeType': 'application/vnd.google-apps.shortcut'}),
+    group('g2', 'CompanyBench', folder('9', '09-27 Batch1 CompanyBench 267')),
+    group('g3', '[Deprecated] Dupes or Partial', folder('2', '[Deprecated] 09-25 Batch5.1 - Partial v1')),
+    group('g4', 'EKW / SVC'), group('g5', '[Meta] Meta - 0919'), group('g6', 'Empty group'),
+    folder('10', '10-04 Batch 13.1'),                      # a batch still at the top level
 ]}
-manifests = {'m1': good, 'm5': good, 'm6': good, 'm7': b'{"tasks": [{"task_name": "x"}]}'}
+manifests = {'m1': good, 'm1c': good, 'm5': good, 'm6': other, 'm9': good, 'm10': good,
+             'm7': b'{"tasks": [{"task_name": "x"}]}'}
 out = build(listing, manifests, audited_batches={'Batch 4.1'})
-check(list(out['counts']['batches']) == ['Batch 5.1'], f'only Batch 5.1 publishes, got {out["counts"]}')
+check(list(out['counts']['batches']) == ['Batch 13.1', 'Batch 5.1', 'CompanyBench 1'],
+      f'batches inside group folders and at the top level publish, got {out["counts"]}')
+five = next(b for b in out['batches'] if b['batch'] == 'Batch 5.1')
+check(five['folder'] == 'ComputerBench/09-25-Batch5.1' and five['notes'],
+      'an identical copy is read once, from the plainer name, and noted')
 skipped = {s['name']: s['reason'] for s in out['skipped']}
-check('10-01 Batch 10.1' in skipped, 'a batch folder with no manifest is reported, not dropped')
-check('10-02 Batch 11.1' in skipped and '10-02 Batch11.1 copy' in skipped,
-      'two folders claiming one batch publish neither')
-check('10-03 Batch 12.1' in skipped, 'an unrecognised layout is skipped with a reason')
+check('ComputerBench/10-01 Batch 10.1' in skipped, 'a batch folder with no manifest is reported, not dropped')
+check('ComputerBench/10-02 Batch 11.1' in skipped and 'ComputerBench/10-02 Batch11.1 v2' in skipped,
+      'two folders with different manifests for one batch publish neither')
+check('ComputerBench/10-03 Batch 12.1' in skipped, 'an unrecognised layout is skipped with a reason')
 ignored = {i['name'] for i in out['ignored']}
-check({'[Deprecated] 09-25 Batch5.1 - Partial v1', '09-16-Batch4.1', '09-08-Batch1'} <= ignored,
-      'deprecated folders, audited batches and shortcuts are ignored')
+check({'[Deprecated] Dupes or Partial', 'EKW / SVC', '[Meta] Meta - 0919', 'Empty group',
+       'ComputerBench/09-16-Batch4.1', 'ComputerBench/09-08-Batch1'} <= ignored,
+      f'deprecated, meta and knowledge-work groups, audited batches and shortcuts are ignored: {ignored}')
+check(not any(b['folder'].startswith('[Deprecated]') for b in out['batches']),
+      'nothing inside a deprecated group is read')
 
 # --- the live read, against a fake Drive -------------------------------------
 # The VM is the only place with credentials, so the request side is exercised
@@ -107,8 +131,11 @@ import urllib.parse                               # noqa: E402
 import build_drive_deliveries as bdd              # noqa: E402
 
 tree = {'root': [{'id': 'b5', 'name': '09-25-Batch5.1', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'},
-                 {'id': 'meta', 'name': 'Meta - 0919', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
+                 {'id': 'meta', 'name': 'Meta - 0919', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'},
+                 {'id': 'cb', 'name': 'CompanyBench', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
         'b5': [{'id': 'm5', 'name': 'manifest.json', 'mimeType': 'application/json', 'modifiedTime': 'v1'}],
+        'cb': [{'id': 'cb1', 'name': '09-27 Batch1 CompanyBench 267', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
+        'cb1': [{'id': 'mcb1', 'name': 'manifest.json', 'mimeType': 'application/json', 'modifiedTime': 'v1'}],
         'meta': [{'id': 'nope', 'name': 'manifest.json', 'mimeType': 'application/json', 'modifiedTime': 'v1'}]}
 calls = []
 
@@ -132,9 +159,10 @@ real_get, bdd.drive_get = bdd.drive_get, fake_get
 try:
     with tempfile.TemporaryDirectory() as cache:
         listing, got = bdd.snapshot_from_drive('root', 'token', cache=cache)
-        check([i['name'] for i in listing['items']] == ['09-25-Batch5.1', 'Meta - 0919'],
+        check([i['name'] for i in listing['items']] == ['09-25-Batch5.1', 'Meta - 0919', 'CompanyBench'],
               'both pages of the folder listing are read')
-        check(set(got) == {'m5'}, 'only batch folders are opened for a manifest')
+        check(set(got) == {'m5', 'mcb1'},
+              'batch folders are opened, also one level inside a group; ignored folders are not')
         bdd.save_snapshot(cache, listing, got)
         downloads = sum('alt=media' in c for c in calls)
         bdd.snapshot_from_drive('root', 'token', cache=cache)
@@ -159,7 +187,7 @@ if asset.exists():
     check(not any('@' in json.dumps(r) for r in blob['rows']), 'no email address in a Drive row')
     per = {}
     for r in blob['rows']:
-        per.setdefault(r['batch'], set()).add(r['task'])
+        per.setdefault(r['batch'], set()).add(r.get('packageName') or r['task'])
     for b in blob['batches']:
         check(len(per.get(b['batch'], ())) == b['tasks'], f"{b['batch']}: one row per package")
     print(f"published: {len(blob['rows']):,} rows from {len(blob['batches'])} batches, "

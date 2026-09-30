@@ -53,8 +53,7 @@ def person(value):
 
 
 def key(value):
-    name = str(value or '').strip().lower()
-    return name[len('harbor/'):] if name.startswith('harbor/') else name
+    return re.sub(r'^(harbor|obi)/', '', str(value or '').strip().lower())
 
 
 def indexes(scan, truth):
@@ -78,7 +77,7 @@ def attribute(row, folders, records, verdicts):
     folder = folders.get(row.get('sourceObject')) if row.get('sourceObject') else None
     if folder and person(folder.get('owner')) and not folder.get('ownerContested'):
         return 'object', [folder['owner']]
-    names = {key(row.get('task')), key(row.get('declaredName'))} - {''}
+    names = {key(row.get('task')), key(row.get('packageName'))} - {''}
     for route, index in (('records', records), ('verdict', verdicts)):
         people = set().union(*(index.get(n, set()) for n in names))
         if people:

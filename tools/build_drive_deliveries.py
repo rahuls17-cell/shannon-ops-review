@@ -21,7 +21,10 @@ The folder also holds work that is not a delivered batch - shipments, meta,
 knowledge work, deprecated partial cuts, zips, sheets, shortcuts - so a folder
 is read only when all of these hold:
 
-  * it is a folder, not a shortcut or a file;
+  * it is a folder, not a shortcut or a file, either at the top of the
+    Deliveries folder or one level down inside a group folder such as
+    ComputerBench/ or CompanyBench/ (a folder whose name is not itself a batch
+    and carries none of the IGNORE words);
   * its name says which batch it is: "Batch 5.1", "Batch6.1", or
     "Batch2 CompanyBench 110", read as "CompanyBench 2" so it never collides
     with Shannon's own Batch 2;
@@ -31,11 +34,18 @@ is read only when all of these hold:
   * it has a manifest.json at its top level.
 
 Anything else is listed in the output with the reason, so a folder that was
-left out can be seen to have been left out.
+left out can be seen to have been left out. Two folders claiming one batch are
+read once when their manifests are byte-identical - a copy made while tidying
+the folder - and skipped with a warning when they differ, because then there is
+no telling which is the receipt.
 
 What each row says
 ------------------
-Only what the manifest records. The manifest names no trainer and the client
+Only what the manifest records. Each row is named by the name its task.toml
+declares (the manifest's task_name, without the harbor/ or obi/ prefix), which
+is the task's real name; the package file name - sometimes an id such as
+ASTR_101554 or 100601-... - is kept beside it as packageName. The manifest names
+no trainer and the client
 has not decided anything yet, so every row is Unattributed and Pending, with
 no priority, QC result, feedback link or dates. Category is the manifest's own
 folder layout - Connector, Real Connector, Synthetic, CompanyBench,
@@ -83,7 +93,8 @@ FOLDER_MIME = 'application/vnd.google-apps.folder'
 
 # Words that mark a folder as something other than a delivered batch. Matched
 # against the name with spaces, dashes and underscores removed.
-IGNORE = ('deprecated', 'partial', 'shipment', 'meta', 'knowledgework', 'ekwbench')
+IGNORE = ('deprecated', 'partial', 'dupes', 'shipment', 'meta', 'knowledgework', 'ekw', 'svc')
+NOT_A_BATCH_NAME = 'name does not say which batch it is'
 BATCH = re.compile(r'batch\s*(\d+(?:\.\d+)?)', re.I)
 SHA256 = re.compile(r'^[0-9a-f]{64}$')
 # The bucket object a package was cut from: gs://.../tasks/<prefix>/<folder>/<hash>.zip
@@ -172,18 +183,17 @@ def snapshot_from_drive(folder_id, token, cache=None):
     known = {}
     if cache and (pathlib.Path(cache) / 'listing.json').exists():
         previous, saved = snapshot_from_dir(cache)
-        for item in previous.get('items', []):
-            for child in item.get('children', []):
-                if child['id'] in saved:
-                    known[child['id']] = (child.get('modifiedTime'), saved[child['id']])
+        for entry in walk(previous.get('items', [])):
+            if entry['id'] in saved:
+                known[entry['id']] = (entry.get('modifiedTime'), saved[entry['id']])
     meta = json.loads(drive_get(f'{API}/{folder_id}?fields=id,name&supportsAllDrives=true', token))
     items = children(folder_id, token)
     manifests, reused = {}, 0
-    for item in items:
-        if item['mimeType'] != FOLDER_MIME or not batch_label(item['name'])[0]:
-            continue
-        item['children'] = children(item['id'], token)
-        for child in item['children']:
+
+    def open_batch(folder):
+        nonlocal reused
+        folder['children'] = children(folder['id'], token)
+        for child in folder['children']:
             if child['name'] != 'manifest.json':
                 continue
             stamp, raw = known.get(child['id'], (None, None))
@@ -192,6 +202,16 @@ def snapshot_from_drive(folder_id, token, cache=None):
             else:
                 raw = drive_get(f'{API}/{child["id"]}?alt=media&supportsAllDrives=true', token)
             manifests[child['id']] = raw
+
+    for item in items:
+        role = folder_role(item)
+        if role == 'batch':
+            open_batch(item)
+        elif role == 'group':
+            item['children'] = children(item['id'], token)
+            for child in item['children']:
+                if folder_role(child) == 'batch':
+                    open_batch(child)
     if reused:
         print(f'{reused} unchanged manifests reused from {cache}', file=sys.stderr)
     return {'folder': meta, 'items': items}, manifests
@@ -217,7 +237,24 @@ def save_snapshot(path, listing, manifests):
     (base / 'listing.json').write_text(json.dumps(listing, indent=1), encoding='utf-8')
 
 
+def walk(items):
+    """Every entry of a saved listing, at any depth."""
+    for item in items:
+        yield item
+        yield from walk(item.get('children', []))
+
+
 # ------------------------------------------------------------ interpretation
+
+def folder_role(item):
+    """'batch', 'group' (a folder of batches, looked into once) or None."""
+    if item['mimeType'] != FOLDER_MIME:
+        return None
+    label, reason = batch_label(item['name'])
+    if label:
+        return 'batch'
+    return 'group' if reason == NOT_A_BATCH_NAME else None
+
 
 def batch_label(name):
     """(label, reason) for a top-level name; label is None when it is not a batch."""
@@ -227,7 +264,7 @@ def batch_label(name):
         return None, f'name marks it as {hit}, not a delivered batch'
     match = BATCH.search(name)
     if not match:
-        return None, 'name does not say which batch it is'
+        return None, NOT_A_BATCH_NAME
     if 'companybench' in flat:
         return f'CompanyBench {match.group(1)}', None
     return f'Batch {match.group(1)}', None
@@ -255,22 +292,22 @@ def normalise(manifest, label):
     for index, task in enumerate(tasks, 1):
         parts = str(task['package_path']).split('/')
         stem = pathlib.PurePosixPath(parts[-1]).stem
-        name = first(task.get('task_id'), stem)
-        if name in seen:
-            return None, f'package {name} appears twice in the manifest'
-        seen.add(name)
+        package = first(task.get('task_id'), stem)
+        if package in seen:
+            return None, f'package {package} appears twice in the manifest'
+        seen.add(package)
+        declared = re.sub(r'^(harbor|obi)/', '', str(task.get('task_name') or '').strip())
+        name = declared or package
         klass = CLASSES.get(parts[0].lower(), parts[0])
         domain = parts[2] if klass == 'Non-Connector' and len(parts) > 3 else first(task.get('domain'))
         band = first(task.get('difficulty'), parts[1] if len(parts) > 2 else None)
         trials = task.get('trial_evidence') if isinstance(task.get('trial_evidence'), dict) else {}
         glm = trials.get('successes') if isinstance(trials.get('successes'), int) else None
-        declared = str(task.get('task_name') or '')
-        declared = declared[len('harbor/'):] if declared.startswith('harbor/') else declared
         services = task.get('connector_services')
         rows.append({
             'id': f'{prefix}-{index:03d}',
             'task': name,
-            'declaredName': declared if declared and declared != name else None,
+            'packageName': package if package != name else None,
             'batch': label,
             'category': f'Non-Connector · {domain}' if klass == 'Non-Connector' and domain else klass,
             'class': klass,
@@ -284,7 +321,10 @@ def normalise(manifest, label):
             'source': 'Delivery manifest',
             'sha': task['sha256'][:16],
             'size_mb': round(task['size_bytes'] / 1e6, 2),
-            'connectors': services if isinstance(services, list) else [],
+            # Some manifests list each service as {name, transport, url}; the page
+            # shows names, so an object is reduced to its name.
+            'connectors': [str(s.get('name') or '') if isinstance(s, dict) else str(s)
+                           for s in services] if isinstance(services, list) else [],
             'dates': [],
             'priority': None,
             'qc_result': None,
@@ -322,31 +362,55 @@ def declared_total(manifest):
 def build(listing, manifests, audited_batches):
     batches, skipped, ignored, rows = [], [], [], []
     candidates = collections.defaultdict(list)
-    for item in sorted(listing['items'], key=lambda i: i['name']):
+
+    def consider(item, path):
         if item['mimeType'] != FOLDER_MIME:
             kind = 'a shortcut' if item['mimeType'].endswith('.shortcut') else 'a file'
-            ignored.append({'name': item['name'], 'reason': f'{kind}, not a batch folder'})
-            continue
+            ignored.append({'name': path, 'reason': f'{kind}, not a batch folder'})
+            return
         label, reason = batch_label(item['name'])
         if not label:
-            ignored.append({'name': item['name'], 'reason': reason})
-            continue
+            ignored.append({'name': path, 'reason': reason})
+            return
         if label in audited_batches:
-            ignored.append({'name': item['name'], 'reason': f'{label} keeps its audited rows'})
-            continue
+            ignored.append({'name': path, 'reason': f'{label} keeps its audited rows'})
+            return
         manifest = next((c for c in item.get('children', []) if c['name'] == 'manifest.json'), None)
         if manifest is None:
-            skipped.append({'name': item['name'], 'batch': label,
+            skipped.append({'name': path, 'batch': label,
                             'reason': 'no manifest.json at the top of the folder'})
-            continue
-        candidates[label].append((item, manifest))
+            return
+        candidates[label].append((dict(item, name=path), manifest))
+
+    for item in sorted(listing['items'], key=lambda i: i['name']):
+        if folder_role(item) == 'group':
+            # A folder of batches, such as ComputerBench/: looked into once,
+            # never deeper, so a batch's own subfolders are not mistaken for one.
+            inside = sorted(item.get('children', []), key=lambda i: i['name'])
+            if not any(folder_role(child) == 'batch' for child in inside):
+                ignored.append({'name': item['name'], 'reason': 'no batch folder inside'})
+            for child in inside:
+                consider(child, f"{item['name']}/{child['name']}")
+        else:
+            consider(item, item['name'])
 
     for label, found in sorted(candidates.items()):
+        notes = []
         if len(found) > 1:
-            for item, _ in found:
-                skipped.append({'name': item['name'], 'batch': label,
-                                'reason': f'{len(found)} folders claim {label}; none published until one is renamed'})
-            continue
+            # A copy made while tidying the folder carries the same receipt, so
+            # it is read once. Different receipts for one batch cannot both be
+            # it, and neither is published until one is renamed or removed.
+            contents = {manifests.get(m['id']) for _, m in found}
+            if len(contents) == 1 and None not in contents:
+                found = sorted(found, key=lambda pair: (len(pair[0]['name']), pair[0]['name']))
+                notes.append('also in ' + ', '.join(i['name'] for i, _ in found[1:]) +
+                             ' with an identical manifest; read once')
+            else:
+                for item, _ in found:
+                    skipped.append({'name': item['name'], 'batch': label,
+                                    'reason': f'{len(found)} folders claim {label} with different manifests; '
+                                              'none published until one is renamed'})
+                continue
         item, manifest = found[0]
         raw = manifests.get(manifest['id'])
         if raw is None:
@@ -365,7 +429,6 @@ def build(listing, manifests, audited_batches):
             (t.get('trial_evidence') or {}).get('model') for t in blob['tasks']
             if isinstance(t.get('trial_evidence'), dict) and t['trial_evidence'].get('model'))
         stated = declared_total(blob)
-        notes = []
         if stated is not None and stated != len(batch_rows):
             notes.append(f'summary states {stated} tasks, the task list holds {len(batch_rows)}')
         batches.append({
