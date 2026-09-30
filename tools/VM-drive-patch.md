@@ -51,7 +51,19 @@ DRIVE_CREDENTIALS=/root/shannon-refresh/drive-reader.json \
   || log "Drive read failed - keeping the previous drive-deliveries.json"
 ```
 
-Then add `assets/drive-deliveries.json` to that `git add` line.
+Right after it, name the trainers for the new rows from the bucket scan. This
+needs no credentials: it reads `assets/gcs-pipeline.json` and
+`assets/pipeline-truth.json`, which are already in the checkout. The refresh
+workflows rebuild it on their own schedule too; running it here means a new
+batch has trainers from its first publish.
+
+```bash
+python3 tools/build_drive_owners.py >>"$LOG" 2>&1 \
+  || log "Drive owner index failed - keeping the previous drive-owners.json"
+```
+
+Then add `assets/drive-deliveries.json` and `assets/drive-owners.json` to that
+`git add` line.
 
 ## 3. Checking it
 

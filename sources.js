@@ -129,7 +129,7 @@
       href: 'https://drive.google.com/drive/folders/1_ZA8ckJfXtaGV4OpqZ0a4f5XZbx4brXO',
       what: 'The manifest shipped with each delivered batch: the receipt of which packages went to the client, with each one\'s hash, size, category, difficulty and GLM trials.',
       why: 'Batches after 4.1 are recorded nowhere else. The manifest is what was handed over, so it is reproduced rather than corrected.',
-      how: 'tools/build_drive_deliveries.py reads the folder read-only on the VM and writes assets/drive-deliveries.json. Folders that are not delivered batches - shipments, meta, knowledge work, deprecated cuts, shortcuts - are left out and listed with the reason.',
+      how: 'tools/build_drive_deliveries.py reads the folder read-only on the VM and writes assets/drive-deliveries.json. Folders that are not delivered batches - shipments, meta, knowledge work, deprecated cuts, shortcuts - are left out and listed with the reason. A manifest names no trainer, so tools/build_drive_owners.py joins each package to the bucket - the exact archive it was cut from, then the pipeline trainer records, then verdict owners - and a package several people claim is shown as contested.',
       views: ['delivery'],
     },
   ];

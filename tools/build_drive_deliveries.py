@@ -86,6 +86,8 @@ FOLDER_MIME = 'application/vnd.google-apps.folder'
 IGNORE = ('deprecated', 'partial', 'shipment', 'meta', 'knowledgework', 'ekwbench')
 BATCH = re.compile(r'batch\s*(\d+(?:\.\d+)?)', re.I)
 SHA256 = re.compile(r'^[0-9a-f]{64}$')
+# The bucket object a package was cut from: gs://.../tasks/<prefix>/<folder>/<hash>.zip
+SOURCE_OBJECT = re.compile(r'/([0-9a-f]{64})\.zip$')
 
 # The first level of the Drive layout, spelled the way the manifests spell it.
 CLASSES = {'connector': 'Connector', 'real connector': 'Real Connector',
@@ -292,8 +294,20 @@ def normalise(manifest, label):
             'unverified': False,
             'version_dependent': False,
             'packagePath': task['package_path'],
+            # Where the manifest says the package came from, when it says. The
+            # owner index joins on it: it names one archive, not one task name.
+            'sourceObject': source_object(task),
         })
     return rows, None
+
+
+def source_object(task):
+    """The sha256 of the bucket archive this package was cut from, or None."""
+    version = str(task.get('source_version') or '')
+    if SHA256.match(version):
+        return version
+    match = SOURCE_OBJECT.search(str(task.get('source_uri') or ''))
+    return match.group(1) if match else None
 
 
 def declared_total(manifest):

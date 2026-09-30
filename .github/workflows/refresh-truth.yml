@@ -108,6 +108,11 @@ jobs:
           # task ids, so a rebuilt pipeline leaves it describing the
           # wrong rows. Reads the published bucket scan; no credential.
           python3 tools/build_connector_index.py
+          # The weakest trainer route reads verdict owners from the pipeline
+          # just rebuilt, so the Drive owner index moves with it.
+          if [ -f assets/drive-deliveries.json ]; then
+            python3 tools/build_drive_owners.py
+          fi
           # Only the check that the index describes the data it was built from.
           # The behavioural suites moved to ci.yml: they assert how the page
           # reads this data, and when one of them was wrong about live data it
@@ -124,6 +129,7 @@ jobs:
           cp assets/pipeline-truth.json "$RUNNER_TEMP/pipeline-truth.json"
           cp assets/delivered-index.json "$RUNNER_TEMP/delivered-index.json"
           cp assets/connector-index.json "$RUNNER_TEMP/connector-index.json"
+          if [ -f assets/drive-owners.json ]; then cp assets/drive-owners.json "$RUNNER_TEMP/drive-owners.json"; fi
           pushed=0
           for attempt in 1 2 3; do
             git fetch origin main
@@ -131,6 +137,10 @@ jobs:
             cp "$RUNNER_TEMP/pipeline-truth.json" assets/pipeline-truth.json
             cp "$RUNNER_TEMP/delivered-index.json" assets/delivered-index.json
             cp "$RUNNER_TEMP/connector-index.json" assets/connector-index.json
+            if [ -f "$RUNNER_TEMP/drive-owners.json" ]; then
+              cp "$RUNNER_TEMP/drive-owners.json" assets/drive-owners.json
+              git add assets/drive-owners.json
+            fi
             git add assets/pipeline-truth.json assets/delivered-index.json assets/connector-index.json assets/manifest-index.json
             if git diff --cached --quiet; then
               echo "asset is identical to main; nothing to commit"

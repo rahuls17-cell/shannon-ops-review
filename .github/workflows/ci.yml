@@ -53,6 +53,9 @@ jobs:
       - name: Which Drive folders are delivered batches
         run: python3 tools/test_drive_deliveries.py
 
+      - name: Which trainer a Drive package gets from the bucket
+        run: python3 tools/test_drive_owners.py
+
       - name: Known data defects have not spread
         # test_duplicate_sample.py exits 1 by design: it reports a genuine
         # contradiction upstream - two records for one task sharing the newest

@@ -140,6 +140,46 @@ if (fs.existsSync(asset)) {
     'without the Drive asset the audit still loads');
 }
 
+// One domain, one bar: the audit's names and the manifests' collapse together.
+{
+  const {mergedCategory} = require('../delivery-audit.js');
+  const pairs = [['Code', 'Engineering'], ['Non-Connector · Engineering', 'Engineering'],
+    ['Law', 'Legal'], ['Non-Connector · Legal', 'Legal'], ['Other/unclassified', 'Other'],
+    ['General', 'Other'], ['Non-Connector · Other', 'Other'], ['Health', 'Health'],
+    ['Non-Connector · Health', 'Health'], ['Company Bench Zeta', 'CompanyBench'],
+    ['Real Connector', 'Real Connector'], ['Synthetic', 'Synthetic'], ['Connector', 'Connector']];
+  for (const [from, to] of pairs) assert.equal(mergedCategory(from), to, `${from} should read as ${to}`);
+  const merged = prepareDeliveryAudit(base);
+  assert.deepEqual(filterDeliveryAudit(merged.rows, {}).byCategory, {Engineering: 2, Health: 2});
+  assert.equal(merged.rows[0].categoryOriginal, 'Code', 'the row keeps what its source called it');
+  assert.equal(filterDeliveryAudit(merged.rows, {category: 'Engineering'}).rows.length, 2,
+    'the filter uses the merged name');
+}
+
+// Trainers for Drive rows come from the owner index, never from the manifest.
+{
+  const drive = {rows: [
+    {id: 'B51-001', task: 'a', batch: 'Batch 5.1', trainer: 'Unattributed', source: 'Delivery manifest', acceptance: 'Pending'},
+    {id: 'B51-002', task: 'b', batch: 'Batch 5.1', trainer: 'Unattributed', source: 'Delivery manifest', acceptance: 'Pending'},
+    {id: 'B51-003', task: 'c', batch: 'Batch 5.1', trainer: 'Unattributed', source: 'Delivery manifest', acceptance: 'Pending'},
+  ], batches: [], skipped: []};
+  const owners = {generatedAt: 't', owners: {
+    'B51-001': {trainer: 'one@turing.com', source: 'GCS trainer records', route: 'records'},
+    'B51-002': {trainer: null, source: 'Contested', route: 'records', candidates: ['x@turing.com', 'y@turing.com']},
+  }};
+  const live = prepareDeliveryAudit(base, drive, owners);
+  const byId = Object.fromEntries(live.rows.map(r => [r.id, r]));
+  assert.equal(byId['B51-001'].trainer, 'one@turing.com');
+  assert.equal(byId['B51-001'].source, 'GCS trainer records', 'the row says where its trainer came from');
+  assert.equal(byId['B51-002'].trainer, null, 'a contested row names nobody');
+  assert.deepEqual(byId['B51-002'].ownerCandidates, ['x@turing.com', 'y@turing.com']);
+  assert.deepEqual(byId['B51-002'].flags, ['contested owner'], 'contested is flagged once');
+  assert.equal(byId['B51-003'].trainer, null, 'a row the index does not name stays Unattributed');
+  assert.equal(live.drive.owners.attributed, 1);
+  assert.equal(live.drive.owners.contested, 1);
+  assert.equal(byId.T1.trainer, 'a@t.com', 'audited rows are never touched by the owner index');
+}
+
 // The published pair: every Drive batch is new to the audit.
 const driveAsset = path.join(__dirname, '..', 'assets', 'drive-deliveries.json');
 if (fs.existsSync(driveAsset) && fs.existsSync(asset)) {

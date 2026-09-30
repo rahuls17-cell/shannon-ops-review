@@ -18,15 +18,48 @@
   const UNSET = '(not recorded)';
   const value = v => (v === null || v === undefined || v === '' ? UNSET : String(v));
 
-  function prepareDeliveryAudit(payload, drivePayload) {
+  // The audit and the manifests name the same domains differently - Law and
+  // "Non-Connector · Legal", Code and "Non-Connector · Engineering" - so one
+  // domain would show as two bars. Both collapse onto the manifest's names here,
+  // on this tab only; the row keeps what its source called it.
+  const CATEGORY_MERGE = {
+    Code: 'Engineering', Law: 'Legal', 'Other/unclassified': 'Other', General: 'Other',
+    'Company Bench Zeta': 'CompanyBench',
+  };
+  function mergedCategory(category) {
+    if (category === null || category === undefined || category === '') return category;
+    const text = String(category).replace(/^Non-Connector\s*·\s*/i, '');
+    return CATEGORY_MERGE[text] || text;
+  }
+
+  // A Drive row names no trainer; the owner index, built from the bucket, may.
+  // Contested rows keep every candidate and name none of them.
+  function withOwner(row, owners) {
+    const owner = owners && owners[row.id];
+    if (!owner) return row;
+    const candidates = Array.isArray(owner.candidates) ? owner.candidates : [];
+    return {
+      ...row,
+      trainer: owner.trainer || 'Unattributed',
+      source: owner.source || row.source,
+      trainerRoute: owner.route || null,
+      ambiguous: candidates.length > 1,
+      ownerCandidates: candidates,
+    };
+  }
+
+  function prepareDeliveryAudit(payload, drivePayload, ownersPayload) {
     if (!payload || !Array.isArray(payload.rows)) throw new Error('No delivery audit asset loaded');
     const audited = new Set(payload.rows.map(row => row.batch));
+    const owners = ownersPayload && ownersPayload.owners ? ownersPayload.owners : null;
     const driveRows = (drivePayload && Array.isArray(drivePayload.rows) ? drivePayload.rows : [])
       .filter(row => !audited.has(row.batch))
-      .map(row => ({...row, fromManifest: true}));
+      .map(row => withOwner({...row, fromManifest: true}, owners));
     const rows = payload.rows.concat(driveRows).map(row => ({
       ...row,
       task: row.task || '',
+      category: mergedCategory(row.category),
+      categoryOriginal: row.category,
       // The source writes the literal string 'Unattributed' rather than
       // leaving the field empty, so a truthiness check counts 12 rows as
       // attributed and lists 'Unattributed' as if it were a person.
@@ -59,6 +92,12 @@
         batches: drivePayload.batches || [],
         skipped: drivePayload.skipped || [],
         rows: driveRows.length,
+        owners: ownersPayload ? {
+          generatedAt: ownersPayload.generatedAt,
+          scanGeneratedAt: ownersPayload.scanGeneratedAt,
+          attributed: driveRows.filter(r => r.trainer && r.trainer !== 'Unattributed').length,
+          contested: driveRows.filter(r => (r.ownerCandidates || []).length > 1).length,
+        } : null,
       } : null,
       rows,
     };
@@ -117,6 +156,6 @@
   root.filterDeliveryAudit = filterDeliveryAudit;
   root.DELIVERY_AUDIT_UNSET = UNSET;
   if (typeof module !== 'undefined') {
-    module.exports = {prepareDeliveryAudit, filterDeliveryAudit, UNSET};
+    module.exports = {prepareDeliveryAudit, filterDeliveryAudit, mergedCategory, UNSET};
   }
 })(typeof window === 'undefined' ? globalThis : window);

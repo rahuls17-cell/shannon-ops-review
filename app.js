@@ -627,7 +627,14 @@ async function loadDeliveryAudit() {
       const dr = await fetch(`assets/drive-deliveries.json?t=${Date.now()}`, {cache: 'no-store'});
       if (dr.ok) drive = await dr.json();
     } catch (ignored) { drive = null; }
-    audit = window.prepareDeliveryAudit(await response.json(), drive);
+    // Their trainers, joined from the bucket. Optional: without it those rows
+    // stay Unattributed, which is what the manifest itself says.
+    let owners = null;
+    try {
+      const ow = drive ? await fetch(`assets/drive-owners.json?t=${Date.now()}`, {cache: 'no-store'}) : null;
+      if (ow && ow.ok) owners = await ow.json();
+    } catch (ignored) { owners = null; }
+    audit = window.prepareDeliveryAudit(await response.json(), drive, owners);
     populateAuditFilters();
     renderAudit();
   } catch (error) {
@@ -853,7 +860,7 @@ function renderAuditRows(rows) {
         <dt>Connectors</dt><dd>${connectors.length ? connectors.map(c => `<span class="chip">${esc(c)}</span>`).join(' ') : 'none'}</dd>
         <dt>Priority</dt><dd>${esc(row.priority || 'not set')}</dd>
         <dt>QC result</dt><dd>${esc(row.qc_result || 'not recorded')}</dd>
-        <dt>Attribution</dt><dd>${esc(row.source || '-')}${row.pipelineOwners.length ? ` · pipeline owners: ${row.pipelineOwners.map(esc).join(', ')}` : ''}</dd>
+        <dt>Attribution</dt><dd>${esc(row.source || '-')}${row.pipelineOwners.length ? ` · pipeline owners: ${row.pipelineOwners.map(esc).join(', ')}` : ''}${(row.ownerCandidates || []).length ? ` · candidates: ${row.ownerCandidates.map(esc).join(', ')}` : ''}</dd>
         <dt>Flags</dt><dd>${row.flags.length ? row.flags.map(esc).join(', ') : 'none'}</dd>
         <dt>Feedback</dt><dd>${row.feedback_url ? `<a href="${esc(row.feedback_url)}" target="_blank" rel="noopener">Open the feedback sheet</a>` : '-'}</dd>
       </dl>
@@ -2913,7 +2920,8 @@ function sourceState(source) {
     if (!drive) return {tone: 'warn', label: 'Not loaded', detail: 'The Drive manifests did not load in this visit.'};
     const skipped = drive.skipped.length ? ` / ${fmt(drive.skipped.length)} folder${drive.skipped.length === 1 ? '' : 's'} skipped` : '';
     return {tone: drive.skipped.length ? 'warn' : 'snapshot', label: 'Snapshot',
-      detail: `${fmt(drive.batches.length)} batches, ${fmt(drive.rows)} tasks, read ${new Date(drive.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}${skipped}`};
+      detail: `${fmt(drive.batches.length)} batches, ${fmt(drive.rows)} tasks, read ${new Date(drive.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})}${skipped}` +
+        (drive.owners ? ` / trainers from the bucket for ${fmt(drive.owners.attributed)}, ${fmt(drive.owners.contested)} contested` : ' / no trainer index loaded')};
   }
   if (source.id === 'harbor-240') {
     if (!clientAcceptance) return {tone: 'warn', label: 'Not loaded', detail: 'The 240 dashboard could not be read and no snapshot was available.'};
