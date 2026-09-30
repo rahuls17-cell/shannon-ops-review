@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T09:11:13+00:00",
+ "generatedAt": "2026-09-30T09:21:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12944,6 +12944,42 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-hour-that-was-not-an-hour/14163b60a911bac8958f6ea6c5ea6b0a8a8ac9a135b96fac95a0b3b1b04c902c.zip",
    "bytesRead": 50996,
+   "readOn": "2026-09-30"
+  },
+  "advisory-board-pre-brief": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/advisory-board-pre-brief/283aeff331cc437bc2575d49b4bfe8c04cbdf36aeea1919be5a8105d9929bd70.zip",
+   "bytesRead": 51048,
+   "readOn": "2026-09-30"
+  },
+  "the-badge-that-still-opens-the-door": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-badge-that-still-opens-the-door/676eaad3b270fd50f09907b11800480229ae6d3fa2f75c029b97d345b0bfcd2d.zip",
+   "bytesRead": 50886,
+   "readOn": "2026-09-30"
+  },
+  "the-people-still-waiting-on-me": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-people-still-waiting-on-me/cb84e6dc9367ec8a5020dc4113a824396f3f39a831e547e3e4d43adbd82a6cb2.zip",
+   "bytesRead": 47539,
    "readOn": "2026-09-30"
   }
  }
