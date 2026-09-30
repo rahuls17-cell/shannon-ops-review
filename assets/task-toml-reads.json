@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T11:41:26+00:00",
+ "generatedAt": "2026-09-30T11:51:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13101,6 +13101,25 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/seven-urgent-messages-the-filter-buried/862924d9803255b7a93c7b06f6785e4eef0c2f056436479a863c7956eeda8c2c.zip",
    "bytesRead": 59829,
+   "readOn": "2026-09-30"
+  },
+  "bill-payment-send-dates-must-avoid-weekends-and-holidays": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bill-payment-send-dates-must-avoid-weekends-and-holidays/9753e12889f8c7eb93091d6a0435a29cd4ad35703309332dd77d9e1446e6a5ca.zip",
+   "bytesRead": 61535,
    "readOn": "2026-09-30"
   }
  }
