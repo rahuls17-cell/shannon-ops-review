@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T08:51:04+00:00",
+ "generatedAt": "2026-09-30T09:01:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12876,6 +12876,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guests-i-never-write-to/f087b0eb4a6de2f758ec79a5feec3b9daa8bcd25814bfc1783127f8ee229ed64.zip",
    "bytesRead": 58253,
+   "readOn": "2026-09-30"
+  },
+  "the-blog-posts-with-nothing-to-look-at": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-blog-posts-with-nothing-to-look-at/988685b23a086c4a2fc130c294652805eabb5fc577bb75ab520fe2c5ae748761.zip",
+   "bytesRead": 49433,
+   "readOn": "2026-09-30"
+  },
+  "the-guest-i-marked-both-ways": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guest-i-marked-both-ways/7167667cb5c77294b7268e8bd4101381314ebb4de0b3a45e76aff7517db6425c.zip",
+   "bytesRead": 52449,
    "readOn": "2026-09-30"
   }
  }
