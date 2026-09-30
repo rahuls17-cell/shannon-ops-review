@@ -197,5 +197,15 @@ console.log('truth checks passed: partition, filters, chains, refusal to render 
       read('glm-index.json'), read('cohort-index.json'), read('bench-index.json'), read('task-names.json'));
     const wrong = live.rows.concat(live.cohortRows || []).filter(r => r.benchSide === 'company' && r.connector === false);
     assert.equal(wrong.length, 0, `non-connector tasks on the Company bench: ${wrong.map(r => r.name).join(', ')}`);
+    // A domain is a non-connector naming convention; a connector task whose
+    // free-text name happens to start with code- is not Engineering.
+    const {connectorType} = require(path.join(__dirname, '..', 'truth.js'));
+    const named = live.rows.concat(live.cohortRows || []).filter(r => connectorType(r) === true && r.domain && r.domain !== 'Not recorded');
+    assert.equal(named.length, 0, `connector tasks with a named domain: ${named.map(r => r.name).join(', ')}`);
+    // The Connector filter splits the rows exactly as the segment switch does.
+    const all = live.rows.length;
+    const n = v => filterTruth(live.rows, {connector: v}).rows.length;
+    assert.equal(n('yes') + n('no') + n('unknown'), all, 'the Connector filter must cover every row once');
+    assert.equal(n('yes'), live.rows.filter(r => connectorType(r) === true).length);
   }
 }

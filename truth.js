@@ -91,7 +91,9 @@
           return {bench: hit.bench, benchImage: hit.image, benchRead: true,
                   benchSide: hit.bench.startsWith('company') ? 'company' : 'computer'};
         }
-        if (hit && hit.image && !plain) plain = hit;
+        // An image left as a build variable - ${BASE_IMAGE}:${BASE_TAG} - was
+        // never resolved, so it says nothing about the harness either way.
+        if (hit && hit.image && !plain && !/\$\{/.test(hit.image)) plain = hit;
       }
       return plain ? {benchImage: plain.image, benchRead: true} : {};
     };
@@ -114,10 +116,11 @@
           ...benchAt(row.id, row.name),
         }))
         .map(onComputerIfNotConnector)
+        .map(noDomainOnConnector)
       : payload.tasks;
 
     const cohort = cohortRows(rows, cohortIndex, benchAt, dupOf);
-    if (cohort) cohort.forEach((row, index) => { cohort[index] = onComputerIfNotConnector(row); });
+    if (cohort) cohort.forEach((row, index) => { cohort[index] = noDomainOnConnector(onComputerIfNotConnector(row)); });
     carryDuplicateFolders(rows, cohort);
 
     return {
@@ -274,6 +277,31 @@
   // benchmark-base image and read as Company Bench Zeta. A plain base image
   // (python, node and the like) is the same evidence: no harness, so no
   // connector. Only a task never read is left without a bench.
+  // Connector or not, the one rule the segment switch, the Connector filter
+  // and the makeup tiles all use: what the package's task.toml declares, then
+  // the type of the Delivery row it went out as, and for a task whose package
+  // was never scanned and never delivered, the base image in its
+  // Dockerfile - the Company Bench images and the synthetic and real Computer
+  // Bench ones are connector harnesses, a plain base image is not. `connector`
+  // itself stays the task.toml reading alone.
+  function connectorType(row) {
+    if (row.connector === true || row.connector === false) return row.connector;
+    // Where it was delivered: the Drive folder it sits in says which it is.
+    if (row.deliveredType === true || row.deliveredType === false) return row.deliveredType;
+    if (/non-connector/.test(row.bench || '')) return false;
+    if (/company bench|computer bench (synth|real)/.test(row.bench || '')) return true;
+    return null;
+  }
+
+  // A domain is the prefix on a non-connector task's name - gen-, law-,
+  // code-, health- - and says nothing about a connector task, whose name is
+  // free text: code-review-assistant-provenance-attestation is a GitHub
+  // connector task, not Engineering. The name's reading is kept apart.
+  function noDomainOnConnector(row) {
+    if (connectorType(row) !== true || !row.domain || row.domain === 'Not recorded') return row;
+    return {...row, domain: 'Not recorded', domainFromName: row.domain};
+  }
+
   function onComputerIfNotConnector(row) {
     if (row.connector === false || (!row.bench && row.benchRead)) {
       return {...row, bench: 'computer bench non-connector', benchSide: 'computer',
@@ -352,6 +380,8 @@
   //
   // Recomputed from what prepareTruth set, so running it again after the
   // Delivery rows change gives the same answer rather than accumulating.
+  const typeFlag = type => (type === 'Connector' ? true : type === 'Non-connector' ? false : null);
+
   function joinDeliveries(prepared, deliveries, missing) {
     if (!prepared) return null;
     const cohort = prepared.cohortRows || [];
@@ -384,6 +414,8 @@
         : by === 'folder' ? `${first.batch}: the folder its manifest names`
         : by === 'name' ? `${first.batch}: the task its package declares` : null;
       if (by && by !== 'manifest' && !row.deliveredTask) row.deliveredTask = first.task;
+      row.deliveredType = first ? typeFlag(first.type) : null;
+      Object.assign(row, noDomainOnConnector(row));
     });
     // A pipeline row is a submission, not a folder. It is marked by the Drive
     // batches' declared names only; Batches 1 to 4.1 were joined to these rows
@@ -397,6 +429,9 @@
         : (driveByName.get(keyOf(row.name)) || driveByName.get(keyOf(row.packageTask)) || [])[0];
       row.delivered = row.indexDelivered || Boolean(hit);
       row.deliveredTask = hit ? hit.task : row.indexDeliveredTask;
+      const sent = hit || (row.indexDeliveredTask ? (byName.get(keyOf(row.indexDeliveredTask)) || [])[0] : null);
+      row.deliveredType = sent ? typeFlag(sent.type) : null;
+      Object.assign(row, noDomainOnConnector(row));
       if (hit) row.deliveredVia = `${hit.batch}: the task name it carries`;
     });
     const gone = new Set((missing || []).map(m => `${m.batch}|${keyOf(m.task)}`));
@@ -457,9 +492,9 @@
               (row.state === 'accepted' || row.state === 'legacy accepted'))
           : f.delivered === 'no' ? row.delivered !== true
           : true)) &&
-        (!f.connector || (f.connector === 'yes' ? row.connector === true
-          : f.connector === 'no' ? row.connector === false
-          : row.connector === null || row.connector === undefined)) &&
+        (!f.connector || (f.connector === 'yes' ? connectorType(row) === true
+          : f.connector === 'no' ? connectorType(row) === false
+          : connectorType(row) === null)) &&
         // The band is a property of the run, so a row with no trials is
         // excluded from every band filter rather than counted as 0.
         // A row never read for a bench is excluded from every bench filter
@@ -573,5 +608,6 @@
   root.chainFor = chainFor;
   root.acceptedTaskNames = acceptedTaskNames;
   root.joinDeliveries = joinDeliveries;
-  if (typeof module !== 'undefined') module.exports = {prepareTruth, filterTruth, collapseByTask, chainFor, acceptedTaskNames, joinDeliveries, UNDECIDED};
+  root.connectorType = connectorType;
+  if (typeof module !== 'undefined') module.exports = {prepareTruth, filterTruth, collapseByTask, chainFor, acceptedTaskNames, joinDeliveries, connectorType, UNDECIDED};
 })(typeof window === 'undefined' ? globalThis : window);

@@ -33,10 +33,11 @@ longer decides Company Bench anywhere on the dashboard.
   `Non-Connector` folder means non-connector). A pipeline task with no connector
   flag takes it from its image: Company Bench and synthetic/real Computer Bench
   images are connector harnesses. (`5f63d80`)
-- Pipeline tasks split Computer Bench 813 connector / 4,346 non-connector (4
-  more of unknown type), Company Bench 3,740; 78 have no bench or type yet.
+- Pipeline tasks split Computer Bench 813 connector / 4,348 non-connector (1
+  more of unknown type), Company Bench 3,740; 79 have no bench or type yet.
   (Was 838 / 4,347 / 3,714 / 82 until the delivered join below linked about 60
-  more folders to where they were delivered.)
+  more folders to where they were delivered and delivered tasks took their
+  type from the delivery.)
 - **A non-connector task is always on the Computer bench.** The one "Company
   Bench non-connector" task, `gen-g414-press-release-prohibited-terms-audit`,
   was a misclassification: its Dockerfile starts from the `benchmark-base`
@@ -117,6 +118,33 @@ longer decides Company Bench anywhere on the dashboard.
   Pipeline accepted is now Computer Bench 205 + 1,651, Company Bench 449;
   pipeline tasks 813 / 4,346 / 3,740, 4 Computer Bench of unknown type, 78
   unknown.
+- **Why 1,956 already delivered is not 1,893 found in the bucket**: different
+  units. 1,956 counts accepted folders; the Delivery join counts delivered tasks.
+  The 1,956 folders hold 1,880 distinct tasks (by the name their package
+  declares) - 76 folders are re-cut copies of a task already counted. From the
+  other side, 1,893 found + 3 of the Batch 1 to 4.1 "gone" (their exact archive
+  is gone but the same task is still in the prefix) = 1,896 deliveries that
+  reach a folder; 17 tasks went out twice (9 in Batch 5.1 again after Batches 1
+  to 4.1, 4 in both 5.1 and CompanyBench 2, 3 in both Batch 2 and 6.1, 1 pair
+  across 9.1 and 10.1 with crossed names), so they come to the same 1,880 tasks.
+- **Delivery & makeup, "What the shown tasks are"**:
+  - Connector / Non-connector / Not known now use the segment switch's rule,
+    so they split what is shown: under Computer Bench Connector it read 299
+    connector + 514 not known, now 813 connector (299 from task.toml, 514 from
+    the Dockerfile image). All: 4,553 connector, 4,348 non-connector, 80 not
+    known. The Connector filter uses the same rule.
+  - **A connector task has no named domain.** The three "named domain" tasks
+    under Connector were `code-review-assistant-provenance-attestation`, a
+    GitHub connector task whose name starts with `code-`, which the prefix rule
+    read as Engineering. The domain is a non-connector naming convention, so it
+    is dropped on connector tasks (kept on the row as `domainFromName`); a
+    check fails if one comes back.
+  - A delivered task takes its type from its Delivery row when task.toml was
+    not scanned, ahead of the image. An image left as a build variable
+    (`${BASE_IMAGE}:${BASE_TAG}`, 2 tasks) no longer counts as a plain image:
+    it had put a CompanyBench 2 connector task on Company Bench as
+    non-connector. Pipeline tasks are now 813 / 4,348 / 3,740, 1 Computer Bench
+    of unknown type, 79 unknown.
 - The Drive reader keeps the source folder a manifest names (`sourcePrefix`,
   `sourceFolder`, `sourceKind`) so the join can read it. (`0af9d45`)
 

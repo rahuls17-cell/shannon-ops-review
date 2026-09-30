@@ -782,9 +782,7 @@ function truthBench(row) {
 // A pipeline row with no connector flag still says what it is through its
 // image: the Company Bench images and the synthetic and real Computer Bench
 // ones are connector harnesses; a plain base image is a non-connector task.
-const truthConnector = row => (row.connector === true || row.connector === false ? row.connector
-  : /non-connector/.test(row.bench || '') ? false
-  : /company bench|computer bench (synth|real)/.test(row.bench || '') ? true : null);
+const truthConnector = row => window.connectorType(row);
 // A leaf key - bench and type - when both are known; the bench alone when only
 // it is; 'unknown' when neither is.
 function taskSegment(bench, connector) {
@@ -1576,7 +1574,7 @@ function renderTruthFilterChips(filters, filtered) {
 
   const byConnector = without('connector').rows;
   byId('tConnectorChips').innerHTML = chip('tConnector', '', 'Any', shownTasks(byConnector), 'var(--slate)', !filters.connector) +
-    [['yes', 'Connector', 'var(--aqua)', r => r.connector === true], ['no', 'Non-connector', 'var(--blue)', r => r.connector === false], ['unknown', 'Not known', 'var(--slate)', r => r.connector !== true && r.connector !== false]]
+    [['yes', 'Connector', 'var(--aqua)', r => truthConnector(r) === true], ['no', 'Non-connector', 'var(--blue)', r => truthConnector(r) === false], ['unknown', 'Not known', 'var(--slate)', r => truthConnector(r) === null]]
       .map(([v, l, tone, test]) => chip('tConnector', v, l, shownTasks(byConnector.filter(test)), tone, filters.connector === v)).join('');
 
   const byGate = without('gateEra').rows;
@@ -1721,30 +1719,28 @@ function renderTruthFigures(result, filtered) {
   // because one is evidence and the other is a naming convention.
   const shownBase = shownTasks(result.rows);
   const shownWhere = test => shownTasks(result.rows.filter(test));
+  // Connector by the same rule as the segment switch and the Connector filter,
+  // so the three tiles split what is shown; the sub line says how much of each
+  // was read from the package and how much from the image.
+  const typed = value => result.rows.filter(r => truthConnector(r) === value);
+  const fromToml = rows => shownTasks(rows.filter(r => r.connector === true || r.connector === false));
+  const via = rows => {
+    const toml = fromToml(rows), image = shownTasks(rows) - toml;
+    return image ? `${fmt(toml)} from task.toml \u00b7 ${fmt(image)} from its image` : '';
+  };
+  const [isConn, isNot, isUnknown] = [typed(true), typed(false), typed(null)];
   byId('truthMakeup').innerHTML =
-    stat('connector', shownWhere(r => r.connector === true), shownBase,
-      tip('The task mounts connector gyms - Slack, Jira, Drive and the rest.',
-        'Opened the package and read whether task.toml declares [[environment.mcp_servers]].',
-        'It is structural evidence, so it holds whatever the task is called.',
-        'Never inferred from the name. A gen- or code- prefix says nothing about whether a task talks to Slack.'),
-      null, 'aqua') +
-    stat('non-connector', shownWhere(r => r.connector === false), shownBase,
-      tip('The package declares no connector gyms.',
-        'Same read of the same file; this is the negative answer, not the absence of one.',
-        'These are the tasks the domain split below describes.',
-        'Not a guess. A task with no package scanned is in "not known", not here.'),
-      null, 'blue') +
-    stat('not known', shownWhere(r => r.connector !== true && r.connector !== false), shownBase,
-      tip('No package was scanned for these.',
-        'Looked for an archive in the bucket and found none at the current bar.',
-        'They are reported as unknown so the two figures beside them mean what they say.',
-        'Not "no". The marker only exists inside a package, and calling these non-connector would invent an answer for ' + fmt(result.connectorUnknown) + ' tasks.'),
+    stat('connector', shownTasks(isConn), shownBase,
+      tip('The task mounts connector gyms - Slack, Jira, Drive and the rest: task.toml declares [[environment.mcp_servers]], or, for a package never scanned, its Dockerfile starts from a connector harness image (Company Bench, or synthetic or real Computer Bench).'),
+      null, 'aqua', null, via(isConn)) +
+    stat('non-connector', shownTasks(isNot), shownBase,
+      tip('The task declares no connector gyms, or its Dockerfile starts from a plain base image with no harness. These are the tasks the domain split below describes.'),
+      null, 'blue', null, via(isNot)) +
+    stat('not known', shownTasks(isUnknown), shownBase,
+      tip('Neither a package nor a Dockerfile has been read for these, so they are reported as unknown rather than guessed. Never inferred from the name.'),
       null, 'slate') +
     stat('named domain', shownWhere(r => r.domain && r.domain !== 'Not recorded'), shownBase,
-      tip('The task name starts with a domain prefix such as gen- or law-.',
-        'Read the prefix off the name. Nothing was opened.',
-        'It gives a rough subject split for the tasks that follow the convention.',
-        'Not structural, and not comparable to connector above. It is a naming convention most tasks simply do not follow.'),
+      tip('A non-connector task whose name starts with a domain prefix such as gen-, law- or code-. Read off the name, so it is a naming convention, not structure; a connector task never carries one, whatever its name starts with.'),
       null, 'violet');
   animateCounts(byId('truthMakeup'));
 
