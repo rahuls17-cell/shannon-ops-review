@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T08:41:09+00:00",
+ "generatedAt": "2026-09-30T08:51:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12842,6 +12842,40 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-mockup-nobody-signed-off-on/9058adfd67c9c75f23a7ca69640117ea775b8eecdfd4be92e19b34d5751cf6b3.zip",
    "bytesRead": 50486,
+   "readOn": "2026-09-30"
+  },
+  "gen-g446-tour-booking-recognition-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g446-tour-booking-recognition-audit/f7b190bf9b8daf5621363d73cf5454aaf38154f3a631e53872b0b404b3de44ce.zip",
+   "bytesRead": 68419,
+   "readOn": "2026-09-30"
+  },
+  "summer-lab-orders": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/summer-lab-orders/dc0319a28415c3ad1bc60f28c376ec5425542b6dd1a8a620b80c310dac7ffe52.zip",
+   "bytesRead": 46188,
+   "readOn": "2026-09-30"
+  },
+  "the-guests-i-never-write-to": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guests-i-never-write-to/f087b0eb4a6de2f758ec79a5feec3b9daa8bcd25814bfc1783127f8ee229ed64.zip",
+   "bytesRead": 58253,
    "readOn": "2026-09-30"
   }
  }
