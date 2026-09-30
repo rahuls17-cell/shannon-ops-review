@@ -69,9 +69,24 @@ longer decides Company Bench anywhere on the dashboard.
 - **Client accepted** under a segment counts the delivery audit's accepted
   tasks in it (the same 31 decisions the Harbor 240 dashboard publishes as a
   count): Computer Bench 3 connector + 28 non-connector. (`2f7b741`)
-- **Paid out, Pending** and the top pending list take each person's share in
+- **Paid out, Pending** and the top pending list count each person's tasks in
   the segment instead of their whole balance, so Connector and Non-connector no
-  longer read the same: paid $6,150 + $4,050, pending 5 + 19 tasks. (`2f7b741`)
+  longer read the same. (`2f7b741`)
+- **Money is counted task by task at $300, never as a share of a person's
+  pay.** The first version split each person's balance by their share of
+  tasks, which produced impossible figures ($6,150, $4,050). Now: a ledger task
+  marked Paid is paid in its own segment; a Not itemised person (paid for some
+  tasks, no record of which) is placed only when all their tasks share one
+  segment; paid tasks beyond every task the ledger lists for a person - 3 tasks,
+  $900, for ghosh.m1, melat.m and monty.d2 - are tied to no task, so they count
+  under All only and the card says so. Computer Bench: paid $5,400 connector
+  (18 tasks) + $3,900 non-connector (13) + $900 unplaced = $10,200; pending
+  $1,500 (5) + $5,700 (19). Payouts' Settlement by bench and the Overview
+  balance chart use the same split, with the unplaced $900 under Unassigned.
+- Client accepted and paid are different populations: the payout ledger's 55
+  tasks include all 31 client-accepted tasks, but also 18 paid tasks the client
+  rejected, so a segment's client-accepted count and its pay are not expected
+  to match.
 
 ### Data and automation
 - The Drive reader follows the regrouped Deliveries folder (`ComputerBench/`,

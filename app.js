@@ -2894,9 +2894,9 @@ function renderHero() {
   const summary = {
     paidAmount: totals ? totals.paidAmount : sum(rows, 'paidAmount'),
     pendingAmount: totals ? totals.pendingAmount : sum(rows, 'pendingAmount'),
-    pendingTasks: totals ? totals.pendingTasks : Math.round(sum(rows, 'pendingTasks')),
-    paidTasks: totals ? totals.paidTasks : Math.round(sum(rows, 'paidTasks')),
-    acceptedTasks: totals ? totals.acceptedTasks : Math.round(sum(rows, 'acceptedTasks')),
+    pendingTasks: totals ? totals.pendingTasks : sum(rows, 'pendingTasks'),
+    paidTasks: totals ? totals.paidTasks : sum(rows, 'paidTasks'),
+    acceptedTasks: totals ? totals.acceptedTasks : sum(rows, 'acceptedTasks'),
     activeTrainers: (!segment && data.summary?.activeTrainers) || rows.filter(r => String(r.status).toLowerCase() === 'active').length,
     totalTrainers: (!segment && data.summary?.totalTrainers) || rows.length,
   };
@@ -2931,7 +2931,10 @@ function renderHero() {
   setText('metricV2AcceptedNote', v2 ? `of ${fmt(finalisationRows.length)} accepted folders` : '');
   setCount('metricPaid', paid, 'money');
   setCount('metricPendingTasks', summary.pendingTasks);
-  setText("metricPending", `${money(pending)} pending`);
+  // Paid tasks that no record ties to a task cannot be put in any segment.
+  const unplaced = segment ? unplacedPayout() : null;
+  setText("metricPending", `${money(pending)} pending` + (unplaced && unplaced.paidAmount
+    ? ` \u00b7 ${money(unplaced.paidAmount)} paid for ${fmt(unplaced.paidTasks)} task${unplaced.paidTasks === 1 ? '' : 's'} the ledger does not name, counted under All only` : ''));
   setCount('metricActive', summary.activeTrainers);
   setText("metricRoster", `${fmt(summary.totalTrainers)} total trainer records`);
   setText('commandSourceStatus', gcsPipeline
@@ -3146,12 +3149,15 @@ function renderExposureChart(rows) {
   // their team: someone with tasks on both benches counts on both.
   const benches = [['Company', 'company'], ['Computer', 'computer'], ['Unassigned', 'unassigned']]
     .map(([label, key]) => {
-      // Inside a segment the rows are already that segment's share, and the
-      // segment names its bench.
-      const weight = row => (segment ? (segment.startsWith(key) ? 1 : 0) : benchShares(row.email)[key]);
-      const part = field => rows.reduce((total, row) => total + (Number(row[field]) || 0) * weight(row), 0);
-      return {label, key, paid: part('paidAmount'), pending: part('pendingAmount'),
-              paidTasks: Math.round(part('paidTasks')), pendingTasks: Math.round(part('pendingTasks'))};
+      // Inside a segment the rows already hold only that segment's tasks, and
+      // the segment names its bench; otherwise each task goes to its own bench.
+      if (segment) {
+        const inBench = segment.startsWith(key);
+        return {label, key, paid: inBench ? sum(rows, 'paidAmount') : 0, pending: inBench ? sum(rows, 'pendingAmount') : 0,
+                paidTasks: inBench ? sum(rows, 'paidTasks') : 0, pendingTasks: inBench ? sum(rows, 'pendingTasks') : 0};
+      }
+      const m = benchMoney(rows, key);
+      return {label, key, paid: m.paid, pending: m.pending, paidTasks: m.paidTasks, pendingTasks: m.pendingTasks};
     })
     .filter(bench => bench.paid || bench.pending);
   const scale = Math.max(...benches.map(bench => bench.paid + bench.pending), 1);
@@ -3194,7 +3200,7 @@ function renderTopPendingCards() {
     return;
   }
   const rows = segmentPayoutRows()
-    .filter((row) => row.pendingTasks >= 0.5)
+    .filter((row) => row.pendingTasks > 0)
     .sort((a, b) => b.pendingAmount - a.pendingAmount || b.acceptedTasks - a.acceptedTasks)
     .slice(0, 8);
   const max = Math.max(...rows.map((row) => row.pendingAmount), 1);
@@ -3212,7 +3218,7 @@ function renderTopPendingCards() {
           <div class="rank${index < 3 ? ` medal medal-${index + 1}` : ''}">${index + 1}</div>
           <div class="person">
             <strong>${open ? esc(who) : hiddenName()}</strong>
-            <span>${fmt(Math.round(row.pendingTasks))} of ${fmt(Math.round(row.acceptedTasks))} tasks unpaid · ${esc(row.team || 'no team')}</span>
+            <span>${fmt(row.pendingTasks)} of ${fmt(row.acceptedTasks)} tasks unpaid · ${esc(row.team || 'no team')}</span>
           </div>
           <div class="bar-track"><div class="bar-fill" style="width:${safePct(row.pendingAmount, max)}"></div></div>
           ${open ? `<div class="amount" data-count="${row.pendingAmount}" data-kind="money" data-key="owed:${esc(row.email || row.name)}">${money(row.pendingAmount)}</div>` : `<div class="amount">${hiddenMoney()}</div>`}
@@ -3417,33 +3423,103 @@ function syncOverviewSlicer() {
 
 
 
-// The part of a person's accepted ledger tasks that sits in the chosen segment.
-// Money and task counts are kept per person, not per task, so a segment takes
-// that share of them: someone with 3 connector and 1 non-connector task has
-// three quarters of their pay under Connector and a quarter under Non-connector,
-// rather than all of it under both. Someone with no ledger tasks cannot be
-// placed, so they count under All only.
-function segmentShare(email) {
-  if (!segment) return 1;
-  const who = String(email || '').toLowerCase();
-  let all = 0, inside = 0;
-  payoutLedgerTasks.forEach(task => {
-    if (String(task.email || '').toLowerCase() !== who || !task.payable) return;
-    all += 1;
-    if (segmentMatches(taskSegment(task.bench, typeFlag(task.filterType)))) inside += 1;
-  });
-  return all ? inside / all : 0;
+// Where a person's paid and unpaid tasks sit, task by task, at a whole number
+// of tasks each - money is only ever a count of tasks at the rate, so it can
+// never come out as a fraction of one.
+//   - a ledger task marked Paid is paid, in its own segment;
+//   - a task marked Not paid is pending, in its own segment;
+//   - Not itemised means the person was paid for some of their tasks and no
+//     record says which. When all of those tasks sit in one segment, so do the
+//     paid and the pending ones. When they are spread, which were paid cannot
+//     be told, so they are placed nowhere.
+//   - a paid task beyond every task the ledger lists for them is placed
+//     nowhere either: nothing records what it was.
+// What is placed nowhere counts under All and in no segment.
+const payRate = () => Number(payoutLedger?.payPerTask) || 300;
+function payoutSplit(row) {
+  const who = String(row.email || '').toLowerCase();
+  const tasks = payoutLedgerTasks.filter(task => String(task.email || '').toLowerCase() === who && task.payable);
+  const leaves = new Map();
+  const at = task => {
+    const key = taskSegment(task.bench, typeFlag(task.filterType));
+    if (!leaves.has(key)) leaves.set(key, {paid: 0, pending: 0});
+    return leaves.get(key);
+  };
+  const paidTotal = Number(row.paidTasks) || 0;
+  const itemised = tasks.filter(task => task.paymentState === 'Paid');
+  itemised.forEach(task => { at(task).paid += 1; });
+  tasks.filter(task => task.paymentState === 'Not paid').forEach(task => { at(task).pending += 1; });
+  const unitemised = tasks.filter(task => task.paymentState === 'Not itemised');
+  const unitemisedPaid = Math.min(Math.max(paidTotal - itemised.length, 0), unitemised.length);
+  let unplacedPaid = Math.max(paidTotal - itemised.length - unitemisedPaid, 0);
+  let unplacedPending = 0;
+  if (unitemised.length) {
+    const keys = new Set(unitemised.map(task => taskSegment(task.bench, typeFlag(task.filterType))));
+    if (keys.size === 1) {
+      const leaf = at(unitemised[0]);
+      leaf.paid += unitemisedPaid;
+      leaf.pending += unitemised.length - unitemisedPaid;
+    } else {
+      unplacedPaid += unitemisedPaid;
+      unplacedPending += unitemised.length - unitemisedPaid;
+    }
+  }
+  return {leaves, unplacedPaid, unplacedPending};
 }
-// Payout rows for the Overview's money figures: each person's share in the
-// segment, never their whole balance.
+// The paid and pending tasks of one person inside the chosen segment, or of
+// one bench when a bench key is given instead.
+function splitIn(split, match) {
+  let paid = 0, pending = 0;
+  split.leaves.forEach((value, key) => { if (match(key)) { paid += value.paid; pending += value.pending; } });
+  return {paid, pending};
+}
+// Payout rows for the Overview's money figures: each person's tasks in the
+// segment at the rate, never their whole balance and never a share of it.
 function segmentPayoutRows() {
   if (!segment) return payoutRows();
+  const rate = payRate();
   return payoutRows(true).map(row => {
-    const share = segmentShare(row.email);
-    const part = field => (Number(row[field]) || 0) * share;
-    return {...row, segmentShare: share, acceptedTasks: part('acceptedTasks'), paidTasks: part('paidTasks'),
-      paidAmount: part('paidAmount'), pendingTasks: part('pendingTasks'), pendingAmount: part('pendingAmount')};
-  }).filter(row => row.segmentShare > 0);
+    const {paid, pending} = splitIn(payoutSplit(row), segmentMatches);
+    return {...row, acceptedTasks: paid + pending, paidTasks: paid, paidAmount: paid * rate,
+      pendingTasks: pending, pendingAmount: pending * rate};
+  }).filter(row => row.paidTasks || row.pendingTasks);
+}
+// Paid and pending that no task places in a segment, across everyone.
+function unplacedPayout() {
+  const rate = payRate();
+  return payoutRows(true).reduce((total, row) => {
+    const split = payoutSplit(row);
+    const placed = [...split.leaves].reduce((n, [key, v]) => n + (key === 'unknown' ? 0 : v.paid), 0);
+    const unknown = split.leaves.get('unknown') || {paid: 0, pending: 0};
+    total.paidTasks += split.unplacedPaid + unknown.paid;
+    total.paidAmount += Math.max((Number(row.paidAmount) || 0) - placed * rate, 0);
+    total.pendingTasks += split.unplacedPending + unknown.pending;
+    return total;
+  }, {paidTasks: 0, paidAmount: 0, pendingTasks: 0});
+}
+// Money per bench from the same task-by-task split. Whatever no task places
+// sits under Unassigned, so the benches still add up to the whole.
+function benchMoney(rows, key) {
+  const rate = payRate();
+  const out = {paid: 0, pending: 0, paidTasks: 0, pendingTasks: 0, people: 0};
+  rows.forEach(row => {
+    const split = payoutSplit(row);
+    let paid, pending, amount;
+    if (key === 'unassigned') {
+      const unknown = split.leaves.get('unknown') || {paid: 0, pending: 0};
+      paid = split.unplacedPaid + unknown.paid;
+      pending = split.unplacedPending + unknown.pending;
+      const placed = [...split.leaves].reduce((n, [k, v]) => n + (k === 'unknown' ? 0 : v.paid), 0);
+      amount = Math.max((Number(row.paidAmount) || 0) - placed * rate, 0);
+    } else {
+      ({paid, pending} = splitIn(split, leaf => leaf === key || leaf.startsWith(`${key}-`)));
+      amount = paid * rate;
+    }
+    out.paid += amount; out.pending += pending * rate;
+    out.paidTasks += paid; out.pendingTasks += pending;
+    if (paid || pending || amount) out.people += 1;
+  });
+  return out;
 }
 
 function payoutRows(everyone = false) {
@@ -3493,11 +3569,10 @@ function renderPayoutPanels(rows) {
   // Settlement by bench: how much of what each bench earned has been paid.
   // Split by the bench of each person's accepted tasks, not their team.
   const benches = [['Company', 'company'], ['Computer', 'computer'], ['Unassigned', 'unassigned']].map(([label, key]) => {
-    const part = field => rows.reduce((total, row) => total + (Number(row[field]) || 0) * benchShares(row.email)[key], 0);
-    const paid = part('paidAmount'), owed = part('pendingAmount');
-    return {label, key, paid, owed,
-            people: rows.filter(r => (r.paidAmount || r.pendingAmount) && benchShares(r.email)[key] > 0).length,
-            paidTasks: Math.round(part('paidTasks')), owedTasks: Math.round(part('pendingTasks')),
+    const m = benchMoney(rows, key);
+    const paid = m.paid, owed = m.pending;
+    return {label, key, paid, owed, people: m.people,
+            paidTasks: m.paidTasks, owedTasks: m.pendingTasks,
             settled: paid + owed ? Math.round((paid / (paid + owed)) * 100) : 0};
   }).filter(b => b.paid || b.owed);
   byId('payoutBenches').innerHTML = benches.length ? benches.map((b, index) => `
