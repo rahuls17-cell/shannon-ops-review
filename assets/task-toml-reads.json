@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-29T23:41:02+00:00",
+ "generatedAt": "2026-09-30T06:11:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12591,6 +12591,16 @@
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g541-dispersed-camping-permit-audit-QC-Fixes-c21525-v1-sna-klqt/74da55fde7a6891e0f60ba7a1e1ca2e9826900c15599284175db0e0e2bbdaa23.zip",
    "bytesRead": 106733,
    "readOn": "2026-09-29"
+  },
+  "the-calendar-blocks-that-only-look-like-meetings-20260923T124555Z-1-001": {
+   "connector": null,
+   "services": [],
+   "basis": "mcp_servers present but not readable",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-calendar-blocks-that-only-look-like-meetings-20260923T124555Z-1-001/e6f84ae8f54364ae1014d06b980711f37298bf0d192eedddce0869e5c2581f16.zip",
+   "bytesRead": 73529,
+   "readOn": "2026-09-30"
   }
  }
 }
