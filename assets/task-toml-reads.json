@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T16:21:09+00:00",
+ "generatedAt": "2026-09-30T16:31:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13152,6 +13152,16 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/household-member-archival-request-verify-eligibility-for-member-in-hou-2/706945d9bf30b594ab9b7582b226e44f5ec09e50fe866f4c2355a51872fd627d.zip",
    "bytesRead": 68091,
+   "readOn": "2026-09-30"
+  },
+  "bus-b46-b10-sales-vertical-backlog-quality-summary": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b46-b10-sales-vertical-backlog-quality-summary/d0d21b2599508432323713e75e4a20d4d545bcb30ee3bc5bab1c2e40488adddb.zip",
+   "bytesRead": 98661,
    "readOn": "2026-09-30"
   }
  }
