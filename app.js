@@ -194,13 +194,12 @@ const infoCopy = {
   segment: () => {
     const rows = truth ? truth.rows : [];
     const count = key => rows.filter(row => truthSegment(row) === key).length;
-    const both = rows.filter(row => truthSegment(row) === 'company' && truthConnector(row) === true).length;
     return 'One split for the whole dashboard, applied like the date range, and decided by the task, never by who made it - people work on both benches and the roster moves. ' +
-      'Company Bench: a task on the Company bench - where it was delivered when it has been (the CompanyBench batches and the CompanyBench folder inside a Computer Bench batch), otherwise the base image in its Dockerfile. ' +
-      'Connector and Non-connector: every other task, by its connector flag - from the pipeline, the delivery folders, the payout ledger or the audit. ' +
-      `Right now: Connector ${fmt(count('connector'))}, Non-connector ${fmt(count('non-connector'))}, Company Bench ${fmt(count('company'))} of ${fmt(rows.length)} pipeline tasks; ` +
-      `${fmt(count('unknown'))} carry no flag yet (the pipeline learns the type at delivery) and appear under All only. ` +
-      (both ? `${fmt(both)} Company Bench tasks are also connector tasks; they count under Company Bench. ` : '') +
+      'First the bench. Company Bench: where the task was delivered when it has been (the CompanyBench batches and the CompanyBench folder inside a Computer Bench batch), otherwise the base image in its Dockerfile; every other task is Computer Bench. ' +
+      'Then, within either bench, Connector or Non-connector by the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit. Choosing a bench shows both of its types. ' +
+      `Right now, of ${fmt(rows.length)} pipeline tasks: Computer Bench ${fmt(count('computer-connector'))} connector and ${fmt(count('computer-non-connector'))} non-connector; ` +
+      `Company Bench ${fmt(count('company-connector'))} connector and ${fmt(count('company-non-connector'))} non-connector; ` +
+      `${fmt(rows.length - SEGMENT_LEAVES.reduce((total, key) => total + count(key), 0))} carry no bench or type yet and appear under All, or under their bench alone. ` +
       'A person counts in every segment they have tasks in, so someone who works on both benches shows under both. The 240 audit counts and the daily plan are not split, and say so.';
   },
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
@@ -372,7 +371,7 @@ function renderSegmentStrip() {
   const rows = truth ? truth.rows : [];
   const people = data.trainers || [];
   const ledger = payoutLedgerTasks;
-  const keys = ['connector', 'non-connector', 'company'];
+  const keys = SEGMENT_LEAVES;
   const tiles = keys.map(key => {
     const tasks = rows.filter(row => truthSegment(row) === key);
     const v = {acc: tasks.filter(r => r.state === 'accepted').length, rej: tasks.filter(r => r.state === 'rejected').length};
@@ -383,7 +382,7 @@ function renderSegmentStrip() {
     return {key, label: SEGMENTS[key], tasks: tasks.length, accepted: v.acc + legacy, rejected: v.rej, other: tasks.length - v.acc - legacy - v.rej,
             people: folk.length, ledger: money.length, paid};
   });
-  const unknown = rows.filter(row => truthSegment(row) === 'unknown').length;
+  const unknown = rows.filter(row => !SEGMENT_LEAVES.includes(truthSegment(row))).length;
   const typed = rows.length - unknown;
   const lead = [...tiles].sort((a, b) => b.accepted - a.accepted)[0];
   host.innerHTML = `
@@ -403,10 +402,10 @@ function renderSegmentStrip() {
           <div><b data-count="${t.paid}" data-key="seg:${t.key}:paid">${fmt(t.paid)}</b><span>paid of ${fmt(t.ledger)}</span></div>
         </div>
       </button>`).join('')}
-      ${unknown ? `<div class="segtile is-unknown" style="--i:3;--c:var(--slate)" data-tip="The pipeline only learns a task's type once it reaches delivery; these ${fmt(unknown)} have not, so they count under All and nowhere else.">
-        <div class="segtile-head"><span class="segtile-name"><i></i>Type not yet known</span></div>
+      ${unknown ? `<div class="segtile is-unknown" style="--i:4;--c:var(--slate)" data-tip="These ${fmt(unknown)} carry no bench or no type yet - the pipeline learns a task's type once it reaches delivery - so they count under All, and under their bench when only that is known.">
+        <div class="segtile-head"><span class="segtile-name"><i></i>Bench or type not yet known</span></div>
         <div class="segtile-main"><b data-count="${unknown}" data-key="seg:unknown">${fmt(unknown)}</b><span>pipeline tasks<small>${Math.round((unknown / (rows.length || 1)) * 100)}% of all</small></span></div>
-        <p class="segtile-why">No connector flag until delivery. Shown under All only.</p>
+        <p class="segtile-why">No bench or no type yet. Shown under All, or under the bench alone.</p>
       </div>` : ''}
     </div>`;
   animateCounts(host);
@@ -708,8 +707,21 @@ const AUDIT_FLAG_CODES = {'contested owner': 'CO', 'owner still contested': 'OC'
 // Company Bench is a task on the Company bench; any other task is split by its
 // connector flag. A task with neither bench nor flag is "not yet known" and
 // shows under All only.
-const SEGMENTS = {connector: 'Connector', 'non-connector': 'Non-connector', company: 'Company Bench'};
-const SEGMENT_TONES = {connector: '--aqua', 'non-connector': '--blue', company: '--violet', unknown: '--slate'};
+// Two levels: the bench, then the type within it. Both benches hold both kinds,
+// so a bench key selects both of its types and a leaf key one of them.
+const SEGMENTS = {
+  computer: 'Computer Bench', 'computer-connector': 'Computer Bench \u00b7 Connector',
+  'computer-non-connector': 'Computer Bench \u00b7 Non-connector',
+  company: 'Company Bench', 'company-connector': 'Company Bench \u00b7 Connector',
+  'company-non-connector': 'Company Bench \u00b7 Non-connector',
+};
+const SEGMENT_LEAVES = ['computer-connector', 'computer-non-connector', 'company-connector', 'company-non-connector'];
+const SEGMENT_TONES = {computer: '--blue', 'computer-connector': '--aqua', 'computer-non-connector': '--blue',
+  company: '--violet', 'company-connector': '--violet', 'company-non-connector': '--magenta', unknown: '--slate'};
+// Links and saved choices from before the split named three flat segments;
+// outside Company Bench those were Computer Bench work.
+const LEGACY_SEGMENTS = {connector: 'computer-connector', 'non-connector': 'computer-non-connector'};
+const segmentMatches = key => !segment || key === segment || String(key).startsWith(`${segment}-`);
 let segment = '';
 // Which bench a task is on, strongest evidence first:
 //   1. where it was delivered - the Drive folder behind each Delivery row;
@@ -756,17 +768,23 @@ function truthBench(row) {
   }
   return row.benchSide || benchOfTask(row.name);
 }
-// A pipeline row with no connector flag still says what it is through its image.
+// A pipeline row with no connector flag still says what it is through its
+// image: the Company Bench images and the synthetic and real Computer Bench
+// ones are connector harnesses; a plain base image is a non-connector task.
 const truthConnector = row => (row.connector === true || row.connector === false ? row.connector
-  : /non-connector/.test(row.bench || '') ? false : /computer bench (synth|real)/.test(row.bench || '') ? true : null);
+  : /non-connector/.test(row.bench || '') ? false
+  : /company bench|computer bench (synth|real)/.test(row.bench || '') ? true : null);
+// A leaf key - bench and type - when both are known; the bench alone when only
+// it is; 'unknown' when neither is.
 function taskSegment(bench, connector) {
-  if (bench === 'company') return 'company';
-  if (connector === true) return 'connector';
-  if (connector === false) return 'non-connector';
-  return 'unknown';
+  const side = bench === 'company' ? 'company'
+    : bench === 'computer' || connector === true || connector === false ? 'computer' : null;
+  if (!side) return 'unknown';
+  const kind = connector === true ? 'connector' : connector === false ? 'non-connector' : null;
+  return kind ? `${side}-${kind}` : side;
 }
 const truthSegment = row => taskSegment(truthBench(row), truthConnector(row));
-const inTaskSegment = (bench, connector) => !segment || taskSegment(bench, connector) === segment;
+const inTaskSegment = (bench, connector) => segmentMatches(taskSegment(bench, connector));
 // Everything above is read from data that arrives at different times, so it
 // is rebuilt whenever the Delivery rows or the pipeline land.
 function resetTaskBenches() {
@@ -812,9 +830,9 @@ function personSegments(row) {
     (truth ? truth.rows : []).forEach(task => add(task.owner, truthSegment(task)));
   }
   const set = new Set(personSegmentCache.get(String(row.email || '').toLowerCase()) || []);
-  // The workbook's own counts still say whether someone did connector work.
-  if ((Number(row.sepConnectorAccepted) || 0) + (Number(row.projectConnectorAccepted) || 0)) set.add('connector');
-  if ((Number(row.sepNonConnectorAccepted) || 0) + (Number(row.projectNonConnectorAccepted) || 0)) set.add('non-connector');
+  // The workbook's own counts are Computer Bench project work.
+  if ((Number(row.sepConnectorAccepted) || 0) + (Number(row.projectConnectorAccepted) || 0)) set.add('computer-connector');
+  if ((Number(row.sepNonConnectorAccepted) || 0) + (Number(row.projectNonConnectorAccepted) || 0)) set.add('computer-non-connector');
   return set;
 }
 // How a person's accepted ledger tasks split across the benches, for money
@@ -833,9 +851,9 @@ const benchLabel = email => {
   const s = benchShares(email);
   return s.unassigned ? 'unassigned' : s.company && s.computer ? 'company and computer' : s.company ? 'company' : 'computer';
 };
-const personInSegment = row => !segment || personSegments(row).has(segment);
-const truthRows = () => (truth ? truth.rows.filter(row => !segment || truthSegment(row) === segment) : []);
-const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filter(row => !segment || truthSegment(row) === segment) : null);
+const personInSegment = row => !segment || [...personSegments(row)].some(segmentMatches);
+const truthRows = () => (truth ? truth.rows.filter(row => segmentMatches(truthSegment(row))) : []);
+const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filter(row => segmentMatches(truthSegment(row))) : null);
 // A search with no state chosen also reaches the accepted folders that have no
 // verdict inside the window; otherwise they are listed only under Accepted.
 const truthSearchRows = () => { const cohort = truthCohortRows(); return cohort ? truthRows().concat(cohort.filter(row => row.noVerdict)) : truthRows(); };
@@ -845,15 +863,12 @@ const shownTasks = rows => rows.length;
 // not by its trainer's roster team: people work on both benches and the roster
 // moves. A row with no bench recorded - the audited batches 1 to 4.1 - is a
 // Computer Bench task, split by its connector flag.
-function deliverySegment(row) {
-  if (row.bench === 'company') return 'company';
-  const flag = typeFlag(row.type);
-  return flag === true ? 'connector' : flag === false ? 'non-connector' : 'unknown';
-}
-const auditRows = () => (audit ? audit.rows.filter(row => !segment || deliverySegment(row) === segment) : []);
+const deliverySegment = row => taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type));
+const auditRows = () => (audit ? audit.rows.filter(row => segmentMatches(deliverySegment(row))) : []);
 const ledgerRows = () => payoutLedgerTasks.filter(task => inTaskSegment(task.bench, typeFlag(task.filterType)));
 
 function setSegment(value) {
+  value = LEGACY_SEGMENTS[value] || value;
   segment = SEGMENTS[value] ? value : '';
   try { localStorage.setItem('segment', segment); } catch { /* storage may be unavailable */ }
   const url = new URL(location.href);
@@ -865,6 +880,8 @@ function syncSegmentSwitch() {
   document.querySelectorAll('#segmentSwitch [data-seg]').forEach(button => {
     const on = (button.dataset.seg || '') === segment;
     button.classList.toggle('is-on', on);
+    // A bench head stays lit while one of its types is chosen.
+    button.classList.toggle('is-within', !on && Boolean(button.dataset.seg) && segment.startsWith(`${button.dataset.seg}-`));
     button.setAttribute('aria-pressed', String(on));
   });
   document.body.dataset.segment = segment;
@@ -875,6 +892,7 @@ function syncSegmentSwitch() {
 function restoreSegment() {
   let saved = '';
   try { saved = new URL(location.href).searchParams.get('seg') || localStorage.getItem('segment') || ''; } catch { saved = ''; }
+  saved = LEGACY_SEGMENTS[saved] || saved;
   segment = SEGMENTS[saved] ? saved : '';
 }
 
@@ -3714,7 +3732,7 @@ function planWindow() {
   // The workbook plans per bench, so a segment shows its bench: Company
   // Bench for company, Computer Bench for connector and non-connector alike.
   const benches = (data.plan || []).filter(bench => !segment ||
-    (segment === 'company' ? /company/i.test(bench.bench) : !/company/i.test(bench.bench)));
+    (segment.startsWith('company') ? /company/i.test(bench.bench) : !/company/i.test(bench.bench)));
   const dates = benches[0]?.dates || [];
   const within = dates.map(day => inRange(day));
   const shown = dates.filter((day, index) => within[index]);
@@ -3752,8 +3770,8 @@ function renderPlan() {
     animateCounts(summary);
   }
 
-  setTextIfPresent('planNote', segment && segment !== 'company'
-    ? 'The plan is kept per bench; Computer Bench covers connector and non-connector work together.'
+  setTextIfPresent('planNote', segment && segment.includes('-')
+    ? 'The plan is kept per bench, not per type, so this shows the whole bench.'
     : '');
   byId('planCharts').innerHTML = benches.map((bench, benchIndex) => {
     const total = totals.find(row => row.bench === bench.bench);

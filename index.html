@@ -57,9 +57,16 @@
             <span class="segctl-label">Segment<button class="why" data-info="segment" aria-label="How the segments are defined">?</button></span>
             <div class="segmented" id="segmentSwitch">
               <button type="button" class="segbtn is-on" data-seg="">All</button>
-              <button type="button" class="segbtn" data-seg="connector">Connector</button>
-              <button type="button" class="segbtn" data-seg="non-connector">Non-connector</button>
-              <button type="button" class="segbtn" data-seg="company">Company Bench</button>
+              <span class="seggroup" data-bench="computer">
+                <button type="button" class="segbtn seghead" data-seg="computer">Computer Bench</button>
+                <button type="button" class="segbtn segsub" data-seg="computer-connector">Connector</button>
+                <button type="button" class="segbtn segsub" data-seg="computer-non-connector">Non-connector</button>
+              </span>
+              <span class="seggroup" data-bench="company">
+                <button type="button" class="segbtn seghead" data-seg="company">Company Bench</button>
+                <button type="button" class="segbtn segsub" data-seg="company-connector">Connector</button>
+                <button type="button" class="segbtn segsub" data-seg="company-non-connector">Non-connector</button>
+              </span>
             </div>
           </div>
           <div class="topbar-actions">

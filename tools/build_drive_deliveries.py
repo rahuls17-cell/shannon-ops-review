@@ -376,7 +376,7 @@ def normalise(manifest, label, files=None, require_present=False):
             'category': f'Non-Connector · {domain}' if klass == 'Non-Connector' and domain else klass,
             'class': klass,
             'domain': domain,
-            'type': 'Non-connector' if klass == 'Non-Connector' else 'Connector',
+            'type': type_of(klass, location),
             'bench': bench_of(label, klass, task, location),
             'driveFolder': location,
             'difficulty': band.capitalize() if band else None,
@@ -408,6 +408,17 @@ def normalise(manifest, label, files=None, require_present=False):
 
 
 COMPANY_FOLDER = re.compile(r'^company\s*bench', re.I)
+NON_CONNECTOR_FOLDER = re.compile(r'^non[\s_-]*connector', re.I)
+
+
+def type_of(klass, location=None):
+    """Connector or Non-connector, by the Drive folder when the zip was found.
+
+    Both benches can hold both kinds, so the type is read on its own, from the
+    same place as the bench: a Non-Connector folder anywhere in the batch."""
+    if location is not None:
+        return 'Non-connector' if any(NON_CONNECTOR_FOLDER.match(part) for part in location.split('/')) else 'Connector'
+    return 'Non-connector' if klass == 'Non-Connector' else 'Connector'
 
 
 def bench_of(label, klass, task, location=None):
