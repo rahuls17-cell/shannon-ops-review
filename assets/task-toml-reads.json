@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-09-30T07:51:21+00:00",
+ "generatedAt": "2026-09-30T08:01:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12750,6 +12750,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-issues-nobody-owns/19e29f285b0fef06e11cd5c0dad8fb81bf6cd67bac57bd57de2b3d60cd899520.zip",
    "bytesRead": 46288,
+   "readOn": "2026-09-30"
+  },
+  "which-team-talks-about-compliance": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-team-talks-about-compliance/e378b533574e635b0fbc7ff46b8964ab050500089afd2d6c78389a827d44d0d5.zip",
+   "bytesRead": 49646,
    "readOn": "2026-09-30"
   }
  }
