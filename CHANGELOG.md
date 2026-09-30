@@ -187,6 +187,14 @@ longer decides Company Bench anywhere on the dashboard.
 - `tools/build_drive_owners.py` writes `assets/drive-owners.json`; the refresh
   workflows rebuild it with the bucket scan and keep it across their reset onto
   `origin/main`. (`e79b875`)
+- **Staging deploys with the default `data_ref=main` now show the current Drive
+  batches.** `main` holds a 29 Sep `drive-deliveries.json` (no Batch 10.1, no
+  5.1 dedup copy) and no `drive-owners.json`, because nothing on `main` rebuilds
+  them yet, and the deploy replaced every asset with `main`'s copy. The deploy
+  workflow (shannon-ops-review-staging `60b6d69`) now keeps files `main` lacks
+  and, for those two Drive inputs, uses whichever copy has the newer
+  `generatedAt`; everything the VM builds still comes from `main`. The banner
+  names the real data ref instead of always printing `main@`.
 - New checks: `tools/test_drive_owners.py`; `tools/test_drive_deliveries.py`
   covers folder groups, dedup copies, Drive folder benches and types.
 
