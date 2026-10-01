@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T17:51:05+00:00",
+ "generatedAt": "2026-10-01T18:01:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14600,6 +14600,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/eighteen-breaches-stamped-at-the-closing-bell/0113f8e2e4730bf366513153ace196fe35e28e1acc4dfb0d3005b870fa60793e.zip",
    "bytesRead": 60721,
+   "readOn": "2026-10-01"
+  },
+  "ASTR_101585": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101585/76256bc14dd49cce6b9c37e271982f1bf7d9c81be39c542e098a28ecccc92e86.zip",
+   "bytesRead": 41700,
+   "readOn": "2026-10-01"
+  },
+  "what-was-said-next": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-was-said-next/a98270ecfea84a5dd4618a6409867b414e27e8425a6b9e9b8a852b9d1d69d61a.zip",
+   "bytesRead": 49678,
    "readOn": "2026-10-01"
   }
  }
