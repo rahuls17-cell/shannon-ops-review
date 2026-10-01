@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T14:51:08+00:00",
+ "generatedAt": "2026-10-01T15:01:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14248,6 +14248,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/winter-tests-left-without-a-result/81a7a35cb6a32f061e0fd8639e1c583411073f47d1c719f55088b3ff35db0ddf.zip",
    "bytesRead": 52095,
+   "readOn": "2026-10-01"
+  },
+  "a-green-review-is-not-a-green-light": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness:company-synthetic-20260907-0412-pt-pr1331@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/a-green-review-is-not-a-green-light/dcbfc2fc5995857807e71d42e79f4cf41fa0ecdb9844924fb9693fd0f0a06b66.zip",
+   "bytesRead": 49552,
    "readOn": "2026-10-01"
   }
  }
