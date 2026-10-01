@@ -932,8 +932,8 @@ function stampSides() {
 // Zeta image is Company Bench, a synthetic or real one is Computer Bench
 // connector work. The Drive folder a package was filed in decides only when no
 // image was read - 22 Batch 5.1 packages sit in its CompanyBench folder on a
-// synthetic or real image, and 26 sit in its Real Connector and Synthetic
-// folders on the Zeta image. A moved Delivery row keeps the folder's answer as
+// synthetic or real image, 27 sit in its Real Connector and Synthetic folders on
+// the Zeta image, and 3 of the audited Batch 2 tasks run on the Zeta image. A moved Delivery row keeps the folder's answer as
 // benchByFolder and takes the category of its bench.
 const IMAGE_BENCH = {'company bench aster': 'company', 'company bench zeta': 'company',
   'computer bench synth': 'computer', 'computer bench real': 'computer'};
@@ -959,13 +959,17 @@ function applyImageBench() {
     });
   });
   audit.rows.forEach(row => {
-    if (!row.fromManifest) return;
-    if (row.benchByFolder === undefined) { row.benchByFolder = row.bench; row.categoryByFolder = row.category; }
+    // The audited Batches 1 to 4.1 carry no bench of their own: they were a
+    // Computer Bench audit, so that is their folder's answer.
+    if (row.benchByFolder === undefined) {
+      row.benchByFolder = row.fromManifest ? row.bench : (row.bench || 'computer');
+      row.categoryByFolder = row.category;
+    }
     let side = map.get(benchKey(row.task)) || map.get(benchKey(row.packageName)) || null;
     if (side === 'computer' && harnessOfGyms(row.connectors)) side = null;
     row.bench = side || row.benchByFolder;
     row.category = row.bench === row.benchByFolder ? row.categoryByFolder
-      : row.bench === 'company' ? 'CompanyBench' : window.mergedCategory(row.class);
+      : row.bench === 'company' ? 'CompanyBench' : window.mergedCategory(row.class || row.categoryByFolder);
     row.benchFromImage = row.bench !== row.benchByFolder;
   });
 }
@@ -1078,9 +1082,19 @@ const ledgerRows = () => payoutLedgerTasks.filter(task => segmentMatches(ledgerS
 // cards built from them and is stated as not applied elsewhere.
 let harness = '';
 const HARNESS_LABELS = {'company bench aster': 'aster', 'company bench zeta': 'zeta', 'computer bench real': 'real',
-  'computer bench synth': 'synthetic', 'computer bench non-connector': 'non-connector image', none: 'not read yet'};
+  'computer bench synth': 'synthetic', 'computer bench non-connector': 'plain base image', none: 'not read yet'};
 const harnessLabel = value => HARNESS_LABELS[value] || value;
-const harnessMatches = row => !harness || (harness === 'none' ? !row.bench : row.bench === harness);
+// Inside Company Bench a row is keyed by the harness it was put in - its image,
+// or its manifest or Zeta SQL gym when the image names none - so the menu never
+// lists a Computer Bench image under Aster or Zeta. Elsewhere, by its image.
+const harnessKey = row => {
+  if (String(row.__seg || truthSegment(row)).startsWith('company')) {
+    const decided = truthHarness(row);
+    if (decided) return `company bench ${decided}`;
+  }
+  return row.bench || 'none';
+};
+const harnessMatches = row => !harness || harnessKey(row) === harness;
 function setSegment(value, nextHarness = harness, nextConn = connCount) {
   value = LEGACY_SEGMENTS[value] || value;
   segment = SEGMENTS[value] ? value : '';
@@ -1110,7 +1124,7 @@ function renderHarnessMenus() {
     const seg = button.dataset.seg || '';
     const within = rows.filter(row => !seg || row.__seg === seg || String(row.__seg || '').startsWith(`${seg}-`));
     const tally = {};
-    within.forEach(row => { const key = row.bench || 'none'; if (key !== 'none' || !seg) tally[key] = (tally[key] || 0) + 1; });
+    within.forEach(row => { const key = harnessKey(row); if (key !== 'none' || !seg) tally[key] = (tally[key] || 0) + 1; });
     const keys = Object.keys(tally).sort((a, b) => (a === 'none') - (b === 'none') || tally[b] - tally[a]);
     harnessOptions[seg] = keys.map(key => [key, tally[key]]);
     let tab = button.parentElement;

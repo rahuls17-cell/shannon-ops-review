@@ -101,6 +101,19 @@ longer decides Company Bench anywhere on the dashboard.
   tasks-a-day and change showed the segment chosen before; on first load it was
   blank. It is now rebuilt first. An empty selection reads 0 tasks decided, not
   1.
+- **Harness dropdown on the segment tabs** (Varun's): it listed the raw image
+  reading, so Company Bench, Zeta showed "synthetic 5" (the
+  obi-benchmark@8219115c tasks that mount the Zeta SQL gym). Inside Company Bench
+  a task is now listed under the harness it was put in, so Company Bench shows
+  only Aster and Zeta and Computer Bench only synthetic, real and plain base
+  image; choosing any entry gives exactly its count. "Non-connector image" is
+  renamed "plain base image": the 12 under Connector are connector tasks
+  (slack-gym) built on a plain python image. The "Zeta 56" seen under Connector
+  came from the deploy before the image-first rule, when a Zeta-image task
+  took the bench of the Computer Bench batch it was delivered in; it is 0 now.
+- The image rule reaches the audited Batches 1 to 4.1 too: 3 Batch 2 tasks run
+  on the Zeta image and move to Company Bench Zeta on the Delivery tab, as the
+  Pipeline tab already had them.
 - The Drive reader records `harness` on Company Bench rows.
 
 ### Delivery tab
