@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T11:41:06+00:00",
+ "generatedAt": "2026-10-01T11:51:19+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13832,6 +13832,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/seven-silent-approvals-one-of-them-huge/2da9edeb14c7596b33eb6709fb6a820597d2670a76ae98a592d612a61e406832.zip",
    "bytesRead": 52536,
+   "readOn": "2026-10-01"
+  },
+  "who-wrote-while-i-was-heads-down": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-wrote-while-i-was-heads-down/c3f50b4c55a9203d48bcc911585212a7b3940c47cbae4e83343989dba7264781.zip",
+   "bytesRead": 49758,
    "readOn": "2026-10-01"
   }
  }
