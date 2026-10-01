@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T16:31:07+00:00",
+ "generatedAt": "2026-10-01T16:41:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14414,6 +14414,40 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-to-ask-in-the-team-channels/fc156e59ffc6dd6f60463fa42f89fe8111813f25e4b4de27f7034cf7c118ac5f.zip",
    "bytesRead": 46694,
+   "readOn": "2026-10-01"
+  },
+  "gen-g706-mes-rollout-readiness-audit-v22.5": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g706-mes-rollout-readiness-audit-v22.5/c38dfb32ed67c125a7994d2507dca8242fd305b714e06f86f8281c5ecf0a0dd5.zip",
+   "bytesRead": 103518,
+   "readOn": "2026-10-01"
+  },
+  "rebuild-my-time-card-from-slack": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/rebuild-my-time-card-from-slack/f68aa533a74b733f7b02c22bc668af3b54e337c8939759907fd924fd8a477da7.zip",
+   "bytesRead": 48812,
+   "readOn": "2026-10-01"
+  },
+  "vendor-pitches-i-left-hanging": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-pitches-i-left-hanging/d4c752cfaff3552999bdb394204b299249d6e80f9a7cd81217e37185ec22e257.zip",
+   "bytesRead": 48734,
    "readOn": "2026-10-01"
   }
  }
