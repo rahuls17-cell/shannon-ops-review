@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T20:21:06+00:00",
+ "generatedAt": "2026-10-01T20:31:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14934,6 +14934,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-notes-i-never-sent/49fad19cf70e2e5ae3ef2a1235f022c035624670088dac86b30698b067bf064b.zip",
    "bytesRead": 44524,
+   "readOn": "2026-10-01"
+  },
+  "which-cpt-codes-the-boards-still-miss": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-cpt-codes-the-boards-still-miss/fe0318642b31294739b816df8f07bd0ee7cb6c6317469dcec9e0890fa6a75d5b.zip",
+   "bytesRead": 51985,
    "readOn": "2026-10-01"
   }
  }
