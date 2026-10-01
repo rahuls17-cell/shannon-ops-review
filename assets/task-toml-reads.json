@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T18:51:08+00:00",
+ "generatedAt": "2026-10-01T19:01:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14814,6 +14814,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-documents-still-chasing-me/ecf996aaf918c839c021bb92e054dcbe416fe07daad5da0ecffb370ab44c2454.zip",
    "bytesRead": 54206,
+   "readOn": "2026-10-01"
+  },
+  "drive-membership-grant-audit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/drive-membership-grant-audit/ab5f273e3392b0c0cf63985956ecf66b7fe1bc794e3bed5e00c033a59ff39447.zip",
+   "bytesRead": 46578,
+   "readOn": "2026-10-01"
+  },
+  "who-still-owes-a-reply": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-still-owes-a-reply/3b6be6472ec747152d708f8f350a3ab36ddfc70211edff3fc58c44faa78e1090.zip",
+   "bytesRead": 52341,
    "readOn": "2026-10-01"
   }
  }
