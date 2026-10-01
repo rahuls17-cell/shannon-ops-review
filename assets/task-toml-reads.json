@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T14:31:04+00:00",
+ "generatedAt": "2026-10-01T14:41:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14190,6 +14190,16 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-views-these-boards-cannot-drive/88bd48ce8f781a6f2051b8b5ea72638e2561770139fa5681b716a9e12ee50496.zip",
    "bytesRead": 49617,
+   "readOn": "2026-10-01"
+  },
+  "gen-g658-treasury-wire-transfer-authorization-audit-hard-v24": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g658-treasury-wire-transfer-authorization-audit-hard-v24/c237d8b363d52369b26e69ac39fde2e1a8e2fa1307780518d3c28f622ba825ac.zip",
+   "bytesRead": 76501,
    "readOn": "2026-10-01"
   }
  }
