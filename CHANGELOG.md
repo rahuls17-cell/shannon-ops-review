@@ -93,6 +93,16 @@ longer decides Company Bench anywhere on the dashboard.
   A choice already made stays listed, at 0 when the new segment holds none, so
   the filter never changes silently. The Domain dropdown shows its choices
   without counts.
+- **Pipeline Domain dropdown names connector tasks by their kind**, not "Not
+  recorded". A domain is the prefix on a non-connector task's name (gen-,
+  code-, health- ...), which connector tasks do not carry, so every connector
+  task read Not recorded. Now: Computer Bench connector tasks are Synthetic,
+  Real Connector or Connector (plain base image), by their image; Company Bench
+  tasks are Aster or Zeta with Single connector or Multi-connector - the
+  Delivery tab's names. Non-connector tasks keep their domains. Company Bench
+  tasks whose package was never scanned read "connectors not read" (Zeta
+  1,941, Aster 711 pipeline tasks today). Only this dropdown and its filter
+  change; the named-domain card and Carried over's Domain still read the name.
 - **Fix: the Pipeline's In scope trend lagged one segment behind.** The
   day-by-day model it reads was rebuilt after the Pipeline was drawn, so its
   tasks-a-day and change showed the segment chosen before; on first load it was

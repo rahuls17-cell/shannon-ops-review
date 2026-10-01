@@ -918,7 +918,29 @@ const SIDE_OF = {'computer-connector': 'connector', 'computer-non-connector': 'n
   'company-aster': 'company', 'company-zeta': 'company'};
 function stampSides() {
   if (!truth) return;
-  [truth.rows, truth.cohortRows].forEach(list => (list || []).forEach(row => { row.side = SIDE_OF[leafOf(truthSegment(row))] || 'unknown'; }));
+  [truth.rows, truth.cohortRows].forEach(list => (list || []).forEach(row => {
+    const leaf = leafOf(truthSegment(row));
+    row.side = SIDE_OF[leaf] || 'unknown';
+    row.domainKind = domainKindOf(row, leaf);
+  }));
+}
+// What the Pipeline's Domain dropdown filters on. A non-connector task keeps
+// its name-prefix domain (gen-, code-, health- ...). A connector task has no
+// such prefix, so it is named by its kind instead, the same names the Delivery
+// tab's categories use: Synthetic, Real Connector or Connector on the Computer
+// bench, by its image; on the Company bench its harness and how many
+// connectors it declares - Aster or Zeta, single connector or multi-connector.
+// row.domain itself is left as the name says, for the named-domain card.
+const KIND_OF_IMAGE = {'computer bench synth': 'Synthetic', 'computer bench real': 'Real Connector'};
+function domainKindOf(row, leaf) {
+  if (String(leaf).startsWith('company')) {
+    const harness = COMPANY_HARNESS[truthHarness(row)] || 'Company Bench';
+    const count = connectorCountOf(row.connectorServices)
+      || countOfTask(row.name, row.deliveredTask, row.packageTask, row.cohortFolder);
+    return `${harness} · ${COMPANY_COUNT[count] || 'connectors not read'}`;
+  }
+  if (leaf === 'computer-connector') return KIND_OF_IMAGE[row.bench] || 'Connector';
+  return row.domain || 'Not recorded';
 }
 // The Dockerfile image decides the bench whenever it names one: an Aster or
 // Zeta image is Company Bench, a synthetic or real one is Computer Bench
@@ -1726,7 +1748,7 @@ function truthFilters() {
     glm: byId('tGlm') ? byId('tGlm').value : '',
     bench: '',
     carriedOver: byId('tCarried').value, confidence: byId('tConfidence').value,
-    domain: byId('tDomain').value, owner: byId('tOwner').value,
+    domainKind: byId('tDomain').value, owner: byId('tOwner').value,
     duplicate: byId('tDuplicate').value,
     search: byId('tSearch').value,
     start: dateRange.start, end: dateRange.end,
@@ -1800,12 +1822,13 @@ function fillBench() {
 // Bench view listed General and Engineering domains it does not hold. Refilled
 // whenever the segment changes; a choice already made is kept.
 function vocabularyOf(rows) {
-  const tally = {finalState: {}, gateEra: {}, findingFamilies: {}, domain: {}, owner: {}};
+  const tally = {finalState: {}, gateEra: {}, findingFamilies: {}, domain: {}, domainKind: {}, owner: {}};
   const add = (key, value) => { if (value) tally[key][value] = (tally[key][value] || 0) + 1; };
   rows.forEach(row => {
     add('finalState', row.state);
     add('gateEra', row.gateEra);
     add('domain', row.domain);
+    add('domainKind', row.domainKind);
     add('owner', row.owner);
     new Set(row.findingsAllRuns || row.findings || []).forEach(family => add('findingFamilies', family));
   });
@@ -1823,7 +1846,7 @@ function populateTruthFilters() {
   fillSelect('tGate', v.gateEra, 'Any gate', undefined, true);
   fillSelect('tFinding', v.findingFamilies, 'Any finding', undefined, true);
   // Domain lists its choices without counts.
-  fillSelect('tDomain', v.domain, 'Any domain', undefined, true, false);
+  fillSelect('tDomain', v.domainKind, 'Any domain', undefined, true, false);
   fillSelect('tOwner', v.owner, 'Any trainer', undefined, true);
   fillBench();
   // Carried over lists the carried tasks, so its choices count those.

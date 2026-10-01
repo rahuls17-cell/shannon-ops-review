@@ -502,6 +502,9 @@
       return (!f.state || f.state === row.state) &&
         (!f.gateEra || f.gateEra === row.gateEra) &&
         (!f.domain || f.domain === row.domain) &&
+        // The Pipeline's Domain dropdown: the name-prefix domain, or a
+        // connector task's kind (app.js domainKindOf).
+        (!f.domainKind || f.domainKind === (row.domainKind || row.domain)) &&
         (!f.owner || f.owner === row.owner) &&
         (!f.confidence || f.confidence === row.confidence) &&
         (!f.duplicate || (f.duplicate === 'yes' ? row.possibleDuplicate
