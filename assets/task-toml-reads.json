@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T11:31:07+00:00",
+ "generatedAt": "2026-10-01T11:41:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13820,6 +13820,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-link-two-meetings-share/79cad4f310980f9212fb69637eb3715eea6ed032ce8649674d756f3e6e3423bb.zip",
    "bytesRead": 54432,
+   "readOn": "2026-10-01"
+  },
+  "seven-silent-approvals-one-of-them-huge": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/seven-silent-approvals-one-of-them-huge/2da9edeb14c7596b33eb6709fb6a820597d2670a76ae98a592d612a61e406832.zip",
+   "bytesRead": 52536,
    "readOn": "2026-10-01"
   }
  }
