@@ -103,6 +103,13 @@ longer decides Company Bench anywhere on the dashboard.
   tasks whose package was never scanned read "connectors not read" (Zeta
   1,941, Aster 711 pipeline tasks today). Only this dropdown and its filter
   change; the named-domain card and Carried over's Domain still read the name.
+- **Pipeline domains are Engineering, Finance, Health, Legal and Other.** gen-
+  and bus- tasks were labelled General and Business; both are Other, as on the
+  Delivery tab. tools/build_tags.py names them Other from the next pipeline
+  build, and the page folds the current data the same way, so the Domain
+  dropdown, the named-domain card and Carried over agree: Other 1,659,
+  Engineering 812, Health 330, Legal 244, Finance 239 under Non-connector.
+  Non-connector tasks whose name carries no prefix stay Not recorded.
 - **Fix: the Pipeline's In scope trend lagged one segment behind.** The
   day-by-day model it reads was rebuilt after the Pipeline was drawn, so its
   tasks-a-day and change showed the segment chosen before; on first load it was

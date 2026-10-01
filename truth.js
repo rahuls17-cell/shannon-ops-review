@@ -119,11 +119,12 @@
           ...benchAt(row.id, row.name),
         }))
         .map(onComputerIfNotConnector)
+        .map(oneDomain)
         .map(noDomainOnConnector)
       : payload.tasks;
 
     const cohort = cohortRows(rows, cohortIndex, benchAt, dupOf);
-    if (cohort) cohort.forEach((row, index) => { cohort[index] = noDomainOnConnector(onComputerIfNotConnector(row)); });
+    if (cohort) cohort.forEach((row, index) => { cohort[index] = noDomainOnConnector(oneDomain(onComputerIfNotConnector(row))); });
     carryDuplicateFolders(rows, cohort);
 
     return {
@@ -324,6 +325,15 @@
   // code-, health- - and says nothing about a connector task, whose name is
   // free text: code-review-assistant-provenance-attestation is a GitHub
   // connector task, not Engineering. The name's reading is kept apart.
+  // Five domains: Engineering, Finance, Health, Legal and Other. A pipeline
+  // built before tools/build_tags.py folded them still says General or
+  // Business for gen- and bus- tasks; both are Other.
+  const DOMAIN_MERGE = {General: 'Other', Business: 'Other'};
+  function oneDomain(row) {
+    const merged = DOMAIN_MERGE[row.domain];
+    return merged ? {...row, domain: merged} : row;
+  }
+
   function noDomainOnConnector(row) {
     if (connectorType(row) !== true || !row.domain || row.domain === 'Not recorded') return row;
     return {...row, domain: 'Not recorded', domainFromName: row.domain};

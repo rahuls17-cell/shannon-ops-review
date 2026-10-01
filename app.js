@@ -698,7 +698,7 @@ function renderBreakdown(id, counts, total) {
 // One colour per domain, so the same domain reads the same on every strip.
 const DOMAIN_TONES = {
   General: '--violet', Engineering: '--blue', Health: '--magenta',
-  Legal: '--orange', Finance: '--yellow', Business: '--aqua',
+  Legal: '--orange', Finance: '--yellow', Business: '--aqua', Other: '--violet',
 };
 
 const AUDIT_TONES = {

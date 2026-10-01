@@ -28,8 +28,10 @@ from pathlib import Path
 
 HASH_SUFFIX = re.compile(r':[0-9a-f]{8,}$')
 NUMBER_SUFFIX = re.compile(r'-(\d+)$')
+# Five domains: Engineering, Finance, Health, Legal and Other. gen- and bus-
+# tasks are Other - there is no General or Business domain.
 DOMAINS = {'code': 'Engineering', 'fin': 'Finance', 'health': 'Health',
-           'law': 'Legal', 'gen': 'General', 'bus': 'Business'}
+           'law': 'Legal', 'gen': 'Other', 'bus': 'Other'}
 
 
 def name_key(value):
