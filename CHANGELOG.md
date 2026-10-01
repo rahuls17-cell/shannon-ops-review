@@ -114,6 +114,15 @@ longer decides Company Bench anywhere on the dashboard.
 - The image rule reaches the audited Batches 1 to 4.1 too: 3 Batch 2 tasks run
   on the Zeta image and move to Company Bench Zeta on the Delivery tab, as the
   Pipeline tab already had them.
+- **Delivery tab, Category mix and Category x GLM: Company Bench splits by
+  connector count.** A Company Bench package has no category of its own - its
+  manifest says "unnamed" or "connector" - so both cards showed one bar,
+  CompanyBench. It is now Company Bench - Single connector or Company Bench -
+  Multi-connector (Connectors not read when neither the manifest nor the
+  package lists them), the same count as the Single / Multi switch; Aster and
+  Zeta stay in the segment switch. Today: Multi-connector 1,463 (all Zeta),
+  Single connector 233 (224 Aster, 9 Zeta). The Category filter and the CSV
+  carry the same names.
 - The Drive reader records `harness` on Company Bench rows.
 
 ### Delivery tab

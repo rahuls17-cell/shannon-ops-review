@@ -703,7 +703,8 @@ const DOMAIN_TONES = {
 
 const AUDIT_TONES = {
   category: {Code: '--blue', 'Other/unclassified': '--slate', General: '--violet', Connector: '--aqua', Health: '--magenta', Law: '--orange', Finance: '--yellow',
-             'Real Connector': '--green', Synthetic: '--accent', 'Company Bench Zeta': '--violet', CompanyBench: '--violet', Legal: '--orange', Engineering: '--blue', Other: '--slate'},
+             'Real Connector': '--green', Synthetic: '--accent', 'Company Bench Zeta': '--violet', CompanyBench: '--violet', Legal: '--orange', Engineering: '--blue', Other: '--slate',
+             'Single connector': '--violet', 'Multi-connector': '--magenta', 'Connectors not read': '--slate'},
   acceptance: {Accepted: '--aqua', Rejected: '--red', Pending: '--yellow'},
   glm: {'0/4': '--slate', '1/4': '--blue', '2/4': '--violet', '3/4': '--accent', '4/4': '--aqua'},
   difficulty: {Easier: '--aqua', Harder: '--orange'},
@@ -959,18 +960,35 @@ function applyImageBench() {
     });
   });
   audit.rows.forEach(row => {
-    // The audited Batches 1 to 4.1 carry no bench of their own: they were a
-    // Computer Bench audit, so that is their folder's answer.
-    if (row.benchByFolder === undefined) {
-      row.benchByFolder = row.fromManifest ? row.bench : (row.bench || 'computer');
-      row.categoryByFolder = row.category;
-    }
+    keepFolderAnswer(row);
     let side = map.get(benchKey(row.task)) || map.get(benchKey(row.packageName)) || null;
     if (side === 'computer' && harnessOfGyms(row.connectors)) side = null;
     row.bench = side || row.benchByFolder;
     row.category = row.bench === row.benchByFolder ? row.categoryByFolder
       : row.bench === 'company' ? 'CompanyBench' : window.mergedCategory(row.class || row.categoryByFolder);
     row.benchFromImage = row.bench !== row.benchByFolder;
+  });
+}
+// What the Drive folder and the manifest said, kept before the image or the
+// connector count change a row. The audited Batches 1 to 4.1 carry no bench of
+// their own: they were a Computer Bench audit, so that is their folder's answer.
+function keepFolderAnswer(row) {
+  if (row.benchByFolder !== undefined) return;
+  row.benchByFolder = row.fromManifest ? row.bench : (row.bench || 'computer');
+  row.categoryByFolder = row.category;
+}
+// A Company Bench package has no category of its own - its manifest says
+// "unnamed" or "connector" - so the Delivery cards would show one bar called
+// CompanyBench. It is split by how many connectors the task declares instead,
+// the same count as the Single and Multi switch; Aster and Zeta stay in the
+// segment switch.
+const COMPANY_CATEGORY = {single: 'Single connector', multi: 'Multi-connector'};
+function applyCompanyCategory() {
+  if (!audit) return;
+  audit.rows.forEach(row => {
+    keepFolderAnswer(row);
+    if (row.bench !== 'company') return;
+    row.category = `Company Bench · ${COMPANY_CATEGORY[deliveryCount(row)] || 'Connectors not read'}`;
   });
 }
 // Everything above is read from data that arrives at different times, so it
@@ -981,6 +999,7 @@ function resetTaskBenches() {
   taskBenchCache = null;
   taskHarnessCache = null;
   taskCountCache = null;
+  applyCompanyCategory();
   personSegmentCache = null;
   payoutLedgerTasks.forEach(task => { task.bench = benchOfTask(task.task) || 'unassigned'; });
   stampSides();
