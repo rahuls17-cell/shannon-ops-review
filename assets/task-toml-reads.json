@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T18:41:07+00:00",
+ "generatedAt": "2026-10-01T18:51:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14754,6 +14754,66 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-never-answered/1f53f6a29cd701b3bb958c5ba7f293ae62bdb564493d0f2e8cd8ba0d2221f2a6.zip",
    "bytesRead": 44584,
+   "readOn": "2026-10-01"
+  },
+  "e-m-levels-paying-backwards": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/e-m-levels-paying-backwards/a1f1ec905acf43fbaba40fdbf721007077c2cc9591f69c453d665be3746b7eab.zip",
+   "bytesRead": 47344,
+   "readOn": "2026-10-01"
+  },
+  "eprescribing-closures-by-month": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/eprescribing-closures-by-month/de5274c71bf596df486c35429e822cdba5ebaaab1ba8d02c4608d040b37a64bc.zip",
+   "bytesRead": 47768,
+   "readOn": "2026-10-01"
+  },
+  "fifty-five-assigned-around-the-member-list": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fifty-five-assigned-around-the-member-list/ce47bfafd250406db4268a226553b6527cd1cd57cb7297c3f304287e4a15dfe0.zip",
+   "bytesRead": 57851,
+   "readOn": "2026-10-01"
+  },
+  "follow-up-on-unanswered-sends": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/follow-up-on-unanswered-sends/5cb145873198878543372eb95f193481058f348b2717931b43a014fc6ddbf450.zip",
+   "bytesRead": 56762,
+   "readOn": "2026-10-01"
+  },
+  "the-documents-still-chasing-me": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-documents-still-chasing-me/ecf996aaf918c839c021bb92e054dcbe416fe07daad5da0ecffb370ab44c2454.zip",
+   "bytesRead": 54206,
    "readOn": "2026-10-01"
   }
  }
