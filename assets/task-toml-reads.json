@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T19:31:06+00:00",
+ "generatedAt": "2026-10-01T19:41:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14862,6 +14862,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/virtual-care-codes-at-cms-rates/d8341d3fa31d3f899b3fc94377f16cf58e7a1e86b809a1b1357c1a9c8454414c.zip",
    "bytesRead": 49183,
+   "readOn": "2026-10-01"
+  },
+  "the-filename-that-is-not-the-filename": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-filename-that-is-not-the-filename/d7501e5a80c0757546dc86acf1d9e742636e1feb960d29becc23c921da53bae4.zip",
+   "bytesRead": 51186,
    "readOn": "2026-10-01"
   }
  }
