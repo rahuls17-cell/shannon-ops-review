@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T15:01:08+00:00",
+ "generatedAt": "2026-10-01T15:11:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14260,6 +14260,40 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/a-green-review-is-not-a-green-light/dcbfc2fc5995857807e71d42e79f4cf41fa0ecdb9844924fb9693fd0f0a06b66.zip",
    "bytesRead": 49552,
+   "readOn": "2026-10-01"
+  },
+  "edu-sca-a2-eli10-insertion-ticket-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-a2-eli10-insertion-ticket-adjudication/43278b059034ee5ad739034edc2a65d671dce790116ba85140dd0d1f4d468eb4.zip",
+   "bytesRead": 112847,
+   "readOn": "2026-10-01"
+  },
+  "the-conversations-still-waiting-on-me": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-conversations-still-waiting-on-me/2963bb7c880fa0985d6a3abfdfc51b542d7eb9805d30d0f058cec850938bdfd3.zip",
+   "bytesRead": 50248,
+   "readOn": "2026-10-01"
+  },
+  "which-copy-of-the-old-project-tree-is-real": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-copy-of-the-old-project-tree-is-real/3f9c8df5369fa434cd806ccca576210b5d68fbf326e0e25548524b939e736e02.zip",
+   "bytesRead": 62689,
    "readOn": "2026-10-01"
   }
  }
