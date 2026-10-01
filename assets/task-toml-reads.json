@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T10:11:12+00:00",
+ "generatedAt": "2026-10-01T10:21:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13570,6 +13570,64 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/whose-move-is-it/83ceeb530cf5c1c87021e141185f784597e0a9ee991d4e629df073fddec228b4.zip",
    "bytesRead": 48239,
+   "readOn": "2026-10-01"
+  },
+  "before-another-weekly-series": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/before-another-weekly-series/e2e787c7a2098304650c13d245d464cfc4b37fba0db0845a5fbc0e8db0ce7a28.zip",
+   "bytesRead": 54359,
+   "readOn": "2026-10-01"
+  },
+  "do-our-investor-updates-add-up": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/do-our-investor-updates-add-up/e3edea70c5465bbee1c13c446369c9e55fd0949333fd5891d61f62e6f4ea6327.zip",
+   "bytesRead": 48511,
+   "readOn": "2026-10-01"
+  },
+  "edu-b51-a10-submission-support-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-b51-a10-submission-support-reconciliation/beff81acbd3ac412fa6ccd08aa48def298082dbc669ada8e1ef6542d329d266c.zip",
+   "bytesRead": 82755,
+   "readOn": "2026-10-01"
+  },
+  "error-kinds-that-first-showed-up-in-2025": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/error-kinds-that-first-showed-up-in-2025/f4033f3c3e0c0b7b335a796b109145d34308c23e181b25ddc57d6a32a7b15938.zip",
+   "bytesRead": 55172,
+   "readOn": "2026-10-01"
+  },
+  "which-vendors-put-a-price-in-front-of-us": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-vendors-put-a-price-in-front-of-us/fdb57521da401bf9691b0c4edd070ae6e90847b4a5c884713022ef404a7f829d.zip",
+   "bytesRead": 52397,
    "readOn": "2026-10-01"
   }
  }
