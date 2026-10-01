@@ -537,34 +537,24 @@
             <div class="frows">
               <div class="fgroup"><span class="fgroup-label">State</span><div class="fchips" id="tStateChips" role="group" aria-label="State"></div></div>
               <div class="fgroup"><span class="fgroup-label">Delivered<button class="why" data-info="truthDelivered" aria-label="What delivered means here">?</button></span><div class="fchips" id="tDeliveredChips" role="group" aria-label="Delivered"></div></div>
-              <div class="fgroup"><span class="fgroup-label">Bench<button class="why" data-info="segment" aria-label="How the bench is decided">?</button></span><div class="fchips" id="tConnectorChips" role="group" aria-label="Bench"></div></div>
             </div>
             <div class="fdrawer-body" id="fdrawerBody" hidden>
-              <div class="fdrawer-col">
-                <p class="fdrawer-head">Pipeline</p>
-                <div class="fgroup is-stack"><span class="fgroup-label">Gate<button class="why" data-info="gateEra" aria-label="What the gates are">?</button></span><div class="fchips" id="tGateChips" role="group" aria-label="Gate"></div></div>
-                <div class="fgroup is-stack"><span class="fgroup-label">Package</span><div class="fchips" id="tDeliveryChips" role="group" aria-label="Package"></div></div>
-              </div>
-              <div class="fdrawer-col">
-                <p class="fdrawer-head">Evidence</p>
+              <div class="fgroup"><span class="fgroup-label">Gate<button class="why" data-info="gateEra" aria-label="What the gates are">?</button></span><div class="fchips" id="tGateChips" role="group" aria-label="Gate"></div></div>
+              <div class="fgroup"><span class="fgroup-label">Package</span><div class="fchips" id="tDeliveryChips" role="group" aria-label="Package"></div></div>
+              <div class="fgroup"><span class="fgroup-label">More</span><div class="fselects">
                 <label class="field"><span>GLM<button class="why" data-info="glm" aria-label="What the GLM band is">?</button></span><select id="tGlm"><option value="">Any</option><option value="band">In the 1-3 band</option><option value="0">0 of 4</option><option value="1">1 of 4</option><option value="2">2 of 4</option><option value="3">3 of 4</option><option value="4">4 of 4</option><option value="none">Not recorded</option></select></label>
                 <label class="field"><span>Finding<button class="why" data-info="finding" aria-label="What a finding is">?</button></span><select id="tFinding"></select></label>
-              </div>
-              <div class="fdrawer-col">
-                <p class="fdrawer-head">Task</p>
                 <label class="field"><span>Domain</span><select id="tDomain"></select></label>
-                <label class="field"><span>Trainer</span><select id="tOwner"></select></label>
                 <label class="field"><span>Carried over</span><select id="tCarried"><option value="">All</option><option value="yes">Carried over</option><option value="no">Not carried over</option></select></label>
                 <label class="field"><span>Identity<button class="why" data-info="confidence" aria-label="How the task was identified">?</button></span><select id="tConfidence"><option value="">All</option><option value="high">Keyed by family</option><option value="low">Unmerged</option></select></label>
                 <label class="field"><span>Duplicates<button class="why" data-info="duplicates" aria-label="What a possible duplicate is">?</button></span><select id="tDuplicate"><option value="">All</option><option value="yes">Flagged</option><option value="likely">Likely</option><option value="no">Not flagged</option></select></label>
-              </div>
+              </div></div>
             </div>
             <div class="chips-row"><div id="truthChips" class="chips"></div></div>
             <select id="tState" class="sr-only" aria-hidden="true" tabindex="-1"></select>
             <select id="tGate" class="sr-only" aria-hidden="true" tabindex="-1"></select>
             <select id="tDelivery" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">All</option><option value="current">At the current bar</option><option value="gateOnly">Awaiting re-gate</option><option value="none">No package</option></select>
             <select id="tDelivered" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">Any</option><option value="yes">Already delivered</option><option value="ready">Ready for delivery</option><option value="no">Not delivered</option></select>
-            <select id="tConnector" class="sr-only" aria-hidden="true" tabindex="-1"><option value="">Any</option><option value="connector">Connector</option><option value="non-connector">Non-connector</option><option value="company">Company bench</option><option value="unknown">Not known</option></select>
           </section>
 
           <div class="deck" id="pipelineDeck">

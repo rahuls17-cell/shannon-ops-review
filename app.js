@@ -24,8 +24,8 @@ const AUDIT_PAGE_SIZE = 40;
 const AUDIT_FILTERS = ['aBatch', 'aCategory', 'aDifficulty', 'aGlm',
   'aAcceptance', 'aPriority', 'aTrainer', 'aSource', 'aFlagged'];
 
-const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tConnector', 'tGlm', 'tBench', 'tCarried',
-  'tConfidence', 'tDuplicate', 'tDomain', 'tOwner'];
+const TRUTH_FILTERS = ['tState', 'tGate', 'tFinding', 'tDelivery', 'tDelivered', 'tGlm', 'tCarried',
+  'tConfidence', 'tDuplicate', 'tDomain'];
 let explorer = null;
 let explorerPath = '';
 let explorerEntry = null;
@@ -1144,86 +1144,6 @@ const setHarness = value => setSegment(segment, value);
 // One menu per tab, listing the harnesses its tasks actually run in; All also
 // lists the tasks with no Dockerfile read. The caret is part of the tab and
 // opens a menu drawn by the page, not the browser.
-const harnessOptions = {};
-function renderHarnessMenus() {
-  const rows = truth ? truth.rows : [];
-  document.querySelectorAll('#segmentSwitch .segbtn[data-seg]').forEach(button => {
-    const seg = button.dataset.seg || '';
-    const within = rows.filter(row => !seg || row.__seg === seg || String(row.__seg || '').startsWith(`${seg}-`));
-    const tally = {};
-    within.forEach(row => { const key = harnessKey(row); if (key !== 'none' || !seg) tally[key] = (tally[key] || 0) + 1; });
-    const keys = Object.keys(tally).sort((a, b) => (a === 'none') - (b === 'none') || tally[b] - tally[a]);
-    harnessOptions[seg] = keys.map(key => [key, tally[key]]);
-    let tab = button.parentElement;
-    if (!tab.classList.contains('segtab')) {
-      tab = document.createElement('span');
-      tab.className = 'segtab';
-      button.replaceWith(tab);
-      tab.appendChild(button);
-      const caret = document.createElement('button');
-      caret.type = 'button';
-      caret.className = 'segcaret';
-      caret.setAttribute('aria-haspopup', 'listbox');
-      caret.setAttribute('aria-expanded', 'false');
-      caret.innerHTML = '<i aria-hidden="true"></i>';
-      caret.addEventListener('click', event => { event.stopPropagation(); toggleHarnessMenu(seg, caret); });
-      tab.appendChild(caret);
-    }
-    const caret = tab.querySelector('.segcaret');
-    const active = seg === segment;
-    caret.setAttribute('aria-label', `Harness within ${seg ? SEGMENTS[seg] : 'all benches'}`);
-    caret.hidden = keys.length < 2;
-    tab.classList.toggle('has-harness', active && Boolean(harness));
-    let tag = button.querySelector('.segbtn-h');
-    if (active && harness) {
-      if (!tag) { tag = document.createElement('small'); tag.className = 'segbtn-h'; button.appendChild(tag); }
-      tag.textContent = harnessLabel(harness);
-    } else if (tag) tag.remove();
-  });
-}
-let harnessMenuFor = null;
-function closeHarnessMenu() {
-  const menu = byId('harnessMenu');
-  if (!menu) return;
-  menu.hidden = true;
-  document.querySelectorAll('#segmentSwitch .segcaret[aria-expanded="true"]').forEach(c => c.setAttribute('aria-expanded', 'false'));
-  harnessMenuFor = null;
-}
-function toggleHarnessMenu(seg, caret) {
-  let menu = byId('harnessMenu');
-  if (!menu) {
-    menu = document.createElement('div');
-    menu.id = 'harnessMenu';
-    menu.className = 'hmenu';
-    menu.setAttribute('role', 'listbox');
-    menu.hidden = true;
-    document.body.appendChild(menu);
-    menu.addEventListener('click', event => {
-      const item = event.target.closest('.hmenu-item');
-      if (!item) return;
-      const target = menu.dataset.seg || '';
-      closeHarnessMenu();
-      setSegment(target, item.dataset.value);
-    });
-    document.addEventListener('click', event => { if (!menu.hidden && !menu.contains(event.target)) closeHarnessMenu(); });
-    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeHarnessMenu(); });
-    window.addEventListener('resize', closeHarnessMenu);
-  }
-  if (harnessMenuFor === seg && !menu.hidden) { closeHarnessMenu(); return; }
-  closeHarnessMenu();
-  const current = seg === segment ? harness : '';
-  const options = [['', null], ...(harnessOptions[seg] || [])];
-  menu.dataset.seg = seg;
-  menu.innerHTML = `<p class="hmenu-head">Harness \u00b7 ${esc(seg ? SEGMENTS[seg] : 'All benches')}</p>` +
-    options.map(([value, count]) => `<button type="button" class="hmenu-item${value === current ? ' is-on' : ''}" role="option" aria-selected="${value === current}" data-value="${esc(value)}"><i class="hmenu-check" aria-hidden="true"></i><span>${esc(value ? harnessLabel(value) : 'Any harness')}</span>${count == null ? '' : `<small>${fmt(count)}</small>`}</button>`).join('');
-  const box = caret.parentElement.getBoundingClientRect();
-  menu.hidden = false;
-  menu.style.top = `${Math.round(box.bottom + 8)}px`;
-  menu.style.left = `${Math.round(Math.min(box.left, window.innerWidth - menu.offsetWidth - 12))}px`;
-  caret.setAttribute('aria-expanded', 'true');
-  harnessMenuFor = seg;
-  menu.querySelector('.hmenu-item.is-on, .hmenu-item')?.focus();
-}
 function syncSegmentSwitch() {
   document.querySelectorAll('#segmentSwitch [data-seg]').forEach(button => {
     const on = (button.dataset.seg || '') === segment;
@@ -1234,7 +1154,6 @@ function syncSegmentSwitch() {
   });
   document.body.dataset.segment = segment;
   (truth ? truth.rows : []).forEach(row => { row.__seg = truthSegment(row); });
-  renderHarnessMenus();
   document.querySelectorAll('[data-range]').forEach(node => {
     const here = node.dataset.range;
     const applies = !here || here === 'pipeline' || here === 'overview';
@@ -1749,11 +1668,10 @@ function truthFilters() {
     state: byId('tState').value, gateEra: byId('tGate').value,
     finding: byId('tFinding').value, delivery: byId('tDelivery').value,
     delivered: byId('tDelivered') ? byId('tDelivered').value : '',
-    side: byId('tConnector') ? byId('tConnector').value : '',
     glm: byId('tGlm') ? byId('tGlm').value : '',
     bench: '',
     carriedOver: byId('tCarried').value, confidence: byId('tConfidence').value,
-    domainKind: byId('tDomain').value, owner: byId('tOwner').value,
+    domainKind: byId('tDomain') ? byId('tDomain').value : '', owner: '',
     duplicate: byId('tDuplicate').value,
     search: byId('tSearch').value,
     start: dateRange.start, end: dateRange.end,
@@ -1852,7 +1770,6 @@ function populateTruthFilters() {
   fillSelect('tFinding', v.findingFamilies, 'Any finding', undefined, true);
   // Domain lists its choices without counts.
   fillSelect('tDomain', v.domainKind, 'Any domain', undefined, true, false);
-  fillSelect('tOwner', v.owner, 'Any trainer', undefined, true);
   fillBench();
   // Carried over lists the carried tasks, so its choices count those.
   const c = vocabularyOf(rows.filter(row => row.carriedOver));
@@ -1941,11 +1858,6 @@ function renderTruthFilterChips(filters, filtered) {
     [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
       .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
 
-  const bySide = without('side').rows;
-  const sideCount = key => shownTasks(bySide.filter(r => r.side === key));
-  byId('tConnectorChips').innerHTML = chip('tConnector', '', 'Any', shownTasks(bySide), 'var(--slate)', !filters.side) +
-    [['connector', 'Connector', 'var(--aqua)'], ['non-connector', 'Non-connector', 'var(--blue)'], ['company', 'Company bench', 'var(--violet)'], ['unknown', 'Not known', 'var(--slate)']]
-      .map(([v, l, tone]) => chip('tConnector', v, l, sideCount(v), tone, filters.side === v)).join('');
 
   const byGate = without('gateEra').rows;
   const gates = [...new Set(byGate.map(r => r.gateEra).filter(Boolean))].sort((a, b) => byGate.filter(r => r.gateEra === b).length - byGate.filter(r => r.gateEra === a).length);
@@ -1961,7 +1873,7 @@ function renderTruthFilterChips(filters, filtered) {
 
   const shown = shownTasks(window.filterTruth(rows, truthByBucket ? {...filters, state: ''} : filters).rows);
   setText('truthFilterCount', filtered ? `${fmt(shown)} of ${fmt(truthRows().length)} tasks` : `${fmt(truthRows().length)} tasks`);
-  const drawerActive = ['tGate', 'tDelivery', 'tGlm', 'tFinding', 'tDomain', 'tOwner', 'tCarried', 'tConfidence', 'tDuplicate'].filter(id => byId(id)?.value).length;
+  const drawerActive = ['tGate', 'tDelivery', 'tGlm', 'tFinding', 'tDomain', 'tCarried', 'tConfidence', 'tDuplicate'].filter(id => byId(id)?.value).length;
   setText('fmoreCount', drawerActive ? String(drawerActive) : '');
   byId('fmore')?.classList.toggle('has-active', drawerActive > 0);
 

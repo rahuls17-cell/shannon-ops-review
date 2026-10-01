@@ -3262,35 +3262,6 @@ button.trow:hover span:first-child { color: var(--accent); }
 .gchip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 @media (max-width: 1100px) { .gfilters { order: 3; flex-basis: 100%; } }
 
-/* ---------- Harness menu on each bench tab: one split pill, a page-drawn menu ---------- */
-#segmentSwitch .segtab { display: inline-flex; align-items: stretch; border-radius: 7px; transition: background var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease); }
-#segmentSwitch .segtab .segbtn { border-radius: 7px 0 0 7px; padding-right: 9px; }
-#segmentSwitch .segtab .segbtn:only-child { border-radius: 7px; padding-right: 11px; }
-#segmentSwitch .segtab:hover { background: rgba(255,255,255,.6); }
-#segmentSwitch .segtab:hover .segbtn { background: transparent; }
-#segmentSwitch .segtab:has(.segbtn.is-on) { background: var(--panel); box-shadow: 0 1px 2px rgba(16,23,32,.08), 0 0 0 1px var(--line); }
-#segmentSwitch .segtab .segbtn.is-on { background: transparent; box-shadow: none; }
-#segmentSwitch .seggroup[data-bench="computer"] .segtab:has(.segbtn.is-on) { box-shadow: 0 1px 2px rgba(16,23,32,.08), 0 0 0 1px var(--blue); }
-#segmentSwitch .seggroup[data-bench="company"] .segtab:has(.segbtn.is-on) { box-shadow: 0 1px 2px rgba(16,23,32,.08), 0 0 0 1px var(--violet); }
-#segmentSwitch .seggroup .segtab .segbtn.is-on { box-shadow: none; }
-#segmentSwitch .segcaret { display: inline-grid; place-items: center; width: 22px; padding: 0; border: 0; border-left: 1px solid transparent; border-radius: 0 7px 7px 0; background: transparent; color: var(--muted); cursor: pointer; transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
-#segmentSwitch .segcaret:hover { background: var(--panel-2); color: var(--ink); }
-#segmentSwitch .segcaret[aria-expanded="true"] { background: var(--ink); color: #fff; border-left-color: var(--ink); }
-#segmentSwitch .segcaret i { width: 6px; height: 6px; border-right: 1.5px solid currentColor; border-bottom: 1.5px solid currentColor; transform: translateY(-1.5px) rotate(45deg); }
-#segmentSwitch .segcaret[aria-expanded="true"] i { transform: translateY(1.5px) rotate(-135deg); }
-#segmentSwitch .segcaret:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
-#segmentSwitch .segtab.has-harness .segcaret { color: var(--accent); }
-#segmentSwitch .segsub + .segcaret, #segmentSwitch .segtab:has(.segsub) .segcaret { width: 20px; }
-#segmentSwitch .segbtn-h { margin-left: 6px; padding: 1px 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 10.5px; font-weight: 600; letter-spacing: 0; text-transform: none; }
-.hmenu { position: fixed; z-index: 60; min-width: 232px; padding: 6px; border-radius: 12px; background: var(--panel); border: 1px solid var(--line); box-shadow: var(--shadow-lift); animation: pop var(--t-med) var(--ease); }
-.hmenu-head { margin: 4px 10px 6px; font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
-.hmenu-item { display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; align-items: center; gap: 10px; width: 100%; padding: 8px 10px; border: 0; border-radius: 8px; background: transparent; font: inherit; font-size: 12.5px; color: var(--ink-2); text-align: left; cursor: pointer; transition: background var(--t-fast) var(--ease), color var(--t-fast) var(--ease); }
-.hmenu-item:hover, .hmenu-item:focus-visible { background: var(--panel-2); color: var(--ink); outline: none; }
-.hmenu-item.is-on { color: var(--ink); font-weight: 600; }
-.hmenu-item small { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
-.hmenu-check { width: 14px; height: 14px; border-radius: 50%; }
-.hmenu-item.is-on .hmenu-check { background: var(--ink); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E"); background-size: 10px; background-position: center; background-repeat: no-repeat; }
-#segmentSwitch .segtab:hover .segcaret, #segmentSwitch .segtab:has(.segbtn.is-on) .segcaret { border-left-color: var(--line); }
 
 /* Delivery: page-wide search above the figures; export without a hairline. */
 .dsearch { display: flex; align-items: center; gap: 12px; }
@@ -3383,3 +3354,19 @@ body #stagingBanner .sb-link:hover { text-decoration: underline; }
 #view-carried .mini-row b { font-weight: 600; }
 #carriedWhy .mini-row { padding: 10px 8px; }
 #carriedWhy .minilist { gap: 6px; }
+
+/* ---------- Pipeline: the More filters drawer continues the filter rows ---------- */
+#view-pipeline .fdrawer-body { display: grid; grid-template-columns: none; gap: 10px; margin: 2px 0 0; padding: 12px 0 2px; background: none; border: 0; border-top: 1px solid var(--line-soft); border-radius: 0; box-shadow: none; animation: none; }
+#view-pipeline .fdrawer-body .fgroup { grid-template-columns: 88px minmax(0, 1fr); align-items: center; gap: 12px; }
+#view-pipeline .fdrawer-body .fchips { display: flex; flex-wrap: wrap; gap: 6px; }
+#view-pipeline .fdrawer-body .fchip { height: 30px; }
+#view-pipeline .fselects { display: flex; flex-wrap: wrap; gap: 8px; }
+#view-pipeline .fselects .field { display: inline-flex; align-items: stretch; border: 1px solid var(--line); border-radius: 999px; background: var(--panel); overflow: hidden; transition: border-color var(--t-fast) var(--ease); }
+#view-pipeline .fselects .field:hover { border-color: #cfd4dc; }
+#view-pipeline .fselects .field > span { display: inline-flex; align-items: center; gap: 4px; height: 30px; padding: 0 8px 0 12px; white-space: nowrap; border: 0; border-radius: 0; background: transparent; font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--muted); }
+#view-pipeline .fselects .field > span .why { width: 14px; height: 14px; font-size: 9px; }
+#view-pipeline .fselects .field select { height: 30px; min-width: 0; padding: 0 28px 0 8px; border: 0; border-left: 1px solid var(--line-soft); border-radius: 0; background-color: transparent; font-size: 12.5px; font-weight: 500; color: var(--ink); }
+#view-pipeline .fselects .field select:focus { outline: none; background-color: var(--panel-2); }
+#view-pipeline .fselects .field:has(option:checked:not([value=""])) { border-color: var(--ink); background: var(--ink); }
+#view-pipeline .fselects .field:has(option:checked:not([value=""])) > span { color: rgba(255,255,255,.7); }
+#view-pipeline .fselects .field:has(option:checked:not([value=""])) select { color: #fff; border-left-color: rgba(255,255,255,.2); }
