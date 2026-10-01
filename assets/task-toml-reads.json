@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T14:41:05+00:00",
+ "generatedAt": "2026-10-01T14:51:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14200,6 +14200,54 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g658-treasury-wire-transfer-authorization-audit-hard-v24/c237d8b363d52369b26e69ac39fde2e1a8e2fa1307780518d3c28f622ba825ac.zip",
    "bytesRead": 76501,
+   "readOn": "2026-10-01"
+  },
+  "the-four-folders-all-called-customers": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-four-folders-all-called-customers/9993c5b3c8a02b59e35712b67234efa17d3708d86629fe47b56ff1b92cb73b04.zip",
+   "bytesRead": 59126,
+   "readOn": "2026-10-01"
+  },
+  "which-questions-got-answered-twice-over": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-questions-got-answered-twice-over/ad62565d79319c8fdfc50f04cc4eeab7d9589eb987d358eab24006ee8213fc41.zip",
+   "bytesRead": 52496,
+   "readOn": "2026-10-01"
+  },
+  "who-is-actually-waiting-on-me": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-is-actually-waiting-on-me/d284da2c9fa98b698399262ba676c63ff1a8e70d1786cc5384068176dbb4d960.zip",
+   "bytesRead": 53720,
+   "readOn": "2026-10-01"
+  },
+  "winter-tests-left-without-a-result": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/winter-tests-left-without-a-result/81a7a35cb6a32f061e0fd8639e1c583411073f47d1c719f55088b3ff35db0ddf.zip",
+   "bytesRead": 52095,
    "readOn": "2026-10-01"
   }
  }
