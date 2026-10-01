@@ -197,7 +197,7 @@ const infoCopy = {
     const count = key => rows.filter(row => truthSegment(row) === key).length;
     return 'One split for the whole dashboard, applied like the date range, and decided by the task, never by who made it - people work on both benches and the roster moves. ' +
       'First the bench. Company Bench: where the task was delivered when it has been (the CompanyBench batches and the CompanyBench folder inside a Computer Bench batch), otherwise the base image in its Dockerfile; every other task is Computer Bench. ' +
-      'Then, within Computer Bench, Connector or Non-connector by the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit; choosing Computer Bench shows both. Company Bench is connector work only, so it splits instead by harness: Aster or Zeta, read from the base image in the task\u2019s Dockerfile (an Aster image says aster; a Zeta image says zeta or is one of the image register\u2019s Zeta images), else from its delivery manifest, else from which company’s gyms it mounts. ' +
+      'Then, within Computer Bench, Connector or Non-connector by the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit; choosing Computer Bench shows both. Company Bench is connector work only, so it splits instead by harness: Aster or Zeta, read from the base image in the task\u2019s Dockerfile (an Aster image says aster; a Zeta image says zeta or is one of the image register\u2019s Zeta images), else from its delivery manifest, else Zeta when it mounts Zeta’s own SQL gym. ' +
       `Right now, of ${fmt(rows.length)} pipeline tasks: Computer Bench ${fmt(count('computer-connector'))} connector and ${fmt(count('computer-non-connector'))} non-connector; ` +
       `Company Bench ${fmt(count('company-aster'))} Aster and ${fmt(count('company-zeta'))} Zeta${count('company') ? `, ${fmt(count('company'))} with no harness read yet` : ''}; ` +
       `${fmt(rows.length - SEGMENT_LEAVES.reduce((total, key) => total + count(key), 0))} carry no bench, type or harness yet and appear under All, or under their bench alone. ` +
@@ -775,6 +775,10 @@ function benchOfTask(...names) {
 }
 // A pipeline row carries its own bench; a delivered one takes where it was delivered.
 function truthBench(row) {
+  // The image names a bench outright - Aster or Zeta, synthetic or real - and
+  // that beats the folder the package was filed in.
+  const fromImage = imageSide(row.bench, row.connectorServices);
+  if (fromImage) return fromImage;
   if (row.delivered && row.deliveredTask) {
     const side = taskBenches().delivered.get(benchKey(row.deliveredTask));
     if (side) return side;
@@ -805,7 +809,7 @@ function taskHarnesses() {
     return map;
   };
   const built = index([...(truth ? truth.rows : []), ...((truth && truth.cohortRows) || [])].flatMap(row => {
-    const value = HARNESS_OF_BENCH[row.bench];
+    const value = HARNESS_OF_BENCH[row.bench] || harnessOfGyms(row.connectorServices);
     return value ? [[row.name, value], [row.packageTask, value], [row.cohortFolder, value]] : [];
   }));
   const delivered = index((audit ? audit.rows : []).flatMap(row => {
@@ -825,17 +829,16 @@ function harnessOfTask(...names) {
   }
   return null;
 }
-// Last, the gyms the task mounts: each company's data sits behind its own
-// gyms - Zeta's SQL, Jira, Confluence and Freshdesk; Aster's GitHub, Notion,
-// Linear, Outlook, Gmail and Calendar, and Google Workspace - so a task that
-// mounts one set and none of the other is that company's. CompanyBench 1 names
-// no image anywhere and mounts the Zeta set on every task.
-const ZETA_GYMS = /^(zeta3-sql|jira|confluence|freshdesk|figma)(-gym)?$/;
-const ASTER_GYMS = /^(github|notion|linear|outlook|email-calendar|gws)(-gym)?$/;
+// Last, the gyms the task mounts - for Zeta only. Zeta's data sits behind its
+// own SQL gym, zeta3-sql-gym, which no other harness serves; CompanyBench 1
+// names no image anywhere and mounts it on every task. Aster's gyms (GitHub,
+// Notion, Linear, Outlook, Google Workspace) are the same kinds a Computer
+// Bench synthetic task mounts - Aster is served as the gyms' synthetic dataset
+// - so the gyms cannot tell an Aster task from a synthetic one, and are not
+// asked to.
+const ZETA_GYM = /^zeta3-sql(-gym)?$/;
 function harnessOfGyms(gyms) {
-  const list = (gyms || []).map(g => String(g).toLowerCase());
-  const zeta = list.some(g => ZETA_GYMS.test(g)), aster = list.some(g => ASTER_GYMS.test(g));
-  return zeta === aster ? null : zeta ? 'zeta' : 'aster';
+  return (gyms || []).some(g => ZETA_GYM.test(String(g).toLowerCase())) ? 'zeta' : null;
 }
 const truthHarness = row => HARNESS_OF_BENCH[row.bench]
   || harnessOfTask(row.name, row.deliveredTask, row.packageTask, row.cohortFolder)
@@ -868,9 +871,51 @@ function stampSides() {
   if (!truth) return;
   [truth.rows, truth.cohortRows].forEach(list => (list || []).forEach(row => { row.side = SIDE_OF[truthSegment(row)] || 'unknown'; }));
 }
+// The Dockerfile image decides the bench whenever it names one: an Aster or
+// Zeta image is Company Bench, a synthetic or real one is Computer Bench
+// connector work. The Drive folder a package was filed in decides only when no
+// image was read - 22 Batch 5.1 packages sit in its CompanyBench folder on a
+// synthetic or real image, and 26 sit in its Real Connector and Synthetic
+// folders on the Zeta image. A moved Delivery row keeps the folder's answer as
+// benchByFolder and takes the category of its bench.
+const IMAGE_BENCH = {'company bench aster': 'company', 'company bench zeta': 'company',
+  'computer bench synth': 'computer', 'computer bench real': 'computer'};
+// Unless the task's own gyms say otherwise: a task on a synthetic image that
+// mounts Zeta's SQL gym - obi-benchmark@8219115c, which the register does not
+// list, carries it on every task whose gyms are known - is Zeta's, and the
+// image is not taken as the answer.
+const imageSide = (bench, gyms) => {
+  const side = IMAGE_BENCH[bench];
+  return side === 'computer' && harnessOfGyms(gyms) ? 'company' : side || null;
+};
+function applyImageBench() {
+  if (!truth || !audit) return;
+  const map = new Map();
+  [...truth.rows, ...(truth.cohortRows || [])].forEach(row => {
+    const side = imageSide(row.bench, row.connectorServices);
+    if (!side) return;
+    [row.name, row.packageTask, row.cohortFolder].forEach(name => {
+      const key = benchKey(name);
+      if (!key) return;
+      const was = map.get(key);
+      map.set(key, was === undefined || was === side ? side : null);
+    });
+  });
+  audit.rows.forEach(row => {
+    if (!row.fromManifest) return;
+    if (row.benchByFolder === undefined) { row.benchByFolder = row.bench; row.categoryByFolder = row.category; }
+    let side = map.get(benchKey(row.task)) || map.get(benchKey(row.packageName)) || null;
+    if (side === 'computer' && harnessOfGyms(row.connectors)) side = null;
+    row.bench = side || row.benchByFolder;
+    row.category = row.bench === row.benchByFolder ? row.categoryByFolder
+      : row.bench === 'company' ? 'CompanyBench' : window.mergedCategory(row.class);
+    row.benchFromImage = row.bench !== row.benchByFolder;
+  });
+}
 // Everything above is read from data that arrives at different times, so it
 // is rebuilt whenever the Delivery rows or the pipeline land.
 function resetTaskBenches() {
+  applyImageBench();
   applyDeliveryJoin();
   taskBenchCache = null;
   taskHarnessCache = null;
@@ -1441,6 +1486,9 @@ async function loadTruth() {
     // after the first render, so it would otherwise sit on a dash until
     // something else happened to redraw it.
     renderHero();
+    // The image can move a Delivery row's bench and category, so its filters
+    // are refilled once the pipeline's images are in.
+    if (audit) populateAuditFilters();
     if (cohortIndex && typeof renderAudit === 'function') renderAudit();
     buildDelta();
     renderScopeFunnel();

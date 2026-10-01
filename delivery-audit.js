@@ -155,6 +155,7 @@
   root.prepareDeliveryAudit = prepareDeliveryAudit;
   root.filterDeliveryAudit = filterDeliveryAudit;
   root.DELIVERY_AUDIT_UNSET = UNSET;
+  root.mergedCategory = mergedCategory;
   if (typeof module !== 'undefined') {
     module.exports = {prepareDeliveryAudit, filterDeliveryAudit, mergedCategory, UNSET};
   }
