@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T06:01:03+00:00",
+ "generatedAt": "2026-10-01T06:11:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13185,6 +13185,18 @@
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c406-fair-event-schedule-compliance-audit-fixed/56ad884c04681afdcad646fce8f372bf5b19de05e63f5b0037bb713a7af93e72.zip",
    "bytesRead": 75019,
    "readOn": "2026-09-30"
+  },
+  "the-meeting-links-on-repeat": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meeting-links-on-repeat/db8ab03c9fee90157e53245d65357852a56498aa6724162293bb6108076b1793.zip",
+   "bytesRead": 50320,
+   "readOn": "2026-10-01"
   }
  }
 }
