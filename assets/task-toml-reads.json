@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T17:01:33+00:00",
+ "generatedAt": "2026-10-01T17:11:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14494,6 +14494,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-design-reviews-nobody-picked-up/c1a8e247645bc1ba0325b337b6cec808fbd810a943877c12a9f7a928fd93aa6f.zip",
    "bytesRead": 48212,
+   "readOn": "2026-10-01"
+  },
+  "the-weeks-my-mail-surged": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-weeks-my-mail-surged/1e9dec3c5cf27761ce9db7c8a270ceee483d194e68c5b0a9007f5d47ce38792c.zip",
+   "bytesRead": 51464,
+   "readOn": "2026-10-01"
+  },
+  "tone-of-a-member-in-team-eng": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tone-of-a-member-in-team-eng/543314abe6bdbeda6ea3feaf97b5db7e19934a7fe5ee668adcd2f0a45daef356.zip",
+   "bytesRead": 49251,
    "readOn": "2026-10-01"
   }
  }
