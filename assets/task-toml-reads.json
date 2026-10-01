@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T19:51:07+00:00",
+ "generatedAt": "2026-10-01T20:01:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14886,6 +14886,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/november-invoice-against-lab-exports/3b1f7400d2b4c7283194bf8c004edfbe39cc946c04ac309fe6f92412c6fc3ecd.zip",
    "bytesRead": 55091,
+   "readOn": "2026-10-01"
+  },
+  "services-that-could-not-charge-us": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/services-that-could-not-charge-us/fd5fcb4dd3cee6a5fab70a895c13697e5ffacbec748ed2b9f0b0f625f0748c64.zip",
+   "bytesRead": 54097,
+   "readOn": "2026-10-01"
+  },
+  "spreadsheet-copies-to-keep": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spreadsheet-copies-to-keep/0007489b5636bf9ccfc4a3b133b015df80de32e46a147139a85f76e794a7515e.zip",
+   "bytesRead": 60563,
    "readOn": "2026-10-01"
   }
  }
