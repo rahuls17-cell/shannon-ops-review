@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T16:21:06+00:00",
+ "generatedAt": "2026-10-01T16:31:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14390,6 +14390,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/conversations-i-still-owe-a-reply/e9c8bc333b721baf2d125f73d2587371008ef2e4bae1855a91d6d89148e0f02f.zip",
    "bytesRead": 52124,
+   "readOn": "2026-10-01"
+  },
+  "which-specs-outlived-their-owners": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-specs-outlived-their-owners/7b4656da0d056c5af42176f946cdc38d2ad22cc42305ad2d6d6844a737871919.zip",
+   "bytesRead": 51856,
+   "readOn": "2026-10-01"
+  },
+  "who-to-ask-in-the-team-channels": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-to-ask-in-the-team-channels/fc156e59ffc6dd6f60463fa42f89fe8111813f25e4b4de27f7034cf7c118ac5f.zip",
+   "bytesRead": 46694,
    "readOn": "2026-10-01"
   }
  }
