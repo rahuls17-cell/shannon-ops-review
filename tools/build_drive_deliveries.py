@@ -90,6 +90,9 @@ import urllib.parse
 import urllib.request
 from datetime import datetime, timezone
 
+sys.path.insert(0, str(pathlib.Path(__file__).resolve().parent))
+from read_task_toml import bench_type                    # noqa: E402
+
 FOLDER = '1_ZA8ckJfXtaGV4OpqZ0a4f5XZbx4brXO'   # "Deliveries"
 API = 'https://www.googleapis.com/drive/v3/files'
 SCOPE = 'https://www.googleapis.com/auth/drive.readonly'
@@ -387,6 +390,9 @@ def normalise(manifest, label, files=None, require_present=False):
             'domain': domain,
             'type': type_of(klass, location),
             'bench': bench_of(label, klass, task, location),
+            # Aster or Zeta, for a Company Bench package; the page prefers the
+            # image read from the task's own Dockerfile and falls back to this.
+            'harness': harness_of(task, klass) if bench_of(label, klass, task, location) == 'company' else None,
             'driveFolder': location,
             'difficulty': band.capitalize() if band else None,
             'glm': glm,
@@ -471,6 +477,18 @@ def source_folder(task):
     (None, None) when the manifest names another bucket or no source at all."""
     match = SOURCE_FOLDER.match(str(task.get('source_uri') or '').strip())
     return (match.group(1), match.group(2)) if match else (None, None)
+
+
+def harness_of(task, klass=None):
+    """'aster' or 'zeta': the Company Bench harness, from the image the manifest
+    names when it names one, then the bench it declares, then its folder class.
+    Read with the scanner's own image rule, so the two cannot disagree."""
+    for value in (task.get('image_ref'), task.get('bench_type'), task.get('bench_family'),
+                  task.get('bench_class'), klass):
+        bench = bench_type(str(value)) if value else None
+        if bench and bench.startswith('company bench '):
+            return bench.split()[-1]
+    return None
 
 
 def source_kind(task):

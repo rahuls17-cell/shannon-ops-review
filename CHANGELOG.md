@@ -47,6 +47,35 @@ longer decides Company Bench anywhere on the dashboard.
   reading is kept on the row as `benchFromImage`; a check now fails if any
   non-connector task lands on the Company bench. (`truth.js`)
 
+### Company Bench: Aster and Zeta
+- **The segment switch splits Company Bench into Aster and Zeta**, on every tab
+  - Overview, Delivery, Pipeline, Payouts - the way Computer Bench splits into
+  Connector and Non-connector. The Overview strip has four tiles.
+- **Which harness**, strongest first: the base image in the task's own
+  Dockerfile; then what its delivery manifest records (the image it names, or
+  the bench it declares); then the gyms it mounts - Zeta's SQL, Jira,
+  Confluence and Freshdesk, or Aster's GitHub, Notion, Linear, Outlook, Gmail
+  and Calendar, Google Workspace. Image and manifest never disagree on the
+  current data.
+- **The image rule, checked against the image register Rahul shared** (Zeta V1
+  to V4, Aster V5 to V7): an image that says aster is Aster; one that says zeta
+  is Zeta, and so are the register's Zeta images that do not say it
+  (benchmark-base, company-bench-private, and obi-benchmark at the V3
+  pinned-data digest). Synthetic and real images stay Computer Bench connector.
+  **Fix:** obi-benchmark@1e2fbc7a (Zeta V3) read as Computer Bench synthetic;
+  29 tasks move to Zeta. obi-benchmark at the one other digest in use,
+  8219115c, is not in the register and stays Computer Bench synthetic, as the
+  labelled reference sheet has it. The page re-reads every cached image with
+  the current rule, so main's older bench index reads right on staging too;
+  a check holds the page and the scanner to the same answer on every image.
+- Now: pipeline tasks Aster 1,226, Zeta 2,523; Delivery Aster 224 (Batches 5.1
+  to 10.1), Zeta 1,442 (CompanyBench 1 to 3 and the Zeta packages in 6.1 to
+  9.1); accepted packages Aster 283, Zeta 169.
+- Not split: 22 Batch 5.1 packages sit in its CompanyBench folder on Drive but
+  their Dockerfile is a Computer Bench synthetic (19) or real (3) image, so
+  they have no Company Bench harness; they show under Company Bench and All.
+- The Drive reader records `harness` on Company Bench rows.
+
 ### Delivery tab
 - **Company Bench** = everything in CompanyBench 1-3, plus any package sitting in
   a `CompanyBench` folder inside a Computer Bench batch on Drive - not what the

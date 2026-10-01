@@ -87,9 +87,12 @@
       let plain = null;
       for (let i = 0; i < keys.length; i += 1) {
         const hit = keys[i] && benches[keys[i]];
-        if (hit && hit.bench) {
-          return {bench: hit.bench, benchImage: hit.image, benchRead: true,
-                  benchSide: hit.bench.startsWith('company') ? 'company' : 'computer'};
+        // The cached reading is redone from the image with the current rule, so
+        // an index built before a rule change still reads right.
+        const bench = hit ? (hit.image ? benchOfImage(hit.image) : hit.bench) : null;
+        if (bench) {
+          return {bench, benchImage: hit.image, benchRead: true,
+                  benchSide: bench.startsWith('company') ? 'company' : 'computer'};
         }
         // An image left as a build variable - ${BASE_IMAGE}:${BASE_TAG} - was
         // never resolved, so it says nothing about the harness either way.
@@ -277,6 +280,30 @@
   // benchmark-base image and read as Company Bench Zeta. A plain base image
   // (python, node and the like) is the same evidence: no harness, so no
   // connector. Only a task never read is left without a bench.
+  // Which bench an image is - tools/read_task_toml.py bench_type, line for
+  // line, and tools/test-task-toml.cjs holds the two to the same answers. An
+  // Aster image says aster; a Zeta image says zeta, or is one of the image
+  // register's Zeta images, which mostly do not: benchmark-base,
+  // company-bench-private, and obi-benchmark at the V3 pinned-data digest
+  // (obi-benchmark at any other digest is a Computer Bench synthetic image).
+  const ZETA_DIGESTS = [
+    'ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83',
+    '975f115a995790786a6dbf124204433ccf77460f0277227fbdd21745388e56ca',
+    'cb2fee77bd5b1bbe02471664111fae13711c2a0851147f7da987105bf015f293',
+    '1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8',
+  ];
+  function benchOfImage(image) {
+    const im = String(image || '').toLowerCase();
+    if (!im) return null;
+    if (im.includes('aster')) return 'company bench aster';
+    if (im.includes('zeta') || ZETA_DIGESTS.some(d => im.includes(d))) return 'company bench zeta';
+    if (im.includes('real-data')) return 'computer bench real';
+    if (im.includes('connectors-rl-gym')) return 'computer bench synth';
+    if (['company-bench-private', 'benchmark-base', 'data-obi-rl-gym'].some(p => im.includes(p))) return 'company bench zeta';
+    if (im.includes('connectors-harness')) return 'computer bench synth';
+    return null;
+  }
+
   // Connector or not, the one rule the segment switch, the Connector filter
   // and the makeup tiles all use: what the package's task.toml declares, then
   // the type of the Delivery row it went out as, and for a task whose package
@@ -613,5 +640,6 @@
   root.acceptedTaskNames = acceptedTaskNames;
   root.joinDeliveries = joinDeliveries;
   root.connectorType = connectorType;
-  if (typeof module !== 'undefined') module.exports = {prepareTruth, filterTruth, collapseByTask, chainFor, acceptedTaskNames, joinDeliveries, connectorType, UNDECIDED};
+  root.benchOfImage = benchOfImage;
+  if (typeof module !== 'undefined') module.exports = {prepareTruth, filterTruth, collapseByTask, chainFor, acceptedTaskNames, joinDeliveries, connectorType, benchOfImage, UNDECIDED};
 })(typeof window === 'undefined' ? globalThis : window);

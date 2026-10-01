@@ -197,10 +197,10 @@ const infoCopy = {
     const count = key => rows.filter(row => truthSegment(row) === key).length;
     return 'One split for the whole dashboard, applied like the date range, and decided by the task, never by who made it - people work on both benches and the roster moves. ' +
       'First the bench. Company Bench: where the task was delivered when it has been (the CompanyBench batches and the CompanyBench folder inside a Computer Bench batch), otherwise the base image in its Dockerfile; every other task is Computer Bench. ' +
-      'Then, within Computer Bench, Connector or Non-connector by the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit; choosing Computer Bench shows both. Company Bench is connector work only, so it has no split. ' +
+      'Then, within Computer Bench, Connector or Non-connector by the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit; choosing Computer Bench shows both. Company Bench is connector work only, so it splits instead by harness: Aster or Zeta, read from the base image in the task\u2019s Dockerfile (an Aster image says aster; a Zeta image says zeta or is one of the image register\u2019s Zeta images), else from its delivery manifest, else from which company’s gyms it mounts. ' +
       `Right now, of ${fmt(rows.length)} pipeline tasks: Computer Bench ${fmt(count('computer-connector'))} connector and ${fmt(count('computer-non-connector'))} non-connector; ` +
-      `Company Bench ${fmt(count('company'))}; ` +
-      `${fmt(rows.length - SEGMENT_LEAVES.reduce((total, key) => total + count(key), 0))} carry no bench or type yet and appear under All, or under their bench alone. ` +
+      `Company Bench ${fmt(count('company-aster'))} Aster and ${fmt(count('company-zeta'))} Zeta${count('company') ? `, ${fmt(count('company'))} with no harness read yet` : ''}; ` +
+      `${fmt(rows.length - SEGMENT_LEAVES.reduce((total, key) => total + count(key), 0))} carry no bench, type or harness yet and appear under All, or under their bench alone. ` +
       'A person counts in every segment they have tasks in, so someone who works on both benches shows under both. The 240 audit counts and the daily plan are not split, and say so.';
   },
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
@@ -381,7 +381,7 @@ function renderSegmentStrip() {
     const v = {acc: tasks.filter(r => r.state === 'accepted').length, rej: tasks.filter(r => r.state === 'rejected').length};
     const legacy = tasks.filter(r => r.state === 'legacy accepted').length;
     const folk = people.filter(row => personSegments(row).has(key));
-    const money = ledger.filter(task => taskSegment(task.bench, typeFlag(task.filterType)) === key);
+    const money = ledger.filter(task => ledgerSegment(task) === key);
     const paid = money.filter(t => t.paymentState === 'Paid' || t.paymentState === 'Not itemised').length;
     return {key, label: SEGMENTS[key], tasks: tasks.length, accepted: v.acc + legacy, rejected: v.rej, other: tasks.length - v.acc - legacy - v.rej,
             people: folk.length, ledger: money.length, paid};
@@ -405,10 +405,10 @@ function renderSegmentStrip() {
           <div><b data-count="${t.paid}" data-key="seg:${t.key}:paid">${fmt(t.paid)}</b><span>paid of ${fmt(t.ledger)}</span></div>
         </div>
       </button>`).join('')}
-      ${unknown ? `<div class="segtile is-unknown" style="--i:3;--c:var(--slate)" data-tip="These ${fmt(unknown)} carry no bench or no type yet - the pipeline learns a task's type once it reaches delivery - so they count under All, and under their bench when only that is known.">
-        <div class="segtile-head"><span class="segtile-name"><i></i>Bench or type not yet known</span></div>
+      ${unknown ? `<div class="segtile is-unknown" style="--i:${keys.length};--c:var(--slate)" data-tip="These ${fmt(unknown)} carry no bench, no type or no harness yet - the pipeline learns a task's type once it reaches delivery - so they count under All, and under their bench when only that is known.">
+        <div class="segtile-head"><span class="segtile-name"><i></i>Not yet known</span></div>
         <div class="segtile-main"><b data-count="${unknown}" data-key="seg:unknown">${fmt(unknown)}</b><span>pipeline tasks \u00b7 ${Math.round((unknown / (rows.length || 1)) * 100)}% of all</span></div>
-        <p class="segtile-why">No bench or no type yet. Shown under All, or under the bench alone.</p>
+        <p class="segtile-why">No bench, type or harness yet. Shown under All, or under the bench alone.</p>
       </div>` : ''}
     </div>`;
   animateCounts(host);
@@ -718,17 +718,17 @@ const AUDIT_FLAG_CODES = {'contested owner': 'CO', 'owner still contested': 'OC'
 // connector flag. A task with neither bench nor flag is "not yet known" and
 // shows under All only.
 // The bench first. Computer Bench holds both kinds of task, so it splits into
-// Connector and Non-connector; Company Bench is connector work only - its
+// Connector and Non-connector. Company Bench is connector work only - its
 // images are connector harnesses and a non-connector task runs on the Computer
-// bench - so it is one segment with nothing beneath it.
+// bench - and splits by which company's harness it runs in, Aster or Zeta.
 const SEGMENTS = {
   computer: 'Computer Bench', 'computer-connector': 'Computer Bench \u00b7 Connector',
   'computer-non-connector': 'Computer Bench \u00b7 Non-connector',
-  company: 'Company Bench',
+  company: 'Company Bench', 'company-aster': 'Company Bench \u00b7 Aster', 'company-zeta': 'Company Bench \u00b7 Zeta',
 };
-const SEGMENT_LEAVES = ['computer-connector', 'computer-non-connector', 'company'];
+const SEGMENT_LEAVES = ['computer-connector', 'computer-non-connector', 'company-aster', 'company-zeta'];
 const SEGMENT_TONES = {computer: '--blue', 'computer-connector': '--aqua', 'computer-non-connector': '--blue',
-  company: '--violet', unknown: '--slate'};
+  company: '--violet', 'company-aster': '--violet', 'company-zeta': '--magenta', unknown: '--slate'};
 // Links and saved choices from earlier versions: the flat segments were
 // Computer Bench work outside Company Bench, and the Company Bench types are
 // Company Bench.
@@ -785,19 +785,85 @@ function truthBench(row) {
 // image: the Company Bench images and the synthetic and real Computer Bench
 // ones are connector harnesses; a plain base image is a non-connector task.
 const truthConnector = row => window.connectorType(row);
-// A leaf key - bench and type - when both are known; the bench alone when only
-// it is; 'unknown' when neither is.
-function taskSegment(bench, connector) {
-  if (bench === 'company') return 'company';
+// Which Company Bench harness a task runs in, Aster or Zeta: the base image in
+// its own Dockerfile first (tools/read_task_toml.py bench_type - an Aster image
+// says aster, a Zeta image says zeta or is one of the image register's Zeta
+// images), then what the manifest it was delivered in records. Looked up by
+// name like the bench, and a name read both ways is left unknown.
+const HARNESS_OF_BENCH = {'company bench aster': 'aster', 'company bench zeta': 'zeta'};
+let taskHarnessCache = null;
+function taskHarnesses() {
+  if (taskHarnessCache) return taskHarnessCache;
+  const index = pairs => {
+    const map = new Map();
+    pairs.forEach(([name, value]) => {
+      const key = benchKey(name);
+      if (!key || !value) return;
+      const was = map.get(key);
+      map.set(key, was === undefined || was === value ? value : null);
+    });
+    return map;
+  };
+  const built = index([...(truth ? truth.rows : []), ...((truth && truth.cohortRows) || [])].flatMap(row => {
+    const value = HARNESS_OF_BENCH[row.bench];
+    return value ? [[row.name, value], [row.packageTask, value], [row.cohortFolder, value]] : [];
+  }));
+  const delivered = index((audit ? audit.rows : []).flatMap(row => {
+    const value = row.bench === 'company' ? (row.harness || harnessOfGyms(row.connectors)) : null;
+    return value ? [[row.task, value], [row.packageName, value]] : [];
+  }));
+  taskHarnessCache = {built, delivered};
+  return taskHarnessCache;
+}
+function harnessOfTask(...names) {
+  const {built, delivered} = taskHarnesses();
+  for (const map of [built, delivered]) {
+    for (const name of names) {
+      const value = map.get(benchKey(name));
+      if (value) return value;
+    }
+  }
+  return null;
+}
+// Last, the gyms the task mounts: each company's data sits behind its own
+// gyms - Zeta's SQL, Jira, Confluence and Freshdesk; Aster's GitHub, Notion,
+// Linear, Outlook, Gmail and Calendar, and Google Workspace - so a task that
+// mounts one set and none of the other is that company's. CompanyBench 1 names
+// no image anywhere and mounts the Zeta set on every task.
+const ZETA_GYMS = /^(zeta3-sql|jira|confluence|freshdesk|figma)(-gym)?$/;
+const ASTER_GYMS = /^(github|notion|linear|outlook|email-calendar|gws)(-gym)?$/;
+function harnessOfGyms(gyms) {
+  const list = (gyms || []).map(g => String(g).toLowerCase());
+  const zeta = list.some(g => ZETA_GYMS.test(g)), aster = list.some(g => ASTER_GYMS.test(g));
+  return zeta === aster ? null : zeta ? 'zeta' : 'aster';
+}
+const truthHarness = row => HARNESS_OF_BENCH[row.bench]
+  || harnessOfTask(row.name, row.deliveredTask, row.packageTask, row.cohortFolder)
+  || harnessOfGyms(row.connectorServices);
+// A delivered package: its task's own image when that was read, else its
+// manifest, else the gyms it mounts.
+const deliveryHarness = row => {
+  const {built} = taskHarnesses();
+  return built.get(benchKey(row.task)) || built.get(benchKey(row.packageName)) || row.harness
+    || harnessOfGyms(row.connectors);
+};
+// A leaf key - bench and type, or bench and harness - when both are known; the
+// bench alone when only it is; 'unknown' when neither is.
+function taskSegment(bench, connector, harness) {
+  if (bench === 'company') return harness ? `company-${harness}` : 'company';
   const side = bench === 'computer' || connector === true || connector === false ? 'computer' : null;
   if (!side) return 'unknown';
   const kind = connector === true ? 'connector' : connector === false ? 'non-connector' : null;
   return kind ? `${side}-${kind}` : side;
 }
-const truthSegment = row => taskSegment(truthBench(row), truthConnector(row));
-const inTaskSegment = (bench, connector) => segmentMatches(taskSegment(bench, connector));
+const truthSegment = row => taskSegment(truthBench(row), truthConnector(row), truthHarness(row));
+const inTaskSegment = (bench, connector, harness) => segmentMatches(taskSegment(bench, connector, harness));
+// A payout ledger task, by the bench and type it carries and its task's harness.
+const ledgerSegment = task => taskSegment(task.bench, typeFlag(task.filterType),
+  task.bench === 'company' ? harnessOfTask(task.task) : null);
 // Each pipeline row carries its bench side so the Bench filter can test it directly.
-const SIDE_OF = {'computer-connector': 'connector', 'computer-non-connector': 'non-connector', company: 'company'};
+const SIDE_OF = {'computer-connector': 'connector', 'computer-non-connector': 'non-connector', company: 'company',
+  'company-aster': 'company', 'company-zeta': 'company'};
 function stampSides() {
   if (!truth) return;
   [truth.rows, truth.cohortRows].forEach(list => (list || []).forEach(row => { row.side = SIDE_OF[truthSegment(row)] || 'unknown'; }));
@@ -807,6 +873,7 @@ function stampSides() {
 function resetTaskBenches() {
   applyDeliveryJoin();
   taskBenchCache = null;
+  taskHarnessCache = null;
   personSegmentCache = null;
   payoutLedgerTasks.forEach(task => { task.bench = benchOfTask(task.task) || 'unassigned'; });
   stampSides();
@@ -858,7 +925,7 @@ function personSegments(row) {
       if (!personSegmentCache.has(who)) personSegmentCache.set(who, new Set());
       personSegmentCache.get(who).add(key);
     };
-    payoutLedgerTasks.forEach(task => add(task.email, taskSegment(task.bench, typeFlag(task.filterType))));
+    payoutLedgerTasks.forEach(task => add(task.email, ledgerSegment(task)));
     (truth ? truth.rows : []).forEach(task => add(task.owner, truthSegment(task)));
   }
   const set = new Set(personSegmentCache.get(String(row.email || '').toLowerCase()) || []);
@@ -895,9 +962,10 @@ const shownTasks = rows => rows.length;
 // not by its trainer's roster team: people work on both benches and the roster
 // moves. A row with no bench recorded - the audited batches 1 to 4.1 - is a
 // Computer Bench task, split by its connector flag.
-const deliverySegment = row => taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type));
+const deliverySegment = row => taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type),
+  row.bench === 'company' ? deliveryHarness(row) : null);
 const auditRows = () => (audit ? audit.rows.filter(row => segmentMatches(deliverySegment(row))) : []);
-const ledgerRows = () => payoutLedgerTasks.filter(task => inTaskSegment(task.bench, typeFlag(task.filterType)));
+const ledgerRows = () => payoutLedgerTasks.filter(task => segmentMatches(ledgerSegment(task)));
 
 // The harness image a task runs in, read from its Dockerfile. Chosen from the
 // dropdown on a bench tab; 'none' is the tasks whose Dockerfile was never read.
@@ -951,7 +1019,7 @@ function renderHarnessMenus() {
     const caret = tab.querySelector('.segcaret');
     const active = seg === segment;
     caret.setAttribute('aria-label', `Harness within ${seg ? SEGMENTS[seg] : 'all benches'}`);
-    caret.hidden = !keys.length;
+    caret.hidden = keys.length < 2;
     tab.classList.toggle('has-harness', active && Boolean(harness));
     let tag = button.querySelector('.segbtn-h');
     if (active && harness) {
@@ -3080,19 +3148,19 @@ function switchView(viewName, push = true) {
 function acceptedTasksAllDates() {
   if (!finalisationRows.length || !gcsPipeline) return null;
   return new Set(finalisationRows
-    .filter(row => inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType)))
+    .filter(row => inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder)))
     .map(row => row.name)).size;
 }
 
 function commandSnapshot() {
-  const folders = finalisationRows.filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType)));
+  const folders = finalisationRows.filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder)));
   // One task can be finalised into several cohorts; the accepted count is task names, not folders.
   const tasks = new Set(folders.map(row => row.name));
   return {
     ready: Boolean(finalisationRows.length && gcsPipeline),
     folders,
     tasks,
-    current: (gcsPipeline?.current || []).filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.task), evaluationConnector(row))),
+    current: (gcsPipeline?.current || []).filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.task), evaluationConnector(row), harnessOfTask(row.task))),
     duplicates: folders.length - tasks.size,
     unassigned: folders.filter(row => !row.trainer).length,
   };
@@ -3723,7 +3791,7 @@ function payoutSplit(row) {
   const tasks = payoutLedgerTasks.filter(task => String(task.email || '').toLowerCase() === who && task.payable);
   const leaves = new Map();
   const at = task => {
-    const key = taskSegment(task.bench, typeFlag(task.filterType));
+    const key = ledgerSegment(task);
     if (!leaves.has(key)) leaves.set(key, {paid: 0, pending: 0});
     return leaves.get(key);
   };
@@ -3736,7 +3804,7 @@ function payoutSplit(row) {
   let unplacedPaid = Math.max(paidTotal - itemised.length - unitemisedPaid, 0);
   let unplacedPending = 0;
   if (unitemised.length) {
-    const keys = new Set(unitemised.map(task => taskSegment(task.bench, typeFlag(task.filterType))));
+    const keys = new Set(unitemised.map(task => ledgerSegment(task)));
     if (keys.size === 1) {
       const leaf = at(unitemised[0]);
       leaf.paid += unitemisedPaid;

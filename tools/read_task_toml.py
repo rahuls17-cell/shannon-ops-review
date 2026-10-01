@@ -66,15 +66,33 @@ FROM_LINE = re.compile(r'^\ufeff?\s*FROM\s+(?:--\S+\s+)*(\S+)', re.M | re.I)
 
 # Which bench a connector task belongs to, derived from that image. Checked
 # against the 348 labelled rows in the reference sheet, which it reproduces
-# exactly. Order matters: benchmark-base sits under data-obi-rl-gym and is a
-# company image, while obi-benchmark under connectors-rl-gym is a computer one,
-# so the registry path is tested before the image name.
+# exactly, and against the image register Rahul shared (Zeta V1 to V4, Aster
+# V5 to V7).
+#
+# Company Bench has two harnesses. An Aster image always says aster in its
+# name, and a Zeta image that says zeta is Zeta. Most Zeta images do not say it,
+# though: benchmark-base (data-obi-rl-gym) and company-bench-private are the
+# Zeta images of the register, and so is obi-benchmark under connectors-rl-gym
+# at the V3 pinned-data digest - the same registry path that, at any other
+# digest, is a Computer Bench synthetic image (the reference sheet labels
+# obi-benchmark@8219115c that way). So the register's Zeta digests are tested
+# before the registry path, and the registry path before the image name.
+ZETA_DIGESTS = (
+    'ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83',  # V1
+    '975f115a995790786a6dbf124204433ccf77460f0277227fbdd21745388e56ca',  # V2, GCP
+    'cb2fee77bd5b1bbe02471664111fae13711c2a0851147f7da987105bf015f293',  # V2, Docker Hub
+    '1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8',  # V3 pinned data
+)
+
+
 def bench_type(image):
     im = str(image or '').lower()
     if not im:
         return None
-    if 'connectors-harness-aster' in im:
+    if 'aster' in im:
         return 'company bench aster'
+    if 'zeta' in im or any(d in im for d in ZETA_DIGESTS):
+        return 'company bench zeta'
     if 'real-data' in im:
         return 'computer bench real'
     if 'connectors-rl-gym' in im:

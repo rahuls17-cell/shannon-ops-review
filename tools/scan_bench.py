@@ -6,7 +6,9 @@ What decides it
 The base image. A connector task runs in a harness image, and which harness it
 is separates the benches:
 
-    connectors-harness-aster                    company bench aster
+    aster anywhere in the image                 company bench aster
+    zeta anywhere, or a Zeta digest of the      company bench zeta
+      image register (V1 to V3)
     company-bench-private, benchmark-base,      company bench zeta
       anything under data-obi-rl-gym
     connectors-harness:real-data-*              computer bench real
@@ -250,6 +252,11 @@ def main():
                 misses.pop(row['id'], None)
                 why['read from the Dockerfile'] += 1
 
+    # The rule is applied again to every cached image, not only to new reads,
+    # so a change to it reaches the tasks read before the change.
+    for entry in known.values():
+        if entry.get('image'):
+            entry['bench'] = bench_type(entry['image'])
     benches = collections.Counter(v['bench'] for v in known.values() if v.get('bench'))
     payload = {
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),

@@ -281,6 +281,14 @@ check(bdd.source_kind({'source_uri': 'gs://yogesh-harbor-deliveries/ready-for-de
 check(bdd.source_kind({'source': 'Final DELIVERY.zip : batch_0/x/'}) == 'elsewhere', 'a named archive is elsewhere')
 check(bdd.source_kind({}) is None, 'no source is no source')
 
+# --- Aster or Zeta, for a Company Bench package -----------------------------
+check(bdd.harness_of({'bench_type': 'company bench aster'}) == 'aster', 'a declared Aster bench is Aster')
+check(bdd.harness_of({'bench_type': 'company bench zeta'}) == 'zeta', 'a declared Zeta bench is Zeta')
+check(bdd.harness_of({'image_ref': 'kuzphi/connectors-harness-aster:company-aster-v6-20260917',
+                      'bench_type': 'company bench zeta'}) == 'aster', 'the image the manifest names comes first')
+check(bdd.harness_of({}, 'Company Bench Zeta') == 'zeta', 'the folder class is the last word')
+check(bdd.harness_of({'bench_type': 'computer bench synth'}) is None, 'a computer bench has no company harness')
+
 if failures:
     print('\n'.join(f'FAIL {f}' for f in failures))
     sys.exit(1)

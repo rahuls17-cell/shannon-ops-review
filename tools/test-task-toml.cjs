@@ -116,12 +116,41 @@ print(json.dumps(m.bench_type(sys.stdin.read().strip())))
   assert.equal(bench('us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:x'),
     'company bench zeta', 'benchmark-base under data-obi-rl-gym is a company image');
   assert.equal(bench('us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/obi-benchmark@sha256:x'),
-    'computer bench synth', 'anything under connectors-rl-gym is a computer image');
+    'computer bench synth', 'connectors-rl-gym at a digest the register does not list is a computer image');
   assert.equal(bench('kuzphi/connectors-harness-aster:company-aster-v6'), 'company bench aster',
     'aster is a company bench despite the connectors-harness name');
   assert.equal(bench('kuzphi/connectors-harness:real-data-v4'), 'computer bench real');
   assert.equal(bench('python:3.12-slim-bookworm'), null,
     'a plain base image is not a bench at all');
+
+  // The image register Rahul shared: every Zeta and Aster image in it.
+  const register = {
+    'us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83': 'company bench zeta',
+    'docker.io/kuzphi/company-bench-private@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83': 'company bench zeta',
+    'us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:975f115a995790786a6dbf124204433ccf77460f0277227fbdd21745388e56ca': 'company bench zeta',
+    'docker.io/kuzphi/company-bench-private@sha256:cb2fee77bd5b1bbe02471664111fae13711c2a0851147f7da987105bf015f293': 'company bench zeta',
+    'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/obi-benchmark@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8': 'company bench zeta',
+    'docker.io/kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8': 'company bench zeta',
+    'kuzphi/company-bench-private:zeta-newdbs2-20260918': 'company bench zeta',
+    'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:832fec69897f00d324614205d2e70797eab8e991d7b172ea1a52091181011ae2': 'company bench aster',
+    'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44': 'company bench aster',
+    'docker.io/kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3': 'company bench aster',
+  };
+  Object.entries(register).forEach(([image, expected]) =>
+    assert.equal(bench(image), expected, `register: ${image.slice(0, 80)} should be ${expected}`));
+
+  // The page applies the same rule to the cached readings; it must agree with
+  // this one on every image the bench index holds.
+  const {benchOfImage} = require(path.join(root, 'truth.js'));
+  const index = JSON.parse(fs.readFileSync(path.join(root, 'assets', 'bench-index.json'), 'utf8'));
+  const images = [...new Set(Object.values(index.bench).map(v => v.image).filter(Boolean)), ...Object.keys(register)];
+  const py = JSON.parse(execFileSync('python', ['-c', `
+import sys, json, importlib.util
+spec = importlib.util.spec_from_file_location('r', ${JSON.stringify(tool)})
+m = importlib.util.module_from_spec(spec); spec.loader.exec_module(m)
+print(json.dumps([m.bench_type(i) for i in json.loads(sys.stdin.read())]))
+`], {input: JSON.stringify(images), encoding: 'utf8'}));
+  images.forEach((image, i) => assert.equal(benchOfImage(image), py[i], `the page and the scanner disagree on ${image.slice(0, 80)}`));
 
   const counts = {};
   ref.labelled.forEach(r => { counts[r.bench] = (counts[r.bench] || 0) + 1; });
