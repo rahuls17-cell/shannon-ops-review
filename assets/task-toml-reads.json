@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T18:11:06+00:00",
+ "generatedAt": "2026-10-01T18:21:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14624,6 +14624,64 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-was-said-next/a98270ecfea84a5dd4618a6409867b414e27e8425a6b9e9b8a852b9d1d69d61a.zip",
    "bytesRead": 49678,
+   "readOn": "2026-10-01"
+  },
+  "code-c516-legal-intake-escalation-routing-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c516-legal-intake-escalation-routing-audit/b156a43e62afd7400ae500b2f33322424bf8ab13e9676ad3b653d0ac934ea3b4.zip",
+   "bytesRead": 73697,
+   "readOn": "2026-10-01"
+  },
+  "open-counts-that-dont-add-up": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/open-counts-that-dont-add-up/5482068d4792c1f0133f23b8267e950d629042cf92dcbc17426c30e5440d5e6f.zip",
+   "bytesRead": 47618,
+   "readOn": "2026-10-01"
+  },
+  "the-resolve-that-never-took": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-resolve-that-never-took/9f960e3f932a4cd11320bdf8f85dca893cac294ecb058ce5e0b80982847a4015.zip",
+   "bytesRead": 49885,
+   "readOn": "2026-10-01"
+  },
+  "vendors-we-already-named-to-investors": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendors-we-already-named-to-investors/5c2dd422a355f90f8589d17caca2ebd89fb75fb896f183ffcc02590b94ce1c54.zip",
+   "bytesRead": 51815,
+   "readOn": "2026-10-01"
+  },
+  "who-can-open-our-lab-statements": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-can-open-our-lab-statements/29f3008efe6888acd8f2aa26e66323866779108d3ef585afe5da8d5ce5f68804.zip",
+   "bytesRead": 54193,
    "readOn": "2026-10-01"
   }
  }
