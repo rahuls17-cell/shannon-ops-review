@@ -82,20 +82,6 @@ longer decides Company Bench anywhere on the dashboard.
   accepted packages Aster 271, Zeta 206; Overview Accepted tasks Aster 163,
   Zeta 176; Delivery Aster 224 (Batches 5.1 to 10.1), Zeta 1,469, Computer
   Bench connector 167. Every Company Bench task is one or the other.
-- **Single / Multi connector** beside Aster and Zeta narrows Company Bench,
-  Aster or Zeta by how many connectors the task declares in its task.toml: one,
-  or two and more (gyms only - harbor and tags such as read-only are not
-  connectors). Read from the pipeline's package first, then the delivery
-  manifest, by name, so a new task is placed as soon as either has read it; a
-  task never read has no count and is left out while the choice is on. Picking
-  it outside Company Bench opens Company Bench; leaving Company Bench clears it.
-  Today every Aster task is single (Delivery 224, accepted 248) and nearly
-  every Zeta task declares all seven Zeta connectors (Delivery 1,462 multi, 7
-  single; accepted 191 multi, 12 single); Aster Multi is empty until such tasks
-  arrive. 2,652 pipeline Company Bench tasks have no connectors read yet.
-- The Pipeline tab follows Single / Multi everywhere it follows the segment:
-  the state cards, Accepted packages, the Delivery join, the accepted cohort
-  strip, the makeup tiles, the Bench chips and the task table.
 - **Fix: the Pipeline's In scope trend lagged one segment behind.** The
   day-by-day model it reads was rebuilt after the Pipeline was drawn, so its
   tasks-a-day and change showed the segment chosen before; on first load it was
@@ -114,15 +100,20 @@ longer decides Company Bench anywhere on the dashboard.
 - The image rule reaches the audited Batches 1 to 4.1 too: 3 Batch 2 tasks run
   on the Zeta image and move to Company Bench Zeta on the Delivery tab, as the
   Pipeline tab already had them.
-- **Delivery tab, Category mix and Category x GLM: Company Bench splits by
-  connector count.** A Company Bench package has no category of its own - its
-  manifest says "unnamed" or "connector" - so both cards showed one bar,
-  CompanyBench. It is now Company Bench - Single connector or Company Bench -
-  Multi-connector (Connectors not read when neither the manifest nor the
-  package lists them), the same count as the Single / Multi switch; Aster and
-  Zeta stay in the segment switch. Today: Multi-connector 1,463 (all Zeta),
-  Single connector 233 (224 Aster, 9 Zeta). The Category filter and the CSV
-  carry the same names.
+- **Delivery tab, Category mix and Category x GLM: Company Bench categories
+  are harness and connector count.** A Company Bench package has no category of
+  its own - its manifest says "unnamed" or "connector" - so both cards showed
+  one bar, CompanyBench. It is now Aster - Single connector, Aster -
+  Multi-connector, Zeta - Single connector or Zeta - Multi-connector: one
+  connector declared in the task's task.toml, or two and more (gyms only;
+  harbor and tags such as read-only are not connectors), read from the
+  manifest first and the pipeline's package by name. A new multi-connector Aster
+  task lands in its own category as it arrives. Today: Zeta multi 1,463, Aster
+  single 224, Zeta single 9, Aster multi none yet. The Category filter and the
+  CSV carry the same names.
+- A Single / Multi connector switch was tried beside Aster and Zeta and taken
+  out again; the count lives in the categories instead. Old links and saved
+  choices that carry it are ignored.
 - The Drive reader records `harness` on Company Bench rows.
 
 ### Delivery tab

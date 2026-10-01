@@ -197,7 +197,7 @@ const infoCopy = {
     const count = key => rows.filter(row => leafOf(truthSegment(row)) === key).length;
     return 'One split for the whole dashboard, applied like the date range, and decided by the task, never by who made it - people work on both benches and the roster moves. ' +
       'First the bench. Company Bench: where the task was delivered when it has been (the CompanyBench batches and the CompanyBench folder inside a Computer Bench batch), otherwise the base image in its Dockerfile; every other task is Computer Bench. ' +
-      'Then, within Computer Bench, Connector or Non-connector by the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit; choosing Computer Bench shows both. Company Bench is connector work only, so it splits instead by harness: Aster or Zeta, read from the base image in the task\u2019s Dockerfile (an Aster image says aster; a Zeta image says zeta or is one of the image register\u2019s Zeta images), else from its delivery manifest, else Zeta when it mounts Zeta’s own SQL gym. Single or Multi narrows Company Bench, Aster or Zeta by how many connectors the task declares in its task.toml - one, or two and more. ' +
+      'Then, within Computer Bench, Connector or Non-connector by the task\u2019s connector flag - from the pipeline, the delivery folders, the payout ledger or the audit; choosing Computer Bench shows both. Company Bench is connector work only, so it splits instead by harness: Aster or Zeta, read from the base image in the task\u2019s Dockerfile (an Aster image says aster; a Zeta image says zeta or is one of the image register\u2019s Zeta images), else from its delivery manifest, else Zeta when it mounts Zeta’s own SQL gym. ' +
       `Right now, of ${fmt(rows.length)} pipeline tasks: Computer Bench ${fmt(count('computer-connector'))} connector and ${fmt(count('computer-non-connector'))} non-connector; ` +
       `Company Bench ${fmt(count('company-aster'))} Aster and ${fmt(count('company-zeta'))} Zeta${count('company') ? `, ${fmt(count('company'))} with no harness read yet` : ''}; ` +
       `${fmt(rows.length - SEGMENT_LEAVES.reduce((total, key) => total + count(key), 0))} carry no bench, type or harness yet and appear under All, or under their bench alone. ` +
@@ -704,7 +704,8 @@ const DOMAIN_TONES = {
 const AUDIT_TONES = {
   category: {Code: '--blue', 'Other/unclassified': '--slate', General: '--violet', Connector: '--aqua', Health: '--magenta', Law: '--orange', Finance: '--yellow',
              'Real Connector': '--green', Synthetic: '--accent', 'Company Bench Zeta': '--violet', CompanyBench: '--violet', Legal: '--orange', Engineering: '--blue', Other: '--slate',
-             'Single connector': '--violet', 'Multi-connector': '--magenta', 'Connectors not read': '--slate'},
+             'Aster \u00b7 Single connector': '--violet', 'Aster \u00b7 Multi-connector': '--blue',
+             'Zeta \u00b7 Single connector': '--magenta', 'Zeta \u00b7 Multi-connector': '--orange'},
   acceptance: {Accepted: '--aqua', Rejected: '--red', Pending: '--yellow'},
   glm: {'0/4': '--slate', '1/4': '--blue', '2/4': '--violet', '3/4': '--accent', '4/4': '--aqua'},
   difficulty: {Easier: '--aqua', Harder: '--orange'},
@@ -736,16 +737,8 @@ const SEGMENT_TONES = {computer: '--blue', 'computer-connector': '--aqua', 'comp
 // Company Bench.
 const LEGACY_SEGMENTS = {connector: 'computer-connector', 'non-connector': 'computer-non-connector',
   'company-connector': 'company', 'company-non-connector': 'company'};
-// Within Company Bench, a task is single-connector or multi-connector by how
-// many connectors its task.toml declares: one, or two and more. Chosen beside
-// Aster and Zeta and kept apart from the segment, so it narrows Company Bench,
-// Aster or Zeta alike. A task whose connectors were never read has no count
-// and is left out while the choice is on.
-let connCount = '';
-const CONN_LABELS = {single: 'Single connector', multi: 'Multi-connector'};
-const leafOf = key => String(key).replace(/-(single|multi)$/, '');
-const segmentMatches = key => (!segment || key === segment || String(key).startsWith(`${segment}-`))
-  && (!connCount || String(key).endsWith(`-${connCount}`));
+const leafOf = key => String(key);
+const segmentMatches = key => !segment || key === segment || String(key).startsWith(`${segment}-`);
 let segment = '';
 // Which bench a task is on, strongest evidence first:
 //   1. where it was delivered - the Drive folder behind each Delivery row;
@@ -906,22 +899,20 @@ function countOfTask(...names) {
   }
   return null;
 }
-// A leaf key - bench and type, or bench, harness and connector count - when
-// they are known; the bench alone when only it is; 'unknown' when neither is.
-function taskSegment(bench, connector, harness, count) {
-  if (bench === 'company') return ['company', harness, count].filter(Boolean).join('-');
+// A leaf key - bench and type, or bench and harness - when both are known; the
+// bench alone when only it is; 'unknown' when neither is.
+function taskSegment(bench, connector, harness) {
+  if (bench === 'company') return harness ? `company-${harness}` : 'company';
   const side = bench === 'computer' || connector === true || connector === false ? 'computer' : null;
   if (!side) return 'unknown';
   const kind = connector === true ? 'connector' : connector === false ? 'non-connector' : null;
   return kind ? `${side}-${kind}` : side;
 }
-const truthCount = row => connectorCountOf(row.connectorServices)
-  || countOfTask(row.name, row.deliveredTask, row.packageTask, row.cohortFolder);
-const truthSegment = row => taskSegment(truthBench(row), truthConnector(row), truthHarness(row), truthCount(row));
-const inTaskSegment = (bench, connector, harness, count) => segmentMatches(taskSegment(bench, connector, harness, count));
+const truthSegment = row => taskSegment(truthBench(row), truthConnector(row), truthHarness(row));
+const inTaskSegment = (bench, connector, harness) => segmentMatches(taskSegment(bench, connector, harness));
 // A payout ledger task, by the bench and type it carries and its task's harness.
 const ledgerSegment = task => taskSegment(task.bench, typeFlag(task.filterType),
-  task.bench === 'company' ? harnessOfTask(task.task) : null, task.bench === 'company' ? countOfTask(task.task) : null);
+  task.bench === 'company' ? harnessOfTask(task.task) : null);
 // Each pipeline row carries its bench side so the Bench filter can test it directly.
 const SIDE_OF = {'computer-connector': 'connector', 'computer-non-connector': 'non-connector', company: 'company',
   'company-aster': 'company', 'company-zeta': 'company'};
@@ -979,16 +970,17 @@ function keepFolderAnswer(row) {
 }
 // A Company Bench package has no category of its own - its manifest says
 // "unnamed" or "connector" - so the Delivery cards would show one bar called
-// CompanyBench. It is split by how many connectors the task declares instead,
-// the same count as the Single and Multi switch; Aster and Zeta stay in the
-// segment switch.
-const COMPANY_CATEGORY = {single: 'Single connector', multi: 'Multi-connector'};
+// CompanyBench. Its category is its harness and how many connectors the task
+// declares in its task.toml - one, or two and more: Aster or Zeta, single
+// connector or multi-connector.
+const COMPANY_HARNESS = {aster: 'Aster', zeta: 'Zeta'};
+const COMPANY_COUNT = {single: 'Single connector', multi: 'Multi-connector'};
 function applyCompanyCategory() {
   if (!audit) return;
   audit.rows.forEach(row => {
     keepFolderAnswer(row);
     if (row.bench !== 'company') return;
-    row.category = `Company Bench · ${COMPANY_CATEGORY[deliveryCount(row)] || 'Connectors not read'}`;
+    row.category = `${COMPANY_HARNESS[deliveryHarness(row)] || 'Company Bench'} \u00b7 ${COMPANY_COUNT[deliveryCount(row)] || 'connectors not read'}`;
   });
 }
 // Everything above is read from data that arrives at different times, so it
@@ -1091,7 +1083,7 @@ const shownTasks = rows => rows.length;
 // A delivered package's own manifest list first, then the pipeline's reading.
 const deliveryCount = row => connectorCountOf(row.connectors) || countOfTask(row.task, row.packageName);
 const deliverySegment = row => taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type),
-  row.bench === 'company' ? deliveryHarness(row) : null, row.bench === 'company' ? deliveryCount(row) : null);
+  row.bench === 'company' ? deliveryHarness(row) : null);
 const auditRows = () => (audit ? audit.rows.filter(row => segmentMatches(deliverySegment(row))) : []);
 const ledgerRows = () => payoutLedgerTasks.filter(task => segmentMatches(ledgerSegment(task)));
 
@@ -1114,25 +1106,19 @@ const harnessKey = row => {
   return row.bench || 'none';
 };
 const harnessMatches = row => !harness || harnessKey(row) === harness;
-function setSegment(value, nextHarness = harness, nextConn = connCount) {
+function setSegment(value, nextHarness = harness) {
   value = LEGACY_SEGMENTS[value] || value;
   segment = SEGMENTS[value] ? value : '';
   harness = nextHarness || '';
-  // The connector count is a Company Bench choice: picking it from outside
-  // Company Bench opens Company Bench, and leaving Company Bench clears it.
-  connCount = CONN_LABELS[nextConn] ? nextConn : '';
-  if (connCount && !segment.startsWith('company')) segment = 'company';
-  if (segment && !segment.startsWith('company')) connCount = '';
-  try { localStorage.setItem('segment', segment); localStorage.setItem('harness', harness); localStorage.setItem('conn', connCount); } catch { /* storage may be unavailable */ }
+  try { localStorage.setItem('segment', segment); localStorage.setItem('harness', harness); localStorage.removeItem('conn'); } catch { /* storage may be unavailable */ }
   const url = new URL(location.href);
   if (segment) url.searchParams.set('seg', segment); else url.searchParams.delete('seg');
-  if (connCount) url.searchParams.set('conn', connCount); else url.searchParams.delete('conn');
+  url.searchParams.delete('conn');
   if (harness) url.searchParams.set('harness', harness); else url.searchParams.delete('harness');
   history.replaceState(history.state, '', url);
   renderEverything();
 }
 const setHarness = value => setSegment(segment, value);
-const setConnCount = value => setSegment(segment, harness, value);
 // One menu per tab, listing the harnesses its tasks actually run in; All also
 // lists the tasks with no Dockerfile read. The caret is part of the tab and
 // opens a menu drawn by the page, not the browser.
@@ -1224,18 +1210,13 @@ function syncSegmentSwitch() {
     button.classList.toggle('is-within', !on && Boolean(button.dataset.seg) && segment.startsWith(`${button.dataset.seg}-`));
     button.setAttribute('aria-pressed', String(on));
   });
-  document.querySelectorAll('#segmentSwitch [data-conn]').forEach(button => {
-    const on = button.dataset.conn === connCount;
-    button.classList.toggle('is-on', on);
-    button.setAttribute('aria-pressed', String(on));
-  });
   document.body.dataset.segment = segment;
   (truth ? truth.rows : []).forEach(row => { row.__seg = truthSegment(row); });
   renderHarnessMenus();
   document.querySelectorAll('[data-range]').forEach(node => {
     const here = node.dataset.range;
     const applies = !here || here === 'pipeline' || here === 'overview';
-    node.textContent = `${rangeLabel()}${segment ? ` · ${SEGMENTS[segment]}${connCount ? ` \u00b7 ${CONN_LABELS[connCount].toLowerCase()}` : ''} only` : ''}` +
+    node.textContent = `${rangeLabel()}${segment ? ` · ${SEGMENTS[segment]} only` : ''}` +
       (harness ? (applies ? ` · ${harnessLabel(harness)} harness` : ` · harness filter not applied here`) : '');
   });
 }
@@ -1247,9 +1228,6 @@ function restoreSegment() {
   let savedHarness = '';
   try { savedHarness = new URL(location.href).searchParams.get('harness') || localStorage.getItem('harness') || ''; } catch { savedHarness = ''; }
   harness = HARNESS_LABELS[savedHarness] ? savedHarness : '';
-  let savedConn = '';
-  try { savedConn = new URL(location.href).searchParams.get('conn') || localStorage.getItem('conn') || ''; } catch { savedConn = ''; }
-  connCount = CONN_LABELS[savedConn] && segment.startsWith('company') ? savedConn : '';
 }
 
 let auditLens = 'category';
@@ -3309,19 +3287,19 @@ function switchView(viewName, push = true) {
 function acceptedTasksAllDates() {
   if (!finalisationRows.length || !gcsPipeline) return null;
   return new Set(finalisationRows
-    .filter(row => inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder), countOfTask(row.name, row.folder)))
+    .filter(row => inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder)))
     .map(row => row.name)).size;
 }
 
 function commandSnapshot() {
-  const folders = finalisationRows.filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder), countOfTask(row.name, row.folder)));
+  const folders = finalisationRows.filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder)));
   // One task can be finalised into several cohorts; the accepted count is task names, not folders.
   const tasks = new Set(folders.map(row => row.name));
   return {
     ready: Boolean(finalisationRows.length && gcsPipeline),
     folders,
     tasks,
-    current: (gcsPipeline?.current || []).filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.task), evaluationConnector(row), harnessOfTask(row.task), countOfTask(row.task))),
+    current: (gcsPipeline?.current || []).filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.task), evaluationConnector(row), harnessOfTask(row.task))),
     duplicates: folders.length - tasks.size,
     unassigned: folders.filter(row => !row.trainer).length,
   };
@@ -4678,7 +4656,6 @@ function renderGlobalFilters() {
   const chips = [];
   if (segment) chips.push({page: 'Segment', label: '', value: SEGMENTS[segment], clear: () => setSegment('')});
   if (harness) chips.push({page: 'Harness', label: '', value: harnessLabel(harness), clear: () => setHarness('')});
-  if (connCount) chips.push({page: 'Connectors', label: '', value: CONN_LABELS[connCount], clear: () => setConnCount('')});
   if (dateRange.start || dateRange.end) chips.push({page: 'Range', label: '', value: rangeLabel(), clear: () => byId('clearDates')?.click()});
   GLOBAL_FILTER_SOURCES.forEach(([id, page]) => {
     byId(id)?.querySelectorAll('.chipbtn:not(.is-clear)').forEach(button => {
@@ -4775,8 +4752,6 @@ function wireEvents() {
     panel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
   });
   document.addEventListener('click', event => {
-    const conn = event.target.closest('#segmentSwitch [data-conn]');
-    if (conn) { setConnCount(connCount === conn.dataset.conn ? '' : conn.dataset.conn); return; }
     const pick = event.target.closest('#segmentSwitch [data-seg], .segtile[data-seg]');
     if (!pick || event.target.closest('.why')) return;
     const value = pick.dataset.seg || '';
