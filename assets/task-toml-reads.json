@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T11:51:19+00:00",
+ "generatedAt": "2026-10-01T12:01:21+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13844,6 +13844,54 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-wrote-while-i-was-heads-down/c3f50b4c55a9203d48bcc911585212a7b3940c47cbae4e83343989dba7264781.zip",
    "bytesRead": 49758,
+   "readOn": "2026-10-01"
+  },
+  "august-lab-order-copies-counted-once": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/august-lab-order-copies-counted-once/886a9cc371deb508ca9396b3750ab555767053378097f88b883fd5b0ea6de7a7.zip",
+   "bytesRead": 52266,
+   "readOn": "2026-10-01"
+  },
+  "harbor-single-task-8k7ulkrz": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-8k7ulkrz/7dce690a40e1d88630fc05c805c7920ef87759e63256806bc25368c9dda61de9.zip",
+   "bytesRead": 48996,
+   "readOn": "2026-10-01"
+  },
+  "the-projects-only-one-person-is-on": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-projects-only-one-person-is-on/8755f2391f15be9a518e9cd3ea26b513b853fcd63b819e9195cd073ee16d779a.zip",
+   "bytesRead": 46743,
+   "readOn": "2026-10-01"
+  },
+  "what-the-summariser-actually-gets": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-summariser-actually-gets/9801f1e5bec611703154183ff77f0d6876ed310a68b65255d3a92dc14958dbee.zip",
+   "bytesRead": 51284,
    "readOn": "2026-10-01"
   }
  }
