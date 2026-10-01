@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T13:21:07+00:00",
+ "generatedAt": "2026-10-01T13:31:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14054,6 +14054,28 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-week-nobody-confirmed/3e948cf020815dbc9092ffc0d4f3088e24d504711de56942fa549551546a4fb8.zip",
    "bytesRead": 47170,
+   "readOn": "2026-10-01"
+  },
+  "edu-sch-b3-practicum-reflection-efficacy-ledger": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sch-b3-practicum-reflection-efficacy-ledger/b5965b59c6b08d64eb7d475aa62c10a5c8100ca07232efd01b2edd4337258379.zip",
+   "bytesRead": 67548,
+   "readOn": "2026-10-01"
+  },
+  "the-latest-change-everywhere": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-latest-change-everywhere/1cbada3fe85f7d020516242808e28a6c91809475152cb7b11313516b453a5da6.zip",
+   "bytesRead": 47205,
    "readOn": "2026-10-01"
   }
  }
