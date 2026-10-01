@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T21:21:05+00:00",
+ "generatedAt": "2026-10-01T21:31:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14946,6 +14946,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-cpt-codes-the-boards-still-miss/fe0318642b31294739b816df8f07bd0ee7cb6c6317469dcec9e0890fa6a75d5b.zip",
    "bytesRead": 51985,
+   "readOn": "2026-10-01"
+  },
+  "the-canvas-points-at-an-empty-room": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-canvas-points-at-an-empty-room/e193b37b28b7a37530e77334a71701ab4c55a6b4e122eaaecc3472f5ae6728c6.zip",
+   "bytesRead": 50031,
    "readOn": "2026-10-01"
   }
  }
