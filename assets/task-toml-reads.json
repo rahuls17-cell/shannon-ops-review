@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T19:01:08+00:00",
+ "generatedAt": "2026-10-01T19:11:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14838,6 +14838,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-still-owes-a-reply/3b6be6472ec747152d708f8f350a3ab36ddfc70211edff3fc58c44faa78e1090.zip",
    "bytesRead": 52341,
+   "readOn": "2026-10-01"
+  },
+  "the-visit-schedule-we-tell-patients-v12": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-visit-schedule-we-tell-patients-v12/755c138306f80a9011d544cb9e6c0ce71552e009b7e3d7c35c9f1247fe63eec3.zip",
+   "bytesRead": 52846,
+   "readOn": "2026-10-01"
+  },
+  "virtual-care-codes-at-cms-rates": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/virtual-care-codes-at-cms-rates/d8341d3fa31d3f899b3fc94377f16cf58e7a1e86b809a1b1357c1a9c8454414c.zip",
+   "bytesRead": 49183,
    "readOn": "2026-10-01"
   }
  }
