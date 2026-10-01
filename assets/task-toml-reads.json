@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T10:31:05+00:00",
+ "generatedAt": "2026-10-01T10:41:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13664,6 +13664,40 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/winter-lab-fee-components/d682a4812c0f87c5d723f97e2e0fc4c688b67f7425819f1d7c69984d7cae956f.zip",
    "bytesRead": 49433,
+   "readOn": "2026-10-01"
+  },
+  "gen-g627-cpom-medical-directorship-compliance-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g627-cpom-medical-directorship-compliance-audit/9f75e92fcc1be8a0d3ea6e245334124e5a00519959245e1782604f3c54b21a22.zip",
+   "bytesRead": 72493,
+   "readOn": "2026-10-01"
+  },
+  "lab-results-morning-brief": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-results-morning-brief/f9b6e387cbec7f09efa1be6ff9bd56f68c690541b16fb24dc25827d85a79de69.zip",
+   "bytesRead": 48698,
+   "readOn": "2026-10-01"
+  },
+  "the-threads-that-would-not-die": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-threads-that-would-not-die/677fdc5bf52db9c7c81add2a06c5161f1e03eacee4b48b72023eecc0d28ed3ae.zip",
+   "bytesRead": 67029,
    "readOn": "2026-10-01"
   }
  }
