@@ -2608,16 +2608,14 @@ function renderCarried() {
     const pressed = state ? byId('cState').value === state : false;
     const tag = state ? 'button' : 'div';
     return `<${tag} class="kpi kpi-button${state ? '' : ' kpi-static'}" data-tone="${tone}" style="--i:${index}"${state ? ` data-filter="cState" data-value="${esc(state)}" aria-pressed="${pressed}"` : ''}>
-      <div class="kpi-top"><h3>${esc(label)}</h3></div>
+      <div class="kpi-top"><h3><i class="kpi-dot"></i>${esc(label)}</h3>${state ? `<span class="kpi-tag">${all.length ? Math.round((value / all.length) * 100) : 0}%</span>` : ''}</div>
       <strong data-count="${value}" data-key="carried:${esc(label)}">${fmt(value)}</strong>
       <p class="kpi-note">${esc(note)}</p>
-      <span class="tile-share"><i style="--pct:${all.length ? Math.round((value / all.length) * 100) : 0}"></i></span>
-      ${state ? `<span class="kpi-cue">${pressed ? 'filtering · click to clear' : 'click to filter'}</span>` : ''}
+      <span class="track" style="--pct:${all.length ? Math.round((value / all.length) * 100) : 0}"><i></i></span>
     </${tag}>`;
   }).join('');
   animateCounts(figuresHost);
-  setText('carriedStatus', `${fmt(all.length)} tasks of the ${fmt(truth.rows.length)} in scope were first decided before ${truth.cut}; ` +
-    `${fmt(settledOf(all))} reached an acceptance under the current pipeline. They are included in the Pipeline figures, not added to them.`);
+  setText('carriedStatus', `${fmt(all.length)} of ${fmt(truth.rows.length)} in-scope tasks were first decided before ${truth.cut} \u00b7 ${fmt(settledOf(all))} accepted since \u00b7 already counted in the Pipeline figures`);
 
   // When: stacked bars per settlement day, with the cleared share running above.
   const states = ['accepted', 'legacy accepted', 'rejected', 'error'];
@@ -2660,7 +2658,7 @@ function renderCarried() {
     : '');
 
   // Who: the trainers with the most carried-over tasks.
-  const owners = Object.entries(groupBy(base.filter(row => row.owner), row => row.owner)).map(([owner, list]) => ({owner, n: list.length, settled: settledOf(list)})).sort((a, b) => b.n - a.n || b.settled - a.settled).slice(0, 8);
+  const owners = Object.entries(groupBy(base.filter(row => row.owner), row => row.owner)).map(([owner, list]) => ({owner, n: list.length, settled: settledOf(list)})).sort((a, b) => b.n - a.n || b.settled - a.settled).slice(0, 10);
   const ownerMax = Math.max(1, ...owners.map(o => o.n));
   byId('carriedOwners').innerHTML = owners.length ? owners.map((o, index) => `
     <button type="button" class="leader-row${byId('cOwner').value === o.owner ? ' is-on' : ''}" style="--i:${index}" data-filter="cOwner" data-value="${esc(o.owner)}" data-tip="${esc(o.owner)}: ${fmt(o.n)} carried over, ${fmt(o.settled)} accepted">
@@ -2671,37 +2669,38 @@ function renderCarried() {
     </button>`).join('') : '<p class="empty">No trainers in this selection.</p>';
   setText('carriedOwnersNote', `${fmt(new Set(base.map(row => row.owner).filter(Boolean)).size)} trainers hold the ${fmt(base.length)} shown · accepted share drawn inside each bar`);
 
-  // Where: gate era, domain and duplicate flags as clickable split bars.
-  const PALETTE = ['--accent', '--blue', '--aqua', '--violet', '--magenta', '--orange', '--yellow', '--slate'];
-  const splitBar = (label, key, filter, order) => {
-    const entries = Object.entries(groupBy(base, row => key(row))).map(([k, list]) => [k, list.length]);
-    entries.sort(order || ((a, b) => b[1] - a[1]));
+  // Where: gate era, domain and duplicate flags, each a bar list on the shared
+  // axis of everything shown, so the three read with the rest of the dashboard.
+  const GATE_TONE = {'KESTREL full': '--good', 'KESTREL on': '--aqua', 'Opus gate': '--violet', 'GLM-5.2 gate only': '--caution'};
+  const whereList = (title, filter, entries, toneOf, nameOf = k => k) => {
     const sum = entries.reduce((n, [, v]) => n + v, 0) || 1;
-    return `<div class="split-row"><span class="split-label">${label}</span>
-      <span class="split-bar">${entries.map(([k, n], index) => `<button type="button" class="split-seg${byId(filter)?.value === k ? ' is-on' : ''}" style="flex:${n};--c:var(${PALETTE[index % PALETTE.length]})" data-filter="${filter}" data-value="${esc(k)}" data-tip="${esc(k)}: ${fmt(n)} (${Math.round((n / sum) * 100)}%)">${n / sum >= 0.08 ? `<span>${esc(k)}</span><b>${fmt(n)}</b>` : ''}</button>`).join('')}</span></div>`;
+    return `<div class="facet"><p class="subhead">${title}</p><div class="barlist is-where">${entries.map(([k, n]) => {
+      const on = byId(filter)?.value === k;
+      return `<button type="button" class="brow${on ? ' is-on' : ''}" style="--w:${Math.max(1.5, (n / sum) * 100).toFixed(1)};--c:var(${toneOf(k)})" data-filter="${filter}" data-value="${esc(k)}" data-tip="${esc(nameOf(k))}: ${fmt(n)} of ${fmt(sum)} (${Math.round((n / sum) * 100)}%) \u00b7 click to filter"><span class="brow-label">${esc(nameOf(k))}</span><span class="brow-bar"><i></i></span><b>${fmt(n)}</b><small>${Math.round((n / sum) * 100)}%</small></button>`;
+    }).join('')}</div></div>`;
   };
+  const tallyBy = key => Object.entries(groupBy(base, row => key(row))).map(([k, list]) => [k, list.length]).sort((a, b) => b[1] - a[1]);
   const dupKey = row => (row.duplicateTier === 'likely' ? 'likely' : row.possibleDuplicate ? 'yes' : 'no');
   const dupName = {yes: 'Possible duplicate', likely: 'Likely duplicate', no: 'Not flagged'};
   byId('carriedSplits').innerHTML = base.length
-    ? splitBar('Gate', row => row.gateEra || 'Not recorded', 'cGate') +
-      splitBar('Domain', row => row.domain || 'Not recorded', 'cDomain') +
-      `<div class="split-row"><span class="split-label">Duplicates</span><span class="split-bar">${['no', 'yes', 'likely'].map((k, index) => {
-        const n = base.filter(row => dupKey(row) === k).length;
-        return n ? `<button type="button" class="split-seg${byId('cDuplicate')?.value === k ? ' is-on' : ''}" style="flex:${n};--c:var(${['--slate', '--yellow', '--red'][index]})" data-filter="cDuplicate" data-value="${k}" data-tip="${dupName[k]}: ${fmt(n)} (${Math.round((n / base.length) * 100)}%)">${n / base.length >= 0.08 ? `<span>${dupName[k]}</span><b>${fmt(n)}</b>` : ''}</button>` : '';
-      }).join('')}</span></div>`
+    ? whereList('Gate', 'cGate', tallyBy(row => row.gateEra || 'Not recorded'), k => GATE_TONE[k] || '--slate') +
+      whereList('Domain', 'cDomain', tallyBy(row => row.domain || 'Not recorded'), k => DOMAIN_TONES[k] || '--slate') +
+      whereList('Duplicates', 'cDuplicate', ['no', 'yes', 'likely'].map(k => [k, base.filter(row => dupKey(row) === k).length]).filter(([, n]) => n), k => ({no: '--slate', yes: '--caution', likely: '--concern'})[k], k => dupName[k])
     : '<p class="empty">Nothing in this selection.</p>';
 
   // Why each task settled the way it did, and the findings raised on the way.
   const whys = Object.entries(groupBy(base, row => row.why || 'Not recorded')).map(([k, list]) => [k, list.length]).sort((a, b) => b[1] - a[1]);
-  const findings = Object.entries(base.reduce((acc, row) => { (row.findingsAllRuns || row.findings || []).forEach(f => { acc[f] = (acc[f] || 0) + 1; }); return acc; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 8);
+  const findings = Object.entries(base.reduce((acc, row) => { (row.findingsAllRuns || row.findings || []).forEach(f => { acc[f] = (acc[f] || 0) + 1; }); return acc; }, {})).sort((a, b) => b[1] - a[1]).slice(0, 6);
   const miniList = (entries, extra, tone) => {
     const top = Math.max(1, ...entries.map(([, n]) => n));
     return entries.map(([k, n], index) => `<button type="button" class="mini-row${carriedExtra[extra] === k ? ' is-on' : ''}" style="--i:${index};--c:${tone(k, index)}" data-extra="${extra}" data-value="${esc(k)}" data-tip="${esc(k)}: ${fmt(n)} of ${fmt(base.length)}">
       <span class="mini-label">${esc(k)}</span><span class="mini-track"><i style="--pct:${Math.round((n / top) * 100)}"></i></span><b>${fmt(n)}</b></button>`).join('');
   };
-  byId('carriedSplits').insertAdjacentHTML('beforeend', base.length ? `
-    <div class="facet"><p class="subhead">Why it settled that way</p><div class="minilist">${miniList(whys, 'why', k => stateTone(k.startsWith('accepted and') ? 'accepted' : k.startsWith('acceptance withdrawn') ? 'legacy accepted' : k.startsWith('reached') ? 'rejected' : 'error'))}</div></div>
-    <div class="facet"><p class="subhead">Findings raised on any run<em>top ${fmt(findings.length)}</em></p><div class="minilist">${findings.length ? miniList(findings, 'finding', () => 'var(--accent)') : '<p class="empty">No findings recorded.</p>'}</div></div>` : '');
+  byId('carriedWhy').innerHTML = base.length
+    ? miniList(whys, 'why', k => stateTone(k.startsWith('accepted and') ? 'accepted' : k.startsWith('acceptance withdrawn') ? 'legacy accepted' : k.startsWith('reached') ? 'rejected' : 'error'))
+    : '<p class="empty">Nothing in this selection.</p>';
+  byId('carriedFindings').innerHTML = findings.length ? miniList(findings, 'finding', () => 'var(--accent)') : '<p class="empty">No findings recorded.</p>';
+  setText('carriedFindingsNote', findings.length ? `Top ${fmt(findings.length)} across the shown tasks. Click a row to filter.` : '');
 
   // Chips and the table.
   const labels = {cState: 'State', cOwner: 'Trainer', cGate: 'Gate', cDomain: 'Domain', cDuplicate: 'Duplicates', cSearch: 'Search'};
@@ -4803,7 +4802,22 @@ function wireEvents() {
 
 // The topbar search drives whichever view owns a search box.
 
+// The staging build injects a banner above the page; it is restyled here so a
+// preview reads like the dashboard it previews.
+function dressStagingBanner() {
+  const banner = byId('stagingBanner');
+  if (!banner || banner.dataset.dressed) return;
+  const refs = [...banner.querySelectorAll('code')].map(node => node.textContent.trim());
+  const link = banner.querySelector('a')?.getAttribute('href') || 'https://rahuls17-cell.github.io/shannon-ops-review/';
+  const short = ref => { const [branch, sha] = String(ref).split('@'); return `${branch} ${String(sha || '').slice(0, 7)}`.trim(); };
+  banner.dataset.dressed = 'true';
+  banner.innerHTML = `<span class="sb-tag">Staging preview</span>
+    <span class="sb-meta">${refs[0] ? `code <b>${esc(short(refs[0]))}</b>` : ''}${refs[1] ? ` <i></i> data <b>${esc(short(refs[1]))}</b>` : ''}</span>
+    <a class="sb-link" href="${esc(link)}">Open the live dashboard</a>`;
+}
+
 function init() {
+  dressStagingBanner();
   restoreSegment();
   renderHero();
   renderTopPendingCards();

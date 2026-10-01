@@ -697,9 +697,8 @@
           <header class="view-head">
             <div>
               <h1 id="carried-title">Carried over</h1>
-              <p class="lede">Tasks first decided before 5 September that the pipeline running today has since settled. Not new work, and not closed history &mdash; they are counted inside the Pipeline figures, and this is a lens on that population rather than a separate universe.</p>
+
             </div>
-            <div class="sourcestrip" data-sources="pipeline"></div>
           </header>
           <p class="rangeecho" data-range="carried"></p>
           <p class="provenance" id="carriedStatus"></p>
@@ -729,9 +728,24 @@
             </section>
             <section class="panel">
               <header class="panel-head">
-                <div><h2>Where it sits</h2><p class="panel-note">Gate, domain and duplicate flags across the carried-over set. Click a segment to filter.</p></div>
+                <div><h2>Where it sits</h2><p class="panel-note">Gate, domain and duplicate flags. Click a row to filter.</p></div>
               </header>
               <div class="panel-body"><div id="carriedSplits" class="splits"></div></div>
+            </section>
+          </div>
+
+          <div class="split">
+            <section class="panel">
+              <header class="panel-head">
+                <div><h2>Why it settled that way</h2><p class="panel-note">The reason recorded on each task's deciding run. Click a row to filter.</p></div>
+              </header>
+              <div class="panel-body"><div id="carriedWhy" class="minilist"></div></div>
+            </section>
+            <section class="panel">
+              <header class="panel-head">
+                <div><h2>Findings raised on any run</h2><p class="panel-note" id="carriedFindingsNote"></p></div>
+              </header>
+              <div class="panel-body"><div id="carriedFindings" class="minilist"></div></div>
             </section>
           </div>
 

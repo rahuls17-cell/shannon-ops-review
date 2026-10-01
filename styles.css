@@ -3301,3 +3301,85 @@ button.trow:hover span:first-child { color: var(--accent); }
 .dsearch .fcount:empty { display: none; }
 #view-delivery .export-btn { border: 0; box-shadow: 0 1px 2px rgba(16, 23, 32, .12); }
 #view-delivery .export-btn:hover { box-shadow: 0 2px 6px rgba(16, 23, 32, .16); }
+
+/* ---------- Staging banner: quiet strip in the dashboard's own voice ---------- */
+body #stagingBanner { display: flex; align-items: center; justify-content: center; gap: 14px; padding: 6px 16px; background: var(--panel); color: var(--ink-2); border-bottom: 1px solid var(--line); font: 500 12px/1.4 var(--sans); letter-spacing: 0; text-align: left; }
+body #stagingBanner .sb-tag { display: inline-flex; align-items: center; gap: 6px; padding: 2px 9px; border-radius: 999px; background: var(--caution-soft); color: var(--caution); font-size: 10.5px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+body #stagingBanner .sb-tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--caution); }
+body #stagingBanner .sb-meta { color: var(--muted); font-variant-numeric: tabular-nums; }
+body #stagingBanner .sb-meta b { font-weight: 600; color: var(--ink); }
+body #stagingBanner .sb-meta i { display: inline-block; width: 3px; height: 3px; margin: 0 8px 2px; border-radius: 50%; background: var(--line); vertical-align: middle; }
+body #stagingBanner .sb-link, body #stagingBanner a { color: var(--accent); font-weight: 500; text-decoration: none; }
+body #stagingBanner .sb-link:hover { text-decoration: underline; }
+
+/* ---------- Payouts: the calm card family ---------- */
+#payoutSummary .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; gap: 8px; }
+#payoutSummary .kpi::before, #payoutSummary .kpi::after { display: none; }
+#payoutSummary .kpi:hover, #payoutSummary .kpi-button:hover { transform: none; background: var(--panel); border-color: #cfd4dc; box-shadow: var(--shadow-lift); }
+#payoutSummary .kpi-button[aria-pressed="true"] { background: var(--panel); border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); transform: none; }
+#payoutSummary .kpi h3 { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--muted); }
+#payoutSummary .kpi h3::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--tc, var(--slate)); }
+#payoutSummary .kpi > strong { font-size: 28px; font-weight: 600; letter-spacing: -.02em; line-height: 1.1; color: var(--ink); }
+#payoutSummary .kpi .kpi-note { font-size: 12.5px; color: var(--ink-2); }
+#view-payouts .panel { border-radius: var(--radius); border: 1px solid var(--line); box-shadow: var(--shadow); }
+#view-payouts .panel-head h2 { font-size: 13px; font-weight: 600; }
+#view-payouts .medal, #view-payouts .leader-row .rank.medal { background: var(--panel-3); color: var(--ink-2); box-shadow: none; }
+#view-payouts .team-card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: none; }
+#view-payouts .team-card::before { display: none; }
+#view-payouts .team-card.is-champion { border-color: var(--line); background: var(--panel); }
+#view-payouts .team-card:hover { transform: none; border-color: #cfd4dc; box-shadow: var(--shadow-lift); }
+#view-payouts .leader-row { background: var(--panel); border-color: var(--line-soft); }
+#view-payouts .leader-row:hover, #view-payouts .leader-row.is-linked { transform: none; background: var(--panel-2); border-color: #cfd4dc; }
+#view-payouts .leader-row .amount { color: var(--caution); }
+#view-payouts .settle { background: var(--panel-2); border-color: var(--line-soft); }
+#view-payouts .settle-head b { color: var(--ink); }
+#view-payouts .benchring { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius-sm); box-shadow: none; }
+#view-payouts .benchring .ring-fg { stroke: var(--good); }
+#view-payouts .benchring .ring-big { color: var(--ink); font-weight: 600; }
+#view-payouts .benchring-lines .is-owed { color: var(--caution); }
+
+/* ---------- Carried over: the calm card family ---------- */
+#view-carried .provenance { font-size: 12.5px; color: var(--muted); }
+#carriedFigures .kpi { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; gap: 8px; }
+#carriedFigures .kpi::before, #carriedFigures .kpi::after { display: none; }
+#carriedFigures .kpi:hover { transform: none; border-color: #cfd4dc; box-shadow: var(--shadow-lift); }
+#carriedFigures .kpi-button[aria-pressed="true"] { transform: none; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+#carriedFigures .kpi h3 { display: inline-flex; align-items: center; gap: 7px; font-size: 12px; font-weight: 500; letter-spacing: 0; text-transform: none; color: var(--muted); }
+#carriedFigures .kpi[data-tone="aqua"] { --c: var(--aqua); } #carriedFigures .kpi[data-tone="blue"] { --c: var(--blue); }
+#carriedFigures .kpi[data-tone="yellow"] { --c: var(--yellow); } #carriedFigures .kpi[data-tone="orange"] { --c: var(--orange); }
+#carriedFigures .kpi[data-tone="slate"] { --c: var(--slate); }
+#carriedFigures .kpi > strong { font-size: 28px; font-weight: 600; letter-spacing: -.02em; line-height: 1.1; color: var(--ink); }
+#carriedFigures .kpi .kpi-note { font-size: 12.5px; color: var(--ink-2); }
+#carriedFigures .kpi .track i { background: var(--c, var(--ink)); }
+#view-carried .panel { border-radius: var(--radius); border: 1px solid var(--line); box-shadow: var(--shadow); }
+#view-carried .panel-head h2 { font-size: 13px; font-weight: 600; }
+#view-carried .panel-note { font-size: 12px; color: var(--muted); }
+#view-carried .medal, #view-carried .leader-row .rank.medal { background: var(--panel-3); color: var(--ink-2); box-shadow: none; }
+#view-carried .leader-row { background: var(--panel); border-color: var(--line-soft); }
+#view-carried .leader-row:hover, #view-carried .leader-row.is-on { transform: none; background: var(--panel-2); border-color: #cfd4dc; }
+#view-carried .comp-insight { border-left: 0; border: 1px solid var(--line-soft); color: var(--ink-2); }
+#view-carried .splits { gap: 16px; }
+#view-carried .facet .subhead { margin: 0 0 8px; font-size: 11px; letter-spacing: .08em; color: var(--muted); }
+.barlist.is-where { max-width: none; gap: 6px; }
+.barlist.is-where .brow { grid-template-columns: minmax(110px, 150px) minmax(0, 1fr) 48px 36px; padding: 4px 6px; margin: 0 -6px; border: 0; border-radius: 8px; background: transparent; font: inherit; color: inherit; text-align: left; cursor: pointer; transition: background var(--t-fast) var(--ease); }
+.barlist.is-where .brow:hover, .barlist.is-where .brow.is-on { background: var(--panel-2); }
+.barlist.is-where .brow.is-on .brow-label { color: var(--ink); font-weight: 600; }
+.barlist.is-where .brow-bar { height: 10px; }
+.barlist.is-where .brow b { font-size: 13px; font-weight: 600; color: var(--ink); }
+#view-carried .leaderboard { height: auto; align-content: start; gap: 6px; }
+#view-carried .leader-row { align-self: start; padding: 8px 10px; }
+
+/* Carried over: the two lower rows share heights; lists stay compact. */
+#view-carried .split-wide { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: stretch; }
+#view-carried .split { align-items: stretch; }
+#view-carried .splits { gap: 14px; }
+#view-carried .leaderboard { gap: 6px; }
+#view-carried .leader-row { padding: 7px 10px; }
+#view-carried .minilist { gap: 4px; }
+#view-carried .mini-row { padding: 6px 8px; margin: 0 -8px; border-radius: 8px; border: 0; background: transparent; }
+#view-carried .mini-row:hover { transform: none; background: var(--panel-2); }
+#view-carried .mini-row.is-on { background: var(--panel-2); border: 0; box-shadow: inset 3px 0 0 var(--c); }
+#view-carried .mini-label { font-size: 12.5px; color: var(--ink-2); }
+#view-carried .mini-row b { font-weight: 600; }
+#carriedWhy .mini-row { padding: 10px 8px; }
+#carriedWhy .minilist { gap: 6px; }
