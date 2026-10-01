@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T10:01:10+00:00",
+ "generatedAt": "2026-10-01T10:11:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13418,6 +13418,158 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-inbox-left-out/160ef4f2e909b474e912953b10b848e6bac2b05a001a7431905a555810624f4e.zip",
    "bytesRead": 45456,
+   "readOn": "2026-10-01"
+  },
+  "back-into-their-threads-v2": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/back-into-their-threads-v2/5f28a5df05e86098b8309a5765d501115cf6cb2f95e808a8638d96c6f673b079.zip",
+   "bytesRead": 45014,
+   "readOn": "2026-10-01"
+  },
+  "cake-ventures-thread-catch-up-QCUPLOAD": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/cake-ventures-thread-catch-up-QCUPLOAD/eaff070a28b832f1fe6bead68cb9b4d3481a3dde3cbc3b2b78f486850cc3039e.zip",
+   "bytesRead": 53777,
+   "readOn": "2026-10-01"
+  },
+  "code-c513-music-track-release-readiness-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c513-music-track-release-readiness-audit/e175b17a3960aedd2cdbe2e18c52e1914bdec80bf9602ecb7b478b88b04198db.zip",
+   "bytesRead": 78274,
+   "readOn": "2026-10-01"
+  },
+  "confirm-my-moved-meetings": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/confirm-my-moved-meetings/9e0d5208f02f3f596ce781c0dd5fe9de4a5efc0de46b35b8d0518fa2d187334b.zip",
+   "bytesRead": 48786,
+   "readOn": "2026-10-01"
+  },
+  "end-of-week-sync-her-conversations": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/end-of-week-sync-her-conversations/7d6d6c7934aaca614997bfb8ef5ee17cc7297c96ee4a79af4ccd600d794014c3.zip",
+   "bytesRead": 51228,
+   "readOn": "2026-10-01"
+  },
+  "even-stock-before-physical-count": {
+   "connector": true,
+   "services": [
+    "shopify-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/even-stock-before-physical-count/d334e66d0819cc09e549c54d14891722557eb66403b2f905f18bfa657a3a565f.zip",
+   "bytesRead": 46356,
+   "readOn": "2026-10-01"
+  },
+  "gen-g25-feed-metadata-compliance": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g25-feed-metadata-compliance/d598ed05d6832479230f5bc5ce9186bd4129b066269d4a7b103cc44dce0bb57f.zip",
+   "bytesRead": 75805,
+   "readOn": "2026-10-01"
+  },
+  "the-evening-label-digest": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-evening-label-digest/41af534ec75035579e47dace706413d43ee798534ba65bd68e3d4c8e7d430ae4.zip",
+   "bytesRead": 48259,
+   "readOn": "2026-10-01"
+  },
+  "the-headcount-that-counts-the-host": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-headcount-that-counts-the-host/1977020919ae89ef5d48eec4c1c2fd2e186ba6a4807e9965f22833adbbb0ff3a.zip",
+   "bytesRead": 60421,
+   "readOn": "2026-10-01"
+  },
+  "the-renewals-nobody-is-working": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-renewals-nobody-is-working/7180e911c3fd0597fdd366896765846eb66b5c33937ca5e1b0a0e35c1fd88a8a.zip",
+   "bytesRead": 47494,
+   "readOn": "2026-10-01"
+  },
+  "the-shelf-that-never-sold": {
+   "connector": true,
+   "services": [
+    "shopify-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-shelf-that-never-sold/f728bbb40d5efeb3654e72862c32018429322989d26f41fd845ce389e12c6572.zip",
+   "bytesRead": 43058,
+   "readOn": "2026-10-01"
+  },
+  "unread-piling-up-under-labels": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unread-piling-up-under-labels/79e886cc3415d8411f542129a674c091d2c2a246b73730259d4eddfb0f7174b5.zip",
+   "bytesRead": 50020,
+   "readOn": "2026-10-01"
+  },
+  "whose-move-is-it": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/whose-move-is-it/83ceeb530cf5c1c87021e141185f784597e0a9ee991d4e629df073fddec228b4.zip",
+   "bytesRead": 48239,
    "readOn": "2026-10-01"
   }
  }
