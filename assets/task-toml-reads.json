@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T18:31:04+00:00",
+ "generatedAt": "2026-10-01T18:41:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14694,6 +14694,66 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-partnership-threads-went-cold/25fc3c79ed6f2934e60ac63683b4aa60113fae288a518645a4c896e71c599da9.zip",
    "bytesRead": 64875,
+   "readOn": "2026-10-01"
+  },
+  "august-lab-order-dedup": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/august-lab-order-dedup/072d53e1cc5ca01d89499c50481492626601785e73d0a587b8a1b22fc6313041.zip",
+   "bytesRead": 48373,
+   "readOn": "2026-10-01"
+  },
+  "estimate-capacity-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/estimate-capacity-audit/8280ad8d3029d8b756055a940e246eb0b8af3a1aa0a02f25affd03a3b28d5b7a.zip",
+   "bytesRead": 48062,
+   "readOn": "2026-10-01"
+  },
+  "which-vendors-have-gone-quiet": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-vendors-have-gone-quiet/80cae86b8457aedcfa378438dabb5f979b4029c94c0cac0f0225ec6a64f03583.zip",
+   "bytesRead": 47907,
+   "readOn": "2026-10-01"
+  },
+  "who-can-see-my-calendars": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-can-see-my-calendars/b250892f99765f4e9fb033d1f2341e6ade2dd68a7d0a7ba07454c61575b2acbd.zip",
+   "bytesRead": 50945,
+   "readOn": "2026-10-01"
+  },
+  "who-never-answered": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-never-answered/1f53f6a29cd701b3bb958c5ba7f293ae62bdb564493d0f2e8cd8ba0d2221f2a6.zip",
+   "bytesRead": 44584,
    "readOn": "2026-10-01"
   }
  }
