@@ -884,8 +884,8 @@ const benchLabel = email => {
   return s.unassigned ? 'unassigned' : s.company && s.computer ? 'company and computer' : s.company ? 'company' : 'computer';
 };
 const personInSegment = row => !segment || [...personSegments(row)].some(segmentMatches);
-const truthRows = () => (truth ? truth.rows.filter(row => segmentMatches(truthSegment(row))) : []);
-const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filter(row => segmentMatches(truthSegment(row))) : null);
+const truthRows = () => (truth ? truth.rows.filter(row => segmentMatches(truthSegment(row)) && harnessMatches(row)) : []);
+const truthCohortRows = () => (truth && truth.cohortRows ? truth.cohortRows.filter(row => segmentMatches(truthSegment(row)) && harnessMatches(row)) : null);
 // A search with no state chosen also reaches the accepted folders that have no
 // verdict inside the window; otherwise they are listed only under Accepted.
 const truthSearchRows = () => { const cohort = truthCohortRows(); return cohort ? truthRows().concat(cohort.filter(row => row.noVerdict)) : truthRows(); };
@@ -899,14 +899,109 @@ const deliverySegment = row => taskSegment(row.bench === 'company' ? 'company' :
 const auditRows = () => (audit ? audit.rows.filter(row => segmentMatches(deliverySegment(row))) : []);
 const ledgerRows = () => payoutLedgerTasks.filter(task => inTaskSegment(task.bench, typeFlag(task.filterType)));
 
-function setSegment(value) {
+// The harness image a task runs in, read from its Dockerfile. Chosen from the
+// dropdown on a bench tab; 'none' is the tasks whose Dockerfile was never read.
+// Only pipeline rows carry it, so it narrows the Pipeline and the Overview
+// cards built from them and is stated as not applied elsewhere.
+let harness = '';
+const HARNESS_LABELS = {'company bench aster': 'aster', 'company bench zeta': 'zeta', 'computer bench real': 'real',
+  'computer bench synth': 'synthetic', 'computer bench non-connector': 'non-connector image', none: 'not read yet'};
+const harnessLabel = value => HARNESS_LABELS[value] || value;
+const harnessMatches = row => !harness || (harness === 'none' ? !row.bench : row.bench === harness);
+function setSegment(value, nextHarness = harness) {
   value = LEGACY_SEGMENTS[value] || value;
   segment = SEGMENTS[value] ? value : '';
-  try { localStorage.setItem('segment', segment); } catch { /* storage may be unavailable */ }
+  harness = nextHarness || '';
+  try { localStorage.setItem('segment', segment); localStorage.setItem('harness', harness); } catch { /* storage may be unavailable */ }
   const url = new URL(location.href);
   if (segment) url.searchParams.set('seg', segment); else url.searchParams.delete('seg');
+  if (harness) url.searchParams.set('harness', harness); else url.searchParams.delete('harness');
   history.replaceState(history.state, '', url);
   renderEverything();
+}
+const setHarness = value => setSegment(segment, value);
+// One menu per tab, listing the harnesses its tasks actually run in; All also
+// lists the tasks with no Dockerfile read. The caret is part of the tab and
+// opens a menu drawn by the page, not the browser.
+const harnessOptions = {};
+function renderHarnessMenus() {
+  const rows = truth ? truth.rows : [];
+  document.querySelectorAll('#segmentSwitch .segbtn[data-seg]').forEach(button => {
+    const seg = button.dataset.seg || '';
+    const within = rows.filter(row => !seg || row.__seg === seg || String(row.__seg || '').startsWith(`${seg}-`));
+    const tally = {};
+    within.forEach(row => { const key = row.bench || 'none'; if (key !== 'none' || !seg) tally[key] = (tally[key] || 0) + 1; });
+    const keys = Object.keys(tally).sort((a, b) => (a === 'none') - (b === 'none') || tally[b] - tally[a]);
+    harnessOptions[seg] = keys.map(key => [key, tally[key]]);
+    let tab = button.parentElement;
+    if (!tab.classList.contains('segtab')) {
+      tab = document.createElement('span');
+      tab.className = 'segtab';
+      button.replaceWith(tab);
+      tab.appendChild(button);
+      const caret = document.createElement('button');
+      caret.type = 'button';
+      caret.className = 'segcaret';
+      caret.setAttribute('aria-haspopup', 'listbox');
+      caret.setAttribute('aria-expanded', 'false');
+      caret.innerHTML = '<i aria-hidden="true"></i>';
+      caret.addEventListener('click', event => { event.stopPropagation(); toggleHarnessMenu(seg, caret); });
+      tab.appendChild(caret);
+    }
+    const caret = tab.querySelector('.segcaret');
+    const active = seg === segment;
+    caret.setAttribute('aria-label', `Harness within ${seg ? SEGMENTS[seg] : 'all benches'}`);
+    caret.hidden = !keys.length;
+    tab.classList.toggle('has-harness', active && Boolean(harness));
+    let tag = button.querySelector('.segbtn-h');
+    if (active && harness) {
+      if (!tag) { tag = document.createElement('small'); tag.className = 'segbtn-h'; button.appendChild(tag); }
+      tag.textContent = harnessLabel(harness);
+    } else if (tag) tag.remove();
+  });
+}
+let harnessMenuFor = null;
+function closeHarnessMenu() {
+  const menu = byId('harnessMenu');
+  if (!menu) return;
+  menu.hidden = true;
+  document.querySelectorAll('#segmentSwitch .segcaret[aria-expanded="true"]').forEach(c => c.setAttribute('aria-expanded', 'false'));
+  harnessMenuFor = null;
+}
+function toggleHarnessMenu(seg, caret) {
+  let menu = byId('harnessMenu');
+  if (!menu) {
+    menu = document.createElement('div');
+    menu.id = 'harnessMenu';
+    menu.className = 'hmenu';
+    menu.setAttribute('role', 'listbox');
+    menu.hidden = true;
+    document.body.appendChild(menu);
+    menu.addEventListener('click', event => {
+      const item = event.target.closest('.hmenu-item');
+      if (!item) return;
+      const target = menu.dataset.seg || '';
+      closeHarnessMenu();
+      setSegment(target, item.dataset.value);
+    });
+    document.addEventListener('click', event => { if (!menu.hidden && !menu.contains(event.target)) closeHarnessMenu(); });
+    document.addEventListener('keydown', event => { if (event.key === 'Escape') closeHarnessMenu(); });
+    window.addEventListener('resize', closeHarnessMenu);
+  }
+  if (harnessMenuFor === seg && !menu.hidden) { closeHarnessMenu(); return; }
+  closeHarnessMenu();
+  const current = seg === segment ? harness : '';
+  const options = [['', null], ...(harnessOptions[seg] || [])];
+  menu.dataset.seg = seg;
+  menu.innerHTML = `<p class="hmenu-head">Harness \u00b7 ${esc(seg ? SEGMENTS[seg] : 'All benches')}</p>` +
+    options.map(([value, count]) => `<button type="button" class="hmenu-item${value === current ? ' is-on' : ''}" role="option" aria-selected="${value === current}" data-value="${esc(value)}"><i class="hmenu-check" aria-hidden="true"></i><span>${esc(value ? harnessLabel(value) : 'Any harness')}</span>${count == null ? '' : `<small>${fmt(count)}</small>`}</button>`).join('');
+  const box = caret.parentElement.getBoundingClientRect();
+  menu.hidden = false;
+  menu.style.top = `${Math.round(box.bottom + 8)}px`;
+  menu.style.left = `${Math.round(Math.min(box.left, window.innerWidth - menu.offsetWidth - 12))}px`;
+  caret.setAttribute('aria-expanded', 'true');
+  harnessMenuFor = seg;
+  menu.querySelector('.hmenu-item.is-on, .hmenu-item')?.focus();
 }
 function syncSegmentSwitch() {
   document.querySelectorAll('#segmentSwitch [data-seg]').forEach(button => {
@@ -917,8 +1012,13 @@ function syncSegmentSwitch() {
     button.setAttribute('aria-pressed', String(on));
   });
   document.body.dataset.segment = segment;
+  (truth ? truth.rows : []).forEach(row => { row.__seg = truthSegment(row); });
+  renderHarnessMenus();
   document.querySelectorAll('[data-range]').forEach(node => {
-    node.textContent = `${rangeLabel()}${segment ? ` · ${SEGMENTS[segment]} only` : ''}`;
+    const here = node.dataset.range;
+    const applies = !here || here === 'pipeline' || here === 'overview';
+    node.textContent = `${rangeLabel()}${segment ? ` · ${SEGMENTS[segment]} only` : ''}` +
+      (harness ? (applies ? ` · ${harnessLabel(harness)} harness` : ` · harness filter not applied here`) : '');
   });
 }
 function restoreSegment() {
@@ -926,6 +1026,9 @@ function restoreSegment() {
   try { saved = new URL(location.href).searchParams.get('seg') || localStorage.getItem('segment') || ''; } catch { saved = ''; }
   saved = LEGACY_SEGMENTS[saved] || saved;
   segment = SEGMENTS[saved] ? saved : '';
+  let savedHarness = '';
+  try { savedHarness = new URL(location.href).searchParams.get('harness') || localStorage.getItem('harness') || ''; } catch { savedHarness = ''; }
+  harness = HARNESS_LABELS[savedHarness] ? savedHarness : '';
 }
 
 let auditLens = 'category';
@@ -1416,7 +1519,7 @@ function truthFilters() {
     delivered: byId('tDelivered') ? byId('tDelivered').value : '',
     side: byId('tConnector') ? byId('tConnector').value : '',
     glm: byId('tGlm') ? byId('tGlm').value : '',
-    bench: byId('tBench') ? byId('tBench').value : '',
+    bench: '',
     carriedOver: byId('tCarried').value, confidence: byId('tConfidence').value,
     domain: byId('tDomain').value, owner: byId('tOwner').value,
     duplicate: byId('tDuplicate').value,
@@ -1601,11 +1704,11 @@ function renderTruthFilterChips(filters, filtered) {
 
   const shown = shownTasks(window.filterTruth(rows, truthByBucket ? {...filters, state: ''} : filters).rows);
   setText('truthFilterCount', filtered ? `${fmt(shown)} of ${fmt(truthRows().length)} tasks` : `${fmt(truthRows().length)} tasks`);
-  const drawerActive = ['tGate', 'tDelivery', 'tGlm', 'tBench', 'tFinding', 'tDomain', 'tOwner', 'tCarried', 'tConfidence', 'tDuplicate'].filter(id => byId(id)?.value).length;
+  const drawerActive = ['tGate', 'tDelivery', 'tGlm', 'tFinding', 'tDomain', 'tOwner', 'tCarried', 'tConfidence', 'tDuplicate'].filter(id => byId(id)?.value).length;
   setText('fmoreCount', drawerActive ? String(drawerActive) : '');
   byId('fmore')?.classList.toggle('has-active', drawerActive > 0);
 
-  const labels = {tState: 'State', tGate: 'Gate', tFinding: 'Finding', tDelivery: 'Delivery', tDelivered: 'Delivered', tConnector: 'Bench', tGlm: 'GLM', tBench: 'Harness', tCarried: 'Carried over', tConfidence: 'Identity', tDomain: 'Domain', tOwner: 'Trainer', tDuplicate: 'Duplicates', tSearch: 'Search'};
+  const labels = {tState: 'State', tGate: 'Gate', tFinding: 'Finding', tDelivery: 'Delivery', tDelivered: 'Delivered', tConnector: 'Bench', tGlm: 'GLM', tCarried: 'Carried over', tConfidence: 'Identity', tDomain: 'Domain', tOwner: 'Trainer', tDuplicate: 'Duplicates', tSearch: 'Search'};
   const shownValue = id => { const node = byId(id); if (!node) return ''; if (node.tagName === 'SELECT') return (node.options[node.selectedIndex]?.textContent || node.value).replace(/\s*\(\d[\d,]*\)$/, ''); return node.value; };
   const active = [...TRUTH_FILTERS, 'tSearch'].filter(id => byId(id)?.value);
   const toneOf = id => byId(`${id}Chips`)?.querySelector('.fchip.is-on')?.style.getPropertyValue('--c') || 'var(--accent)';
@@ -4345,6 +4448,7 @@ function renderGlobalFilters() {
   if (!host) return;
   const chips = [];
   if (segment) chips.push({page: 'Segment', label: '', value: SEGMENTS[segment], clear: () => setSegment('')});
+  if (harness) chips.push({page: 'Harness', label: '', value: harnessLabel(harness), clear: () => setHarness('')});
   if (dateRange.start || dateRange.end) chips.push({page: 'Range', label: '', value: rangeLabel(), clear: () => byId('clearDates')?.click()});
   GLOBAL_FILTER_SOURCES.forEach(([id, page]) => {
     byId(id)?.querySelectorAll('.chipbtn:not(.is-clear)').forEach(button => {
