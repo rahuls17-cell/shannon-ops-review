@@ -1286,6 +1286,7 @@ function renderAudit() {
       new Date(drive.generatedAt).toLocaleString([], {dateStyle: 'medium', timeStyle: 'short'})
     : ' · Drive manifests not loaded';
   setText('auditAudit', `${fmt(shown)} of ${fmt(audit.rows.length)} tasks`);
+  setText('auditSearchCount', byId('aSearch')?.value ? `${fmt(shown)} of ${fmt(audit.rows.length)} tasks match` : '');
   renderAuditChips(filters);
   renderBatchTabs(filters);
   renderAuditRows(rows);

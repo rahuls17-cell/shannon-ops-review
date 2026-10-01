@@ -413,6 +413,10 @@
               </section>
             </aside>
             <div class="delivery-main">
+              <div class="dsearch">
+                <label class="fsearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="aSearch" type="search" placeholder="Search tasks, trainers, batches, categories or SHA" aria-label="Search deliveries" /></label>
+                <span class="fcount" id="auditSearchCount"></span>
+              </div>
               <div class="viewstrip" id="auditView"></div>
               <div id="auditFigures" class="status-grid"></div>
               <section class="panel chartcard">
@@ -441,7 +445,6 @@
                 <p class="panel-note" id="auditAudit"></p>
               </div>
               <div class="toolbar" data-toolbar>
-                <label class="field"><span>Search</span><input id="aSearch" type="search" placeholder="Task, SHA or trainer" /></label>
                 <label class="field"><span>Category</span><select id="aCategory"></select></label>
                 <label class="field"><span>Acceptance<button class="why" data-info="auditAcceptance" aria-label="Where acceptance comes from">?</button></span><select id="aAcceptance"></select></label>
                 <label class="field"><span>GLM</span><select id="aGlm"></select></label>

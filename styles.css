@@ -3291,3 +3291,13 @@ button.trow:hover span:first-child { color: var(--accent); }
 .hmenu-check { width: 14px; height: 14px; border-radius: 50%; }
 .hmenu-item.is-on .hmenu-check { background: var(--ink); background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12l5 5L20 7'/%3E%3C/svg%3E"); background-size: 10px; background-position: center; background-repeat: no-repeat; }
 #segmentSwitch .segtab:hover .segcaret, #segmentSwitch .segtab:has(.segbtn.is-on) .segcaret { border-left-color: var(--line); }
+
+/* Delivery: page-wide search above the figures; export without a hairline. */
+.dsearch { display: flex; align-items: center; gap: 12px; }
+.dsearch .fsearch { flex: 1 1 360px; max-width: 560px; }
+.dsearch .fsearch input { height: 38px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); font-size: 13px; box-shadow: var(--shadow); }
+.dsearch .fsearch input:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(15, 20, 32, .06); }
+.dsearch .fcount { background: transparent; border: 0; padding: 0; font-size: 12.5px; font-weight: 500; color: var(--muted); }
+.dsearch .fcount:empty { display: none; }
+#view-delivery .export-btn { border: 0; box-shadow: 0 1px 2px rgba(16, 23, 32, .12); }
+#view-delivery .export-btn:hover { box-shadow: 0 2px 6px rgba(16, 23, 32, .16); }
