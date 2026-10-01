@@ -82,6 +82,17 @@ longer decides Company Bench anywhere on the dashboard.
   accepted packages Aster 271, Zeta 206; Overview Accepted tasks Aster 163,
   Zeta 176; Delivery Aster 224 (Batches 5.1 to 10.1), Zeta 1,469, Computer
   Bench connector 167. Every Company Bench task is one or the other.
+- **Single / Multi connector** beside Aster and Zeta narrows Company Bench,
+  Aster or Zeta by how many connectors the task declares in its task.toml: one,
+  or two and more (gyms only - harbor and tags such as read-only are not
+  connectors). Read from the pipeline's package first, then the delivery
+  manifest, by name, so a new task is placed as soon as either has read it; a
+  task never read has no count and is left out while the choice is on. Picking
+  it outside Company Bench opens Company Bench; leaving Company Bench clears it.
+  Today every Aster task is single (Delivery 224, accepted 248) and nearly
+  every Zeta task declares all seven Zeta connectors (Delivery 1,462 multi, 7
+  single; accepted 191 multi, 12 single); Aster Multi is empty until such tasks
+  arrive. 2,652 pipeline Company Bench tasks have no connectors read yet.
 - The Drive reader records `harness` on Company Bench rows.
 
 ### Delivery tab
