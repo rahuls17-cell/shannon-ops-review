@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T12:11:14+00:00",
+ "generatedAt": "2026-10-01T12:21:18+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13904,6 +13904,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-my-meetings-actually-happen/0c6587071b34ee78cb10e9a24f351f13e88f21d45a4d493fe089f3e4d402f41c.zip",
    "bytesRead": 57042,
+   "readOn": "2026-10-01"
+  },
+  "faxes-on-the-lines-i-track": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/faxes-on-the-lines-i-track/54fe12b447b510866a52e9c77c75643afc87bd7caf23aa4f14e16822384c5038.zip",
+   "bytesRead": 47440,
+   "readOn": "2026-10-01"
+  },
+  "send-over-the-meetings-that-stood": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/send-over-the-meetings-that-stood/8f13734790371136c74d9b06ed5d1e094c74fea55e35af59c124550b72ee1c58.zip",
+   "bytesRead": 50589,
+   "readOn": "2026-10-01"
+  },
+  "the-required-guests-still-not-locked-in": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-required-guests-still-not-locked-in/ab4525beef2b5b58dddf20dc6197897c3158d3dd2e70f6fac52661e6334acc7e.zip",
+   "bytesRead": 60456,
    "readOn": "2026-10-01"
   }
  }
