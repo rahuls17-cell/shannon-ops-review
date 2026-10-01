@@ -425,7 +425,7 @@ function renderEverything() {
   renderHero(); renderTopPendingCards(); renderDonut(); renderTrainerRows(); renderTeams();
   renderBenchCards();
   renderPlan();
-  if (truth) { renderTruth(); renderCarried(); }
+  if (truth) { populateTruthFilters(); renderTruth(); renderCarried(); }
   if (audit) renderAudit();
   renderScopeFunnel();
   populateDeltaFilter();
@@ -1733,10 +1733,13 @@ function truthFilters() {
   };
 }
 
-function fillSelect(id, counts, allLabel, unit) {
+function fillSelect(id, counts, allLabel, unit, keepChosen = false) {
   const node = byId(id);
   if (!node) return;
   const keep = node.value;
+  // A choice the new counts do not hold is kept, at 0, when asked: dropping it
+  // would silently change what the filter is doing.
+  if (keepChosen && keep && !(counts || {})[keep]) counts = {...counts, [keep]: 0};
   const entries = Object.entries(counts || {})
     .filter(([value]) => value && value !== '(none)')
     .sort((a, b) => b[1] - a[1]);
@@ -1792,22 +1795,42 @@ function fillBench() {
   if ([...node.options].some(o => o.value === keep)) node.value = keep;
 }
 
+// The drawer's choices and their counts, over the tasks in the segment and
+// harness - the published vocabulary counts the whole pipeline, so a Company
+// Bench view listed General and Engineering domains it does not hold. Refilled
+// whenever the segment changes; a choice already made is kept.
+function vocabularyOf(rows) {
+  const tally = {finalState: {}, gateEra: {}, findingFamilies: {}, domain: {}, owner: {}};
+  const add = (key, value) => { if (value) tally[key][value] = (tally[key][value] || 0) + 1; };
+  rows.forEach(row => {
+    add('finalState', row.state);
+    add('gateEra', row.gateEra);
+    add('domain', row.domain);
+    add('owner', row.owner);
+    new Set(row.findingsAllRuns || row.findings || []).forEach(family => add('findingFamilies', family));
+  });
+  return tally;
+}
 function populateTruthFilters() {
   if (!truth) return;
-  const v = truth.vocabulary;
+  const rows = truthRows();
+  const v = vocabularyOf(rows);
+  const cohort = truthCohortRows();
   const states = {...v.finalState};
-  if (truth.cohortRows) states.accepted = truth.cohortRows.length;
+  if (cohort) states.accepted = cohort.length;
   fillSelect('tState', states, 'Any state',
-    value => (value === 'accepted' && truth.cohortRows ? 'packages' : 'submissions'));
-  fillSelect('tGate', v.gateEra, 'Any gate');
-  fillSelect('tFinding', v.findingFamilies, 'Any finding');
-  fillSelect('tDomain', v.domain, 'Any domain');
-  fillSelect('tOwner', v.owner, 'Any trainer');
+    value => (value === 'accepted' && cohort ? 'packages' : 'submissions'), true);
+  fillSelect('tGate', v.gateEra, 'Any gate', undefined, true);
+  fillSelect('tFinding', v.findingFamilies, 'Any finding', undefined, true);
+  fillSelect('tDomain', v.domain, 'Any domain', undefined, true);
+  fillSelect('tOwner', v.owner, 'Any trainer', undefined, true);
   fillBench();
-  fillSelect('cState', v.finalState, 'Any state');
-  fillSelect('cOwner', v.owner, 'Any trainer');
-  fillSelect('cGate', v.gateEra, 'Any gate');
-  fillSelect('cDomain', v.domain, 'Any domain');
+  // Carried over lists the carried tasks, so its choices count those.
+  const c = vocabularyOf(rows.filter(row => row.carriedOver));
+  fillSelect('cState', c.finalState, 'Any state', undefined, true);
+  fillSelect('cOwner', c.owner, 'Any trainer', undefined, true);
+  fillSelect('cGate', c.gateEra, 'Any gate', undefined, true);
+  fillSelect('cDomain', c.domain, 'Any domain', undefined, true);
 }
 
 // A figure is a value plus the chain that produced it. Clicking one opens the

@@ -241,10 +241,13 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
 // count beside it has to be that number and say which unit it is in.
 {
   const app3 = fs.readFileSync(path.join(root, 'app.js'), 'utf8');
-  assert.ok(/states\.accepted = truth\.cohortRows\.length/.test(app3),
+  // Counted in the segment, from the same folders the Accepted card counts.
+  assert.ok(/const cohort = truthCohortRows\(\);[\s\S]{0,120}states\.accepted = cohort\.length/.test(app3),
     'the accepted option must count the folders it selects');
-  assert.ok(/value === 'accepted' && truth\.cohortRows \? 'packages' : 'submissions'/.test(app3),
+  assert.ok(/value === 'accepted' && cohort \? 'packages' : 'submissions'/.test(app3),
     'and each option must name its own unit, because the tab genuinely has two');
+  assert.ok(/populateTruthFilters\(\); renderTruth\(\)/.test(app3),
+    'the drawer is refilled for the segment before the tab is drawn');
   console.log(`dropdown: accepted (${c.packages.toLocaleString()} packages), everything else in submissions`);
 }
 

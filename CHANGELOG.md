@@ -82,6 +82,16 @@ longer decides Company Bench anywhere on the dashboard.
   accepted packages Aster 271, Zeta 206; Overview Accepted tasks Aster 163,
   Zeta 176; Delivery Aster 224 (Batches 5.1 to 10.1), Zeta 1,469, Computer
   Bench connector 167. Every Company Bench task is one or the other.
+- **Pipeline, More filters: the dropdowns follow the segment.** State, Gate,
+  Finding, Domain and Trainer (and Carried over's State, Gate, Domain and
+  Trainer) were filled once from the published vocabulary, which counts the
+  whole pipeline, so Company Bench listed General and Engineering domains it
+  does not hold. They are now counted over the tasks in the segment and harness
+  and refilled on every change: under Computer Bench Connector, Aster or Zeta,
+  Domain lists only Not recorded (a domain is a non-connector naming
+  convention); under Non-connector, General 1,394, Engineering 812 and the rest.
+  A choice already made stays listed, at 0 when the new segment holds none, so
+  the filter never changes silently.
 - **Fix: the Pipeline's In scope trend lagged one segment behind.** The
   day-by-day model it reads was rebuilt after the Pipeline was drawn, so its
   tasks-a-day and change showed the segment chosen before; on first load it was
