@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T16:51:07+00:00",
+ "generatedAt": "2026-10-01T17:01:33+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14482,6 +14482,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spring-orders-billed-again-next-month/886cc192518eaf9dd66fff62924d395afb2e6a7dc175d4edb0911b8c796f5553.zip",
    "bytesRead": 55586,
+   "readOn": "2026-10-01"
+  },
+  "the-design-reviews-nobody-picked-up": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-design-reviews-nobody-picked-up/c1a8e247645bc1ba0325b337b6cec808fbd810a943877c12a9f7a928fd93aa6f.zip",
+   "bytesRead": 48212,
    "readOn": "2026-10-01"
   }
  }
