@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T12:41:05+00:00",
+ "generatedAt": "2026-10-01T12:51:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13952,6 +13952,62 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-booking-i-cannot-get-back/bc3ef3f301bc72187a7bb4f46047a3b64a1be6a2ef09fbfc23e72064f5fe8685.zip",
    "bytesRead": 47309,
+   "readOn": "2026-10-01"
+  },
+  "edu-sca-b4-lattice-drill-reconciliation": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sca-b4-lattice-drill-reconciliation/26b37bf98024114db70284f96746ae4fb4adb702895267c416a85b08243e9121.zip",
+   "bytesRead": 86918,
+   "readOn": "2026-10-01"
+  },
+  "fin-b54-f4-property-portfolio-overview-tieout": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-b54-f4-property-portfolio-overview-tieout/f7bb45c7db48b6074225cc6f411270ff7441ed12dd17c41a54da032baacedf73.zip",
+   "bytesRead": 77092,
+   "readOn": "2026-10-01"
+  },
+  "the-milestones-that-slipped-past-their-dates": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-milestones-that-slipped-past-their-dates/0b9599e6d3ef42288c0fef4feb1fd72fcab2aaa6f4ca413367a4dc59757c7d58.zip",
+   "bytesRead": 52041,
+   "readOn": "2026-10-01"
+  },
+  "which-channels-outgrew-their-membership": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-channels-outgrew-their-membership/dd144f64b3f3c0e172a9ae1ff1ba2e60be55913655aab6003626229a5537f79e.zip",
+   "bytesRead": 51630,
+   "readOn": "2026-10-01"
+  },
+  "which-entries-say-the-same-thing": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-entries-say-the-same-thing/76744885a5c9c6be0fc6ebe2db252d9a57d4f837a44f887d92805d0ced6775f0.zip",
+   "bytesRead": 49308,
    "readOn": "2026-10-01"
   }
  }
