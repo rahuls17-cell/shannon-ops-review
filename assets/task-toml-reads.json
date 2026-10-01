@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T16:11:07+00:00",
+ "generatedAt": "2026-10-01T16:21:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14378,6 +14378,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/forty-filed-in-a-day-eighteen-never-touched-r3-qc-clean/78c44e9bdc7496f5e8e337e0b237af72095a730a7423de8399dacefd88e4d3ff.zip",
    "bytesRead": 63355,
+   "readOn": "2026-10-01"
+  },
+  "conversations-i-still-owe-a-reply": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/conversations-i-still-owe-a-reply/e9c8bc333b721baf2d125f73d2587371008ef2e4bae1855a91d6d89148e0f02f.zip",
+   "bytesRead": 52124,
    "readOn": "2026-10-01"
   }
  }
