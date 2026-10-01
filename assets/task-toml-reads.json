@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T13:41:05+00:00",
+ "generatedAt": "2026-10-01T13:51:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14076,6 +14076,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-latest-change-everywhere/1cbada3fe85f7d020516242808e28a6c91809475152cb7b11313516b453a5da6.zip",
    "bytesRead": 47205,
+   "readOn": "2026-10-01"
+  },
+  "which-entries-the-view-never-shows": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-entries-the-view-never-shows/a56c7b865eeb3951335a53b15ff575ec879899392c345bd9fe824d78e33dbd3a.zip",
+   "bytesRead": 51609,
+   "readOn": "2026-10-01"
+  },
+  "which-trackers-fell-out-of-date": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-trackers-fell-out-of-date/791da2b03262dd4acd3022487b7d29355a2544bb08f295a4cafa5164b47174ce.zip",
+   "bytesRead": 56489,
    "readOn": "2026-10-01"
   }
  }
