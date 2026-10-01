@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T10:41:02+00:00",
+ "generatedAt": "2026-10-01T10:51:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13698,6 +13698,58 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-threads-that-would-not-die/677fdc5bf52db9c7c81add2a06c5161f1e03eacee4b48b72023eecc0d28ed3ae.zip",
    "bytesRead": 67029,
+   "readOn": "2026-10-01"
+  },
+  "gen-g929-v100-qc-v101-cld3": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g929-v100-qc-v101-cld3/67decdf68187b6a09da883b1b396687fdc382fcc85c4b174d132360a08da6dac.zip",
+   "bytesRead": 66452,
+   "readOn": "2026-10-01"
+  },
+  "household_archival_companybench_v52_task_content_cardinality_fixed": {
+   "connector": true,
+   "services": [
+    "confluence-gym",
+    "email-gym",
+    "freshdesk-gym",
+    "google-drive-gym",
+    "jira-gym",
+    "slack-gym",
+    "zeta3-sql-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/data-obi-rl-gym/benchmark-base@sha256:ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/household_archival_companybench_v52_task_content_cardinality_fixed/d863b59a294bce867c6c1f8def2cc2472cdf54ecbf8f194b252be93db5030a77.zip",
+   "bytesRead": 62269,
+   "readOn": "2026-10-01"
+  },
+  "the-rule-that-stopped-at-the-first-tab": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-rule-that-stopped-at-the-first-tab/a7e45ebe7680cfe46b1e5fc0d70d2eedf55d19b34637158f8cc494a3441e067d.zip",
+   "bytesRead": 60725,
+   "readOn": "2026-10-01"
+  },
+  "the-tagged-specs-that-are-one-line-long": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-tagged-specs-that-are-one-line-long/98d2ecbf4b5f2cd2dd65a3b11df218fa57527e131319bcdddfc1c39972b361fe.zip",
+   "bytesRead": 51169,
    "readOn": "2026-10-01"
   }
  }
