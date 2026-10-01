@@ -93,6 +93,14 @@ longer decides Company Bench anywhere on the dashboard.
   every Zeta task declares all seven Zeta connectors (Delivery 1,462 multi, 7
   single; accepted 191 multi, 12 single); Aster Multi is empty until such tasks
   arrive. 2,652 pipeline Company Bench tasks have no connectors read yet.
+- The Pipeline tab follows Single / Multi everywhere it follows the segment:
+  the state cards, Accepted packages, the Delivery join, the accepted cohort
+  strip, the makeup tiles, the Bench chips and the task table.
+- **Fix: the Pipeline's In scope trend lagged one segment behind.** The
+  day-by-day model it reads was rebuilt after the Pipeline was drawn, so its
+  tasks-a-day and change showed the segment chosen before; on first load it was
+  blank. It is now rebuilt first. An empty selection reads 0 tasks decided, not
+  1.
 - The Drive reader records `harness` on Company Bench rows.
 
 ### Delivery tab

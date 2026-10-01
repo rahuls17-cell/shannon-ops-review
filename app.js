@@ -416,6 +416,10 @@ function renderSegmentStrip() {
 
 function renderEverything() {
   syncSegmentSwitch();
+  // The day-by-day model is built from the rows in the segment, and the cards
+  // below draw their trend from it, so it is rebuilt before they are drawn -
+  // built after, every trend showed the segment chosen before this one.
+  buildDelta();
   renderSegmentStrip();
   renderSources();
   renderHero(); renderTopPendingCards(); renderDonut(); renderTrainerRows(); renderTeams();
@@ -424,9 +428,6 @@ function renderEverything() {
   if (truth) { renderTruth(); renderCarried(); }
   if (audit) renderAudit();
   renderScopeFunnel();
-  // The delta is built from the rows in the segment, so a new segment needs a
-  // new model, not just a redraw of the old one.
-  buildDelta();
   populateDeltaFilter();
   renderDailyDelta();
   fitDeck();
@@ -1554,6 +1555,8 @@ async function loadTruth() {
     resetTaskBenches();
     truth.counts = payload.counts || null;
     populateTruthFilters();
+    // Before the Pipeline is drawn: its In scope trend reads this model.
+    buildDelta();
     renderTruth();
     renderCarried();
     // The Overview's Pipeline accepted tile reads this asset too, and it loads
@@ -1977,7 +1980,10 @@ function renderTruthFigures(result, filtered) {
     `<button class="part${openChain === label ? ' is-on' : ''}" style="flex:${value};--c:var(--${tone});--i:${index}" data-chain="${esc(label)}" aria-pressed="${openChain === label}" data-tip="${esc(label)}: ${fmt(value)} of ${fmt(total)} (${Math.round((value / total) * 100)}%)">
       ${value / total >= 0.07 ? `<span>${esc(label)}</span><b>${Math.round((value / total) * 100)}%</b>` : ''}
     </button>`).join('');
-  const splitTotal = split.reduce((n, [, v]) => n + (v || 0), 0) || 1;
+  // The count shown, and a divisor that is never zero; an empty selection
+  // reads 0, not the 1 the divisor stands in with.
+  const decidedTotal = split.reduce((n, [, v]) => n + (v || 0), 0);
+  const splitTotal = decidedTotal || 1;
   const shareOf = (label, value) => Math.round(((label === 'Accepted' ? result.accepted : value) / splitTotal) * 100);
   const ringSvg = '<svg viewBox="0 0 36 36" aria-hidden="true"><circle class="ring-track" cx="18" cy="18" r="15.5"/><circle class="ring-fill" cx="18" cy="18" r="15.5"/></svg>';
   const stateCard = ([label, value, hint, tone], kind, index) => {
@@ -1995,7 +2001,7 @@ function renderTruthFigures(result, filtered) {
     <article class="kpi kpi-trend">
       <div class="kpi-top"><h3>In scope<button class="why" data-info="scope" aria-label="What is counted here">?</button></h3><span class="kpi-tag" id="pipeTrendTag"></span></div>
       <div class="kpi-row">
-        <div><strong data-count="${splitTotal}" data-key="truth:scope">${fmt(splitTotal)}</strong><p class="kpi-note">tasks decided${filtered ? ' in this selection' : ''} · ${Math.round((result.accepted / splitTotal) * 100)}% accepted</p></div>
+        <div><strong data-count="${decidedTotal}" data-key="truth:scope">${fmt(decidedTotal)}</strong><p class="kpi-note">tasks decided${filtered ? ' in this selection' : ''} · ${Math.round((result.accepted / splitTotal) * 100)}% accepted</p></div>
         <figure class="spark" id="sparkPipe" aria-label="Tasks decided per day, last 14 days"></figure>
       </div>
     </article>` +
