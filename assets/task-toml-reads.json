@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T09:31:06+00:00",
+ "generatedAt": "2026-10-01T09:41:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13322,6 +13322,26 @@
    "bench": null,
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c445-interface-register-correction-audit/37bcbbd735367f63141e4a7f9e265dd70473a987e848f9507544f88d889f16d1.zip",
    "bytesRead": 71226,
+   "readOn": "2026-10-01"
+  },
+  "code-c339-market-share-scope-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-c339-market-share-scope-audit/923cb05be78b9d6943ca90b653490448bfe6763df6b9cc048cf3b291332b9ca1.zip",
+   "bytesRead": 64657,
+   "readOn": "2026-10-01"
+  },
+  "edu-s1-d5-pacing-guide-quarter-compaction-v5": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-s1-d5-pacing-guide-quarter-compaction-v5/2781049f6d894beaf89de8636fe6681a10b2a3bb2e073ceae2d69295d659ea4b.zip",
+   "bytesRead": 74297,
    "readOn": "2026-10-01"
   }
  }
