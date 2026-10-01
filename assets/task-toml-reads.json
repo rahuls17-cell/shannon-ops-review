@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T22:31:06+00:00",
+ "generatedAt": "2026-10-01T22:41:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14958,6 +14958,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-canvas-points-at-an-empty-room/e193b37b28b7a37530e77334a71701ab4c55a6b4e122eaaecc3472f5ae6728c6.zip",
    "bytesRead": 50031,
+   "readOn": "2026-10-01"
+  },
+  "join-links-before-travel": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/join-links-before-travel/c41f53af11fcfb8726d9294f1da9ab0806274587d8b8071bfc7e4a478e4a9620.zip",
+   "bytesRead": 52663,
    "readOn": "2026-10-01"
   }
  }
