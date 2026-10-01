@@ -1525,10 +1525,15 @@ function renderBatchTabs(filters) {
   const current = byId('aBatch').value;
   const row = (value, label, list, index) => {
     const v = verdicts(list);
-    return `<button type="button" class="batchrow${current === value ? ' is-on' : ''}" style="--i:${index}" data-filter="aBatch" data-value="${esc(value)}" aria-pressed="${current === value}">
+    // The rate is of the tasks the client has decided, not of all the tasks in
+    // the batch: under All batches, 31 accepted of 179 decided is 17%, while 31
+    // of 3,231 tasks is 1%. So the line names what it divides by.
+    const decided = v.acc + v.rej;
+    const tip = v.rate == null ? '' : ` data-tip="${fmt(v.acc)} accepted and ${fmt(v.rej)} rejected of ${fmt(decided)} decided; ${fmt(v.pen)} still pending of ${fmt(list.length)} tasks"`;
+    return `<button type="button" class="batchrow${current === value ? ' is-on' : ''}" style="--i:${index}" data-filter="aBatch" data-value="${esc(value)}" aria-pressed="${current === value}"${tip}>
       <span class="batchrow-name">${esc(label)}</span>
       <b class="batchrow-n" data-count="${list.length}" data-key="btab:${esc(value)}">${fmt(list.length)}</b>
-      <span class="batchrow-sub">${v.rate == null ? (list.length ? 'awaiting decisions' : 'no tasks') : `${v.rate}% accepted`}</span>
+      <span class="batchrow-sub">${v.rate == null ? (list.length ? 'awaiting decisions' : 'no tasks') : `${v.rate}% accepted of ${fmt(decided)} decided`}</span>
       ${list.length ? verdictBar(v.acc, v.rej, v.pen, list.length) : '<span class="vbar"></span>'}
     </button>`;
   };

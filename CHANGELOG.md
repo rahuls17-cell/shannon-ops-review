@@ -145,6 +145,13 @@ longer decides Company Bench anywhere on the dashboard.
 - The Drive reader records `harness` on Company Bench rows.
 
 ### Delivery tab
+- **Batch rail percentages say what they divide by.** Each batch's rate is
+  accepted / (accepted + rejected) - the tasks the client has decided - and the
+  arithmetic was right (Batch 1 6/60 = 10%, Batch 2 10/59 = 17%, Batch 3 15/60 =
+  25%). But "17% accepted" under All batches read as 17% of 3,231 tasks, when it
+  is 31 of the 179 decided; 3,052 are still pending. The line now reads "17%
+  accepted of 179 decided", and hovering a batch gives accepted, rejected and
+  pending.
 - **Company Bench** = everything in CompanyBench 1-3, plus any package sitting in
   a `CompanyBench` folder inside a Computer Bench batch on Drive - not what the
   manifest's `package_path` says. 5.1, 6.1 and 7.1 file their Company Bench
