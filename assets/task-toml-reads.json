@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T09:01:04+00:00",
+ "generatedAt": "2026-10-01T09:11:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13196,6 +13196,110 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meeting-links-on-repeat/db8ab03c9fee90157e53245d65357852a56498aa6724162293bb6108076b1793.zip",
    "bytesRead": 50320,
+   "readOn": "2026-10-01"
+  },
+  "biggest-guest-list-agenda-note": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/biggest-guest-list-agenda-note/6a14f20873d8a3497668616164d159eecea22c694765a96ed04a77228759278f.zip",
+   "bytesRead": 51187,
+   "readOn": "2026-10-01"
+  },
+  "bus-b55-b7-delivery-route-unit-economics": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b55-b7-delivery-route-unit-economics/5e923cdda662e30763e8ee3252af682c87574ee347f50cc64b830825051f16cc.zip",
+   "bytesRead": 90669,
+   "readOn": "2026-10-01"
+  },
+  "bus-b58-t2-broadcaster-channel-staffing": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/bus-b58-t2-broadcaster-channel-staffing/09ccd53f0657e74f890105b08aa1124bc228bbe261041a88c99828e4296c775a.zip",
+   "bytesRead": 65920,
+   "readOn": "2026-10-01"
+  },
+  "edu-s2-b2-cohort-vocabulary-review-sitting-placement": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:1aaa65a85fda306ffb8b910824d4e93bdce61e212c7e87168123ea3073b41a1a",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-s2-b2-cohort-vocabulary-review-sitting-placement/dda795fe02fec3b06646d7238fb6711c32546aee524c163783a4445ddab0c394.zip",
+   "bytesRead": 71928,
+   "readOn": "2026-10-01"
+  },
+  "edu-sch-b10-escape-room-booth-safety-adjudication": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edu-sch-b10-escape-room-booth-safety-adjudication/eaa7eb50f5d3c69253934640088c1305c2601712e80cad0b80bdb690e7f596ee.zip",
+   "bytesRead": 75296,
+   "readOn": "2026-10-01"
+  },
+  "health-tdt8-a2-hopd-chargemaster-line-normalization": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:392307d22300de8b5986851a12d9176dfc0fc073e65bf6523ebd7dcbeb23564e",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-tdt8-a2-hopd-chargemaster-line-normalization/9c15c49cd65473b91e21df2bfc527b16e7239fbd8b5f1d490c2e48dc1c635213.zip",
+   "bytesRead": 84576,
+   "readOn": "2026-10-01"
+  },
+  "tech-b51-t4-alarm-schedule-temporal-reconstruction": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:782412e85d0f0984994c290652577d4018aff08145c85b262bb63dc0c7522254",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-b51-t4-alarm-schedule-temporal-reconstruction/41bbe107397ec85ae946b6bba99c31b47e34d5025a24aba5e2ef5ee4f23467de.zip",
+   "bytesRead": 73868,
+   "readOn": "2026-10-01"
+  },
+  "tech-mg-it-b10-a10-home-lab-board-install-matrix": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:a116514e19457bcb7af7efe9c3dd0b9b71e85b317694e7882a1c52aa15a78134",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b10-a10-home-lab-board-install-matrix/c6c7e61c9cb924351c9127e2411861ef64e00456fa0936ec73130029890b0762.zip",
+   "bytesRead": 83566,
+   "readOn": "2026-10-01"
+  },
+  "tech-mg-it-b9-a4-golden-gate-scanner-verdicts": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:4766d8b510c428e595d74b9cc5bbb2fae8e26316fffb4adc89908d79aacd58a2",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/tech-mg-it-b9-a4-golden-gate-scanner-verdicts/fd064a26f531a226a6e2999c9d0cda0ee6fe8b3d74df0062d44f329ba1147017.zip",
+   "bytesRead": 78046,
+   "readOn": "2026-10-01"
+  },
+  "the-review-threads-that-asked": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-review-threads-that-asked/8831b74ecb466890e030e21426705c1bc44f331abce2acf806c24fb49b8cc186.zip",
+   "bytesRead": 47576,
    "readOn": "2026-10-01"
   }
  }
