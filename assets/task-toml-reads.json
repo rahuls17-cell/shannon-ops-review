@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T15:41:04+00:00",
+ "generatedAt": "2026-10-01T15:51:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14318,6 +14318,54 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/a-hundred-and-three-finished-without-starting/0cbe4d164e28bcf5d97d26d7662f1c2b2a7b51d17e004ea529ce90b4e3722a47.zip",
    "bytesRead": 60245,
+   "readOn": "2026-10-01"
+  },
+  "card-charges-billed-twice-final": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "docker.io/kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/card-charges-billed-twice-final/72df5bec8620f6b0a7fd359d6ed420ab16ee86a1881e4e4cb030124a440e3c68.zip",
+   "bytesRead": 49142,
+   "readOn": "2026-10-01"
+  },
+  "mail-from-people-i-have-never-met": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/mail-from-people-i-have-never-met/1d7fe40adbf77909a7e00b74d8e04ca1b8d2d8c25f38fa5bab8aded1132a5e53.zip",
+   "bytesRead": 50558,
+   "readOn": "2026-10-01"
+  },
+  "nobody-has-signed-this-off": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nobody-has-signed-this-off/9958498c98de3f6e2201ebbb704a6eb1c3bbc665e7209a17c5d350afcc046cb3.zip",
+   "bytesRead": 49416,
+   "readOn": "2026-10-01"
+  },
+  "threads-that-settled-themselves": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/threads-that-settled-themselves/0ae6425c01aa0b4e52fe6c68ab679359ffadded4e017ece6809ff48da56deda1.zip",
+   "bytesRead": 49544,
    "readOn": "2026-10-01"
   }
  }
