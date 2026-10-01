@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T10:51:04+00:00",
+ "generatedAt": "2026-10-01T11:01:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -13750,6 +13750,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-tagged-specs-that-are-one-line-long/98d2ecbf4b5f2cd2dd65a3b11df218fa57527e131319bcdddfc1c39972b361fe.zip",
    "bytesRead": 51169,
+   "readOn": "2026-10-01"
+  },
+  "what-lands-on-my-weekends": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-lands-on-my-weekends/54de5c4ea3c9f5e58b09257e95574fe5fb736bc1fefd462bf5bfdd188c4251c8.zip",
+   "bytesRead": 57076,
+   "readOn": "2026-10-01"
+  },
+  "which-threads-went-cold-after-one-reply": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-threads-went-cold-after-one-reply/d6eb12a1d8d0932e14806aaf2fc582bcfbbf65c249f659f418a66bccf5a9e442.zip",
+   "bytesRead": 46595,
    "readOn": "2026-10-01"
   }
  }
