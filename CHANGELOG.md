@@ -91,7 +91,8 @@ longer decides Company Bench anywhere on the dashboard.
   Domain lists only Not recorded (a domain is a non-connector naming
   convention); under Non-connector, General 1,394, Engineering 812 and the rest.
   A choice already made stays listed, at 0 when the new segment holds none, so
-  the filter never changes silently.
+  the filter never changes silently. The Domain dropdown shows its choices
+  without counts.
 - **Fix: the Pipeline's In scope trend lagged one segment behind.** The
   day-by-day model it reads was rebuilt after the Pipeline was drawn, so its
   tasks-a-day and change showed the segment chosen before; on first load it was

@@ -1733,7 +1733,7 @@ function truthFilters() {
   };
 }
 
-function fillSelect(id, counts, allLabel, unit, keepChosen = false) {
+function fillSelect(id, counts, allLabel, unit, keepChosen = false, showCounts = true) {
   const node = byId(id);
   if (!node) return;
   const keep = node.value;
@@ -1746,7 +1746,7 @@ function fillSelect(id, counts, allLabel, unit, keepChosen = false) {
   node.innerHTML = `<option value="">${esc(allLabel)}</option>` +
     entries.map(([value, n]) => {
       const suffix = typeof unit === 'function' ? unit(value) : unit;
-      return `<option value="${esc(value)}">${esc(value)} (${fmt(n)}${suffix ? ` ${esc(suffix)}` : ''})</option>`;
+      return `<option value="${esc(value)}">${esc(value)}${showCounts ? ` (${fmt(n)}${suffix ? ` ${esc(suffix)}` : ''})` : ''}</option>`;
     }).join('');
   if ([...node.options].some(o => o.value === keep)) node.value = keep;
 }
@@ -1822,7 +1822,8 @@ function populateTruthFilters() {
     value => (value === 'accepted' && cohort ? 'packages' : 'submissions'), true);
   fillSelect('tGate', v.gateEra, 'Any gate', undefined, true);
   fillSelect('tFinding', v.findingFamilies, 'Any finding', undefined, true);
-  fillSelect('tDomain', v.domain, 'Any domain', undefined, true);
+  // Domain lists its choices without counts.
+  fillSelect('tDomain', v.domain, 'Any domain', undefined, true, false);
   fillSelect('tOwner', v.owner, 'Any trainer', undefined, true);
   fillBench();
   // Carried over lists the carried tasks, so its choices count those.
