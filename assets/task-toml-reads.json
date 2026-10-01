@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T17:31:04+00:00",
+ "generatedAt": "2026-10-01T17:41:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -14530,6 +14530,64 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practice-status-board-jul-sep/6ce602d7398d3516b4146074268cb7a6ce785b93bc906ba08dea273936aca3d3.zip",
    "bytesRead": 49997,
+   "readOn": "2026-10-01"
+  },
+  "drive-legal-hold-audit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/drive-legal-hold-audit/be316fd0d284e7ecd52628df03e09cf88e919d990dbfec7654339e3eab88319b.zip",
+   "bytesRead": 43151,
+   "readOn": "2026-10-01"
+  },
+  "gen-g99-overtime-eligibility-audit": {
+   "connector": false,
+   "services": [],
+   "basis": "mcp_servers declared and empty",
+   "image": "python:3.12-slim-bookworm@sha256:0f5b26b9518d002b6173fd61daad821fa340635ebfec5bba471013f9ca114579",
+   "bench": null,
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g99-overtime-eligibility-audit/428e3aae17658e47f0ea3596d712a3b370242b5babf56195c63950c52ee7f965.zip",
+   "bytesRead": 72649,
+   "readOn": "2026-10-01"
+  },
+  "summer-lab-reports-for-past-customers": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/summer-lab-reports-for-past-customers/5057ca51076cdca4a83ecade8f04ca6449a9d57f3414afcfb4724c638cc76ab3.zip",
+   "bytesRead": 52143,
+   "readOn": "2026-10-01"
+  },
+  "the-sprint-whose-name-is-another-sprint": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-sprint-whose-name-is-another-sprint/ec65599ed009cf5e83168ec6ec94cc648c0fc89ee8189397de0b2a993a56ec18.zip",
+   "bytesRead": 53138,
+   "readOn": "2026-10-01"
+  },
+  "which-clinics-never-sent-their-team": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-clinics-never-sent-their-team/1c8ed569bf3e129895c12793f682543440a67183d7bd6003e96a4eccf5e83bea.zip",
+   "bytesRead": 50716,
    "readOn": "2026-10-01"
   }
  }
