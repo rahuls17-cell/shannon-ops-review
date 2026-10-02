@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T18:11:04+00:00",
+ "generatedAt": "2026-10-02T18:21:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15151,6 +15151,18 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/drive-duplicate-copies-audit/16ed7b4fa4cf2aa0a964e2b3ca53f8265e4559d0ea185146c5a36b3aa2066e7c.zip",
    "bytesRead": 41933,
+   "readOn": "2026-10-02"
+  },
+  "writing-in-a-chat-that-is-not-theirs": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-in-a-chat-that-is-not-theirs/07ee6fb3ccdb0c6b0525c4916044c6e0b9d4eabd665d33eefb35de6e4c0431a6.zip",
+   "bytesRead": 57378,
    "readOn": "2026-10-02"
   }
  }
