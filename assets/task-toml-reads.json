@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T21:41:01+00:00",
+ "generatedAt": "2026-10-02T21:51:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15577,6 +15577,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/keep-the-client-and-partner-mail/6dc4708d426703ec75484bb69e9dfe34d5c527d3d50d3ba5031e9737cfd7545b.zip",
    "bytesRead": 58046,
+   "readOn": "2026-10-02"
+  },
+  "paid-accounts-about-to-cut-us-off": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/paid-accounts-about-to-cut-us-off/ab90ab4b4ea12d70fc3af8dda0528c89c2eb106dcc84f0fc6e46bf08e1737d45.zip",
+   "bytesRead": 52848,
+   "readOn": "2026-10-02"
+  },
+  "who-answered-the-report": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-answered-the-report/f6245907decc12c6872899ac385a23cdcc8b59297cbf6b63a72ee9dfa3d3714d.zip",
+   "bytesRead": 45523,
    "readOn": "2026-10-02"
   }
  }
