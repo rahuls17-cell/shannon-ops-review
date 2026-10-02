@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T19:01:04+00:00",
+ "generatedAt": "2026-10-02T19:11:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15200,6 +15200,42 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-board-said-done/6f795e315e2efb109e58dfb8016cb1ccb378f3d09c75bb46a8ad4d521238fa71.zip",
    "bytesRead": 43648,
+   "readOn": "2026-10-02"
+  },
+  "finance-coverage-escalation-audit": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-coverage-escalation-audit/242c06ba8eeeb4e1b785f077e55845416221bf62a96546ad3e976a8b0fd84ff7.zip",
+   "bytesRead": 48013,
+   "readOn": "2026-10-02"
+  },
+  "morning-check-ins-in-2023": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/morning-check-ins-in-2023/21aba3d4d992f766abd2e8afd02904da3dec21475f6771783106bde7beab5914.zip",
+   "bytesRead": 46289,
+   "readOn": "2026-10-02"
+  },
+  "the-bots-no-two-lists-agree-on": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-bots-no-two-lists-agree-on/c802aa17ad1ee95eb0b3ed8cf293118765c5b64dbfd29aa4d35b929d1e9184d1.zip",
+   "bytesRead": 48879,
    "readOn": "2026-10-02"
   }
  }
