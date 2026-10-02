@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T18:41:04+00:00",
+ "generatedAt": "2026-10-02T18:51:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15175,6 +15175,19 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/codes-the-charge-table-prices-two-ways/8cb53b78ac55481ae13ed2eac3b6ca05b81f28d9b4d51b6265a6b57000284f54.zip",
    "bytesRead": 52209,
+   "readOn": "2026-10-02"
+  },
+  "billing-pipeline-compute-cost-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/billing-pipeline-compute-cost-audit/929496351b8e890713ea785d8d9945aa4af25952b2c73bc8f43a46f12f9a5934.zip",
+   "bytesRead": 43696,
    "readOn": "2026-10-02"
   }
  }
