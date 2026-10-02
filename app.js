@@ -2078,19 +2078,27 @@ function renderTruthFigures(result, filtered) {
     </div>`;
   animateCounts(byId('truthMakeup'));
 
-  // The domain split of whatever is shown, so filtering to non-connector
-  // answers "which of these are general, which are law".
-  const domains = Object.entries(result.domains || {})
+  // The domain split of whatever is shown, by the same names as the Domain
+  // dropdown: a non-connector task's name-prefix domain, a connector task's
+  // kind - Synthetic, Real Connector or Connector on the Computer bench, Aster
+  // or Zeta with single or multi-connector on the Company bench. By domain
+  // alone every connector segment read Not recorded and the chart was empty.
+  const kinds = {};
+  result.rows.forEach(row => {
+    const kind = row.domainKind || row.domain || 'Not recorded';
+    kinds[kind] = (kinds[kind] || 0) + 1;
+  });
+  const domains = Object.entries(kinds)
     .filter(([name]) => name && name !== 'Not recorded' && name !== '(none)')
     .sort((a, b) => b[1] - a[1]);
   const domainTotal = domains.reduce((n, [, v]) => n + v, 0);
-  const unnamed = (result.domains || {})['Not recorded'] || 0;
+  const unnamed = kinds['Not recorded'] || 0;
   byId('truthDomains').innerHTML = `
-    <div class="kpi-top"><h3>Named domain</h3><span class="kpi-tag">${shownBase ? Math.round((domainTotal / shownBase) * 100) : 0}% of shown</span></div>
-    <div class="kpi-head"><strong data-count="${domainTotal}" data-key="dom:total">${fmt(domainTotal)}</strong><p class="kpi-note">tasks whose name starts with a domain prefix \u00b7 ${fmt(unnamed)} do not</p></div>
+    <div class="kpi-top"><h3>Domain</h3><span class="kpi-tag">${shownBase ? Math.round((domainTotal / shownBase) * 100) : 0}% of shown</span></div>
+    <div class="kpi-head"><strong data-count="${domainTotal}" data-key="dom:total">${fmt(domainTotal)}</strong><p class="kpi-note">tasks with a domain prefix or a connector kind \u00b7 ${fmt(unnamed)} not recorded</p></div>
     ${domains.length
-      ? columnsMarkup(domains.map(([name, n], i) => [name, n, `ramp-${Math.min(i, 5)}`, `${name}: ${fmt(n)} of the ${fmt(domainTotal)} named tasks`])).replace('<div class="cols"', '<div class="cols is-wide is-grid"')
-      : '<p class="empty">No task in this selection carries a domain prefix.</p>'}`;
+      ? columnsMarkup(domains.map(([name, n], i) => [name, n, `ramp-${Math.min(i, 5)}`, `${name}: ${fmt(n)} of the ${fmt(domainTotal)} tasks with a domain or kind`])).replace('<div class="cols"', '<div class="cols is-wide is-grid"')
+      : '<p class="empty">No task in this selection has a domain or a connector kind recorded.</p>'}`;
 
   byId('truthFlags').innerHTML = [
     ['carried over', shownWhere(r => r.carriedOver), 'Carried over',

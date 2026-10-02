@@ -103,6 +103,14 @@ longer decides Company Bench anywhere on the dashboard.
   tasks whose package was never scanned read "connectors not read" (Zeta
   1,941, Aster 711 pipeline tasks today). Only this dropdown and its filter
   change; the named-domain card and Carried over's Domain still read the name.
+- **Pipeline, Delivery & makeup: the Domain chart follows the segment.** It
+  counted the name-prefix domain only, which connector tasks do not carry, so
+  under Connector, Company Bench, Aster or Zeta it read "No task in this
+  selection carries a domain prefix" and showed nothing. It now uses the same
+  names as the Domain dropdown: Synthetic, Real Connector and Connector under
+  Computer Bench Connector; Aster or Zeta with single or multi-connector (or
+  connectors not read) under Company Bench; the five domains under
+  Non-connector. Renamed from Named domain to Domain.
 - **Pipeline domains are Engineering, Finance, Health, Legal and Other.** gen-
   and bus- tasks were labelled General and Business; both are Other, as on the
   Delivery tab. tools/build_tags.py names them Other from the next pipeline
