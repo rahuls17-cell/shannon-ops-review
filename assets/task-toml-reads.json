@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T22:31:03+00:00",
+ "generatedAt": "2026-10-02T22:41:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15650,6 +15650,18 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/failover-stale-links-audit/112e2fb5f66d0e231a33c21d921cf7a2c0d61f9f30f19341379d69797f2b2c6b.zip",
    "bytesRead": 42474,
+   "readOn": "2026-10-02"
+  },
+  "nobody-checked-who-can-open-them": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nobody-checked-who-can-open-them/1483a391f7410b190afc06a118793420a539ced09db1d1e8822b328d63f12b93.zip",
+   "bytesRead": 57087,
    "readOn": "2026-10-02"
   }
  }
