@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T20:41:04+00:00",
+ "generatedAt": "2026-10-02T20:51:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15406,6 +15406,56 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-owns-the-untended-records/d912c1bbe398511c346884a283227f841c2aacda10ff0a421a7075080ccd9533.zip",
    "bytesRead": 49372,
+   "readOn": "2026-10-02"
+  },
+  "client-data-segregation-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/client-data-segregation-audit/e5a33c1a9eee8bd007184f0659de0df79eba9531c94340d2879c8f39d81341c6.zip",
+   "bytesRead": 44469,
+   "readOn": "2026-10-02"
+  },
+  "egress-destination-audit": {
+   "connector": true,
+   "services": [
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/egress-destination-audit/c4aa1a189ead5009f3b03abe585190d874991e2bf0782889bbbb21299c33b334.zip",
+   "bytesRead": 42763,
+   "readOn": "2026-10-02"
+  },
+  "growth-portfolio-health-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/growth-portfolio-health-audit/720243fdc98fa9abe17e41f79b342182cd5d61c3ccd9aecc86336e5194d3fa43.zip",
+   "bytesRead": 41678,
+   "readOn": "2026-10-02"
+  },
+  "where-the-seed-round-stands": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-the-seed-round-stands/2711be2498c16b9d6244dbbfd04dc5752c249c019f99884d8118543701eeeb9d.zip",
+   "bytesRead": 48906,
    "readOn": "2026-10-02"
   }
  }
