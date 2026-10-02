@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T21:11:07+00:00",
+ "generatedAt": "2026-10-02T21:21:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15516,6 +15516,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/signature-requests-i-sent-out/762eca9ee340056aa566fbbf66aa342dd0e8151c9baa7dc8bf14994dc0d0c50b.zip",
    "bytesRead": 48745,
+   "readOn": "2026-10-02"
+  },
+  "cs-lifecycle-nudge-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/cs-lifecycle-nudge-audit/0587e00b3af4cc284ac87d71798e90eed6cc82c0346840b549c7d94f386846bc.zip",
+   "bytesRead": 47936,
+   "readOn": "2026-10-02"
+  },
+  "meeting-load-digest": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/meeting-load-digest/491ff53d56ba81f995b81e4c8a7b7d8a9da56e2140c97219436b1250b4ed56b8.zip",
+   "bytesRead": 44010,
    "readOn": "2026-10-02"
   }
  }
