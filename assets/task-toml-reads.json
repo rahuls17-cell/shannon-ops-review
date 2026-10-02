@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T19:31:05+00:00",
+ "generatedAt": "2026-10-02T19:41:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15261,6 +15261,42 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-ledger-duties-audit/a6975f8425e1d8d9fdc41ae02fbadc395bbd37546c4eba3d721891f3a8519cd8.zip",
    "bytesRead": 44744,
+   "readOn": "2026-10-02"
+  },
+  "the-notice-that-names-the-wrong-sender": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-notice-that-names-the-wrong-sender/7c20c8eedacdbd8c43db61a986fdf13adec1f2d3f64c9e07214667555fc56036.zip",
+   "bytesRead": 55919,
+   "readOn": "2026-10-02"
+  },
+  "the-post-i-was-never-sent": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-post-i-was-never-sent/ca53642b7382192736fae3ae3293e8ad4b1cee18a437bdec78cbde895da170df.zip",
+   "bytesRead": 50048,
+   "readOn": "2026-10-02"
+  },
+  "the-thread-and-everything-attached-to-it": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-thread-and-everything-attached-to-it/5e892f337acfc598b70f7298dd21cbb68698f7d236491b77f8f1db9030816c31.zip",
+   "bytesRead": 54188,
    "readOn": "2026-10-02"
   }
  }
