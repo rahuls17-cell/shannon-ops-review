@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T20:11:03+00:00",
+ "generatedAt": "2026-10-02T20:21:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15346,6 +15346,42 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/growth-label-ownership-audit/9b7a3af9f2a3a62444b41fa58e68a8ec32d9a84c56446e4e16f8d7352002fa7d.zip",
    "bytesRead": 42089,
+   "readOn": "2026-10-02"
+  },
+  "acme-account-trail-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/acme-account-trail-audit/34a4f8ba610319fcaa75df5ae8330b0d410da9ca66cc161b50bccd613fa47aab.zip",
+   "bytesRead": 46807,
+   "readOn": "2026-10-02"
+  },
+  "the-guardino-dr-meetings": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guardino-dr-meetings/ea592883e14be460b442f75838da1c7651a0129f3185bef9e39fcc47bebe5367.zip",
+   "bytesRead": 61792,
+   "readOn": "2026-10-02"
+  },
+  "the-training-invitations-nobody-took-up": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-training-invitations-nobody-took-up/6ff04c6d36c87c7620ccf647b7cc80662d2f196141dee7fc2f83098ee4f1ebd5.zip",
+   "bytesRead": 53472,
    "readOn": "2026-10-02"
   }
  }
