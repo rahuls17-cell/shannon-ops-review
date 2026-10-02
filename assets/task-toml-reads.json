@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T21:01:06+00:00",
+ "generatedAt": "2026-10-02T21:11:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15468,6 +15468,54 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-sprint-work-started-without-a-plan/c133bba458cf7f970676ef775fb7c69b28e91e233d5d0db78b138d6a987ec1d8.zip",
    "bytesRead": 50140,
+   "readOn": "2026-10-02"
+  },
+  "calendar-rsvp-hygiene-audit": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/calendar-rsvp-hygiene-audit/399368728c6c77e561a3474319c7cbb2faaa4d71d3d4fa5ecdff92ee90574b0e.zip",
+   "bytesRead": 45476,
+   "readOn": "2026-10-02"
+  },
+  "growth-initiative-coverage-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/growth-initiative-coverage-audit/0a1768d2aac82a0a62aa8503026d4a288da0302f698d3ff3259c9f731351ea70.zip",
+   "bytesRead": 45020,
+   "readOn": "2026-10-02"
+  },
+  "meetings-my-guests-keep-declining": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/meetings-my-guests-keep-declining/47741bbe374519ee987322b2767f1629492cbb48d01b2ac4604ab6d24035f4a9.zip",
+   "bytesRead": 48875,
+   "readOn": "2026-10-02"
+  },
+  "signature-requests-i-sent-out": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/signature-requests-i-sent-out/762eca9ee340056aa566fbbf66aa342dd0e8151c9baa7dc8bf14994dc0d0c50b.zip",
+   "bytesRead": 48745,
    "readOn": "2026-10-02"
   }
  }
