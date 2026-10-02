@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T19:51:03+00:00",
+ "generatedAt": "2026-10-02T20:01:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15321,6 +15321,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-notification-emails-are-really-ready/ee678c263eb202b37c1ff337b14df12665282a5b77922dbc9bfc10ec1e40b9c9.zip",
    "bytesRead": 52849,
+   "readOn": "2026-10-02"
+  },
+  "broken-chain-holdup-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/broken-chain-holdup-audit/eea3c445b6212347e4d9e2d90a1c112c0b6fe27a9d422a06f43585576cad30d4.zip",
+   "bytesRead": 39504,
+   "readOn": "2026-10-02"
+  },
+  "growth-label-ownership-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/growth-label-ownership-audit/9b7a3af9f2a3a62444b41fa58e68a8ec32d9a84c56446e4e16f8d7352002fa7d.zip",
+   "bytesRead": 42089,
    "readOn": "2026-10-02"
   }
  }
