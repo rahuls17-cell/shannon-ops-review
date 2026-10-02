@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T22:21:01+00:00",
+ "generatedAt": "2026-10-02T22:31:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15625,6 +15625,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/cancelled-visits-never-rebooked/13b9291c3ecf7df786152d736e5c7a08a84d0a6754dcdfcfd503e71f279d0807.zip",
    "bytesRead": 54711,
+   "readOn": "2026-10-02"
+  },
+  "customers-still-waiting-on-features": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/customers-still-waiting-on-features/4b90439736ce7cc33804029dbb265b5dfdd24463bbc3690e928d58c235df43eb.zip",
+   "bytesRead": 53292,
+   "readOn": "2026-10-02"
+  },
+  "failover-stale-links-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/failover-stale-links-audit/112e2fb5f66d0e231a33c21d921cf7a2c0d61f9f30f19341379d69797f2b2c6b.zip",
+   "bytesRead": 42474,
    "readOn": "2026-10-02"
   }
  }
