@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T19:21:04+00:00",
+ "generatedAt": "2026-10-02T19:31:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15236,6 +15236,31 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-bots-no-two-lists-agree-on/c802aa17ad1ee95eb0b3ed8cf293118765c5b64dbfd29aa4d35b929d1e9184d1.zip",
    "bytesRead": 48879,
+   "readOn": "2026-10-02"
+  },
+  "did-the-reporter-come-back": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/did-the-reporter-come-back/6d9be8b05bb5f0ba7be6dd14b163f868ede1894d018ef2ceadfb0d600fb86dc9.zip",
+   "bytesRead": 47112,
+   "readOn": "2026-10-02"
+  },
+  "finance-ledger-duties-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-ledger-duties-audit/a6975f8425e1d8d9fdc41ae02fbadc395bbd37546c4eba3d721891f3a8519cd8.zip",
+   "bytesRead": 44744,
    "readOn": "2026-10-02"
   }
  }
