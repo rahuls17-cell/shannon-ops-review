@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T20:21:06+00:00",
+ "generatedAt": "2026-10-02T20:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15382,6 +15382,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-training-invitations-nobody-took-up/6ff04c6d36c87c7620ccf647b7cc80662d2f196141dee7fc2f83098ee4f1ebd5.zip",
    "bytesRead": 53472,
+   "readOn": "2026-10-02"
+  },
+  "merged-on-red-incident-suspects": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/merged-on-red-incident-suspects/308c360a70e797331f1bf9cb6bd543d2da25c35d087030a7a24d0f9ee6507692.zip",
+   "bytesRead": 57568,
+   "readOn": "2026-10-02"
+  },
+  "who-owns-the-untended-records": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-owns-the-untended-records/d912c1bbe398511c346884a283227f841c2aacda10ff0a421a7075080ccd9533.zip",
+   "bytesRead": 49372,
    "readOn": "2026-10-02"
   }
  }
