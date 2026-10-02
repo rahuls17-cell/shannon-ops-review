@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T22:41:00+00:00",
+ "generatedAt": "2026-10-02T22:51:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15662,6 +15662,32 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nobody-checked-who-can-open-them/1483a391f7410b190afc06a118793420a539ced09db1d1e8822b328d63f12b93.zip",
    "bytesRead": 57087,
+   "readOn": "2026-10-02"
+  },
+  "billing-chain-foreign-writes": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/billing-chain-foreign-writes/7e4e6f8f027e0c054395434d75bbd45ac4a97746c756f5cdfc9817b0b1dbdd8a.zip",
+   "bytesRead": 47654,
+   "readOn": "2026-10-02"
+  },
+  "finance-export-path-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-export-path-audit/99fad3e07fef2874f1ce45a114f9f5b2297ed7bf2f91831d168cd4b06d208886.zip",
+   "bytesRead": 40085,
    "readOn": "2026-10-02"
   }
  }
