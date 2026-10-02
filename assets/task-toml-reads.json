@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T23:31:03+00:00",
+ "generatedAt": "2026-10-02T23:41:27+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15700,6 +15700,19 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/initiative-deadline-alignment-audit/c87da31b36ba4733008264a470756cfc995e1b531e07e1f834815d36ad341023.zip",
    "bytesRead": 47876,
+   "readOn": "2026-10-02"
+  },
+  "compute-budget-variance-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/compute-budget-variance-audit/c75998edbd8e24512071fd8b9ac0842d92824980b800d2c867da5f5e481bdd4f.zip",
+   "bytesRead": 45184,
    "readOn": "2026-10-02"
   }
  }
