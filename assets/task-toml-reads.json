@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T19:41:07+00:00",
+ "generatedAt": "2026-10-02T19:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15297,6 +15297,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-thread-and-everything-attached-to-it/5e892f337acfc598b70f7298dd21cbb68698f7d236491b77f8f1db9030816c31.zip",
    "bytesRead": 54188,
+   "readOn": "2026-10-02"
+  },
+  "closed-parent-open-subissues-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/closed-parent-open-subissues-audit/b06275560b283ebc5caee870b6aaa53266aa26c52be15c671b0a128a31668e43.zip",
+   "bytesRead": 44717,
+   "readOn": "2026-10-02"
+  },
+  "which-notification-emails-are-really-ready": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-notification-emails-are-really-ready/ee678c263eb202b37c1ff337b14df12665282a5b77922dbc9bfc10ec1e40b9c9.zip",
+   "bytesRead": 52849,
    "readOn": "2026-10-02"
   }
  }
