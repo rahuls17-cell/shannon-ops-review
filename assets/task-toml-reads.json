@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T20:51:06+00:00",
+ "generatedAt": "2026-10-02T21:01:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15456,6 +15456,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-the-seed-round-stands/2711be2498c16b9d6244dbbfd04dc5752c249c019f99884d8118543701eeeb9d.zip",
    "bytesRead": 48906,
+   "readOn": "2026-10-02"
+  },
+  "the-sprint-work-started-without-a-plan": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-sprint-work-started-without-a-plan/c133bba458cf7f970676ef775fb7c69b28e91e233d5d0db78b138d6a987ec1d8.zip",
+   "bytesRead": 50140,
    "readOn": "2026-10-02"
   }
  }
