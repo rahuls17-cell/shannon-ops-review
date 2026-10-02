@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T22:01:04+00:00",
+ "generatedAt": "2026-10-02T22:11:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15613,6 +15613,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-can-prescribe-at-each-practice/3faffa28be61ca0542b41cca39b2b85746e829b3211e6edf892b8672bb57adf5.zip",
    "bytesRead": 47302,
+   "readOn": "2026-10-02"
+  },
+  "cancelled-visits-never-rebooked": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/cancelled-visits-never-rebooked/13b9291c3ecf7df786152d736e5c7a08a84d0a6754dcdfcfd503e71f279d0807.zip",
+   "bytesRead": 54711,
    "readOn": "2026-10-02"
   }
  }
