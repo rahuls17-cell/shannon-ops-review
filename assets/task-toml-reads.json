@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T21:31:04+00:00",
+ "generatedAt": "2026-10-02T21:41:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15553,6 +15553,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-preview-branches-left-running/a0f11c1e4076afab3c4ac0e4f40386d3495b04aebab23cf19235d426c4a98161.zip",
    "bytesRead": 48480,
+   "readOn": "2026-10-02"
+  },
+  "drive-dead-shortcut-audit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/drive-dead-shortcut-audit/06ff4f7a7227bde6cc0d3ba09b4f29444c4ab8ae76107a7bda5393dd2e656b63.zip",
+   "bytesRead": 42279,
+   "readOn": "2026-10-02"
+  },
+  "keep-the-client-and-partner-mail": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/keep-the-client-and-partner-mail/6dc4708d426703ec75484bb69e9dfe34d5c527d3d50d3ba5031e9737cfd7545b.zip",
+   "bytesRead": 58046,
    "readOn": "2026-10-02"
   }
  }
