@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T07:51:01+00:00",
+ "generatedAt": "2026-10-03T08:01:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16256,6 +16256,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-shared-drive-is-really-storing/3872d2bc12be203edff80044b27798772afa50f00133b56d079083de60ba1cad.zip",
    "bytesRead": 55607,
+   "readOn": "2026-10-03"
+  },
+  "eprescribing-outages-prescriber-notices": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/eprescribing-outages-prescriber-notices/658567fa770e95d5c9d802d12d3efcb62b4217e2e3d1bca10b080aa2b5ec19c1.zip",
+   "bytesRead": 51830,
+   "readOn": "2026-10-03"
+  },
+  "which-webhooks-are-still-failing": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-webhooks-are-still-failing/478a5b8c44b71b6ce4bcad5a328181c1fdaea476d5b7845c14c80ed8da7832f1.zip",
+   "bytesRead": 45689,
    "readOn": "2026-10-03"
   }
  }
