@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T06:50:59+00:00",
+ "generatedAt": "2026-10-03T07:01:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16147,6 +16147,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/error-alerts-v16/ea797bfeabbc82d152452884c4f85b8d87a431e4c0ac25327db2a30c6f12d942.zip",
    "bytesRead": 44168,
+   "readOn": "2026-10-03"
+  },
+  "lab-billing-months-that-never-ran": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-billing-months-that-never-ran/a4792a85a229780572422ea96e1ef5a2c9529d1a662e0b12617e7e2a879121e3.zip",
+   "bytesRead": 51165,
+   "readOn": "2026-10-03"
+  },
+  "statements-still-shared-before-shutdown": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/statements-still-shared-before-shutdown/121545546130df57b816471371d7560020dd1edc6681d70a9e61479654394261.zip",
+   "bytesRead": 52975,
    "readOn": "2026-10-03"
   }
  }
