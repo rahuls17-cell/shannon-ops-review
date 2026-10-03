@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T05:41:04+00:00",
+ "generatedAt": "2026-10-03T05:51:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16063,6 +16063,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/zero-fee-lab-lines-to-rebill/a1ce4aa96b55991e8218e5fc1a05660d6c39780b9f1f485512a4627504175ae1.zip",
    "bytesRead": 45533,
+   "readOn": "2026-10-03"
+  },
+  "the-quarterly-bug-scorecard": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-quarterly-bug-scorecard/da5ee7649527a32b92efa828dd3243eceb1a40b17101325636b003e3d7f1de43.zip",
+   "bytesRead": 46631,
    "readOn": "2026-10-03"
   }
  }
