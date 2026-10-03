@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T03:41:06+00:00",
+ "generatedAt": "2026-10-03T03:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15906,6 +15906,54 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/one-sized-at-zero-one-link-home/9aea9b282bdc20696173fb3b55984248dcd66912f85e5ee9b794d3278a0451d8.zip",
    "bytesRead": 49746,
+   "readOn": "2026-10-03"
+  },
+  "back-office-jobs-that-need-a-rerun": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/back-office-jobs-that-need-a-rerun/94c7f6653f884b0c70a562e60a474e617960e2dae3b641ce87e78c5985971d0e.zip",
+   "bytesRead": 52227,
+   "readOn": "2026-10-03"
+  },
+  "invites-that-never-synced": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/invites-that-never-synced/8dad84e30bb5ebc0957bd2bef4517b3dd727c98802bea753319e7b209f088733.zip",
+   "bytesRead": 50058,
+   "readOn": "2026-10-03"
+  },
+  "the-where-line-is-not-the-link": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-where-line-is-not-the-link/da6c69805a055fcb253d5f279e92554097d290d1358c887999276bdd95378eef.zip",
+   "bytesRead": 45945,
+   "readOn": "2026-10-03"
+  },
+  "what-she-can-still-open": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-she-can-still-open/ae5a1dac658a691da41bf19ff6417da0a06a3b236e3bc664a3945ee48c0f6549.zip",
+   "bytesRead": 63965,
    "readOn": "2026-10-03"
   }
  }
