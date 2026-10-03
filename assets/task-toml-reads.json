@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T04:11:04+00:00",
+ "generatedAt": "2026-10-03T04:21:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15979,6 +15979,18 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/initiative-health-rollup-audit-outlook/d7d74faeb8518fcd67c63c070a5e4d8b8fc5550cb8bba9fdacfde689888e74dc.zip",
    "bytesRead": 57913,
+   "readOn": "2026-10-03"
+  },
+  "how-the-risk-registers-disagree": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-the-risk-registers-disagree/b0d51b85d794b201f87c6c3636cbc9beea934935e1d18b1f2b887f65f5b5a0a1.zip",
+   "bytesRead": 50293,
    "readOn": "2026-10-03"
   }
  }
