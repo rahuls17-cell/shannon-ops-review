@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T08:40:59+00:00",
+ "generatedAt": "2026-10-03T08:51:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16305,6 +16305,18 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/security-finding-deadline-audit-github/79be3acf25aa10535c55f32d503a7f0a773cb4d7d40d1641c1e59e9acc8e59b7.zip",
    "bytesRead": 47401,
+   "readOn": "2026-10-03"
+  },
+  "is-the-import-redundant": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/is-the-import-redundant/49d4e0d8f86187e97f219de3a175bd18db43ce90c9e92cd5f6e72820354226c8.zip",
+   "bytesRead": 57126,
    "readOn": "2026-10-03"
   }
  }
