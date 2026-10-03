@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T05:21:01+00:00",
+ "generatedAt": "2026-10-03T05:31:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16039,6 +16039,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/notification-template-audit/df55f6307684a6cf0932e7cc86731af5d6ca21ad8db2ad2014368dcfaa388632.zip",
    "bytesRead": 42896,
+   "readOn": "2026-10-03"
+  },
+  "incident-page-ack-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/incident-page-ack-audit/d79e6d5a98b8732bd223c31bd7c6c1086598b3e5399ea9cd007a3f271392d7bf.zip",
+   "bytesRead": 41279,
+   "readOn": "2026-10-03"
+  },
+  "zero-fee-lab-lines-to-rebill": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/zero-fee-lab-lines-to-rebill/a1ce4aa96b55991e8218e5fc1a05660d6c39780b9f1f485512a4627504175ae1.zip",
+   "bytesRead": 45533,
    "readOn": "2026-10-03"
   }
  }
