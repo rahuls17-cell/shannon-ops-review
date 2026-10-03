@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T07:31:00+00:00",
+ "generatedAt": "2026-10-03T07:41:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16207,6 +16207,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-time-off-i-never-took/b8c31bd02a1988eace3b0d0750d3d43378c0ffea6c4eb369d74e2803ece2ea68.zip",
    "bytesRead": 53681,
+   "readOn": "2026-10-03"
+  },
+  "google-platform-deadlines-ahead": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/google-platform-deadlines-ahead/9410140f7198dc406834a231b1f6d8de23c61d6892380a211e82b2e54d6fc765.zip",
+   "bytesRead": 49775,
    "readOn": "2026-10-03"
   }
  }
