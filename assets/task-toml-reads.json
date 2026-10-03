@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T04:01:01+00:00",
+ "generatedAt": "2026-10-03T04:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15954,6 +15954,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-she-can-still-open/ae5a1dac658a691da41bf19ff6417da0a06a3b236e3bc664a3945ee48c0f6549.zip",
    "bytesRead": 63965,
+   "readOn": "2026-10-03"
+  },
+  "initiative-health-rollup-audit-linear": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/initiative-health-rollup-audit-linear/59bf9cca31b1e9cde2395baa2ee3e4a3c10ffdf754cb326c4107f78c8378c285.zip",
+   "bytesRead": 44518,
+   "readOn": "2026-10-03"
+  },
+  "initiative-health-rollup-audit-outlook": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/initiative-health-rollup-audit-outlook/d7d74faeb8518fcd67c63c070a5e4d8b8fc5550cb8bba9fdacfde689888e74dc.zip",
+   "bytesRead": 57913,
    "readOn": "2026-10-03"
   }
  }
