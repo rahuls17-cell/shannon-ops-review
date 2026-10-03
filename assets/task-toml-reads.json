@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T01:21:02+00:00",
+ "generatedAt": "2026-10-03T01:31:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15762,6 +15762,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/data-defect-cycle-rollover-audit/3fc77605fb9c0197ef7e1bdc2d6439363ff54e6555d7b36151c521a3d7392f11.zip",
    "bytesRead": 49704,
+   "readOn": "2026-10-03"
+  },
+  "the-statement-files-sorted-by-month": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-statement-files-sorted-by-month/cb85079555800d5609c14b5d8815d2d3ed034129441767921dda47e889a7d752.zip",
+   "bytesRead": 53166,
+   "readOn": "2026-10-03"
+  },
+  "vendor-policy-changes-to-act-on": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-policy-changes-to-act-on/e8f86b04ca18de6ba389a7d6d5773aa896fe4761e746cf27886e43d610dc3277.zip",
+   "bytesRead": 69003,
    "readOn": "2026-10-03"
   }
  }
