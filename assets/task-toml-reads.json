@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T01:51:03+00:00",
+ "generatedAt": "2026-10-03T02:01:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15810,6 +15810,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-entries-i-can-sign-off/85554afe783b6f77954fc5a66137e93a6217eea011414f9567d8828b19322c28.zip",
    "bytesRead": 51436,
+   "readOn": "2026-10-03"
+  },
+  "learning-record-for-my-review": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/learning-record-for-my-review/19ab17dffa20c44175d40b4ae821ff4643d2a2c1846bb38c3b97bf86f4e3da1f.zip",
+   "bytesRead": 53152,
    "readOn": "2026-10-03"
   }
  }
