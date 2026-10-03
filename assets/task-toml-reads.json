@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T07:01:00+00:00",
+ "generatedAt": "2026-10-03T07:11:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16171,6 +16171,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/statements-still-shared-before-shutdown/121545546130df57b816471371d7560020dd1edc6681d70a9e61479654394261.zip",
    "bytesRead": 52975,
+   "readOn": "2026-10-03"
+  },
+  "which-team-channels-carry-the-standup": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-team-channels-carry-the-standup/b5df22204e75ad7cd7a7d947ffa6f7240b82466b51fbf4db85f5612452c0a166.zip",
+   "bytesRead": 52613,
    "readOn": "2026-10-03"
   }
  }
