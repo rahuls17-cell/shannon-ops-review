@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T05:01:02+00:00",
+ "generatedAt": "2026-10-03T05:11:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16015,6 +16015,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-sign-ups-we-counted-twice/c4a937e83e3633f01d54966f8ca1c0674770e9ba05132b851e359f0e0eefafee.zip",
    "bytesRead": 45833,
+   "readOn": "2026-10-03"
+  },
+  "technical-track-sessions-i-missed": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/technical-track-sessions-i-missed/b4fe56ef2bc407e4f8b3230a20a21690f04912cbeff3532096bb5085ef28a8b8.zip",
+   "bytesRead": 51997,
    "readOn": "2026-10-03"
   }
  }
