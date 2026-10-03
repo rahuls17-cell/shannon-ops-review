@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T04:31:04+00:00",
+ "generatedAt": "2026-10-03T04:41:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15991,6 +15991,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-the-risk-registers-disagree/b0d51b85d794b201f87c6c3636cbc9beea934935e1d18b1f2b887f65f5b5a0a1.zip",
    "bytesRead": 50293,
+   "readOn": "2026-10-03"
+  },
+  "practice-exports-before-shutdown": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practice-exports-before-shutdown/ad95be7d56b2e02f8f95e2aacf4a9ba5df381530cbc423ff825dd897588ae009.zip",
+   "bytesRead": 50190,
    "readOn": "2026-10-03"
   }
  }
