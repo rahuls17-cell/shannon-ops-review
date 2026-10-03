@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T08:51:00+00:00",
+ "generatedAt": "2026-10-03T09:01:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16317,6 +16317,19 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/is-the-import-redundant/49d4e0d8f86187e97f219de3a175bd18db43ce90c9e92cd5f6e72820354226c8.zip",
    "bytesRead": 57126,
+   "readOn": "2026-10-03"
+  },
+  "duplicate-run-overlap-cost-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/duplicate-run-overlap-cost-audit/85c98bbd4d823a0d7d9d3e3709c58365b8ee333c5a35378e9af62f312a782fd0.zip",
+   "bytesRead": 45791,
    "readOn": "2026-10-03"
   }
  }
