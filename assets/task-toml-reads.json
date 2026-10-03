@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T06:11:05+00:00",
+ "generatedAt": "2026-10-03T06:21:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16087,6 +16087,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/channels-whose-owner-has-no-name/376b449bfaa722fc35f37a8b505a7e01c470486e73c1057274bd9c9e535aa88f.zip",
    "bytesRead": 48748,
+   "readOn": "2026-10-03"
+  },
+  "patient-rosters-held-in-drive": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/patient-rosters-held-in-drive/655af21f2a295ec2ec8c6e7a01806e528b9f4aa988b59f1dc943285248eb4289.zip",
+   "bytesRead": 63371,
+   "readOn": "2026-10-03"
+  },
+  "the-answer-she-already-gave": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-answer-she-already-gave/e9b3e3b923692af746f16f1ee457ad74e0282a25154909e80cabcd1b739d98a8.zip",
+   "bytesRead": 52613,
    "readOn": "2026-10-03"
   }
  }
