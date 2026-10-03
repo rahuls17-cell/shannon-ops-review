@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T03:21:06+00:00",
+ "generatedAt": "2026-10-03T03:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15894,6 +15894,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-deals-nobody-can-call/ee6fdbc55870c81b8d551ce1a550d9c2ee89e17e64efbb0b23def5864759b3e9.zip",
    "bytesRead": 46290,
+   "readOn": "2026-10-03"
+  },
+  "one-sized-at-zero-one-link-home": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/one-sized-at-zero-one-link-home/9aea9b282bdc20696173fb3b55984248dcd66912f85e5ee9b794d3278a0451d8.zip",
+   "bytesRead": 49746,
    "readOn": "2026-10-03"
   }
  }
