@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T08:01:02+00:00",
+ "generatedAt": "2026-10-03T08:11:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16280,6 +16280,19 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-webhooks-are-still-failing/478a5b8c44b71b6ce4bcad5a328181c1fdaea476d5b7845c14c80ed8da7832f1.zip",
    "bytesRead": 45689,
+   "readOn": "2026-10-03"
+  },
+  "done-without-merge-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/done-without-merge-audit/c3d70df9a0009ead09c2b1f0f75a8328ad1d03981c90f5d9f93a61c2174dca59.zip",
+   "bytesRead": 89768,
    "readOn": "2026-10-03"
   }
  }
