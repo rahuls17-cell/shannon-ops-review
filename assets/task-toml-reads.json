@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T07:41:01+00:00",
+ "generatedAt": "2026-10-03T07:51:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16219,6 +16219,43 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/google-platform-deadlines-ahead/9410140f7198dc406834a231b1f6d8de23c61d6892380a211e82b2e54d6fc765.zip",
    "bytesRead": 49775,
+   "readOn": "2026-10-03"
+  },
+  "client-dataset-usage-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/client-dataset-usage-audit/99bede18b53eac32561e267f898b21eecd50943addfa9aa74cbf6ebe24b1ada6.zip",
+   "bytesRead": 45942,
+   "readOn": "2026-10-03"
+  },
+  "small-practices-billing-with-raw-exports": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/small-practices-billing-with-raw-exports/ef60c4d3437e02d843d51de817dcab6be354b05261c900a8760bd2a819818d09.zip",
+   "bytesRead": 58765,
+   "readOn": "2026-10-03"
+  },
+  "what-the-shared-drive-is-really-storing": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-shared-drive-is-really-storing/3872d2bc12be203edff80044b27798772afa50f00133b56d079083de60ba1cad.zip",
+   "bytesRead": 55607,
    "readOn": "2026-10-03"
   }
  }
