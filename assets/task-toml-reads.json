@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T23:51:01+00:00",
+ "generatedAt": "2026-10-03T00:01:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12600,7 +12600,7 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-calendar-blocks-that-only-look-like-meetings-20260923T124555Z-1-001/e6f84ae8f54364ae1014d06b980711f37298bf0d192eedddce0869e5c2581f16.zip",
    "bytesRead": 73529,
-   "readOn": "2026-10-02"
+   "readOn": "2026-10-03"
   },
   "gen-g431-engagement-outcome-metric-disclosure-audit": {
    "connector": false,
@@ -15714,6 +15714,30 @@
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/compute-budget-variance-audit/c75998edbd8e24512071fd8b9ac0842d92824980b800d2c867da5f5e481bdd4f.zip",
    "bytesRead": 45184,
    "readOn": "2026-10-02"
+  },
+  "the-name-it-never-mentions": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-name-it-never-mentions/02c25c829ec2aac99eff27f1275d9341c8c91c626a755564c7e2a902c112063b.zip",
+   "bytesRead": 51744,
+   "readOn": "2026-10-03"
+  },
+  "who-in-here-is-actually-a-guest": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-in-here-is-actually-a-guest/e0fdd0437212097932b4d636eafacec158bcf9883070d8d29af0f4be5949eda9.zip",
+   "bytesRead": 52137,
+   "readOn": "2026-10-03"
   }
  }
 }
