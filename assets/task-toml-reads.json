@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T09:01:03+00:00",
+ "generatedAt": "2026-10-03T09:11:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16330,6 +16330,18 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/duplicate-run-overlap-cost-audit/85c98bbd4d823a0d7d9d3e3709c58365b8ee333c5a35378e9af62f312a782fd0.zip",
    "bytesRead": 45791,
+   "readOn": "2026-10-03"
+  },
+  "which-appointment-actually-stands": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-appointment-actually-stands/1613669cc7aea916319675bb88e15cf4dce92051824bf58ca720468bb59da058.zip",
+   "bytesRead": 52391,
    "readOn": "2026-10-03"
   }
  }
