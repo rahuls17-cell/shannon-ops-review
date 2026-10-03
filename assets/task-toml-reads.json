@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T00:11:02+00:00",
+ "generatedAt": "2026-10-03T00:21:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15737,6 +15737,31 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-in-here-is-actually-a-guest/e0fdd0437212097932b4d636eafacec158bcf9883070d8d29af0f4be5949eda9.zip",
    "bytesRead": 52137,
+   "readOn": "2026-10-03"
+  },
+  "auto-merge-that-cannot-land": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/auto-merge-that-cannot-land/ae815eb6fdb6def4a9684aa6f08e52135a70b4e302a67a1a1b411d00cc9763d2.zip",
+   "bytesRead": 45983,
+   "readOn": "2026-10-03"
+  },
+  "data-defect-cycle-rollover-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/data-defect-cycle-rollover-audit/3fc77605fb9c0197ef7e1bdc2d6439363ff54e6555d7b36151c521a3d7392f11.zip",
+   "bytesRead": 49704,
    "readOn": "2026-10-03"
   }
  }
