@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T02:31:02+00:00",
+ "generatedAt": "2026-10-03T02:41:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15858,6 +15858,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-calls-that-never-got-a-price/a76fdc797c8f70eee9f3c65c57c153f0216a9d6550f73885cce4486b2489fd10.zip",
    "bytesRead": 50660,
+   "readOn": "2026-10-03"
+  },
+  "account-notice-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/account-notice-audit/ba2b660ca69f0e0baa5d5ba58c3d02a6edbefc20314c1e4ed3471c1d0b0a1e53.zip",
+   "bytesRead": 50901,
+   "readOn": "2026-10-03"
+  },
+  "the-repeats-that-hide-their-rule": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-repeats-that-hide-their-rule/3b092fd014fead33bea784ed24b6472c1e8a828f7efd0f99641e4f72e8c9a957.zip",
+   "bytesRead": 62175,
    "readOn": "2026-10-03"
   }
  }
