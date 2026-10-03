@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T01:41:09+00:00",
+ "generatedAt": "2026-10-03T01:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15798,6 +15798,18 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/backlog-in-cycle-status-audit/23b0db348430ea5a0458d23e8bfba6cf2cf77693755f60076b65bfb5ed75d64f.zip",
    "bytesRead": 76828,
+   "readOn": "2026-10-03"
+  },
+  "the-entries-i-can-sign-off": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-entries-i-can-sign-off/85554afe783b6f77954fc5a66137e93a6217eea011414f9567d8828b19322c28.zip",
+   "bytesRead": 51436,
    "readOn": "2026-10-03"
   }
  }
