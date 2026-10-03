@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T02:41:03+00:00",
+ "generatedAt": "2026-10-03T02:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15882,6 +15882,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-repeats-that-hide-their-rule/3b092fd014fead33bea784ed24b6472c1e8a828f7efd0f99641e4f72e8c9a957.zip",
    "bytesRead": 62175,
+   "readOn": "2026-10-03"
+  },
+  "the-deals-nobody-can-call": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-deals-nobody-can-call/ee6fdbc55870c81b8d551ce1a550d9c2ee89e17e64efbb0b23def5864759b3e9.zip",
+   "bytesRead": 46290,
    "readOn": "2026-10-03"
   }
  }
