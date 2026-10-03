@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T02:01:02+00:00",
+ "generatedAt": "2026-10-03T02:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15822,6 +15822,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/learning-record-for-my-review/19ab17dffa20c44175d40b4ae821ff4643d2a2c1846bb38c3b97bf86f4e3da1f.zip",
    "bytesRead": 53152,
+   "readOn": "2026-10-03"
+  },
+  "canceled-project-sunk-work-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/canceled-project-sunk-work-audit/a768022db45c15821da339877420a3629cd281fa169a86f74c06ebf8a40dc351.zip",
+   "bytesRead": 42381,
+   "readOn": "2026-10-03"
+  },
+  "one-rename-many-pulls": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/one-rename-many-pulls/f784235aecc547e7f17ca2adea8feea5d14083cb82eb7d4f9c7742132fc15c8e.zip",
+   "bytesRead": 49238,
+   "readOn": "2026-10-03"
+  },
+  "vendor-calls-that-never-got-a-price": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-calls-that-never-got-a-price/a76fdc797c8f70eee9f3c65c57c153f0216a9d6550f73885cce4486b2489fd10.zip",
+   "bytesRead": 50660,
    "readOn": "2026-10-03"
   }
  }
