@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T01:31:05+00:00",
+ "generatedAt": "2026-10-03T01:41:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -15786,6 +15786,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-policy-changes-to-act-on/e8f86b04ca18de6ba389a7d6d5773aa896fe4761e746cf27886e43d610dc3277.zip",
    "bytesRead": 69003,
+   "readOn": "2026-10-03"
+  },
+  "backlog-in-cycle-status-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/backlog-in-cycle-status-audit/23b0db348430ea5a0458d23e8bfba6cf2cf77693755f60076b65bfb5ed75d64f.zip",
+   "bytesRead": 76828,
    "readOn": "2026-10-03"
   }
  }
