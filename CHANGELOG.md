@@ -10,14 +10,18 @@ When you change what a figure means, add a line under **Unreleased**. When
 ## Unreleased - on `staging`, not yet on `main`
 
 ### Drive: the 3 Oct layout, and a switch back to the GLM 5.3 cutoff
-- **A Drive switch in the top bar: Current (default) or GLM 5.3 cutoff.** The
+- **The Drive switch belongs to the Delivery tab.** It sits at the top of the
+  tab's left rail, above Batch scope, and changes that tab only. Every other tab
+  - the Overview (Client accepted under a segment), the Pipeline's delivery
+  join, the bench a delivered task gives a pipeline row - keeps reading the GLM
+  5.3 cutoff rows, as it did before the Drive was reorganised, whichever view
+  the Delivery tab shows. It is no longer in the top bar or the filter chips.
+- **A Drive switch: Current (default) or GLM 5.3 cutoff.** The
   Deliveries folder was reorganised on 3 Oct. GLM 5.3 cutoff is the dashboard
   exactly as it stood before, read on 1 Oct and kept unchanged
   (`assets/drive-deliveries-glm53-cutoff.json`, `drive-owners-glm53-cutoff.json`):
   3,231 delivered tasks, Company Bench 1,696. Current reads the folder as it is
-  now. The switch changes the Delivery tab and what is built on delivered
-  packages (the Pipeline delivery join, the bench of a delivered task); it is
-  kept in the link (`?drive=glm53`) and shows as a filter chip.
+  now. The choice is kept in the link (`?drive=glm53`).
 - **The reader follows the new layout** (`tools/build_drive_deliveries.py`):
   - group folders nest two levels: `CompanyBench 1673/CompanyBench - From
     Pipeline 350/Batch 9.1 - CompanyBench 89`;

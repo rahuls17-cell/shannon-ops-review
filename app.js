@@ -203,7 +203,7 @@ const infoCopy = {
       `${fmt(rows.length - SEGMENT_LEAVES.reduce((total, key) => total + count(key), 0))} carry no bench, type or harness yet and appear under All, or under their bench alone. ` +
       'A person counts in every segment they have tasks in, so someone who works on both benches shows under both. The 240 audit counts and the daily plan are not split, and say so.';
   },
-  driveView: 'Which layout of the Drive Deliveries folder the delivered packages are read from. Current is the folder as it is now: since 3 Oct Company Bench sits in one CompanyBench folder - CompanyBench 1 to 3 and, under From Pipeline, the Company Bench share of each Shannon batch - duplicates are taken out, and Batches 5.1 to 7.1 were re-cut. GLM 5.3 cutoff is the dashboard as it stood before that, read on 1 Oct, kept unchanged for comparison. It changes the Delivery tab and everything built on the delivered packages - the Pipeline delivery join and the bench of delivered tasks; the pipeline itself and the payouts do not depend on it.',
+  driveView: 'Which Drive reading this tab shows. Current is the Drive and nothing else, as the Deliveries folder is now: since 3 Oct Company Bench sits in one CompanyBench folder - CompanyBench 1 to 3 and, under From Pipeline, the Company Bench share of each Shannon batch - duplicates are taken out, and Batches 5.1 to 7.1 were re-cut. Every task is a package in a Drive folder, Batches 1 to 4.1 included; bench, Aster or Zeta and connector count come from the Drive folder and the manifest; the Drive records no client decision, so every task is Pending. GLM 5.3 cutoff is this tab as it stood before, kept unchanged: the delivery audit for Batches 1 to 4.1 with its decisions, the Drive read on 1 Oct for the rest. The switch changes this tab only; the other tabs keep reading the GLM 5.3 cutoff rows.',
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
   v2Accepted: 'Task folders in tasks/finalisation_client_qc_accepted_iteration_2/ in the bucket - the second client QC finalisation round. It is one of three accepted cohorts, so it is smaller than the accepted total on the Finalisation tab, and a task finalised into more than one cohort is counted here once per folder. Read it as the size of the v2 round, not as the total accepted work.',
@@ -645,7 +645,17 @@ const DRIVE_VIEWS = {
           owners: 'assets/drive-owners-glm53-cutoff.json', driveOnly: false},
 };
 let driveView = '';
-const driveOnly = () => DRIVE_VIEWS[driveView].driveOnly;
+// The switch is the Delivery tab's own: every other tab - the Overview, the
+// Pipeline's delivery join, the bench a delivered task gives a pipeline row -
+// keeps reading the GLM 5.3 cutoff rows in `audit`, as it did before the Drive
+// was reorganised. The Delivery tab reads deliveryData(): the Drive-only rows in
+// `driveAudit` under Current, the same `audit` under GLM 5.3 cutoff.
+let driveAudit = null;
+const deliveryData = () => (DRIVE_VIEWS[driveView].driveOnly ? driveAudit : audit);
+const deliveryRows = () => {
+  const data = deliveryData();
+  return data ? data.rows.filter(row => segmentMatches(deliverySegment(row))) : [];
+};
 function restoreDriveView() {
   let saved = '';
   try { saved = new URL(location.href).searchParams.get('drive') || localStorage.getItem('driveView') || ''; } catch { saved = ''; }
@@ -666,8 +676,9 @@ async function setDriveView(value) {
   if (driveView) url.searchParams.set('drive', driveView); else url.searchParams.delete('drive');
   history.replaceState(history.state, '', url);
   syncDriveSwitch();
-  await loadDeliveryAudit();
-  renderEverything();
+  auditPage = 0;
+  populateAuditFilters();
+  renderAudit();
 }
 
 async function loadDeliveryAudit() {
@@ -676,20 +687,24 @@ async function loadDeliveryAudit() {
     if (!response.ok) throw new Error(`asset returned ${response.status}`);
     // Batches after 4.1 come from their Drive manifests. Optional: without the
     // asset the tab still shows the audited batches, and says the rest are missing.
-    let drive = null;
-    try {
-      const dr = await fetch(`${DRIVE_VIEWS[driveView].deliveries}?t=${Date.now()}`, {cache: 'no-store'});
-      if (dr.ok) drive = await dr.json();
-    } catch (ignored) { drive = null; }
-    // Their trainers, joined from the bucket. Optional: without it those rows
-    // stay Unattributed, which is what the manifest itself says.
-    let owners = null;
-    try {
-      const ow = drive ? await fetch(`${DRIVE_VIEWS[driveView].owners}?t=${Date.now()}`, {cache: 'no-store'}) : null;
-      if (ow && ow.ok) owners = await ow.json();
-    } catch (ignored) { owners = null; }
+    // Each Drive reading with its trainers, joined from the bucket. Optional:
+    // without the trainers those rows stay Unattributed, which is what the
+    // manifest itself says.
+    const readJson = async path => {
+      try {
+        const got = await fetch(`${path}?t=${Date.now()}`, {cache: 'no-store'});
+        return got.ok ? await got.json() : null;
+      } catch (ignored) { return null; }
+    };
+    const cutoff = DRIVE_VIEWS.glm53, current = DRIVE_VIEWS[''];
+    const [cutoffDrive, cutoffOwners, currentDrive, currentOwners] = await Promise.all(
+      [cutoff.deliveries, cutoff.owners, current.deliveries, current.owners].map(readJson));
     const audited = await response.json();
-    audit = window.prepareDeliveryAudit(driveOnly() ? {...audited, rows: []} : audited, drive, owners);
+    audit = window.prepareDeliveryAudit(audited, cutoffDrive, cutoffOwners);
+    // The Drive alone: no audited row, so Batches 1 to 4.1 come from their Drive folders.
+    driveAudit = currentDrive
+      ? window.prepareDeliveryAudit({...audited, rows: []}, currentDrive, currentOwners) : null;
+    if (driveAudit) driveAudit.rows.forEach(row => { row.driveOnly = true; });
     resetTaskBenches();
     populateAuditFilters();
     renderAudit();
@@ -716,6 +731,7 @@ function auditFilters() {
 }
 
 function populateAuditFilters() {
+  const audit = deliveryData();
   if (!audit) return;
   const all = window.filterDeliveryAudit(audit.rows, {});
   fillSelect('aBatch', all.byBatch, 'Any batch');
@@ -896,7 +912,7 @@ const truthHarness = row => HARNESS_OF_BENCH[row.bench]
 // A delivered package: its task's own image when that was read, else its
 // manifest, else the gyms it mounts.
 const deliveryHarness = row => {
-  if (driveOnly()) return row.harness || driveHarnessOfGyms(row.connectors);
+  if (row.driveOnly) return row.harness || driveHarnessOfGyms(row.connectors);
   const {built} = taskHarnesses();
   return built.get(benchKey(row.task)) || built.get(benchKey(row.packageName)) || row.harness
     || harnessOfGyms(row.connectors);
@@ -1018,17 +1034,9 @@ const imageSide = (bench, gyms) => {
   return side === 'computer' && harnessOfGyms(gyms) ? 'company' : side || null;
 };
 function applyImageBench() {
-  if (audit && driveOnly()) {
-    // The Drive alone: each row keeps the bench and category its Drive folder
-    // and manifest give it.
-    audit.rows.forEach(row => {
-      keepFolderAnswer(row);
-      row.bench = row.benchByFolder;
-      row.category = row.categoryByFolder;
-      row.benchFromImage = false;
-    });
-    return;
-  }
+  // The Drive alone: each row keeps the bench and category its Drive folder and
+  // manifest give it.
+  (driveAudit ? driveAudit.rows : []).forEach(keepFolderAnswer);
   if (!truth || !audit) return;
   const map = new Map();
   [...truth.rows, ...(truth.cohortRows || [])].forEach(row => {
@@ -1067,8 +1075,7 @@ function keepFolderAnswer(row) {
 const COMPANY_HARNESS = {aster: 'Aster', zeta: 'Zeta'};
 const COMPANY_COUNT = {single: 'Single connector', multi: 'Multi-connector'};
 function applyCompanyCategory() {
-  if (!audit) return;
-  audit.rows.forEach(row => {
+  [...(audit ? audit.rows : []), ...(driveAudit ? driveAudit.rows : [])].forEach(row => {
     keepFolderAnswer(row);
     if (row.bench !== 'company') return;
     row.category = `${COMPANY_HARNESS[deliveryHarness(row)] || 'Company Bench'} \u00b7 ${COMPANY_COUNT[deliveryCount(row)] || 'connectors not read'}`;
@@ -1173,7 +1180,7 @@ const shownTasks = rows => rows.length;
 // moves. A row with no bench recorded - the audited batches 1 to 4.1 - is a
 // Computer Bench task, split by its connector flag.
 // A delivered package's own manifest list first, then the pipeline's reading.
-const deliveryCount = row => connectorCountOf(row.connectors) || (driveOnly() ? null : countOfTask(row.task, row.packageName));
+const deliveryCount = row => connectorCountOf(row.connectors) || (row.driveOnly ? null : countOfTask(row.task, row.packageName));
 const deliverySegment = row => taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type),
   row.bench === 'company' ? deliveryHarness(row) : null);
 const auditRows = () => (audit ? audit.rows.filter(row => segmentMatches(deliverySegment(row))) : []);
@@ -1452,9 +1459,10 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
 }
 
 function renderAudit() {
+  const audit = deliveryData();
   if (!audit) return;
   const filters = auditFilters();
-  const result = window.filterDeliveryAudit(auditRows(), filters);
+  const result = window.filterDeliveryAudit(deliveryRows(), filters);
   const rows = result.rows;
   const shown = rows.length;
   const total = audit.rows.length;
@@ -1509,8 +1517,8 @@ function renderAudit() {
 function renderBatchTabs(filters) {
   const host = byId('auditBatchTabs');
   if (!host) return;
-  const pool = window.filterDeliveryAudit(auditRows(), {...filters, batch: ''}).rows;
-  const batches = [...new Set(auditRows().map(row => row.batch || window.DELIVERY_AUDIT_UNSET))].sort(batchOrder);
+  const pool = window.filterDeliveryAudit(deliveryRows(), {...filters, batch: ''}).rows;
+  const batches = [...new Set(deliveryRows().map(row => row.batch || window.DELIVERY_AUDIT_UNSET))].sort(batchOrder);
   const current = byId('aBatch').value;
   const row = (value, label, list, index) => {
     const v = verdicts(list);
@@ -2767,8 +2775,8 @@ const AUDIT_CSV_COLUMNS = [
   ['flags', r => r.flags], ['feedback_url', r => r.feedback_url],
 ];
 function downloadAuditCsv() {
-  if (!audit) return;
-  const rows = sortedAuditRows(window.filterDeliveryAudit(auditRows(), auditFilters()).rows);
+  if (!deliveryData()) return;
+  const rows = sortedAuditRows(window.filterDeliveryAudit(deliveryRows(), auditFilters()).rows);
   if (!rows.length) return;
   const lines = [AUDIT_CSV_COLUMNS.map(([name]) => name).join(',')]
     .concat(rows.map(row => AUDIT_CSV_COLUMNS.map(([, read]) => window.csvCell(read(row))).join(',')));
@@ -4702,7 +4710,6 @@ function renderGlobalFilters() {
   const host = byId('globalFilters');
   if (!host) return;
   const chips = [];
-  if (driveView) chips.push({page: 'Drive', label: '', value: DRIVE_VIEWS[driveView].label, clear: () => setDriveView('')});
   if (segment) chips.push({page: 'Segment', label: '', value: SEGMENTS[segment], clear: () => setSegment('')});
   if (harness) chips.push({page: 'Harness', label: '', value: harnessLabel(harness), clear: () => setHarness('')});
   if (dateRange.start || dateRange.end) chips.push({page: 'Range', label: '', value: rangeLabel(), clear: () => byId('clearDates')?.click()});

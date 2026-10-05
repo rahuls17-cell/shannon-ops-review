@@ -3370,3 +3370,9 @@ body #stagingBanner .sb-link:hover { text-decoration: underline; }
 #view-pipeline .fselects .field:has(option:checked:not([value=""])) { border-color: var(--ink); background: var(--ink); }
 #view-pipeline .fselects .field:has(option:checked:not([value=""])) > span { color: rgba(255,255,255,.7); }
 #view-pipeline .fselects .field:has(option:checked:not([value=""])) select { color: #fff; border-left-color: rgba(255,255,255,.2); }
+
+/* The Drive layout switch sits on the Delivery tab only: it decides which Drive
+   reading the delivered tasks come from, and nothing else on the page. */
+.rail-drive { margin-bottom: 12px; }
+.rail-drive .drive-switch { display: flex; width: 100%; margin-top: 8px; }
+.rail-drive .drive-switch .segbtn { flex: 1; justify-content: center; text-align: center; }

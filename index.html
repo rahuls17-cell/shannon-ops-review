@@ -69,13 +69,6 @@
               </span>
             </div>
           </div>
-          <div class="segctl" role="group" aria-label="Drive layout">
-            <span class="segctl-label">Drive<button class="why" data-info="driveView" aria-label="What the two Drive views are">?</button></span>
-            <div class="segmented" id="driveSwitch">
-              <button type="button" class="segbtn is-on" data-drive="" aria-pressed="true">Current</button>
-              <button type="button" class="segbtn" data-drive="glm53" aria-pressed="false">GLM 5.3 cutoff</button>
-            </div>
-          </div>
           <div class="gfilters" id="globalFilters" aria-label="Active filters"></div>
           <div class="topbar-actions">
             <dl class="freshness">
@@ -415,6 +408,14 @@
 
           <div class="delivery-layout">
             <aside class="delivery-rail">
+              <section class="rail-card rail-drive">
+                <h2>Drive<button class="why" data-info="driveView" aria-label="What the two Drive views are">?</button></h2>
+                <p class="rail-note">Which Drive layout the delivered tasks are read from.</p>
+                <div class="segmented drive-switch" id="driveSwitch" role="group" aria-label="Drive layout">
+                  <button type="button" class="segbtn is-on" data-drive="" aria-pressed="true">Current</button>
+                  <button type="button" class="segbtn" data-drive="glm53" aria-pressed="false">GLM 5.3 cutoff</button>
+                </div>
+              </section>
               <section class="rail-card">
                 <h2>Batch scope</h2>
                 <p class="rail-note">Switch the whole page by batch.</p>
