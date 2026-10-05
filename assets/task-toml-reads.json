@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-01T20:51:07+00:00",
+ "generatedAt": "2026-10-05T12:01:39+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -12600,7 +12600,7 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-calendar-blocks-that-only-look-like-meetings-20260923T124555Z-1-001/e6f84ae8f54364ae1014d06b980711f37298bf0d192eedddce0869e5c2581f16.zip",
    "bytesRead": 73529,
-   "readOn": "2026-10-01"
+   "readOn": "2026-10-05"
   },
   "gen-g431-engagement-outcome-metric-disclosure-audit": {
    "connector": false,
@@ -14947,6 +14947,1426 @@
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-cpt-codes-the-boards-still-miss/fe0318642b31294739b816df8f07bd0ee7cb6c6317469dcec9e0890fa6a75d5b.zip",
    "bytesRead": 51985,
    "readOn": "2026-10-01"
+  },
+  "the-canvas-points-at-an-empty-room": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-canvas-points-at-an-empty-room/e193b37b28b7a37530e77334a71701ab4c55a6b4e122eaaecc3472f5ae6728c6.zip",
+   "bytesRead": 50031,
+   "readOn": "2026-10-01"
+  },
+  "join-links-before-travel": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/join-links-before-travel/c41f53af11fcfb8726d9294f1da9ab0806274587d8b8071bfc7e4a478e4a9620.zip",
+   "bytesRead": 52663,
+   "readOn": "2026-10-01"
+  },
+  "the-key-rotation-that-went-backwards": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-key-rotation-that-went-backwards/b236acd140548b63c5939d8ea503080d57b2078bb8f6a419e665882128e794f2.zip",
+   "bytesRead": 57436,
+   "readOn": "2026-10-02"
+  },
+  "september-ops-review-prep": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/september-ops-review-prep/2ecf379fe701b6665710db8d5e22196c40a638642351e87f8aa161cc2a2f7a43.zip",
+   "bytesRead": 54230,
+   "readOn": "2026-10-02"
+  },
+  "the-holds-nobody-settled": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-holds-nobody-settled/a34e1ae4ba54848f7d451a702384da7d50847e0b194cfe5beafea2fad53bec4d.zip",
+   "bytesRead": 44525,
+   "readOn": "2026-10-02"
+  },
+  "audit-trail-safeguard-audit": {
+   "connector": true,
+   "services": [
+    "outlook-gym",
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/audit-trail-safeguard-audit/ccd3366daf40f05ff61bbb03eecbc65977fa94dec4b836483793c9c024c8fa81.zip",
+   "bytesRead": 46737,
+   "readOn": "2026-10-02"
+  },
+  "clinical-data-jobs-left-broken": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-data-jobs-left-broken/750f527cdc3a6b2b93e3cb483a2509916630c1853eb4aec206a0980632bbcdb5.zip",
+   "bytesRead": 48770,
+   "readOn": "2026-10-02"
+  },
+  "drive-last-editor-role-audit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/drive-last-editor-role-audit/07fd8a8f9b45a98006b66597ba88cae135076a4f644f39be2d88851942365d37.zip",
+   "bytesRead": 44284,
+   "readOn": "2026-10-02"
+  },
+  "meetings-on-my-days-off": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/meetings-on-my-days-off/09ed8f665397a8128c91b9d55ca2f18265515bc7a66e08b5cc5b63bda96b5037.zip",
+   "bytesRead": 50474,
+   "readOn": "2026-10-02"
+  },
+  "the-blocks-that-got-booked-over": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-blocks-that-got-booked-over/88180c0097b3179c57d407f8cc6bc813e5af6e472b5d4655551cd5cf66dac079.zip",
+   "bytesRead": 50325,
+   "readOn": "2026-10-02"
+  },
+  "three-watched-topics-and-their-quiet-nights": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/three-watched-topics-and-their-quiet-nights/953ee1f91f1a415682b20bc3ab1cd57c7f7db2ea1d58de141caf4d93830be904.zip",
+   "bytesRead": 58846,
+   "readOn": "2026-10-02"
+  },
+  "webhook-endpoint-briefing": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/webhook-endpoint-briefing/0df6bacfbc8dc3c445740931a699adbd07e5fe380578de1cfaa6edae0ab13926.zip",
+   "bytesRead": 48914,
+   "readOn": "2026-10-02"
+  },
+  "the-workspace-written-two-ways": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-workspace-written-two-ways/922a6219b19da8b8e35ad3878c8a5fb8350074f11ea215a705565134d39ce9e1.zip",
+   "bytesRead": 51245,
+   "readOn": "2026-10-02"
+  },
+  "note-templates-left-to-fill": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/note-templates-left-to-fill/2a1c96d2f6a62487a95492928dd6d6ed5b34d40164a058fd1a5a95d8fbb73f89.zip",
+   "bytesRead": 47802,
+   "readOn": "2026-10-02"
+  },
+  "which-onboarding-packs-are-actually-finished": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-onboarding-packs-are-actually-finished/6ff515a8cc18ee7a1fc5eaea786931c2ba6240a668fb630d539316c1789cd7d0.zip",
+   "bytesRead": 54788,
+   "readOn": "2026-10-02"
+  },
+  "twenty-one-shipped-none-of-them-sized": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/twenty-one-shipped-none-of-them-sized/4b27d93e8857ea7ac3ce4d639c663e51841018af5ad8bb2739b7cfa782c08fe6.zip",
+   "bytesRead": 51826,
+   "readOn": "2026-10-02"
+  },
+  "drive-duplicate-copies-audit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/drive-duplicate-copies-audit/16ed7b4fa4cf2aa0a964e2b3ca53f8265e4559d0ea185146c5a36b3aa2066e7c.zip",
+   "bytesRead": 41933,
+   "readOn": "2026-10-02"
+  },
+  "writing-in-a-chat-that-is-not-theirs": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/writing-in-a-chat-that-is-not-theirs/07ee6fb3ccdb0c6b0525c4916044c6e0b9d4eabd665d33eefb35de6e4c0431a6.zip",
+   "bytesRead": 57378,
+   "readOn": "2026-10-02"
+  },
+  "codes-the-charge-table-prices-two-ways": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/codes-the-charge-table-prices-two-ways/8cb53b78ac55481ae13ed2eac3b6ca05b81f28d9b4d51b6265a6b57000284f54.zip",
+   "bytesRead": 52209,
+   "readOn": "2026-10-02"
+  },
+  "billing-pipeline-compute-cost-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/billing-pipeline-compute-cost-audit/929496351b8e890713ea785d8d9945aa4af25952b2c73bc8f43a46f12f9a5934.zip",
+   "bytesRead": 43696,
+   "readOn": "2026-10-02"
+  },
+  "the-board-said-done": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-board-said-done/6f795e315e2efb109e58dfb8016cb1ccb378f3d09c75bb46a8ad4d521238fa71.zip",
+   "bytesRead": 43648,
+   "readOn": "2026-10-02"
+  },
+  "finance-coverage-escalation-audit": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-coverage-escalation-audit/242c06ba8eeeb4e1b785f077e55845416221bf62a96546ad3e976a8b0fd84ff7.zip",
+   "bytesRead": 48013,
+   "readOn": "2026-10-02"
+  },
+  "morning-check-ins-in-2023": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/morning-check-ins-in-2023/21aba3d4d992f766abd2e8afd02904da3dec21475f6771783106bde7beab5914.zip",
+   "bytesRead": 46289,
+   "readOn": "2026-10-02"
+  },
+  "the-bots-no-two-lists-agree-on": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-bots-no-two-lists-agree-on/c802aa17ad1ee95eb0b3ed8cf293118765c5b64dbfd29aa4d35b929d1e9184d1.zip",
+   "bytesRead": 48879,
+   "readOn": "2026-10-02"
+  },
+  "did-the-reporter-come-back": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/did-the-reporter-come-back/6d9be8b05bb5f0ba7be6dd14b163f868ede1894d018ef2ceadfb0d600fb86dc9.zip",
+   "bytesRead": 47112,
+   "readOn": "2026-10-02"
+  },
+  "finance-ledger-duties-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-ledger-duties-audit/a6975f8425e1d8d9fdc41ae02fbadc395bbd37546c4eba3d721891f3a8519cd8.zip",
+   "bytesRead": 44744,
+   "readOn": "2026-10-02"
+  },
+  "the-notice-that-names-the-wrong-sender": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-notice-that-names-the-wrong-sender/7c20c8eedacdbd8c43db61a986fdf13adec1f2d3f64c9e07214667555fc56036.zip",
+   "bytesRead": 55919,
+   "readOn": "2026-10-02"
+  },
+  "the-post-i-was-never-sent": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-post-i-was-never-sent/ca53642b7382192736fae3ae3293e8ad4b1cee18a437bdec78cbde895da170df.zip",
+   "bytesRead": 50048,
+   "readOn": "2026-10-02"
+  },
+  "the-thread-and-everything-attached-to-it": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-thread-and-everything-attached-to-it/5e892f337acfc598b70f7298dd21cbb68698f7d236491b77f8f1db9030816c31.zip",
+   "bytesRead": 54188,
+   "readOn": "2026-10-02"
+  },
+  "closed-parent-open-subissues-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/closed-parent-open-subissues-audit/b06275560b283ebc5caee870b6aaa53266aa26c52be15c671b0a128a31668e43.zip",
+   "bytesRead": 44717,
+   "readOn": "2026-10-02"
+  },
+  "which-notification-emails-are-really-ready": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-notification-emails-are-really-ready/ee678c263eb202b37c1ff337b14df12665282a5b77922dbc9bfc10ec1e40b9c9.zip",
+   "bytesRead": 52849,
+   "readOn": "2026-10-02"
+  },
+  "broken-chain-holdup-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/broken-chain-holdup-audit/eea3c445b6212347e4d9e2d90a1c112c0b6fe27a9d422a06f43585576cad30d4.zip",
+   "bytesRead": 39504,
+   "readOn": "2026-10-02"
+  },
+  "growth-label-ownership-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/growth-label-ownership-audit/9b7a3af9f2a3a62444b41fa58e68a8ec32d9a84c56446e4e16f8d7352002fa7d.zip",
+   "bytesRead": 42089,
+   "readOn": "2026-10-02"
+  },
+  "acme-account-trail-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/acme-account-trail-audit/34a4f8ba610319fcaa75df5ae8330b0d410da9ca66cc161b50bccd613fa47aab.zip",
+   "bytesRead": 46807,
+   "readOn": "2026-10-02"
+  },
+  "the-guardino-dr-meetings": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guardino-dr-meetings/ea592883e14be460b442f75838da1c7651a0129f3185bef9e39fcc47bebe5367.zip",
+   "bytesRead": 61792,
+   "readOn": "2026-10-02"
+  },
+  "the-training-invitations-nobody-took-up": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-training-invitations-nobody-took-up/6ff04c6d36c87c7620ccf647b7cc80662d2f196141dee7fc2f83098ee4f1ebd5.zip",
+   "bytesRead": 53472,
+   "readOn": "2026-10-02"
+  },
+  "merged-on-red-incident-suspects": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/merged-on-red-incident-suspects/308c360a70e797331f1bf9cb6bd543d2da25c35d087030a7a24d0f9ee6507692.zip",
+   "bytesRead": 57568,
+   "readOn": "2026-10-02"
+  },
+  "who-owns-the-untended-records": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-owns-the-untended-records/d912c1bbe398511c346884a283227f841c2aacda10ff0a421a7075080ccd9533.zip",
+   "bytesRead": 49372,
+   "readOn": "2026-10-02"
+  },
+  "client-data-segregation-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/client-data-segregation-audit/e5a33c1a9eee8bd007184f0659de0df79eba9531c94340d2879c8f39d81341c6.zip",
+   "bytesRead": 44469,
+   "readOn": "2026-10-02"
+  },
+  "egress-destination-audit": {
+   "connector": true,
+   "services": [
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/egress-destination-audit/c4aa1a189ead5009f3b03abe585190d874991e2bf0782889bbbb21299c33b334.zip",
+   "bytesRead": 42763,
+   "readOn": "2026-10-02"
+  },
+  "growth-portfolio-health-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/growth-portfolio-health-audit/720243fdc98fa9abe17e41f79b342182cd5d61c3ccd9aecc86336e5194d3fa43.zip",
+   "bytesRead": 41678,
+   "readOn": "2026-10-02"
+  },
+  "where-the-seed-round-stands": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-the-seed-round-stands/2711be2498c16b9d6244dbbfd04dc5752c249c019f99884d8118543701eeeb9d.zip",
+   "bytesRead": 48906,
+   "readOn": "2026-10-02"
+  },
+  "the-sprint-work-started-without-a-plan": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-sprint-work-started-without-a-plan/c133bba458cf7f970676ef775fb7c69b28e91e233d5d0db78b138d6a987ec1d8.zip",
+   "bytesRead": 50140,
+   "readOn": "2026-10-02"
+  },
+  "calendar-rsvp-hygiene-audit": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/calendar-rsvp-hygiene-audit/399368728c6c77e561a3474319c7cbb2faaa4d71d3d4fa5ecdff92ee90574b0e.zip",
+   "bytesRead": 45476,
+   "readOn": "2026-10-02"
+  },
+  "growth-initiative-coverage-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/growth-initiative-coverage-audit/0a1768d2aac82a0a62aa8503026d4a288da0302f698d3ff3259c9f731351ea70.zip",
+   "bytesRead": 45020,
+   "readOn": "2026-10-02"
+  },
+  "meetings-my-guests-keep-declining": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/meetings-my-guests-keep-declining/47741bbe374519ee987322b2767f1629492cbb48d01b2ac4604ab6d24035f4a9.zip",
+   "bytesRead": 48875,
+   "readOn": "2026-10-02"
+  },
+  "signature-requests-i-sent-out": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/signature-requests-i-sent-out/762eca9ee340056aa566fbbf66aa342dd0e8151c9baa7dc8bf14994dc0d0c50b.zip",
+   "bytesRead": 48745,
+   "readOn": "2026-10-02"
+  },
+  "cs-lifecycle-nudge-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/cs-lifecycle-nudge-audit/0587e00b3af4cc284ac87d71798e90eed6cc82c0346840b549c7d94f386846bc.zip",
+   "bytesRead": 47936,
+   "readOn": "2026-10-02"
+  },
+  "meeting-load-digest": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/meeting-load-digest/491ff53d56ba81f995b81e4c8a7b7d8a9da56e2140c97219436b1250b4ed56b8.zip",
+   "bytesRead": 44010,
+   "readOn": "2026-10-02"
+  },
+  "the-preview-branches-left-running": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-preview-branches-left-running/a0f11c1e4076afab3c4ac0e4f40386d3495b04aebab23cf19235d426c4a98161.zip",
+   "bytesRead": 48480,
+   "readOn": "2026-10-02"
+  },
+  "drive-dead-shortcut-audit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/drive-dead-shortcut-audit/06ff4f7a7227bde6cc0d3ba09b4f29444c4ab8ae76107a7bda5393dd2e656b63.zip",
+   "bytesRead": 42279,
+   "readOn": "2026-10-02"
+  },
+  "keep-the-client-and-partner-mail": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/keep-the-client-and-partner-mail/6dc4708d426703ec75484bb69e9dfe34d5c527d3d50d3ba5031e9737cfd7545b.zip",
+   "bytesRead": 58046,
+   "readOn": "2026-10-02"
+  },
+  "paid-accounts-about-to-cut-us-off": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/paid-accounts-about-to-cut-us-off/ab90ab4b4ea12d70fc3af8dda0528c89c2eb106dcc84f0fc6e46bf08e1737d45.zip",
+   "bytesRead": 52848,
+   "readOn": "2026-10-02"
+  },
+  "who-answered-the-report": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-answered-the-report/f6245907decc12c6872899ac385a23cdcc8b59297cbf6b63a72ee9dfa3d3714d.zip",
+   "bytesRead": 45523,
+   "readOn": "2026-10-02"
+  },
+  "who-can-prescribe-at-each-practice": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-can-prescribe-at-each-practice/3faffa28be61ca0542b41cca39b2b85746e829b3211e6edf892b8672bb57adf5.zip",
+   "bytesRead": 47302,
+   "readOn": "2026-10-02"
+  },
+  "cancelled-visits-never-rebooked": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/cancelled-visits-never-rebooked/13b9291c3ecf7df786152d736e5c7a08a84d0a6754dcdfcfd503e71f279d0807.zip",
+   "bytesRead": 54711,
+   "readOn": "2026-10-02"
+  },
+  "customers-still-waiting-on-features": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/customers-still-waiting-on-features/4b90439736ce7cc33804029dbb265b5dfdd24463bbc3690e928d58c235df43eb.zip",
+   "bytesRead": 53292,
+   "readOn": "2026-10-02"
+  },
+  "failover-stale-links-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/failover-stale-links-audit/112e2fb5f66d0e231a33c21d921cf7a2c0d61f9f30f19341379d69797f2b2c6b.zip",
+   "bytesRead": 42474,
+   "readOn": "2026-10-02"
+  },
+  "nobody-checked-who-can-open-them": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nobody-checked-who-can-open-them/1483a391f7410b190afc06a118793420a539ced09db1d1e8822b328d63f12b93.zip",
+   "bytesRead": 57087,
+   "readOn": "2026-10-02"
+  },
+  "billing-chain-foreign-writes": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/billing-chain-foreign-writes/7e4e6f8f027e0c054395434d75bbd45ac4a97746c756f5cdfc9817b0b1dbdd8a.zip",
+   "bytesRead": 47654,
+   "readOn": "2026-10-02"
+  },
+  "finance-export-path-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-export-path-audit/99fad3e07fef2874f1ce45a114f9f5b2297ed7bf2f91831d168cd4b06d208886.zip",
+   "bytesRead": 40085,
+   "readOn": "2026-10-02"
+  },
+  "initiative-deadline-alignment-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/initiative-deadline-alignment-audit/c87da31b36ba4733008264a470756cfc995e1b531e07e1f834815d36ad341023.zip",
+   "bytesRead": 47876,
+   "readOn": "2026-10-02"
+  },
+  "compute-budget-variance-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/compute-budget-variance-audit/c75998edbd8e24512071fd8b9ac0842d92824980b800d2c867da5f5e481bdd4f.zip",
+   "bytesRead": 45184,
+   "readOn": "2026-10-02"
+  },
+  "the-name-it-never-mentions": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-name-it-never-mentions/02c25c829ec2aac99eff27f1275d9341c8c91c626a755564c7e2a902c112063b.zip",
+   "bytesRead": 51744,
+   "readOn": "2026-10-03"
+  },
+  "who-in-here-is-actually-a-guest": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-in-here-is-actually-a-guest/e0fdd0437212097932b4d636eafacec158bcf9883070d8d29af0f4be5949eda9.zip",
+   "bytesRead": 52137,
+   "readOn": "2026-10-03"
+  },
+  "auto-merge-that-cannot-land": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/auto-merge-that-cannot-land/ae815eb6fdb6def4a9684aa6f08e52135a70b4e302a67a1a1b411d00cc9763d2.zip",
+   "bytesRead": 45983,
+   "readOn": "2026-10-03"
+  },
+  "data-defect-cycle-rollover-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/data-defect-cycle-rollover-audit/3fc77605fb9c0197ef7e1bdc2d6439363ff54e6555d7b36151c521a3d7392f11.zip",
+   "bytesRead": 49704,
+   "readOn": "2026-10-03"
+  },
+  "the-statement-files-sorted-by-month": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-statement-files-sorted-by-month/cb85079555800d5609c14b5d8815d2d3ed034129441767921dda47e889a7d752.zip",
+   "bytesRead": 53166,
+   "readOn": "2026-10-03"
+  },
+  "vendor-policy-changes-to-act-on": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-policy-changes-to-act-on/e8f86b04ca18de6ba389a7d6d5773aa896fe4761e746cf27886e43d610dc3277.zip",
+   "bytesRead": 69003,
+   "readOn": "2026-10-03"
+  },
+  "backlog-in-cycle-status-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/backlog-in-cycle-status-audit/23b0db348430ea5a0458d23e8bfba6cf2cf77693755f60076b65bfb5ed75d64f.zip",
+   "bytesRead": 76828,
+   "readOn": "2026-10-03"
+  },
+  "the-entries-i-can-sign-off": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-entries-i-can-sign-off/85554afe783b6f77954fc5a66137e93a6217eea011414f9567d8828b19322c28.zip",
+   "bytesRead": 51436,
+   "readOn": "2026-10-03"
+  },
+  "learning-record-for-my-review": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/learning-record-for-my-review/19ab17dffa20c44175d40b4ae821ff4643d2a2c1846bb38c3b97bf86f4e3da1f.zip",
+   "bytesRead": 53152,
+   "readOn": "2026-10-03"
+  },
+  "canceled-project-sunk-work-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/canceled-project-sunk-work-audit/a768022db45c15821da339877420a3629cd281fa169a86f74c06ebf8a40dc351.zip",
+   "bytesRead": 42381,
+   "readOn": "2026-10-03"
+  },
+  "one-rename-many-pulls": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/one-rename-many-pulls/f784235aecc547e7f17ca2adea8feea5d14083cb82eb7d4f9c7742132fc15c8e.zip",
+   "bytesRead": 49238,
+   "readOn": "2026-10-03"
+  },
+  "vendor-calls-that-never-got-a-price": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-calls-that-never-got-a-price/a76fdc797c8f70eee9f3c65c57c153f0216a9d6550f73885cce4486b2489fd10.zip",
+   "bytesRead": 50660,
+   "readOn": "2026-10-03"
+  },
+  "account-notice-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/account-notice-audit/ba2b660ca69f0e0baa5d5ba58c3d02a6edbefc20314c1e4ed3471c1d0b0a1e53.zip",
+   "bytesRead": 50901,
+   "readOn": "2026-10-03"
+  },
+  "the-repeats-that-hide-their-rule": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-repeats-that-hide-their-rule/3b092fd014fead33bea784ed24b6472c1e8a828f7efd0f99641e4f72e8c9a957.zip",
+   "bytesRead": 62175,
+   "readOn": "2026-10-03"
+  },
+  "the-deals-nobody-can-call": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-deals-nobody-can-call/ee6fdbc55870c81b8d551ce1a550d9c2ee89e17e64efbb0b23def5864759b3e9.zip",
+   "bytesRead": 46290,
+   "readOn": "2026-10-03"
+  },
+  "one-sized-at-zero-one-link-home": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/one-sized-at-zero-one-link-home/9aea9b282bdc20696173fb3b55984248dcd66912f85e5ee9b794d3278a0451d8.zip",
+   "bytesRead": 49746,
+   "readOn": "2026-10-03"
+  },
+  "back-office-jobs-that-need-a-rerun": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/back-office-jobs-that-need-a-rerun/94c7f6653f884b0c70a562e60a474e617960e2dae3b641ce87e78c5985971d0e.zip",
+   "bytesRead": 52227,
+   "readOn": "2026-10-03"
+  },
+  "invites-that-never-synced": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/invites-that-never-synced/8dad84e30bb5ebc0957bd2bef4517b3dd727c98802bea753319e7b209f088733.zip",
+   "bytesRead": 50058,
+   "readOn": "2026-10-03"
+  },
+  "the-where-line-is-not-the-link": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-where-line-is-not-the-link/da6c69805a055fcb253d5f279e92554097d290d1358c887999276bdd95378eef.zip",
+   "bytesRead": 45945,
+   "readOn": "2026-10-03"
+  },
+  "what-she-can-still-open": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-she-can-still-open/ae5a1dac658a691da41bf19ff6417da0a06a3b236e3bc664a3945ee48c0f6549.zip",
+   "bytesRead": 63965,
+   "readOn": "2026-10-03"
+  },
+  "initiative-health-rollup-audit-linear": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/initiative-health-rollup-audit-linear/59bf9cca31b1e9cde2395baa2ee3e4a3c10ffdf754cb326c4107f78c8378c285.zip",
+   "bytesRead": 44518,
+   "readOn": "2026-10-03"
+  },
+  "initiative-health-rollup-audit-outlook": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/initiative-health-rollup-audit-outlook/d7d74faeb8518fcd67c63c070a5e4d8b8fc5550cb8bba9fdacfde689888e74dc.zip",
+   "bytesRead": 57913,
+   "readOn": "2026-10-03"
+  },
+  "how-the-risk-registers-disagree": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-the-risk-registers-disagree/b0d51b85d794b201f87c6c3636cbc9beea934935e1d18b1f2b887f65f5b5a0a1.zip",
+   "bytesRead": 50293,
+   "readOn": "2026-10-03"
+  },
+  "practice-exports-before-shutdown": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practice-exports-before-shutdown/ad95be7d56b2e02f8f95e2aacf4a9ba5df381530cbc423ff825dd897588ae009.zip",
+   "bytesRead": 50190,
+   "readOn": "2026-10-03"
+  },
+  "the-sign-ups-we-counted-twice": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-sign-ups-we-counted-twice/c4a937e83e3633f01d54966f8ca1c0674770e9ba05132b851e359f0e0eefafee.zip",
+   "bytesRead": 45833,
+   "readOn": "2026-10-03"
+  },
+  "technical-track-sessions-i-missed": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/technical-track-sessions-i-missed/b4fe56ef2bc407e4f8b3230a20a21690f04912cbeff3532096bb5085ef28a8b8.zip",
+   "bytesRead": 51997,
+   "readOn": "2026-10-03"
+  },
+  "notification-template-audit": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/notification-template-audit/df55f6307684a6cf0932e7cc86731af5d6ca21ad8db2ad2014368dcfaa388632.zip",
+   "bytesRead": 42896,
+   "readOn": "2026-10-03"
+  },
+  "incident-page-ack-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/incident-page-ack-audit/d79e6d5a98b8732bd223c31bd7c6c1086598b3e5399ea9cd007a3f271392d7bf.zip",
+   "bytesRead": 41279,
+   "readOn": "2026-10-03"
+  },
+  "zero-fee-lab-lines-to-rebill": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/zero-fee-lab-lines-to-rebill/a1ce4aa96b55991e8218e5fc1a05660d6c39780b9f1f485512a4627504175ae1.zip",
+   "bytesRead": 45533,
+   "readOn": "2026-10-03"
+  },
+  "the-quarterly-bug-scorecard": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-quarterly-bug-scorecard/da5ee7649527a32b92efa828dd3243eceb1a40b17101325636b003e3d7f1de43.zip",
+   "bytesRead": 46631,
+   "readOn": "2026-10-03"
+  },
+  "channels-whose-owner-has-no-name": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/channels-whose-owner-has-no-name/376b449bfaa722fc35f37a8b505a7e01c470486e73c1057274bd9c9e535aa88f.zip",
+   "bytesRead": 48748,
+   "readOn": "2026-10-03"
+  },
+  "patient-rosters-held-in-drive": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/patient-rosters-held-in-drive/655af21f2a295ec2ec8c6e7a01806e528b9f4aa988b59f1dc943285248eb4289.zip",
+   "bytesRead": 63371,
+   "readOn": "2026-10-03"
+  },
+  "the-answer-she-already-gave": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-answer-she-already-gave/e9b3e3b923692af746f16f1ee457ad74e0282a25154909e80cabcd1b739d98a8.zip",
+   "bytesRead": 52613,
+   "readOn": "2026-10-03"
+  },
+  "closing-out-our-short-term-goals": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/closing-out-our-short-term-goals/02ee5d51359bc56ce1c870ceced87235fd1f0da29b89b67da10a9f144771f199.zip",
+   "bytesRead": 48951,
+   "readOn": "2026-10-03"
+  },
+  "weekly-team-channel-roundup": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/weekly-team-channel-roundup/0d12a36a71cfcc898ba2050734c0699b590f1e9cd3de31b9645803f139794afa.zip",
+   "bytesRead": 48489,
+   "readOn": "2026-10-03"
+  },
+  "error-alerts-v16": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/error-alerts-v16/ea797bfeabbc82d152452884c4f85b8d87a431e4c0ac25327db2a30c6f12d942.zip",
+   "bytesRead": 44168,
+   "readOn": "2026-10-03"
+  },
+  "lab-billing-months-that-never-ran": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-billing-months-that-never-ran/a4792a85a229780572422ea96e1ef5a2c9529d1a662e0b12617e7e2a879121e3.zip",
+   "bytesRead": 51165,
+   "readOn": "2026-10-03"
+  },
+  "statements-still-shared-before-shutdown": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/statements-still-shared-before-shutdown/121545546130df57b816471371d7560020dd1edc6681d70a9e61479654394261.zip",
+   "bytesRead": 52975,
+   "readOn": "2026-10-03"
+  },
+  "which-team-channels-carry-the-standup": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-team-channels-carry-the-standup/b5df22204e75ad7cd7a7d947ffa6f7240b82466b51fbf4db85f5612452c0a166.zip",
+   "bytesRead": 52613,
+   "readOn": "2026-10-03"
+  },
+  "nothing-here-can-open-it": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nothing-here-can-open-it/330ec80c85e11a7876c03016fba25005dad2772983e44aaed68aaf0a16a80479.zip",
+   "bytesRead": 49577,
+   "readOn": "2026-10-03"
+  },
+  "the-time-off-i-never-took": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-time-off-i-never-took/b8c31bd02a1988eace3b0d0750d3d43378c0ffea6c4eb369d74e2803ece2ea68.zip",
+   "bytesRead": 53681,
+   "readOn": "2026-10-03"
+  },
+  "google-platform-deadlines-ahead": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/google-platform-deadlines-ahead/9410140f7198dc406834a231b1f6d8de23c61d6892380a211e82b2e54d6fc765.zip",
+   "bytesRead": 49775,
+   "readOn": "2026-10-03"
+  },
+  "client-dataset-usage-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/client-dataset-usage-audit/99bede18b53eac32561e267f898b21eecd50943addfa9aa74cbf6ebe24b1ada6.zip",
+   "bytesRead": 45942,
+   "readOn": "2026-10-03"
+  },
+  "small-practices-billing-with-raw-exports": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/small-practices-billing-with-raw-exports/ef60c4d3437e02d843d51de817dcab6be354b05261c900a8760bd2a819818d09.zip",
+   "bytesRead": 58765,
+   "readOn": "2026-10-03"
+  },
+  "what-the-shared-drive-is-really-storing": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-shared-drive-is-really-storing/3872d2bc12be203edff80044b27798772afa50f00133b56d079083de60ba1cad.zip",
+   "bytesRead": 55607,
+   "readOn": "2026-10-03"
+  },
+  "eprescribing-outages-prescriber-notices": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/eprescribing-outages-prescriber-notices/658567fa770e95d5c9d802d12d3efcb62b4217e2e3d1bca10b080aa2b5ec19c1.zip",
+   "bytesRead": 51830,
+   "readOn": "2026-10-03"
+  },
+  "which-webhooks-are-still-failing": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-webhooks-are-still-failing/478a5b8c44b71b6ce4bcad5a328181c1fdaea476d5b7845c14c80ed8da7832f1.zip",
+   "bytesRead": 45689,
+   "readOn": "2026-10-03"
+  },
+  "done-without-merge-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/done-without-merge-audit/c3d70df9a0009ead09c2b1f0f75a8328ad1d03981c90f5d9f93a61c2174dca59.zip",
+   "bytesRead": 89768,
+   "readOn": "2026-10-03"
+  },
+  "security-finding-deadline-audit-github": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/security-finding-deadline-audit-github/79be3acf25aa10535c55f32d503a7f0a773cb4d7d40d1641c1e59e9acc8e59b7.zip",
+   "bytesRead": 47401,
+   "readOn": "2026-10-03"
+  },
+  "is-the-import-redundant": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/is-the-import-redundant/49d4e0d8f86187e97f219de3a175bd18db43ce90c9e92cd5f6e72820354226c8.zip",
+   "bytesRead": 57126,
+   "readOn": "2026-10-03"
+  },
+  "duplicate-run-overlap-cost-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/duplicate-run-overlap-cost-audit/85c98bbd4d823a0d7d9d3e3709c58365b8ee333c5a35378e9af62f312a782fd0.zip",
+   "bytesRead": 45791,
+   "readOn": "2026-10-03"
+  },
+  "which-appointment-actually-stands": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-appointment-actually-stands/1613669cc7aea916319675bb88e15cf4dce92051824bf58ca720468bb59da058.zip",
+   "bytesRead": 52391,
+   "readOn": "2026-10-03"
+  },
+  "six-names-behind-one-domain": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/six-names-behind-one-domain/2340d699b51d75e3abba326504324bfc513734e1410355c251b2b47f37fcb231.zip",
+   "bytesRead": 47316,
+   "readOn": "2026-10-03"
+  },
+  "the-note-was-on-the-file": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-note-was-on-the-file/d2b0690c8fae5dd08841da83d5d39b063de64fce25626f8909d06a74627d1fc5.zip",
+   "bytesRead": 45844,
+   "readOn": "2026-10-03"
   }
  }
 }
