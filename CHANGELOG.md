@@ -439,6 +439,14 @@ longer decides Company Bench anywhere on the dashboard.
     a 401: a run reads ~50,000 objects and outlived its token on the new VM.
   - While it is tested the VM publishes `staging` and node 1 keeps publishing
     `main`; taking over `main` means stopping node 1's two jobs in the same step.
+  - `refresh-drive.sh` (every 15 min) refreshes the Delivery tab's Current view
+    from Drive: `build_drive_deliveries.py --audit none` with a snapshot cache,
+    then `build_drive_owners.py`, then both Drive test suites; it commits
+    `drive-deliveries.json` and `drive-owners.json` only, only when they
+    changed. The GLM 5.3 cutoff files are not touched. **Waiting on a Drive
+    credential** - a key at `/root/shannon-refresh/drive-reader.json` with
+    Viewer on the folder, or the VM's account given the drive.readonly scope;
+    until then each run fails safely and records it in `refresh-drive.status`.
 - The Drive reader follows the regrouped Deliveries folder (`ComputerBench/`,
   `CompanyBench/`), ignores `[Deprecated]`, `[Meta]` and `EKW / SVC`, lists every
   batch folder's zips with the folder they sit in, and matches zips saved under

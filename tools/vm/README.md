@@ -12,6 +12,7 @@ The files here are the version-controlled copies. The copies that run are in
 |---|---|---|
 | `publish.sh` | every 10 min | scans the bucket, rebuilds the pipeline (`refresh_truth.sh` in the chain directory), rejoins every index, copies in the latest bucket export and GLM band, builds the Drive trainer names, commits the assets and pushes to `PUBLISH_BRANCH` |
 | `export-gcs.sh` | every 30 min | writes the bucket export (`gcs-pipeline.json`: accepted folders in all three prefixes, evaluations, trainer records) beside `publish.sh`; takes minutes, so it is not on the 10-minute tick |
+| `refresh-drive.sh` | every 15 min | the Delivery tab's Current view from the Drive Deliveries folder: `drive-deliveries.json` (`--audit none`, so Batches 1 to 4.1 come from Drive too) and `drive-owners.json`; commits those two files only, only when they changed and both Drive test suites pass. Folders it skips are logged. Last result in `refresh-drive.status` |
 | `scan-glm.sh` | daily 03:17 UTC | the four-trial GLM band (`glm-index.json`); about a quarter of an hour |
 | `crontab.txt` | | root's crontab on the VM |
 
@@ -27,6 +28,16 @@ The files here are the version-controlled copies. The copies that run are in
 - Bucket access: the VM's service account
   (`713053229214-compute@developer.gserviceaccount.com`). Nothing writes to the
   bucket.
+- Drive read (for `refresh-drive.sh`), not set up yet - a person has to do one
+  of these; nothing here creates keys:
+  - a service account key at `/root/shannon-refresh/drive-reader.json` (mode
+    600), its account given **Viewer** on the Deliveries folder
+    (`1_ZA8ckJfXtaGV4OpqZ0a4f5XZbx4brXO`); the folder's turing.com link sharing
+    does not reach a service account. Needs `python3-google-auth` (installed);
+  - or the VM's own service account given the
+    `https://www.googleapis.com/auth/drive.readonly` scope (the VM has to be
+    stopped to change scopes) and Viewer on the folder.
+  Until then every run fails safely and says so in `refresh-drive.status`.
 - GitHub push: `/root/.ssh/shannon_ops_push` (a deploy key on this repo) and a
   `Host github-shannon-ops` entry in `/root/.ssh/config`; the clone's remote is
   `git@github-shannon-ops:rahuls17-cell/shannon-ops-review.git`.
