@@ -203,6 +203,7 @@ const infoCopy = {
       `${fmt(rows.length - SEGMENT_LEAVES.reduce((total, key) => total + count(key), 0))} carry no bench, type or harness yet and appear under All, or under their bench alone. ` +
       'A person counts in every segment they have tasks in, so someone who works on both benches shows under both. The 240 audit counts and the daily plan are not split, and say so.';
   },
+  driveView: 'Which layout of the Drive Deliveries folder the delivered packages are read from. Current is the folder as it is now: since 3 Oct Company Bench sits in one CompanyBench folder - CompanyBench 1 to 3 and, under From Pipeline, the Company Bench share of each Shannon batch - duplicates are taken out, and Batches 5.1 to 7.1 were re-cut. GLM 5.3 cutoff is the dashboard as it stood before that, read on 1 Oct, kept unchanged for comparison. It changes the Delivery tab and everything built on the delivered packages - the Pipeline delivery join and the bench of delivered tasks; the pipeline itself and the payouts do not depend on it.',
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
   v2Accepted: 'Task folders in tasks/finalisation_client_qc_accepted_iteration_2/ in the bucket - the second client QC finalisation round. It is one of three accepted cohorts, so it is smaller than the accepted total on the Finalisation tab, and a task finalised into more than one cohort is counted here once per folder. Read it as the size of the v2 round, not as the total accepted work.',
@@ -625,6 +626,42 @@ function renderPayoutLedger() {
   }).join('') || '<tr><td colspan="8" class="empty">No matches.</td></tr>';
 }
 
+// Which Drive layout the Delivery rows come from. The Deliveries folder was
+// reorganised on 3 Oct - Company Bench gathered into one folder, duplicates
+// taken out, Batches 5.1 to 7.1 re-cut - and the dashboard as it stood before
+// is kept, unchanged, as the GLM 5.3 cutoff view. The current layout is the
+// default. Each view has its own owners file: an owner is keyed by the row's
+// place in its manifest, and the re-cut manifests list packages in another order.
+const DRIVE_VIEWS = {
+  '': {label: 'Current', deliveries: 'assets/drive-deliveries.json', owners: 'assets/drive-owners.json'},
+  glm53: {label: 'GLM 5.3 cutoff', deliveries: 'assets/drive-deliveries-glm53-cutoff.json',
+          owners: 'assets/drive-owners-glm53-cutoff.json'},
+};
+let driveView = '';
+function restoreDriveView() {
+  let saved = '';
+  try { saved = new URL(location.href).searchParams.get('drive') || localStorage.getItem('driveView') || ''; } catch { saved = ''; }
+  driveView = DRIVE_VIEWS[saved] ? saved : '';
+}
+function syncDriveSwitch() {
+  document.querySelectorAll('#driveSwitch [data-drive]').forEach(button => {
+    const on = (button.dataset.drive || '') === driveView;
+    button.classList.toggle('is-on', on);
+    button.setAttribute('aria-pressed', String(on));
+  });
+  document.body.dataset.driveView = driveView || 'current';
+}
+async function setDriveView(value) {
+  driveView = DRIVE_VIEWS[value] ? value : '';
+  try { localStorage.setItem('driveView', driveView); } catch { /* storage may be unavailable */ }
+  const url = new URL(location.href);
+  if (driveView) url.searchParams.set('drive', driveView); else url.searchParams.delete('drive');
+  history.replaceState(history.state, '', url);
+  syncDriveSwitch();
+  await loadDeliveryAudit();
+  renderEverything();
+}
+
 async function loadDeliveryAudit() {
   try {
     const response = await fetch(`assets/delivery-audit.json?t=${Date.now()}`, {cache: 'no-store'});
@@ -633,14 +670,14 @@ async function loadDeliveryAudit() {
     // asset the tab still shows the audited batches, and says the rest are missing.
     let drive = null;
     try {
-      const dr = await fetch(`assets/drive-deliveries.json?t=${Date.now()}`, {cache: 'no-store'});
+      const dr = await fetch(`${DRIVE_VIEWS[driveView].deliveries}?t=${Date.now()}`, {cache: 'no-store'});
       if (dr.ok) drive = await dr.json();
     } catch (ignored) { drive = null; }
     // Their trainers, joined from the bucket. Optional: without it those rows
     // stay Unattributed, which is what the manifest itself says.
     let owners = null;
     try {
-      const ow = drive ? await fetch(`assets/drive-owners.json?t=${Date.now()}`, {cache: 'no-store'}) : null;
+      const ow = drive ? await fetch(`${DRIVE_VIEWS[driveView].owners}?t=${Date.now()}`, {cache: 'no-store'}) : null;
       if (ow && ow.ok) owners = await ow.json();
     } catch (ignored) { owners = null; }
     audit = window.prepareDeliveryAudit(await response.json(), drive, owners);
@@ -4633,6 +4670,7 @@ function renderGlobalFilters() {
   const host = byId('globalFilters');
   if (!host) return;
   const chips = [];
+  if (driveView) chips.push({page: 'Drive', label: '', value: DRIVE_VIEWS[driveView].label, clear: () => setDriveView('')});
   if (segment) chips.push({page: 'Segment', label: '', value: SEGMENTS[segment], clear: () => setSegment('')});
   if (harness) chips.push({page: 'Harness', label: '', value: harnessLabel(harness), clear: () => setHarness('')});
   if (dateRange.start || dateRange.end) chips.push({page: 'Range', label: '', value: rangeLabel(), clear: () => byId('clearDates')?.click()});
@@ -4731,6 +4769,8 @@ function wireEvents() {
     panel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
   });
   document.addEventListener('click', event => {
+    const view = event.target.closest('#driveSwitch [data-drive]');
+    if (view) { if ((view.dataset.drive || '') !== driveView) setDriveView(view.dataset.drive || ''); return; }
     const pick = event.target.closest('#segmentSwitch [data-seg], .segtile[data-seg]');
     if (!pick || event.target.closest('.why')) return;
     const value = pick.dataset.seg || '';
@@ -5005,6 +5045,8 @@ function dressStagingBanner() {
 function init() {
   dressStagingBanner();
   restoreSegment();
+  restoreDriveView();
+  syncDriveSwitch();
   renderHero();
   renderTopPendingCards();
   renderDonut();

@@ -173,6 +173,83 @@ check({'[Deprecated] Dupes or Partial', 'EKW / SVC', '[Meta] Meta - 0919', 'Empt
 check(not any(b['folder'].startswith('[Deprecated]') for b in out['batches']),
       'nothing inside a deprecated group is read')
 
+# --- the 3 Oct layout: Company Bench shares filed apart from their batch -----
+# CompanyBench/CompanyBench - From Pipeline/Batch N - CompanyBench holds the
+# Company Bench packages of Shannon's Batch N. It has no manifest: Batch N's
+# manifest lists them. Its zips count for Batch N, filed under CompanyBench/,
+# and a package whose zip is on Drive nowhere is left out.
+def listed(fid, name, files, manifest=True):
+    item = folder(fid, name, manifest)
+    item['files'] = [{'name': n, 'path': p} for n, p in files]
+    return item
+
+
+nine = json.dumps({'tasks': [task('Non-Connector/Harder/Legal/n.zip'), task('CompanyBench/Easier/k.zip'),
+                             task('Synthetic/Harder/s.zip'), task('Connector/Easier/gone.zip')]}).encode()
+one = json.dumps({'tasks': [task('Connector/Easier/u.zip'), task('Non-Connector/Easier/v.zip')]}).encode()
+cb = json.dumps({'tasks': [task('Connector/Easier/w.zip'), task('Connector/Easier/dup.zip')]}).encode()
+layout = {'folder': {'id': 'root', 'name': 'Deliveries'}, 'items': [
+    group('c', 'ComputerBench (NC 1616 RC 72 S 94)',
+          listed('b9', '09-29 Batch 9.1 (NC 297 RC 0 S 13)',
+                 [('n.zip', 'Non-Connector (NC 297 RC 0 S 0)/Harder'), ('s.zip', 'Synthetic (NC 0 RC 0 S 13)/Harder')]),
+          listed('b1', '09-08-Batch1 (NC 46 RC 0 S 0)', [('v.zip', 'Non-Connector (NC 46 RC 0 S 0)/Easier')])),
+    group('k', 'CompanyBench 1673',
+          listed('cb1', '09-27 Batch1 CompanyBench 252', [('w.zip', 'Connector/Easier')]),
+          group('p', 'CompanyBench - From Pipeline 350',
+                listed('s9', 'Batch 9.1 - CompanyBench 89', [('k.zip', 'Easier 43')], manifest=False),
+                listed('s1', 'Batch 1 - CompanyBench 12', [('u.zip', 'Easier')], manifest=False))),
+    group('d', '[Deprecated]', listed('x', 'CompanyBench 1678 - removed duplicates', [('dup.zip', '')])),
+]}
+out = build(layout, {'mb9': nine, 'mb1': one, 'mcb1': cb}, audited_batches={'Batch 1'})
+check(sorted(out['counts']['batches']) == ['Batch 9.1', 'CompanyBench 1'],
+      f'a share folder is not a batch of its own, got {out["counts"]}')
+b9 = {r['packageName']: (r['bench'], r['driveFolder']) for r in out['rows'] if r['batch'] == 'Batch 9.1'}
+check(b9 == {'n': ('computer', 'Non-Connector (NC 297 RC 0 S 0)/Harder'), 'k': ('company', 'CompanyBench/Easier 43'),
+             's': ('computer', 'Synthetic (NC 0 RC 0 S 13)/Harder')},
+      f'a share folder\'s zips count for its batch, as Company Bench; got {b9}')
+nine_batch = next(b for b in out['batches'] if b['batch'] == 'Batch 9.1')
+check(nine_batch['leftOut'] == ['gone.zip'], 'a package no longer on Drive is left out and named')
+check(out['counts']['batches']['CompanyBench 1'] == 1,
+      'a package moved to [Deprecated] as a duplicate is no longer published')
+check(out['auditedCompany'] == [{'batch': 'Batch 1', 'task': 'u-name', 'packageName': 'u',
+                                 'driveFolder': 'CompanyBench/Easier'}],
+      f"an audited batch's Company Bench share is named for the page, got {out['auditedCompany']}")
+check(not any(r['batch'] == 'Batch 1' for r in out['rows']), 'an audited batch keeps its audited rows')
+check(not any('CompanyBench 9.1' in str(s) for s in out['skipped']),
+      'a share folder is never reported as a CompanyBench batch with no manifest')
+
+# A zip filed in a share folder that its batch's manifest does not list - a
+# CompanyBench 3 package put under "Batch 3 - CompanyBench" - counts for the
+# CompanyBench batch whose manifest lists it, and is not left out there.
+three_cb = json.dumps({'tasks': [task('Company Bench Zeta/z1.zip'), task('Company Bench Zeta/z2.zip')]}).encode()
+three = json.dumps({'tasks': [task('Non-Connector/Easier/t.zip')]}).encode()
+stray = {'folder': {'id': 'root', 'name': 'Deliveries'}, 'items': [
+    group('c', 'ComputerBench', listed('b3', '09-08-Batch3 (NC 58 RC 0 S 0)', [('t.zip', 'Non-Connector/Easier')])),
+    group('k', 'CompanyBench 1673',
+          listed('cb3', '09-28 Batch3 CompanyBench 961', [('z1.zip', 'Company Bench 961')]),
+          group('p', 'CompanyBench - From Pipeline 350',
+                listed('s3', 'Batch 3 - CompanyBench 6', [('z2.zip', 'Harder 6')], manifest=False))),
+]}
+out = build(stray, {'mb3': three, 'mcb3': three_cb}, audited_batches={'Batch 3'})
+check(out['counts']['batches'].get('CompanyBench 3') == 2,
+      f'a stray zip counts for the CompanyBench batch that lists it, got {out["counts"]}')
+cb3 = next(b for b in out['batches'] if b['batch'] == 'CompanyBench 3')
+check(cb3['leftOut'] == [] and any('filed under Batch 3' in n for n in cb3['notes']),
+      f'and is not left out, with a note saying where it is filed: {cb3}')
+check(out['auditedCompany'] == [], 'a stray zip is not taken for the audited batch it is filed under')
+
+# The class a Drive folder names wins over the manifest's folder: Batch 10.1's
+# CompanyBench folder became "Real ComputerBench" in the 3 Oct layout.
+import build_drive_deliveries as bdd_classes      # noqa: E402
+check(bdd_classes.folder_class('Real ComputerBench (NC 0 RC 37 S 0)/Easier 24') == 'Real Connector', 'Real ComputerBench is Real Connector')
+check(bdd_classes.folder_class('Synthetic ComputerBench (NC 0 RC 0 S 21)/Harder') == 'Synthetic', 'Synthetic ComputerBench is Synthetic')
+check(bdd_classes.folder_class('Non-Connector (NC 297 RC 0 S 0)/Harder/Legal') == 'Non-Connector', 'counts in brackets are dropped')
+check(bdd_classes.folder_class('Easier 43') is None and bdd_classes.folder_class(None) is None, 'a difficulty folder names no class')
+ten = json.dumps({'tasks': [task('CompanyBench/Easier/r.zip', bench_type='company bench aster')]}).encode()
+rows, _ = normalise(json.loads(ten), 'Batch 10.1', [{'name': 'r.zip', 'path': 'Real ComputerBench (NC 0 RC 37 S 0)/Easier 24'}])
+check(rows[0]['bench'] == 'computer' and rows[0]['category'] == 'Real Connector' and rows[0]['type'] == 'Connector',
+      f"a package filed under Real ComputerBench is Computer Bench Real Connector, got {rows[0]['bench'], rows[0]['category']}")
+
 # --- the live read, against a fake Drive -------------------------------------
 # The VM is the only place with credentials, so the request side is exercised
 # here instead: pagination is followed, only batch-like folders are opened, and
@@ -186,7 +263,10 @@ tree = {'root': [{'id': 'b5', 'name': '09-25-Batch5.1', 'mimeType': FOLDER_MIME,
                  {'id': 'cb', 'name': 'CompanyBench', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
         'b5': [{'id': 'm5', 'name': 'manifest.json', 'mimeType': 'application/json', 'modifiedTime': 'v1'}],
         'cb': [{'id': 'cb1', 'name': '09-27 Batch1 CompanyBench 267', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'},
-               {'id': 'cbd', 'name': '09-27 Batch2 CompanyBench 110 (dedup copy)', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
+               {'id': 'cbd', 'name': '09-27 Batch2 CompanyBench 110 (dedup copy)', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'},
+               {'id': 'pipe', 'name': 'CompanyBench - From Pipeline 350', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
+        'pipe': [{'id': 'sh', 'name': 'Batch 9.1 - CompanyBench 89', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'}],
+        'sh': [{'id': 'shz', 'name': 'share.zip', 'mimeType': 'application/zip', 'modifiedTime': 't'}],
         'cbd': [{'id': 'mcbd', 'name': 'manifest.json', 'mimeType': 'application/json', 'modifiedTime': 'v1'},
                 {'id': 'sub', 'name': 'Connector', 'mimeType': FOLDER_MIME, 'modifiedTime': 't'},
                 {'id': 'z0', 'name': 'top.zip', 'mimeType': 'application/zip', 'modifiedTime': 't'}],
@@ -223,6 +303,10 @@ try:
         copy = next(c for c in listing['items'][2]['children'] if c['id'] == 'cbd')
         check(copy.get('files') == [{'name': 'top.zip', 'path': ''}, {'name': 'deep.zip', 'path': 'Connector/Harder'}],
               f"a batch folder's zips are listed at every depth with their folder, got {copy.get('files')}")
+        pipe = next(c for c in listing['items'][2]['children'] if c['id'] == 'pipe')
+        share = next(c for c in pipe.get('children', []) if c['id'] == 'sh')
+        check(share.get('files') == [{'name': 'share.zip', 'path': ''}],
+              'a share folder two levels down - a group inside a group - is opened and its zips listed')
         bdd.save_snapshot(cache, listing, got)
         downloads = sum('alt=media' in c for c in calls)
         bdd.snapshot_from_drive('root', 'token', cache=cache)

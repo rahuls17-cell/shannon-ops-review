@@ -9,6 +9,52 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Drive: the 3 Oct layout, and a switch back to the GLM 5.3 cutoff
+- **A Drive switch in the top bar: Current (default) or GLM 5.3 cutoff.** The
+  Deliveries folder was reorganised on 3 Oct. GLM 5.3 cutoff is the dashboard
+  exactly as it stood before, read on 1 Oct and kept unchanged
+  (`assets/drive-deliveries-glm53-cutoff.json`, `drive-owners-glm53-cutoff.json`):
+  3,231 delivered tasks, Company Bench 1,696. Current reads the folder as it is
+  now. The switch changes the Delivery tab and what is built on delivered
+  packages (the Pipeline delivery join, the bench of a delivered task); it is
+  kept in the link (`?drive=glm53`) and shows as a filter chip.
+- **The reader follows the new layout** (`tools/build_drive_deliveries.py`):
+  - group folders nest two levels: `CompanyBench 1673/CompanyBench - From
+    Pipeline 350/Batch 9.1 - CompanyBench 89`;
+  - a "Batch N - CompanyBench" folder with no manifest is Batch N's Company Bench
+    share: its zips count for Batch N, filed under CompanyBench/, matched
+    against Batch N's manifest. For the audited Batches 1 to 4.1 the share is
+    published as `auditedCompany` and the page puts those audited tasks on the
+    Company bench (34: Batch 1 12, Batch 2 12, Batch 3 1, Batch 4.1 9);
+  - a share zip its batch's manifest does not list counts for the CompanyBench
+    batch whose manifest does: five CompanyBench 3 packages filed under "Batch 3
+    - CompanyBench";
+  - a package is published only when its zip is on Drive (the cleanup took
+    duplicates out of folders and left the manifests alone); the rest are
+    listed as left out;
+  - the class a Drive folder names wins over the manifest's folder: Batch
+    10.1's CompanyBench folder is now "Real ComputerBench (NC 0 RC 37 S 0)";
+  - Batches 5.1, 6.1 and 7.1 were re-cut on 1 Oct with new manifests (5.1 now
+    the dedup content, 375; 6.1 271; 7.1 169).
+- **Read without a Drive token**, through the Drive connector, on 5 Oct; the
+  live reader can also use a gcloud application-default sign-in with the
+  drive.readonly scope now. Folder contents were listed where something moved
+  (CompanyBench 1 and 3, the nine shares, 10.1's Real ComputerBench); every
+  other batch's folder counts match its manifest.
+- **Current, today:** 3,196 delivered tasks (2,784 from Drive). Company Bench by
+  Drive folder 1,654; with the Dockerfile image deciding where it names a bench,
+  1,676 (Aster 224, Zeta 1,452). The Drive's own folder title says 1,673:
+  CompanyBench 3's folder is titled 961 but holds 947 zips, all matched to its
+  manifest (19 of its 971 packages are on Drive nowhere).
+- **Where Drive and the Dockerfile image disagree** (image wins, as before):
+  Batch 10.1's 37 Aster-image packages are filed as Real ComputerBench and stay
+  Company Bench Aster; 20 of the audited batches' Company Bench share run on a
+  synthetic or real image and stay Computer Bench; 5 Batch 5.1 packages go the
+  other way.
+- New checks in `tools/test_drive_deliveries.py`: nested groups, shares,
+  audited shares, presence, stray share zips, folder classes, a share two
+  levels down in the live read.
+
 ### Bench and segment: decided by the task, never by the trainer
 People work on both benches and the roster moves, so a trainer's roster team no
 longer decides Company Bench anywhere on the dashboard.

@@ -55,7 +55,18 @@
     const driveRows = (drivePayload && Array.isArray(drivePayload.rows) ? drivePayload.rows : [])
       .filter(row => !audited.has(row.batch))
       .map(row => withOwner({...row, fromManifest: true}, owners));
-    const rows = payload.rows.concat(driveRows).map(row => ({
+    // Drive files part of the audited Batches 1 to 4.1 as Company Bench (the
+    // 3 Oct layout's "Batch N - CompanyBench" folders). Those audited rows take
+    // that bench; every other audited row is the Computer Bench audit it was.
+    const nameKey = value => String(value || '').trim().toLowerCase().replace(/^(harbor|obi)\//, '');
+    const companyShare = new Map(((drivePayload && drivePayload.auditedCompany) || [])
+      .flatMap(entry => [entry.task, entry.packageName].filter(Boolean)
+        .map(name => [`${entry.batch}|${nameKey(name)}`, entry])));
+    const audit = payload.rows.map(row => {
+      const share = companyShare.get(`${row.batch}|${nameKey(row.task)}`);
+      return share ? {...row, bench: 'company', driveFolder: share.driveFolder} : row;
+    });
+    const rows = audit.concat(driveRows).map(row => ({
       ...row,
       task: row.task || '',
       category: mergedCategory(row.category),
