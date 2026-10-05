@@ -2173,7 +2173,6 @@ function renderTruthFigures(result, filtered) {
   const cohortInSegment = truthCohortRows();
   const co = cohortInSegment ? cohortCounts(cohortInSegment) : null;
   const tn = cohortInSegment ? window.acceptedTaskNames(cohortInSegment) : null;
-  const accTasks = acceptedTasksAllDates();
   const coSplit = cohortInSegment && truth.deliveryJoin ? cohortSplit(cohortInSegment)
     : {delivered: 0, notDelivered: co ? co.packages : 0};
   if (co && byId('truthCohort')) {
@@ -2186,7 +2185,10 @@ function renderTruthFigures(result, filtered) {
       ['accepted', co.latestAccepted, 'good', `${fmt(co.latestAccepted)} whose most recent run came back accepted. ${fmt(co.latestRejected)} were rejected on a later run, ${fmt(co.latestOther)} ended some other way, ${fmt(co.disagreeAcrossRuns)} have runs that disagree.`],
       ['delivered', coSplit.delivered, 'violet', `${fmt(coSplit.delivered)} reached by a delivery in any batch, by the folder its manifest names or the task its package declares. ${fmt(coSplit.notDelivered)} have not gone out yet.`],
     ];
-    const distinct = accTasks !== null ? `<span class="kpi-tag" data-tip="Distinct task names across every accepted folder in the bucket - this cohort and the two earlier accepted prefixes - the same count as the Overview's Accepted tasks${segment ? ', in this segment' : ''}, over all dates.${tn ? ` Within this cohort alone, ${fmt(tn.folders)} folders hold ${fmt(tn.tasks)} tasks by the [task] name their package declares.` : ''}">${fmt(accTasks)} distinct accepted tasks</span>` : '';
+    // Distinct tasks among the folders counted beside it: the folders folded by
+    // the [task] name each package declares, so the card reads folders = tasks
+    // + extra copies of a task re-cut under another folder name.
+    const distinct = tn ? `<span class="kpi-tag" data-tip="${fmt(tn.folders)} accepted folders${segment ? ' in this segment' : ''} hold ${fmt(tn.tasks)} distinct tasks, by the [task] name each package declares; ${fmt(tn.extraFolders)} are extra copies of a task already counted - a re-cut after review lands under a new folder name. A folder whose package could not be read counts as its own task.">${fmt(tn.tasks)} distinct accepted tasks</span>` : '';
     const shades = ['color-mix(in srgb, var(--blue) 30%, var(--panel-3))', 'color-mix(in srgb, var(--blue) 55%, var(--panel))', 'color-mix(in srgb, var(--blue) 78%, var(--panel))', 'var(--blue)'];
     byId('truthCohort').innerHTML = `
       <div class="kpi-top"><h3>In the accepted cohort<button class="why" data-info="cohort" aria-label="How the cohort is counted">?</button></h3>${distinct}</div>
@@ -3003,8 +3005,6 @@ async function loadGcsPipeline(manual = false) {
     connectorByName = null;
     loadFinalisation(); renderDonut(); renderTrainerRows();
     renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
-    // The Pipeline's distinct accepted tasks reads these folders too.
-    if (truth) renderTruth();
     if (manual) setTextIfPresent('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
   } catch (error) {
     setTextIfPresent('pipelineSourceStatus', `GCS export not loaded: ${error.message}`);
@@ -3251,16 +3251,6 @@ function switchView(viewName, push = true) {
   if (viewName === 'pipeline') fitDeck();
   if (push && location.hash.slice(1) !== viewName) history.pushState({viewName}, '', `#${viewName}`);
   window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-// The Overview's Accepted tasks rule - distinct task names over the accepted
-// folders in the segment - with no date range, for the Pipeline's cohort strip.
-// Kept in step with commandSnapshot(); null until the bucket scan has loaded.
-function acceptedTasksAllDates() {
-  if (!finalisationRows.length || !gcsPipeline) return null;
-  return new Set(finalisationRows
-    .filter(row => inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder)))
-    .map(row => row.name)).size;
 }
 
 function commandSnapshot() {

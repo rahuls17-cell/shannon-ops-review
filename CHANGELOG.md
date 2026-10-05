@@ -103,6 +103,17 @@ longer decides Company Bench anywhere on the dashboard.
   tasks whose package was never scanned read "connectors not read" (Zeta
   1,941, Aster 711 pipeline tasks today). Only this dropdown and its filter
   change; the named-domain card and Carried over's Domain still read the name.
+- **Pipeline, In the accepted cohort: "distinct accepted tasks" counts the
+  folders beside it.** It had been tied to the Overview's Accepted tasks, which
+  reads the bucket scan frozen on 28 Sep and adds the two older accepted
+  prefixes, so it could not be reconciled with the Accepted card next to it
+  (Connector: 235 folders, tile 188). It now folds those same folders by the
+  [task] name each package declares, so the card reads folders = tasks + extra
+  copies: Connector 235 = 227 + 8, Non-connector 1,687 = 1,625 + 62, Aster 428 =
+  426 + 2, Zeta 240 = 227 + 13, All 2,590 = 2,505 + 85. The Duplicates filter's
+  15 under Connector is every folder of the 7 tasks that have several (6 x 2 +
+  1 x 3), of which 8 are extra copies; Legacy accepted is a separate state and
+  is not part of the Accepted card.
 - **Pipeline, Delivery & makeup: the Domain chart follows the segment.** It
   counted the name-prefix domain only, which connector tasks do not carry, so
   under Connector, Company Bench, Aster or Zeta it read "No task in this
@@ -330,6 +341,14 @@ longer decides Company Bench anywhere on the dashboard.
   covers folder groups, dedup copies, Drive folder benches and types.
 
 ### Still open
+- **The bucket scan has not refreshed since 28 Sep 00:46 UTC.** The Refresh GCS
+  workflow pulls `assets/gcs-pipeline.json` over SSH from root@35.253.35.165 port
+  2222, and the firewall rule allowing that port (`allow-ssh-alt-port`) was
+  deleted at 01:57 UTC the same day. Everything built from that scan is frozen:
+  the Overview's Accepted tasks and iteration-2 cards, the trainer and bench
+  cards that read the finalisation folders, and `drive-owners.json`. The VM's own
+  push ("Refresh from the VM") still runs, so the pipeline, cohort, delivered,
+  connector, bench and GLM indexes are current.
 - The VM steps in `tools/VM-drive-patch.md` (service account and one line in
   `publish.sh`) are not done, so Drive data is the snapshot last committed.
 - The Payouts per-person table still shows a person's whole balance under a
