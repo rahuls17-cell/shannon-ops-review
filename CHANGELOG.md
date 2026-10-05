@@ -301,7 +301,7 @@ longer decides Company Bench anywhere on the dashboard.
   Computer Bench Connector. A folder of the current prefix now uses the
   Pipeline's own row for it, judged by its own image; the older prefixes have
   no such row and still go by name. Connector 188 -> 182 (one of the seven also
-  has an older iteration-1 folder, which still counts it), Zeta 179 -> 186. All
+  has an older iteration-1 folder, which still counts it); Zeta now 186. All
   three prefixes stay in the count. The card still reads the 28 Sep scan until
   the refresh is restored.
 - **Pipeline accepted** follows the segment and date range, counting the same
