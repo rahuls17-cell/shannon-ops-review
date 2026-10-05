@@ -54,17 +54,22 @@ When you change what a figure means, add a line under **Unreleased**. When
   folder first (`finalization_qc_accepted_zipped/`, `computerbench-batch-5/`), the
   difficulty before the class, connectors under `connector.services`, as
   `{name, image}`, or as one string joined by `|` (Batch 6.1).
-- **Current, today:** 3,188 delivered tasks across 13 batches. Computer Bench:
-  non-connector 1,363, Synthetic 99, Real Connector 72. Company Bench 1,654:
-  Aster 181, Zeta 1,339, and 134 the Drive does not say - 115 in Batch 5.1,
-  whose manifest lists only "harbor" for its connector packages, and 19 that
-  mount only gyms both harnesses have. The Drive's own folder title says 1,673:
-  CompanyBench 3's folder is titled 961 but holds 947 zips, all matched to its
-  manifest (19 of its 971 packages are on Drive nowhere), and the 5 CompanyBench
-  3 synthetic tasks filed under "Batch 3 - CompanyBench" are Computer Bench by
-  their manifest. Computer Bench folder titles count more non-connector zips
-  than their manifests list (Batch 4.1: 415 in the folder, 232 in the manifest);
-  the manifest is the receipt.
+- **Current, today:** 3,202 delivered tasks across 13 batches. Company Bench
+  by Drive folder 1,668 = CompanyBench 1 252 + CompanyBench 2 110 + CompanyBench
+  3 961 + the From Pipeline shares 345, against the Drive's own 1,673 (252 +
+  110 + 961 + 350). The 5 apart are CompanyBench 3 packages filed in the "Batch 3
+  - CompanyBench" share whose manifest marks them Computer Bench synthetic, so
+  they count as Computer Bench. 5 of CompanyBench 3's 971 manifest packages are
+  on Drive only in `[Deprecated]/CompanyBench 1678 - removed duplicates` and are
+  left out. Of Company Bench, Aster or Zeta is not recorded on Drive for 134
+  (115 in Batch 5.1, whose manifest lists only "harbor" for its connector
+  packages). Computer Bench folder titles count more non-connector zips than
+  their manifests list (Batch 4.1: 415 in the folder, 232 in the manifest); the
+  manifest is the receipt.
+- **Correction:** an earlier note said CompanyBench 3's folder held 947 zips
+  and its title (961) was out of date. The title is right. The Drive
+  connector's paged listing of that folder skipped 14 zips; each was found in
+  the folder by a search on its name, and the folder holds 961.
 - **GLM 5.3 cutoff** is unchanged: the audit for Batches 1 to 4.1 and the image
   where it names a bench, 3,231 tasks, Company Bench 1,696.
 - New checks in `tools/test_drive_deliveries.py`: nested groups, shares,
