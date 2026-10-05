@@ -2294,25 +2294,24 @@ button.stat[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 10%, 
 @media (prefers-reduced-motion: reduce) { .deck-pane.is-active { animation: none !important; } }
 
 /* Dock: one icon per pane, magnified under the pointer, folded to a notch at rest. */
-.dock { grid-area: 1 / 1; display: flex; align-items: flex-end; gap: 8px; height: 62px; margin-bottom: 14px; padding: 0 12px; border-radius: 20px; background: rgba(13, 17, 27, 0.84); border: 1px solid rgba(255,255,255,.08); box-shadow: 0 24px 48px -18px rgba(8, 12, 20, .7), inset 0 1px 0 rgba(255,255,255,.07); backdrop-filter: blur(18px) saturate(140%); pointer-events: auto; transition: opacity 260ms var(--ease), transform 320ms var(--ease); }
-.dock-item { --s: 1; position: relative; width: 42px; height: 42px; margin: 0 calc((var(--s) - 1) * 21px) 9px; padding: 0; border: 0; border-radius: 13px; display: grid; place-items: center; color: #fff; cursor: pointer; background: linear-gradient(150deg, var(--tone-a), var(--tone-b)); box-shadow: 0 8px 18px -8px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.28); transform: translateY(calc((1 - var(--s)) * 6px)) scale(var(--s)); transform-origin: bottom center; transition: transform 120ms var(--ease), margin 120ms var(--ease), filter var(--t-fast) var(--ease); }
-.dock-item svg { width: 21px; height: 21px; fill: none; stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; filter: drop-shadow(0 1px 1px rgba(0,0,0,.25)); }
-.dock-item:hover { filter: brightness(1.12); }
-.dock-item:active { filter: brightness(.9); }
-.dock-item::after { content: ""; position: absolute; left: 50%; bottom: -7px; width: 4px; height: 4px; border-radius: 50%; background: #fff; transform: translateX(-50%) scale(0); transition: transform var(--t-fast) var(--ease); }
-.dock-item.is-on::after { transform: translateX(-50%) scale(1); }
-.dock-item:focus-visible { outline: 2px solid #00bbff; outline-offset: 3px; }
-.dock-label { position: absolute; left: 50%; bottom: calc(100% + 12px); padding: 5px 10px; border-radius: 8px; background: #0d111b; color: #fff; font-size: 11px; font-weight: 600; white-space: nowrap; letter-spacing: .01em; opacity: 0; transform: translateX(-50%) translateY(4px) scale(calc(1 / var(--s))); transform-origin: bottom center; pointer-events: none; box-shadow: 0 8px 20px -10px rgba(0,0,0,.6); transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
-.dock-label::after { content: ""; position: absolute; left: 50%; top: 100%; border: 5px solid transparent; border-top-color: #0d111b; transform: translateX(-50%); }
-.dock-item:hover .dock-label, .dock-item:focus-visible .dock-label { opacity: 1; transform: translateX(-50%) translateY(0) scale(calc(1 / var(--s))); }
-.dock-notch { grid-area: 1 / 1; align-self: end; display: flex; align-items: center; gap: 6px; height: 10px; margin-bottom: 8px; padding: 0 14px; border: 0; border-radius: 999px; background: rgba(13, 17, 27, 0.78); box-shadow: 0 6px 16px -8px rgba(8,12,20,.7); cursor: pointer; opacity: 0; transform: translateY(14px); pointer-events: none; transition: opacity 240ms var(--ease) , transform 320ms var(--ease); }
+.dock { grid-area: 1 / 1; display: flex; align-items: flex-end; gap: 2px; height: 56px; margin-bottom: 14px; padding: 0 6px; border-radius: 18px; background: color-mix(in srgb, var(--panel) 66%, transparent); border: 1px solid rgba(15, 20, 32, .08); box-shadow: 0 1px 2px rgba(16, 23, 32, .06), 0 18px 40px -20px rgba(16, 23, 32, .32), inset 0 1px 0 rgba(255, 255, 255, .85); backdrop-filter: blur(22px) saturate(170%); -webkit-backdrop-filter: blur(22px) saturate(170%); pointer-events: auto; transition: opacity 260ms var(--ease), transform 320ms var(--ease); }
+.dock-item { --s: 1; position: relative; width: 42px; height: 42px; margin: 0 0 7px; padding: 0; border: 0; border-radius: 12px; display: grid; place-items: center; color: var(--muted); cursor: pointer; background: transparent; transition: color var(--t-fast) var(--ease), background var(--t-fast) var(--ease), box-shadow var(--t-fast) var(--ease); }
+.dock-item svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; transform: scale(var(--s)); transition: transform 120ms var(--ease); }
+.dock-item:hover { color: var(--ink); background: rgba(15, 20, 32, .06); }
+.dock-item:active { background: rgba(15, 20, 32, .1); }
+.dock-item.is-on { color: var(--ink); background: var(--panel); box-shadow: 0 1px 2px rgba(16, 23, 32, .08), 0 6px 14px -8px rgba(16, 23, 32, .25), inset 0 0 0 1px rgba(15, 20, 32, .06); }
+.dock-item::after { content: ""; position: absolute; left: 50%; bottom: 4px; width: 10px; height: 2px; border-radius: 1px; background: var(--accent); transform: translateX(-50%) scaleX(0); transition: transform var(--t-fast) var(--ease); }
+.dock-item.is-on::after { transform: translateX(-50%) scaleX(1); }
+.dock-item:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.dock-label { position: absolute; left: 50%; bottom: calc(100% + 10px); padding: 5px 9px; border-radius: 8px; background: color-mix(in srgb, var(--panel) 92%, transparent); color: var(--ink); font-size: 11.5px; font-weight: 600; white-space: nowrap; letter-spacing: .005em; opacity: 0; transform: translateX(-50%) translateY(3px); transform-origin: bottom center; pointer-events: none; border: 1px solid rgba(15, 20, 32, .08); box-shadow: 0 1px 2px rgba(16, 23, 32, .06), 0 10px 24px -14px rgba(16, 23, 32, .3); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); transition: opacity var(--t-fast) var(--ease), transform var(--t-fast) var(--ease); }
+.dock-item:hover .dock-label, .dock-item:focus-visible .dock-label { opacity: 1; transform: translateX(-50%) translateY(0); }
+.dock-notch { grid-area: 1 / 1; align-self: end; position: relative; display: flex; align-items: center; gap: 5px; height: 14px; margin-bottom: 8px; padding: 0 10px; border: 1px solid rgba(15, 20, 32, .08); border-radius: 999px; background: color-mix(in srgb, var(--panel) 72%, transparent); box-shadow: 0 1px 2px rgba(16, 23, 32, .06), 0 8px 18px -12px rgba(16, 23, 32, .3), inset 0 1px 0 rgba(255, 255, 255, .85); backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%); cursor: pointer; opacity: 0; transform: translateY(14px); pointer-events: none; transition: opacity 240ms var(--ease), transform 320ms var(--ease); }
 .dock-notch::before { content: ""; position: absolute; inset: -28px -30px -8px; }
-.dock-notch { position: relative; }
-.dock-notch i { width: 4px; height: 4px; border-radius: 50%; background: rgba(255,255,255,.3); transition: background var(--t-fast) var(--ease), width var(--t-fast) var(--ease); }
-.dock-notch i.is-on { width: 14px; border-radius: 2px; background: #00bbff; }
-.deck-pager.is-idle .dock { opacity: 0; transform: translateY(26px) scale(.86); pointer-events: none; }
+.dock-notch i { width: 4px; height: 4px; border-radius: 50%; background: rgba(15, 20, 32, .22); transition: background var(--t-fast) var(--ease), width var(--t-fast) var(--ease); }
+.dock-notch i.is-on { width: 12px; border-radius: 2px; background: var(--ink); }
+.deck-pager.is-idle .dock { opacity: 0; transform: translateY(26px) scale(.9); pointer-events: none; }
 .deck-pager.is-idle .dock-notch { opacity: 1; transform: none; pointer-events: auto; }
-@media (max-width: 900px) { .dock { gap: 4px; padding: 0 8px; } .dock-item { width: 36px; height: 36px; } }
+@media (max-width: 900px) { .dock { gap: 0; padding: 0 4px; } .dock-item { width: 36px; height: 36px; } }
 @media (prefers-reduced-motion: reduce) { .dock, .dock-item, .dock-notch, .dock-label { transition: none !important; } }
 @media (prefers-reduced-motion: reduce) { .deck-track { transition: none !important; } }
 

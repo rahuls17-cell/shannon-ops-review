@@ -23,8 +23,8 @@ Everything the page shows is read from a JSON asset in `assets/`. A VM, `yogesh-
 | `delivered-index.json` | `build_delivered_index.py` | The join of delivered tasks onto pipeline tasks, by name, done once and tested. |
 | `connector-index.json` | `build_connector_index.py` / `read_task_toml.py` | Per task: does `task.toml` declare `[[environment.mcp_servers]]`, and which gyms. |
 | `bench-index.json` | `scan_bench.py` | Per task: the `FROM` image in its Dockerfile. |
-| `delivery-audit.json` | `build_delivery_audit.py` | Batches 1 to 4.1, pulled from the delivery dashboard: trainer, category, GLM trials, client decision. |
-| `drive-deliveries.json` | `build_drive_deliveries.py` | Batch 5.1 onward and CompanyBench 1 to 3, one row per package from each batch's `manifest.json` on Drive. |
+| `delivery-audit.json` | `build_delivery_audit.py` | Batches 1 to 4.1, pulled from the delivery dashboard: trainer, category, GLM trials, client decision. Used by Overview and Pipeline. |
+| `drive-deliveries.json` | `build_drive_deliveries.py` | Every delivered batch on Drive, Batches 1 to 4.1 included, one row per package from each batch's `manifest.json`. What the Delivery page shows. |
 | `drive-owners.json` | `build_drive_owners.py` | Trainer for Drive rows, recovered from the bucket's owner records. |
 | `manifest-index.json`, `task-names.json`, `glm-index.json` | `build_manifest_index.py`, `scan_task_names.py`, `scan_glm_trials.py` | Package → task name, declared names, GLM trial results. |
 | `client-acceptance.json` | `build_client_acceptance.py` | Counts only, from the Harbor 240 dashboard. |
@@ -123,19 +123,21 @@ Every dropdown in the filter bar shows the counts for the current segment, so th
 
 ## 5. Delivery
 
-Source: `delivery-audit.json` (Batches 1 to 4.1, with trainer and client decision) plus `drive-deliveries.json` (Batch 5.1 onward and CompanyBench 1 to 3, from each batch's `manifest.json`). Drive rows carry no client decision, so they are Pending by construction, and get a trainer from `drive-owners.json` when the bucket names one.
+Source: `drive-deliveries.json`, one row per package in every batch folder of the shared Deliveries folder on Drive, Batches 1 to 4.1 included, read from each batch's `manifest.json` by `tools/build_drive_deliveries.py`. The Drive holds no client decision, so every row reads **Pending**. Trainers come from `drive-owners.json` when the bucket's owner records name one.
+
+The other pages keep reading `delivery-audit.json` (Batches 1 to 4.1 with the client's decisions) for the Overview's Client accepted card, the Pipeline's Delivery join and the bench a delivered task gives a pipeline row. A hidden switch (`DRIVE_SWITCH_SHOWN` in `app.js`) can put the Delivery page back on that reading.
 
 Row rules:
 
-- **Bench**: the image first, then the Drive folder the package sits in. A package in a `CompanyBench/` folder inside a Computer Bench batch is Company Bench. A manifest marking it computer bench keeps it there.
+- **Bench, harness and connector count**: where the package is filed on Drive and what its manifest records. A package in a `CompanyBench/` folder is Company Bench; Aster or Zeta from the manifest's image or declared bench. Never from the Dockerfile image in the bucket.
 - **Category**: a Company Bench package is `CompanyBench`. Computer Bench categories come from the manifest with `Non-Connector ·` stripped and Code → Engineering, Law → Legal, General and Other/unclassified → Other.
-- **GLM bucket**: `n/4` trials solved from the audit or manifest. No run recorded → `(not recorded)`.
+- **GLM bucket**: `n/4` trials solved from the manifest. No run recorded → `(not recorded)`.
 - **Trainer**: `Unattributed` when none is recorded; rows with more than one candidate owner are contested and name nobody.
 
 | Card | Number | Counted as | Shown as |
 |---|---|---|---|
 | **Delivered tasks** | Rows matching the filters | Every audit and Drive row in the segment and filters. | Share of all delivered. |
-| **Accepted / Rejected / Pending** | Rows by client acceptance | `acceptance` on the row. Pending = no decision recorded. | Share of shown; click to filter. |
+| **Accepted / Rejected / Pending** | Rows by client acceptance | `acceptance` on the row. The Drive records none, so everything is Pending until decisions are read from elsewhere. | Share of shown; click to filter. |
 | **Trainers** | Distinct attributed trainers | Rows with an email trainer; note shows the unattributed count. | Count. |
 | **Batch scope** | Tasks per batch | All batches, no pagination. **Rate = accepted ÷ (accepted + rejected)**, the tasks the client has decided, never ÷ all tasks. A batch with no decisions reads "awaiting decisions". | One row per batch with count, rate line and verdict bar. |
 | **Category mix** | Rows per category | Grouped by category. | Ranked bars, click to filter. |

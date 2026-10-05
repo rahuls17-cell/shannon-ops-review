@@ -4507,7 +4507,6 @@ const DOCK_ICONS = {
   package: '<path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/>',
   calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
 };
-const DOCK_TONES = ['#2e6edf,#00bbff', '#6d4de6,#a78bfa', '#0f9d6b,#34d399', '#e0651f,#fbbf24', '#475569,#94a3b8', '#be3f8f,#f472b6'];
 const DOCK_IDLE_MS = 2400;
 
 function makeDeck({view, deck: deckId, pager: pagerId, key}) {
@@ -4520,7 +4519,7 @@ function makeDeck({view, deck: deckId, pager: pagerId, key}) {
     pager.innerHTML = `
       <button type="button" class="dock-notch" aria-label="Show sections">${list.map((pane, i) => `<i class="${i === index ? 'is-on' : ''}"></i>`).join('')}</button>
       <div class="dock" role="tablist">${list.map((pane, i) => `
-        <button type="button" role="tab" class="dock-item${i === index ? ' is-on' : ''}" data-index="${i}" aria-selected="${i === index}" aria-label="${esc(pane.dataset.title)}" style="--tone-a:${DOCK_TONES[i % DOCK_TONES.length].split(',')[0]};--tone-b:${DOCK_TONES[i % DOCK_TONES.length].split(',')[1]}">
+        <button type="button" role="tab" class="dock-item${i === index ? ' is-on' : ''}" data-index="${i}" aria-selected="${i === index}" aria-label="${esc(pane.dataset.title)}">
           <svg viewBox="0 0 24 24" aria-hidden="true">${DOCK_ICONS[pane.dataset.icon] || DOCK_ICONS.summary}</svg>
           <span class="dock-label">${esc(pane.dataset.title)}</span>
         </button>`).join('')}</div>`;
@@ -4544,7 +4543,7 @@ function makeDeck({view, deck: deckId, pager: pagerId, key}) {
     pager.querySelectorAll('.dock-item').forEach(item => {
       const box = item.getBoundingClientRect();
       const distance = Math.abs(event.clientX - (box.left + box.width / 2));
-      const scale = 1 + 0.55 * Math.max(0, 1 - distance / 110);
+      const scale = 1 + 0.32 * Math.max(0, 1 - distance / 110);
       item.style.setProperty('--s', scale.toFixed(3));
     });
   };
