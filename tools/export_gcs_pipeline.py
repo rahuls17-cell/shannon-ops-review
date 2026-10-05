@@ -2,6 +2,8 @@
 import argparse
 import json
 import sys
+import threading
+import urllib.error
 import urllib.parse
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
@@ -249,6 +251,28 @@ def main():
     parser.add_argument('--out', required=True)
     args = parser.parse_args()
     tok = S.token()
+    # A run reads tens of thousands of objects and lasts minutes, longer than an
+    # access token can be counted on to live: a 401 midway killed the whole
+    # export on the audit VM. Every read goes through S.http, so it is wrapped
+    # once here - on a 401 it takes a fresh token and tries that read again -
+    # and the token each call passes in is ignored in favour of the current one.
+    raw_http = S.http
+    current = {'tok': tok}
+    refresh = threading.Lock()
+
+    def http(url, _tok, *args, **kwargs):
+        sent = current['tok']
+        try:
+            return raw_http(url, sent, *args, **kwargs)
+        except urllib.error.HTTPError as error:
+            if error.code != 401:
+                raise
+            with refresh:
+                if current['tok'] == sent:
+                    current['tok'] = S.token()
+            return raw_http(url, current['tok'], *args, **kwargs)
+    S.http = http
+
     def listing(prefix):
         items, page = [], None
         while True:

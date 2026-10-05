@@ -405,6 +405,25 @@ longer decides Company Bench anywhere on the dashboard.
   to match.
 
 ### Data and automation
+- **yogesh-audit-vm is the dashboard's hub**, replacing task-mining-node-1. Its
+  scripts and crontab are in `tools/vm/` (see `tools/vm/README.md`); the copies
+  that run are in `/root/shannon-ops-publish/` on the VM. Everything the page
+  reads from the bucket is now made there and pushed by the VM itself:
+  - `publish.sh` (every 10 min) also runs the bucket scan the pipeline's tags
+    read (`pipeline-stats.json`, about two seconds with its cache - node 1 got
+    it from a separate dashboard's cron), publishes the bucket export when a
+    newer one is ready, and builds the Drive trainer names; it pushes to
+    `PUBLISH_BRANCH`.
+  - `export-gcs.sh` (every 30 min) makes `gcs-pipeline.json`, the export the
+    Overview reads. It takes minutes, so it is off the 10-minute tick.
+  - **GitHub no longer fetches anything.** `refresh-gcs.yml` and
+    `refresh-truth.yml` pulled from node 1 over SSH on port 2222, which IT
+    closed on 28 Sep; they are removed (in `292c6195`). A push to `main` still
+    deploys through `deploy.yml`.
+  - `tools/export_gcs_pipeline.py` takes a fresh access token when a read gets
+    a 401: a run reads ~50,000 objects and outlived its token on the new VM.
+  - While it is tested the VM publishes `staging` and node 1 keeps publishing
+    `main`; taking over `main` means stopping node 1's two jobs in the same step.
 - The Drive reader follows the regrouped Deliveries folder (`ComputerBench/`,
   `CompanyBench/`), ignores `[Deprecated]`, `[Meta]` and `EKW / SVC`, lists every
   batch folder's zips with the folder they sit in, and matches zips saved under
@@ -424,14 +443,11 @@ longer decides Company Bench anywhere on the dashboard.
   covers folder groups, dedup copies, Drive folder benches and types.
 
 ### Still open
-- **The bucket scan has not refreshed since 28 Sep 00:46 UTC.** The Refresh GCS
-  workflow pulls `assets/gcs-pipeline.json` over SSH from root@35.253.35.165 port
-  2222, and the firewall rule allowing that port (`allow-ssh-alt-port`) was
-  deleted at 01:57 UTC the same day. Everything built from that scan is frozen:
-  the Overview's Accepted tasks and iteration-2 cards, the trainer and bench
-  cards that read the finalisation folders, and `drive-owners.json`. The VM's own
-  push ("Refresh from the VM") still runs, so the pipeline, cohort, delivered,
-  connector, bench and GLM indexes are current.
+- **The bucket export on `main` is still frozen at 28 Sep 00:46 UTC** (the
+  Overview's Accepted tasks and iteration-2 cards, the trainer and bench cards,
+  `drive-owners.json`). The GitHub job that fetched it over port 2222 died when
+  IT closed that port. yogesh-audit-vm now makes and pushes it - to `staging`
+  until it takes over `main`.
 - The VM steps in `tools/VM-drive-patch.md` (service account and one line in
   `publish.sh`) are not done, so Drive data is the snapshot last committed.
 - The Payouts per-person table still shows a person's whole balance under a

@@ -14,7 +14,7 @@ This file explains where every number on the **Overview**, **Pipeline** and **De
 
 ## 1. Where the data comes from
 
-Everything the page shows is read from a JSON asset in `assets/`. A VM rebuilds the assets and commits them to `main` roughly every 10 minutes (`.github/workflows/refresh-truth.yml`, `refresh-gcs.yml`). The page never calls an API.
+Everything the page shows is read from a JSON asset in `assets/`. A VM, `yogesh-audit-vm`, rebuilds the assets from the bucket and pushes them itself roughly every 10 minutes; its scripts and crontab are kept in `tools/vm/` (see `tools/vm/README.md`). The page never calls an API.
 
 | Asset | Built by | What it holds |
 |---|---|---|
