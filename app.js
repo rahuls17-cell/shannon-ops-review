@@ -656,10 +656,16 @@ const deliveryRows = () => {
   const data = deliveryData();
   return data ? data.rows.filter(row => segmentMatches(deliverySegment(row))) : [];
 };
+// The Current / GLM 5.3 cutoff switch is hidden for now: the Delivery tab shows
+// Current only, and neither ?drive= nor a view saved earlier brings the cutoff
+// back. Its files and code stay, so turning this on restores the switch.
+const DRIVE_SWITCH_SHOWN = false;
 function restoreDriveView() {
   let saved = '';
   try { saved = new URL(location.href).searchParams.get('drive') || localStorage.getItem('driveView') || ''; } catch { saved = ''; }
-  driveView = DRIVE_VIEWS[saved] ? saved : '';
+  driveView = DRIVE_SWITCH_SHOWN && DRIVE_VIEWS[saved] ? saved : '';
+  const card = document.querySelector('.rail-drive');
+  if (card) card.hidden = !DRIVE_SWITCH_SHOWN;
 }
 function syncDriveSwitch() {
   document.querySelectorAll('#driveSwitch [data-drive]').forEach(button => {
@@ -670,7 +676,7 @@ function syncDriveSwitch() {
   document.body.dataset.driveView = driveView || 'current';
 }
 async function setDriveView(value) {
-  driveView = DRIVE_VIEWS[value] ? value : '';
+  driveView = DRIVE_SWITCH_SHOWN && DRIVE_VIEWS[value] ? value : '';
   try { localStorage.setItem('driveView', driveView); } catch { /* storage may be unavailable */ }
   const url = new URL(location.href);
   if (driveView) url.searchParams.set('drive', driveView); else url.searchParams.delete('drive');

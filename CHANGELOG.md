@@ -10,6 +10,12 @@ When you change what a figure means, add a line under **Unreleased**. When
 ## Unreleased - on `staging`, not yet on `main`
 
 ### Drive: the 3 Oct layout, and a switch back to the GLM 5.3 cutoff
+- **The Drive switch is hidden.** The Delivery tab shows Current only: the
+  Drive card above Batch scope is gone, and neither `?drive=glm53` nor a view
+  saved earlier in the browser brings the GLM 5.3 cutoff back. The cutoff files
+  (`assets/drive-deliveries-glm53-cutoff.json`, `assets/drive-owners-glm53-cutoff.json`)
+  and the switch's code stay in the repo; `DRIVE_SWITCH_SHOWN` in app.js turns
+  it back on. The other tabs read as before.
 - **The Drive switch belongs to the Delivery tab.** It sits at the top of the
   tab's left rail, above Batch scope, and changes that tab only. Every other tab
   - the Overview (Client accepted under a segment), the Pipeline's delivery
