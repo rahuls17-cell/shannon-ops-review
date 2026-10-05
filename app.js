@@ -1012,6 +1012,7 @@ function resetTaskBenches() {
   applyDeliveryJoin();
   taskBenchCache = null;
   taskHarnessCache = null;
+  cohortRowByFolder = null;
   taskCountCache = null;
   applyCompanyCategory();
   personSegmentCache = null;
@@ -3253,8 +3254,24 @@ function switchView(viewName, push = true) {
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
+// An accepted folder's segment. A folder of the current accepted prefix is the
+// Pipeline's own row for that folder, judged by its own image like every other
+// accepted folder; a name shared by two submissions - one on a Zeta image, one
+// on a synthetic one - put 7 Zeta folders under Connector when the bench was
+// looked up by name. The older prefixes have no such row, so they still go by
+// name.
+let cohortRowByFolder = null;
+function finalisationSegment(row) {
+  if (truth && truth.cohortRows && cohortIndex && row.cohort === cohortIndex.cohort) {
+    if (!cohortRowByFolder) cohortRowByFolder = new Map(truth.cohortRows.map(r => [String(r.cohortFolder).toLowerCase(), r]));
+    const own = cohortRowByFolder.get(String(row.folder).toLowerCase());
+    if (own) return truthSegment(own);
+  }
+  return taskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder));
+}
+
 function commandSnapshot() {
-  const folders = finalisationRows.filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder)));
+  const folders = finalisationRows.filter(row => inRange(row.date) && segmentMatches(finalisationSegment(row)));
   // One task can be finalised into several cohorts; the accepted count is task names, not folders.
   const tasks = new Set(folders.map(row => row.name));
   return {

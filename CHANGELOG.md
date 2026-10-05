@@ -293,6 +293,17 @@ longer decides Company Bench anywhere on the dashboard.
   `sourceFolder`, `sourceKind`) so the join can read it. (`0af9d45`)
 
 ### Overview
+- **Accepted tasks: a current-prefix folder takes its own bench.** The card
+  counts distinct task names over all three accepted prefixes, deciding each
+  folder's segment by the task's name. Five names are shared by two
+  submissions - one on a Zeta image, one on a synthetic one - and two tasks on a
+  synthetic image mount the Zeta SQL gym, so 7 Zeta folders counted under
+  Computer Bench Connector. A folder of the current prefix now uses the
+  Pipeline's own row for it, judged by its own image; the older prefixes have
+  no such row and still go by name. Connector 188 -> 182 (one of the seven also
+  has an older iteration-1 folder, which still counts it), Zeta 179 -> 186. All
+  three prefixes stay in the count. The card still reads the 28 Sep scan until
+  the refresh is restored.
 - **Pipeline accepted** follows the segment and date range, counting the same
   accepted folders as the Pipeline tab's Accepted card: all 2,305, Computer
   Bench 1,856 (206 + 1,650), Company Bench 449 (448 + 1). It used to show the
