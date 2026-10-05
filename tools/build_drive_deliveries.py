@@ -412,7 +412,7 @@ def normalise(manifest, label, files=None, require_present=False):
     located = locate(tasks, files) if files is not None else {}
     rows, seen = [], set()
     for index, task in enumerate(tasks, 1):
-        parts = str(task['package_path']).split('/')
+        parts = package_parts(task['package_path'])
         location = located.get(index - 1)
         if require_present and location is None:
             continue
@@ -467,8 +467,7 @@ def normalise(manifest, label, files=None, require_present=False):
             'size_mb': round(task['size_bytes'] / 1e6, 2),
             # Some manifests list each service as {name, transport, url}; the page
             # shows names, so an object is reduced to its name.
-            'connectors': [str(s.get('name') or '') if isinstance(s, dict) else str(s)
-                           for s in services] if isinstance(services, list) else [],
+            'connectors': connector_names(task),
             'dates': [],
             'priority': None,
             'qc_result': None,
@@ -489,6 +488,28 @@ def normalise(manifest, label, files=None, require_present=False):
             'sourceKind': source_kind(task),
         })
     return rows, None
+
+
+DIFFICULTIES = ('easier', 'harder')
+
+
+def package_parts(path):
+    """A manifest's package_path as class/difficulty/[domain/]file.
+
+    The current manifests write it that way. Batches 1 to 4.1, re-filed on Drive
+    in the 3 Oct layout, carry their older layouts: a wrapper folder first -
+    finalization_qc_accepted_zipped/, computerbench-batch-5/ - and in Batches 1
+    to 3 the difficulty before the class: harder/non-connector/engineering/x.zip.
+    """
+    parts = [p for p in str(path).split('/') if p]
+    if len(parts) > 2 and parts[0].lower() not in CLASSES and (
+            parts[1].lower() in CLASSES or parts[1].lower() in DIFFICULTIES):
+        parts = parts[1:]
+    if len(parts) > 2 and parts[0].lower() in DIFFICULTIES and parts[1].lower() in CLASSES:
+        parts = [parts[1], parts[0]] + parts[2:]
+    if len(parts) > 3 and parts[2] == parts[2].lower():
+        parts = parts[:2] + [parts[2].capitalize()] + parts[3:]
+    return parts
 
 
 COMPANY_FOLDER = re.compile(r'^company\s*bench', re.I)
@@ -558,11 +579,29 @@ def source_folder(task):
     return (match.group(1), match.group(2)) if match else (None, None)
 
 
+def connector_entries(task):
+    """The connectors a manifest lists, however it writes them: a list of names,
+    a list of {name, image, ...}, one string joined by | or commas (Batch 6.1),
+    or under connector.services (Batches 1 to 3)."""
+    services = task.get('connector_services')
+    if services is None and isinstance(task.get('connector'), dict):
+        services = task['connector'].get('services')
+    if isinstance(services, str):
+        services = [part.strip() for part in re.split(r'[|,;]', services) if part.strip()]
+    return services if isinstance(services, list) else []
+
+
+def connector_names(task):
+    return [str(s.get('name') or '') if isinstance(s, dict) else str(s) for s in connector_entries(task)]
+
+
 def harness_of(task, klass=None):
     """'aster' or 'zeta': the Company Bench harness, from the image the manifest
-    names when it names one, then the bench it declares, then its folder class.
-    Read with the scanner's own image rule, so the two cannot disagree."""
-    for value in (task.get('image_ref'), task.get('bench_type'), task.get('bench_family'),
+    names when it names one - for the task, or for its connectors (Batch 2 lists
+    each connector with its image) - then the bench it declares, then its folder
+    class. Read with the scanner's own image rule, so the two cannot disagree."""
+    images = [s.get('image') for s in connector_entries(task) if isinstance(s, dict) and s.get('image')]
+    for value in (task.get('image_ref'), *images, task.get('bench_type'), task.get('bench_family'),
                   task.get('bench_class'), klass):
         bench = bench_type(str(value)) if value else None
         if bench and bench.startswith('company bench '):

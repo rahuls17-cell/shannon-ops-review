@@ -238,6 +238,22 @@ check(cb3['leftOut'] == [] and any('filed under Batch 3' in n for n in cb3['note
       f'and is not left out, with a note saying where it is filed: {cb3}')
 check(out['auditedCompany'] == [], 'a stray zip is not taken for the audited batch it is filed under')
 
+# Batches 1 to 4.1 on Drive carry older manifest layouts: a wrapper folder
+# first, and in Batches 1 to 3 the difficulty before the class; connectors as
+# connector.services, as {name, image}, or as one string joined by |.
+bdd_c = __import__('build_drive_deliveries')
+check(bdd_c.package_parts('finalization_qc_accepted_zipped/harder/non-connector/engineering/a.zip')
+      == ['non-connector', 'harder', 'Engineering', 'a.zip'],
+      'a Batch 1-3 path reads as class, difficulty, domain')
+check(bdd_c.package_parts('computerbench-batch-5/Connector/Easier/b.zip') == ['Connector', 'Easier', 'b.zip'],
+      'a Batch 4.1 path drops its wrapper folder')
+check(bdd_c.connector_names({'connector': {'services': ['notion-gym']}}) == ['notion-gym'], 'connector.services is read')
+check(bdd_c.connector_names({'connector_services': 'confluence-gym | email-gym'}) == ['confluence-gym', 'email-gym'],
+      'a | joined string is split')
+check(bdd_c.connector_names({'connector_services': [{'name': 'slack-gym', 'image': 'x'}]}) == ['slack-gym'], 'object entries give names')
+check(bdd_c.harness_of({'connector_services': [{'name': 'gws-gym', 'image': 'kuzphi/connectors-harness-aster:v6'}]}) == 'aster',
+      "a connector's own image on Drive names the harness")
+
 # The class a Drive folder names wins over the manifest's folder: Batch 10.1's
 # CompanyBench folder became "Real ComputerBench" in the 3 Oct layout.
 import build_drive_deliveries as bdd_classes      # noqa: E402
@@ -324,7 +340,13 @@ if asset.exists():
     audit = json.loads((asset.parent / 'delivery-audit.json').read_text(encoding='utf-8'))
     audited = {r['batch'] for r in audit['rows']}
     published = {r['batch'] for r in blob['rows']}
-    check(not (published & audited), f'batches listed twice: {sorted(published & audited)}')
+    # The current file is the Drive alone, Batches 1 to 4.1 included, read from
+    # their Drive folders; the GLM 5.3 cutoff file leaves those to the audit.
+    check(audited <= published, f'the current Drive file carries the audited batches from Drive: {sorted(audited - published)}')
+    cutoff = asset.with_name('drive-deliveries-glm53-cutoff.json')
+    if cutoff.exists():
+        before = {r['batch'] for r in json.loads(cutoff.read_text(encoding='utf-8'))['rows']}
+        check(not (before & audited), f'the GLM 5.3 cutoff file lists audited batches twice: {sorted(before & audited)}')
     check(sum(blob['counts']['batches'].values()) == len(blob['rows']), 'batch counts add up')
     check(all(r['trainer'] == 'Unattributed' and r['acceptance'] == 'Pending' for r in blob['rows']),
           'published Drive rows carry no trainer and no decision')

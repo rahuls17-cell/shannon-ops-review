@@ -632,12 +632,20 @@ function renderPayoutLedger() {
 // is kept, unchanged, as the GLM 5.3 cutoff view. The current layout is the
 // default. Each view has its own owners file: an owner is keyed by the row's
 // place in its manifest, and the re-cut manifests list packages in another order.
+// Current is the Drive and nothing else: every delivered task is a package in a
+// Drive folder - Batches 1 to 4.1 too, read from their Drive folders and
+// manifests rather than the delivery audit - and its bench, Aster or Zeta and
+// connector count come from where it is filed and what its manifest says, never
+// from the task's Dockerfile image in the bucket. GLM 5.3 cutoff keeps the
+// earlier reading: the audit for Batches 1 to 4.1 and the image where it names a
+// bench.
 const DRIVE_VIEWS = {
-  '': {label: 'Current', deliveries: 'assets/drive-deliveries.json', owners: 'assets/drive-owners.json'},
+  '': {label: 'Current', deliveries: 'assets/drive-deliveries.json', owners: 'assets/drive-owners.json', driveOnly: true},
   glm53: {label: 'GLM 5.3 cutoff', deliveries: 'assets/drive-deliveries-glm53-cutoff.json',
-          owners: 'assets/drive-owners-glm53-cutoff.json'},
+          owners: 'assets/drive-owners-glm53-cutoff.json', driveOnly: false},
 };
 let driveView = '';
+const driveOnly = () => DRIVE_VIEWS[driveView].driveOnly;
 function restoreDriveView() {
   let saved = '';
   try { saved = new URL(location.href).searchParams.get('drive') || localStorage.getItem('driveView') || ''; } catch { saved = ''; }
@@ -680,7 +688,8 @@ async function loadDeliveryAudit() {
       const ow = drive ? await fetch(`${DRIVE_VIEWS[driveView].owners}?t=${Date.now()}`, {cache: 'no-store'}) : null;
       if (ow && ow.ok) owners = await ow.json();
     } catch (ignored) { owners = null; }
-    audit = window.prepareDeliveryAudit(await response.json(), drive, owners);
+    const audited = await response.json();
+    audit = window.prepareDeliveryAudit(driveOnly() ? {...audited, rows: []} : audited, drive, owners);
     resetTaskBenches();
     populateAuditFilters();
     renderAudit();
@@ -887,10 +896,22 @@ const truthHarness = row => HARNESS_OF_BENCH[row.bench]
 // A delivered package: its task's own image when that was read, else its
 // manifest, else the gyms it mounts.
 const deliveryHarness = row => {
+  if (driveOnly()) return row.harness || driveHarnessOfGyms(row.connectors);
   const {built} = taskHarnesses();
   return built.get(benchKey(row.task)) || built.get(benchKey(row.packageName)) || row.harness
     || harnessOfGyms(row.connectors);
 };
+// Aster or Zeta from the connectors a manifest lists, for a package Drive
+// already files as Company Bench: Zeta's own SQL gym says Zeta, and among
+// Company Bench packages only Aster mounts GitHub, Notion, Linear, Outlook,
+// Gmail and Calendar or Google Workspace. Outside Company Bench those gyms say
+// nothing, which is why this is asked only of a Company Bench package.
+const ASTER_GYM = /^(github|notion|linear|outlook|email-calendar|gws)(-gym)?$/;
+function driveHarnessOfGyms(gyms) {
+  const list = (gyms || []).map(g => String(g).toLowerCase());
+  if (list.some(g => ZETA_GYM.test(g))) return 'zeta';
+  return list.some(g => ASTER_GYM.test(g)) ? 'aster' : null;
+}
 // How many connectors a task declares. Only the gyms count - harbor and the
 // tags some manifests list beside them (read-only, quality-review) are not
 // connectors - and a gym named with and without -gym is one.
@@ -997,6 +1018,17 @@ const imageSide = (bench, gyms) => {
   return side === 'computer' && harnessOfGyms(gyms) ? 'company' : side || null;
 };
 function applyImageBench() {
+  if (audit && driveOnly()) {
+    // The Drive alone: each row keeps the bench and category its Drive folder
+    // and manifest give it.
+    audit.rows.forEach(row => {
+      keepFolderAnswer(row);
+      row.bench = row.benchByFolder;
+      row.category = row.categoryByFolder;
+      row.benchFromImage = false;
+    });
+    return;
+  }
   if (!truth || !audit) return;
   const map = new Map();
   [...truth.rows, ...(truth.cohortRows || [])].forEach(row => {
@@ -1141,7 +1173,7 @@ const shownTasks = rows => rows.length;
 // moves. A row with no bench recorded - the audited batches 1 to 4.1 - is a
 // Computer Bench task, split by its connector flag.
 // A delivered package's own manifest list first, then the pipeline's reading.
-const deliveryCount = row => connectorCountOf(row.connectors) || countOfTask(row.task, row.packageName);
+const deliveryCount = row => connectorCountOf(row.connectors) || (driveOnly() ? null : countOfTask(row.task, row.packageName));
 const deliverySegment = row => taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type),
   row.bench === 'company' ? deliveryHarness(row) : null);
 const auditRows = () => (audit ? audit.rows.filter(row => segmentMatches(deliverySegment(row))) : []);

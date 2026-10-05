@@ -41,16 +41,32 @@ When you change what a figure means, add a line under **Unreleased**. When
   drive.readonly scope now. Folder contents were listed where something moved
   (CompanyBench 1 and 3, the nine shares, 10.1's Real ComputerBench); every
   other batch's folder counts match its manifest.
-- **Current, today:** 3,196 delivered tasks (2,784 from Drive). Company Bench by
-  Drive folder 1,654; with the Dockerfile image deciding where it names a bench,
-  1,676 (Aster 224, Zeta 1,452). The Drive's own folder title says 1,673:
+- **Current is the Drive and nothing else.** Every delivered task is a package
+  in a Drive folder: Batches 1 to 4.1 too, read from their Drive folders and
+  manifests (`ComputerBench/09-08-Batch1` and so on, plus their Company Bench
+  shares), not from the delivery audit. Bench, Aster or Zeta and connector count
+  come from where a package is filed and what its manifest records - including
+  a connector's own image when the manifest lists one (Batch 2) - never from the
+  Dockerfile image in the bucket. The Drive holds no client decision, so every
+  task reads Pending. Trainer names still come from the bucket's owner join
+  (`drive-owners.json`), as before.
+- The reader reads the older manifest layouts Batches 1 to 4.1 carry: a wrapper
+  folder first (`finalization_qc_accepted_zipped/`, `computerbench-batch-5/`), the
+  difficulty before the class, connectors under `connector.services`, as
+  `{name, image}`, or as one string joined by `|` (Batch 6.1).
+- **Current, today:** 3,188 delivered tasks across 13 batches. Computer Bench:
+  non-connector 1,363, Synthetic 99, Real Connector 72. Company Bench 1,654:
+  Aster 181, Zeta 1,339, and 134 the Drive does not say - 115 in Batch 5.1,
+  whose manifest lists only "harbor" for its connector packages, and 19 that
+  mount only gyms both harnesses have. The Drive's own folder title says 1,673:
   CompanyBench 3's folder is titled 961 but holds 947 zips, all matched to its
-  manifest (19 of its 971 packages are on Drive nowhere).
-- **Where Drive and the Dockerfile image disagree** (image wins, as before):
-  Batch 10.1's 37 Aster-image packages are filed as Real ComputerBench and stay
-  Company Bench Aster; 20 of the audited batches' Company Bench share run on a
-  synthetic or real image and stay Computer Bench; 5 Batch 5.1 packages go the
-  other way.
+  manifest (19 of its 971 packages are on Drive nowhere), and the 5 CompanyBench
+  3 synthetic tasks filed under "Batch 3 - CompanyBench" are Computer Bench by
+  their manifest. Computer Bench folder titles count more non-connector zips
+  than their manifests list (Batch 4.1: 415 in the folder, 232 in the manifest);
+  the manifest is the receipt.
+- **GLM 5.3 cutoff** is unchanged: the audit for Batches 1 to 4.1 and the image
+  where it names a bench, 3,231 tasks, Company Bench 1,696.
 - New checks in `tools/test_drive_deliveries.py`: nested groups, shares,
   audited shares, presence, stray share zips, folder classes, a share two
   levels down in the live read.
