@@ -51,7 +51,9 @@ log "=== publish start ==="
 cd "$REPO"
 # Start from what is published, so a human push is never clobbered and a failed
 # run leaves nothing behind.
-git fetch -q origin "$BRANCH"
+# Fetched by full refspec: the clone may track main only, and a bare
+# `git fetch origin <branch>` would then leave origin/<branch> missing.
+git fetch -q origin "+refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
 git reset -q --hard "origin/$BRANCH"
 git clean -qfd
 BEFORE=$(python3 -c "import json;print(json.load(open('assets/pipeline-truth.json'))['generatedAt'])" 2>/dev/null || echo none)
