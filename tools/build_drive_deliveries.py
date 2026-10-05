@@ -557,6 +557,13 @@ def bench_of(label, klass, task, location=None):
     """
     declared = str(task.get('bench_type') or task.get('bench_family') or '').lower()
     if label.startswith('CompanyBench'):
+        # The image the manifest records, read with the scanner's rule, before
+        # the label it wrote from that image: CompanyBench 3 labels 9 tasks
+        # computer bench synth from obi-benchmark@sha256:e76ff56a..., which is the
+        # Zeta V4 image under another name.
+        recorded = bench_type(manifest_image(task)) if manifest_image(task) else None
+        if recorded:
+            return 'company' if recorded.startswith('company') else 'computer'
         return 'computer' if 'computer' in declared else 'company'
     if location is not None:
         return 'company' if COMPANY_FOLDER.match(location.split('/')[0]) else 'computer'
@@ -595,13 +602,26 @@ def connector_names(task):
     return [str(s.get('name') or '') if isinstance(s, dict) else str(s) for s in connector_entries(task)]
 
 
+IMAGE_REFERENCE = re.compile(r'image reference\s+(\S+)', re.I)
+
+
+def manifest_image(task):
+    """The Dockerfile image a manifest records for the task: image_ref, or the
+    image named in bench_basis ("image reference <image> (environment/Dockerfile
+    final FROM)"). None when it records neither."""
+    if task.get('image_ref'):
+        return str(task['image_ref'])
+    match = IMAGE_REFERENCE.search(str(task.get('bench_basis') or ''))
+    return match.group(1) if match else None
+
+
 def harness_of(task, klass=None):
     """'aster' or 'zeta': the Company Bench harness, from the image the manifest
     names when it names one - for the task, or for its connectors (Batch 2 lists
     each connector with its image) - then the bench it declares, then its folder
     class. Read with the scanner's own image rule, so the two cannot disagree."""
     images = [s.get('image') for s in connector_entries(task) if isinstance(s, dict) and s.get('image')]
-    for value in (task.get('image_ref'), *images, task.get('bench_type'), task.get('bench_family'),
+    for value in (manifest_image(task), *images, task.get('bench_type'), task.get('bench_family'),
                   task.get('bench_class'), klass):
         bench = bench_type(str(value)) if value else None
         if bench and bench.startswith('company bench '):

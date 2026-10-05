@@ -59,17 +59,26 @@ When you change what a figure means, add a line under **Unreleased**. When
   difficulty before the class, connectors under `connector.services`, as
   `{name, image}`, or as one string joined by `|` (Batch 6.1).
 - **Current, today:** 3,202 delivered tasks across 13 batches. Company Bench
-  by Drive folder 1,668 = CompanyBench 1 252 + CompanyBench 2 110 + CompanyBench
-  3 961 + the From Pipeline shares 345, against the Drive's own 1,673 (252 +
-  110 + 961 + 350). The 5 apart are CompanyBench 3 packages filed in the "Batch 3
-  - CompanyBench" share whose manifest marks them Computer Bench synthetic, so
-  they count as Computer Bench. 5 of CompanyBench 3's 971 manifest packages are
-  on Drive only in `[Deprecated]/CompanyBench 1678 - removed duplicates` and are
-  left out. Of Company Bench, Aster or Zeta is not recorded on Drive for 134
-  (115 in Batch 5.1, whose manifest lists only "harbor" for its connector
-  packages). Computer Bench folder titles count more non-connector zips than
-  their manifests list (Batch 4.1: 415 in the folder, 232 in the manifest); the
-  manifest is the receipt.
+  1,673 - the Drive's own total (CompanyBench 1 252 + 2 110 + 3 961 + the From
+  Pipeline shares 350): Aster 181, Zeta 1,358, and 134 whose harness the Drive
+  does not record (115 in Batch 5.1, whose manifest lists only "harbor" for its
+  connector packages). Computer Bench 1,529: the Drive's folder titles say 1,782
+  because Batch 4.1 keeps its original "Non-Connector (NC 192)" folder beside
+  "Non-Connector-fixed (NC 196)" - every one of the 192 is also in the fixed
+  folder, and the manifest lists the 196 - and Batch 5.1's "Engineering 112"
+  folder holds 51 zips. 5 of CompanyBench 3's 971 manifest packages are on
+  Drive only in `[Deprecated]/CompanyBench 1678 - removed duplicates`.
+- **Fix: 9 CompanyBench 3 tasks labelled Computer Bench synthetic are Zeta.**
+  The manifest files them under `Synthetic/` with bench_type computer bench
+  synth, from their image `connectors-rl-gym/obi-benchmark@sha256:e76ff56a...` -
+  the same digest as `company-bench-private:zeta-newdbs2-20260918`, Zeta V4 in
+  the image register, which lists V4 by its tag only. All 9 mount the full Zeta
+  gym set, and the Drive files the 5 still delivered under Company Bench. The V4
+  digest joins the known Zeta images (scanner and page), and for a CompanyBench
+  batch the image a manifest records (image_ref, or the image in bench_basis)
+  decides the bench ahead of the label written from it. No pipeline task runs on
+  that image under the obi-benchmark name, so the Pipeline tab and the GLM 5.3
+  cutoff view do not move.
 - **Correction:** an earlier note said CompanyBench 3's folder held 947 zips
   and its title (961) was out of date. The title is right. The Drive
   connector's paged listing of that folder skipped 14 zips; each was found in

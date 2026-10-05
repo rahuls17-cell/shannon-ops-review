@@ -254,6 +254,20 @@ check(bdd_c.connector_names({'connector_services': [{'name': 'slack-gym', 'image
 check(bdd_c.harness_of({'connector_services': [{'name': 'gws-gym', 'image': 'kuzphi/connectors-harness-aster:v6'}]}) == 'aster',
       "a connector's own image on Drive names the harness")
 
+# A CompanyBench batch's task is placed by the image its manifest records, not by
+# the label written from it: CompanyBench 3 labels 9 tasks computer bench synth on
+# obi-benchmark@sha256:e76ff56a..., the Zeta V4 image.
+v4 = ('image reference us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/obi-benchmark@sha256:'
+      'e76ff56a791502397586f102f90902e4a1aa0f9534625605bd31e64ed9f20f24 (environment/Dockerfile final FROM)')
+mislabelled = {'bench_type': 'computer bench synth', 'bench_basis': v4}
+check(bdd_c.bench_of('CompanyBench 3', 'Synthetic', mislabelled) == 'company', 'the recorded Zeta V4 image wins over the label')
+check(bdd_c.harness_of(mislabelled) == 'zeta', 'and names the harness')
+check(bdd_c.bench_of('CompanyBench 3', 'Synthetic', {'bench_type': 'computer bench synth'}) == 'computer',
+      'with no image recorded the label still decides')
+check(bdd_c.bench_of('CompanyBench 3', 'Synthetic', {'bench_type': 'computer bench synth',
+      'bench_basis': 'image reference kuzphi/connectors-harness:real-data-v4'}) == 'computer',
+      'a recorded Computer Bench image keeps a task on the Computer bench')
+
 # The class a Drive folder names wins over the manifest's folder: Batch 10.1's
 # CompanyBench folder became "Real ComputerBench" in the 3 Oct layout.
 import build_drive_deliveries as bdd_classes      # noqa: E402
