@@ -163,11 +163,91 @@
     };
   }
 
+  // A manifest.json for the packages the Delivery tab is showing, in the shape
+  // of the batch manifests on Drive (harbor/delivery-manifest/v4): one entry per
+  // package, each restated from the batch manifest that listed it, in batch
+  // order and then manifest order. Nothing is deduplicated or dropped - a task
+  // delivered in two batches was two deliveries, so it is two entries - and no
+  // trainer is written, because a delivery manifest never names one.
+  function deliveryManifest(rows, options) {
+    const o = options || {};
+    const order = o.batchOrder || ((a, b) => String(a).localeCompare(String(b)));
+    const place = row => Number(String(row.id || '').replace(/^.*-/, '')) || 0;
+    const sorted = [...rows].sort((a, b) =>
+      order(a.batch || UNSET, b.batch || UNSET) || place(a) - place(b) || String(a.id).localeCompare(String(b.id)));
+    const lower = value => (value ? String(value).toLowerCase() : null);
+    const tasks = sorted.map((row, i) => {
+      const path = row.packagePath || null;
+      return {
+        position: i + 1,
+        task_id: row.packageName || row.task,
+        task_name: row.taskName || row.task,
+        original_filename: path ? path.split('/').pop() : null,
+        package_path: path,
+        batch: row.batch || null,
+        drive_folder: row.driveFolder || null,
+        difficulty: lower(row.difficulty),
+        trial_evidence: {model: row.glmModel || null,
+                         successes: Number.isInteger(row.glm) ? row.glm : null, runs: 4},
+        category: row.category || null,
+        connector: row.type === 'Connector',
+        connector_services: (row.connectors || []).map(name => ({name})),
+        bench_type: row.benchType || null,
+        bench: row.bench === 'company' ? 'Company Bench' : 'Computer Bench',
+        harness: (o.harnessOf ? o.harnessOf(row) : row.harness) || null,
+        bench_class: row.class || null,
+        source_uri: row.sourceUri || null,
+        source_version: row.sourceObject || null,
+        sha256: row.sha256 || null,
+        size_bytes: Number.isInteger(row.sizeBytes) ? row.sizeBytes : null,
+      };
+    });
+    const tally = read => tasks.reduce((counts, task) => {
+      const key = read(task) || UNSET;
+      counts[key] = (counts[key] || 0) + 1;
+      return counts;
+    }, {});
+    const batches = [...new Set(tasks.map(t => t.batch || UNSET))];
+    const folders = Object.fromEntries((o.batches || []).map(b => [b.batch, String(b.folder || '').split('/').pop()]));
+    const driveBatch = batches.map(b => folders[b]).filter(Boolean);
+    const stamp = new Date(o.generatedAt || Date.now());
+    // India Standard Time, written as the batch manifests write it: 20260930-140429.
+    const ist = new Date(stamp.getTime() + 5.5 * 3600 * 1000).toISOString();
+    return {
+      schema: 'harbor/delivery-manifest/v4',
+      generated_at_ist: `${ist.slice(0, 10).replace(/-/g, '')}-${ist.slice(11, 19).replace(/:/g, '')}`,
+      source: 'Shannon ops dashboard, Delivery tab: the batch manifests in the Drive "Deliveries" folder' +
+              (o.driveGeneratedAt ? `, read ${o.driveGeneratedAt}` : ''),
+      batch: o.scope || (batches.length === 1 ? batches[0] : 'All batches'),
+      drive_batch: driveBatch.length === 1 ? driveBatch[0] : driveBatch,
+      selection: {
+        rule: 'every package the Delivery tab shows, one entry per package a batch manifest lists, ' +
+              'in batch order and then manifest order',
+        segment: o.segment || 'All tasks',
+        filters: o.filters || {},
+        tasks: tasks.length,
+      },
+      summary: {
+        tasks: tasks.length,
+        batches: batches.length,
+        by_batch: tally(t => t.batch),
+        by_bench: tally(t => t.bench),
+        by_class_and_band: tally(t => `${t.bench_class || UNSET} | ${t.difficulty || UNSET}`),
+        by_successes: tally(t => (t.trial_evidence.successes === null ? null : String(t.trial_evidence.successes))),
+        connector: tasks.filter(t => t.connector).length,
+        total_bytes: tasks.reduce((n, t) => n + (t.size_bytes || 0), 0),
+        without_checksum: tasks.filter(t => !t.sha256).length,
+      },
+      tasks,
+    };
+  }
+
   root.prepareDeliveryAudit = prepareDeliveryAudit;
+  root.deliveryManifest = deliveryManifest;
   root.filterDeliveryAudit = filterDeliveryAudit;
   root.DELIVERY_AUDIT_UNSET = UNSET;
   root.mergedCategory = mergedCategory;
   if (typeof module !== 'undefined') {
-    module.exports = {prepareDeliveryAudit, filterDeliveryAudit, mergedCategory, UNSET};
+    module.exports = {prepareDeliveryAudit, filterDeliveryAudit, mergedCategory, deliveryManifest, UNSET};
   }
 })(typeof window === 'undefined' ? globalThis : window);

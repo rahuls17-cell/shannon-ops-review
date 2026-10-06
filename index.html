@@ -402,7 +402,10 @@
             <div>
               <h1 id="delivery-title">Delivery</h1>
             </div>
-            <button id="aExportTop" class="ghost export-btn" title="Download the tasks currently shown as a CSV">Export CSV</button>
+            <div class="export-stack">
+              <button id="aExportTop" class="ghost export-btn" title="Download the tasks currently shown as a CSV">Export CSV</button>
+              <button id="aManifestTop" class="ghost export-btn" title="Download the tasks currently shown as a delivery manifest.json - all batches, or the batch selected">Export manifest.json</button>
+            </div>
           </header>
           <p class="rangeecho" data-range="delivery"></p>
 

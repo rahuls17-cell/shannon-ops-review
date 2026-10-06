@@ -9,6 +9,22 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Delivery tab
+- **Export manifest.json**, right below Export CSV. It writes the packages the
+  tab is showing - all batches, or the batch selected in Batch scope, with the
+  segment and filters applied as for the CSV - as a delivery manifest in the
+  Drive manifests' own shape (`harbor/delivery-manifest/v4`): one entry per
+  package, restated from the batch manifest that listed it (task id and name,
+  package path, difficulty, GLM-5.3 successes, connectors, bench, Aster or Zeta,
+  source, sha256, size), in batch order and then manifest order, with a summary
+  by batch, bench, class and band. Nothing is deduplicated - a task delivered in
+  two batches is two entries - and no trainer is written. All batches today:
+  3,202 packages, Company Bench 1,673, Computer Bench 1,529. To carry the full
+  checksum and size, each Drive row now also keeps `sha256`, `sizeBytes`,
+  `sourceUri`, `taskName`, `benchType` and `glmModel` from its manifest
+  (`drive-deliveries.json` 2.7 to 3.8 MB; no other value changed). The older
+  manifests record no source URI or bench type, so those entries leave them null.
+
 ## v3 - 2026-10-06, staging promoted to production
 
 ### Drive: the 3 Oct layout, and a switch back to the GLM 5.3 cutoff

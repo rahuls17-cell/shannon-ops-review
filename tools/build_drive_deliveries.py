@@ -486,6 +486,15 @@ def normalise(manifest, label, files=None, require_present=False):
             'sourcePrefix': source_folder(task)[0],
             'sourceFolder': source_folder(task)[1],
             'sourceKind': source_kind(task),
+            # What the Delivery tab's manifest.json export needs to restate the
+            # entry as the batch manifest wrote it: the package's full checksum
+            # and size, where it was cut from, and the names and labels it gave.
+            'sha256': task['sha256'],
+            'sizeBytes': task['size_bytes'],
+            'sourceUri': first(task.get('source_uri')),
+            'taskName': first(task.get('task_name')),
+            'benchType': first(task.get('bench_type')),
+            'glmModel': first(trials.get('model')),
         })
     return rows, None
 

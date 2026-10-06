@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const {prepareDeliveryAudit, filterDeliveryAudit, UNSET} = require('../delivery-audit.js');
+const {prepareDeliveryAudit, filterDeliveryAudit, deliveryManifest, UNSET} = require('../delivery-audit.js');
 
 const base = {
   generatedAt: '2026-09-19T00:00:00+00:00',
@@ -190,4 +190,53 @@ if (fs.existsSync(driveAsset) && fs.existsSync(asset)) {
   console.log(`with Drive: ${live.rows.length} tasks in ${Object.keys(all.byBatch).length} batches ` +
     `(${live.auditedCount} audited + ${live.drive.rows} from manifests)`);
 }
-console.log('delivery audit checks passed: attribution, partition, buckets, filters');
+// --- the Delivery tab's manifest.json export ---------------------------------
+// One entry per package shown, restated from its batch manifest, batch order
+// then manifest order; a task in two batches stays two entries; no trainer.
+{
+  const pkg = (id, batch, over) => Object.assign({
+    id, batch, task: `t-${id}`, taskName: `harbor/t-${id}`, packagePath: `Non-Connector/Harder/Other/t-${id}.zip`,
+    class: 'Non-Connector', category: 'Non-Connector · Other', type: 'Non-connector', bench: 'computer',
+    difficulty: 'Harder', glm: 2, glmModel: 'pplx/glm-5.3', connectors: [], trainer: 'a@t.com',
+    sha256: 'f'.repeat(64), sizeBytes: 1000, sourceObject: 'abc', sourceUri: 'gs://b/t.zip',
+  }, over);
+  const shown = [
+    pkg('B10.1-002', 'Batch 10.1'),
+    pkg('B9.1-010', 'Batch 9.1', {task: 'same', taskName: 'harbor/same'}),
+    pkg('B10.1-001', 'Batch 10.1', {task: 'same', taskName: 'harbor/same', type: 'Connector',
+      bench: 'company', class: 'CompanyBench', connectors: ['zeta-gym'], harness: 'zeta', sha256: null, sizeBytes: null}),
+  ];
+  const order = (a, b) => parseFloat(a.replace(/[^\d.]/g, '')) - parseFloat(b.replace(/[^\d.]/g, ''));
+  const m = deliveryManifest(shown, {batchOrder: order, generatedAt: '2026-10-06T08:00:00Z',
+    batches: [{batch: 'Batch 9.1', folder: 'ComputerBench/09-29 Batch 9.1 (NC 297)'}]});
+  assert.equal(m.schema, 'harbor/delivery-manifest/v4');
+  assert.equal(m.generated_at_ist, '20261006-133000', 'IST, written as the batch manifests write it');
+  assert.deepEqual(m.tasks.map(t => t.batch + ' ' + t.task_id), ['Batch 9.1 t-B9.1-010', 'Batch 10.1 t-B10.1-001', 'Batch 10.1 t-B10.1-002'].map(s => s.replace('t-B9.1-010', 'same').replace('t-B10.1-001', 'same')),
+    'batch order, then manifest order');
+  assert.equal(m.tasks.filter(t => t.task_name === 'harbor/same').length, 2, 'a task delivered twice is two entries');
+  assert.equal(m.batch, 'All batches');
+  assert.equal(m.summary.tasks, 3);
+  assert.deepEqual(m.summary.by_bench, {'Computer Bench': 2, 'Company Bench': 1});
+  assert.equal(m.summary.total_bytes, 2000);
+  assert.equal(m.summary.without_checksum, 1, 'a package with no checksum is counted, not invented');
+  assert.equal(m.tasks[1].harness, 'zeta');
+  assert.deepEqual(m.tasks[1].connector_services, [{name: 'zeta-gym'}]);
+  assert.equal(m.tasks[0].original_filename, 't-B9.1-010.zip');
+  assert.equal(m.tasks[0].trial_evidence.successes, 2);
+  assert.ok(!JSON.stringify(m).includes('a@t.com'), 'no trainer in a delivery manifest');
+  const one = deliveryManifest(shown.filter(r => r.batch === 'Batch 9.1'), {batchOrder: order, scope: 'Batch 9.1',
+    batches: [{batch: 'Batch 9.1', folder: 'ComputerBench/09-29 Batch 9.1 (NC 297)'}]});
+  assert.equal(one.batch, 'Batch 9.1');
+  assert.equal(one.drive_batch, '09-29 Batch 9.1 (NC 297)');
+
+  // The published Drive rows carry everything an entry restates.
+  const drivePath = path.join(__dirname, '..', 'assets', 'drive-deliveries.json');
+  if (fs.existsSync(drivePath)) {
+    const drive = JSON.parse(fs.readFileSync(drivePath, 'utf8'));
+    const full = deliveryManifest(drive.rows, {batches: drive.batches});
+    assert.equal(full.tasks.length, drive.rows.length);
+    assert.equal(full.summary.without_checksum, 0, 'every Drive package keeps its full sha256');
+    assert.ok(full.tasks.every(t => t.package_path && Number.isInteger(t.size_bytes)));
+  }
+}
+console.log('delivery audit checks passed: attribution, partition, buckets, filters, manifest export');

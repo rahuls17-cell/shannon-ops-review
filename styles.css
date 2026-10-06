@@ -3375,3 +3375,7 @@ body #stagingBanner .sb-link:hover { text-decoration: underline; }
 .rail-drive { margin-bottom: 12px; }
 .rail-drive .drive-switch { display: flex; width: 100%; margin-top: 8px; }
 .rail-drive .drive-switch .segbtn { flex: 1; justify-content: center; text-align: center; }
+
+/* Delivery header: Export CSV with Export manifest.json right below it. */
+.export-stack { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
+.export-stack .export-btn { justify-content: center; text-align: center; }

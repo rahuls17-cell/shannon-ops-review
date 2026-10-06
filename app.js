@@ -2798,6 +2798,37 @@ function downloadAuditCsv() {
   URL.revokeObjectURL(url);
 }
 
+// The packages shown - batch scope, segment and filters, as the CSV export -
+// written as a delivery manifest.json (delivery-audit.js deliveryManifest).
+function downloadDeliveryManifest() {
+  const data = deliveryData();
+  if (!data) return;
+  const filters = auditFilters();
+  const rows = window.filterDeliveryAudit(deliveryRows(), filters).rows;
+  if (!rows.length) return;
+  const drive = data.drive || null;
+  const manifest = window.deliveryManifest(rows, {
+    batchOrder,
+    harnessOf: row => (row.bench === 'company' ? deliveryHarness(row) : null),
+    scope: filters.batch || 'All batches',
+    segment: segment ? SEGMENTS[segment] : '',
+    filters: Object.fromEntries(Object.entries(filters).filter(([key, value]) => value && key !== 'batch')),
+    batches: drive ? drive.batches : [],
+    driveGeneratedAt: drive ? drive.generatedAt : null,
+  });
+  const slug = String(manifest.batch).toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-|-$/g, '');
+  const stamp = new Date().toISOString().slice(0, 19).replace('T', '-').replace(/:/g, '');
+  const blob = new Blob([JSON.stringify(manifest, null, 2) + '\n'], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `manifest-${slug}-${rows.length}-${stamp}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
 function downloadTruthCsv() {
   if (!truth) return;
   const result = shownRows();
@@ -4857,6 +4888,7 @@ function wireEvents() {
   byId('tSearch')?.addEventListener('input', () => { truthPage = 0; renderTruth(); });
   byId('tExport')?.addEventListener('click', downloadTruthCsv);
   ['aExport', 'aExportTop'].forEach(id => byId(id)?.addEventListener('click', downloadAuditCsv));
+  byId('aManifestTop')?.addEventListener('click', downloadDeliveryManifest);
   byId('view-pipeline')?.addEventListener('click', event => {
     const pick = event.target.closest('.fchip[data-tfilter]');
     if (pick) {
