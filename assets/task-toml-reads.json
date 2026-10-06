@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T10:11:05+00:00",
+ "generatedAt": "2026-10-06T11:01:29+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16488,6 +16488,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practices-still-billed-at-wind-down/558e17aa3f00cddb4552e8766d992ae4dffc6387d49d671116e47728e04aca7c.zip",
    "bytesRead": 55885,
+   "readOn": "2026-10-06"
+  },
+  "research-project-outcome-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/research-project-outcome-audit/22a55324cc0a14f3d78f982248eefdc74dcbbb600bd20b1423c4d8b95075af79.zip",
+   "bytesRead": 45116,
+   "readOn": "2026-10-06"
+  },
+  "what-rooted-births-lab-work-actually-cost": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-rooted-births-lab-work-actually-cost/9c9da220384dd6ca11d00da26bb97f3214e600f8cb6e6760cd784771c6530239.zip",
+   "bytesRead": 59156,
    "readOn": "2026-10-06"
   }
  }
