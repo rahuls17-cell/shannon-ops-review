@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T20:41:11+00:00",
+ "generatedAt": "2026-10-06T20:51:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17381,6 +17381,19 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/support-sla-status-audit/7848cb789e105d158c482b6f8eb0f1b9c5b6e487e81666c34e847de0d1433088.zip",
    "bytesRead": 42479,
+   "readOn": "2026-10-06"
+  },
+  "ci-red-merge-gate-audit": {
+   "connector": true,
+   "services": [
+    "github-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ci-red-merge-gate-audit/8de02b4c6e7d2d23dd8eeee757df6e2c5f54d9638a15844f77dce4b6ae4a7441.zip",
+   "bytesRead": 43674,
    "readOn": "2026-10-06"
   }
  }
