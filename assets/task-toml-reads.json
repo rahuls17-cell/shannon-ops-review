@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T09:51:07+00:00",
+ "generatedAt": "2026-10-06T10:11:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16476,6 +16476,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/position-fifty-one-in-a-conversation-of-two/19a555110961237355bb059fc3e79f4fbc784aa05368d75ddee2d13f00fd6e3c.zip",
    "bytesRead": 62395,
+   "readOn": "2026-10-06"
+  },
+  "practices-still-billed-at-wind-down": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practices-still-billed-at-wind-down/558e17aa3f00cddb4552e8766d992ae4dffc6387d49d671116e47728e04aca7c.zip",
+   "bytesRead": 55885,
    "readOn": "2026-10-06"
   }
  }
