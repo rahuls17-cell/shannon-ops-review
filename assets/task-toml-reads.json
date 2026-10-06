@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T15:01:11+00:00",
+ "generatedAt": "2026-10-06T15:11:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16837,6 +16837,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-royalty-lines-were-never-billed/d70c2f4c8a6b5839d940974b45a8617244730bf258fa3395add8d6b85cddb679.zip",
    "bytesRead": 61291,
+   "readOn": "2026-10-06"
+  },
+  "the-lab-results-that-never-came-back": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-lab-results-that-never-came-back/d00cd7694562142ce28399ce465ad4958936853675e886896995d28b5089f69d.zip",
+   "bytesRead": 48656,
    "readOn": "2026-10-06"
   }
  }
