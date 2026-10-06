@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T12:01:13+00:00",
+ "generatedAt": "2026-10-06T12:11:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16560,6 +16560,18 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/compliance-portfolio-deadline-audit/3145e90ad586f9ab3727d9da2cba4f501fc45e538c58630b7e6e5630e66e044b.zip",
    "bytesRead": 43771,
+   "readOn": "2026-10-06"
+  },
+  "the-meeting-that-shows-up-as-free": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meeting-that-shows-up-as-free/d80738900fe306892d174516071cfa9d398c26f7c856a41c6b60750cbe114e11.zip",
+   "bytesRead": 52834,
    "readOn": "2026-10-06"
   }
  }
