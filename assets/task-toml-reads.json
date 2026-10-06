@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T08:11:03+00:00",
+ "generatedAt": "2026-10-06T08:21:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16403,6 +16403,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/pilot-practices-live-without-agreement/4e1ead7171b3f3bf153dbe39d4d7248e3b7273ce5e3f51544752624437de012c.zip",
    "bytesRead": 50391,
+   "readOn": "2026-10-06"
+  },
+  "ASTR_101157": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ASTR_101157/ebd7a9f01766ff4e31c07ea62cdf0c9a9fd9c5146c304798f241b9236e12463a.zip",
+   "bytesRead": 42070,
    "readOn": "2026-10-06"
   }
  }
