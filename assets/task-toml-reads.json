@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T13:11:08+00:00",
+ "generatedAt": "2026-10-06T13:31:18+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16645,6 +16645,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-sprints-got-a-kickoff/32e7a61a49961f40223c4f54ba23d21ffdd6dae6d0737c36a1eaff692b4833c4.zip",
    "bytesRead": 46033,
+   "readOn": "2026-10-06"
+  },
+  "practice-data-handover-brief": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practice-data-handover-brief/6e5848b27e4a49daaa87a31257ca602c16416595fb3dc287b3987d06e6d617a7.zip",
+   "bytesRead": 49746,
    "readOn": "2026-10-06"
   }
  }
