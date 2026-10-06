@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T11:51:04+00:00",
+ "generatedAt": "2026-10-06T12:01:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16548,6 +16548,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-nobody-actually-confirmed/76c08a20dadc44476f37cf1600f2dadef20cfefe2d41427ef3e73f5b076ae164.zip",
    "bytesRead": 57867,
+   "readOn": "2026-10-06"
+  },
+  "compliance-portfolio-deadline-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/compliance-portfolio-deadline-audit/3145e90ad586f9ab3727d9da2cba4f501fc45e538c58630b7e6e5630e66e044b.zip",
+   "bytesRead": 43771,
    "readOn": "2026-10-06"
   }
  }
