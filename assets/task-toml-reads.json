@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T15:31:09+00:00",
+ "generatedAt": "2026-10-06T15:51:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16862,6 +16862,30 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/database-network-exposure-audit/2f15afb233a43d271a02f2e8e63b51d46da067d8231bf5e3615c9ffeeb1f526c.zip",
    "bytesRead": 50030,
+   "readOn": "2026-10-06"
+  },
+  "computer-gtm-todo-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/computer-gtm-todo-audit/3e100d668ef1c7ea8fd1b539556b2dd03ce43e47b1ccbf753d4ecd924042771d.zip",
+   "bytesRead": 45745,
+   "readOn": "2026-10-06"
+  },
+  "psychiatry-codes-quoting-the-wrong-fee": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/psychiatry-codes-quoting-the-wrong-fee/f475e30b383d2ed41d0f0a81b49592624694ef63c4f5ba306265b9335448082d.zip",
+   "bytesRead": 49968,
    "readOn": "2026-10-06"
   }
  }
