@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T13:31:18+00:00",
+ "generatedAt": "2026-10-06T13:41:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16657,6 +16657,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practice-data-handover-brief/6e5848b27e4a49daaa87a31257ca602c16416595fb3dc287b3987d06e6d617a7.zip",
    "bytesRead": 49746,
+   "readOn": "2026-10-06"
+  },
+  "the-rooms-where-nothing-was-ever-said": {
+   "connector": true,
+   "services": [
+    "microsoft-teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-rooms-where-nothing-was-ever-said/a9fd89990f3ec5110f8777f2e97774d3671de3be254e00f4912bc7a79c819409.zip",
+   "bytesRead": 58213,
+   "readOn": "2026-10-06"
+  },
+  "visit-weeks-pushed-out-in-bulk": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/visit-weeks-pushed-out-in-bulk/4217e1bf86bfde29e8b870c19e0ce6023a8b3ac4c044d577d76bdb2625c8f2e5.zip",
+   "bytesRead": 54573,
    "readOn": "2026-10-06"
   }
  }
