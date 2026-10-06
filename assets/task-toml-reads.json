@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T18:21:10+00:00",
+ "generatedAt": "2026-10-06T18:31:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17141,6 +17141,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-that-sit-on-top-of-each-other/bf21711928869035550f1a024e9fe6cc8914fa202164aeb4b5495c786d5db822.zip",
    "bytesRead": 54637,
+   "readOn": "2026-10-06"
+  },
+  "the-handle-two-people-answer-to": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-handle-two-people-answer-to/61de811cd418ae2eb9f5a06fea1b9cd3044480d1aca953b71aaef03327df04ef.zip",
+   "bytesRead": 50200,
    "readOn": "2026-10-06"
   }
  }
