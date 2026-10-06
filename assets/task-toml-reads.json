@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T19:31:16+00:00",
+ "generatedAt": "2026-10-06T19:41:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17297,6 +17297,54 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nothing-was-said-anywhere/57530517bf4d4873257badd1721bc2e1e3b3659db21ae14244d5270cb89241b9.zip",
    "bytesRead": 47746,
+   "readOn": "2026-10-06"
+  },
+  "notification-emails-against-the-spec": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/notification-emails-against-the-spec/374b7e68a2c0ef1802bdd7a66cd5bcffa498ae15a85e864542c99f88bdbf3bb2.zip",
+   "bytesRead": 51322,
+   "readOn": "2026-10-06"
+  },
+  "service-key-rotation-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/service-key-rotation-audit/f459bc8d78fc3fa19ab2a8b1f9bdc2510cf46e513fb71f2a14c834d7868468f7.zip",
+   "bytesRead": 46083,
+   "readOn": "2026-10-06"
+  },
+  "spring-lab-results-pending-at-report": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spring-lab-results-pending-at-report/1e40b5ddfa430da134ebcf6a8a1b65ae145583b7ae0f72f76a59acf56ce55f8e.zip",
+   "bytesRead": 53199,
+   "readOn": "2026-10-06"
+  },
+  "sunset-project-open-work-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sunset-project-open-work-audit/537a83fdc154b3f64013d85e800583918b6aa3e99dded906b069f72621330c7b.zip",
+   "bytesRead": 42817,
    "readOn": "2026-10-06"
   }
  }
