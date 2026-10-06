@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T12:11:05+00:00",
+ "generatedAt": "2026-10-06T12:41:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16572,6 +16572,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meeting-that-shows-up-as-free/d80738900fe306892d174516071cfa9d398c26f7c856a41c6b60750cbe114e11.zip",
    "bytesRead": 52834,
+   "readOn": "2026-10-06"
+  },
+  "cs-churn-goal-closure-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/cs-churn-goal-closure-audit/f7269d758b52de61bac4a34cd5134588206375816dec663b40a79dd5581b129d.zip",
+   "bytesRead": 43960,
    "readOn": "2026-10-06"
   }
  }
