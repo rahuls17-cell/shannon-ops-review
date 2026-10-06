@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T19:01:12+00:00",
+ "generatedAt": "2026-10-06T19:11:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17273,6 +17273,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-digest-i-get-twice/e9c7435ccc49a7af93bc71d7d41d857e8989a2392692b17e87d37e6b6682fa19.zip",
    "bytesRead": 49198,
+   "readOn": "2026-10-06"
+  },
+  "the-workspace-that-only-looks-busy": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-workspace-that-only-looks-busy/43e0816fec1b68380ac9cfd6813782720e30c0868edfba34415d69b20a4815d7.zip",
+   "bytesRead": 48457,
    "readOn": "2026-10-06"
   }
  }
