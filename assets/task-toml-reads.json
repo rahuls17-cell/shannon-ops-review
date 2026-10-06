@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T20:51:13+00:00",
+ "generatedAt": "2026-10-06T21:21:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17394,6 +17394,30 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ci-red-merge-gate-audit/8de02b4c6e7d2d23dd8eeee757df6e2c5f54d9638a15844f77dce4b6ae4a7441.zip",
    "bytesRead": 43674,
+   "readOn": "2026-10-06"
+  },
+  "backlog-plan-staleness-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/backlog-plan-staleness-audit/a1d2ec92f050494a6e37bf46480263cb4cde8687edd4511ed8c263cc62ff3e51.zip",
+   "bytesRead": 44782,
+   "readOn": "2026-10-06"
+  },
+  "rooted-collection-routes": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/rooted-collection-routes/aaf81a51103bb1cf0244886590c59a693ad01d6f1472ae8098d1a88244c9901d.zip",
+   "bytesRead": 49290,
    "readOn": "2026-10-06"
   }
  }
