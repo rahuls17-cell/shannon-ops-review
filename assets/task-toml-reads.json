@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T16:51:09+00:00",
+ "generatedAt": "2026-10-06T17:21:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17042,6 +17042,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-monday-morning-reminder/8df0a411e2ffebefbb81f5e8154a9a679755ddaa5bfb4e6015fc15f38161f02d.zip",
    "bytesRead": 58198,
+   "readOn": "2026-10-06"
+  },
+  "stale-input-publish-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/stale-input-publish-audit/43fdc9a0b5f242b4ea3f4e61e5c989f8e2d28abadfb31ee76dcf7510e983c174.zip",
+   "bytesRead": 43404,
+   "readOn": "2026-10-06"
+  },
+  "the-standup-that-runs-less-than-it-claims": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-standup-that-runs-less-than-it-claims/d6c71432bbc261d77f9596cff94d828c9cc92118069fbe12152fbc8306aa831f.zip",
+   "bytesRead": 53043,
    "readOn": "2026-10-06"
   }
  }
