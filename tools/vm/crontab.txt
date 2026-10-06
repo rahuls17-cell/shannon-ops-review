@@ -1,0 +1,9 @@
+# Shannon ops dashboard - yogesh-audit-vm (root crontab). The hub since 2026-10-05.
+# PUBLISH_BRANCH=staging while it is tested beside task-mining-node-1, which still
+# publishes main. To take over main: set it to main here, and remove node 1's
+# publish.sh and scan-glm.sh lines in the same step, so the two never both push.
+PUBLISH_BRANCH=staging
+*/10 * * * * /root/shannon-ops-publish/publish.sh >/dev/null 2>&1
+*/30 * * * * /root/shannon-ops-publish/export-gcs.sh >/dev/null 2>&1
+*/15 * * * * /root/shannon-ops-publish/refresh-drive.sh >/dev/null 2>&1
+17 3 * * * /root/shannon-ops-publish/scan-glm.sh >> /root/shannon-ops-publish/glm-scan.log 2>&1

@@ -33,6 +33,23 @@ is read only when all of these hold:
     rows, trainer and decisions included;
   * it has a manifest.json at its top level.
 
+The 3 Oct layout gathered Company Bench into one CompanyBench/ folder, and
+under it "CompanyBench - From Pipeline/" holds the Company Bench share of each
+Shannon batch, one folder per batch: "Batch 9.1 - CompanyBench 89". Such a
+share has no manifest of its own - the batch's manifest lists those packages -
+so its zips count for that batch, filed under CompanyBench/. For the audited
+Batches 1 to 4.1, which keep their audited rows, the shares are published as
+auditedCompany so the page can put those tasks on the Company bench. A zip in a
+share that its batch's manifest does not list (CompanyBench 3 packages filed
+under "Batch 3 - CompanyBench") counts for whichever CompanyBench batch's
+manifest lists it. Group folders nest two levels at most.
+
+A package is published only when its zip is on Drive, whenever the folder's
+zips were listed: the cleanup took duplicates out of folders and left their
+manifests as they were. The class a Drive folder names - "Real ComputerBench",
+"Synthetic ComputerBench", "Non-Connector (NC 297 ...)" - wins over the
+manifest's own folder.
+
 Anything else is listed in the output with the reason, so a folder that was
 left out can be seen to have been left out. When two folders claim one batch
 and one of them is a dedup copy ("dedup" in its name), the dedup copy is the
@@ -69,7 +86,9 @@ READ ONLY: it issues GET on the Drive API and nothing else. The token comes
 from, in order:
 
   1. DRIVE_CREDENTIALS, a service account key file, via google-auth;
-  2. the GCE metadata server, if the VM's service account has a Drive scope.
+  2. the GCE metadata server, if the VM's service account has a Drive scope;
+  3. the gcloud application-default sign-in on this machine, when it was made
+     with the drive.readonly scope.
 
 The service account has to be given read access to the Deliveries folder.
 
@@ -99,6 +118,15 @@ SCOPE = 'https://www.googleapis.com/auth/drive.readonly'
 METADATA = ('http://metadata.google.internal/computeMetadata/v1/'
             'instance/service-accounts/default/token')
 FOLDER_MIME = 'application/vnd.google-apps.folder'
+# How deep group folders nest: ComputerBench/<batch>, and
+# CompanyBench/CompanyBench - From Pipeline/<Batch N - CompanyBench>.
+GROUP_DEPTH = 2
+# The Company Bench share of a Shannon batch, filed apart from it since the
+# 3 Oct layout: "Batch 9.1 - CompanyBench 89". It has no manifest of its own -
+# the batch's manifest lists these packages - so its zips belong to Batch 9.1,
+# filed under CompanyBench/. A CompanyBench batch proper is named the other way
+# round, "09-27 Batch1 CompanyBench 252", and carries its own manifest.
+SHARE = re.compile(r'^\s*batch\s*(\d+(?:\.\d+)?)\s*[-\u2013:]\s*company\s*bench', re.I)
 
 # Words that mark a folder as something other than a delivered batch. Matched
 # against the name with spaces, dashes and underscores removed.
@@ -139,10 +167,27 @@ def token_from_metadata():
         return json.load(response)['access_token']
 
 
+def token_from_gcloud():
+    """An access token from the gcloud application-default sign-in on this
+    machine. It carries Drive only when that sign-in asked for the Drive scope:
+
+        gcloud auth application-default login --scopes=https://www.googleapis.com/auth/drive.readonly,https://www.googleapis.com/auth/cloud-platform
+    """
+    import shutil                                          # noqa: PLC0415
+    import subprocess                                      # noqa: PLC0415
+    gcloud = shutil.which('gcloud') or shutil.which('gcloud.cmd')
+    if not gcloud:
+        raise FileNotFoundError('gcloud is not on PATH')
+    out = subprocess.run([gcloud, 'auth', 'application-default', 'print-access-token'],
+                         capture_output=True, text=True, timeout=60, check=True)
+    return out.stdout.strip()
+
+
 def access_token():
     tried = []
     for name, get in (('a service account key', token_from_key),
-                      ('the GCE metadata server', token_from_metadata)):
+                      ('the GCE metadata server', token_from_metadata),
+                      ('the gcloud application-default sign-in', token_from_gcloud)):
         try:
             value = get()
             if value:
@@ -217,15 +262,24 @@ def snapshot_from_drive(folder_id, token, cache=None):
                 raw = drive_get(f'{API}/{child["id"]}?alt=media&supportsAllDrives=true', token)
             manifests[child['id']] = raw
 
+    # Groups hold batches, and since the 3 Oct layout a group can hold a group:
+    # CompanyBench/CompanyBench - From Pipeline/Batch 9.1 - CompanyBench 89. Two
+    # levels, never deeper, so a batch's own subfolders are never taken for one.
+    def open_group(group, depth):
+        group['children'] = children(group['id'], token)
+        for child in group['children']:
+            role = folder_role(child)
+            if role == 'batch':
+                open_batch(child)
+            elif role == 'group' and depth < GROUP_DEPTH:
+                open_group(child, depth + 1)
+
     for item in items:
         role = folder_role(item)
         if role == 'batch':
             open_batch(item)
         elif role == 'group':
-            item['children'] = children(item['id'], token)
-            for child in item['children']:
-                if folder_role(child) == 'batch':
-                    open_batch(child)
+            open_group(item, 1)
     if reused:
         print(f'{reused} unchanged manifests reused from {cache}', file=sys.stderr)
     return {'folder': meta, 'items': items}, manifests
@@ -358,7 +412,7 @@ def normalise(manifest, label, files=None, require_present=False):
     located = locate(tasks, files) if files is not None else {}
     rows, seen = [], set()
     for index, task in enumerate(tasks, 1):
-        parts = str(task['package_path']).split('/')
+        parts = package_parts(task['package_path'])
         location = located.get(index - 1)
         if require_present and location is None:
             continue
@@ -370,6 +424,15 @@ def normalise(manifest, label, files=None, require_present=False):
         declared = re.sub(r'^(harbor|obi)/', '', str(task.get('task_name') or '').strip())
         name = declared or package
         klass = CLASSES.get(parts[0].lower(), parts[0])
+        # Where the zip sits on Drive names its class when the folder says one -
+        # Batch 10.1's CompanyBench folder became "Real ComputerBench" in the
+        # 3 Oct layout while its manifest still says CompanyBench/.
+        # A Company Bench folder does not make a package Company Bench on its own:
+        # the 9 synthetic tasks CompanyBench 3 ships are Computer Bench by its
+        # manifest wherever they are filed, so then the manifest's class stays.
+        filed = folder_class(location)
+        if filed and not (filed == 'CompanyBench' and bench_of(label, klass, task, location) != 'company'):
+            klass = filed
         domain = parts[2] if klass == 'Non-Connector' and len(parts) > 3 else first(task.get('domain'))
         band = first(task.get('difficulty'), parts[1] if len(parts) > 2 else None)
         trials = task.get('trial_evidence') if isinstance(task.get('trial_evidence'), dict) else {}
@@ -404,8 +467,7 @@ def normalise(manifest, label, files=None, require_present=False):
             'size_mb': round(task['size_bytes'] / 1e6, 2),
             # Some manifests list each service as {name, transport, url}; the page
             # shows names, so an object is reduced to its name.
-            'connectors': [str(s.get('name') or '') if isinstance(s, dict) else str(s)
-                           for s in services] if isinstance(services, list) else [],
+            'connectors': connector_names(task),
             'dates': [],
             'priority': None,
             'qc_result': None,
@@ -428,7 +490,45 @@ def normalise(manifest, label, files=None, require_present=False):
     return rows, None
 
 
+DIFFICULTIES = ('easier', 'harder')
+
+
+def package_parts(path):
+    """A manifest's package_path as class/difficulty/[domain/]file.
+
+    The current manifests write it that way. Batches 1 to 4.1, re-filed on Drive
+    in the 3 Oct layout, carry their older layouts: a wrapper folder first -
+    finalization_qc_accepted_zipped/, computerbench-batch-5/ - and in Batches 1
+    to 3 the difficulty before the class: harder/non-connector/engineering/x.zip.
+    """
+    parts = [p for p in str(path).split('/') if p]
+    if len(parts) > 2 and parts[0].lower() not in CLASSES and (
+            parts[1].lower() in CLASSES or parts[1].lower() in DIFFICULTIES):
+        parts = parts[1:]
+    if len(parts) > 2 and parts[0].lower() in DIFFICULTIES and parts[1].lower() in CLASSES:
+        parts = [parts[1], parts[0]] + parts[2:]
+    if len(parts) > 3 and parts[2] == parts[2].lower():
+        parts = parts[:2] + [parts[2].capitalize()] + parts[3:]
+    return parts
+
+
 COMPANY_FOLDER = re.compile(r'^company\s*bench', re.I)
+# A Drive folder name read as a class: counts in brackets and "ComputerBench"
+# dropped - "Real ComputerBench (NC 0 RC 37 S 0)" is Real Connector,
+# "Synthetic ComputerBench (...)" Synthetic, "Non-Connector (NC 297 ...)"
+# Non-Connector. A difficulty or domain folder names no class.
+FOLDER_CLASSES = {'real': 'Real Connector', 'real connector': 'Real Connector', 'synthetic': 'Synthetic',
+                  'non-connector': 'Non-Connector', 'non connector': 'Non-Connector', 'connector': 'Connector',
+                  'companybench': 'CompanyBench', 'company bench': 'CompanyBench'}
+
+
+def folder_class(location):
+    if not location:
+        return None
+    head = re.sub(r'\(.*?\)', '', location.split('/')[0])
+    head = re.sub(r'computer\s*bench', '', head, flags=re.I)
+    head = re.sub(r'\s+\d+\s*$', '', head).strip().lower()
+    return FOLDER_CLASSES.get(head)
 NON_CONNECTOR_FOLDER = re.compile(r'^non[\s_-]*connector', re.I)
 
 
@@ -457,6 +557,13 @@ def bench_of(label, klass, task, location=None):
     """
     declared = str(task.get('bench_type') or task.get('bench_family') or '').lower()
     if label.startswith('CompanyBench'):
+        # The image the manifest records, read with the scanner's rule, before
+        # the label it wrote from that image: CompanyBench 3 labels 9 tasks
+        # computer bench synth from obi-benchmark@sha256:e76ff56a..., which is the
+        # Zeta V4 image under another name.
+        recorded = bench_type(manifest_image(task)) if manifest_image(task) else None
+        if recorded:
+            return 'company' if recorded.startswith('company') else 'computer'
         return 'computer' if 'computer' in declared else 'company'
     if location is not None:
         return 'company' if COMPANY_FOLDER.match(location.split('/')[0]) else 'computer'
@@ -479,11 +586,42 @@ def source_folder(task):
     return (match.group(1), match.group(2)) if match else (None, None)
 
 
+def connector_entries(task):
+    """The connectors a manifest lists, however it writes them: a list of names,
+    a list of {name, image, ...}, one string joined by | or commas (Batch 6.1),
+    or under connector.services (Batches 1 to 3)."""
+    services = task.get('connector_services')
+    if services is None and isinstance(task.get('connector'), dict):
+        services = task['connector'].get('services')
+    if isinstance(services, str):
+        services = [part.strip() for part in re.split(r'[|,;]', services) if part.strip()]
+    return services if isinstance(services, list) else []
+
+
+def connector_names(task):
+    return [str(s.get('name') or '') if isinstance(s, dict) else str(s) for s in connector_entries(task)]
+
+
+IMAGE_REFERENCE = re.compile(r'image reference\s+(\S+)', re.I)
+
+
+def manifest_image(task):
+    """The Dockerfile image a manifest records for the task: image_ref, or the
+    image named in bench_basis ("image reference <image> (environment/Dockerfile
+    final FROM)"). None when it records neither."""
+    if task.get('image_ref'):
+        return str(task['image_ref'])
+    match = IMAGE_REFERENCE.search(str(task.get('bench_basis') or ''))
+    return match.group(1) if match else None
+
+
 def harness_of(task, klass=None):
     """'aster' or 'zeta': the Company Bench harness, from the image the manifest
-    names when it names one, then the bench it declares, then its folder class.
-    Read with the scanner's own image rule, so the two cannot disagree."""
-    for value in (task.get('image_ref'), task.get('bench_type'), task.get('bench_family'),
+    names when it names one - for the task, or for its connectors (Batch 2 lists
+    each connector with its image) - then the bench it declares, then its folder
+    class. Read with the scanner's own image rule, so the two cannot disagree."""
+    images = [s.get('image') for s in connector_entries(task) if isinstance(s, dict) and s.get('image')]
+    for value in (manifest_image(task), *images, task.get('bench_type'), task.get('bench_family'),
                   task.get('bench_class'), klass):
         bench = bench_type(str(value)) if value else None
         if bench and bench.startswith('company bench '):
@@ -512,6 +650,7 @@ def declared_total(manifest):
 def build(listing, manifests, audited_batches):
     batches, skipped, ignored, rows = [], [], [], []
     candidates = collections.defaultdict(list)
+    shares = collections.defaultdict(list)     # Batch N -> its Company Bench share folders
 
     def consider(item, path):
         if item['mimeType'] != FOLDER_MIME:
@@ -522,27 +661,89 @@ def build(listing, manifests, audited_batches):
         if not label:
             ignored.append({'name': path, 'reason': reason})
             return
+        manifest = next((c for c in item.get('children', []) if c['name'] == 'manifest.json'), None)
+        share = SHARE.match(item['name'])
+        if manifest is None and share:
+            shares[f'Batch {share.group(1)}'].append(dict(item, name=path))
+            return
         if label in audited_batches:
             ignored.append({'name': path, 'reason': f'{label} keeps its audited rows'})
             return
-        manifest = next((c for c in item.get('children', []) if c['name'] == 'manifest.json'), None)
         if manifest is None:
             skipped.append({'name': path, 'batch': label,
                             'reason': 'no manifest.json at the top of the folder'})
             return
         candidates[label].append((dict(item, name=path), manifest))
 
-    for item in sorted(listing['items'], key=lambda i: i['name']):
-        if folder_role(item) == 'group':
-            # A folder of batches, such as ComputerBench/: looked into once,
-            # never deeper, so a batch's own subfolders are not mistaken for one.
+    def visit(item, path, depth):
+        if folder_role(item) == 'group' and depth <= GROUP_DEPTH:
+            # A folder of batches, such as ComputerBench/, or of Company Bench
+            # shares, such as CompanyBench - From Pipeline/. A batch's own
+            # subfolders are never looked into, so none is taken for a batch.
             inside = sorted(item.get('children', []), key=lambda i: i['name'])
-            if not any(folder_role(child) == 'batch' for child in inside):
-                ignored.append({'name': item['name'], 'reason': 'no batch folder inside'})
+            if not any(folder_role(child) in ('batch', 'group') for child in inside):
+                ignored.append({'name': path, 'reason': 'no batch folder inside'})
             for child in inside:
-                consider(child, f"{item['name']}/{child['name']}")
+                visit(child, f"{path}/{child['name']}", depth + 1)
         else:
-            consider(item, item['name'])
+            consider(item, path)
+
+    for item in sorted(listing['items'], key=lambda i: i['name']):
+        visit(item, item['name'], 1)
+
+    def share_files(label):
+        """The zips of a batch's Company Bench share, filed under CompanyBench/."""
+        return [{'name': f['name'], 'path': f"CompanyBench/{f.get('path', '')}".rstrip('/')}
+                for folder in shares.get(label, []) for f in (folder.get('files') or [])]
+
+    def tasks_of(label):
+        """The task list of a batch's own manifest on Drive, or []."""
+        folder = next((c for c in walk(listing['items'])
+                       if c.get('mimeType') == FOLDER_MIME and not SHARE.match(c['name'])
+                       and batch_label(c['name'])[0] == label
+                       and any(x['name'] == 'manifest.json' for x in c.get('children', []))), None)
+        manifest = next(x for x in folder['children'] if x['name'] == 'manifest.json') if folder else None
+        raw = manifests.get(manifest['id']) if manifest else None
+        try:
+            return (json.loads(raw).get('tasks') if raw else None) or []
+        except ValueError:
+            return []
+
+    # A zip in a share folder that its batch's manifest does not list is filed
+    # there by hand, not delivered in that batch: "Batch 3 - CompanyBench" holds
+    # five CompanyBench 3 packages, the folder named after Shannon's Batch 3
+    # rather than CompanyBench's own "Batch3". Such a zip is offered to the
+    # CompanyBench batches, and counts wherever a manifest lists it.
+    strays, share_tasks = [], {}
+    for label in sorted(shares):
+        tasks = tasks_of(label)
+        share_tasks[label] = tasks
+        files = share_files(label)
+        found = locate(tasks, files)
+        matched = {pathlib.PurePosixPath(n).name.lower() for i in found for n in drive_keys(tasks[i])}
+        strays.extend(dict(f, path=f"{f['path']} (filed under {label})") for f in files
+                      if f['name'].lower() not in matched)
+
+    # The audited batches keep their audited rows. What Drive adds is which of
+    # their packages are filed as Company Bench, read against the batch's own
+    # manifest on Drive by the zips in its share folder.
+    audited_company = []
+    for label in sorted(shares):
+        if label not in audited_batches:
+            continue
+        tasks = share_tasks[label]
+        found = locate(tasks, share_files(label))
+        for index in sorted(found):
+            task = tasks[index]
+            stem = pathlib.PurePosixPath(str(task.get('package_path') or '')).stem
+            audited_company.append({
+                'batch': label,
+                'task': re.sub(r'^(harbor|obi)/', '', str(task.get('task_name') or '').strip()) or stem,
+                'packageName': stem, 'driveFolder': found[index]})
+        if not tasks:
+            skipped.append({'name': ', '.join(f['name'] for f in shares[label]), 'batch': label,
+                            'reason': f'no {label} manifest on Drive to read its Company Bench share against'})
+    claimed = set()
 
     for label, found in sorted(candidates.items()):
         notes = []
@@ -582,24 +783,45 @@ def build(listing, manifests, audited_batches):
         files = item.get('files')
         if files is None and isinstance(item.get('packages'), list):     # older snapshots
             files = [{'name': n, 'path': ''} for n in item['packages']]
+        # Whether every zip of the batch folder itself was listed. A live read
+        # always lists them all; a snapshot assembled by hand may list only the
+        # folders that moved, and says so - then the zips give locations but no
+        # package is left out for being absent.
+        complete = files is not None and item.get('filesComplete', True)
+        if shares.get(label):
+            files = (files or []) + share_files(label)
+            notes.append('Company Bench share read from ' + ', '.join(f['name'] for f in shares[label]))
+        if label.startswith('CompanyBench') and strays and files is not None:
+            files = files + strays
         dedup_copy = is_dedup(item['name'])
         if dedup_copy and files is None:
             skipped.append({'name': item['name'], 'batch': label,
                             'reason': 'a dedup copy whose packages were not listed; not published '
                                       'until they are, so a removed package is never shown'})
             continue
-        batch_rows, reason = normalise(blob, label, files, require_present=dedup_copy)
+        # The packages actually on Drive decide whenever the folder was listed:
+        # the 3 Oct cleanup took duplicates out of folders and left their
+        # manifests as they were, as a dedup copy always has.
+        present_only = complete
+        batch_rows, reason = normalise(blob, label, files, require_present=present_only)
         if batch_rows is None:
             skipped.append({'name': item['name'], 'batch': label, 'reason': reason})
             continue
         left_out = []
-        if dedup_copy:
-            found = locate(blob['tasks'], files)
+        placed = locate(blob['tasks'], files)
+        moved = sorted({placed[i] for i in placed if '(filed under ' in placed[i]})
+        if moved:
+            claimed.update(f['name'].lower() for f in strays
+                           if any(f['name'].lower() in drive_keys(t) for i, t in enumerate(blob['tasks']) if i in placed))
+            notes.append(f"{sum(1 for i in placed if '(filed under ' in placed[i])} of its packages are filed in "
+                         + ', '.join(moved))
+        if present_only:
+            found = placed
             left_out = sorted(pathlib.PurePosixPath(str(t['package_path'])).name
                               for i, t in enumerate(blob['tasks']) if i not in found)
             if left_out:
                 notes.append(f'{len(left_out)} of the manifest\'s {len(blob["tasks"])} packages are not '
-                             'in the dedup copy and are left out')
+                             'in the folder on Drive and are left out')
         models = collections.Counter(
             (t.get('trial_evidence') or {}).get('model') for t in blob['tasks']
             if isinstance(t.get('trial_evidence'), dict) and t['trial_evidence'].get('model'))
@@ -616,6 +838,12 @@ def build(listing, manifests, audited_batches):
         })
         rows.extend(batch_rows)
 
+    unclaimed = [f for f in strays if f['name'].lower() not in claimed]
+    if unclaimed:
+        skipped.append({'name': ', '.join(sorted({f['path'] for f in unclaimed})), 'batch': None,
+                        'reason': f'{len(unclaimed)} Company Bench zips in a share folder match no manifest: '
+                                  + ', '.join(sorted(f['name'] for f in unclaimed))})
+
     return {
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
         'folder': listing['folder'],
@@ -624,6 +852,8 @@ def build(listing, manifests, audited_batches):
         'counts': {'tasks': len(rows), 'batches': {b['batch']: b['tasks'] for b in batches},
                    'skipped': len(skipped), 'ignored': len(ignored)},
         'batches': batches, 'skipped': skipped, 'ignored': ignored, 'rows': rows,
+        # Packages of the audited Batches 1 to 4.1 that Drive files as Company Bench.
+        'auditedCompany': audited_company,
     }
 
 

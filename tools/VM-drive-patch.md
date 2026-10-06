@@ -1,3 +1,7 @@
+> **Superseded on yogesh-audit-vm.** The Drive refresh now runs as its own job,
+> `tools/vm/refresh-drive.sh` (every 15 minutes; see `tools/vm/README.md`),
+> rather than as lines in `publish.sh`. The credential steps below still apply.
+
 # Reading the Drive batch manifests on the VM
 
 The Delivery tab lists Batch 5.1 onwards, and the CompanyBench batches, from the

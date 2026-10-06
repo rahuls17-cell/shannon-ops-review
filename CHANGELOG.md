@@ -9,6 +9,94 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+## v3 - 2026-10-06, staging promoted to production
+
+### Drive: the 3 Oct layout, and a switch back to the GLM 5.3 cutoff
+- **The Drive switch is hidden.** The Delivery tab shows Current only: the
+  Drive card above Batch scope is gone, and neither `?drive=glm53` nor a view
+  saved earlier in the browser brings the GLM 5.3 cutoff back. The cutoff files
+  (`assets/drive-deliveries-glm53-cutoff.json`, `assets/drive-owners-glm53-cutoff.json`)
+  and the switch's code stay in the repo; `DRIVE_SWITCH_SHOWN` in app.js turns
+  it back on. The other tabs read as before.
+- **The Drive switch belongs to the Delivery tab.** It sits at the top of the
+  tab's left rail, above Batch scope, and changes that tab only. Every other tab
+  - the Overview (Client accepted under a segment), the Pipeline's delivery
+  join, the bench a delivered task gives a pipeline row - keeps reading the GLM
+  5.3 cutoff rows, as it did before the Drive was reorganised, whichever view
+  the Delivery tab shows. It is no longer in the top bar or the filter chips.
+- **A Drive switch: Current (default) or GLM 5.3 cutoff.** The
+  Deliveries folder was reorganised on 3 Oct. GLM 5.3 cutoff is the dashboard
+  exactly as it stood before, read on 1 Oct and kept unchanged
+  (`assets/drive-deliveries-glm53-cutoff.json`, `drive-owners-glm53-cutoff.json`):
+  3,231 delivered tasks, Company Bench 1,696. Current reads the folder as it is
+  now. The choice is kept in the link (`?drive=glm53`).
+- **The reader follows the new layout** (`tools/build_drive_deliveries.py`):
+  - group folders nest two levels: `CompanyBench 1673/CompanyBench - From
+    Pipeline 350/Batch 9.1 - CompanyBench 89`;
+  - a "Batch N - CompanyBench" folder with no manifest is Batch N's Company Bench
+    share: its zips count for Batch N, filed under CompanyBench/, matched
+    against Batch N's manifest. For the audited Batches 1 to 4.1 the share is
+    published as `auditedCompany` and the page puts those audited tasks on the
+    Company bench (34: Batch 1 12, Batch 2 12, Batch 3 1, Batch 4.1 9);
+  - a share zip its batch's manifest does not list counts for the CompanyBench
+    batch whose manifest does: five CompanyBench 3 packages filed under "Batch 3
+    - CompanyBench";
+  - a package is published only when its zip is on Drive (the cleanup took
+    duplicates out of folders and left the manifests alone); the rest are
+    listed as left out;
+  - the class a Drive folder names wins over the manifest's folder: Batch
+    10.1's CompanyBench folder is now "Real ComputerBench (NC 0 RC 37 S 0)";
+  - Batches 5.1, 6.1 and 7.1 were re-cut on 1 Oct with new manifests (5.1 now
+    the dedup content, 375; 6.1 271; 7.1 169).
+- **Read without a Drive token**, through the Drive connector, on 5 Oct; the
+  live reader can also use a gcloud application-default sign-in with the
+  drive.readonly scope now. Folder contents were listed where something moved
+  (CompanyBench 1 and 3, the nine shares, 10.1's Real ComputerBench); every
+  other batch's folder counts match its manifest.
+- **Current is the Drive and nothing else.** Every delivered task is a package
+  in a Drive folder: Batches 1 to 4.1 too, read from their Drive folders and
+  manifests (`ComputerBench/09-08-Batch1` and so on, plus their Company Bench
+  shares), not from the delivery audit. Bench, Aster or Zeta and connector count
+  come from where a package is filed and what its manifest records - including
+  a connector's own image when the manifest lists one (Batch 2) - never from the
+  Dockerfile image in the bucket. The Drive holds no client decision, so every
+  task reads Pending. Trainer names still come from the bucket's owner join
+  (`drive-owners.json`), as before.
+- The reader reads the older manifest layouts Batches 1 to 4.1 carry: a wrapper
+  folder first (`finalization_qc_accepted_zipped/`, `computerbench-batch-5/`), the
+  difficulty before the class, connectors under `connector.services`, as
+  `{name, image}`, or as one string joined by `|` (Batch 6.1).
+- **Current, today:** 3,202 delivered tasks across 13 batches. Company Bench
+  1,673 - the Drive's own total (CompanyBench 1 252 + 2 110 + 3 961 + the From
+  Pipeline shares 350): Aster 181, Zeta 1,358, and 134 whose harness the Drive
+  does not record (115 in Batch 5.1, whose manifest lists only "harbor" for its
+  connector packages). Computer Bench 1,529: the Drive's folder titles say 1,782
+  because Batch 4.1 keeps its original "Non-Connector (NC 192)" folder beside
+  "Non-Connector-fixed (NC 196)" - every one of the 192 is also in the fixed
+  folder, and the manifest lists the 196 - and Batch 5.1's "Engineering 112"
+  folder holds 51 zips. 5 of CompanyBench 3's 971 manifest packages are on
+  Drive only in `[Deprecated]/CompanyBench 1678 - removed duplicates`.
+- **Fix: 9 CompanyBench 3 tasks labelled Computer Bench synthetic are Zeta.**
+  The manifest files them under `Synthetic/` with bench_type computer bench
+  synth, from their image `connectors-rl-gym/obi-benchmark@sha256:e76ff56a...` -
+  the same digest as `company-bench-private:zeta-newdbs2-20260918`, Zeta V4 in
+  the image register, which lists V4 by its tag only. All 9 mount the full Zeta
+  gym set, and the Drive files the 5 still delivered under Company Bench. The V4
+  digest joins the known Zeta images (scanner and page), and for a CompanyBench
+  batch the image a manifest records (image_ref, or the image in bench_basis)
+  decides the bench ahead of the label written from it. No pipeline task runs on
+  that image under the obi-benchmark name, so the Pipeline tab and the GLM 5.3
+  cutoff view do not move.
+- **Correction:** an earlier note said CompanyBench 3's folder held 947 zips
+  and its title (961) was out of date. The title is right. The Drive
+  connector's paged listing of that folder skipped 14 zips; each was found in
+  the folder by a search on its name, and the folder holds 961.
+- **GLM 5.3 cutoff** is unchanged: the audit for Batches 1 to 4.1 and the image
+  where it names a bench, 3,231 tasks, Company Bench 1,696.
+- New checks in `tools/test_drive_deliveries.py`: nested groups, shares,
+  audited shares, presence, stray share zips, folder classes, a share two
+  levels down in the live read.
+
 ### Bench and segment: decided by the task, never by the trainer
 People work on both benches and the roster moves, so a trainer's roster team no
 longer decides Company Bench anywhere on the dashboard.
@@ -103,6 +191,25 @@ longer decides Company Bench anywhere on the dashboard.
   tasks whose package was never scanned read "connectors not read" (Zeta
   1,941, Aster 711 pipeline tasks today). Only this dropdown and its filter
   change; the named-domain card and Carried over's Domain still read the name.
+- **Pipeline, In the accepted cohort: "distinct accepted tasks" counts the
+  folders beside it.** It had been tied to the Overview's Accepted tasks, which
+  reads the bucket scan frozen on 28 Sep and adds the two older accepted
+  prefixes, so it could not be reconciled with the Accepted card next to it
+  (Connector: 235 folders, tile 188). It now folds those same folders by the
+  [task] name each package declares, so the card reads folders = tasks + extra
+  copies: Connector 235 = 227 + 8, Non-connector 1,687 = 1,625 + 62, Aster 428 =
+  426 + 2, Zeta 240 = 227 + 13, All 2,590 = 2,505 + 85. The Duplicates filter's
+  15 under Connector is every folder of the 7 tasks that have several (6 x 2 +
+  1 x 3), of which 8 are extra copies; Legacy accepted is a separate state and
+  is not part of the Accepted card.
+- **Pipeline, Delivery & makeup: the Domain chart follows the segment.** It
+  counted the name-prefix domain only, which connector tasks do not carry, so
+  under Connector, Company Bench, Aster or Zeta it read "No task in this
+  selection carries a domain prefix" and showed nothing. It now uses the same
+  names as the Domain dropdown: Synthetic, Real Connector and Connector under
+  Computer Bench Connector; Aster or Zeta with single or multi-connector (or
+  connectors not read) under Company Bench; the five domains under
+  Non-connector. Renamed from Named domain to Domain.
 - **Pipeline domains are Engineering, Finance, Health, Legal and Other.** gen-
   and bus- tasks were labelled General and Business; both are Other, as on the
   Delivery tab. tools/build_tags.py names them Other from the next pipeline
@@ -274,6 +381,18 @@ longer decides Company Bench anywhere on the dashboard.
   `sourceFolder`, `sourceKind`) so the join can read it. (`0af9d45`)
 
 ### Overview
+- **Accepted tasks: a current-prefix folder takes its own bench.** The card
+  counts distinct task names over all three accepted prefixes, deciding each
+  folder's segment by the task's name. Five names are shared by two
+  submissions - one on a Zeta image, one on a synthetic one - and two tasks on a
+  synthetic image mount the Zeta SQL gym, so 7 Zeta folders counted under
+  Computer Bench Connector. A folder of the current prefix now uses the
+  Pipeline's own row for it, judged by its own image; the older prefixes have
+  no such row and still go by name. Connector 188 -> 182 (one of the seven also
+  has an older iteration-1 folder, which still counts it under Connector), Zeta
+  179 -> 186. All
+  three prefixes stay in the count. The card still reads the 28 Sep scan until
+  the refresh is restored.
 - **Pipeline accepted** follows the segment and date range, counting the same
   accepted folders as the Pipeline tab's Accepted card: all 2,305, Computer
   Bench 1,856 (206 + 1,650), Company Bench 449 (448 + 1). It used to show the
@@ -303,6 +422,33 @@ longer decides Company Bench anywhere on the dashboard.
   to match.
 
 ### Data and automation
+- **yogesh-audit-vm is the dashboard's hub**, replacing task-mining-node-1. Its
+  scripts and crontab are in `tools/vm/` (see `tools/vm/README.md`); the copies
+  that run are in `/root/shannon-ops-publish/` on the VM. Everything the page
+  reads from the bucket is now made there and pushed by the VM itself:
+  - `publish.sh` (every 10 min) also runs the bucket scan the pipeline's tags
+    read (`pipeline-stats.json`, about two seconds with its cache - node 1 got
+    it from a separate dashboard's cron), publishes the bucket export when a
+    newer one is ready, and builds the Drive trainer names; it pushes to
+    `PUBLISH_BRANCH`.
+  - `export-gcs.sh` (every 30 min) makes `gcs-pipeline.json`, the export the
+    Overview reads. It takes minutes, so it is off the 10-minute tick.
+  - **GitHub no longer fetches anything.** `refresh-gcs.yml` and
+    `refresh-truth.yml` pulled from node 1 over SSH on port 2222, which IT
+    closed on 28 Sep; they are removed (in `292c6195`). A push to `main` still
+    deploys through `deploy.yml`.
+  - `tools/export_gcs_pipeline.py` takes a fresh access token when a read gets
+    a 401: a run reads ~50,000 objects and outlived its token on the new VM.
+  - While it is tested the VM publishes `staging` and node 1 keeps publishing
+    `main`; taking over `main` means stopping node 1's two jobs in the same step.
+  - `refresh-drive.sh` (every 15 min) refreshes the Delivery tab's Current view
+    from Drive: `build_drive_deliveries.py --audit none` with a snapshot cache,
+    then `build_drive_owners.py`, then both Drive test suites; it commits
+    `drive-deliveries.json` and `drive-owners.json` only, only when they
+    changed. The GLM 5.3 cutoff files are not touched. **Waiting on a Drive
+    credential** - a key at `/root/shannon-refresh/drive-reader.json` with
+    Viewer on the folder, or the VM's account given the drive.readonly scope;
+    until then each run fails safely and records it in `refresh-drive.status`.
 - The Drive reader follows the regrouped Deliveries folder (`ComputerBench/`,
   `CompanyBench/`), ignores `[Deprecated]`, `[Meta]` and `EKW / SVC`, lists every
   batch folder's zips with the folder they sit in, and matches zips saved under
@@ -322,6 +468,11 @@ longer decides Company Bench anywhere on the dashboard.
   covers folder groups, dedup copies, Drive folder benches and types.
 
 ### Still open
+- **The bucket export on `main` is still frozen at 28 Sep 00:46 UTC** (the
+  Overview's Accepted tasks and iteration-2 cards, the trainer and bench cards,
+  `drive-owners.json`). The GitHub job that fetched it over port 2222 died when
+  IT closed that port. yogesh-audit-vm now makes and pushes it - to `staging`
+  until it takes over `main`.
 - The VM steps in `tools/VM-drive-patch.md` (service account and one line in
   `publish.sh`) are not done, so Drive data is the snapshot last committed.
 - The Payouts per-person table still shows a person's whole balance under a

@@ -82,6 +82,10 @@ ZETA_DIGESTS = (
     '975f115a995790786a6dbf124204433ccf77460f0277227fbdd21745388e56ca',  # V2, GCP
     'cb2fee77bd5b1bbe02471664111fae13711c2a0851147f7da987105bf015f293',  # V2, Docker Hub
     '1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8',  # V3 pinned data
+    # V4, listed in the register by its tag (company-bench-private:zeta-newdbs2-20260918);
+    # the same image is also pulled as connectors-rl-gym/obi-benchmark@sha256:e76ff56a...,
+    # which the CompanyBench 3 manifest labels computer bench synth for 9 tasks.
+    'e76ff56a791502397586f102f90902e4a1aa0f9534625605bd31e64ed9f20f24',  # V4
 )
 
 

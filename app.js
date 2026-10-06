@@ -203,6 +203,7 @@ const infoCopy = {
       `${fmt(rows.length - SEGMENT_LEAVES.reduce((total, key) => total + count(key), 0))} carry no bench, type or harness yet and appear under All, or under their bench alone. ` +
       'A person counts in every segment they have tasks in, so someone who works on both benches shows under both. The 240 audit counts and the daily plan are not split, and say so.';
   },
+  driveView: 'Which Drive reading this tab shows. Current is the Drive and nothing else, as the Deliveries folder is now: since 3 Oct Company Bench sits in one CompanyBench folder - CompanyBench 1 to 3 and, under From Pipeline, the Company Bench share of each Shannon batch - duplicates are taken out, and Batches 5.1 to 7.1 were re-cut. Every task is a package in a Drive folder, Batches 1 to 4.1 included; bench, Aster or Zeta and connector count come from the Drive folder and the manifest; the Drive records no client decision, so every task is Pending. GLM 5.3 cutoff is this tab as it stood before, kept unchanged: the delivery audit for Batches 1 to 4.1 with its decisions, the Drive read on 1 Oct for the rest. The switch changes this tab only; the other tabs keep reading the GLM 5.3 cutoff rows.',
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
   v2Accepted: 'Task folders in tasks/finalisation_client_qc_accepted_iteration_2/ in the bucket - the second client QC finalisation round. It is one of three accepted cohorts, so it is smaller than the accepted total on the Finalisation tab, and a task finalised into more than one cohort is counted here once per folder. Read it as the size of the v2 round, not as the total accepted work.',
@@ -625,25 +626,91 @@ function renderPayoutLedger() {
   }).join('') || '<tr><td colspan="8" class="empty">No matches.</td></tr>';
 }
 
+// Which Drive layout the Delivery rows come from. The Deliveries folder was
+// reorganised on 3 Oct - Company Bench gathered into one folder, duplicates
+// taken out, Batches 5.1 to 7.1 re-cut - and the dashboard as it stood before
+// is kept, unchanged, as the GLM 5.3 cutoff view. The current layout is the
+// default. Each view has its own owners file: an owner is keyed by the row's
+// place in its manifest, and the re-cut manifests list packages in another order.
+// Current is the Drive and nothing else: every delivered task is a package in a
+// Drive folder - Batches 1 to 4.1 too, read from their Drive folders and
+// manifests rather than the delivery audit - and its bench, Aster or Zeta and
+// connector count come from where it is filed and what its manifest says, never
+// from the task's Dockerfile image in the bucket. GLM 5.3 cutoff keeps the
+// earlier reading: the audit for Batches 1 to 4.1 and the image where it names a
+// bench.
+const DRIVE_VIEWS = {
+  '': {label: 'Current', deliveries: 'assets/drive-deliveries.json', owners: 'assets/drive-owners.json', driveOnly: true},
+  glm53: {label: 'GLM 5.3 cutoff', deliveries: 'assets/drive-deliveries-glm53-cutoff.json',
+          owners: 'assets/drive-owners-glm53-cutoff.json', driveOnly: false},
+};
+let driveView = '';
+// The switch is the Delivery tab's own: every other tab - the Overview, the
+// Pipeline's delivery join, the bench a delivered task gives a pipeline row -
+// keeps reading the GLM 5.3 cutoff rows in `audit`, as it did before the Drive
+// was reorganised. The Delivery tab reads deliveryData(): the Drive-only rows in
+// `driveAudit` under Current, the same `audit` under GLM 5.3 cutoff.
+let driveAudit = null;
+const deliveryData = () => (DRIVE_VIEWS[driveView].driveOnly ? driveAudit : audit);
+const deliveryRows = () => {
+  const data = deliveryData();
+  return data ? data.rows.filter(row => segmentMatches(deliverySegment(row))) : [];
+};
+// The Current / GLM 5.3 cutoff switch is hidden for now: the Delivery tab shows
+// Current only, and neither ?drive= nor a view saved earlier brings the cutoff
+// back. Its files and code stay, so turning this on restores the switch.
+const DRIVE_SWITCH_SHOWN = false;
+function restoreDriveView() {
+  let saved = '';
+  try { saved = new URL(location.href).searchParams.get('drive') || localStorage.getItem('driveView') || ''; } catch { saved = ''; }
+  driveView = DRIVE_SWITCH_SHOWN && DRIVE_VIEWS[saved] ? saved : '';
+  const card = document.querySelector('.rail-drive');
+  if (card) card.hidden = !DRIVE_SWITCH_SHOWN;
+}
+function syncDriveSwitch() {
+  document.querySelectorAll('#driveSwitch [data-drive]').forEach(button => {
+    const on = (button.dataset.drive || '') === driveView;
+    button.classList.toggle('is-on', on);
+    button.setAttribute('aria-pressed', String(on));
+  });
+  document.body.dataset.driveView = driveView || 'current';
+}
+async function setDriveView(value) {
+  driveView = DRIVE_SWITCH_SHOWN && DRIVE_VIEWS[value] ? value : '';
+  try { localStorage.setItem('driveView', driveView); } catch { /* storage may be unavailable */ }
+  const url = new URL(location.href);
+  if (driveView) url.searchParams.set('drive', driveView); else url.searchParams.delete('drive');
+  history.replaceState(history.state, '', url);
+  syncDriveSwitch();
+  auditPage = 0;
+  populateAuditFilters();
+  renderAudit();
+}
+
 async function loadDeliveryAudit() {
   try {
     const response = await fetch(`assets/delivery-audit.json?t=${Date.now()}`, {cache: 'no-store'});
     if (!response.ok) throw new Error(`asset returned ${response.status}`);
     // Batches after 4.1 come from their Drive manifests. Optional: without the
     // asset the tab still shows the audited batches, and says the rest are missing.
-    let drive = null;
-    try {
-      const dr = await fetch(`assets/drive-deliveries.json?t=${Date.now()}`, {cache: 'no-store'});
-      if (dr.ok) drive = await dr.json();
-    } catch (ignored) { drive = null; }
-    // Their trainers, joined from the bucket. Optional: without it those rows
-    // stay Unattributed, which is what the manifest itself says.
-    let owners = null;
-    try {
-      const ow = drive ? await fetch(`assets/drive-owners.json?t=${Date.now()}`, {cache: 'no-store'}) : null;
-      if (ow && ow.ok) owners = await ow.json();
-    } catch (ignored) { owners = null; }
-    audit = window.prepareDeliveryAudit(await response.json(), drive, owners);
+    // Each Drive reading with its trainers, joined from the bucket. Optional:
+    // without the trainers those rows stay Unattributed, which is what the
+    // manifest itself says.
+    const readJson = async path => {
+      try {
+        const got = await fetch(`${path}?t=${Date.now()}`, {cache: 'no-store'});
+        return got.ok ? await got.json() : null;
+      } catch (ignored) { return null; }
+    };
+    const cutoff = DRIVE_VIEWS.glm53, current = DRIVE_VIEWS[''];
+    const [cutoffDrive, cutoffOwners, currentDrive, currentOwners] = await Promise.all(
+      [cutoff.deliveries, cutoff.owners, current.deliveries, current.owners].map(readJson));
+    const audited = await response.json();
+    audit = window.prepareDeliveryAudit(audited, cutoffDrive, cutoffOwners);
+    // The Drive alone: no audited row, so Batches 1 to 4.1 come from their Drive folders.
+    driveAudit = currentDrive
+      ? window.prepareDeliveryAudit({...audited, rows: []}, currentDrive, currentOwners) : null;
+    if (driveAudit) driveAudit.rows.forEach(row => { row.driveOnly = true; });
     resetTaskBenches();
     populateAuditFilters();
     renderAudit();
@@ -670,6 +737,7 @@ function auditFilters() {
 }
 
 function populateAuditFilters() {
+  const audit = deliveryData();
   if (!audit) return;
   const all = window.filterDeliveryAudit(audit.rows, {});
   fillSelect('aBatch', all.byBatch, 'Any batch');
@@ -850,10 +918,22 @@ const truthHarness = row => HARNESS_OF_BENCH[row.bench]
 // A delivered package: its task's own image when that was read, else its
 // manifest, else the gyms it mounts.
 const deliveryHarness = row => {
+  if (row.driveOnly) return row.harness || driveHarnessOfGyms(row.connectors);
   const {built} = taskHarnesses();
   return built.get(benchKey(row.task)) || built.get(benchKey(row.packageName)) || row.harness
     || harnessOfGyms(row.connectors);
 };
+// Aster or Zeta from the connectors a manifest lists, for a package Drive
+// already files as Company Bench: Zeta's own SQL gym says Zeta, and among
+// Company Bench packages only Aster mounts GitHub, Notion, Linear, Outlook,
+// Gmail and Calendar or Google Workspace. Outside Company Bench those gyms say
+// nothing, which is why this is asked only of a Company Bench package.
+const ASTER_GYM = /^(github|notion|linear|outlook|email-calendar|gws)(-gym)?$/;
+function driveHarnessOfGyms(gyms) {
+  const list = (gyms || []).map(g => String(g).toLowerCase());
+  if (list.some(g => ZETA_GYM.test(g))) return 'zeta';
+  return list.some(g => ASTER_GYM.test(g)) ? 'aster' : null;
+}
 // How many connectors a task declares. Only the gyms count - harbor and the
 // tags some manifests list beside them (read-only, quality-review) are not
 // connectors - and a gym named with and without -gym is one.
@@ -960,6 +1040,9 @@ const imageSide = (bench, gyms) => {
   return side === 'computer' && harnessOfGyms(gyms) ? 'company' : side || null;
 };
 function applyImageBench() {
+  // The Drive alone: each row keeps the bench and category its Drive folder and
+  // manifest give it.
+  (driveAudit ? driveAudit.rows : []).forEach(keepFolderAnswer);
   if (!truth || !audit) return;
   const map = new Map();
   [...truth.rows, ...(truth.cohortRows || [])].forEach(row => {
@@ -998,8 +1081,7 @@ function keepFolderAnswer(row) {
 const COMPANY_HARNESS = {aster: 'Aster', zeta: 'Zeta'};
 const COMPANY_COUNT = {single: 'Single connector', multi: 'Multi-connector'};
 function applyCompanyCategory() {
-  if (!audit) return;
-  audit.rows.forEach(row => {
+  [...(audit ? audit.rows : []), ...(driveAudit ? driveAudit.rows : [])].forEach(row => {
     keepFolderAnswer(row);
     if (row.bench !== 'company') return;
     row.category = `${COMPANY_HARNESS[deliveryHarness(row)] || 'Company Bench'} \u00b7 ${COMPANY_COUNT[deliveryCount(row)] || 'connectors not read'}`;
@@ -1012,6 +1094,7 @@ function resetTaskBenches() {
   applyDeliveryJoin();
   taskBenchCache = null;
   taskHarnessCache = null;
+  cohortRowByFolder = null;
   taskCountCache = null;
   applyCompanyCategory();
   personSegmentCache = null;
@@ -1103,7 +1186,7 @@ const shownTasks = rows => rows.length;
 // moves. A row with no bench recorded - the audited batches 1 to 4.1 - is a
 // Computer Bench task, split by its connector flag.
 // A delivered package's own manifest list first, then the pipeline's reading.
-const deliveryCount = row => connectorCountOf(row.connectors) || countOfTask(row.task, row.packageName);
+const deliveryCount = row => connectorCountOf(row.connectors) || (row.driveOnly ? null : countOfTask(row.task, row.packageName));
 const deliverySegment = row => taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type),
   row.bench === 'company' ? deliveryHarness(row) : null);
 const auditRows = () => (audit ? audit.rows.filter(row => segmentMatches(deliverySegment(row))) : []);
@@ -1382,9 +1465,10 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
 }
 
 function renderAudit() {
+  const audit = deliveryData();
   if (!audit) return;
   const filters = auditFilters();
-  const result = window.filterDeliveryAudit(auditRows(), filters);
+  const result = window.filterDeliveryAudit(deliveryRows(), filters);
   const rows = result.rows;
   const shown = rows.length;
   const total = audit.rows.length;
@@ -1439,8 +1523,8 @@ function renderAudit() {
 function renderBatchTabs(filters) {
   const host = byId('auditBatchTabs');
   if (!host) return;
-  const pool = window.filterDeliveryAudit(auditRows(), {...filters, batch: ''}).rows;
-  const batches = [...new Set(auditRows().map(row => row.batch || window.DELIVERY_AUDIT_UNSET))].sort(batchOrder);
+  const pool = window.filterDeliveryAudit(deliveryRows(), {...filters, batch: ''}).rows;
+  const batches = [...new Set(deliveryRows().map(row => row.batch || window.DELIVERY_AUDIT_UNSET))].sort(batchOrder);
   const current = byId('aBatch').value;
   const row = (value, label, list, index) => {
     const v = verdicts(list);
@@ -2078,19 +2162,27 @@ function renderTruthFigures(result, filtered) {
     </div>`;
   animateCounts(byId('truthMakeup'));
 
-  // The domain split of whatever is shown, so filtering to non-connector
-  // answers "which of these are general, which are law".
-  const domains = Object.entries(result.domains || {})
+  // The domain split of whatever is shown, by the same names as the Domain
+  // dropdown: a non-connector task's name-prefix domain, a connector task's
+  // kind - Synthetic, Real Connector or Connector on the Computer bench, Aster
+  // or Zeta with single or multi-connector on the Company bench. By domain
+  // alone every connector segment read Not recorded and the chart was empty.
+  const kinds = {};
+  result.rows.forEach(row => {
+    const kind = row.domainKind || row.domain || 'Not recorded';
+    kinds[kind] = (kinds[kind] || 0) + 1;
+  });
+  const domains = Object.entries(kinds)
     .filter(([name]) => name && name !== 'Not recorded' && name !== '(none)')
     .sort((a, b) => b[1] - a[1]);
   const domainTotal = domains.reduce((n, [, v]) => n + v, 0);
-  const unnamed = (result.domains || {})['Not recorded'] || 0;
+  const unnamed = kinds['Not recorded'] || 0;
   byId('truthDomains').innerHTML = `
-    <div class="kpi-top"><h3>Named domain</h3><span class="kpi-tag">${shownBase ? Math.round((domainTotal / shownBase) * 100) : 0}% of shown</span></div>
-    <div class="kpi-head"><strong data-count="${domainTotal}" data-key="dom:total">${fmt(domainTotal)}</strong><p class="kpi-note">tasks whose name starts with a domain prefix \u00b7 ${fmt(unnamed)} do not</p></div>
+    <div class="kpi-top"><h3>Domain</h3><span class="kpi-tag">${shownBase ? Math.round((domainTotal / shownBase) * 100) : 0}% of shown</span></div>
+    <div class="kpi-head"><strong data-count="${domainTotal}" data-key="dom:total">${fmt(domainTotal)}</strong><p class="kpi-note">tasks with a domain prefix or a connector kind \u00b7 ${fmt(unnamed)} not recorded</p></div>
     ${domains.length
-      ? columnsMarkup(domains.map(([name, n], i) => [name, n, `ramp-${Math.min(i, 5)}`, `${name}: ${fmt(n)} of the ${fmt(domainTotal)} named tasks`])).replace('<div class="cols"', '<div class="cols is-wide is-grid"')
-      : '<p class="empty">No task in this selection carries a domain prefix.</p>'}`;
+      ? columnsMarkup(domains.map(([name, n], i) => [name, n, `ramp-${Math.min(i, 5)}`, `${name}: ${fmt(n)} of the ${fmt(domainTotal)} tasks with a domain or kind`])).replace('<div class="cols"', '<div class="cols is-wide is-grid"')
+      : '<p class="empty">No task in this selection has a domain or a connector kind recorded.</p>'}`;
 
   byId('truthFlags').innerHTML = [
     ['carried over', shownWhere(r => r.carriedOver), 'Carried over',
@@ -2165,7 +2257,6 @@ function renderTruthFigures(result, filtered) {
   const cohortInSegment = truthCohortRows();
   const co = cohortInSegment ? cohortCounts(cohortInSegment) : null;
   const tn = cohortInSegment ? window.acceptedTaskNames(cohortInSegment) : null;
-  const accTasks = acceptedTasksAllDates();
   const coSplit = cohortInSegment && truth.deliveryJoin ? cohortSplit(cohortInSegment)
     : {delivered: 0, notDelivered: co ? co.packages : 0};
   if (co && byId('truthCohort')) {
@@ -2178,7 +2269,10 @@ function renderTruthFigures(result, filtered) {
       ['accepted', co.latestAccepted, 'good', `${fmt(co.latestAccepted)} whose most recent run came back accepted. ${fmt(co.latestRejected)} were rejected on a later run, ${fmt(co.latestOther)} ended some other way, ${fmt(co.disagreeAcrossRuns)} have runs that disagree.`],
       ['delivered', coSplit.delivered, 'violet', `${fmt(coSplit.delivered)} reached by a delivery in any batch, by the folder its manifest names or the task its package declares. ${fmt(coSplit.notDelivered)} have not gone out yet.`],
     ];
-    const distinct = accTasks !== null ? `<span class="kpi-tag" data-tip="Distinct task names across every accepted folder in the bucket - this cohort and the two earlier accepted prefixes - the same count as the Overview's Accepted tasks${segment ? ', in this segment' : ''}, over all dates.${tn ? ` Within this cohort alone, ${fmt(tn.folders)} folders hold ${fmt(tn.tasks)} tasks by the [task] name their package declares.` : ''}">${fmt(accTasks)} distinct accepted tasks</span>` : '';
+    // Distinct tasks among the folders counted beside it: the folders folded by
+    // the [task] name each package declares, so the card reads folders = tasks
+    // + extra copies of a task re-cut under another folder name.
+    const distinct = tn ? `<span class="kpi-tag" data-tip="${fmt(tn.folders)} accepted folders${segment ? ' in this segment' : ''} hold ${fmt(tn.tasks)} distinct tasks, by the [task] name each package declares; ${fmt(tn.extraFolders)} are extra copies of a task already counted - a re-cut after review lands under a new folder name. A folder whose package could not be read counts as its own task.">${fmt(tn.tasks)} distinct accepted tasks</span>` : '';
     const shades = ['color-mix(in srgb, var(--blue) 30%, var(--panel-3))', 'color-mix(in srgb, var(--blue) 55%, var(--panel))', 'color-mix(in srgb, var(--blue) 78%, var(--panel))', 'var(--blue)'];
     byId('truthCohort').innerHTML = `
       <div class="kpi-top"><h3>In the accepted cohort<button class="why" data-info="cohort" aria-label="How the cohort is counted">?</button></h3>${distinct}</div>
@@ -2687,8 +2781,8 @@ const AUDIT_CSV_COLUMNS = [
   ['flags', r => r.flags], ['feedback_url', r => r.feedback_url],
 ];
 function downloadAuditCsv() {
-  if (!audit) return;
-  const rows = sortedAuditRows(window.filterDeliveryAudit(auditRows(), auditFilters()).rows);
+  if (!deliveryData()) return;
+  const rows = sortedAuditRows(window.filterDeliveryAudit(deliveryRows(), auditFilters()).rows);
   if (!rows.length) return;
   const lines = [AUDIT_CSV_COLUMNS.map(([name]) => name).join(',')]
     .concat(rows.map(row => AUDIT_CSV_COLUMNS.map(([, read]) => window.csvCell(read(row))).join(',')));
@@ -2995,8 +3089,6 @@ async function loadGcsPipeline(manual = false) {
     connectorByName = null;
     loadFinalisation(); renderDonut(); renderTrainerRows();
     renderSources(); renderHero(); renderTopPendingCards(); renderBenchCards();
-    // The Pipeline's distinct accepted tasks reads these folders too.
-    if (truth) renderTruth();
     if (manual) setTextIfPresent('pipelineSourceStatus', `Latest published GCS export loaded: ${gcsPipeline.generatedAt}`);
   } catch (error) {
     setTextIfPresent('pipelineSourceStatus', `GCS export not loaded: ${error.message}`);
@@ -3245,18 +3337,24 @@ function switchView(viewName, push = true) {
   window.scrollTo({top: 0, behavior: 'smooth'});
 }
 
-// The Overview's Accepted tasks rule - distinct task names over the accepted
-// folders in the segment - with no date range, for the Pipeline's cohort strip.
-// Kept in step with commandSnapshot(); null until the bucket scan has loaded.
-function acceptedTasksAllDates() {
-  if (!finalisationRows.length || !gcsPipeline) return null;
-  return new Set(finalisationRows
-    .filter(row => inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder)))
-    .map(row => row.name)).size;
+// An accepted folder's segment. A folder of the current accepted prefix is the
+// Pipeline's own row for that folder, judged by its own image like every other
+// accepted folder; a name shared by two submissions - one on a Zeta image, one
+// on a synthetic one - put 7 Zeta folders under Connector when the bench was
+// looked up by name. The older prefixes have no such row, so they still go by
+// name.
+let cohortRowByFolder = null;
+function finalisationSegment(row) {
+  if (truth && truth.cohortRows && cohortIndex && row.cohort === cohortIndex.cohort) {
+    if (!cohortRowByFolder) cohortRowByFolder = new Map(truth.cohortRows.map(r => [String(r.cohortFolder).toLowerCase(), r]));
+    const own = cohortRowByFolder.get(String(row.folder).toLowerCase());
+    if (own) return truthSegment(own);
+  }
+  return taskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder));
 }
 
 function commandSnapshot() {
-  const folders = finalisationRows.filter(row => inRange(row.date) && inTaskSegment(benchOfTask(row.name, row.folder), typeFlag(row.filterType), harnessOfTask(row.name, row.folder)));
+  const folders = finalisationRows.filter(row => inRange(row.date) && segmentMatches(finalisationSegment(row)));
   // One task can be finalised into several cohorts; the accepted count is task names, not folders.
   const tasks = new Set(folders.map(row => row.name));
   return {
@@ -4409,7 +4507,6 @@ const DOCK_ICONS = {
   package: '<path d="M21 8l-9-5-9 5 9 5 9-5zM3 8v8l9 5 9-5V8M12 13v8"/>',
   calendar: '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/>',
 };
-const DOCK_TONES = ['#2e6edf,#00bbff', '#6d4de6,#a78bfa', '#0f9d6b,#34d399', '#e0651f,#fbbf24', '#475569,#94a3b8', '#be3f8f,#f472b6'];
 const DOCK_IDLE_MS = 2400;
 
 function makeDeck({view, deck: deckId, pager: pagerId, key}) {
@@ -4422,7 +4519,7 @@ function makeDeck({view, deck: deckId, pager: pagerId, key}) {
     pager.innerHTML = `
       <button type="button" class="dock-notch" aria-label="Show sections">${list.map((pane, i) => `<i class="${i === index ? 'is-on' : ''}"></i>`).join('')}</button>
       <div class="dock" role="tablist">${list.map((pane, i) => `
-        <button type="button" role="tab" class="dock-item${i === index ? ' is-on' : ''}" data-index="${i}" aria-selected="${i === index}" aria-label="${esc(pane.dataset.title)}" style="--tone-a:${DOCK_TONES[i % DOCK_TONES.length].split(',')[0]};--tone-b:${DOCK_TONES[i % DOCK_TONES.length].split(',')[1]}">
+        <button type="button" role="tab" class="dock-item${i === index ? ' is-on' : ''}" data-index="${i}" aria-selected="${i === index}" aria-label="${esc(pane.dataset.title)}">
           <svg viewBox="0 0 24 24" aria-hidden="true">${DOCK_ICONS[pane.dataset.icon] || DOCK_ICONS.summary}</svg>
           <span class="dock-label">${esc(pane.dataset.title)}</span>
         </button>`).join('')}</div>`;
@@ -4446,7 +4543,7 @@ function makeDeck({view, deck: deckId, pager: pagerId, key}) {
     pager.querySelectorAll('.dock-item').forEach(item => {
       const box = item.getBoundingClientRect();
       const distance = Math.abs(event.clientX - (box.left + box.width / 2));
-      const scale = 1 + 0.55 * Math.max(0, 1 - distance / 110);
+      const scale = 1 + 0.32 * Math.max(0, 1 - distance / 110);
       item.style.setProperty('--s', scale.toFixed(3));
     });
   };
@@ -4716,6 +4813,8 @@ function wireEvents() {
     panel.scrollIntoView({behavior: 'smooth', block: 'nearest'});
   });
   document.addEventListener('click', event => {
+    const view = event.target.closest('#driveSwitch [data-drive]');
+    if (view) { if ((view.dataset.drive || '') !== driveView) setDriveView(view.dataset.drive || ''); return; }
     const pick = event.target.closest('#segmentSwitch [data-seg], .segtile[data-seg]');
     if (!pick || event.target.closest('.why')) return;
     const value = pick.dataset.seg || '';
@@ -4990,6 +5089,8 @@ function dressStagingBanner() {
 function init() {
   dressStagingBanner();
   restoreSegment();
+  restoreDriveView();
+  syncDriveSwitch();
   renderHero();
   renderTopPendingCards();
   renderDonut();

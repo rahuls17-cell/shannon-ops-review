@@ -292,6 +292,7 @@
     '975f115a995790786a6dbf124204433ccf77460f0277227fbdd21745388e56ca',
     'cb2fee77bd5b1bbe02471664111fae13711c2a0851147f7da987105bf015f293',
     '1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8',
+    'e76ff56a791502397586f102f90902e4a1aa0f9534625605bd31e64ed9f20f24',  // V4, also pulled as connectors-rl-gym/obi-benchmark
   ];
   function benchOfImage(image) {
     const im = String(image || '').toLowerCase();

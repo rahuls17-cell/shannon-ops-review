@@ -1,260 +1,164 @@
 # Shannon Ops Review
 
-An operations dashboard for the Harbor task pipeline, built for VPs, CXOs and
-delivery managers.
+Operations dashboard for the Harbor task pipeline.
+Static HTML, CSS and vanilla JS. No build step. GitHub Pages serves the repo root.
 
-**Live:** https://rahuls17-cell.github.io/shannon-ops-review/
+- **Live:** https://rahuls17-cell.github.io/shannon-ops-review/
+- **Staging:** https://rahuls17-cell.github.io/shannon-ops-review-staging/
+- **Run locally:** `python3 tools/truth_server.py --port 8787` then open http://127.0.0.1:8787
+- **Tests:** `for t in tools/test-*.cjs; do node "$t"; done`
 
-Static HTML, CSS and vanilla JavaScript. No bundler, no framework, no
-`package.json`. GitHub Pages serves the repository root.
+This file explains where every number on the **Overview**, **Pipeline** and **Delivery** pages comes from and how it is counted. Payouts and Carried over are documented in `CHANGELOG.md`.
 
 ---
 
-## What it shows
+## 1. Where the data comes from
 
-| Tab | Question | Source |
+Everything the page shows is read from a JSON asset in `assets/`. A VM, `yogesh-audit-vm`, rebuilds the assets from the bucket and pushes them itself roughly every 10 minutes; its scripts and crontab are kept in `tools/vm/` (see `tools/vm/README.md`). The page never calls an API.
+
+| Asset | Built by | What it holds |
 |---|---|---|
-| **Overview** | headline position across all workstreams | workbook + bucket scan |
-| **Payouts** | who was paid, for what | workbook |
-| **Delivery** | what was delivered, batch by batch; plan versus actual | delivery audit (batches 1–4.1) + Drive manifests (5.1 on, CompanyBench), workbook |
-| **Pipeline** | what the pipeline says about every task | **GCS verdicts** |
-| **Carried over** | pre-cut backlog settled by the current pipeline | GCS verdicts |
-| **Bucket** | file explorer over the storage bucket, metadata only | GCS listing |
+| `pipeline-truth.json` | VM: `ingest_verdicts.py` → `assign_identity.py` → `select_canonical.py` → `derive_state.py` → `build_tags.py` | One row per **task** (not per submission) with its state, decision date, gate, findings, flags, domain, bench image. Cut date `2026-09-05`. |
+| `cohort-index.json` | `build_cohort_index.py` | Every folder under the accepted finalisation prefix in the bucket. One folder = one accepted package. |
+| `delivered-index.json` | `build_delivered_index.py` | The join of delivered tasks onto pipeline tasks, by name, done once and tested. |
+| `connector-index.json` | `build_connector_index.py` / `read_task_toml.py` | Per task: does `task.toml` declare `[[environment.mcp_servers]]`, and which gyms. |
+| `bench-index.json` | `scan_bench.py` | Per task: the `FROM` image in its Dockerfile. |
+| `delivery-audit.json` | `build_delivery_audit.py` | Batches 1 to 4.1, pulled from the delivery dashboard: trainer, category, GLM trials, client decision. Used by Overview and Pipeline. |
+| `drive-deliveries.json` | `build_drive_deliveries.py` | Every delivered batch on Drive, Batches 1 to 4.1 included, one row per package from each batch's `manifest.json`. What the Delivery page shows. |
+| `drive-owners.json` | `build_drive_owners.py` | Trainer for Drive rows, recovered from the bucket's owner records. |
+| `manifest-index.json`, `task-names.json`, `glm-index.json` | `build_manifest_index.py`, `scan_task_names.py`, `scan_glm_trials.py` | Package → task name, declared names, GLM trial results. |
+| `client-acceptance.json` | `build_client_acceptance.py` | Counts only, from the Harbor 240 dashboard. |
+| `payout-ledger.json`, `data.js` | `build_payout_ledger.py`, `build_data.py` | Workbook export: paid, pending, roster, plan. |
+| `gcs-pipeline.json` | `export_gcs_pipeline.py` | Raw evaluation ledger and finalisation folders. |
+
+Click the `?` on any card to see the predicate chain that produced its number.
 
 ---
 
-## The central idea
+## 2. Vocabulary used everywhere
 
-**Every figure carries the chain that produced it.**
+**Task state** (set by `derive_state.py`, one row per task):
 
-Click any number on the Pipeline tab and it opens the list of predicates that
-narrowed the population down to it, with the count surviving each step, ending
-at the Cloud Storage objects the figure was read from:
-
-```
-Accepted = 591
-  10,293  verdict objects read from tasks/qc_platform_sync/_verdicts/
-  10,293  rows, one per submission × task
-   6,755  grouped into identities
-   6,755  one canonical run per identity
-   4,590  decision on or after 2026-09-05
-     945  canonical decision is accepted
-     591  package is in the current bar today
-```
-
-Every row likewise states why it holds its status, why one of its runs was
-chosen as canonical, and which verdict object it came from.
-
-Chains are **computed** — each step is the predicate applied to real rows and
-counted — so a chain cannot drift away from the number it claims to explain.
-
-`tools/reconcile.py` enforces this as a build gate. It checks 35 invariants and
-exits non-zero on failure, and the publishing workflow treats that as fatal. A
-figure that cannot explain itself is never published.
-
----
-
-## Source of truth
-
-**`gs://obi-harbor-pipeline`**, and nothing else, for the Pipeline figures:
-
-- `tasks/qc_platform_sync/_verdicts/*.json` for task state
-- the accepted folders for delivery
-
-The Harbor Console is not read, and neither is Postgres. The console was the
-source until 2026-09-17; it was dropped because it answers from a Cloud Storage
-assembler itself, so reading the bucket directly removes a proxy that
-additionally required a signed-in human. A full refresh went from roughly twenty
-minutes to thirty-five seconds.
-
-Payouts remains workbook-derived and is deliberately unaffected by any of this.
-
----
-
-## How a refresh works
-
-An eight-step chain, each step a separate process writing a JSON file, so any
-one can be re-run in isolation while investigating a number:
-
-```
-ingest_verdicts → index_delivery → assign_identity → select_canonical
-   → derive_state → build_tags → build_provenance → reconcile
-```
-
-It runs on the Harbor VM, where the storage credentials live. They never reach
-a browser.
-
-**From the published site:** the *Rebuild from the bucket* button opens the
-**Refresh derived pipeline** workflow. That asks the VM for a rebuild over a key
-restricted to a single script, validates what comes back, commits it and
-deploys. The page then polls and loads the new data when it lands.
-
-**Locally:**
-
-```bash
-python tools/truth_server.py --port 8871
-```
-
-Use this rather than `python -m http.server`: only this serves the rebuild
-endpoint the button calls. A plain static server answers it with HTTP 501, and
-the button will say so.
-
----
-
-## Reading the numbers
-
-Three figures answer three different questions and will not match. Each is
-correct for its own question. The bucket is live, so these move between
-refreshes; the page always shows the build timestamp of the data it is
-displaying, and figures quoted here are from `2026-09-18T06:08Z`.
-
-| | Current | Counts |
-|---|---:|---|
-| Packages at the current bar | 630 | task folders in the delivery folder |
-| Accepted | 591 | tasks whose verdict is accepted, within the window |
-| Distinct accepted names | 528 | tasks once a name counted twice is counted once |
-
-The scope is **tasks decided on or after 2026-09-05**, cut on the decision date
-rather than the submission date: a task uploaded in August but judged by the
-current pipeline belongs to the current window. 2,165 tasks decided before the
-cut are excluded entirely.
-
-### Qualifiers shown on the page
-
-These are displayed rather than smoothed over, because they affect how much
-weight a figure carries:
-
-- **unmerged** (2,373) — the submission carried no lineage id, so repeat runs of
-  that task may be counted separately.
-- **possible / likely duplicate** (904) — another task in scope shares its name
-  and trainer. Flagged, never merged: one name in this bucket covers 36
-  genuinely unrelated tasks.
-- **approx** (1,137) — no decision timestamp on the verdict, so the row is dated
-  from when the verdict was last updated.
-
-### Delivered, and what is left to deliver
-
-The Pipeline tab carries a **Delivered** filter, joining the 412 audited tasks
-on the Delivery tab onto the pipeline. The two datasets share only the task
-name, so that is the key: matched exactly first, then with version and status
-suffixes stripped, and never when that would pull in more than one task.
-
-The audit also carries the first 16 hex of each package's sha256. It reaches
-only 66 of the 412 — that scan covers what sits at the current bar — so it
-cannot be the join, but it can check it. On all 66 rows where both keys exist
-they agree, so a name match does not invent a delivery.
-
-| | |
-|---|---:|
-| Audited tasks matched into the pipeline | 319 of 412 |
-| Unmatched, of which accepted | 93, **2** |
-| Pipeline rows marked delivered | 452 (319 names) |
-| **New unique tasks ready for delivery** | **369** |
-
-*Ready* means accepted, package collectable at the current bar, and not matched
-to anything already delivered. The 93 unmatched are reported on the page rather
-than hidden; they barely touch accepted work, which is what makes the split
-usable. `tools/build_delivered_index.py` does the join once, outside the
-browser, and the workflow re-runs it whenever the pipeline is rebuilt — the
-index resolves to pipeline task ids, and the page says so if the two ever drift
-apart.
-
----
-
-## What the tooltips mean, in plain words
-
-Hovering the small **?** beside a heading, or any tag on a row, gives the full
-explanation in place. Here is the short version of each.
-
-### Tags on a task row
-
-| Tag | In plain words |
+| State | Rule |
 |---|---|
-| **unmerged** | We are not certain we grouped all of this task's attempts together. The pipeline usually stamps each task with a lineage id; this one arrived without it, so if it was submitted more than once those attempts may be sitting on the page as separate tasks. Nothing else on the page looks like a copy of it. |
-| **possible duplicate** | Another task in the list has the same name and the same trainer. It is probably the same piece of work counted twice. We show it rather than merging it, because task names are not unique — one name here covers 36 completely different tasks. |
-| **likely duplicate** | The same, but it also matches on the day it was decided and on the outcome. There is not really a story where these are different pieces of work. |
-| **carried over** | This task was first judged before 5 September, and the pipeline running today is what finally settled it. It is old backlog being cleared, not new work. |
-| **approx** (next to a date) | The record did not say when the decision was made, so we used the last time the record was touched. It is close, but for a task near the 5 September boundary it could sit on the wrong side of it. |
+| Accepted | Canonical decision accepted **and** package sits in the current bar (or decided within the grace window). |
+| Legacy accepted | Was accepted at some point, but not Accepted now: GLM-5.2 gate only, retired bar, or never delivered. |
+| Rejected | Canonical decision rejected. |
+| No QC decision | Run reports only a submission state: error, queued, not started. |
+| Running | In a stage. |
 
-### The ? beside each heading
+**Bench and segment** (the top switch: All · Computer Bench: Connector, Non-connector · Company Bench: Aster, Zeta). Decided by the task, never by its trainer. Strongest rule first:
 
-| Where | In plain words |
-|---|---|
-| **Tasks** | One row is one task, not one attempt. If a task was submitted five times, you see one row, and it shows the attempt that got furthest. The other four are inside the row, not lost. |
-| **Gate era** | Which reviewer judged this task. The reviewer changed twice in September — Opus, then GLM-5.2, then KESTREL — and the dates come from markers the pipeline itself left in storage, not from guesswork. |
-| **Identity** | How sure we are that a task's attempts were grouped correctly. *Keyed by family* means the pipeline gave us its own id for the task, which is reliable. *Unmerged* means it did not, so we fell back to a weaker method. |
-| **Duplicates** | Why a task is flagged as a probable copy, and why we flag rather than merge. |
-| **Finding** | What the reviewer objected to. The filter looks across every attempt, so a task that failed a check, was fixed and then passed is still findable under that check — but the row tells you which attempt each objection came from, so an accepted task is never made to look as though it passed while failing. |
-| **What is counted** | Why the cut is on the date a task was *decided* rather than *submitted*: a task uploaded in August but judged this week belongs to this week, because this week's reviewer is what judged it. |
-| **Date range** | One date filter drives Overview, Delivery and Pipeline. Payouts is deliberately left out, because the workbook records when someone was *paid*, not when the work happened — filtering it would quietly hide people paid for older work. |
-| **Reading from** | Where every number on the page came from, and whether it was read live during this visit or came from a saved copy. |
+1. **Image** in the task's Dockerfile. Aster or Zeta image → Company Bench. Synthetic (`connectors-rl-gym`) or real-data image → Computer Bench connector. Plain base image → Computer Bench non-connector.
+2. **Where it was delivered**: the Drive folder its package sits in (`CompanyBench/`, `Non-Connector/`, …), used only when no image was read.
+3. **Name lookup** against delivered and built tasks, only when unambiguous.
 
-### Two phrases that appear on every row
+**Connector** (`connectorType` in `truth.js`): `task.toml` declares MCP servers → connector. Else the delivered folder type. Else the image, as above. Never inferred from the name. Unknown stays unknown.
 
-- **Why this state** — the exact rule that put this task in its bucket, for
-  example *"accepted and its package is in the current bar"*.
-- **Canonical run** — why this attempt was chosen over the others, for example
-  *"better outcome at the same depth of 2 runs"*.
+**Harness** (Aster vs Zeta): the image first, then what the delivery manifest records, then for Zeta only whether the task mounts `zeta3-sql-gym`.
+
+**Domain**: the prefix on a non-connector task's name. `code-` Engineering, `fin-` Finance, `health-` Health, `law-` Legal, `gen-`/`bus-` Other. Connector tasks have no domain prefix, so the Domain dropdown names them by kind instead: Synthetic, Real Connector or Connector on Computer Bench; harness plus single or multi connector on Company Bench.
+
+The segment switch, the date range and the global filter strip apply to every page. Payouts ignores the date range on purpose: the workbook records when money was paid, not when work happened.
 
 ---
 
-## Known limitations
+## 3. Overview
 
-| | |
-|---|---|
-| An older acceptance can outrank a newer rejection | 69 tasks display a superseded verdict |
-| Residual duplicate counting | approximately 11% |
-| Domain attribution | 36% — derived from a name prefix most tasks lack |
-| Connector attribution | 15% — known only where a package was scanned |
-| Bench attribution | not implemented; the roster covers 61% of task owners |
-| Bucket tab | needs a 114 MB index that is not committed, so it is populated only when running locally |
+### Summary pane
 
-### Defects in the source data, surfaced rather than hidden
+| Card | Number | Counted as | Shown as |
+|---|---|---|---|
+| **The split** (segment tiles) | Pipeline tasks per leaf segment | `pipeline-truth` rows whose segment is that leaf; accepted = Accepted + Legacy accepted; people = roster rows with a task in that segment; paid of ledger = ledger tasks marked Paid. | One tile per segment, verdict bar, click to filter the whole dashboard. |
+| **In scope** | Tasks decided | `pipeline-truth` rows (the published in-scope count under All, the segment's rows under a segment). | Headline + 14-day sparkline of tasks decided per day with the daily average and half-over-half change. |
+| **Accepted tasks** | Distinct task names | Folders in the three accepted finalisation prefixes (`gcs-pipeline` finalisation rows) in the date range and segment, deduplicated by task name. A current-prefix folder takes the bench of its own Pipeline row; older prefixes go by name. | Ring = accepted ÷ in scope. |
+| **Client accepted** | Tasks the client accepted | Under All: `client-acceptance.json`, tasks at priority Low out of the audited 240. Under a segment: `delivery-audit` rows with acceptance Accepted in that segment, because the 240 snapshot has no per-task bench. | Ring = accepted ÷ audited. |
+| **Finalisation v2** | Accepted folders in iteration 2 | Finalisation rows whose cohort is `finalisation_client_qc_accepted_iteration_2`, in range and segment. | Bar = v2 ÷ all accepted folders. |
+| **Payout balance** | Paid and upcoming money | `payout-ledger` totals under All; per-row sums under a segment. Pending per person = accepted − paid, floored at 0, × $300. | Two-sided balance bar, tag = % settled. |
+| **Active trainers** | Roster rows marked Active | `data.js` roster. | Bar = active ÷ roster. |
 
-**40 packages are collectable at the current bar while their latest verdict is a
-rejection** — 32 are artefacts left behind when a re-run failed, and 5 had a
-package written *after* the rejection.
+### Pipeline pane
 
-**1,086 verdicts report a submission state with no per-task decision.** They are
-counted as their own bucket rather than forced into accepted or rejected.
+- **Current evaluations**: `gcs-pipeline` current rows by status, in range and segment.
+- **Where the work sits / By bench**: the same evaluations grouped by the task's bench (Computer, Company, Unassigned), with accepted rate per bench and distinct accepted task names per bench.
 
-**Some task owners are not people** — `dev@localhost`, `harbor-operator-e2e`, and
-`companybench@turing.com`, a shared account.
+### Payout balance pane
+
+- **By bench**: each person's paid and pending split between benches by the share of their accepted ledger tasks on each bench.
+- **Largest upcoming payments**: people ranked by pending amount.
+
+### Daily delta pane
+
+- One point per task per day it reached its state, from `decided` on `pipeline-truth` rows. A task resubmitted five times moves the line once. Movement, not a running total. Dates the chain had to infer are counted and said to be inferred.
 
 ---
 
-## Repository layout
+## 4. Pipeline
 
-```
-index.html              the page; loads each module in order
-app.js                  all DOM rendering and event wiring
-truth.js                read model for the GCS-derived Pipeline
-pipeline-view.js        earlier console-era model, still used by Overview
-sources.js              provenance registry: every figure maps to a source
-finalisation.js         bucket cohort model
-payout-ledger.js        workbook payout model
-explorer.js             bucket file explorer
-assets/                 published data
-tools/                  the chain, the builders, and the tests
-.github/workflows/      refresh-gcs.yml, refresh-truth.yml
-```
+Source for everything on this page: `pipeline-truth.json` rows, filtered by the segment and the filter bar (State, Delivered, and Gate / Package / GLM / Finding / Domain / Carried over / Identity / Duplicates under More filters). Search matches task name, owner, the why line and finding codes.
 
-### Tests
+### States pane
 
-Plain Node and Python, no runner, no dependencies. Each file is self-contained
-and exits non-zero on failure.
+| Card | Number | Counted as | Shown as |
+|---|---|---|---|
+| **In scope** | Tasks decided | Sum of the five state counts over the filtered rows. | Headline, accepted share, 14-day sparkline of decisions per day. |
+| **Accepted** | Accepted packages | Folders in `cohort-index` (the accepted prefix) in the segment and filters. The bucket, not the verdicts, is the acceptance decision. Falls back to Accepted verdict rows if the index has not loaded. | Ring = Accepted verdict rows ÷ all decided. |
+| **Rejected / No QC decision** | Verdict rows in that state. | Ring = share of decided. |
+| **Running / Legacy accepted** | Verdict rows in that state. | Bar = share of decided. |
+| **Delivery join** | Delivered packages found in the bucket | Every batch the Delivery page lists, in the segment, traced into the accepted prefix: Batches 1 to 4.1 by the exact object the manifest names, Drive batches by the folder the manifest names or the folder whose package declares the same task. Follows the segment, not the filters. **Not found** splits into gone from the prefix, packaged from elsewhere, no source named. None is a failed delivery. | Found vs not found balance, split track, foot line with packages and batches. |
+| **Accepted packages** | Delivered of accepted | The same folders the Accepted card counts, split by whether any delivery reached them. Delivered + still to deliver = packages, by construction. | Progress track, foot line with still to deliver and later rejected. |
 
-```bash
-node tools/test-truth.cjs        # partition, filters, chains
-node tools/test-delivered.cjs    # the delivered / ready-for-delivery join
-node tools/test-views.cjs        # nav, sections and the view whitelist must agree
-node tools/test-pipeline-view.cjs
-node tools/test-payout-ledger.cjs
-node tools/test-explorer.cjs
-node tools/test-finalisation-filters.cjs
-python tools/test_duplicate_sample.py
-```
+### Delivery & makeup pane
 
-`test_duplicate_sample.py` exits 1 on one group where the source data carries two
-verdicts with identical timestamp, lineage id and run id but conflicting states.
-That is a defect upstream and cannot be resolved here.
+| Card | Number | Counted as | Shown as |
+|---|---|---|---|
+| **In the accepted cohort** | Packages in the cohort | `cohort-index` folders in the segment, no date range. Steps: **packages** (every folder), **decided** (verdict dated on or after the cut), **accepted** (latest run accepted), **delivered** (reached by a delivery). | Bar list on one axis; tag = distinct tasks among these folders, folded by the `[task]` name each package declares, so folders = tasks + extra copies. |
+| **What the shown tasks are** | Shown tasks | Filtered rows split by `connectorType`: connector / non-connector / not known. Counted in tasks, not rows. | Bar list, connector and non-connector highlighted. |
+| **Flag cards** | Carried over · Awaiting re-gate · Possible duplicates · Packages at the bar | Flags set by `derive_state.py` on each row: first decided before the cut; accepted under the GLM-5.2 gate only; shares name and trainer with another task; package collectable from the bucket today. Flags overlap, so they do not add up. | Count, % of shown, sparkline per day. Click opens the chain. |
+| **Domain** | Tasks with a domain | Same names as the Domain dropdown, so it follows the segment: the five name-prefix domains under Non-connector; Synthetic, Real Connector or Connector under Computer Bench Connector; harness plus single or multi connector under Company Bench. Not recorded excluded. | Column chart ordered by count, tag = % of shown. |
+
+Every dropdown in the filter bar shows the counts for the current segment, so the list only offers values that exist there.
+
+---
+
+## 5. Delivery
+
+Source: `drive-deliveries.json`, one row per package in every batch folder of the shared Deliveries folder on Drive, Batches 1 to 4.1 included, read from each batch's `manifest.json` by `tools/build_drive_deliveries.py`. The Drive holds no client decision, so every row reads **Pending**. Trainers come from `drive-owners.json` when the bucket's owner records name one.
+
+The other pages keep reading `delivery-audit.json` (Batches 1 to 4.1 with the client's decisions) for the Overview's Client accepted card, the Pipeline's Delivery join and the bench a delivered task gives a pipeline row. A hidden switch (`DRIVE_SWITCH_SHOWN` in `app.js`) can put the Delivery page back on that reading.
+
+Row rules:
+
+- **Bench, harness and connector count**: where the package is filed on Drive and what its manifest records. A package in a `CompanyBench/` folder is Company Bench; Aster or Zeta from the manifest's image or declared bench. Never from the Dockerfile image in the bucket.
+- **Category**: a Company Bench package is `CompanyBench`. Computer Bench categories come from the manifest with `Non-Connector ·` stripped and Code → Engineering, Law → Legal, General and Other/unclassified → Other.
+- **GLM bucket**: `n/4` trials solved from the manifest. No run recorded → `(not recorded)`.
+- **Trainer**: `Unattributed` when none is recorded; rows with more than one candidate owner are contested and name nobody.
+
+| Card | Number | Counted as | Shown as |
+|---|---|---|---|
+| **Delivered tasks** | Rows matching the filters | Every audit and Drive row in the segment and filters. | Share of all delivered. |
+| **Accepted / Rejected / Pending** | Rows by client acceptance | `acceptance` on the row. The Drive records none, so everything is Pending until decisions are read from elsewhere. | Share of shown; click to filter. |
+| **Trainers** | Distinct attributed trainers | Rows with an email trainer; note shows the unattributed count. | Count. |
+| **Batch scope** | Tasks per batch | All batches, no pagination. **Rate = accepted ÷ (accepted + rejected)**, the tasks the client has decided, never ÷ all tasks. A batch with no decisions reads "awaiting decisions". | One row per batch with count, rate line and verdict bar. |
+| **Category mix** | Rows per category | Grouped by category. | Ranked bars, click to filter. |
+| **Category × GLM** | Rows per category and GLM bucket | Columns are the GLM buckets present, plus **Not recorded** (no run) and **Sum**, so each row adds up to its category. | Heat map, click a cell to filter both. |
+| **Trainer concentration** | Rows per trainer | Attributed rows grouped by trainer, top accounts shown. | Ranked bars. |
+| **Verdicts by batch** | Accepted / Rejected / Pending per batch | Same `verdicts()` split as the batch rail. | Stacked bars. |
+| **Current view** | Shown · trainer coverage · accepted · rejected · pending | Coverage = attributed ÷ shown. | Strip under the charts. |
+
+The search box at the top filters every card and the table on task, package name, sha, trainer, category and batch. **Export** writes the table as CSV in its current sort and filter.
+
+---
+
+## 6. Layout of the code
+
+| File | Role |
+|---|---|
+| `index.html` | All markup for every page. |
+| `app.js` | Rendering, segment and filter state, every card. |
+| `truth.js` | `prepareTruth`, `filterTruth`, `collapseByTask`, `joinDeliveries`, `connectorType`. Pure, tested. |
+| `delivery-audit.js` | Merges audit and Drive rows, category and trainer rules, `filterDeliveryAudit`. |
+| `daily-delta.js` | Tasks reaching each state per day. |
+| `sources.js` | Registry of every feed, with sheet gids and bucket prefixes, for the source panel. |
+| `styles.css` | Design tokens and components. |
+| `tools/` | Builders the VM runs, and `test-*.cjs` checks. |

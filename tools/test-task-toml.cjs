@@ -132,6 +132,8 @@ print(json.dumps(m.bench_type(sys.stdin.read().strip())))
     'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/obi-benchmark@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8': 'company bench zeta',
     'docker.io/kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8': 'company bench zeta',
     'kuzphi/company-bench-private:zeta-newdbs2-20260918': 'company bench zeta',
+    // V4 under another repository name: the CompanyBench 3 manifest records 9 tasks on it.
+    'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/obi-benchmark@sha256:e76ff56a791502397586f102f90902e4a1aa0f9534625605bd31e64ed9f20f24': 'company bench zeta',
     'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:832fec69897f00d324614205d2e70797eab8e991d7b172ea1a52091181011ae2': 'company bench aster',
     'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44': 'company bench aster',
     'docker.io/kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3': 'company bench aster',

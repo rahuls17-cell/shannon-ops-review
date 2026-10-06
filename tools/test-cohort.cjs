@@ -120,20 +120,17 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
     + `${c.notDelivered} still to deliver`);
 }
 
-// --- the Pipeline's distinct accepted tasks is the Overview's Accepted tasks --
-// Same folders, same segment test, same name; only the Overview's date range
-// is left out. If one rule changes without the other, the two cards disagree.
+// --- the Pipeline's distinct accepted tasks counts the folders beside it ------
+// Folded by declared [task] name over the same folders as the Accepted card, so
+// folders = distinct tasks + extra copies holds on the card itself.
 {
-  const pick = name => {
-    const at = app.indexOf(`function ${name}(`);
-    const body = app.slice(at, app.indexOf('\n}\n', at));
-    return (body.match(/finalisationRows\s*\.filter\(row => ([^\n]+)\)/) || [])[1];
-  };
-  const overview = pick('commandSnapshot'), pipeline = pick('acceptedTasksAllDates');
-  assert.ok(overview && pipeline, 'both counts must filter the accepted folders');
-  assert.equal(pipeline.replace(/^inRange\(row\.date\) && /, ''), overview.replace(/^inRange\(row\.date\) && /, ''),
-    'the Pipeline tile must use the Overview segment rule');
-  assert.ok(/\$\{fmt\(accTasks\)\} distinct accepted tasks/.test(app), 'the cohort card shows it');
+  assert.ok(/\$\{fmt\(tn\.tasks\)\} distinct accepted tasks/.test(app), 'the cohort card shows the folders folded by task');
+  assert.ok(/const tn = cohortInSegment \? window\.acceptedTaskNames\(cohortInSegment\)/.test(app),
+    'over the folders in the segment, the same ones the Accepted card counts');
+  const T = require(path.join(root, 'truth.js'));
+  const folders = Object.values(idx.folders).map(f => ({cohortFolder: f.folder, packageTask: null}));
+  const n = T.acceptedTaskNames(folders);
+  assert.equal(n.tasks + n.extraFolders, n.folders, 'folders = distinct tasks + extra copies');
 }
 
 // --- delivered covers every batch, not only the four audited manifests ------
