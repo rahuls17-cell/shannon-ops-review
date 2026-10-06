@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T13:51:10+00:00",
+ "generatedAt": "2026-10-06T14:11:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16705,6 +16705,90 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/urgent-project-update-gap-audit/223ffdbd89dd189fefdc6fcba9485da823c67d7c52207eb295cd1870a05ddcd5.zip",
    "bytesRead": 45404,
+   "readOn": "2026-10-06"
+  },
+  "scope-rebaseline-trail-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/scope-rebaseline-trail-audit/f889915fcafea2681129af67c2822bc496a567f69f9fb9a3098b68290ffcaf65.zip",
+   "bytesRead": 45291,
+   "readOn": "2026-10-06"
+  },
+  "the-accelerator-dates-still-ahead-of-me": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-accelerator-dates-still-ahead-of-me/6334f6adafb62f40277b26c92e88189ac5709a286f0a56bdddf599430f018301.zip",
+   "bytesRead": 54452,
+   "readOn": "2026-10-06"
+  },
+  "the-clinical-threads-left-open": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-threads-left-open/b8e17c816616bf458f9783948debad4b9e03c2903ced0787f0299bae8a1d1a6b.zip",
+   "bytesRead": 50136,
+   "readOn": "2026-10-06"
+  },
+  "the-handbook-pages-that-contradict": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-handbook-pages-that-contradict/81a03ef91e3c18cdeb7fa21778a515fbb360a9cc301cb159d9066d9f8f3e88a0.zip",
+   "bytesRead": 50775,
+   "readOn": "2026-10-06"
+  },
+  "the-invite-ics-in-my-mail": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-invite-ics-in-my-mail/68afdd25238c7293395e385480bfa2307f8f74234258543b53ed20be0c5472cd.zip",
+   "bytesRead": 47542,
+   "readOn": "2026-10-06"
+  },
+  "the-team-the-search-invented": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-team-the-search-invented/21511bb8808185b85bddf67b3ab759c5253e513bc3bfe0016f75923bf0b7706e.zip",
+   "bytesRead": 49305,
+   "readOn": "2026-10-06"
+  },
+  "the-training-notices-that-lapsed": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-training-notices-that-lapsed/b19def3524f0c949396308c9592777c9907287d285052f883ef7328c0fb717ae.zip",
+   "bytesRead": 54706,
    "readOn": "2026-10-06"
   }
  }
