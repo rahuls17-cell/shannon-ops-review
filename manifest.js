@@ -64,9 +64,22 @@
       String(a.id).localeCompare(String(b.id));
   }
 
+  // A folder key names one bucket folder exactly, so it is only lower-cased: a
+  // folder called ...-v5 or ...-20260918 is a different folder from the one
+  // without the suffix, and stripping it here meant it was never excluded.
+  function exclusionKey(value) {
+    const text = String(value || '').trim().toLowerCase();
+    return text.startsWith('folder:') ? text : normaliseName(text);
+  }
+  const withoutNamespace = value => String(value || '').trim().replace(/^(?:harbor|obi)\//i, '');
+
   function buildManifest(rows, options) {
     const o = options || {};
-    const exclude = new Set([...(o.exclude || [])].map(normaliseName));
+    const exclude = new Set([...(o.exclude || [])].map(exclusionKey));
+    // A task an earlier manifest names, wherever it now sits: by its folder key,
+    // or by the name a row of it carries or the package declares.
+    const named = members => members.some(m => [m.name, m.packageTask]
+      .some(n => n && exclude.has(normaliseName(withoutNamespace(n)))));
 
     const groups = new Map();
     rows.forEach(row => {
@@ -81,7 +94,7 @@
     const excluded = [];
     const candidates = [];
     groups.forEach((members, k) => {
-      if (exclude.has(k)) { excluded.push(k); return; }
+      if (exclude.has(k) || named(members)) { excluded.push(k); return; }
       const sorted = [...members].sort(preferred);
       candidates.push({key: k, row: sorted[0], members: sorted});
     });
@@ -156,12 +169,29 @@
   }
 
   // Names already claimed by an earlier manifest, so a second round does not
-  // reissue the first one's work. Accepts a manifest of this schema, or a bare
-  // list of names, because someone will paste one.
+  // reissue the first one's work. Accepts a manifest of this schema; a delivery
+  // manifest in the Drive batches' shape (harbor/delivery-manifest, which the
+  // Delivery tab's Export manifest.json writes too); or a bare list of names,
+  // because someone will paste one.
+  const FOLDER_OF_URI = /\/tasks\/[^/]+\/([^/]+)\/[^/]+$/;
+  const stemOf = path => String(path || '').split('/').pop().replace(/\.zip$/i, '');
+  function namesFromDelivery(task) {
+    const folders = [task.source_folder, (String(task.source_uri || '').match(FOLDER_OF_URI) || [])[1],
+      withoutNamespace(task.task_id), stemOf(task.original_filename || task.package_path)];
+    const names = [task.task_name, task.task_id].map(withoutNamespace);
+    return [...folders.filter(Boolean).map(f => `folder:${String(f).trim().toLowerCase()}`),
+            ...names.filter(Boolean)];
+  }
   function namesFromManifest(payload) {
     if (!payload) return [];
     if (Array.isArray(payload)) return payload.map(v => (typeof v === 'string' ? v : v && v.name)).filter(Boolean);
-    if (Array.isArray(payload.tasks)) return payload.tasks.map(t => t.key || t.name).filter(Boolean);
+    if (Array.isArray(payload.tasks)) {
+      return [...new Set(payload.tasks.flatMap(t => {
+        if (!t) return [];
+        if (t.key || t.name) return [t.key || t.name];
+        return t.task_id || t.task_name ? namesFromDelivery(t) : [];
+      }))];
+    }
     return [];
   }
 

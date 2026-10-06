@@ -224,3 +224,32 @@ assert.equal(inManifest.length, suspectRows.length,
 console.log('suspects :', `${suspectIds.length} ready rows may already have shipped,`,
   `${flagged.length} flagged in the full manifest`);
 console.log('all suspect assertions passed');
+
+// --- a delivery manifest as the exclusion list ------------------------------
+// The Drive batch manifests and the Delivery tab's Export manifest.json name a
+// task by task_id / task_name and its folder by source_folder or source_uri;
+// all of them must exclude, and a folder key keeps its suffix.
+{
+  const delivery = {schema: 'harbor/delivery-manifest/v4', tasks: [
+    {task_id: 'gen-g1-audit-v5', task_name: 'harbor/gen-g1-audit-v5', package_path: 'Non-Connector/Harder/Other/gen-g1-audit-v5.zip',
+     source_uri: 'gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1-audit-v5/abc.zip'},
+    {task_id: 'ASTR_1', task_name: 'harbor/renamed-task', source_folder: 'ASTR_1_review'},
+  ]};
+  const names = namesFromManifest(delivery);
+  assert.ok(names.includes('folder:gen-g1-audit-v5'), 'the folder from source_uri');
+  assert.ok(names.includes('folder:astr_1_review'), 'the folder the export names');
+  assert.ok(names.includes('renamed-task'), 'the declared name, without its namespace');
+  const rowsShown = [
+    {id: 'r1', name: 'gen-g1-audit', cohortFolder: 'gen-g1-audit-v5', decided: '2026-09-10'},
+    {id: 'r2', name: 'other', cohortFolder: 'ASTR_1_review', decided: '2026-09-10'},
+    {id: 'r3', name: 'x', cohortFolder: 'x-folder', packageTask: 'harbor/renamed-task', decided: '2026-09-10'},
+    {id: 'r4', name: 'keep-me', cohortFolder: 'keep-me', decided: '2026-09-10'},
+  ];
+  const cut = buildManifest(rowsShown, {exclude: names});
+  assert.deepEqual(cut.tasks.map(t => t.id), ['r4'], 'folder, suffixed folder and declared name all exclude');
+  assert.equal(cut.selection.excludedByPreviousManifest, 3);
+  // A Pipeline manifest's own folder keys keep their suffix too.
+  const own = buildManifest(rowsShown, {exclude: ['folder:gen-g1-audit-v5']});
+  assert.ok(!own.tasks.some(t => t.id === 'r1'), 'folder:...-v5 excludes the -v5 folder');
+}
+console.log('delivery manifest exclusions passed');

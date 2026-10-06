@@ -197,6 +197,8 @@
         harness: (o.harnessOf ? o.harnessOf(row) : row.harness) || null,
         bench_class: row.class || null,
         source_uri: row.sourceUri || null,
+        source_prefix: row.sourcePrefix || null,
+        source_folder: row.sourceFolder || null,
         source_version: row.sourceObject || null,
         sha256: row.sha256 || null,
         size_bytes: Number.isInteger(row.sizeBytes) ? row.sizeBytes : null,

@@ -28,6 +28,21 @@ When you change what a figure means, add a line under **Unreleased**. When
   of releasing it the moment the download starts: the all-batches manifest is
   4 MB, and Chrome can drop a download whose link is revoked before it has read it.
 
+### Pipeline tab
+- **Exclude a previous manifest reads delivery manifests**: a Drive batch
+  manifest or the Delivery tab's Export manifest.json (`harbor/delivery-manifest`)
+  was refused with "no tasks in that file", because only the Pipeline's own
+  manifest shape was read. A delivery entry now excludes by its bucket folder
+  (`source_folder`, or the folder in `source_uri`), its task id and package file,
+  and its declared task name, matched against a ready row's name and the task its
+  package declares. The Delivery export now writes `source_prefix` and
+  `source_folder` too. All batches today: 30 of the 742 ready tasks excluded, each
+  a re-cut of a task a Drive batch already delivered (the page already flagged
+  them as possibly delivered).
+- **Fix:** an excluded folder key keeps its suffix. A folder named `...-v5` or
+  `...-20260918` had the suffix stripped before matching, so it was never
+  excluded, even by a manifest the Pipeline wrote itself.
+
 ### Tests
 - `test-cohort.cjs`: since 5 Oct the connector scan reads all 2,590 accepted
   packages, so no folder needs the direct task.toml read the check expected
