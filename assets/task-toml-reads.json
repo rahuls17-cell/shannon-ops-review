@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T18:11:09+00:00",
+ "generatedAt": "2026-10-06T18:21:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17129,6 +17129,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-we-said-about-healthie/b0cbe0f6723c0616f9998679e92a99df0f2e235b3a3c35b9b1017f95b6cb0f70.zip",
    "bytesRead": 46620,
+   "readOn": "2026-10-06"
+  },
+  "the-meetings-that-sit-on-top-of-each-other": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-that-sit-on-top-of-each-other/bf21711928869035550f1a024e9fe6cc8914fa202164aeb4b5495c786d5db822.zip",
+   "bytesRead": 54637,
    "readOn": "2026-10-06"
   }
  }
