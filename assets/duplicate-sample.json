@@ -4,14 +4,14 @@
   "liveOnly": false,
   "basis": "normalised task name; ordered by full submitted_at timestamp",
   "population": {
-    "submissions": 6979,
+    "submissions": 6928,
     "taskKeys": 3689,
-    "duplicateKeys": 1350
+    "duplicateKeys": 1333
   },
   "checks": {
-    "ties": 49,
-    "tieDisagreements": 1,
-    "sameDayGroups": 582,
+    "ties": 0,
+    "tieDisagreements": 0,
+    "sameDayGroups": 553,
     "contestedTrainer": 155,
     "handover": 109
   },
@@ -57,74 +57,16 @@
       ]
     },
     {
-      "task": "gen-g631-chemical-catalog-harmonization-reconcile",
-      "trainer": "rahul.s17@turing.com",
+      "task": "gen-g649-energy-project-screening-audit",
+      "trainer": "srinivas.p2@turing.com",
       "trainers_in_group": [
-        "rahul.s17@turing.com"
+        "srinivas.p2@turing.com"
       ],
       "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-09-11T12:00:04+00:00",
-      "last_submitted": "2026-09-11T17:30:50+00:00",
-      "span_hours": 5.51,
-      "same_day_repeats": 1,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-09-11T12:00:04+00:00",
-          "by": "rahul.s17@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-11T17:30:50+00:00",
-          "by": "rahul.s17@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "code-c712-outdoor-gfci-outlet-code-compliance-audit-v1",
-      "trainer": "uzair.h@turing.com",
-      "trainers_in_group": [
-        "uzair.h@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-28T17:10:32+00:00",
-      "last_submitted": "2026-08-31T21:47:03+00:00",
-      "span_hours": 76.61,
-      "same_day_repeats": 0,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-28T17:10:32+00:00",
-          "by": "uzair.h@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-31T21:47:03+00:00",
-          "by": "uzair.h@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "verify-atm-no-dispense-dispute-resolution-for-500-claim-ttx-11jvcvxr25",
-      "trainer": "krupal.p@turing.com",
-      "trainers_in_group": [
-        "krupal.p@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-30T20:19:36+00:00",
-      "last_submitted": "2026-09-12T20:48:36+00:00",
-      "span_hours": 312.48,
+      "submissions": 3,
+      "first_submitted": "2026-08-28T17:56:08+00:00",
+      "last_submitted": "2026-09-13T15:54:33+00:00",
+      "span_hours": 381.97,
       "same_day_repeats": 0,
       "final_state": "accepted",
       "states_seen": [
@@ -133,13 +75,95 @@
       ],
       "timeline": [
         {
-          "at": "2026-08-30T20:19:36+00:00",
-          "by": "krupal.p@turing.com",
+          "at": "2026-08-28T17:56:08+00:00",
+          "by": "srinivas.p2@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-12T20:48:36+00:00",
-          "by": "krupal.p@turing.com",
+          "at": "2026-08-30T11:55:05+00:00",
+          "by": "srinivas.p2@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-13T15:54:33+00:00",
+          "by": "srinivas.p2@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "code-c713-device-migration-app-inventory-reconcile-hardened",
+      "trainer": "tushar.k2@turing.com",
+      "trainers_in_group": [
+        "tushar.k2@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-09-01T08:05:52+00:00",
+      "last_submitted": "2026-09-01T13:50:58+00:00",
+      "span_hours": 5.75,
+      "same_day_repeats": 1,
+      "final_state": "error",
+      "states_seen": [
+        "error",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-09-01T08:05:52+00:00",
+          "by": "tushar.k2@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-01T13:50:58+00:00",
+          "by": "tushar.k2@turing.com",
+          "state": "error"
+        }
+      ]
+    },
+    {
+      "task": "verify-out-of-network-atm-fee-on-48-withdrawal-aug-2022-account-6049",
+      "trainer": "monicah.w@turing.com",
+      "trainers_in_group": [
+        "mazen.a@turing.com",
+        "monicah.w@turing.com"
+      ],
+      "contested": true,
+      "submissions": 5,
+      "first_submitted": "2026-08-28T22:00:44+00:00",
+      "last_submitted": "2026-09-14T15:54:13+00:00",
+      "span_hours": 401.89,
+      "same_day_repeats": 0,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "error",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T22:00:44+00:00",
+          "by": "monicah.w@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-08-29T12:46:18+00:00",
+          "by": "monicah.w@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-08-31T20:07:22+00:00",
+          "by": "mazen.a@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-10T01:16:25+00:00",
+          "by": "monicah.w@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-14T15:54:13+00:00",
+          "by": "monicah.w@turing.com",
           "state": "accepted"
         }
       ]
@@ -179,46 +203,17 @@
       ]
     },
     {
-      "task": "gen-g570-benefits-handbook-localization-audit",
-      "trainer": "shwetank.c@turing.com",
+      "task": "gen-g59-accreditation-compliance-recompute",
+      "trainer": "lelisa.m@turing.com",
       "trainers_in_group": [
-        "shwetank.c@turing.com"
+        "lelisa.m@turing.com"
       ],
       "contested": false,
       "submissions": 2,
-      "first_submitted": "2026-08-29T00:11:51+00:00",
-      "last_submitted": "2026-08-29T05:56:40+00:00",
-      "span_hours": 5.75,
-      "same_day_repeats": 1,
-      "final_state": "legacy_accepted",
-      "states_seen": [
-        "legacy_accepted"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-29T00:11:51+00:00",
-          "by": "shwetank.c@turing.com",
-          "state": "legacy_accepted"
-        },
-        {
-          "at": "2026-08-29T05:56:40+00:00",
-          "by": "shwetank.c@turing.com",
-          "state": "legacy_accepted"
-        }
-      ]
-    },
-    {
-      "task": "health-h125-eye-drop-lens-compatibility-audit",
-      "trainer": "michael.b2@turing.com",
-      "trainers_in_group": [
-        "michael.b2@turing.com"
-      ],
-      "contested": false,
-      "submissions": 7,
-      "first_submitted": "2026-08-27T21:41:24+00:00",
-      "last_submitted": "2026-09-06T14:27:16+00:00",
-      "span_hours": 232.76,
-      "same_day_repeats": 2,
+      "first_submitted": "2026-09-02T10:57:05+00:00",
+      "last_submitted": "2026-09-09T22:03:03+00:00",
+      "span_hours": 179.1,
+      "same_day_repeats": 0,
       "final_state": "accepted",
       "states_seen": [
         "accepted",
@@ -226,378 +221,64 @@
       ],
       "timeline": [
         {
-          "at": "2026-08-27T21:41:24+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-01T16:47:48+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-02T08:56:03+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-02T09:55:04+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-03T14:19:18+00:00",
-          "by": "michael.b2@turing.com",
+          "at": "2026-09-02T10:57:05+00:00",
+          "by": "lelisa.m@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-03T17:05:16+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-06T14:27:16+00:00",
-          "by": "michael.b2@turing.com",
+          "at": "2026-09-09T22:03:03+00:00",
+          "by": "lelisa.m@turing.com",
           "state": "accepted"
         }
       ]
     },
     {
-      "task": "fin-f55-trust-principal-income-allocation-audit",
+      "task": "health-h34-randomisation-balance",
       "trainer": "muhammad.y7@turing.com",
       "trainers_in_group": [
         "muhammad.y7@turing.com"
       ],
       "contested": false,
-      "submissions": 5,
-      "first_submitted": "2026-08-30T04:54:35+00:00",
-      "last_submitted": "2026-09-09T17:44:43+00:00",
-      "span_hours": 252.84,
-      "same_day_repeats": 1,
-      "final_state": "accepted",
-      "states_seen": [
-        "accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-30T04:54:35+00:00",
-          "by": "muhammad.y7@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T13:01:10+00:00",
-          "by": "muhammad.y7@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-31T00:21:49+00:00",
-          "by": "muhammad.y7@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-02T20:06:17+00:00",
-          "by": "muhammad.y7@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-09T17:44:43+00:00",
-          "by": "muhammad.y7@turing.com",
-          "state": "accepted"
-        }
-      ]
-    },
-    {
-      "task": "outside-voices-in-the-locked-sales-drive",
-      "trainer": "melat.m@turing.com",
-      "trainers_in_group": [
-        "melat.m@turing.com"
-      ],
-      "contested": false,
-      "submissions": 4,
-      "first_submitted": "2026-08-28T10:52:30+00:00",
-      "last_submitted": "2026-09-09T10:23:47+00:00",
-      "span_hours": 287.52,
-      "same_day_repeats": 1,
-      "final_state": "accepted",
-      "states_seen": [
-        "accepted"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-28T10:52:30+00:00",
-          "by": "melat.m@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-08T09:57:13+00:00",
-          "by": "melat.m@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-09T09:44:31+00:00",
-          "by": "melat.m@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-09T10:23:47+00:00",
-          "by": "melat.m@turing.com",
-          "state": "accepted"
-        }
-      ]
-    },
-    {
-      "task": "gen-g818-vendor-recipe-card-completeness-audit",
-      "trainer": "emmanuel.m1@turing.com",
-      "trainers_in_group": [
-        "emmanuel.m1@turing.com",
-        "victor.n4@turing.com"
-      ],
-      "contested": true,
-      "submissions": 3,
-      "first_submitted": "2026-08-28T06:30:17+00:00",
-      "last_submitted": "2026-09-14T22:49:34+00:00",
-      "span_hours": 424.32,
-      "same_day_repeats": 1,
-      "final_state": "legacy_accepted",
-      "states_seen": [
-        "accepted",
-        "legacy_accepted"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-28T06:30:17+00:00",
-          "by": "victor.n4@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-08-28T07:00:53+00:00",
-          "by": "victor.n4@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-14T22:49:34+00:00",
-          "by": "emmanuel.m1@turing.com",
-          "state": "legacy_accepted"
-        }
-      ]
-    },
-    {
-      "task": "live-pin-storage-chargeback-tally",
-      "trainer": "bhargav.k@turing.com",
-      "trainers_in_group": [
-        "bhargav.k@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-28T06:19:29+00:00",
-      "last_submitted": "2026-08-29T08:01:38+00:00",
-      "span_hours": 25.7,
-      "same_day_repeats": 0,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-28T06:19:29+00:00",
-          "by": "bhargav.k@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-29T08:01:38+00:00",
-          "by": "bhargav.k@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "review-board-label-state-reconciliation-20260821t123303z-1-001",
-      "trainer": "bilal.s1@turing.com",
-      "trainers_in_group": [
-        "bilal.s1@turing.com"
-      ],
-      "contested": false,
       "submissions": 6,
-      "first_submitted": "2026-08-27T15:59:00+00:00",
-      "last_submitted": "2026-09-13T18:18:17+00:00",
-      "span_hours": 410.32,
-      "same_day_repeats": 0,
-      "final_state": "accepted",
-      "states_seen": [
-        "accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-27T15:59:00+00:00",
-          "by": "bilal.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-29T13:32:12+00:00",
-          "by": "bilal.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-02T09:22:58+00:00",
-          "by": "bilal.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-03T16:44:34+00:00",
-          "by": "bilal.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-11T22:05:40+00:00",
-          "by": "bilal.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-13T18:18:17+00:00",
-          "by": "bilal.s1@turing.com",
-          "state": "accepted"
-        }
-      ]
-    },
-    {
-      "task": "health-h107-equine-therapy-session-compliance-audit",
-      "trainer": "shwetank.c@turing.com",
-      "trainers_in_group": [
-        "shwetank.c@turing.com"
-      ],
-      "contested": false,
-      "submissions": 3,
-      "first_submitted": "2026-09-02T08:44:58+00:00",
-      "last_submitted": "2026-09-06T12:57:00+00:00",
-      "span_hours": 100.2,
-      "same_day_repeats": 0,
-      "final_state": "accepted",
-      "states_seen": [
-        "accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-09-02T08:44:58+00:00",
-          "by": "shwetank.c@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-05T07:24:53+00:00",
-          "by": "shwetank.c@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-06T12:57:00+00:00",
-          "by": "shwetank.c@turing.com",
-          "state": "accepted"
-        }
-      ]
-    },
-    {
-      "task": "law-l6-permit-compliance-matrix",
-      "trainer": "thamizh.k@turing.com",
-      "trainers_in_group": [
-        "thamizh.k@turing.com"
-      ],
-      "contested": false,
-      "submissions": 4,
-      "first_submitted": "2026-08-27T10:15:13+00:00",
-      "last_submitted": "2026-09-15T17:52:11+00:00",
-      "span_hours": 463.62,
-      "same_day_repeats": 0,
+      "first_submitted": "2026-08-26T06:51:13+00:00",
+      "last_submitted": "2026-09-02T18:30:16+00:00",
+      "span_hours": 179.65,
+      "same_day_repeats": 1,
       "final_state": "rejected",
-      "states_seen": [
-        "error",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-27T10:15:13+00:00",
-          "by": "thamizh.k@turing.com",
-          "state": "error"
-        },
-        {
-          "at": "2026-08-30T15:44:06+00:00",
-          "by": "thamizh.k@turing.com",
-          "state": "error"
-        },
-        {
-          "at": "2026-09-03T18:53:36+00:00",
-          "by": "thamizh.k@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-15T17:52:11+00:00",
-          "by": "thamizh.k@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "task-100550-verify-missing-200-joint-account-transfer-to-external-bank-for-user-91",
-      "trainer": "dawit.h2@turing.com",
-      "trainers_in_group": [
-        "dawit.h2@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-28T02:24:30+00:00",
-      "last_submitted": "2026-08-29T16:31:16+00:00",
-      "span_hours": 38.11,
-      "same_day_repeats": 0,
-      "final_state": "error",
-      "states_seen": [
-        "error",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-28T02:24:30+00:00",
-          "by": "dawit.h2@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-29T16:31:16+00:00",
-          "by": "dawit.h2@turing.com",
-          "state": "error"
-        }
-      ]
-    },
-    {
-      "task": "idea-board-planning-readiness-count",
-      "trainer": "pranav.u@turing.com",
-      "trainers_in_group": [
-        "pranav.u@turing.com"
-      ],
-      "contested": false,
-      "submissions": 3,
-      "first_submitted": "2026-08-28T12:40:52+00:00",
-      "last_submitted": "2026-08-30T16:00:57+00:00",
-      "span_hours": 51.33,
-      "same_day_repeats": 0,
-      "final_state": "legacy_accepted",
       "states_seen": [
         "legacy_accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-28T12:40:52+00:00",
-          "by": "pranav.u@turing.com",
+          "at": "2026-08-26T06:51:13+00:00",
+          "by": "muhammad.y7@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-29T19:22:35+00:00",
-          "by": "pranav.u@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T16:00:57+00:00",
-          "by": "pranav.u@turing.com",
+          "at": "2026-08-27T22:10:25+00:00",
+          "by": "muhammad.y7@turing.com",
           "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-08-31T18:45:21+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-31T22:04:06+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-01T13:25:48+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-02T18:30:16+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
         }
       ]
     },
@@ -631,16 +312,16 @@
       ]
     },
     {
-      "task": "gen-g103-customer-credit-limit-hold-audit",
-      "trainer": "hamna.n1@turing.com",
+      "task": "recurring-idea-themes-across-the-board",
+      "trainer": "kashif.m@turing.com",
       "trainers_in_group": [
-        "hamna.n1@turing.com"
+        "kashif.m@turing.com"
       ],
       "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-28T14:30:43+00:00",
-      "last_submitted": "2026-08-30T19:42:08+00:00",
-      "span_hours": 53.19,
+      "submissions": 3,
+      "first_submitted": "2026-08-27T12:03:27+00:00",
+      "last_submitted": "2026-09-01T11:07:42+00:00",
+      "span_hours": 119.07,
       "same_day_repeats": 0,
       "final_state": "rejected",
       "states_seen": [
@@ -648,188 +329,272 @@
       ],
       "timeline": [
         {
-          "at": "2026-08-28T14:30:43+00:00",
-          "by": "hamna.n1@turing.com",
+          "at": "2026-08-27T12:03:27+00:00",
+          "by": "kashif.m@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-30T19:42:08+00:00",
-          "by": "hamna.n1@turing.com",
+          "at": "2026-08-28T21:52:14+00:00",
+          "by": "kashif.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-01T11:07:42+00:00",
+          "by": "kashif.m@turing.com",
           "state": "rejected"
         }
       ]
     },
     {
-      "task": "code-c780-calendar-recovery-reconciliation",
-      "trainer": "mikias.z@turing.com",
+      "task": "gen-g827-correspondence-summary-redaction-audit",
+      "trainer": "mukund.k@turing.com",
       "trainers_in_group": [
-        "mikias.z@turing.com"
+        "muhammad.a1@turing.com",
+        "mukund.k@turing.com"
       ],
-      "contested": false,
+      "contested": true,
       "submissions": 2,
-      "first_submitted": "2026-08-28T21:11:21+00:00",
-      "last_submitted": "2026-09-13T16:45:56+00:00",
-      "span_hours": 379.58,
+      "first_submitted": "2026-08-31T02:31:38+00:00",
+      "last_submitted": "2026-09-03T21:05:24+00:00",
+      "span_hours": 90.56,
       "same_day_repeats": 0,
-      "final_state": "accepted",
+      "final_state": "rejected",
       "states_seen": [
-        "accepted"
+        "accepted",
+        "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-28T21:11:21+00:00",
-          "by": "mikias.z@turing.com",
+          "at": "2026-08-31T02:31:38+00:00",
+          "by": "muhammad.a1@turing.com",
           "state": "accepted"
         },
         {
-          "at": "2026-09-13T16:45:56+00:00",
-          "by": "mikias.z@turing.com",
-          "state": "accepted"
+          "at": "2026-09-03T21:05:24+00:00",
+          "by": "mukund.k@turing.com",
+          "state": "rejected"
         }
       ]
     },
     {
-      "task": "gen-g812-tenant-notice-period-compliance-audit",
-      "trainer": "srinivas.p2@turing.com",
+      "task": "obi-gen-g763-conference-publication-design-system-audit",
+      "trainer": "adeojo.e1@turing.com",
       "trainers_in_group": [
-        "hamza.c@turing.com",
-        "harshil.suthar@turing.com",
-        "srinivas.p2@turing.com"
+        "adeojo.e1@turing.com"
       ],
-      "contested": true,
-      "submissions": 7,
-      "first_submitted": "2026-08-27T14:07:37+00:00",
-      "last_submitted": "2026-09-15T19:41:39+00:00",
-      "span_hours": 461.57,
-      "same_day_repeats": 1,
-      "final_state": "legacy_accepted",
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-31T19:44:50+00:00",
+      "last_submitted": "2026-09-01T12:30:21+00:00",
+      "span_hours": 16.76,
+      "same_day_repeats": 0,
+      "final_state": "rejected",
       "states_seen": [
-        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-31T19:44:50+00:00",
+          "by": "adeojo.e1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-01T12:30:21+00:00",
+          "by": "adeojo.e1@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "superseded-version-storage-footprint",
+      "trainer": "dinesh.s3@turing.com",
+      "trainers_in_group": [
+        "dinesh.s3@turing.com"
+      ],
+      "contested": false,
+      "submissions": 4,
+      "first_submitted": "2026-08-28T06:33:53+00:00",
+      "last_submitted": "2026-09-14T01:35:32+00:00",
+      "span_hours": 403.03,
+      "same_day_repeats": 0,
+      "final_state": "error",
+      "states_seen": [
+        "error",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T06:33:53+00:00",
+          "by": "dinesh.s3@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-09-08T22:35:49+00:00",
+          "by": "dinesh.s3@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-12T19:40:32+00:00",
+          "by": "dinesh.s3@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-14T01:35:32+00:00",
+          "by": "dinesh.s3@turing.com",
+          "state": "error"
+        }
+      ]
+    },
+    {
+      "task": "health-h129-small-group-eligibility-audit",
+      "trainer": "debashis.b@turing.com",
+      "trainers_in_group": [
+        "debashis.b@turing.com"
+      ],
+      "contested": false,
+      "submissions": 6,
+      "first_submitted": "2026-08-27T09:28:18+00:00",
+      "last_submitted": "2026-09-04T02:24:15+00:00",
+      "span_hours": 184.93,
+      "same_day_repeats": 1,
+      "final_state": "rejected",
+      "states_seen": [
         "legacy_accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-27T14:07:37+00:00",
-          "by": "hamza.c@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-08-28T01:38:20+00:00",
-          "by": "srinivas.p2@turing.com",
+          "at": "2026-08-27T09:28:18+00:00",
+          "by": "debashis.b@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-29T03:39:13+00:00",
-          "by": "srinivas.p2@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-03T07:21:32+00:00",
-          "by": "srinivas.p2@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-03T12:42:56+00:00",
-          "by": "hamza.c@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-04T14:38:06+00:00",
-          "by": "harshil.suthar@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-15T19:41:39+00:00",
-          "by": "srinivas.p2@turing.com",
+          "at": "2026-08-28T07:47:24+00:00",
+          "by": "debashis.b@turing.com",
           "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-08-29T10:23:20+00:00",
+          "by": "debashis.b@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T07:16:56+00:00",
+          "by": "debashis.b@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T18:15:50+00:00",
+          "by": "debashis.b@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-04T02:24:15+00:00",
+          "by": "debashis.b@turing.com",
+          "state": "rejected"
         }
       ]
     },
     {
-      "task": "gen-g1208-chapter-event-series-compliance-audit",
-      "trainer": "tarun.s3@turing.com",
+      "task": "law-l89-hcpcs-jcode-assignment-audit",
+      "trainer": "michael.b2@turing.com",
       "trainers_in_group": [
-        "tarun.s3@turing.com"
+        "michael.b2@turing.com"
       ],
       "contested": false,
-      "submissions": 3,
-      "first_submitted": "2026-08-27T16:21:50+00:00",
-      "last_submitted": "2026-09-09T13:50:10+00:00",
-      "span_hours": 309.47,
-      "same_day_repeats": 0,
+      "submissions": 6,
+      "first_submitted": "2026-08-27T12:29:08+00:00",
+      "last_submitted": "2026-09-06T16:20:49+00:00",
+      "span_hours": 243.86,
+      "same_day_repeats": 1,
       "final_state": "accepted",
       "states_seen": [
         "accepted"
       ],
       "timeline": [
         {
-          "at": "2026-08-27T16:21:50+00:00",
-          "by": "tarun.s3@turing.com",
+          "at": "2026-08-27T12:29:08+00:00",
+          "by": "michael.b2@turing.com",
           "state": "accepted"
         },
         {
-          "at": "2026-09-02T14:10:57+00:00",
-          "by": "tarun.s3@turing.com",
+          "at": "2026-08-29T06:55:25+00:00",
+          "by": "michael.b2@turing.com",
           "state": "accepted"
         },
         {
-          "at": "2026-09-09T13:50:10+00:00",
-          "by": "tarun.s3@turing.com",
+          "at": "2026-08-29T23:48:41+00:00",
+          "by": "michael.b2@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-08-31T10:13:59+00:00",
+          "by": "michael.b2@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-05T12:39:52+00:00",
+          "by": "michael.b2@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-06T16:20:49+00:00",
+          "by": "michael.b2@turing.com",
           "state": "accepted"
         }
       ]
     },
     {
-      "task": "j1-mydrive-redundant-copy-crossref",
+      "task": "task_j1_salesops_stale_retention_pin_gap",
+      "trainer": "numair.m1@turing.com",
+      "trainers_in_group": [
+        "numair.m1@turing.com"
+      ],
+      "contested": false,
+      "submissions": 4,
+      "first_submitted": "2026-08-27T14:45:56+00:00",
+      "last_submitted": "2026-09-14T18:27:54+00:00",
+      "span_hours": 435.7,
+      "same_day_repeats": 0,
+      "final_state": "rejected",
+      "states_seen": [
+        "error",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-27T14:45:56+00:00",
+          "by": "numair.m1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-31T18:19:23+00:00",
+          "by": "numair.m1@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-09-04T13:15:09+00:00",
+          "by": "numair.m1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-14T18:27:54+00:00",
+          "by": "numair.m1@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "j1-litigation-version-history-weight-ranked",
       "trainer": "melat.m@turing.com",
       "trainers_in_group": [
         "melat.m@turing.com"
       ],
       "contested": false,
       "submissions": 4,
-      "first_submitted": "2026-08-27T20:04:11+00:00",
-      "last_submitted": "2026-09-03T09:25:55+00:00",
-      "span_hours": 157.36,
-      "same_day_repeats": 1,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-27T20:04:11+00:00",
-          "by": "melat.m@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-28T15:40:37+00:00",
-          "by": "melat.m@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-28T22:25:38+00:00",
-          "by": "melat.m@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-03T09:25:55+00:00",
-          "by": "melat.m@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "unsettled-comment-threads-outsider-voice-audit",
-      "trainer": "dinesh.s3@turing.com",
-      "trainers_in_group": [
-        "dinesh.s3@turing.com"
-      ],
-      "contested": false,
-      "submissions": 5,
-      "first_submitted": "2026-08-28T06:27:54+00:00",
-      "last_submitted": "2026-09-09T03:28:51+00:00",
-      "span_hours": 285.02,
+      "first_submitted": "2026-08-27T07:35:23+00:00",
+      "last_submitted": "2026-09-02T20:04:37+00:00",
+      "span_hours": 156.49,
       "same_day_repeats": 1,
       "final_state": "accepted",
       "states_seen": [
@@ -838,229 +603,138 @@
       ],
       "timeline": [
         {
-          "at": "2026-08-28T06:27:54+00:00",
-          "by": "dinesh.s3@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-02T19:13:50+00:00",
-          "by": "dinesh.s3@turing.com",
+          "at": "2026-08-27T07:35:23+00:00",
+          "by": "melat.m@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-03T12:21:34+00:00",
-          "by": "dinesh.s3@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-09T02:24:16+00:00",
-          "by": "dinesh.s3@turing.com",
+          "at": "2026-08-27T21:32:21+00:00",
+          "by": "melat.m@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-09T03:28:51+00:00",
-          "by": "dinesh.s3@turing.com",
+          "at": "2026-08-28T09:55:14+00:00",
+          "by": "melat.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-02T20:04:37+00:00",
+          "by": "melat.m@turing.com",
           "state": "accepted"
         }
       ]
     },
     {
-      "task": "gen-g872-bulk-unit-discount-eligibility-audit",
-      "trainer": "anushka.s1@turing.com",
+      "task": "flagged-it-and-nobody-came-back",
+      "trainer": "gabriel.o6@turing.com",
       "trainers_in_group": [
-        "anushka.s1@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-26T15:20:44+00:00",
-      "last_submitted": "2026-08-28T15:03:21+00:00",
-      "span_hours": 47.71,
-      "same_day_repeats": 0,
-      "final_state": "rejected",
-      "states_seen": [
-        "accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-26T15:20:44+00:00",
-          "by": "anushka.s1@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-08-28T15:03:21+00:00",
-          "by": "anushka.s1@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "gen-g740-invoice-due-date-policy-audit",
-      "trainer": "suraj.wavhal@turing.com",
-      "trainers_in_group": [
-        "suraj.wavhal@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-09-02T09:17:09+00:00",
-      "last_submitted": "2026-09-03T04:35:38+00:00",
-      "span_hours": 19.31,
-      "same_day_repeats": 0,
-      "final_state": "legacy_accepted",
-      "states_seen": [
-        "legacy_accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-09-02T09:17:09+00:00",
-          "by": "suraj.wavhal@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-03T04:35:38+00:00",
-          "by": "suraj.wavhal@turing.com",
-          "state": "legacy_accepted"
-        }
-      ]
-    },
-    {
-      "task": "uncovered-release-window-enforcement",
-      "trainer": "yohannes.m2@turing.com",
-      "trainers_in_group": [
-        "yohannes.m2@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-29T23:43:48+00:00",
-      "last_submitted": "2026-09-04T20:17:22+00:00",
-      "span_hours": 140.56,
-      "same_day_repeats": 0,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-29T23:43:48+00:00",
-          "by": "yohannes.m2@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-04T20:17:22+00:00",
-          "by": "yohannes.m2@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "gen-g753-state-park-blog-affiliate-link-audit",
-      "trainer": "pranjal.v@turing.com",
-      "trainers_in_group": [
-        "pranjal.v@turing.com",
-        "suraj.wavhal@turing.com"
-      ],
-      "contested": true,
-      "submissions": 8,
-      "first_submitted": "2026-08-27T03:43:32+00:00",
-      "last_submitted": "2026-09-14T19:38:21+00:00",
-      "span_hours": 447.91,
-      "same_day_repeats": 2,
-      "final_state": "legacy_accepted",
-      "states_seen": [
-        "accepted",
-        "legacy_accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-27T03:43:32+00:00",
-          "by": "suraj.wavhal@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-29T04:49:54+00:00",
-          "by": "suraj.wavhal@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-02T12:57:09+00:00",
-          "by": "suraj.wavhal@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-02T17:08:02+00:00",
-          "by": "suraj.wavhal@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-03T05:04:57+00:00",
-          "by": "suraj.wavhal@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-03T07:05:07+00:00",
-          "by": "suraj.wavhal@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-04T00:08:07+00:00",
-          "by": "suraj.wavhal@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-14T19:38:21+00:00",
-          "by": "pranjal.v@turing.com",
-          "state": "legacy_accepted"
-        }
-      ]
-    },
-    {
-      "task": "health-tdt3-a8-gastric-balloon-regulatory-timeline",
-      "trainer": "monty.d2@turing.com",
-      "trainers_in_group": [
-        "monty.d2@turing.com"
+        "gabriel.o6@turing.com"
       ],
       "contested": false,
       "submissions": 3,
-      "first_submitted": "2026-09-15T13:42:47+00:00",
-      "last_submitted": "2026-09-17T04:41:01+00:00",
-      "span_hours": 38.97,
-      "same_day_repeats": 1,
+      "first_submitted": "2026-09-04T06:50:57+00:00",
+      "last_submitted": "2026-09-15T02:58:35+00:00",
+      "span_hours": 260.13,
+      "same_day_repeats": 0,
       "final_state": "rejected",
       "states_seen": [
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-09-15T13:42:47+00:00",
-          "by": "monty.d2@turing.com",
+          "at": "2026-09-04T06:50:57+00:00",
+          "by": "gabriel.o6@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-17T02:23:27+00:00",
-          "by": "monty.d2@turing.com",
+          "at": "2026-09-13T03:56:31+00:00",
+          "by": "gabriel.o6@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-17T04:41:01+00:00",
-          "by": "monty.d2@turing.com",
+          "at": "2026-09-15T02:58:35+00:00",
+          "by": "gabriel.o6@turing.com",
           "state": "rejected"
         }
       ]
     },
     {
-      "task": "gen-g722-acquisition-earnout-milestone-audit",
-      "trainer": "ali.b@turing.com",
+      "task": "gen-g1114-certification-domain-score-audit",
+      "trainer": "ali.h14@turing.com",
       "trainers_in_group": [
-        "ali.b@turing.com",
-        "haseeb.s2@turing.com"
+        "ali.h14@turing.com"
+      ],
+      "contested": false,
+      "submissions": 3,
+      "first_submitted": "2026-09-15T06:52:12+00:00",
+      "last_submitted": "2026-09-17T15:29:20+00:00",
+      "span_hours": 56.62,
+      "same_day_repeats": 1,
+      "final_state": "running",
+      "states_seen": [
+        "rejected",
+        "running"
+      ],
+      "timeline": [
+        {
+          "at": "2026-09-15T06:52:12+00:00",
+          "by": "ali.h14@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-17T07:26:56+00:00",
+          "by": "ali.h14@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-17T15:29:20+00:00",
+          "by": "ali.h14@turing.com",
+          "state": "running"
+        }
+      ]
+    },
+    {
+      "task": "code-c781-recurring-calendar-item-audit",
+      "trainer": "gideon.b@turing.com",
+      "trainers_in_group": [
+        "gideon.b@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-30T14:00:37+00:00",
+      "last_submitted": "2026-08-30T15:42:41+00:00",
+      "span_hours": 1.7,
+      "same_day_repeats": 1,
+      "final_state": "legacy_accepted",
+      "states_seen": [
+        "legacy_accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-30T14:00:37+00:00",
+          "by": "gideon.b@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-30T15:42:41+00:00",
+          "by": "gideon.b@turing.com",
+          "state": "legacy_accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g823-variety-trial-report-cadence-audit",
+      "trainer": "opeyemi.o2@turing.com",
+      "trainers_in_group": [
+        "krishna.b@turing.com",
+        "opeyemi.o2@turing.com"
       ],
       "contested": true,
-      "submissions": 5,
-      "first_submitted": "2026-08-26T20:41:11+00:00",
-      "last_submitted": "2026-09-13T16:24:39+00:00",
-      "span_hours": 427.72,
+      "submissions": 7,
+      "first_submitted": "2026-08-27T11:10:49+00:00",
+      "last_submitted": "2026-09-09T08:17:16+00:00",
+      "span_hours": 309.11,
       "same_day_repeats": 1,
       "final_state": "legacy_accepted",
       "states_seen": [
@@ -1070,29 +744,376 @@
       ],
       "timeline": [
         {
-          "at": "2026-08-26T20:41:11+00:00",
-          "by": "haseeb.s2@turing.com",
+          "at": "2026-08-27T11:10:49+00:00",
+          "by": "krishna.b@turing.com",
           "state": "accepted"
         },
         {
-          "at": "2026-08-27T23:17:24+00:00",
-          "by": "ali.b@turing.com",
+          "at": "2026-08-28T07:24:04+00:00",
+          "by": "krishna.b@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-28T21:07:34+00:00",
-          "by": "ali.b@turing.com",
+          "at": "2026-08-29T07:25:10+00:00",
+          "by": "opeyemi.o2@turing.com",
           "state": "accepted"
         },
         {
-          "at": "2026-08-28T22:42:18+00:00",
-          "by": "ali.b@turing.com",
-          "state": "accepted"
+          "at": "2026-08-29T14:11:54+00:00",
+          "by": "opeyemi.o2@turing.com",
+          "state": "rejected"
         },
         {
-          "at": "2026-09-13T16:24:39+00:00",
-          "by": "ali.b@turing.com",
+          "at": "2026-09-04T06:22:43+00:00",
+          "by": "krishna.b@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-08T02:57:49+00:00",
+          "by": "opeyemi.o2@turing.com",
           "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-09-09T08:17:16+00:00",
+          "by": "opeyemi.o2@turing.com",
+          "state": "legacy_accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g1218-dealership-ad-compliance-audit",
+      "trainer": "mikias.z@turing.com",
+      "trainers_in_group": [
+        "mikias.z@turing.com"
+      ],
+      "contested": false,
+      "submissions": 4,
+      "first_submitted": "2026-08-28T09:08:12+00:00",
+      "last_submitted": "2026-09-12T13:52:00+00:00",
+      "span_hours": 364.73,
+      "same_day_repeats": 1,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T09:08:12+00:00",
+          "by": "mikias.z@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-30T09:39:41+00:00",
+          "by": "mikias.z@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-30T12:53:00+00:00",
+          "by": "mikias.z@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-12T13:52:00+00:00",
+          "by": "mikias.z@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "law-b38-l4-docket-case-status-reconstruction",
+      "trainer": "hamza.c@turing.com",
+      "trainers_in_group": [
+        "hamza.c@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-09-16T08:30:47+00:00",
+      "last_submitted": "2026-09-17T12:24:33+00:00",
+      "span_hours": 27.9,
+      "same_day_repeats": 0,
+      "final_state": "rejected",
+      "states_seen": [
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-09-16T08:30:47+00:00",
+          "by": "hamza.c@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-17T12:24:33+00:00",
+          "by": "hamza.c@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "verify-duplicate-13-17-smashburger-charge-dispute-for-account-2898",
+      "trainer": "segni.d@turing.com",
+      "trainers_in_group": [
+        "segni.d@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-31T17:41:58+00:00",
+      "last_submitted": "2026-09-02T20:11:58+00:00",
+      "span_hours": 50.5,
+      "same_day_repeats": 0,
+      "final_state": "error",
+      "states_seen": [
+        "error",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-31T17:41:58+00:00",
+          "by": "segni.d@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-02T20:11:58+00:00",
+          "by": "segni.d@turing.com",
+          "state": "error"
+        }
+      ]
+    },
+    {
+      "task": "gen-g887-spa-menu-card-relaunch-audit",
+      "trainer": "junaid.s1@turing.com",
+      "trainers_in_group": [
+        "junaid.s1@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-29T18:14:03+00:00",
+      "last_submitted": "2026-08-29T19:42:50+00:00",
+      "span_hours": 1.48,
+      "same_day_repeats": 1,
+      "final_state": "rejected",
+      "states_seen": [
+        "error",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-29T18:14:03+00:00",
+          "by": "junaid.s1@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-08-29T19:42:50+00:00",
+          "by": "junaid.s1@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "gen-g749-grant-report-revision-confirmation-audit",
+      "trainer": "eyob.t@turing.com",
+      "trainers_in_group": [
+        "eyob.t@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-09-11T12:43:17+00:00",
+      "last_submitted": "2026-09-11T23:43:40+00:00",
+      "span_hours": 11.01,
+      "same_day_repeats": 1,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-09-11T12:43:17+00:00",
+          "by": "eyob.t@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-11T23:43:40+00:00",
+          "by": "eyob.t@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "verify-companion-application-33605-lifecycle-on-account-10991",
+      "trainer": "shan.a1@turing.com",
+      "trainers_in_group": [
+        "shan.a1@turing.com"
+      ],
+      "contested": false,
+      "submissions": 4,
+      "first_submitted": "2026-08-25T15:41:34+00:00",
+      "last_submitted": "2026-09-10T06:44:41+00:00",
+      "span_hours": 375.05,
+      "same_day_repeats": 0,
+      "final_state": "rejected",
+      "states_seen": [
+        "accepted",
+        "error",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-25T15:41:34+00:00",
+          "by": "shan.a1@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-08-27T19:12:28+00:00",
+          "by": "shan.a1@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-09-03T12:07:35+00:00",
+          "by": "shan.a1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-10T06:44:41+00:00",
+          "by": "shan.a1@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "gen-g760-swahili-report-restructuring-audit",
+      "trainer": "bhola.y@turing.com",
+      "trainers_in_group": [
+        "bhola.y@turing.com"
+      ],
+      "contested": false,
+      "submissions": 5,
+      "first_submitted": "2026-08-27T13:01:36+00:00",
+      "last_submitted": "2026-09-13T10:47:23+00:00",
+      "span_hours": 405.76,
+      "same_day_repeats": 1,
+      "final_state": "error",
+      "states_seen": [
+        "accepted",
+        "error",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-27T13:01:36+00:00",
+          "by": "bhola.y@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-10T15:13:08+00:00",
+          "by": "bhola.y@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-12T05:07:38+00:00",
+          "by": "bhola.y@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-12T19:22:04+00:00",
+          "by": "bhola.y@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-13T10:47:23+00:00",
+          "by": "bhola.y@turing.com",
+          "state": "error"
+        }
+      ]
+    },
+    {
+      "task": "ideas-board-triage-and-stray-copies",
+      "trainer": "govind.v1@turing.com",
+      "trainers_in_group": [
+        "govind.v1@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-28T14:57:03+00:00",
+      "last_submitted": "2026-08-30T19:11:25+00:00",
+      "span_hours": 52.24,
+      "same_day_repeats": 0,
+      "final_state": "error",
+      "states_seen": [
+        "error"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T14:57:03+00:00",
+          "by": "govind.v1@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-08-30T19:11:25+00:00",
+          "by": "govind.v1@turing.com",
+          "state": "error"
+        }
+      ]
+    },
+    {
+      "task": "gen-g729-social-campaign-phase-gate-audit",
+      "trainer": "srinivas.p2@turing.com",
+      "trainers_in_group": [
+        "alelgne.b@turing.com",
+        "srinivas.p2@turing.com"
+      ],
+      "contested": true,
+      "submissions": 8,
+      "first_submitted": "2026-08-27T05:27:31+00:00",
+      "last_submitted": "2026-09-15T16:17:50+00:00",
+      "span_hours": 466.84,
+      "same_day_repeats": 1,
+      "final_state": "rejected",
+      "states_seen": [
+        "accepted",
+        "legacy_accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-27T05:27:31+00:00",
+          "by": "srinivas.p2@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-28T03:21:56+00:00",
+          "by": "alelgne.b@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-02T14:16:14+00:00",
+          "by": "alelgne.b@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T07:20:52+00:00",
+          "by": "srinivas.p2@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-10T01:04:11+00:00",
+          "by": "srinivas.p2@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-09-14T11:47:00+00:00",
+          "by": "srinivas.p2@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-14T13:33:40+00:00",
+          "by": "srinivas.p2@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-15T16:17:50+00:00",
+          "by": "srinivas.p2@turing.com",
+          "state": "rejected"
         }
       ]
     },
@@ -1188,35 +1209,36 @@
       ]
     },
     {
-      "task": "gen-g972-franchise-signage-brandmark-recreation-audit-modified",
-      "trainer": "shivam.s18@turing.com",
+      "task": "gen-g980-greenhouse-as-built-compliance-audit-v3-final-staging-20260903",
+      "trainer": "istiak.a@turing.com",
       "trainers_in_group": [
-        "shivam.s18@turing.com"
+        "istiak.a@turing.com"
       ],
       "contested": false,
       "submissions": 3,
-      "first_submitted": "2026-09-02T21:08:36+00:00",
-      "last_submitted": "2026-09-03T15:33:17+00:00",
-      "span_hours": 18.41,
+      "first_submitted": "2026-09-03T15:40:52+00:00",
+      "last_submitted": "2026-09-14T11:14:03+00:00",
+      "span_hours": 259.55,
       "same_day_repeats": 1,
       "final_state": "rejected",
       "states_seen": [
+        "accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-09-02T21:08:36+00:00",
-          "by": "shivam.s18@turing.com",
+          "at": "2026-09-03T15:40:52+00:00",
+          "by": "istiak.a@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-03T19:29:06+00:00",
+          "by": "istiak.a@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-03T14:38:40+00:00",
-          "by": "shivam.s18@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-03T15:33:17+00:00",
-          "by": "shivam.s18@turing.com",
+          "at": "2026-09-14T11:14:03+00:00",
+          "by": "istiak.a@turing.com",
           "state": "rejected"
         }
       ]
@@ -1251,46 +1273,200 @@
       ]
     },
     {
-      "task": "daily-ofac-canary-determine-next-step-for-user-49-with-no-monitoring-e",
-      "trainer": "rishabh.p1@turing.com",
+      "task": "dark-mode-rollout-what-actually-landed",
+      "trainer": "zeeshan.i@turing.com",
       "trainers_in_group": [
-        "rishabh.p1@turing.com"
+        "zeeshan.i@turing.com"
       ],
       "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-31T16:42:54+00:00",
-      "last_submitted": "2026-09-04T04:53:54+00:00",
-      "span_hours": 84.18,
+      "submissions": 3,
+      "first_submitted": "2026-08-27T16:07:38+00:00",
+      "last_submitted": "2026-09-14T18:30:55+00:00",
+      "span_hours": 434.39,
       "same_day_repeats": 0,
       "final_state": "rejected",
       "states_seen": [
-        "error",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-31T16:42:54+00:00",
-          "by": "rishabh.p1@turing.com",
-          "state": "error"
+          "at": "2026-08-27T16:07:38+00:00",
+          "by": "zeeshan.i@turing.com",
+          "state": "rejected"
         },
         {
-          "at": "2026-09-04T04:53:54+00:00",
-          "by": "rishabh.p1@turing.com",
+          "at": "2026-08-30T11:57:44+00:00",
+          "by": "zeeshan.i@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-14T18:30:55+00:00",
+          "by": "zeeshan.i@turing.com",
           "state": "rejected"
         }
       ]
     },
     {
-      "task": "gen-g953-channel-icon-delivery-spec-audit-modified",
-      "trainer": "shepherd.u@turing.com",
+      "task": "gen-g961-mls-listing-photo-edit-disclosure-audit",
+      "trainer": "lelisa.m@turing.com",
       "trainers_in_group": [
-        "shepherd.u@turing.com"
+        "lelisa.m@turing.com"
       ],
       "contested": false,
       "submissions": 2,
-      "first_submitted": "2026-09-02T16:38:46+00:00",
-      "last_submitted": "2026-09-02T21:23:11+00:00",
-      "span_hours": 4.74,
+      "first_submitted": "2026-08-27T13:16:34+00:00",
+      "last_submitted": "2026-09-08T20:27:17+00:00",
+      "span_hours": 295.18,
+      "same_day_repeats": 0,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-27T13:16:34+00:00",
+          "by": "lelisa.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-08T20:27:17+00:00",
+          "by": "lelisa.m@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "roadmap-chain-delivery-attestation",
+      "trainer": "segni.d@turing.com",
+      "trainers_in_group": [
+        "segni.d@turing.com"
+      ],
+      "contested": false,
+      "submissions": 4,
+      "first_submitted": "2026-08-28T09:33:30+00:00",
+      "last_submitted": "2026-09-17T05:13:16+00:00",
+      "span_hours": 475.66,
+      "same_day_repeats": 0,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T09:33:30+00:00",
+          "by": "segni.d@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-04T12:35:11+00:00",
+          "by": "segni.d@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-16T03:34:13+00:00",
+          "by": "segni.d@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-17T05:13:16+00:00",
+          "by": "segni.d@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g212-photo-qc-review-audit",
+      "trainer": "shubhankar.p1@turing.com",
+      "trainers_in_group": [
+        "shubhankar.p1@turing.com"
+      ],
+      "contested": false,
+      "submissions": 5,
+      "first_submitted": "2026-09-01T17:32:43+00:00",
+      "last_submitted": "2026-09-15T04:00:07+00:00",
+      "span_hours": 322.46,
+      "same_day_repeats": 1,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-09-01T17:32:43+00:00",
+          "by": "shubhankar.p1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T06:47:08+00:00",
+          "by": "shubhankar.p1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T10:35:57+00:00",
+          "by": "shubhankar.p1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-13T07:59:56+00:00",
+          "by": "shubhankar.p1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-15T04:00:07+00:00",
+          "by": "shubhankar.p1@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "idea-board-planning-readiness-count",
+      "trainer": "pranav.u@turing.com",
+      "trainers_in_group": [
+        "pranav.u@turing.com"
+      ],
+      "contested": false,
+      "submissions": 3,
+      "first_submitted": "2026-08-28T12:40:52+00:00",
+      "last_submitted": "2026-08-30T16:00:57+00:00",
+      "span_hours": 51.33,
+      "same_day_repeats": 0,
+      "final_state": "legacy_accepted",
+      "states_seen": [
+        "legacy_accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T12:40:52+00:00",
+          "by": "pranav.u@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-29T19:22:35+00:00",
+          "by": "pranav.u@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-30T16:00:57+00:00",
+          "by": "pranav.u@turing.com",
+          "state": "legacy_accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g97-noncompete-enforceability-audit",
+      "trainer": "ashutosh.m3@turing.com",
+      "trainers_in_group": [
+        "ashutosh.m3@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-29T12:26:24+00:00",
+      "last_submitted": "2026-08-29T13:15:32+00:00",
+      "span_hours": 0.82,
       "same_day_repeats": 1,
       "final_state": "legacy_accepted",
       "states_seen": [
@@ -1299,162 +1475,48 @@
       ],
       "timeline": [
         {
-          "at": "2026-09-02T16:38:46+00:00",
-          "by": "shepherd.u@turing.com",
+          "at": "2026-08-29T12:26:24+00:00",
+          "by": "ashutosh.m3@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-02T21:23:11+00:00",
-          "by": "shepherd.u@turing.com",
+          "at": "2026-08-29T13:15:32+00:00",
+          "by": "ashutosh.m3@turing.com",
           "state": "legacy_accepted"
         }
       ]
     },
     {
-      "task": "reconstruct-lifecycle-of-issued-check-10050-1-425-00-now-in-cleared-st",
-      "trainer": "mohammad.f2@turing.com",
+      "task": "diagnose-declined-card-verification-attempt-on-card-24745-oct-25",
+      "trainer": "hamza.k@turing.com",
       "trainers_in_group": [
-        "mohammad.f2@turing.com"
+        "hamza.k@turing.com"
       ],
       "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-27T19:44:23+00:00",
-      "last_submitted": "2026-09-04T14:28:05+00:00",
-      "span_hours": 186.73,
+      "submissions": 3,
+      "first_submitted": "2026-08-27T14:54:00+00:00",
+      "last_submitted": "2026-09-10T13:52:48+00:00",
+      "span_hours": 334.98,
       "same_day_repeats": 0,
-      "final_state": "error",
+      "final_state": "rejected",
       "states_seen": [
-        "error",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-27T19:44:23+00:00",
-          "by": "mohammad.f2@turing.com",
+          "at": "2026-08-27T14:54:00+00:00",
+          "by": "hamza.k@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-04T14:28:05+00:00",
-          "by": "mohammad.f2@turing.com",
-          "state": "error"
-        }
-      ]
-    },
-    {
-      "task": "gen-g190-rent-roll-lease-abstract-reconcile",
-      "trainer": "vanshika.d@turing.com",
-      "trainers_in_group": [
-        "vanshika.d@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-30T01:22:09+00:00",
-      "last_submitted": "2026-09-13T09:36:54+00:00",
-      "span_hours": 344.25,
-      "same_day_repeats": 0,
-      "final_state": "accepted",
-      "states_seen": [
-        "accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-30T01:22:09+00:00",
-          "by": "vanshika.d@turing.com",
+          "at": "2026-09-09T20:29:32+00:00",
+          "by": "hamza.k@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-13T09:36:54+00:00",
-          "by": "vanshika.d@turing.com",
-          "state": "accepted"
-        }
-      ]
-    },
-    {
-      "task": "health-tdt3-a4-fat-graft-claim-reimbursement-audit",
-      "trainer": "abdullah.c1@turing.com",
-      "trainers_in_group": [
-        "abdullah.c1@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-09-14T03:41:03+00:00",
-      "last_submitted": "2026-09-14T09:50:57+00:00",
-      "span_hours": 6.17,
-      "same_day_repeats": 1,
-      "final_state": "accepted",
-      "states_seen": [
-        "accepted"
-      ],
-      "timeline": [
-        {
-          "at": "2026-09-14T03:41:03+00:00",
-          "by": "abdullah.c1@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-14T09:50:57+00:00",
-          "by": "abdullah.c1@turing.com",
-          "state": "accepted"
-        }
-      ]
-    },
-    {
-      "task": "gen-g96-title-insurance-premium-audit",
-      "trainer": "zaid.b@turing.com",
-      "trainers_in_group": [
-        "zaid.b@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-27T09:03:52+00:00",
-      "last_submitted": "2026-08-28T13:26:48+00:00",
-      "span_hours": 28.38,
-      "same_day_repeats": 0,
-      "final_state": "legacy_accepted",
-      "states_seen": [
-        "legacy_accepted"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-27T09:03:52+00:00",
-          "by": "zaid.b@turing.com",
-          "state": "legacy_accepted"
-        },
-        {
-          "at": "2026-08-28T13:26:48+00:00",
-          "by": "zaid.b@turing.com",
-          "state": "legacy_accepted"
-        }
-      ]
-    },
-    {
-      "task": "diagnose-declined-21-19-chip-pin-purchase-on-card-42577-for-cardholder",
-      "trainer": "rishabh.p1@turing.com",
-      "trainers_in_group": [
-        "rishabh.p1@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-31T10:10:58+00:00",
-      "last_submitted": "2026-09-03T22:22:06+00:00",
-      "span_hours": 84.19,
-      "same_day_repeats": 0,
-      "final_state": "accepted",
-      "states_seen": [
-        "accepted",
-        "error"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-31T10:10:58+00:00",
-          "by": "rishabh.p1@turing.com",
-          "state": "error"
-        },
-        {
-          "at": "2026-09-03T22:22:06+00:00",
-          "by": "rishabh.p1@turing.com",
-          "state": "accepted"
+          "at": "2026-09-10T13:52:48+00:00",
+          "by": "hamza.k@turing.com",
+          "state": "rejected"
         }
       ]
     },
@@ -1584,32 +1646,32 @@
       ]
     },
     {
-      "task": "gen-g556-mls-market-stats-area-routing-audit",
-      "trainer": "mareeswaran.m1@turing.com",
+      "task": "gen-g567-ad-creative-format-audit",
+      "trainer": "reza.z2@turing.com",
       "trainers_in_group": [
-        "mareeswaran.m1@turing.com"
+        "reza.z2@turing.com"
       ],
       "contested": false,
       "submissions": 2,
-      "first_submitted": "2026-08-31T14:46:14+00:00",
-      "last_submitted": "2026-09-03T14:52:43+00:00",
-      "span_hours": 72.11,
+      "first_submitted": "2026-09-01T10:58:43+00:00",
+      "last_submitted": "2026-09-14T18:22:48+00:00",
+      "span_hours": 319.4,
       "same_day_repeats": 0,
-      "final_state": "rejected",
+      "final_state": "error",
       "states_seen": [
-        "legacy_accepted",
+        "error",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-31T14:46:14+00:00",
-          "by": "mareeswaran.m1@turing.com",
-          "state": "legacy_accepted"
+          "at": "2026-09-01T10:58:43+00:00",
+          "by": "reza.z2@turing.com",
+          "state": "rejected"
         },
         {
-          "at": "2026-09-03T14:52:43+00:00",
-          "by": "mareeswaran.m1@turing.com",
-          "state": "rejected"
+          "at": "2026-09-14T18:22:48+00:00",
+          "by": "reza.z2@turing.com",
+          "state": "error"
         }
       ]
     },
@@ -1643,105 +1705,98 @@
       ]
     },
     {
-      "task": "gen-g314-construction-draw-audit",
-      "trainer": "muhammad.e1@turing.com",
+      "task": "gen-g333-vendor-shipment-benchmark-audit",
+      "trainer": "abdullah.m7@turing.com",
       "trainers_in_group": [
-        "muhammad.e1@turing.com"
+        "abdullah.m7@turing.com"
       ],
       "contested": false,
-      "submissions": 6,
-      "first_submitted": "2026-08-27T16:21:01+00:00",
-      "last_submitted": "2026-09-11T18:57:39+00:00",
-      "span_hours": 362.61,
-      "same_day_repeats": 1,
-      "final_state": "rejected",
+      "submissions": 3,
+      "first_submitted": "2026-08-27T06:30:09+00:00",
+      "last_submitted": "2026-09-11T12:32:20+00:00",
+      "span_hours": 366.04,
+      "same_day_repeats": 0,
+      "final_state": "accepted",
       "states_seen": [
+        "accepted",
+        "error",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-27T16:21:01+00:00",
-          "by": "muhammad.e1@turing.com",
+          "at": "2026-08-27T06:30:09+00:00",
+          "by": "abdullah.m7@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-09-04T02:24:45+00:00",
+          "by": "abdullah.m7@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-29T16:25:04+00:00",
-          "by": "muhammad.e1@turing.com",
+          "at": "2026-09-11T12:32:20+00:00",
+          "by": "abdullah.m7@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g963-charity-booth-rack-safety-compliance-audit",
+      "trainer": "abdur.k@turing.com",
+      "trainers_in_group": [
+        "abdur.k@turing.com"
+      ],
+      "contested": false,
+      "submissions": 5,
+      "first_submitted": "2026-08-28T20:02:05+00:00",
+      "last_submitted": "2026-09-13T15:48:34+00:00",
+      "span_hours": 379.77,
+      "same_day_repeats": 0,
+      "final_state": "rejected",
+      "states_seen": [
+        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T20:02:05+00:00",
+          "by": "abdur.k@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-08-31T18:26:11+00:00",
+          "by": "abdur.k@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-30T19:14:16+00:00",
-          "by": "muhammad.e1@turing.com",
+          "at": "2026-09-02T16:37:02+00:00",
+          "by": "abdur.k@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-02T12:01:43+00:00",
-          "by": "muhammad.e1@turing.com",
+          "at": "2026-09-03T12:02:54+00:00",
+          "by": "abdur.k@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-02T19:17:16+00:00",
-          "by": "muhammad.e1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-11T18:57:39+00:00",
-          "by": "muhammad.e1@turing.com",
+          "at": "2026-09-13T15:48:34+00:00",
+          "by": "abdur.k@turing.com",
           "state": "rejected"
         }
       ]
     },
     {
-      "task": "gen-g955-render-revision-scope-compliance-audit-modified",
-      "trainer": "shepherd.u@turing.com",
+      "task": "gen-g1173-workday-application-validation-audit",
+      "trainer": "reza.z2@turing.com",
       "trainers_in_group": [
-        "shepherd.u@turing.com"
+        "reza.z2@turing.com"
       ],
       "contested": false,
-      "submissions": 4,
-      "first_submitted": "2026-09-02T14:05:28+00:00",
-      "last_submitted": "2026-09-07T02:48:42+00:00",
-      "span_hours": 108.72,
-      "same_day_repeats": 1,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-09-02T14:05:28+00:00",
-          "by": "shepherd.u@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-03T14:17:33+00:00",
-          "by": "shepherd.u@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-03T17:27:56+00:00",
-          "by": "shepherd.u@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-07T02:48:42+00:00",
-          "by": "shepherd.u@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "gen-g1160-docx-pdf-conversion-naming-audit",
-      "trainer": "zia.r@turing.com",
-      "trainers_in_group": [
-        "zia.r@turing.com"
-      ],
-      "contested": false,
-      "submissions": 4,
-      "first_submitted": "2026-08-28T13:41:38+00:00",
-      "last_submitted": "2026-09-08T13:50:20+00:00",
-      "span_hours": 264.14,
-      "same_day_repeats": 1,
+      "submissions": 2,
+      "first_submitted": "2026-08-27T17:39:59+00:00",
+      "last_submitted": "2026-09-12T00:51:30+00:00",
+      "span_hours": 367.19,
+      "same_day_repeats": 0,
       "final_state": "accepted",
       "states_seen": [
         "accepted",
@@ -1749,89 +1804,95 @@
       ],
       "timeline": [
         {
-          "at": "2026-08-28T13:41:38+00:00",
-          "by": "zia.r@turing.com",
+          "at": "2026-08-27T17:39:59+00:00",
+          "by": "reza.z2@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-02T09:28:30+00:00",
-          "by": "zia.r@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-02T11:50:06+00:00",
-          "by": "zia.r@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-08T13:50:20+00:00",
-          "by": "zia.r@turing.com",
+          "at": "2026-09-12T00:51:30+00:00",
+          "by": "reza.z2@turing.com",
           "state": "accepted"
         }
       ]
     },
     {
-      "task": "gen-g727-multi-stream-revenue-recognition-audit",
-      "trainer": "rajoka.a@turing.com",
+      "task": "gen-g734-cms-publish-readiness-audit",
+      "trainer": "maruthi.g@turing.com",
       "trainers_in_group": [
-        "rajoka.a@turing.com",
-        "syed.r1@turing.com"
+        "maruthi.g@turing.com",
+        "muhammad.y7@turing.com"
       ],
       "contested": true,
       "submissions": 3,
-      "first_submitted": "2026-08-28T08:56:39+00:00",
-      "last_submitted": "2026-09-02T16:35:16+00:00",
-      "span_hours": 127.64,
+      "first_submitted": "2026-08-27T22:41:53+00:00",
+      "last_submitted": "2026-09-12T04:20:04+00:00",
+      "span_hours": 365.64,
       "same_day_repeats": 0,
-      "final_state": "legacy_accepted",
+      "final_state": "accepted",
       "states_seen": [
-        "legacy_accepted",
+        "accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-28T08:56:39+00:00",
-          "by": "syed.r1@turing.com",
-          "state": "legacy_accepted"
+          "at": "2026-08-27T22:41:53+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "accepted"
         },
         {
-          "at": "2026-09-01T11:08:47+00:00",
-          "by": "rajoka.a@turing.com",
+          "at": "2026-09-02T19:35:17+00:00",
+          "by": "muhammad.y7@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-02T16:35:16+00:00",
-          "by": "rajoka.a@turing.com",
-          "state": "legacy_accepted"
+          "at": "2026-09-12T04:20:04+00:00",
+          "by": "maruthi.g@turing.com",
+          "state": "accepted"
         }
       ]
     },
     {
-      "task": "spring-release-rollout-live-check",
-      "trainer": "kashif.m@turing.com",
+      "task": "task_atm_200_withdrawal_declined_on_card_50732_customer_disputes_pin_entry",
+      "trainer": "bhargav.c@turing.com",
       "trainers_in_group": [
-        "kashif.m@turing.com"
+        "bhargav.c@turing.com"
       ],
       "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-27T12:03:35+00:00",
-      "last_submitted": "2026-08-28T21:54:56+00:00",
-      "span_hours": 33.86,
+      "submissions": 5,
+      "first_submitted": "2026-08-27T06:14:52+00:00",
+      "last_submitted": "2026-09-01T07:53:12+00:00",
+      "span_hours": 121.64,
       "same_day_repeats": 0,
-      "final_state": "rejected",
+      "final_state": "error",
       "states_seen": [
+        "error",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-27T12:03:35+00:00",
-          "by": "kashif.m@turing.com",
+          "at": "2026-08-27T06:14:52+00:00",
+          "by": "bhargav.c@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-28T21:54:56+00:00",
-          "by": "kashif.m@turing.com",
+          "at": "2026-08-28T10:04:18+00:00",
+          "by": "bhargav.c@turing.com",
           "state": "rejected"
+        },
+        {
+          "at": "2026-08-29T16:08:22+00:00",
+          "by": "bhargav.c@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-08-31T08:51:53+00:00",
+          "by": "bhargav.c@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-09-01T07:53:12+00:00",
+          "by": "bhargav.c@turing.com",
+          "state": "error"
         }
       ]
     },
@@ -1865,17 +1926,131 @@
       ]
     },
     {
-      "task": "gen-g843-prelaunch-raise-disclosure-audit",
-      "trainer": "shivam.s18@turing.com",
+      "task": "gen-g857-department-directory-categorization-audit",
+      "trainer": "muhammad.y7@turing.com",
       "trainers_in_group": [
-        "shivam.s18@turing.com"
+        "muhammad.y7@turing.com"
       ],
       "contested": false,
-      "submissions": 4,
-      "first_submitted": "2026-08-28T12:49:34+00:00",
-      "last_submitted": "2026-09-03T16:01:19+00:00",
-      "span_hours": 147.2,
+      "submissions": 6,
+      "first_submitted": "2026-08-26T15:59:42+00:00",
+      "last_submitted": "2026-09-11T23:02:40+00:00",
+      "span_hours": 391.05,
       "same_day_repeats": 1,
+      "final_state": "rejected",
+      "states_seen": [
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-26T15:59:42+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-27T02:37:31+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-31T22:00:55+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-09T18:34:37+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-09T19:02:34+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-11T23:02:40+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "investigate-repeated-11-48-mastercard-pin-debit-declines-on-card-48017",
+      "trainer": "zeeshan.i@turing.com",
+      "trainers_in_group": [
+        "zeeshan.i@turing.com"
+      ],
+      "contested": false,
+      "submissions": 3,
+      "first_submitted": "2026-08-31T16:13:01+00:00",
+      "last_submitted": "2026-09-15T19:26:40+00:00",
+      "span_hours": 363.23,
+      "same_day_repeats": 0,
+      "final_state": "error",
+      "states_seen": [
+        "error",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-31T16:13:01+00:00",
+          "by": "zeeshan.i@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-11T00:14:37+00:00",
+          "by": "zeeshan.i@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-15T19:26:40+00:00",
+          "by": "zeeshan.i@turing.com",
+          "state": "error"
+        }
+      ]
+    },
+    {
+      "task": "program-thread-custody-chain-apr-may-2026",
+      "trainer": "segni.d@turing.com",
+      "trainers_in_group": [
+        "segni.d@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-28T15:13:35+00:00",
+      "last_submitted": "2026-09-13T11:27:38+00:00",
+      "span_hours": 380.23,
+      "same_day_repeats": 0,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T15:13:35+00:00",
+          "by": "segni.d@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-13T11:27:38+00:00",
+          "by": "segni.d@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g231-slack-proposal-audit",
+      "trainer": "umer.a2@turing.com",
+      "trainers_in_group": [
+        "umer.a2@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-28T01:10:51+00:00",
+      "last_submitted": "2026-09-02T10:58:01+00:00",
+      "span_hours": 129.79,
+      "same_day_repeats": 0,
       "final_state": "rejected",
       "states_seen": [
         "legacy_accepted",
@@ -1883,142 +2058,13 @@
       ],
       "timeline": [
         {
-          "at": "2026-08-28T12:49:34+00:00",
-          "by": "shivam.s18@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-28T16:31:40+00:00",
-          "by": "shivam.s18@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-29T07:15:14+00:00",
-          "by": "shivam.s18@turing.com",
+          "at": "2026-08-28T01:10:51+00:00",
+          "by": "umer.a2@turing.com",
           "state": "legacy_accepted"
         },
         {
-          "at": "2026-09-03T16:01:19+00:00",
-          "by": "shivam.s18@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "how-much-of-my-drive-is-link-only",
-      "trainer": "harshil.suthar@turing.com",
-      "trainers_in_group": [
-        "ghosh.m1@turing.com",
-        "harshil.suthar@turing.com"
-      ],
-      "contested": true,
-      "submissions": 5,
-      "first_submitted": "2026-08-26T12:07:22+00:00",
-      "last_submitted": "2026-09-04T14:38:17+00:00",
-      "span_hours": 218.52,
-      "same_day_repeats": 2,
-      "final_state": "rejected",
-      "states_seen": [
-        "accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-26T12:07:22+00:00",
-          "by": "ghosh.m1@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-02T11:32:45+00:00",
-          "by": "ghosh.m1@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-02T11:45:55+00:00",
-          "by": "ghosh.m1@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-02T20:16:05+00:00",
-          "by": "ghosh.m1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-04T14:38:17+00:00",
-          "by": "harshil.suthar@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "outlook-messages-that-arrived-before-they-were-sent",
-      "trainer": "saurabh.p5@turing.com",
-      "trainers_in_group": [
-        "saurabh.p5@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-31T18:48:20+00:00",
-      "last_submitted": "2026-09-03T03:30:14+00:00",
-      "span_hours": 56.7,
-      "same_day_repeats": 0,
-      "final_state": "error",
-      "states_seen": [
-        "error"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-31T18:48:20+00:00",
-          "by": "saurabh.p5@turing.com",
-          "state": "error"
-        },
-        {
-          "at": "2026-09-03T03:30:14+00:00",
-          "by": "saurabh.p5@turing.com",
-          "state": "error"
-        }
-      ]
-    },
-    {
-      "task": "gen-g223-gift-card-site-compliance-audit",
-      "trainer": "vishvani.d@turing.com",
-      "trainers_in_group": [
-        "vishvani.d@turing.com"
-      ],
-      "contested": false,
-      "submissions": 5,
-      "first_submitted": "2026-09-04T08:05:36+00:00",
-      "last_submitted": "2026-09-04T16:35:08+00:00",
-      "span_hours": 8.49,
-      "same_day_repeats": 4,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-09-04T08:05:36+00:00",
-          "by": "vishvani.d@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-04T11:45:48+00:00",
-          "by": "vishvani.d@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-04T12:28:18+00:00",
-          "by": "vishvani.d@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-04T14:30:43+00:00",
-          "by": "vishvani.d@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-04T16:35:08+00:00",
-          "by": "vishvani.d@turing.com",
+          "at": "2026-09-02T10:58:01+00:00",
+          "by": "umer.a2@turing.com",
           "state": "rejected"
         }
       ]
@@ -2054,31 +2100,31 @@
       ]
     },
     {
-      "task": "task-100650",
-      "trainer": "dawit.h2@turing.com",
+      "task": "task_j2_emea_outside_voices_review_record_attest",
+      "trainer": "pawan.g3@turing.com",
       "trainers_in_group": [
-        "dawit.h2@turing.com"
+        "pawan.g3@turing.com"
       ],
       "contested": false,
       "submissions": 2,
-      "first_submitted": "2026-09-17T12:45:03+00:00",
-      "last_submitted": "2026-09-17T12:45:03+00:00",
-      "span_hours": 0.0,
-      "same_day_repeats": 1,
-      "final_state": "rejected",
+      "first_submitted": "2026-09-05T15:12:54+00:00",
+      "last_submitted": "2026-09-11T01:39:14+00:00",
+      "span_hours": 130.44,
+      "same_day_repeats": 0,
+      "final_state": "error",
       "states_seen": [
-        "rejected"
+        "error"
       ],
       "timeline": [
         {
-          "at": "2026-09-17T12:45:03+00:00",
-          "by": "dawit.h2@turing.com",
-          "state": "rejected"
+          "at": "2026-09-05T15:12:54+00:00",
+          "by": "pawan.g3@turing.com",
+          "state": "error"
         },
         {
-          "at": "2026-09-17T12:45:03+00:00",
-          "by": "dawit.h2@turing.com",
-          "state": "rejected"
+          "at": "2026-09-11T01:39:14+00:00",
+          "by": "pawan.g3@turing.com",
+          "state": "error"
         }
       ]
     },
@@ -2148,211 +2194,190 @@
       ]
     },
     {
-      "task": "neptune-cache-approval-authority-reaudit-ranking",
-      "trainer": "asad.s@turing.com",
+      "task": "open-notes-anchor-digest",
+      "trainer": "shan.a1@turing.com",
       "trainers_in_group": [
-        "asad.s@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-29T15:34:33+00:00",
-      "last_submitted": "2026-09-03T14:22:59+00:00",
-      "span_hours": 118.81,
-      "same_day_repeats": 0,
-      "final_state": "error",
-      "states_seen": [
-        "error"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-29T15:34:33+00:00",
-          "by": "asad.s@turing.com",
-          "state": "error"
-        },
-        {
-          "at": "2026-09-03T14:22:59+00:00",
-          "by": "asad.s@turing.com",
-          "state": "error"
-        }
-      ]
-    },
-    {
-      "task": "task_kyc_manual_review_which_documents_to_request_for_application_45965_den",
-      "trainer": "abhay.s3@turing.com",
-      "trainers_in_group": [
-        "abhay.s3@turing.com"
+        "shan.a1@turing.com"
       ],
       "contested": false,
       "submissions": 3,
-      "first_submitted": "2026-09-02T09:36:12+00:00",
-      "last_submitted": "2026-09-02T22:02:22+00:00",
-      "span_hours": 12.44,
-      "same_day_repeats": 2,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-09-02T09:36:12+00:00",
-          "by": "abhay.s3@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-02T14:48:30+00:00",
-          "by": "abhay.s3@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-02T22:02:22+00:00",
-          "by": "abhay.s3@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "ephyra-q2-onward-shipped-volume-sizing",
-      "trainer": "dinesh.s3@turing.com",
-      "trainers_in_group": [
-        "dinesh.s3@turing.com"
-      ],
-      "contested": false,
-      "submissions": 5,
-      "first_submitted": "2026-08-27T05:40:05+00:00",
-      "last_submitted": "2026-09-14T07:39:00+00:00",
-      "span_hours": 433.98,
-      "same_day_repeats": 1,
-      "final_state": "rejected",
-      "states_seen": [
-        "error",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-27T05:40:05+00:00",
-          "by": "dinesh.s3@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-07T20:32:45+00:00",
-          "by": "dinesh.s3@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-07T22:43:11+00:00",
-          "by": "dinesh.s3@turing.com",
-          "state": "error"
-        },
-        {
-          "at": "2026-09-13T22:03:37+00:00",
-          "by": "dinesh.s3@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-14T07:39:00+00:00",
-          "by": "dinesh.s3@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "gen-g126-facility-maintenance-work-order-priority-audit",
-      "trainer": "arslan.s@turing.com",
-      "trainers_in_group": [
-        "arslan.s@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-29T17:46:43+00:00",
-      "last_submitted": "2026-09-16T14:13:57+00:00",
-      "span_hours": 428.45,
+      "first_submitted": "2026-08-28T09:43:27+00:00",
+      "last_submitted": "2026-09-14T10:28:57+00:00",
+      "span_hours": 408.76,
       "same_day_repeats": 0,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-29T17:46:43+00:00",
-          "by": "arslan.s@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-16T14:13:57+00:00",
-          "by": "arslan.s@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "ofac-backfill-audit-verify-retroactive-enrollment-for-pre-launch-appli-2",
-      "trainer": "aviral.k@turing.com",
-      "trainers_in_group": [
-        "aviral.k@turing.com"
-      ],
-      "contested": false,
-      "submissions": 4,
-      "first_submitted": "2026-08-31T17:52:00+00:00",
-      "last_submitted": "2026-09-10T10:55:13+00:00",
-      "span_hours": 233.05,
-      "same_day_repeats": 1,
       "final_state": "accepted",
       "states_seen": [
         "accepted",
-        "error",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-31T17:52:00+00:00",
-          "by": "aviral.k@turing.com",
+          "at": "2026-08-28T09:43:27+00:00",
+          "by": "shan.a1@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-07T07:48:54+00:00",
-          "by": "aviral.k@turing.com",
-          "state": "rejected"
+          "at": "2026-09-13T19:58:06+00:00",
+          "by": "shan.a1@turing.com",
+          "state": "accepted"
         },
         {
-          "at": "2026-09-07T18:37:23+00:00",
-          "by": "aviral.k@turing.com",
-          "state": "error"
-        },
-        {
-          "at": "2026-09-10T10:55:13+00:00",
-          "by": "aviral.k@turing.com",
+          "at": "2026-09-14T10:28:57+00:00",
+          "by": "shan.a1@turing.com",
           "state": "accepted"
         }
       ]
     },
     {
-      "task": "gen-g998-race-entry-number-plate-scrutineering-audit",
-      "trainer": "nemish.v@turing.com",
+      "task": "the-legacy-key-nobody-retired",
+      "trainer": "monty.d2@turing.com",
       "trainers_in_group": [
-        "nemish.v@turing.com",
-        "rajdeep.r@turing.com"
+        "monty.d2@turing.com"
       ],
-      "contested": true,
+      "contested": false,
       "submissions": 2,
-      "first_submitted": "2026-08-28T03:44:41+00:00",
-      "last_submitted": "2026-09-01T10:29:30+00:00",
-      "span_hours": 102.75,
+      "first_submitted": "2026-09-14T19:45:35+00:00",
+      "last_submitted": "2026-09-15T09:14:59+00:00",
+      "span_hours": 13.49,
       "same_day_repeats": 0,
-      "final_state": "rejected",
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-09-14T19:45:35+00:00",
+          "by": "monty.d2@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-15T09:14:59+00:00",
+          "by": "monty.d2@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "ephyra-release-cut-shared-file-overlap",
+      "trainer": "govind.v1@turing.com",
+      "trainers_in_group": [
+        "govind.v1@turing.com"
+      ],
+      "contested": false,
+      "submissions": 3,
+      "first_submitted": "2026-08-29T08:32:34+00:00",
+      "last_submitted": "2026-09-09T15:39:15+00:00",
+      "span_hours": 271.11,
+      "same_day_repeats": 0,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-29T08:32:34+00:00",
+          "by": "govind.v1@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-03T16:30:53+00:00",
+          "by": "govind.v1@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-09T15:39:15+00:00",
+          "by": "govind.v1@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g1269-highlight-reel-music-sync-audit",
+      "trainer": "piyush.a3@turing.com",
+      "trainers_in_group": [
+        "piyush.a3@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-27T08:21:55+00:00",
+      "last_submitted": "2026-08-28T07:40:54+00:00",
+      "span_hours": 23.32,
+      "same_day_repeats": 0,
+      "final_state": "legacy_accepted",
       "states_seen": [
         "legacy_accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-28T03:44:41+00:00",
-          "by": "rajdeep.r@turing.com",
-          "state": "legacy_accepted"
+          "at": "2026-08-27T08:21:55+00:00",
+          "by": "piyush.a3@turing.com",
+          "state": "rejected"
         },
         {
-          "at": "2026-09-01T10:29:30+00:00",
-          "by": "nemish.v@turing.com",
+          "at": "2026-08-28T07:40:54+00:00",
+          "by": "piyush.a3@turing.com",
+          "state": "legacy_accepted"
+        }
+      ]
+    },
+    {
+      "task": "outlook-widest-addressed-inbox-item-roster-dossier",
+      "trainer": "mohamed.e6@turing.com",
+      "trainers_in_group": [
+        "mohamed.e6@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-28T22:24:56+00:00",
+      "last_submitted": "2026-08-29T18:04:37+00:00",
+      "span_hours": 19.66,
+      "same_day_repeats": 0,
+      "final_state": "rejected",
+      "states_seen": [
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T22:24:56+00:00",
+          "by": "mohamed.e6@turing.com",
           "state": "rejected"
+        },
+        {
+          "at": "2026-08-29T18:04:37+00:00",
+          "by": "mohamed.e6@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "health-h101-psa-flare-trigger-audit",
+      "trainer": "abhishek.y@turing.com",
+      "trainers_in_group": [
+        "abhishek.y@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-28T14:40:45+00:00",
+      "last_submitted": "2026-09-07T17:58:29+00:00",
+      "span_hours": 243.3,
+      "same_day_repeats": 0,
+      "final_state": "legacy_accepted",
+      "states_seen": [
+        "accepted",
+        "legacy_accepted"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T14:40:45+00:00",
+          "by": "abhishek.y@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-07T17:58:29+00:00",
+          "by": "abhishek.y@turing.com",
+          "state": "legacy_accepted"
         }
       ]
     },
@@ -2427,31 +2452,42 @@
       ]
     },
     {
-      "task": "law-l41-delegated-authority-limits",
-      "trainer": "syed.s3@turing.com",
+      "task": "law-l69-support-payment-reconciliation",
+      "trainer": "muhammed.k@turing.com",
       "trainers_in_group": [
-        "syed.s3@turing.com"
+        "muhammed.k@turing.com"
       ],
       "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-31T17:26:56+00:00",
-      "last_submitted": "2026-08-31T17:26:59+00:00",
-      "span_hours": 0.0,
-      "same_day_repeats": 1,
-      "final_state": "rejected",
+      "submissions": 4,
+      "first_submitted": "2026-08-25T20:18:33+00:00",
+      "last_submitted": "2026-09-09T12:24:31+00:00",
+      "span_hours": 352.1,
+      "same_day_repeats": 0,
+      "final_state": "accepted",
       "states_seen": [
+        "accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-31T17:26:56+00:00",
-          "by": "syed.s3@turing.com",
+          "at": "2026-08-25T20:18:33+00:00",
+          "by": "muhammed.k@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-08-31T11:20:51+00:00",
+          "by": "muhammed.k@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-31T17:26:59+00:00",
-          "by": "syed.s3@turing.com",
+          "at": "2026-09-04T04:37:21+00:00",
+          "by": "muhammed.k@turing.com",
           "state": "rejected"
+        },
+        {
+          "at": "2026-09-09T12:24:31+00:00",
+          "by": "muhammed.k@turing.com",
+          "state": "accepted"
         }
       ]
     },
@@ -2490,75 +2526,72 @@
       ]
     },
     {
-      "task": "gen-g409-investor-outreach-tier-audit",
-      "trainer": "hamza.m7@turing.com",
+      "task": "gen-g417-newsletter-paywall-tier-audit",
+      "trainer": "rajdeep.r@turing.com",
       "trainers_in_group": [
-        "hamza.m7@turing.com"
+        "rajdeep.r@turing.com"
       ],
       "contested": false,
-      "submissions": 3,
-      "first_submitted": "2026-08-28T20:12:30+00:00",
-      "last_submitted": "2026-09-08T09:32:51+00:00",
-      "span_hours": 253.34,
-      "same_day_repeats": 1,
-      "final_state": "rejected",
+      "submissions": 2,
+      "first_submitted": "2026-08-31T13:34:43+00:00",
+      "last_submitted": "2026-09-01T04:49:48+00:00",
+      "span_hours": 15.25,
+      "same_day_repeats": 0,
+      "final_state": "error",
       "states_seen": [
+        "error",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-28T20:12:30+00:00",
-          "by": "hamza.m7@turing.com",
+          "at": "2026-08-31T13:34:43+00:00",
+          "by": "rajdeep.r@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-28T20:55:41+00:00",
-          "by": "hamza.m7@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-08T09:32:51+00:00",
-          "by": "hamza.m7@turing.com",
-          "state": "rejected"
+          "at": "2026-09-01T04:49:48+00:00",
+          "by": "rajdeep.r@turing.com",
+          "state": "error"
         }
       ]
     },
     {
-      "task": "explain-savings-interest-change-for-account-6909-between-nov-and-dec-2",
-      "trainer": "atul.s3@turing.com",
+      "task": "explain-savings-interest-change-for-account-7486-between-sep-and-oct-2",
+      "trainer": "archit.s2@turing.com",
       "trainers_in_group": [
-        "atul.s3@turing.com"
+        "archit.s2@turing.com"
       ],
       "contested": false,
       "submissions": 4,
-      "first_submitted": "2026-08-25T11:20:19+00:00",
-      "last_submitted": "2026-08-29T14:53:16+00:00",
-      "span_hours": 99.55,
+      "first_submitted": "2026-09-02T22:10:18+00:00",
+      "last_submitted": "2026-09-14T10:59:47+00:00",
+      "span_hours": 276.82,
       "same_day_repeats": 0,
-      "final_state": "rejected",
+      "final_state": "accepted",
       "states_seen": [
+        "accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-25T11:20:19+00:00",
-          "by": "atul.s3@turing.com",
+          "at": "2026-09-02T22:10:18+00:00",
+          "by": "archit.s2@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-27T12:14:06+00:00",
-          "by": "atul.s3@turing.com",
-          "state": "rejected"
+          "at": "2026-09-03T19:36:42+00:00",
+          "by": "archit.s2@turing.com",
+          "state": "accepted"
         },
         {
-          "at": "2026-08-28T10:24:59+00:00",
-          "by": "atul.s3@turing.com",
-          "state": "rejected"
+          "at": "2026-09-09T21:47:18+00:00",
+          "by": "archit.s2@turing.com",
+          "state": "accepted"
         },
         {
-          "at": "2026-08-29T14:53:16+00:00",
-          "by": "atul.s3@turing.com",
-          "state": "rejected"
+          "at": "2026-09-14T10:59:47+00:00",
+          "by": "archit.s2@turing.com",
+          "state": "accepted"
         }
       ]
     },
@@ -2603,85 +2636,102 @@
       ]
     },
     {
-      "task": "code-c747-course-kb-ingestion-coverage-audit",
-      "trainer": "piyush.a3@turing.com",
+      "task": "code-c749-readaloud-accessibility-rollout-audit",
+      "trainer": "vivek.s7@turing.com",
       "trainers_in_group": [
-        "piyush.a3@turing.com"
+        "vivek.s7@turing.com"
       ],
       "contested": false,
-      "submissions": 4,
-      "first_submitted": "2026-08-27T17:55:43+00:00",
-      "last_submitted": "2026-08-30T07:12:35+00:00",
-      "span_hours": 61.28,
-      "same_day_repeats": 1,
+      "submissions": 6,
+      "first_submitted": "2026-08-28T12:08:21+00:00",
+      "last_submitted": "2026-09-05T13:25:55+00:00",
+      "span_hours": 193.29,
+      "same_day_repeats": 2,
       "final_state": "rejected",
       "states_seen": [
+        "legacy_accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-27T17:55:43+00:00",
-          "by": "piyush.a3@turing.com",
+          "at": "2026-08-28T12:08:21+00:00",
+          "by": "vivek.s7@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-08-28T12:23:50+00:00",
+          "by": "vivek.s7@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-09-03T04:26:29+00:00",
+          "by": "vivek.s7@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-28T07:36:14+00:00",
-          "by": "piyush.a3@turing.com",
+          "at": "2026-09-03T18:09:11+00:00",
+          "by": "vivek.s7@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-09-04T03:41:20+00:00",
+          "by": "vivek.s7@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-28T16:57:18+00:00",
-          "by": "piyush.a3@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T07:12:35+00:00",
-          "by": "piyush.a3@turing.com",
+          "at": "2026-09-05T13:25:55+00:00",
+          "by": "vivek.s7@turing.com",
           "state": "rejected"
         }
       ]
     },
     {
-      "task": "gen-g961-mls-listing-photo-edit-disclosure-audit",
-      "trainer": "lelisa.m@turing.com",
+      "task": "gen-g971-costume-bible-wardrobe-compliance-audit",
+      "trainer": "muhammad.i16@turing.com",
       "trainers_in_group": [
-        "lelisa.m@turing.com"
+        "muhammad.i16@turing.com"
       ],
       "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-27T13:16:34+00:00",
-      "last_submitted": "2026-09-08T20:27:17+00:00",
-      "span_hours": 295.18,
-      "same_day_repeats": 0,
-      "final_state": "accepted",
+      "submissions": 3,
+      "first_submitted": "2026-08-29T03:54:54+00:00",
+      "last_submitted": "2026-09-14T23:16:09+00:00",
+      "span_hours": 403.35,
+      "same_day_repeats": 1,
+      "final_state": "legacy_accepted",
       "states_seen": [
         "accepted",
+        "legacy_accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-27T13:16:34+00:00",
-          "by": "lelisa.m@turing.com",
+          "at": "2026-08-29T03:54:54+00:00",
+          "by": "muhammad.i16@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-08T20:27:17+00:00",
-          "by": "lelisa.m@turing.com",
+          "at": "2026-08-29T17:54:58+00:00",
+          "by": "muhammad.i16@turing.com",
           "state": "accepted"
+        },
+        {
+          "at": "2026-09-14T23:16:09+00:00",
+          "by": "muhammad.i16@turing.com",
+          "state": "legacy_accepted"
         }
       ]
     },
     {
-      "task": "code-c741-survey-response-option-compliance-audit",
-      "trainer": "piyush.a3@turing.com",
+      "task": "code-c745-logo-asset-production-qa-audit",
+      "trainer": "dharmendra.b@turing.com",
       "trainers_in_group": [
-        "piyush.a3@turing.com"
+        "dharmendra.b@turing.com"
       ],
       "contested": false,
       "submissions": 2,
-      "first_submitted": "2026-08-27T21:58:30+00:00",
-      "last_submitted": "2026-08-28T05:49:17+00:00",
-      "span_hours": 7.85,
+      "first_submitted": "2026-08-27T17:28:02+00:00",
+      "last_submitted": "2026-08-30T00:14:32+00:00",
+      "span_hours": 54.77,
       "same_day_repeats": 0,
       "final_state": "legacy_accepted",
       "states_seen": [
@@ -2690,13 +2740,13 @@
       ],
       "timeline": [
         {
-          "at": "2026-08-27T21:58:30+00:00",
-          "by": "piyush.a3@turing.com",
+          "at": "2026-08-27T17:28:02+00:00",
+          "by": "dharmendra.b@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-28T05:49:17+00:00",
-          "by": "piyush.a3@turing.com",
+          "at": "2026-08-30T00:14:32+00:00",
+          "by": "dharmendra.b@turing.com",
           "state": "legacy_accepted"
         }
       ]
@@ -2803,352 +2853,359 @@
       ]
     },
     {
-      "task": "gen-g478-apparel-finishing-qc-audit",
+      "task": "gen-g501-deposit-capture-projection-audit",
       "trainer": "ashutosh.m3@turing.com",
       "trainers_in_group": [
         "ashutosh.m3@turing.com"
       ],
       "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-09-03T17:19:09+00:00",
-      "last_submitted": "2026-09-04T09:13:07+00:00",
-      "span_hours": 15.9,
-      "same_day_repeats": 0,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-09-03T17:19:09+00:00",
-          "by": "ashutosh.m3@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-04T09:13:07+00:00",
-          "by": "ashutosh.m3@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "gen-g608-sba-loan-dscr-covenant-audit",
-      "trainer": "maruthi.g@turing.com",
-      "trainers_in_group": [
-        "maruthi.g@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-29T18:51:05+00:00",
-      "last_submitted": "2026-09-16T05:47:10+00:00",
-      "span_hours": 418.93,
-      "same_day_repeats": 0,
-      "final_state": "rejected",
-      "states_seen": [
-        "legacy_accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-29T18:51:05+00:00",
-          "by": "maruthi.g@turing.com",
-          "state": "legacy_accepted"
-        },
-        {
-          "at": "2026-09-16T05:47:10+00:00",
-          "by": "maruthi.g@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "gen-g649-energy-project-screening-audit",
-      "trainer": "srinivas.p2@turing.com",
-      "trainers_in_group": [
-        "srinivas.p2@turing.com"
-      ],
-      "contested": false,
-      "submissions": 3,
-      "first_submitted": "2026-08-28T17:56:08+00:00",
-      "last_submitted": "2026-09-13T15:54:33+00:00",
-      "span_hours": 381.97,
-      "same_day_repeats": 0,
+      "submissions": 6,
+      "first_submitted": "2026-08-31T05:58:14+00:00",
+      "last_submitted": "2026-09-09T03:24:49+00:00",
+      "span_hours": 213.44,
+      "same_day_repeats": 1,
       "final_state": "accepted",
       "states_seen": [
         "accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-28T17:56:08+00:00",
-          "by": "srinivas.p2@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T11:55:05+00:00",
-          "by": "srinivas.p2@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-13T15:54:33+00:00",
-          "by": "srinivas.p2@turing.com",
-          "state": "accepted"
-        }
-      ]
-    },
-    {
-      "task": "j5-owned-link-share-unclassified-flag",
-      "trainer": "melat.m@turing.com",
-      "trainers_in_group": [
-        "melat.m@turing.com"
-      ],
-      "contested": false,
-      "submissions": 3,
-      "first_submitted": "2026-08-28T10:44:19+00:00",
-      "last_submitted": "2026-09-02T11:24:32+00:00",
-      "span_hours": 120.67,
-      "same_day_repeats": 0,
-      "final_state": "error",
-      "states_seen": [
         "error",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-28T10:44:19+00:00",
-          "by": "melat.m@turing.com",
+          "at": "2026-08-31T05:58:14+00:00",
+          "by": "ashutosh.m3@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-01T13:29:33+00:00",
-          "by": "melat.m@turing.com",
+          "at": "2026-09-02T07:46:33+00:00",
+          "by": "ashutosh.m3@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-02T11:24:32+00:00",
-          "by": "melat.m@turing.com",
+          "at": "2026-09-03T03:36:08+00:00",
+          "by": "ashutosh.m3@turing.com",
           "state": "error"
+        },
+        {
+          "at": "2026-09-03T18:00:29+00:00",
+          "by": "ashutosh.m3@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-09-04T10:21:28+00:00",
+          "by": "ashutosh.m3@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-09-09T03:24:49+00:00",
+          "by": "ashutosh.m3@turing.com",
+          "state": "accepted"
         }
       ]
     },
     {
-      "task": "gen-g845-practice-website-page-structure-audit",
-      "trainer": "muhammad.a108@turing.com",
+      "task": "gen-g613-ma-intermediary-classification-audit",
+      "trainer": "hammad.h1@turing.com",
       "trainers_in_group": [
-        "muhammad.a108@turing.com",
-        "usama.r6@turing.com"
-      ],
-      "contested": true,
-      "submissions": 4,
-      "first_submitted": "2026-08-28T15:11:11+00:00",
-      "last_submitted": "2026-08-30T13:11:43+00:00",
-      "span_hours": 46.01,
-      "same_day_repeats": 2,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-28T15:11:11+00:00",
-          "by": "muhammad.a108@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T08:09:53+00:00",
-          "by": "muhammad.a108@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T11:26:55+00:00",
-          "by": "usama.r6@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T13:11:43+00:00",
-          "by": "muhammad.a108@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "gen-g817-app-store-listing-character-limit-audit",
-      "trainer": "sharvesh.s@turing.com",
-      "trainers_in_group": [
-        "junaid.s1@turing.com",
-        "sharvesh.s@turing.com"
-      ],
-      "contested": true,
-      "submissions": 8,
-      "first_submitted": "2026-08-30T13:08:54+00:00",
-      "last_submitted": "2026-09-04T13:56:39+00:00",
-      "span_hours": 120.8,
-      "same_day_repeats": 5,
-      "final_state": "rejected",
-      "states_seen": [
-        "legacy_accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-30T13:08:54+00:00",
-          "by": "junaid.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T14:37:48+00:00",
-          "by": "junaid.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T15:55:41+00:00",
-          "by": "junaid.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T17:10:44+00:00",
-          "by": "junaid.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T19:14:23+00:00",
-          "by": "junaid.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T19:56:52+00:00",
-          "by": "junaid.s1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-31T15:06:30+00:00",
-          "by": "junaid.s1@turing.com",
-          "state": "legacy_accepted"
-        },
-        {
-          "at": "2026-09-04T13:56:39+00:00",
-          "by": "sharvesh.s@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "diagnose-returned-check-deposit-12283-for-210-flagged-duplicate-presen",
-      "trainer": "augustine.a@turing.com",
-      "trainers_in_group": [
-        "augustine.a@turing.com"
+        "hammad.h1@turing.com"
       ],
       "contested": false,
       "submissions": 2,
-      "first_submitted": "2026-08-28T06:50:04+00:00",
-      "last_submitted": "2026-09-03T15:43:49+00:00",
-      "span_hours": 152.9,
-      "same_day_repeats": 0,
+      "first_submitted": "2026-08-31T17:34:18+00:00",
+      "last_submitted": "2026-08-31T20:19:13+00:00",
+      "span_hours": 2.75,
+      "same_day_repeats": 1,
       "final_state": "rejected",
       "states_seen": [
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-28T06:50:04+00:00",
-          "by": "augustine.a@turing.com",
+          "at": "2026-08-31T17:34:18+00:00",
+          "by": "hammad.h1@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-03T15:43:49+00:00",
-          "by": "augustine.a@turing.com",
+          "at": "2026-08-31T20:19:13+00:00",
+          "by": "hammad.h1@turing.com",
           "state": "rejected"
         }
       ]
     },
     {
-      "task": "gen-g823-variety-trial-report-cadence-audit",
-      "trainer": "opeyemi.o2@turing.com",
+      "task": "gen-g663-aftermarket-wheel-ad-claims-compliance-audit",
+      "trainer": "shivam.s18@turing.com",
       "trainers_in_group": [
-        "krishna.b@turing.com",
-        "opeyemi.o2@turing.com"
+        "shivam.s18@turing.com"
       ],
-      "contested": true,
-      "submissions": 7,
-      "first_submitted": "2026-08-27T11:10:49+00:00",
-      "last_submitted": "2026-09-09T08:17:16+00:00",
-      "span_hours": 309.11,
+      "contested": false,
+      "submissions": 3,
+      "first_submitted": "2026-08-30T06:13:21+00:00",
+      "last_submitted": "2026-09-16T03:56:53+00:00",
+      "span_hours": 405.73,
       "same_day_repeats": 1,
-      "final_state": "legacy_accepted",
+      "final_state": "rejected",
       "states_seen": [
-        "accepted",
         "legacy_accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-27T11:10:49+00:00",
-          "by": "krishna.b@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-08-28T07:24:04+00:00",
-          "by": "krishna.b@turing.com",
+          "at": "2026-08-30T06:13:21+00:00",
+          "by": "shivam.s18@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-29T07:25:10+00:00",
-          "by": "opeyemi.o2@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-08-29T14:11:54+00:00",
-          "by": "opeyemi.o2@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-04T06:22:43+00:00",
-          "by": "krishna.b@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-08T02:57:49+00:00",
-          "by": "opeyemi.o2@turing.com",
+          "at": "2026-08-30T07:06:04+00:00",
+          "by": "shivam.s18@turing.com",
           "state": "legacy_accepted"
         },
         {
-          "at": "2026-09-09T08:17:16+00:00",
-          "by": "opeyemi.o2@turing.com",
+          "at": "2026-09-16T03:56:53+00:00",
+          "by": "shivam.s18@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "law-l14-royalty-audit",
+      "trainer": "monu.k@turing.com",
+      "trainers_in_group": [
+        "monu.k@turing.com"
+      ],
+      "contested": false,
+      "submissions": 5,
+      "first_submitted": "2026-08-27T22:17:23+00:00",
+      "last_submitted": "2026-09-09T18:22:07+00:00",
+      "span_hours": 308.08,
+      "same_day_repeats": 2,
+      "final_state": "legacy_accepted",
+      "states_seen": [
+        "accepted",
+        "legacy_accepted"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-27T22:17:23+00:00",
+          "by": "monu.k@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-08-29T03:36:35+00:00",
+          "by": "monu.k@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-08-29T11:50:35+00:00",
+          "by": "monu.k@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-09T14:28:33+00:00",
+          "by": "monu.k@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-09-09T18:22:07+00:00",
+          "by": "monu.k@turing.com",
           "state": "legacy_accepted"
         }
       ]
     },
     {
-      "task": "gen-g64-airline-fareclass-benefits-audit",
-      "trainer": "bhola.y@turing.com",
+      "task": "gen-g858-flooring-submittal-color-legend-audit",
+      "trainer": "ali.b@turing.com",
       "trainers_in_group": [
-        "bhola.y@turing.com"
+        "ali.b@turing.com"
       ],
       "contested": false,
-      "submissions": 3,
-      "first_submitted": "2026-09-02T14:21:33+00:00",
-      "last_submitted": "2026-09-15T05:07:58+00:00",
-      "span_hours": 302.77,
+      "submissions": 4,
+      "first_submitted": "2026-08-28T00:56:05+00:00",
+      "last_submitted": "2026-09-03T13:02:33+00:00",
+      "span_hours": 156.11,
+      "same_day_repeats": 2,
+      "final_state": "rejected",
+      "states_seen": [
+        "legacy_accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T00:56:05+00:00",
+          "by": "ali.b@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-28T19:56:53+00:00",
+          "by": "ali.b@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-09-03T11:55:49+00:00",
+          "by": "ali.b@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T13:02:33+00:00",
+          "by": "ali.b@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "gen-g826-tender-document-brand-style-audit",
+      "trainer": "korada.l@turing.com",
+      "trainers_in_group": [
+        "korada.l@turing.com",
+        "muhammad.y7@turing.com"
+      ],
+      "contested": true,
+      "submissions": 5,
+      "first_submitted": "2026-08-27T09:18:05+00:00",
+      "last_submitted": "2026-09-03T11:40:53+00:00",
+      "span_hours": 170.38,
+      "same_day_repeats": 2,
+      "final_state": "legacy_accepted",
+      "states_seen": [
+        "legacy_accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-27T09:18:05+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-08-29T15:57:18+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T06:24:55+00:00",
+          "by": "korada.l@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T06:55:54+00:00",
+          "by": "korada.l@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T11:40:53+00:00",
+          "by": "korada.l@turing.com",
+          "state": "legacy_accepted"
+        }
+      ]
+    },
+    {
+      "task": "diagnose-returned-check-deposit-9486-16-00-customer-says-funds-never-p",
+      "trainer": "mohd.t1@turing.com",
+      "trainers_in_group": [
+        "mohd.t1@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-09-17T07:10:51+00:00",
+      "last_submitted": "2026-09-17T15:11:11+00:00",
+      "span_hours": 8.01,
+      "same_day_repeats": 1,
+      "final_state": "running",
+      "states_seen": [
+        "rejected",
+        "running"
+      ],
+      "timeline": [
+        {
+          "at": "2026-09-17T07:10:51+00:00",
+          "by": "mohd.t1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-17T15:11:11+00:00",
+          "by": "mohd.t1@turing.com",
+          "state": "running"
+        }
+      ]
+    },
+    {
+      "task": "gen-g830-individual-diagnostic-conversion-audit",
+      "trainer": "usama.r6@turing.com",
+      "trainers_in_group": [
+        "muhammad.a109@turing.com",
+        "usama.r6@turing.com"
+      ],
+      "contested": true,
+      "submissions": 5,
+      "first_submitted": "2026-08-26T23:55:08+00:00",
+      "last_submitted": "2026-09-10T20:09:00+00:00",
+      "span_hours": 356.23,
       "same_day_repeats": 0,
       "final_state": "accepted",
       "states_seen": [
         "accepted",
-        "rejected"
+        "error"
       ],
       "timeline": [
         {
-          "at": "2026-09-02T14:21:33+00:00",
-          "by": "bhola.y@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-12T13:27:29+00:00",
-          "by": "bhola.y@turing.com",
+          "at": "2026-08-26T23:55:08+00:00",
+          "by": "muhammad.a109@turing.com",
           "state": "accepted"
         },
         {
-          "at": "2026-09-15T05:07:58+00:00",
-          "by": "bhola.y@turing.com",
+          "at": "2026-08-29T22:31:29+00:00",
+          "by": "usama.r6@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-08-31T15:08:13+00:00",
+          "by": "usama.r6@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-09-09T22:41:14+00:00",
+          "by": "usama.r6@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-10T20:09:00+00:00",
+          "by": "usama.r6@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g659-cabin-innovation-award-eligibility-audit",
+      "trainer": "emmanuel.m1@turing.com",
+      "trainers_in_group": [
+        "emmanuel.m1@turing.com"
+      ],
+      "contested": false,
+      "submissions": 3,
+      "first_submitted": "2026-09-01T11:30:43+00:00",
+      "last_submitted": "2026-09-10T18:31:40+00:00",
+      "span_hours": 223.02,
+      "same_day_repeats": 0,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "rejected",
+        "running"
+      ],
+      "timeline": [
+        {
+          "at": "2026-09-01T11:30:43+00:00",
+          "by": "emmanuel.m1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-02T08:06:40+00:00",
+          "by": "emmanuel.m1@turing.com",
+          "state": "running"
+        },
+        {
+          "at": "2026-09-10T18:31:40+00:00",
+          "by": "emmanuel.m1@turing.com",
           "state": "accepted"
         }
       ]
@@ -3184,179 +3241,131 @@
       ]
     },
     {
-      "task": "verify-suspected-duplicate-charge-130-57-68-18-for-member-across-two-a",
-      "trainer": "numair.m1@turing.com",
+      "task": "unread-backlog-honest-count-audit",
+      "trainer": "rana.a3@turing.com",
       "trainers_in_group": [
-        "numair.m1@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-08-26T19:20:23+00:00",
-      "last_submitted": "2026-09-11T19:25:20+00:00",
-      "span_hours": 384.08,
-      "same_day_repeats": 0,
-      "final_state": "accepted",
-      "states_seen": [
-        "accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-26T19:20:23+00:00",
-          "by": "numair.m1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-11T19:25:20+00:00",
-          "by": "numair.m1@turing.com",
-          "state": "accepted"
-        }
-      ]
-    },
-    {
-      "task": "the-labels-i-cannot-list",
-      "trainer": "augustine.a@turing.com",
-      "trainers_in_group": [
-        "augustine.a@turing.com"
+        "rana.a3@turing.com"
       ],
       "contested": false,
       "submissions": 3,
-      "first_submitted": "2026-08-30T12:21:26+00:00",
-      "last_submitted": "2026-09-04T12:14:25+00:00",
-      "span_hours": 119.88,
-      "same_day_repeats": 1,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-30T12:21:26+00:00",
-          "by": "augustine.a@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-30T12:39:48+00:00",
-          "by": "augustine.a@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-04T12:14:25+00:00",
-          "by": "augustine.a@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "gen-g899-athletics-sponsor-logo-rights-audit",
-      "trainer": "eyob.t@turing.com",
-      "trainers_in_group": [
-        "eyob.t@turing.com",
-        "haseeb.s2@turing.com"
-      ],
-      "contested": true,
-      "submissions": 4,
-      "first_submitted": "2026-08-28T02:22:22+00:00",
-      "last_submitted": "2026-08-31T07:13:43+00:00",
-      "span_hours": 76.86,
-      "same_day_repeats": 1,
-      "final_state": "legacy_accepted",
-      "states_seen": [
-        "legacy_accepted",
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-08-28T02:22:22+00:00",
-          "by": "haseeb.s2@turing.com",
-          "state": "legacy_accepted"
-        },
-        {
-          "at": "2026-08-29T01:06:18+00:00",
-          "by": "haseeb.s2@turing.com",
-          "state": "legacy_accepted"
-        },
-        {
-          "at": "2026-08-29T18:56:12+00:00",
-          "by": "haseeb.s2@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-08-31T07:13:43+00:00",
-          "by": "eyob.t@turing.com",
-          "state": "legacy_accepted"
-        }
-      ]
-    },
-    {
-      "task": "gen-g948-tour-logo-asset-embargo-audit",
-      "trainer": "muhammad.w1@turing.com",
-      "trainers_in_group": [
-        "abhiteja.s@turing.com",
-        "muhammad.w1@turing.com"
-      ],
-      "contested": true,
-      "submissions": 7,
-      "first_submitted": "2026-08-27T11:18:50+00:00",
-      "last_submitted": "2026-09-15T19:38:10+00:00",
-      "span_hours": 464.32,
+      "first_submitted": "2026-08-26T22:48:08+00:00",
+      "last_submitted": "2026-08-29T14:50:32+00:00",
+      "span_hours": 64.04,
       "same_day_repeats": 0,
       "final_state": "error",
       "states_seen": [
-        "accepted",
         "error",
-        "legacy_accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-27T11:18:50+00:00",
-          "by": "muhammad.w1@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-08-30T11:30:52+00:00",
-          "by": "abhiteja.s@turing.com",
+          "at": "2026-08-26T22:48:08+00:00",
+          "by": "rana.a3@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-02T15:21:06+00:00",
-          "by": "muhammad.w1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-10T15:19:21+00:00",
-          "by": "muhammad.w1@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-11T12:29:38+00:00",
-          "by": "muhammad.w1@turing.com",
-          "state": "legacy_accepted"
-        },
-        {
-          "at": "2026-09-13T18:16:20+00:00",
-          "by": "muhammad.w1@turing.com",
+          "at": "2026-08-27T13:54:54+00:00",
+          "by": "rana.a3@turing.com",
           "state": "error"
         },
         {
-          "at": "2026-09-15T19:38:10+00:00",
-          "by": "muhammad.w1@turing.com",
+          "at": "2026-08-29T14:50:32+00:00",
+          "by": "rana.a3@turing.com",
           "state": "error"
         }
       ]
     },
     {
-      "task": "gen-g743-vendor-whitepaper-deliverable-audit",
-      "trainer": "suraj.wavhal@turing.com",
+      "task": "gen-g91-hotel-rate-parity-audit",
+      "trainer": "opeyemi.o2@turing.com",
       "trainers_in_group": [
-        "suraj.wavhal@turing.com"
+        "opeyemi.o2@turing.com"
+      ],
+      "contested": false,
+      "submissions": 6,
+      "first_submitted": "2026-08-28T02:05:54+00:00",
+      "last_submitted": "2026-09-08T16:53:06+00:00",
+      "span_hours": 278.79,
+      "same_day_repeats": 2,
+      "final_state": "legacy_accepted",
+      "states_seen": [
+        "accepted",
+        "error",
+        "legacy_accepted"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-28T02:05:54+00:00",
+          "by": "opeyemi.o2@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-02T20:15:23+00:00",
+          "by": "opeyemi.o2@turing.com",
+          "state": "accepted"
+        },
+        {
+          "at": "2026-09-07T14:37:06+00:00",
+          "by": "opeyemi.o2@turing.com",
+          "state": "error"
+        },
+        {
+          "at": "2026-09-07T20:51:07+00:00",
+          "by": "opeyemi.o2@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-09-08T11:57:44+00:00",
+          "by": "opeyemi.o2@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-09-08T16:53:06+00:00",
+          "by": "opeyemi.o2@turing.com",
+          "state": "legacy_accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g956-glass-panel-fabrication-batch-qc-audit-modified",
+      "trainer": "shepherd.u@turing.com",
+      "trainers_in_group": [
+        "shepherd.u@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-09-03T14:43:03+00:00",
+      "last_submitted": "2026-09-03T17:00:51+00:00",
+      "span_hours": 2.3,
+      "same_day_repeats": 1,
+      "final_state": "rejected",
+      "states_seen": [
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-09-03T14:43:03+00:00",
+          "by": "shepherd.u@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T17:00:51+00:00",
+          "by": "shepherd.u@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "gen-g752-golf-enclosure-kit-qa-audit",
+      "trainer": "purushottam.s3@turing.com",
+      "trainers_in_group": [
+        "purushottam.s3@turing.com"
       ],
       "contested": false,
       "submissions": 3,
-      "first_submitted": "2026-08-30T15:08:48+00:00",
-      "last_submitted": "2026-09-03T11:29:41+00:00",
-      "span_hours": 92.35,
+      "first_submitted": "2026-08-29T14:37:01+00:00",
+      "last_submitted": "2026-09-13T12:06:10+00:00",
+      "span_hours": 357.49,
       "same_day_repeats": 0,
       "final_state": "accepted",
       "states_seen": [
@@ -3365,119 +3374,88 @@
       ],
       "timeline": [
         {
-          "at": "2026-08-30T15:08:48+00:00",
-          "by": "suraj.wavhal@turing.com",
+          "at": "2026-08-29T14:37:01+00:00",
+          "by": "purushottam.s3@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-31T01:49:57+00:00",
-          "by": "suraj.wavhal@turing.com",
-          "state": "accepted"
+          "at": "2026-09-01T07:49:09+00:00",
+          "by": "purushottam.s3@turing.com",
+          "state": "rejected"
         },
         {
-          "at": "2026-09-03T11:29:41+00:00",
-          "by": "suraj.wavhal@turing.com",
+          "at": "2026-09-13T12:06:10+00:00",
+          "by": "purushottam.s3@turing.com",
           "state": "accepted"
         }
       ]
     },
     {
-      "task": "crypto-watchdog-change-size-claims-vs-diffs",
-      "trainer": "govind.v1@turing.com",
+      "task": "customer-onboarding-signoff-gap",
+      "trainer": "ashutosh.m3@turing.com",
       "trainers_in_group": [
-        "govind.v1@turing.com"
+        "ashutosh.m3@turing.com"
       ],
       "contested": false,
-      "submissions": 6,
-      "first_submitted": "2026-08-29T13:47:35+00:00",
-      "last_submitted": "2026-09-13T06:07:41+00:00",
-      "span_hours": 352.33,
+      "submissions": 4,
+      "first_submitted": "2026-08-28T03:31:42+00:00",
+      "last_submitted": "2026-09-12T08:02:12+00:00",
+      "span_hours": 364.51,
       "same_day_repeats": 2,
-      "final_state": "rejected",
+      "final_state": "accepted",
       "states_seen": [
         "accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-29T13:47:35+00:00",
-          "by": "govind.v1@turing.com",
+          "at": "2026-08-28T03:31:42+00:00",
+          "by": "ashutosh.m3@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-08-29T14:00:10+00:00",
-          "by": "govind.v1@turing.com",
+          "at": "2026-08-28T05:42:06+00:00",
+          "by": "ashutosh.m3@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-04T12:04:14+00:00",
-          "by": "govind.v1@turing.com",
+          "at": "2026-09-12T03:29:08+00:00",
+          "by": "ashutosh.m3@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-12T19:31:06+00:00",
-          "by": "govind.v1@turing.com",
+          "at": "2026-09-12T08:02:12+00:00",
+          "by": "ashutosh.m3@turing.com",
           "state": "accepted"
-        },
-        {
-          "at": "2026-09-13T05:09:27+00:00",
-          "by": "govind.v1@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-13T06:07:41+00:00",
-          "by": "govind.v1@turing.com",
-          "state": "rejected"
         }
       ]
     },
     {
-      "task": "gen-g1251-patio-addition-permit-exemption-audit",
-      "trainer": "michael.b2@turing.com",
+      "task": "gen-g1261-brand-partner-ad-asset-audit",
+      "trainer": "ashutosh.m3@turing.com",
       "trainers_in_group": [
-        "michael.b2@turing.com"
+        "ashutosh.m3@turing.com"
       ],
       "contested": false,
-      "submissions": 6,
-      "first_submitted": "2026-08-28T09:40:09+00:00",
-      "last_submitted": "2026-09-06T11:07:25+00:00",
-      "span_hours": 217.45,
-      "same_day_repeats": 2,
-      "final_state": "accepted",
+      "submissions": 2,
+      "first_submitted": "2026-09-16T17:01:57+00:00",
+      "last_submitted": "2026-09-17T06:53:42+00:00",
+      "span_hours": 13.86,
+      "same_day_repeats": 0,
+      "final_state": "rejected",
       "states_seen": [
-        "accepted",
-        "error"
+        "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-08-28T09:40:09+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "error"
+          "at": "2026-09-16T17:01:57+00:00",
+          "by": "ashutosh.m3@turing.com",
+          "state": "rejected"
         },
         {
-          "at": "2026-08-28T13:27:04+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "error"
-        },
-        {
-          "at": "2026-08-28T15:18:45+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "error"
-        },
-        {
-          "at": "2026-08-29T06:56:06+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-08-30T09:03:36+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-06T11:07:25+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "accepted"
+          "at": "2026-09-17T06:53:42+00:00",
+          "by": "ashutosh.m3@turing.com",
+          "state": "rejected"
         }
       ]
     },
@@ -3511,37 +3489,47 @@
       ]
     },
     {
-      "task": "tech-b45-t10-receipt-sender-scope-migration",
-      "trainer": "michael.b2@turing.com",
+      "task": "the-thread-hands-back-its-own-opener",
+      "trainer": "muhammad.y7@turing.com",
       "trainers_in_group": [
-        "michael.b2@turing.com"
+        "muhammad.y7@turing.com"
       ],
       "contested": false,
-      "submissions": 3,
-      "first_submitted": "2026-09-16T18:10:27+00:00",
-      "last_submitted": "2026-09-17T05:34:15+00:00",
-      "span_hours": 11.4,
-      "same_day_repeats": 1,
-      "final_state": "accepted",
+      "submissions": 5,
+      "first_submitted": "2026-08-29T16:08:17+00:00",
+      "last_submitted": "2026-09-02T22:43:04+00:00",
+      "span_hours": 102.58,
+      "same_day_repeats": 2,
+      "final_state": "error",
       "states_seen": [
-        "accepted",
+        "error",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-09-16T18:10:27+00:00",
-          "by": "michael.b2@turing.com",
+          "at": "2026-08-29T16:08:17+00:00",
+          "by": "muhammad.y7@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-16T20:19:40+00:00",
-          "by": "michael.b2@turing.com",
+          "at": "2026-08-31T20:15:13+00:00",
+          "by": "muhammad.y7@turing.com",
           "state": "rejected"
         },
         {
-          "at": "2026-09-17T05:34:15+00:00",
-          "by": "michael.b2@turing.com",
-          "state": "accepted"
+          "at": "2026-08-31T22:12:10+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-02T18:54:56+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-02T22:43:04+00:00",
+          "by": "muhammad.y7@turing.com",
+          "state": "error"
         }
       ]
     },
@@ -3610,101 +3598,242 @@
       ]
     },
     {
-      "task": "law-b38-l4-docket-case-status-reconstruction",
-      "trainer": "hamza.c@turing.com",
+      "task": "law-l28-gift-register-thresholds",
+      "trainer": "zia.r@turing.com",
       "trainers_in_group": [
-        "hamza.c@turing.com"
+        "zia.r@turing.com"
       ],
       "contested": false,
-      "submissions": 3,
-      "first_submitted": "2026-09-16T08:30:47+00:00",
-      "last_submitted": "2026-09-17T12:24:33+00:00",
-      "span_hours": 27.9,
-      "same_day_repeats": 1,
-      "final_state": "rejected",
-      "states_seen": [
-        "rejected"
-      ],
-      "timeline": [
-        {
-          "at": "2026-09-16T08:30:47+00:00",
-          "by": "hamza.c@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-17T12:24:33+00:00",
-          "by": "hamza.c@turing.com",
-          "state": "rejected"
-        },
-        {
-          "at": "2026-09-17T12:24:33+00:00",
-          "by": "hamza.c@turing.com",
-          "state": "rejected"
-        }
-      ]
-    },
-    {
-      "task": "gen-g974-kdp-cover-proof-content-audit",
-      "trainer": "istiak.a@turing.com",
-      "trainers_in_group": [
-        "istiak.a@turing.com",
-        "s.a@turing.com"
-      ],
-      "contested": true,
-      "submissions": 3,
-      "first_submitted": "2026-09-01T04:45:03+00:00",
-      "last_submitted": "2026-09-09T02:48:20+00:00",
-      "span_hours": 190.05,
-      "same_day_repeats": 1,
+      "submissions": 7,
+      "first_submitted": "2026-08-27T13:09:58+00:00",
+      "last_submitted": "2026-09-08T09:41:36+00:00",
+      "span_hours": 284.53,
+      "same_day_repeats": 2,
       "final_state": "accepted",
-      "states_seen": [
-        "accepted"
-      ],
-      "timeline": [
-        {
-          "at": "2026-09-01T04:45:03+00:00",
-          "by": "istiak.a@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-01T17:46:22+00:00",
-          "by": "s.a@turing.com",
-          "state": "accepted"
-        },
-        {
-          "at": "2026-09-09T02:48:20+00:00",
-          "by": "istiak.a@turing.com",
-          "state": "accepted"
-        }
-      ]
-    },
-    {
-      "task": "diagnose-why-mobile-check-deposit-7845-for-43-75-never-cleared",
-      "trainer": "asad.s@turing.com",
-      "trainers_in_group": [
-        "asad.s@turing.com"
-      ],
-      "contested": false,
-      "submissions": 2,
-      "first_submitted": "2026-09-13T00:31:12+00:00",
-      "last_submitted": "2026-09-16T14:10:55+00:00",
-      "span_hours": 85.66,
-      "same_day_repeats": 0,
-      "final_state": "rejected",
       "states_seen": [
         "accepted",
         "rejected"
       ],
       "timeline": [
         {
-          "at": "2026-09-13T00:31:12+00:00",
-          "by": "asad.s@turing.com",
-          "state": "accepted"
+          "at": "2026-08-27T13:09:58+00:00",
+          "by": "zia.r@turing.com",
+          "state": "rejected"
         },
         {
-          "at": "2026-09-16T14:10:55+00:00",
-          "by": "asad.s@turing.com",
+          "at": "2026-09-02T10:32:34+00:00",
+          "by": "zia.r@turing.com",
           "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T09:55:22+00:00",
+          "by": "zia.r@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-04T10:23:42+00:00",
+          "by": "zia.r@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-04T12:14:52+00:00",
+          "by": "zia.r@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-04T14:47:32+00:00",
+          "by": "zia.r@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-08T09:41:36+00:00",
+          "by": "zia.r@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g985-finance-publication-header-art-spec-audit",
+      "trainer": "vanka.m@turing.com",
+      "trainers_in_group": [
+        "vanka.m@turing.com"
+      ],
+      "contested": false,
+      "submissions": 21,
+      "first_submitted": "2026-08-27T07:42:09+00:00",
+      "last_submitted": "2026-09-11T09:21:40+00:00",
+      "span_hours": 361.66,
+      "same_day_repeats": 12,
+      "final_state": "rejected",
+      "states_seen": [
+        "legacy_accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-27T07:42:09+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-27T13:28:01+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-27T14:30:52+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-28T05:59:12+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-28T06:30:05+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-28T07:11:17+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-28T20:05:17+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-29T10:06:30+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-29T15:41:22+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-08-30T09:54:52+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-30T12:53:53+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-30T19:40:34+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-08-31T13:28:32+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-01T03:03:56+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-01T08:35:44+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-09-01T08:51:00+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "legacy_accepted"
+        },
+        {
+          "at": "2026-09-01T12:24:29+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-01T12:41:09+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-02T17:35:20+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-03T12:33:04+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-11T09:21:40+00:00",
+          "by": "vanka.m@turing.com",
+          "state": "rejected"
+        }
+      ]
+    },
+    {
+      "task": "diagnose-why-premium-plan-invoice-for-subscription-543-ended-dead-in-f",
+      "trainer": "rishabh.p1@turing.com",
+      "trainers_in_group": [
+        "rishabh.p1@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-31T16:42:39+00:00",
+      "last_submitted": "2026-09-11T16:13:12+00:00",
+      "span_hours": 263.51,
+      "same_day_repeats": 0,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-31T16:42:39+00:00",
+          "by": "rishabh.p1@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-09-11T16:13:12+00:00",
+          "by": "rishabh.p1@turing.com",
+          "state": "accepted"
+        }
+      ]
+    },
+    {
+      "task": "gen-g1202-content-repurposing-coverage-audit",
+      "trainer": "md.r13@turing.com",
+      "trainers_in_group": [
+        "md.r13@turing.com"
+      ],
+      "contested": false,
+      "submissions": 2,
+      "first_submitted": "2026-08-29T19:56:12+00:00",
+      "last_submitted": "2026-08-31T12:49:10+00:00",
+      "span_hours": 40.88,
+      "same_day_repeats": 0,
+      "final_state": "accepted",
+      "states_seen": [
+        "accepted",
+        "rejected"
+      ],
+      "timeline": [
+        {
+          "at": "2026-08-29T19:56:12+00:00",
+          "by": "md.r13@turing.com",
+          "state": "rejected"
+        },
+        {
+          "at": "2026-08-31T12:49:10+00:00",
+          "by": "md.r13@turing.com",
+          "state": "accepted"
         }
       ]
     }

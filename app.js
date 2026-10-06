@@ -2795,7 +2795,7 @@ function downloadAuditCsv() {
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 
 // The packages shown - batch scope, segment and filters, as the CSV export -
@@ -2826,7 +2826,9 @@ function downloadDeliveryManifest() {
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(url);
+  // Released later, not at once: the file is about 4 MB for all batches, and
+  // Chrome can drop a download whose link is revoked before it has read it.
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 
 function downloadTruthCsv() {

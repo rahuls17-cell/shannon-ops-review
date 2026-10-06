@@ -24,6 +24,20 @@ When you change what a figure means, add a line under **Unreleased**. When
   `sourceUri`, `taskName`, `benchType` and `glmModel` from its manifest
   (`drive-deliveries.json` 2.7 to 3.8 MB; no other value changed). The older
   manifests record no source URI or bench type, so those entries leave them null.
+- **Export manifest.json and Export CSV keep the file's link for a minute** instead
+  of releasing it the moment the download starts: the all-batches manifest is
+  4 MB, and Chrome can drop a download whose link is revoked before it has read it.
+
+### Tests
+- `test-cohort.cjs`: since 5 Oct the connector scan reads all 2,590 accepted
+  packages, so no folder needs the direct task.toml read the check expected
+  (709 before, 0 now). It now passes when no folder is left unknown.
+- `test_duplicate_sample.py`: the console pull lists 51 submissions twice (same
+  task id, run and timestamp); one, `a-fortnight-nobody-was-watching` run
+  `delivery-11abc37e`, as both error and accepted, which the check read as two
+  submissions tied on time. Repeats are folded into one first, a decided state
+  outranking error or running: 0 ties left, and `duplicate-sample.json` is
+  rewritten (1,350 to 1,333 duplicate task keys).
 
 ## v3 - 2026-10-06, staging promoted to production
 

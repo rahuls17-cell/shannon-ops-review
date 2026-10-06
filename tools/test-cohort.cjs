@@ -399,7 +399,9 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
     + 'not that a single folder slipped through');
   assert.ok(folders.filter(f => f.connector === null).every(f => !f.delivered),
     'a delivered folder can never be unknown: a manifest read its package');
-  assert.ok(c.connectorFromPackage > 0,
+  // Since 5 Oct the scan reads every accepted package, so no folder is left for
+  // the direct task.toml read; what must hold is that none is left unknown.
+  assert.ok(c.connectorFromPackage > 0 || c.connectorUnknown === 0,
     'the last few must be settled by reading the package, not by guessing');
 
   // Every classification names where it came from, and none of them is a name.

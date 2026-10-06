@@ -64,6 +64,21 @@ def main():
     if dateless:
         failures.append(f'{len(dateless)} rows carry a date with no time')
 
+    # The pull lists some submissions twice - same task id, run and timestamp -
+    # usually with the same state, once (17 Sep pull) as error and as accepted.
+    # That is one submission, not two tied on time, so the copies are folded
+    # into one first, a decided state outranking error or running.
+    RANK = {'accepted': 0, 'rejected': 1, 'error': 2, 'running': 3}
+    single = {}
+    for r in rows:
+        same = (r.get('taskId'), r.get('runId'), r['submittedAt'])
+        kept = single.get(same)
+        if kept is None or RANK.get(r['state'], 9) < RANK.get(kept['state'], 9):
+            single[same] = r
+    repeated = len(rows) - len(single)
+    rows = list(single.values())
+    print(f'{repeated} rows were a second listing of the same submission, folded into one')
+
     groups = collections.defaultdict(list)
     for r in rows:
         groups[name_key(r['name'])].append(r)
