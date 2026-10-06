@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T18:41:07+00:00",
+ "generatedAt": "2026-10-06T18:51:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17165,6 +17165,78 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fall-draws-collected-on-site-or-sent-to-quest/80ade41e500292d5689ba1890e58b0c1e5abe5b611bf33582395954aded59e23.zip",
    "bytesRead": 63515,
+   "readOn": "2026-10-06"
+  },
+  "blackout-days-for-the-kickoff": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/blackout-days-for-the-kickoff/691b148cf55c1f47a79fe65b9cda2a23ab271593265838f6f65f70ff71a24080.zip",
+   "bytesRead": 58012,
+   "readOn": "2026-10-06"
+  },
+  "investor-update-kpi-tracker": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/investor-update-kpi-tracker/83d3a35aa81d447cf6f8899f06094344d64dd0e2a1c6539aa22cc0117b6c7620.zip",
+   "bytesRead": 47799,
+   "readOn": "2026-10-06"
+  },
+  "oct-nov-where-patients-had-blood-drawn": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/oct-nov-where-patients-had-blood-drawn/5e2b9f24ab705e9d0f40a6767c79be7e70a87c7ce8a677dd148f940b3cb286ac.zip",
+   "bytesRead": 52588,
+   "readOn": "2026-10-06"
+  },
+  "september-and-october-lab-orders": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/september-and-october-lab-orders/478688f0720bf5a7a4317ecccb72256af13ee4f40a4377592653435a6fdbe9e3.zip",
+   "bytesRead": 45488,
+   "readOn": "2026-10-06"
+  },
+  "unprioritised-active-project-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unprioritised-active-project-audit/2d3d89a8fe0d7e45fca7fe81340e369ac0172a19961e4be64f9d8102d0911cde.zip",
+   "bytesRead": 45347,
+   "readOn": "2026-10-06"
+  },
+  "who-spoke-in-the-eng-huddles-QC-INPUT-v1-PRE-GATE": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-spoke-in-the-eng-huddles-QC-INPUT-v1-PRE-GATE/fd0433749ff22d7f13518a86c9d57cbf5bf226b36c2a1138ec0c477d753a3cfa.zip",
+   "bytesRead": 51489,
    "readOn": "2026-10-06"
   }
  }
