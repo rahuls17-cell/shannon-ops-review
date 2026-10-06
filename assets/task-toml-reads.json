@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T16:11:11+00:00",
+ "generatedAt": "2026-10-06T16:21:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16958,6 +16958,54 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-is-actually-answering/355976d78df42808be805272be95f05961063d837e4cd78f65e5cfe643a45700.zip",
    "bytesRead": 46927,
+   "readOn": "2026-10-06"
+  },
+  "business-cycle-delivery-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/business-cycle-delivery-audit/24b5e6a93f278fa38cb55aa88af4fe6304c7d84b8d76a74560873e8da59a12cd.zip",
+   "bytesRead": 42217,
+   "readOn": "2026-10-06"
+  },
+  "the-decks-nobody-filed": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-decks-nobody-filed/e148adeb929f16e12180db289c64e9c18dbbd59a1042b173f6d793a99dec2fa2.zip",
+   "bytesRead": 51257,
+   "readOn": "2026-10-06"
+  },
+  "vendor-notes-triage": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-notes-triage/b22393ea25feb521128304cfdd24661a80d759e89268e7a6e79b6fb176712e66.zip",
+   "bytesRead": 44172,
+   "readOn": "2026-10-06"
+  },
+  "what-these-boards-are-shaped-like": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-these-boards-are-shaped-like/6d49a872ddba5ff9c9c20997e04f50610230826822535bd29798f6d1468993cf.zip",
+   "bytesRead": 49934,
    "readOn": "2026-10-06"
   }
  }
