@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T18:51:11+00:00",
+ "generatedAt": "2026-10-06T19:01:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17237,6 +17237,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-spoke-in-the-eng-huddles-QC-INPUT-v1-PRE-GATE/fd0433749ff22d7f13518a86c9d57cbf5bf226b36c2a1138ec0c477d753a3cfa.zip",
    "bytesRead": 51489,
+   "readOn": "2026-10-06"
+  },
+  "filed-where-i-cannot-look": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/filed-where-i-cannot-look/6a8cb08e6ca70226118a82fec97ef691d79bb60eaa4c6314560bdd04968286af.zip",
+   "bytesRead": 53844,
+   "readOn": "2026-10-06"
+  },
+  "labels-only-on-paper": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/labels-only-on-paper/9685cdcdc0055db65a726089009df610e4e154e4d2f5d3c0f27ecaf5d3882342.zip",
+   "bytesRead": 43058,
+   "readOn": "2026-10-06"
+  },
+  "the-digest-i-get-twice": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-digest-i-get-twice/e9c7435ccc49a7af93bc71d7d41d857e8989a2392692b17e87d37e6b6682fa19.zip",
+   "bytesRead": 49198,
    "readOn": "2026-10-06"
   }
  }
