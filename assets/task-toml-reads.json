@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T13:41:13+00:00",
+ "generatedAt": "2026-10-06T13:51:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16681,6 +16681,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/visit-weeks-pushed-out-in-bulk/4217e1bf86bfde29e8b870c19e0ce6023a8b3ac4c044d577d76bdb2625c8f2e5.zip",
    "bytesRead": 54573,
+   "readOn": "2026-10-06"
+  },
+  "last-two-accounts-at-close-out": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/last-two-accounts-at-close-out/2c8db6a2b84ccf87ff6231c1c99874fb9f35b85f83872f0c4f1a45eaca29bb1e.zip",
+   "bytesRead": 54152,
+   "readOn": "2026-10-06"
+  },
+  "urgent-project-update-gap-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/urgent-project-update-gap-audit/223ffdbd89dd189fefdc6fcba9485da823c67d7c52207eb295cd1870a05ddcd5.zip",
+   "bytesRead": 45404,
    "readOn": "2026-10-06"
   }
  }
