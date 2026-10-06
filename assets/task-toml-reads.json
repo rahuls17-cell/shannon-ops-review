@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T15:11:08+00:00",
+ "generatedAt": "2026-10-06T15:31:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16849,6 +16849,19 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-lab-results-that-never-came-back/d00cd7694562142ce28399ce465ad4958936853675e886896995d28b5089f69d.zip",
    "bytesRead": 48656,
+   "readOn": "2026-10-06"
+  },
+  "database-network-exposure-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/database-network-exposure-audit/2f15afb233a43d271a02f2e8e63b51d46da067d8231bf5e3615c9ffeeb1f526c.zip",
+   "bytesRead": 50030,
    "readOn": "2026-10-06"
   }
  }
