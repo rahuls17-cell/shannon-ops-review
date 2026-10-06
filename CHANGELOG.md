@@ -39,6 +39,20 @@ When you change what a figure means, add a line under **Unreleased**. When
   `source_folder` too. All batches today: 30 of the 742 ready tasks excluded, each
   a re-cut of a task a Drive batch already delivered (the page already flagged
   them as possibly delivered).
+- **A loaded manifest now takes its tasks out of the Ready for delivery list.**
+  Load a previous manifest (the Delivery tab's all-batches export, a Drive batch
+  manifest, or one the Pipeline wrote) and every task it already names - by
+  folder, task id, package file or declared name, a later version included -
+  leaves the table, its counts and the CSV; Drop exclusions brings them back.
+  Create manifest.json then writes exactly what is left. Today: 742 ready, 712
+  after loading the all-batches export, written as 708 tasks.
+- **One entry per task, by the name its package declares.** A task re-cut under
+  a new name after review was two manifest entries; it is now one, the most
+  recent decided run speaking for it and the other listed in `standsFor`
+  (4 such today). The manifest records the file it excluded (`excludedFrom`)
+  and counts the tasks taken out of the list. As before, the tasks a manifest
+  just wrote are excluded from the next cut in the same visit, so they leave
+  the list too until Drop exclusions.
 - **Fix:** an excluded folder key keeps its suffix. A folder named `...-v5` or
   `...-20260918` had the suffix stripped before matching, so it was never
   excluded, even by a manifest the Pipeline wrote itself.

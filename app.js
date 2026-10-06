@@ -2621,9 +2621,7 @@ function renderTruth() {
   const cohort = truthCohortRows();
   const byBucket = filters.state === 'accepted' && cohort;
   truthByBucket = Boolean(byBucket);
-  const result = byBucket
-    ? window.filterTruth(cohort, {...filters, state: ''})
-    : window.filterTruth(filters.search ? truthSearchRows() : truthRows(), filters);
+  const result = shownRows();
   // Accepted is a bucket figure, but it still has to answer the question the
   // filters are asking. Counted over the same folders, narrowed the same way,
   // so it equals the table whenever Accepted is the selected state.
@@ -2678,6 +2676,7 @@ function renderManifestBar(result) {
   const preview = window.buildManifest(manifestCandidates(result), {
     size: Number(byId('manifestSize').value),
     exclude: manifestExclusions,
+    excludedBefore: result.excludedTasks,
   });
   const s = preview.selection;
   setText('manifestNote',
@@ -2690,7 +2689,7 @@ function renderManifestBar(result) {
         `(${fmt(preview.counts.supersededRows)} repeat submission${preview.counts.supersededRows === 1 ? '' : 's'} left out)` : '') +
     ` / ${fmt(preview.counts.owners)} trainers` +
     (s.excludedByPreviousManifest
-      ? ` / ${fmt(s.excludedByPreviousManifest)} excluded by ${esc(manifestExcludedFrom || 'a previous manifest')}` : '') +
+      ? ` / ${fmt(s.excludedByPreviousManifest)} already in ${esc(manifestExcludedFrom || 'a previous manifest')}, taken out of the list` : '') +
     (preview.counts.possiblyAlreadyDelivered
       ? ` / ${fmt(preview.counts.possiblyAlreadyDelivered)} flagged to check - their identifier names a task the audit already covers` : '') +
     (preview.counts.namesDerived
@@ -2710,6 +2709,8 @@ function downloadManifest() {
   const manifest = window.buildManifest(manifestCandidates(result), {
     size: Number(byId('manifestSize').value),
     exclude: manifestExclusions,
+    excludedBefore: result.excludedTasks,
+    excludedFrom: manifestExcludedFrom || null,
     pipelineGeneratedAt: truth.generatedAt,
     deliveredIndexGeneratedAt: truth.deliveredIndex?.generatedAt || null,
     // The filters are recorded so the manifest says what it was cut from.
@@ -2746,9 +2747,25 @@ function downloadManifest() {
 function shownRows() {
   const filters = truthFilters();
   const cohort = truthCohortRows();
-  return (filters.state === 'accepted' && cohort)
-    ? window.filterTruth(cohort, {...filters, state: ''})
-    : window.filterTruth(filters.search ? truthSearchRows() : truthRows(), filters);
+  const rows = (filters.state === 'accepted' && cohort) ? cohort
+    : filters.search ? truthSearchRows() : truthRows();
+  const result = window.filterTruth(withoutExcluded(rows, filters), (filters.state === 'accepted' && cohort) ? {...filters, state: ''} : filters);
+  result.excludedTasks = manifestExcludedTasks;
+  return result;
+}
+
+// Under Ready for delivery, the tasks a loaded previous manifest already names
+// leave the list before anything is counted - the table, its counts, the CSV
+// and the next manifest then all read the same rows. Drop exclusions brings
+// them back. Other views are not narrowed.
+let manifestExcludedTasks = 0;
+function withoutExcluded(rows, filters) {
+  manifestExcludedTasks = 0;
+  if (filters.delivered !== 'ready' || !manifestExclusions.length) return rows;
+  const excludes = window.manifestExclusionMatcher(manifestExclusions);
+  const gone = rows.filter(excludes);
+  manifestExcludedTasks = window.filterTruth(gone, filters).rows.length;
+  return rows.filter(row => !excludes(row));
 }
 
 function exportRowCount() {

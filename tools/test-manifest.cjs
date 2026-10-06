@@ -253,3 +253,27 @@ console.log('all suspect assertions passed');
   assert.ok(!own.tasks.some(t => t.id === 'r1'), 'folder:...-v5 excludes the -v5 folder');
 }
 console.log('delivery manifest exclusions passed');
+
+// --- one entry per task, and the table's own exclusion ----------------------
+// Two rows whose packages declare one task - a re-cut under a new name - are
+// one entry; the matcher the table uses removes what a manifest names.
+{
+  const {exclusionMatcher, taskKey} = require(path.join(root, 'manifest.js'));
+  const recut = buildManifest([
+    {id: 'a', name: 'law-l1-audit', packageTask: 'obi/law-l1-audit', decided: '2026-09-10'},
+    {id: 'b', name: 'law-l1-audit-review-resolved', packageTask: 'harbor/law-l1-audit', decided: '2026-09-20'},
+    {id: 'c', name: 'other', decided: '2026-09-11'},
+  ], {});
+  assert.equal(recut.counts.tasks, 2, 'a re-cut of one task is one entry');
+  const entry = recut.tasks.find(t => t.key === 'task:law-l1-audit');
+  assert.deepEqual(entry.standsFor, ['b', 'a'], 'the most recent decided run speaks for it, the other is carried');
+  assert.equal(taskKey({name: 'x-v3'}), 'x', 'without a package, the name with its suffixes stripped');
+  const gone = exclusionMatcher(['task:law-l1-audit']);
+  assert.ok(gone({name: 'anything', packageTask: 'obi/law-l1-audit-v2'}), 'a later version of a delivered task is a redelivery');
+  assert.ok(!gone({name: 'other'}));
+  assert.equal(exclusionMatcher([])({name: 'x'}), false, 'nothing loaded excludes nothing');
+  const again = buildManifest([{id: 'c', name: 'other', decided: '2026-09-11'}], {excludedBefore: 30, excludedFrom: 'm.json'});
+  assert.equal(again.selection.excludedByPreviousManifest, 30, 'the tasks the table already took out are counted');
+  assert.equal(again.selection.excludedFrom, 'm.json');
+}
+console.log('unique-task and exclusion-matcher checks passed');

@@ -67,25 +67,43 @@
   // A folder key names one bucket folder exactly, so it is only lower-cased: a
   // folder called ...-v5 or ...-20260918 is a different folder from the one
   // without the suffix, and stripping it here meant it was never excluded.
+  const withoutNamespace = value => String(value || '').trim().replace(/^(?:harbor|obi)\//i, '');
   function exclusionKey(value) {
     const text = String(value || '').trim().toLowerCase();
-    return text.startsWith('folder:') ? text : normaliseName(text);
+    if (text.startsWith('folder:')) return text;
+    if (text.startsWith('task:')) return `task:${normaliseName(withoutNamespace(text.slice(5)))}`;
+    return normaliseName(withoutNamespace(text));
   }
-  const withoutNamespace = value => String(value || '').trim().replace(/^(?:harbor|obi)\//i, '');
+
+  // Which task a row is. The [task] name its package declares comes first: a
+  // task re-cut under a new name or folder after review is still one task, and
+  // shipping both copies is the duplicate this file exists to prevent. Then the
+  // bucket folder, then the row's own name.
+  function taskKey(row) {
+    if (row.packageTask) return `task:${normaliseName(withoutNamespace(row.packageTask))}`;
+    if (row.cohortFolder) return `folder:${String(row.cohortFolder).trim().toLowerCase()}`;
+    return normaliseName(row.name);
+  }
+
+  // Whether an earlier manifest already names this row's task, however it
+  // names it: the task key, the bucket folder, or the row's or package's name.
+  function exclusionMatcher(list) {
+    const exclude = new Set([...(list || [])].map(exclusionKey));
+    if (!exclude.size) return () => false;
+    return row => [
+      taskKey(row),
+      row.cohortFolder ? `folder:${String(row.cohortFolder).trim().toLowerCase()}` : null,
+      ...[row.name, row.packageTask].filter(Boolean).map(n => normaliseName(withoutNamespace(n))),
+    ].some(k => k && exclude.has(k));
+  }
 
   function buildManifest(rows, options) {
     const o = options || {};
-    const exclude = new Set([...(o.exclude || [])].map(exclusionKey));
-    // A task an earlier manifest names, wherever it now sits: by its folder key,
-    // or by the name a row of it carries or the package declares.
-    const named = members => members.some(m => [m.name, m.packageTask]
-      .some(n => n && exclude.has(normaliseName(withoutNamespace(n)))));
+    const excludes = exclusionMatcher(o.exclude);
 
     const groups = new Map();
     rows.forEach(row => {
-      const k = row.cohortFolder
-        ? `folder:${String(row.cohortFolder).trim().toLowerCase()}`
-        : normaliseName(row.name);
+      const k = taskKey(row);
       if (!k) return;
       if (!groups.has(k)) groups.set(k, []);
       groups.get(k).push(row);
@@ -94,7 +112,7 @@
     const excluded = [];
     const candidates = [];
     groups.forEach((members, k) => {
-      if (exclude.has(k) || named(members)) { excluded.push(k); return; }
+      if (members.some(excludes)) { excluded.push(k); return; }
       const sorted = [...members].sort(preferred);
       candidates.push({key: k, row: sorted[0], members: sorted});
     });
@@ -143,14 +161,15 @@
       pipelineGeneratedAt: o.pipelineGeneratedAt || null,
       deliveredIndexGeneratedAt: o.deliveredIndexGeneratedAt || null,
       selection: {
-        rule: 'one entry per distinct task name, version and status suffixes ' +
-              'stripped; the most recent decided run represents it; oldest ' +
-              'decision first',
+        rule: 'one entry per distinct task - the [task] name its package declares, ' +
+              'else its own name - version and status suffixes stripped; the most ' +
+              'recent decided run represents it; oldest decision first',
         requested: Number(o.size) > 0 ? Math.floor(Number(o.size)) : null,
         filters: o.filters || {},
+        excludedFrom: o.excludedFrom || null,
         rowsConsidered: rows.length,
         distinctTasks: groups.size,
-        excludedByPreviousManifest: excluded.length,
+        excludedByPreviousManifest: excluded.length + (Number(o.excludedBefore) || 0),
         availableAfterExclusions: candidates.length,
         shortBy: Math.max(0, (Number(o.size) > 0 ? Math.floor(Number(o.size)) : candidates.length) - taken.length),
       },
@@ -197,8 +216,9 @@
 
   root.buildManifest = buildManifest;
   root.namesFromManifest = namesFromManifest;
+  root.manifestExclusionMatcher = exclusionMatcher;
   root.normaliseManifestName = normaliseName;
   if (typeof module !== 'undefined') {
-    module.exports = {buildManifest, namesFromManifest, normaliseName};
+    module.exports = {buildManifest, namesFromManifest, normaliseName, exclusionMatcher, taskKey};
   }
 })(typeof window === 'undefined' ? globalThis : window);
