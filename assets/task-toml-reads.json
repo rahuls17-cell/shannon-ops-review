@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T18:01:13+00:00",
+ "generatedAt": "2026-10-06T18:11:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17117,6 +17117,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sprint-carryover-audit/3d8d7422b2519ed3bee0549f8acbfe788f83901da15f677e654866268aa4ed25.zip",
    "bytesRead": 45160,
+   "readOn": "2026-10-06"
+  },
+  "what-we-said-about-healthie": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-we-said-about-healthie/b0cbe0f6723c0616f9998679e92a99df0f2e235b3a3c35b9b1017f95b6cb0f70.zip",
+   "bytesRead": 46620,
    "readOn": "2026-10-06"
   }
  }
