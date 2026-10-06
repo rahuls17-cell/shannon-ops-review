@@ -439,8 +439,10 @@ longer decides Company Bench anywhere on the dashboard.
     deploys through `deploy.yml`.
   - `tools/export_gcs_pipeline.py` takes a fresh access token when a read gets
     a 401: a run reads ~50,000 objects and outlived its token on the new VM.
-  - While it is tested the VM publishes `staging` and node 1 keeps publishing
-    `main`; taking over `main` means stopping node 1's two jobs in the same step.
+  - It publishes **`main`** since 2026-10-06, when staging was released to
+    production (`PUBLISH_BRANCH=main` in its crontab). node 1's `publish.sh` and
+    `scan-glm.sh` cron lines still have to be removed so only one VM pushes
+    `main`.
   - `refresh-drive.sh` (every 15 min) refreshes the Delivery tab's Current view
     from Drive: `build_drive_deliveries.py --audit none` with a snapshot cache,
     then `build_drive_owners.py`, then both Drive test suites; it commits
