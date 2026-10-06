@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T11:11:02+00:00",
+ "generatedAt": "2026-10-06T11:51:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16524,6 +16524,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-intake-list-nobody-reconciled/c75583b0f917217fba685f1939cfc81eb19f38499a6450b9a76df6fbe2fba9a3.zip",
    "bytesRead": 56689,
+   "readOn": "2026-10-06"
+  },
+  "report-runs-that-failed": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/report-runs-that-failed/f4e2d8a3224e0b68b9afa6338ffc34d7a5c1adb3543390f45ca5c941e2703858.zip",
+   "bytesRead": 43153,
+   "readOn": "2026-10-06"
+  },
+  "the-meetings-nobody-actually-confirmed": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-nobody-actually-confirmed/76c08a20dadc44476f37cf1600f2dadef20cfefe2d41427ef3e73f5b076ae164.zip",
+   "bytesRead": 57867,
    "readOn": "2026-10-06"
   }
  }
