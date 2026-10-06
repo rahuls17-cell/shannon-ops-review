@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T21:41:16+00:00",
+ "generatedAt": "2026-10-06T23:31:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17430,6 +17430,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/quiet-conversations-before-april/b9040ced0b986aead2e7a119cbf173ad1842ad122473361e5c80d774880de6f2.zip",
    "bytesRead": 54093,
+   "readOn": "2026-10-06"
+  },
+  "cincinnati-lab-orders-counted-once": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/cincinnati-lab-orders-counted-once/75bceee60337864262599c146dd6245e43becc900001549cb16c67e78057ba82.zip",
+   "bytesRead": 52758,
+   "readOn": "2026-10-06"
+  },
+  "who-is-still-waiting-on-me": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-is-still-waiting-on-me/3f087924993599dde7c8bf1c9e6620d9f48f14fa12597aa1d414739f192c8ede.zip",
+   "bytesRead": 48197,
    "readOn": "2026-10-06"
   }
  }
