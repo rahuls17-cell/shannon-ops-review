@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T23:31:17+00:00",
+ "generatedAt": "2026-10-06T23:41:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17454,6 +17454,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-is-still-waiting-on-me/3f087924993599dde7c8bf1c9e6620d9f48f14fa12597aa1d414739f192c8ede.zip",
    "bytesRead": 48197,
+   "readOn": "2026-10-06"
+  },
+  "stranded-feed-spend-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/stranded-feed-spend-audit/3dcb4d1397bd80892435f4d13c3511e9efcc2402929ec7dec6e6b7802266597c.zip",
+   "bytesRead": 41743,
+   "readOn": "2026-10-06"
+  },
+  "the-notifications-from-a-hundred-senders": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-notifications-from-a-hundred-senders/8058c1a878b825efd330289c9d6a5e45825ffa9c6021efb3bf253435f866078c.zip",
+   "bytesRead": 66012,
    "readOn": "2026-10-06"
   }
  }
