@@ -3972,8 +3972,8 @@ function rangeLabel() {
 
 function applyRange() {
   const invalid = Boolean(dateRange.start && dateRange.end && dateRange.start > dateRange.end);
-  byId('dateError').hidden = !invalid;
-  ['dateStart', 'dateEnd'].forEach(id => byId(id).setAttribute('aria-invalid', String(invalid)));
+  document.querySelectorAll('.rangeError').forEach(node => { node.hidden = !invalid; });
+  document.querySelectorAll('[data-date]').forEach(input => input.setAttribute('aria-invalid', String(invalid)));
   syncPresetPills();
   renderEverything();
 }
@@ -3993,15 +3993,15 @@ function setRangeFromPreset(value) {
 function syncPresetPills() {
   document.querySelectorAll('.segmented .segbtn[data-preset]').forEach(pill =>
     pill.classList.toggle('is-on', pill.dataset.preset === (dateRange.preset || '')));
-  const chip = byId('dateChip');
-  if (chip) chip.textContent = (dateRange.start || dateRange.end) && !dateRange.preset ? rangeLabel() : 'Custom';
-  const pop = document.querySelector('.rangepop');
-  if (pop) pop.classList.toggle('is-set', Boolean((dateRange.start || dateRange.end) && !dateRange.preset));
+  const custom = Boolean((dateRange.start || dateRange.end) && !dateRange.preset);
+  document.querySelectorAll('.dateChip').forEach(chip => { chip.textContent = custom ? rangeLabel() : 'Custom'; });
+  document.querySelectorAll('.rangepop').forEach(pop => pop.classList.toggle('is-set', custom));
 }
 
+// Every range control on the page shows the one shared range.
 function syncOverviewSlicer() {
-  byId('dateStart').value = dateRange.start;
-  byId('dateEnd').value = dateRange.end;
+  document.querySelectorAll('[data-date="start"]').forEach(input => { input.value = dateRange.start; });
+  document.querySelectorAll('[data-date="end"]').forEach(input => { input.value = dateRange.end; });
   byId('datePreset').value = dateRange.preset || '';
 }
 
@@ -4794,7 +4794,7 @@ function wireEvents() {
     const select = byId('datePreset');
     select.value = pill.dataset.preset;
     select.dispatchEvent(new Event('change'));
-    const pop = document.querySelector('.rangepop'); if (pop) pop.open = false;
+    document.querySelectorAll('.rangepop[open]').forEach(pop => { pop.open = false; });
   });
   const toggleCard = card => {
     const open = card.getAttribute('aria-expanded') === 'true';
@@ -5008,13 +5008,16 @@ function wireEvents() {
     syncOverviewSlicer();
     applyRange();
   });
-  ['dateStart', 'dateEnd'].forEach(id => byId(id).addEventListener('change', () => {
-    dateRange.start = byId('dateStart').value;
-    dateRange.end = byId('dateEnd').value;
+  document.addEventListener('change', event => {
+    const input = event.target.closest('[data-date]');
+    if (!input) return;
+    const body = input.closest('.rangepop-body');
+    dateRange.start = body.querySelector('[data-date="start"]').value;
+    dateRange.end = body.querySelector('[data-date="end"]').value;
     dateRange.preset = '';
-    byId('datePreset').value = '';
+    syncOverviewSlicer();
     applyRange();
-  }));
+  });
 
   byId('explorerRefresh').addEventListener('click', () => loadExplorer(true));
   byId('explorerFilter').addEventListener('input', renderExplorerBody);
@@ -5035,9 +5038,11 @@ function wireEvents() {
       `<li><button class="explorer-dir" data-path="${esc(path)}">${esc(path)}</button></li>`).join('');
     setText('explorerFoot', `${fmt(rows.length)} folder${rows.length === 1 ? '' : 's'} match. Open one to see its files.`);
   });
-  byId('clearDates').addEventListener('click', () => {
+  document.addEventListener('click', event => {
+    if (!event.target.closest('[data-range-clear]')) return;
     dateRange.start = dateRange.end = '';
-    byId('dateStart').value = byId('dateEnd').value = byId('datePreset').value = '';
+    dateRange.preset = '';
+    syncOverviewSlicer();
     applyRange();
   });
   const popover = byId('infoPopover');
