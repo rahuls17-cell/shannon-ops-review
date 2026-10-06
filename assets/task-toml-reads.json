@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-06T15:51:12+00:00",
+ "generatedAt": "2026-10-06T16:11:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -16886,6 +16886,78 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/psychiatry-codes-quoting-the-wrong-fee/f475e30b383d2ed41d0f0a81b49592624694ef63c4f5ba306265b9335448082d.zip",
    "bytesRead": 49968,
+   "readOn": "2026-10-06"
+  },
+  "design-milestone-delivery-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/design-milestone-delivery-audit/eb7bcd9ac3a10db21fed9b41362033ccd5104013caa1057ec2b7fc88d161ce49.zip",
+   "bytesRead": 98169,
+   "readOn": "2026-10-06"
+  },
+  "project-resource-link-gap-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/project-resource-link-gap-audit/94c5e2b77ceef32edc307cf14bf17fbce2f665e0db6a21fa07205c41dd8bbfea.zip",
+   "bytesRead": 42886,
+   "readOn": "2026-10-06"
+  },
+  "team-roster-access-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/team-roster-access-audit/3f36d59f2a6f34b1481502a8b15a355dfd10a1b044898b5cdc3185ecd587a10e.zip",
+   "bytesRead": 43565,
+   "readOn": "2026-10-06"
+  },
+  "the-focused-mail-i-have-not-read": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-focused-mail-i-have-not-read/51fa76956079659ebb732640788cae6ab142bfb74b0a24f3622cf0b780a3731c.zip",
+   "bytesRead": 58645,
+   "readOn": "2026-10-06"
+  },
+  "where-the-week-lands": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-the-week-lands/5200c7d01b7e04ed6641f80a52a0d990f731f8937a0aef7d9e118f7ddcef053c.zip",
+   "bytesRead": 48878,
+   "readOn": "2026-10-06"
+  },
+  "who-is-actually-answering": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-is-actually-answering/355976d78df42808be805272be95f05961063d837e4cd78f65e5cfe643a45700.zip",
+   "bytesRead": 46927,
    "readOn": "2026-10-06"
   }
  }
