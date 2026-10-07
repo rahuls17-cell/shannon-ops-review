@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T14:31:17+00:00",
+ "generatedAt": "2026-10-07T14:41:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18762,6 +18762,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-that-run-past-midnight/02d5af93c69eef90628a648b358cffb2fd6c5ec1e60534cd3226272b0d9ccf8a.zip",
    "bytesRead": 51609,
+   "readOn": "2026-10-07"
+  },
+  "fulfillment-report-gap-audit": {
+   "connector": true,
+   "services": [
+    "shopify-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fulfillment-report-gap-audit/d2525b5df1fcbac267dc0367e54052cb631ee417280f4b184799b4f1a2b97683.zip",
+   "bytesRead": 43811,
+   "readOn": "2026-10-07"
+  },
+  "the-comment-count-is-not-the-comments": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-comment-count-is-not-the-comments/b801096e938ac49c77c95a41cbd1510f4efbf331522a90df56d89d5230a2ea46.zip",
+   "bytesRead": 47859,
    "readOn": "2026-10-07"
   }
  }
