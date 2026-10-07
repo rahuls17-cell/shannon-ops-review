@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T12:41:06+00:00",
+ "generatedAt": "2026-10-07T12:51:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18399,6 +18399,31 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/admin-mfa-exception-audit/5a22afc91c54cabb9a3b0c777a4781fc4d403a98494e62f7136805d4f1b6a78b.zip",
    "bytesRead": 46178,
+   "readOn": "2026-10-07"
+  },
+  "finance-mart-gap-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-mart-gap-audit/3973498f1eb6594abe9efdcea23713df7ddf702f5f424e6855f8396c791188f6.zip",
+   "bytesRead": 43864,
+   "readOn": "2026-10-07"
+  },
+  "secret-scanning-baseline-audit": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/secret-scanning-baseline-audit/0b63398d090ab66329b3c84e0d2af536a748b64b07b1a3d8b49317d2a4d1f2bc.zip",
+   "bytesRead": 47106,
    "readOn": "2026-10-07"
   }
  }
