@@ -9,6 +9,20 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+## v4.1 - 2026-10-07, staging promoted to production
+
+### Pipeline tab: Batch 11.1 counts as delivered
+- **A batch delivered after the GLM 5.3 cutoff now reaches the Pipeline.** The
+  Pipeline's delivery join (the DL tag, the Delivered / Ready filter, the cohort's
+  delivered split) and the bench, harness and connector count a delivered task
+  gives its pipeline row read the GLM 5.3 cutoff rows only, so Batch 11.1 - in
+  the Current Drive data alone - matched all 274 of its accepted folders and
+  marked none delivered. They now read the cutoff rows plus every batch only the
+  Current Drive data has (`deliveredRows`), so later batches follow on their own.
+  Batch 11.1: 274 of 274 marked delivered (270 by the task the package declares,
+  4 by the folder the manifest names). Delivered filter today: Delivered 1,911 ->
+  2,176, Ready 956 -> 697, Not delivered 5,153 -> 4,891.
+
 ## v4 - 2026-10-07, staging promoted to production
 
 ### Delivery tab
