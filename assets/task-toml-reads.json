@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T07:01:23+00:00",
+ "generatedAt": "2026-10-07T07:21:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17877,6 +17877,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/training-promised-past-our-standard/3381e0b6325f855dc79105f1e29e577b36c42af9e78fff1cde0d2de7bdd36a40.zip",
    "bytesRead": 49949,
+   "readOn": "2026-10-07"
+  },
+  "ga-launch-readiness-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ga-launch-readiness-audit/374347af3f488274c95c85257ee752734a9ee4ae81ba9ec550c1bc5e108dad8b.zip",
+   "bytesRead": 40236,
    "readOn": "2026-10-07"
   }
  }
