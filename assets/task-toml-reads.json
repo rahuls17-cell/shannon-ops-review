@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T15:31:20+00:00",
+ "generatedAt": "2026-10-07T15:41:32+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18918,6 +18918,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-unread-that-piled-up-in-the-inbox/37a9b0098764e4506632e9d3b41cae8479e81b7669673a1aa4e233d38677d5c8.zip",
    "bytesRead": 65548,
+   "readOn": "2026-10-07"
+  },
+  "held-drive-access-request-audit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/held-drive-access-request-audit/0629b87a48884d2d81b633aa8b7928596f151acebc3c1d1d65fededcfc8a4b6d.zip",
+   "bytesRead": 46877,
+   "readOn": "2026-10-07"
+  },
+  "risk-the-reports-state": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/risk-the-reports-state/4c8f1e50f64dccc28367e2ba30c066db852262582be064109d582fc59c0d8379.zip",
+   "bytesRead": 43316,
+   "readOn": "2026-10-07"
+  },
+  "vendor-charges-that-moved": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-charges-that-moved/c1df00104826002b7f44381efcee0dc37e982c7426c44830b002de38d96e2fbc.zip",
+   "bytesRead": 49641,
    "readOn": "2026-10-07"
   }
  }
