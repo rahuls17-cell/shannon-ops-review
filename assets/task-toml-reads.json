@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T00:51:10+00:00",
+ "generatedAt": "2026-10-07T01:11:16+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17564,6 +17564,42 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spend-ask-signoff-audit/134f5d54155a05b507f4d275634767cf03bf51ec897cb9fe7a5adde87f91dc71.zip",
    "bytesRead": 43423,
+   "readOn": "2026-10-07"
+  },
+  "goals-still-waiting-to-start": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/goals-still-waiting-to-start/5c73495406a9fa4105366bfc8112af1fc8849447ff1d495f7e43a2b7ab789523.zip",
+   "bytesRead": 48083,
+   "readOn": "2026-10-07"
+  },
+  "internal-charge-codes-against-cms-rows": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/internal-charge-codes-against-cms-rows/944557deea49a74dc54e33986036e38a9c8d883675b94e5bf2ba7698ddf84dde.zip",
+   "bytesRead": 50913,
+   "readOn": "2026-10-07"
+  },
+  "the-meetings-with-only-me-on-them": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-with-only-me-on-them/ccbcbbf77c561bf4474e9b2049066b52780dd3201063969c7887543f1e174ed7.zip",
+   "bytesRead": 62640,
    "readOn": "2026-10-07"
   }
  }
