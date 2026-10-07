@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T12:51:13+00:00",
+ "generatedAt": "2026-10-07T13:01:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18424,6 +18424,30 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/secret-scanning-baseline-audit/0b63398d090ab66329b3c84e0d2af536a748b64b07b1a3d8b49317d2a4d1f2bc.zip",
    "bytesRead": 47106,
+   "readOn": "2026-10-07"
+  },
+  "answers-nobody-actually-gave": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/answers-nobody-actually-gave/214aed86bb0f441001a086e2bef9bdd8724fd4a1b6dc1ff7bf0bdc280b618e96.zip",
+   "bytesRead": 53526,
+   "readOn": "2026-10-07"
+  },
+  "the-commitments-that-never-added-up": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-commitments-that-never-added-up/cbcb9778171a1ba35687b2ce4709df40bb8f98f06fba6a1844c3b443dcc06316.zip",
+   "bytesRead": 68759,
    "readOn": "2026-10-07"
   }
  }
