@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T07:31:14+00:00",
+ "generatedAt": "2026-10-07T08:01:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17901,6 +17901,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spring-labs-for-patients-35-and-over/0451b3ed1c70887d7e35c6abb5c3543aaf848a80bed477ed15baa066b02a729d.zip",
    "bytesRead": 53203,
+   "readOn": "2026-10-07"
+  },
+  "who-has-been-sitting-in-these-meetings": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-has-been-sitting-in-these-meetings/87dba8e951b24e417f17426e418e16dd5c0d411501bcf47ca3330ba3840a3e23.zip",
+   "bytesRead": 47956,
    "readOn": "2026-10-07"
   }
  }
