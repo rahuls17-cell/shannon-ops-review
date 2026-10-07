@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T13:11:08+00:00",
+ "generatedAt": "2026-10-07T13:21:16+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18461,6 +18461,30 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-file-pickup-lag/2408cf9fe76b37728536e4a98c7f22cb0902eafff16f81f2740f0027667e9f53.zip",
    "bytesRead": 46723,
+   "readOn": "2026-10-07"
+  },
+  "error-alerts-by-incident": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/error-alerts-by-incident/1763d953717a1440c2b2a408ec63deef8fd31522f072d5a15684b25d6456370f.zip",
+   "bytesRead": 49607,
+   "readOn": "2026-10-07"
+  },
+  "the-diary-marked-private": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-diary-marked-private/1b520dd0c5455861e23e67b06019a46f14b72a716883fd1f2fa81ffdc757f651.zip",
+   "bytesRead": 52310,
    "readOn": "2026-10-07"
   }
  }
