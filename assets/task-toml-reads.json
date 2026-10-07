@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T00:21:17+00:00",
+ "generatedAt": "2026-10-07T00:31:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17516,6 +17516,30 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/weekly-bot-traffic-audit/ff79c6594a01e53c70701a3c20eb7c67d716bad89ad5001fd2523fc5d290c4a5.zip",
    "bytesRead": 41856,
+   "readOn": "2026-10-07"
+  },
+  "one-hundred-and-fifty-one-digests-and-a-login-alert": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/one-hundred-and-fifty-one-digests-and-a-login-alert/c3416c4db8a19e33f619fb5c357043684ababb70ef40204713f90279cbdee836.zip",
+   "bytesRead": 62535,
+   "readOn": "2026-10-07"
+  },
+  "the-day-an-all-day-block-covers": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-day-an-all-day-block-covers/7424e98f30cbe48fe66b6557e48e97b37c5a94455fab365c3b748cfa6ccbfa3b.zip",
+   "bytesRead": 51270,
    "readOn": "2026-10-07"
   }
  }
