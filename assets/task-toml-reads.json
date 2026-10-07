@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T14:21:14+00:00",
+ "generatedAt": "2026-10-07T14:31:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18738,6 +18738,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nine-flags-from-2024-that-moved-on/fa19552863d5cec6c1ad5f10b357cbb021b42cbe0a78d72c9525fd2fd8da3b6b.zip",
    "bytesRead": 62771,
+   "readOn": "2026-10-07"
+  },
+  "confirm-moved-meetings-final-times": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/confirm-moved-meetings-final-times/4e89b72eb6f5d629937b21d4a67eebc1184fed3d03951b252c0e4b1f641de4f9.zip",
+   "bytesRead": 49866,
+   "readOn": "2026-10-07"
+  },
+  "the-meetings-that-run-past-midnight": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-that-run-past-midnight/02d5af93c69eef90628a648b358cffb2fd6c5ec1e60534cd3226272b0d9ccf8a.zip",
+   "bytesRead": 51609,
    "readOn": "2026-10-07"
   }
  }
