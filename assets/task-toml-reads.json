@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T00:31:13+00:00",
+ "generatedAt": "2026-10-07T00:51:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17540,6 +17540,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-day-an-all-day-block-covers/7424e98f30cbe48fe66b6557e48e97b37c5a94455fab365c3b748cfa6ccbfa3b.zip",
    "bytesRead": 51270,
+   "readOn": "2026-10-07"
+  },
+  "financial-statement-copy-review-audit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/financial-statement-copy-review-audit/82f7031f39deb8a85a80e64fbd147410d9874c68e3c1c5983a0070f1a3ac3a31.zip",
+   "bytesRead": 51478,
+   "readOn": "2026-10-07"
+  },
+  "spend-ask-signoff-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spend-ask-signoff-audit/134f5d54155a05b507f4d275634767cf03bf51ec897cb9fe7a5adde87f91dc71.zip",
+   "bytesRead": 43423,
    "readOn": "2026-10-07"
   }
  }
