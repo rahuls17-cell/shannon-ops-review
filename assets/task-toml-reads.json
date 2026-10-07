@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T06:21:09+00:00",
+ "generatedAt": "2026-10-07T06:31:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17829,6 +17829,30 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/milestone-progress-lag-audit/663f5f23cbf85ce260c3ec50aca5aabb9a9490cda7b3771936b71502622b71de.zip",
    "bytesRead": 40867,
+   "readOn": "2026-10-07"
+  },
+  "document-sharing-exposure-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/document-sharing-exposure-audit/e49d4fda377fa8274ff31cd2418233a4f36060dc841b4c712bb456487d04d80a.zip",
+   "bytesRead": 43271,
+   "readOn": "2026-10-07"
+  },
+  "fall-lab-fee-lines-sept-to-november": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fall-lab-fee-lines-sept-to-november/04c226ad2a0a44b9fc2d32faa3caefc1a67141cfd357228a9372a40909ecc095.zip",
+   "bytesRead": 53361,
    "readOn": "2026-10-07"
   }
  }
