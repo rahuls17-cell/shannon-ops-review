@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T09:11:11+00:00",
+ "generatedAt": "2026-10-07T09:31:15+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18071,6 +18071,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/work-left-in-archived-repos/23cce065a33ae6bd3c999d1eeebcdabbdd90caa75428214ef15d5ed98ea8ab91.zip",
    "bytesRead": 45358,
+   "readOn": "2026-10-07"
+  },
+  "the-answer-that-never-left": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-answer-that-never-left/5ff6312dd3cd15d777816f4af9953c79c462198292e775b307aacf2b943729d7.zip",
+   "bytesRead": 44971,
+   "readOn": "2026-10-07"
+  },
+  "workbook-tieout-break-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/workbook-tieout-break-audit/e2c1ad71f7055d8c8b87ae9461f99a91730338199491427e13260bb93c6ee6b4.zip",
+   "bytesRead": 44947,
    "readOn": "2026-10-07"
   }
  }
