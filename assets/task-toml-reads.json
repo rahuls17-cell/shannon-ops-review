@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T11:21:15+00:00",
+ "generatedAt": "2026-10-07T11:41:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18266,6 +18266,55 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-leak-that-shipped-twice/2a27711aa5e49136b45c1f94b2e8823b8602c3188ab41ea42ee56e0591421558.zip",
    "bytesRead": 62633,
+   "readOn": "2026-10-07"
+  },
+  "api-exposure-golive-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/api-exposure-golive-audit/6a5e155c58678b25a57069a1b5f38da3c67c589850929ef08dedf17cddc4de48.zip",
+   "bytesRead": 46119,
+   "readOn": "2026-10-07"
+  },
+  "compliance-hold-breach-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/compliance-hold-breach-audit/200bd722970351ba09cfcebbf6f9310ce05eb623d2c0891720e4730780b9a623.zip",
+   "bytesRead": 63608,
+   "readOn": "2026-10-07"
+  },
+  "the-category-cleanup-counts": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-category-cleanup-counts/be067097100241fff55cd46ff062631b9535e0ff98ebb607806035d03e53fe8b.zip",
+   "bytesRead": 46236,
+   "readOn": "2026-10-07"
+  },
+  "the-invites-sitting-in-mail": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-invites-sitting-in-mail/39f7290e2abbade0d36d51be71815ac3358a8d759e5d5a2c017bd7b319d9b9c5.zip",
+   "bytesRead": 53863,
    "readOn": "2026-10-07"
   }
  }
