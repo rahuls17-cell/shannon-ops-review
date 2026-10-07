@@ -12,7 +12,7 @@ The files here are the version-controlled copies. The copies that run are in
 |---|---|---|
 | `publish.sh` | every 10 min | scans the bucket, rebuilds the pipeline (`refresh_truth.sh` in the chain directory), rejoins every index, copies in the latest bucket export and GLM band, builds the Drive trainer names, commits the assets and pushes to `PUBLISH_BRANCH` |
 | `export-gcs.sh` | every 30 min | writes the bucket export (`gcs-pipeline.json`: accepted folders in all three prefixes, evaluations, trainer records) beside `publish.sh`; takes minutes, so it is not on the 10-minute tick |
-| `refresh-drive.sh` | every 15 min | the Delivery tab's Current view from the Drive Deliveries folder: `drive-deliveries.json` (`--audit none`, so Batches 1 to 4.1 come from Drive too) and `drive-owners.json`; commits those two files only, only when they changed and both Drive test suites pass. Folders it skips are logged. Last result in `refresh-drive.status` |
+| `refresh-drive.sh` | by hand (off the cron since 2026-10-07) | the Delivery tab's Current view from the Drive Deliveries folder: `drive-deliveries.json` (`--audit none`, so Batches 1 to 4.1 come from Drive too) and `drive-owners.json`; commits those two files only, only when they changed and both Drive test suites pass. Folders it skips are logged. Last result in `refresh-drive.status` |
 | `scan-glm.sh` | daily 03:17 UTC | the four-trial GLM band (`glm-index.json`); about a quarter of an hour |
 | `crontab.txt` | | root's crontab on the VM |
 

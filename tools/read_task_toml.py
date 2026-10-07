@@ -73,10 +73,17 @@ FROM_LINE = re.compile(r'^\ufeff?\s*FROM\s+(?:--\S+\s+)*(\S+)', re.M | re.I)
 # name, and a Zeta image that says zeta is Zeta. Most Zeta images do not say it,
 # though: benchmark-base (data-obi-rl-gym) and company-bench-private are the
 # Zeta images of the register, and so is obi-benchmark under connectors-rl-gym
-# at the V3 pinned-data digest - the same registry path that, at any other
-# digest, is a Computer Bench synthetic image (the reference sheet labels
-# obi-benchmark@8219115c that way). So the register's Zeta digests are tested
+# at the Zeta digests - the same registry path that, at any other digest, is a
+# Computer Bench synthetic image. So the register's Zeta digests are tested
 # before the registry path, and the registry path before the image name.
+#
+# The register is the Shannon Connector Image Tracker (Drive, anuj.jain; read
+# 2026-10-07). Three answers come from it rather than from the image's name, and
+# override the older "350 tasks accepted" reference where the two differ:
+#   - obi-benchmark@8219115c (zeta-newdbs-20260918) is Zeta;
+#   - real-data-v4 (connectors-harness@f976065b) is Aster;
+#   - the synthetic 12-connector and old synthetic images hosted on Docker Hub
+#     as company-bench-private are Computer Bench synthetic, not Zeta.
 ZETA_DIGESTS = (
     'ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83',  # V1
     '975f115a995790786a6dbf124204433ccf77460f0277227fbdd21745388e56ca',  # V2, GCP
@@ -86,6 +93,18 @@ ZETA_DIGESTS = (
     # the same image is also pulled as connectors-rl-gym/obi-benchmark@sha256:e76ff56a...,
     # which the CompanyBench 3 manifest labels computer bench synth for 9 tasks.
     'e76ff56a791502397586f102f90902e4a1aa0f9534625605bd31e64ed9f20f24',  # V4
+    '8219115ca2895f78f4a64ea6cb6b78a6d09cfb85e063bc8a27f2627bb099fdfe',  # zeta-newdbs-20260918
+)
+# Aster in the tracker without saying aster: real-data-v4.
+ASTER_IMAGES = ('f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb', 'real-data-v4')
+# Computer Bench synthetic in the tracker, though hosted as company-bench-private.
+SYNTHETIC_DIGESTS = (
+    'dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea',
+    'f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f',
+    'bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf',
+    'e3ab159ee9ca4cde6f53c1f694f7831aa70b01bd36df7f0c7150bda7d89f0b83',
+    '52ec261ee5556238d165a0797d5a1071af6b675b7808eb7a0d2d4a382dcdbbf3',
+    '1cb77ee036676d6789a086919dfa3d1023df4f4b718d2f8fd443663ee2d87db4',
 )
 
 
@@ -93,8 +112,10 @@ def bench_type(image):
     im = str(image or '').lower()
     if not im:
         return None
-    if 'aster' in im:
+    if 'aster' in im or any(a in im for a in ASTER_IMAGES):
         return 'company bench aster'
+    if any(d in im for d in SYNTHETIC_DIGESTS):
+        return 'computer bench synth'
     if 'zeta' in im or any(d in im for d in ZETA_DIGESTS):
         return 'company bench zeta'
     if 'real-data' in im:

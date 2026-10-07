@@ -64,15 +64,46 @@
       String(a.id).localeCompare(String(b.id));
   }
 
+  // A folder key names one bucket folder exactly, so it is only lower-cased: a
+  // folder called ...-v5 or ...-20260918 is a different folder from the one
+  // without the suffix, and stripping it here meant it was never excluded.
+  const withoutNamespace = value => String(value || '').trim().replace(/^(?:harbor|obi)\//i, '');
+  function exclusionKey(value) {
+    const text = String(value || '').trim().toLowerCase();
+    if (text.startsWith('folder:')) return text;
+    if (text.startsWith('task:')) return `task:${normaliseName(withoutNamespace(text.slice(5)))}`;
+    return normaliseName(withoutNamespace(text));
+  }
+
+  // Which task a row is. The [task] name its package declares comes first: a
+  // task re-cut under a new name or folder after review is still one task, and
+  // shipping both copies is the duplicate this file exists to prevent. Then the
+  // bucket folder, then the row's own name.
+  function taskKey(row) {
+    if (row.packageTask) return `task:${normaliseName(withoutNamespace(row.packageTask))}`;
+    if (row.cohortFolder) return `folder:${String(row.cohortFolder).trim().toLowerCase()}`;
+    return normaliseName(row.name);
+  }
+
+  // Whether an earlier manifest already names this row's task, however it
+  // names it: the task key, the bucket folder, or the row's or package's name.
+  function exclusionMatcher(list) {
+    const exclude = new Set([...(list || [])].map(exclusionKey));
+    if (!exclude.size) return () => false;
+    return row => [
+      taskKey(row),
+      row.cohortFolder ? `folder:${String(row.cohortFolder).trim().toLowerCase()}` : null,
+      ...[row.name, row.packageTask].filter(Boolean).map(n => normaliseName(withoutNamespace(n))),
+    ].some(k => k && exclude.has(k));
+  }
+
   function buildManifest(rows, options) {
     const o = options || {};
-    const exclude = new Set([...(o.exclude || [])].map(normaliseName));
+    const excludes = exclusionMatcher(o.exclude);
 
     const groups = new Map();
     rows.forEach(row => {
-      const k = row.cohortFolder
-        ? `folder:${String(row.cohortFolder).trim().toLowerCase()}`
-        : normaliseName(row.name);
+      const k = taskKey(row);
       if (!k) return;
       if (!groups.has(k)) groups.set(k, []);
       groups.get(k).push(row);
@@ -81,7 +112,7 @@
     const excluded = [];
     const candidates = [];
     groups.forEach((members, k) => {
-      if (exclude.has(k)) { excluded.push(k); return; }
+      if (members.some(excludes)) { excluded.push(k); return; }
       const sorted = [...members].sort(preferred);
       candidates.push({key: k, row: sorted[0], members: sorted});
     });
@@ -130,14 +161,15 @@
       pipelineGeneratedAt: o.pipelineGeneratedAt || null,
       deliveredIndexGeneratedAt: o.deliveredIndexGeneratedAt || null,
       selection: {
-        rule: 'one entry per distinct task name, version and status suffixes ' +
-              'stripped; the most recent decided run represents it; oldest ' +
-              'decision first',
+        rule: 'one entry per distinct task - the [task] name its package declares, ' +
+              'else its own name - version and status suffixes stripped; the most ' +
+              'recent decided run represents it; oldest decision first',
         requested: Number(o.size) > 0 ? Math.floor(Number(o.size)) : null,
         filters: o.filters || {},
+        excludedFrom: o.excludedFrom || null,
         rowsConsidered: rows.length,
         distinctTasks: groups.size,
-        excludedByPreviousManifest: excluded.length,
+        excludedByPreviousManifest: excluded.length + (Number(o.excludedBefore) || 0),
         availableAfterExclusions: candidates.length,
         shortBy: Math.max(0, (Number(o.size) > 0 ? Math.floor(Number(o.size)) : candidates.length) - taken.length),
       },
@@ -156,19 +188,37 @@
   }
 
   // Names already claimed by an earlier manifest, so a second round does not
-  // reissue the first one's work. Accepts a manifest of this schema, or a bare
-  // list of names, because someone will paste one.
+  // reissue the first one's work. Accepts a manifest of this schema; a delivery
+  // manifest in the Drive batches' shape (harbor/delivery-manifest, which the
+  // Delivery tab's Export manifest.json writes too); or a bare list of names,
+  // because someone will paste one.
+  const FOLDER_OF_URI = /\/tasks\/[^/]+\/([^/]+)\/[^/]+$/;
+  const stemOf = path => String(path || '').split('/').pop().replace(/\.zip$/i, '');
+  function namesFromDelivery(task) {
+    const folders = [task.source_folder, (String(task.source_uri || '').match(FOLDER_OF_URI) || [])[1],
+      withoutNamespace(task.task_id), stemOf(task.original_filename || task.package_path)];
+    const names = [task.task_name, task.task_id].map(withoutNamespace);
+    return [...folders.filter(Boolean).map(f => `folder:${String(f).trim().toLowerCase()}`),
+            ...names.filter(Boolean)];
+  }
   function namesFromManifest(payload) {
     if (!payload) return [];
     if (Array.isArray(payload)) return payload.map(v => (typeof v === 'string' ? v : v && v.name)).filter(Boolean);
-    if (Array.isArray(payload.tasks)) return payload.tasks.map(t => t.key || t.name).filter(Boolean);
+    if (Array.isArray(payload.tasks)) {
+      return [...new Set(payload.tasks.flatMap(t => {
+        if (!t) return [];
+        if (t.key || t.name) return [t.key || t.name];
+        return t.task_id || t.task_name ? namesFromDelivery(t) : [];
+      }))];
+    }
     return [];
   }
 
   root.buildManifest = buildManifest;
   root.namesFromManifest = namesFromManifest;
+  root.manifestExclusionMatcher = exclusionMatcher;
   root.normaliseManifestName = normaliseName;
   if (typeof module !== 'undefined') {
-    module.exports = {buildManifest, namesFromManifest, normaliseName};
+    module.exports = {buildManifest, namesFromManifest, normaliseName, exclusionMatcher, taskKey};
   }
 })(typeof window === 'undefined' ? globalThis : window);

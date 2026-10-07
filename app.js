@@ -104,7 +104,7 @@ const infoCopy = {
   auditAcceptance: 'Accepted, Rejected or Pending as recorded by the audit workbook, not by the GCS verdicts the Pipeline tab reads. The two are different sources judged at different times, so a task can read Accepted here and Rejected there. Batches read from Drive manifests are Pending until the client decides on them. The status line above gives the date this snapshot was built.',
   auditSource: 'How the task was attributed to a trainer. Accepted portal and Trainer records are direct. QC run owner is inferred from who ran the QC, and unverified means that inference was not confirmed. Contested means more than one trainer claims it, and Unattributed means nobody could be identified.',
   auditFlags: 'Three quality caveats carried per task: contested owner - more than one trainer claims it; unverified - the attribution was inferred and not confirmed; version dependent - the result changes between task versions.',
-  manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. To cut a second round, load the first manifest back in and its tasks are left out.',
+  manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. A task re-cut under a new name counts once, by the [task] name its package declares. Exclude a previous manifest takes every task it names - this page’s manifests, the Delivery tab’s export or a Drive batch manifest - out of the list, its counts and the next manifest; files you load stack, and Drop exclusions clears them all. To cut a second round, load the first manifest back in.',
   glm: () => {
     const g = truth && truth.glmIndex && truth.glmIndex.counts;
     return 'How many of four GLM-5.2 trial runs solved the task. The 1 to 3 band is the useful one: 4/4 is too easy, 0/4 unproven'
@@ -703,13 +703,15 @@ async function loadDeliveryAudit() {
       } catch (ignored) { return null; }
     };
     const cutoff = DRIVE_VIEWS.glm53, current = DRIVE_VIEWS[''];
-    const [cutoffDrive, cutoffOwners, currentDrive, currentOwners] = await Promise.all(
-      [cutoff.deliveries, cutoff.owners, current.deliveries, current.owners].map(readJson));
+    // The trainer credit sheet fills the Current rows the bucket cannot settle;
+    // the GLM 5.3 cutoff stays as it was frozen.
+    const [cutoffDrive, cutoffOwners, currentDrive, currentOwners, trainerSheet] = await Promise.all(
+      [cutoff.deliveries, cutoff.owners, current.deliveries, current.owners, 'assets/trainer-sheet.json'].map(readJson));
     const audited = await response.json();
     audit = window.prepareDeliveryAudit(audited, cutoffDrive, cutoffOwners);
     // The Drive alone: no audited row, so Batches 1 to 4.1 come from their Drive folders.
     driveAudit = currentDrive
-      ? window.prepareDeliveryAudit({...audited, rows: []}, currentDrive, currentOwners) : null;
+      ? window.prepareDeliveryAudit({...audited, rows: []}, currentDrive, currentOwners, trainerSheet) : null;
     if (driveAudit) driveAudit.rows.forEach(row => { row.driveOnly = true; });
     resetTaskBenches();
     populateAuditFilters();
@@ -1919,8 +1921,15 @@ function renderScope(result) {
 // The filter card: the three cuts people reach for first are chips with live
 // counts (each counted with the other filters applied), the rest are selects.
 function renderTruthFilterChips(filters, filtered) {
-  const verdictRows = filters.search ? truthSearchRows() : truthRows();
-  const cohort = truthCohortRows();
+  // Under Ready for delivery with a previous manifest loaded, the chips count
+  // the list the table shows: the tasks the file names are already out of it.
+  const excludes = filters.delivered === 'ready' && manifestExclusions.length
+    ? window.manifestExclusionMatcher(manifestExclusions) : null;
+  const kept = list => (excludes && list ? list.filter(row => !excludes(row)) : list);
+  const allVerdictRows = filters.search ? truthSearchRows() : truthRows();
+  const allCohort = truthCohortRows();
+  const verdictRows = kept(allVerdictRows);
+  const cohort = kept(allCohort);
   const rows = truthByBucket ? cohort : verdictRows;
   const without = key => window.filterTruth(rows, {...filters, [key]: '', ...(truthByBucket ? {state: ''} : {})});
   const chip = (filter, value, label, count, tone, on) =>
@@ -1936,8 +1945,11 @@ function renderTruthFilterChips(filters, filtered) {
   byId('tStateChips').innerHTML = chip('tState', '', 'All', byState.rows.length, 'var(--slate)', !filters.state) +
     states.map(st => chip('tState', st, stateLabel(st), stateCount(st), stateTone(st), filters.state === st)).join('');
 
-  const byDelivered = without('delivered').rows;
-  const deliveredCount = value => shownTasks(window.filterTruth(byDelivered, {delivered: value}).rows);
+  // The file narrows Ready only, so the other Delivered chips count every row.
+  const byDelivered = window.filterTruth(truthByBucket ? allCohort : allVerdictRows,
+    {...filters, delivered: '', ...(truthByBucket ? {state: ''} : {})}).rows;
+  const deliveredCount = value => shownTasks(window.filterTruth(value === 'ready' ? kept(byDelivered) : byDelivered,
+    {delivered: value}).rows);
   byId('tDeliveredChips').innerHTML = chip('tDelivered', '', 'Any', shownTasks(byDelivered), 'var(--slate)', !filters.delivered) +
     [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
       .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
@@ -2621,9 +2633,7 @@ function renderTruth() {
   const cohort = truthCohortRows();
   const byBucket = filters.state === 'accepted' && cohort;
   truthByBucket = Boolean(byBucket);
-  const result = byBucket
-    ? window.filterTruth(cohort, {...filters, state: ''})
-    : window.filterTruth(filters.search ? truthSearchRows() : truthRows(), filters);
+  const result = shownRows();
   // Accepted is a bucket figure, but it still has to answer the question the
   // filters are asking. Counted over the same folders, narrowed the same way,
   // so it equals the table whenever Accepted is the selected state.
@@ -2659,6 +2669,9 @@ function renderTruth() {
 // Names claimed by a manifest the user has already issued. Held only for this
 // visit: it is a convenience for cutting a second round, not a record. The
 // authoritative record of what went out is the delivery audit itself.
+// Only files the user loads exclude: a manifest written here is not added on
+// its own, so the list keeps showing what went into it. For a second round,
+// load the file just written. Several files stack; Drop exclusions clears all.
 let manifestExclusions = [];
 let manifestExcludedFrom = '';
 
@@ -2678,6 +2691,7 @@ function renderManifestBar(result) {
   const preview = window.buildManifest(manifestCandidates(result), {
     size: Number(byId('manifestSize').value),
     exclude: manifestExclusions,
+    excludedBefore: result.excludedTasks,
   });
   const s = preview.selection;
   setText('manifestNote',
@@ -2690,7 +2704,7 @@ function renderManifestBar(result) {
         `(${fmt(preview.counts.supersededRows)} repeat submission${preview.counts.supersededRows === 1 ? '' : 's'} left out)` : '') +
     ` / ${fmt(preview.counts.owners)} trainers` +
     (s.excludedByPreviousManifest
-      ? ` / ${fmt(s.excludedByPreviousManifest)} excluded by ${esc(manifestExcludedFrom || 'a previous manifest')}` : '') +
+      ? ` / ${fmt(s.excludedByPreviousManifest)} already in ${esc(manifestExcludedFrom || 'a previous manifest')}, taken out of the list` : '') +
     (preview.counts.possiblyAlreadyDelivered
       ? ` / ${fmt(preview.counts.possiblyAlreadyDelivered)} flagged to check - their identifier names a task the audit already covers` : '') +
     (preview.counts.namesDerived
@@ -2710,6 +2724,8 @@ function downloadManifest() {
   const manifest = window.buildManifest(manifestCandidates(result), {
     size: Number(byId('manifestSize').value),
     exclude: manifestExclusions,
+    excludedBefore: result.excludedTasks,
+    excludedFrom: manifestExcludedFrom || null,
     pipelineGeneratedAt: truth.generatedAt,
     deliveredIndexGeneratedAt: truth.deliveredIndex?.generatedAt || null,
     // The filters are recorded so the manifest says what it was cut from.
@@ -2729,13 +2745,6 @@ function downloadManifest() {
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
-
-  // Carry it forward so the next cut in this visit does not reissue the same
-  // work, and say so rather than doing it invisibly.
-  manifestExclusions = [...new Set([...manifestExclusions,
-    ...window.namesFromManifest(manifest)])];
-  manifestExcludedFrom = `${link.download} and anything loaded before it`;
-  renderTruth();
 }
 
 // --- CSV export ------------------------------------------------------------
@@ -2746,9 +2755,25 @@ function downloadManifest() {
 function shownRows() {
   const filters = truthFilters();
   const cohort = truthCohortRows();
-  return (filters.state === 'accepted' && cohort)
-    ? window.filterTruth(cohort, {...filters, state: ''})
-    : window.filterTruth(filters.search ? truthSearchRows() : truthRows(), filters);
+  const rows = (filters.state === 'accepted' && cohort) ? cohort
+    : filters.search ? truthSearchRows() : truthRows();
+  const result = window.filterTruth(withoutExcluded(rows, filters), (filters.state === 'accepted' && cohort) ? {...filters, state: ''} : filters);
+  result.excludedTasks = manifestExcludedTasks;
+  return result;
+}
+
+// Under Ready for delivery, the tasks a loaded previous manifest already names
+// leave the list before anything is counted - the table, its counts, the CSV
+// and the next manifest then all read the same rows. Drop exclusions brings
+// them back. Other views are not narrowed.
+let manifestExcludedTasks = 0;
+function withoutExcluded(rows, filters) {
+  manifestExcludedTasks = 0;
+  if (filters.delivered !== 'ready' || !manifestExclusions.length) return rows;
+  const excludes = window.manifestExclusionMatcher(manifestExclusions);
+  const gone = rows.filter(excludes);
+  manifestExcludedTasks = window.filterTruth(gone, filters).rows.length;
+  return rows.filter(row => !excludes(row));
 }
 
 function exportRowCount() {
@@ -2795,7 +2820,40 @@ function downloadAuditCsv() {
   document.body.appendChild(link);
   link.click();
   link.remove();
-  URL.revokeObjectURL(url);
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
+}
+
+// The packages shown - batch scope, segment and filters, as the CSV export -
+// written as a delivery manifest.json (delivery-audit.js deliveryManifest).
+function downloadDeliveryManifest() {
+  const data = deliveryData();
+  if (!data) return;
+  const filters = auditFilters();
+  const rows = window.filterDeliveryAudit(deliveryRows(), filters).rows;
+  if (!rows.length) return;
+  const drive = data.drive || null;
+  const manifest = window.deliveryManifest(rows, {
+    batchOrder,
+    harnessOf: row => (row.bench === 'company' ? deliveryHarness(row) : null),
+    scope: filters.batch || 'All batches',
+    segment: segment ? SEGMENTS[segment] : '',
+    filters: Object.fromEntries(Object.entries(filters).filter(([key, value]) => value && key !== 'batch')),
+    batches: drive ? drive.batches : [],
+    driveGeneratedAt: drive ? drive.generatedAt : null,
+  });
+  const slug = String(manifest.batch).toLowerCase().replace(/[^a-z0-9.]+/g, '-').replace(/^-|-$/g, '');
+  const stamp = new Date().toISOString().slice(0, 19).replace('T', '-').replace(/:/g, '');
+  const blob = new Blob([JSON.stringify(manifest, null, 2) + '\n'], {type: 'application/json'});
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `manifest-${slug}-${rows.length}-${stamp}.json`;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  // Released later, not at once: the file is about 4 MB for all batches, and
+  // Chrome can drop a download whose link is revoked before it has read it.
+  setTimeout(() => URL.revokeObjectURL(url), 60000);
 }
 
 function downloadTruthCsv() {
@@ -2823,7 +2881,8 @@ async function loadManifestExclusions(file) {
     const names = window.namesFromManifest(JSON.parse(await file.text()));
     if (!names.length) throw new Error('no tasks in that file');
     manifestExclusions = [...new Set([...manifestExclusions, ...names])];
-    manifestExcludedFrom = file.name;
+    const loaded = manifestExcludedFrom ? manifestExcludedFrom.split(', ') : [];
+    manifestExcludedFrom = [...new Set([...loaded, file.name])].join(', ');
   } catch (error) {
     setText('manifestSummary', `That file could not be read as a manifest: ${error.message}`);
     return;
@@ -3939,8 +3998,8 @@ function rangeLabel() {
 
 function applyRange() {
   const invalid = Boolean(dateRange.start && dateRange.end && dateRange.start > dateRange.end);
-  byId('dateError').hidden = !invalid;
-  ['dateStart', 'dateEnd'].forEach(id => byId(id).setAttribute('aria-invalid', String(invalid)));
+  document.querySelectorAll('.rangeError').forEach(node => { node.hidden = !invalid; });
+  document.querySelectorAll('[data-date]').forEach(input => input.setAttribute('aria-invalid', String(invalid)));
   syncPresetPills();
   renderEverything();
 }
@@ -3960,15 +4019,15 @@ function setRangeFromPreset(value) {
 function syncPresetPills() {
   document.querySelectorAll('.segmented .segbtn[data-preset]').forEach(pill =>
     pill.classList.toggle('is-on', pill.dataset.preset === (dateRange.preset || '')));
-  const chip = byId('dateChip');
-  if (chip) chip.textContent = (dateRange.start || dateRange.end) && !dateRange.preset ? rangeLabel() : 'Custom';
-  const pop = document.querySelector('.rangepop');
-  if (pop) pop.classList.toggle('is-set', Boolean((dateRange.start || dateRange.end) && !dateRange.preset));
+  const custom = Boolean((dateRange.start || dateRange.end) && !dateRange.preset);
+  document.querySelectorAll('.dateChip').forEach(chip => { chip.textContent = custom ? rangeLabel() : 'Custom'; });
+  document.querySelectorAll('.rangepop').forEach(pop => pop.classList.toggle('is-set', custom));
 }
 
+// Every range control on the page shows the one shared range.
 function syncOverviewSlicer() {
-  byId('dateStart').value = dateRange.start;
-  byId('dateEnd').value = dateRange.end;
+  document.querySelectorAll('[data-date="start"]').forEach(input => { input.value = dateRange.start; });
+  document.querySelectorAll('[data-date="end"]').forEach(input => { input.value = dateRange.end; });
   byId('datePreset').value = dateRange.preset || '';
 }
 
@@ -4761,7 +4820,7 @@ function wireEvents() {
     const select = byId('datePreset');
     select.value = pill.dataset.preset;
     select.dispatchEvent(new Event('change'));
-    const pop = document.querySelector('.rangepop'); if (pop) pop.open = false;
+    document.querySelectorAll('.rangepop[open]').forEach(pop => { pop.open = false; });
   });
   const toggleCard = card => {
     const open = card.getAttribute('aria-expanded') === 'true';
@@ -4857,6 +4916,7 @@ function wireEvents() {
   byId('tSearch')?.addEventListener('input', () => { truthPage = 0; renderTruth(); });
   byId('tExport')?.addEventListener('click', downloadTruthCsv);
   ['aExport', 'aExportTop'].forEach(id => byId(id)?.addEventListener('click', downloadAuditCsv));
+  byId('aManifestTop')?.addEventListener('click', downloadDeliveryManifest);
   byId('view-pipeline')?.addEventListener('click', event => {
     const pick = event.target.closest('.fchip[data-tfilter]');
     if (pick) {
@@ -4974,13 +5034,16 @@ function wireEvents() {
     syncOverviewSlicer();
     applyRange();
   });
-  ['dateStart', 'dateEnd'].forEach(id => byId(id).addEventListener('change', () => {
-    dateRange.start = byId('dateStart').value;
-    dateRange.end = byId('dateEnd').value;
+  document.addEventListener('change', event => {
+    const input = event.target.closest('[data-date]');
+    if (!input) return;
+    const body = input.closest('.rangepop-body');
+    dateRange.start = body.querySelector('[data-date="start"]').value;
+    dateRange.end = body.querySelector('[data-date="end"]').value;
     dateRange.preset = '';
-    byId('datePreset').value = '';
+    syncOverviewSlicer();
     applyRange();
-  }));
+  });
 
   byId('explorerRefresh').addEventListener('click', () => loadExplorer(true));
   byId('explorerFilter').addEventListener('input', renderExplorerBody);
@@ -5001,9 +5064,11 @@ function wireEvents() {
       `<li><button class="explorer-dir" data-path="${esc(path)}">${esc(path)}</button></li>`).join('');
     setText('explorerFoot', `${fmt(rows.length)} folder${rows.length === 1 ? '' : 's'} match. Open one to see its files.`);
   });
-  byId('clearDates').addEventListener('click', () => {
+  document.addEventListener('click', event => {
+    if (!event.target.closest('[data-range-clear]')) return;
     dateRange.start = dateRange.end = '';
-    byId('dateStart').value = byId('dateEnd').value = byId('datePreset').value = '';
+    dateRange.preset = '';
+    syncOverviewSlicer();
     applyRange();
   });
   const popover = byId('infoPopover');

@@ -245,6 +245,18 @@ bdd_c = __import__('build_drive_deliveries')
 check(bdd_c.package_parts('finalization_qc_accepted_zipped/harder/non-connector/engineering/a.zip')
       == ['non-connector', 'harder', 'Engineering', 'a.zip'],
       'a Batch 1-3 path reads as class, difficulty, domain')
+# Batch 11.1 groups by bench, counts in the names.
+check(bdd_c.class_of('Aster 180', {}) == 'Aster', 'Aster 180 is the Aster class')
+check(bdd_c.class_of('Company Bench 4', {}) == 'CompanyBench', 'Company Bench 4 is Company Bench')
+check(bdd_c.class_of('Computer Bench (NC 0 RC 0 S 90)', {'bench_type': 'computer bench synthetic'}) == 'Synthetic',
+      'a Computer Bench group folder takes its class from the bench_type')
+check(bdd_c.class_of('Non-Connector', {}) == 'Non-Connector', 'the older class folders read as before')
+check(bdd_c.bench_of('Batch 11.1', 'Aster', {}) == 'company', 'Aster is Company Bench')
+check(bdd_c.bench_of('Batch 11.1', 'Aster', {}, 'Aster 180/Easier 89') == 'company', 'an Aster folder is Company Bench')
+check(bdd_c.bench_of('Batch 11.1', 'Synthetic', {}, 'Computer Bench (NC 0 RC 0 S 90)/Easier 27') == 'computer',
+      'a Computer Bench folder is Computer Bench')
+check(bdd_c.harness_of({'bench_type': 'aster (company & computer bench, real)'}, 'Aster') == 'aster', 'Aster harness')
+check(bdd_c.harness_of({'bench_type': 'company bench zeta (real)'}, 'CompanyBench') == 'zeta', 'Zeta harness')
 check(bdd_c.package_parts('computerbench-batch-5/Connector/Easier/b.zip') == ['Connector', 'Easier', 'b.zip'],
       'a Batch 4.1 path drops its wrapper folder')
 check(bdd_c.connector_names({'connector': {'services': ['notion-gym']}}) == ['notion-gym'], 'connector.services is read')
@@ -265,7 +277,7 @@ check(bdd_c.harness_of(mislabelled) == 'zeta', 'and names the harness')
 check(bdd_c.bench_of('CompanyBench 3', 'Synthetic', {'bench_type': 'computer bench synth'}) == 'computer',
       'with no image recorded the label still decides')
 check(bdd_c.bench_of('CompanyBench 3', 'Synthetic', {'bench_type': 'computer bench synth',
-      'bench_basis': 'image reference kuzphi/connectors-harness:real-data-v4'}) == 'computer',
+      'bench_basis': 'image reference kuzphi/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89'}) == 'computer',
       'a recorded Computer Bench image keeps a task on the Computer bench')
 
 # The class a Drive folder names wins over the manifest's folder: Batch 10.1's
@@ -372,7 +384,9 @@ if asset.exists():
         if not r['batch'].startswith('Batch'):
             continue
         where = (r.get('driveFolder') or r['packagePath']).split('/')[0]
-        expected = 'company' if where.lower().replace(' ', '').startswith('companybench') else 'computer'
+        # Batch 11.1 files Aster on its own ("Aster 180"): Company Bench, Aster.
+        flat = where.lower().replace(' ', '')
+        expected = 'company' if flat.startswith('companybench') or flat.startswith('aster') else 'computer'
         if r['bench'] != expected:
             check(False, f"{r['batch']} {r['task']} in {where} should be {expected}, is {r['bench']}")
             break

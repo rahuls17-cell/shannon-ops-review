@@ -147,6 +147,33 @@ CLASSES = {'connector': 'Connector', 'real connector': 'Real Connector',
            'companybench': 'CompanyBench', 'company bench zeta': 'Company Bench Zeta'}
 
 
+def class_of(head, task):
+    """The class a manifest's first package_path folder names.
+
+    Batch 11.1 groups by bench instead of by class, with counts in the names:
+    "Aster 180" (Company Bench, Aster), "Company Bench 4" (Company Bench, Zeta)
+    and "Computer Bench (NC 0 RC 0 S 90)", whose class the package's own
+    bench_type then says (synthetic, real, or non-connector).
+    """
+    known = CLASSES.get(head.lower())
+    if known:
+        return known
+    name = re.sub(r'\(.*?\)', '', head)
+    name = re.sub(r'\s+\d+\s*$', '', name).strip().lower()
+    if name == 'aster':
+        return 'Aster'
+    if name in ('company bench', 'companybench'):
+        return 'CompanyBench'
+    if name in ('computer bench', 'computerbench'):
+        declared = str(task.get('bench_type') or '').lower()
+        if 'synth' in declared:
+            return 'Synthetic'
+        if 'real' in declared:
+            return 'Real Connector'
+        return 'Non-Connector' if task.get('connector') is False else 'Connector'
+    return head
+
+
 # ---------------------------------------------------------------- Drive reads
 
 def token_from_key():
@@ -423,7 +450,7 @@ def normalise(manifest, label, files=None, require_present=False):
         seen.add(package)
         declared = re.sub(r'^(harbor|obi)/', '', str(task.get('task_name') or '').strip())
         name = declared or package
-        klass = CLASSES.get(parts[0].lower(), parts[0])
+        klass = class_of(parts[0], task)
         # Where the zip sits on Drive names its class when the folder says one -
         # Batch 10.1's CompanyBench folder became "Real ComputerBench" in the
         # 3 Oct layout while its manifest still says CompanyBench/.
@@ -486,6 +513,15 @@ def normalise(manifest, label, files=None, require_present=False):
             'sourcePrefix': source_folder(task)[0],
             'sourceFolder': source_folder(task)[1],
             'sourceKind': source_kind(task),
+            # What the Delivery tab's manifest.json export needs to restate the
+            # entry as the batch manifest wrote it: the package's full checksum
+            # and size, where it was cut from, and the names and labels it gave.
+            'sha256': task['sha256'],
+            'sizeBytes': task['size_bytes'],
+            'sourceUri': first(task.get('source_uri')),
+            'taskName': first(task.get('task_name')),
+            'benchType': first(task.get('bench_type')),
+            'glmModel': first(trials.get('model')),
         })
     return rows, None
 
@@ -513,6 +549,7 @@ def package_parts(path):
 
 
 COMPANY_FOLDER = re.compile(r'^company\s*bench', re.I)
+ASTER_FOLDER = re.compile(r'^aster\b', re.I)
 # A Drive folder name read as a class: counts in brackets and "ComputerBench"
 # dropped - "Real ComputerBench (NC 0 RC 37 S 0)" is Real Connector,
 # "Synthetic ComputerBench (...)" Synthetic, "Non-Connector (NC 297 ...)"
@@ -566,8 +603,9 @@ def bench_of(label, klass, task, location=None):
             return 'company' if recorded.startswith('company') else 'computer'
         return 'computer' if 'computer' in declared else 'company'
     if location is not None:
-        return 'company' if COMPANY_FOLDER.match(location.split('/')[0]) else 'computer'
-    return 'company' if klass in ('CompanyBench', 'Company Bench Zeta') else 'computer'
+        head = location.split('/')[0]
+        return 'company' if COMPANY_FOLDER.match(head) or ASTER_FOLDER.match(head) else 'computer'
+    return 'company' if klass in ('CompanyBench', 'Company Bench Zeta', 'Aster') else 'computer'
 
 
 def source_object(task):

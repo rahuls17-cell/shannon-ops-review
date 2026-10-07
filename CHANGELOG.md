@@ -9,6 +9,132 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+## v4 - 2026-10-07, staging promoted to production
+
+### Delivery tab
+- **Export manifest.json**, right below Export CSV. It writes the packages the
+  tab is showing - all batches, or the batch selected in Batch scope, with the
+  segment and filters applied as for the CSV - as a delivery manifest in the
+  Drive manifests' own shape (`harbor/delivery-manifest/v4`): one entry per
+  package, restated from the batch manifest that listed it (task id and name,
+  package path, difficulty, GLM-5.3 successes, connectors, bench, Aster or Zeta,
+  source, sha256, size), in batch order and then manifest order, with a summary
+  by batch, bench, class and band. Nothing is deduplicated - a task delivered in
+  two batches is two entries - and no trainer is written. All batches today:
+  3,202 packages, Company Bench 1,673, Computer Bench 1,529. To carry the full
+  checksum and size, each Drive row now also keeps `sha256`, `sizeBytes`,
+  `sourceUri`, `taskName`, `benchType` and `glmModel` from its manifest
+  (`drive-deliveries.json` 2.7 to 3.8 MB; no other value changed). The older
+  manifests record no source URI or bench type, so those entries leave them null.
+- **Export manifest.json and Export CSV keep the file's link for a minute** instead
+  of releasing it the moment the download starts: the all-batches manifest is
+  4 MB, and Chrome can drop a download whose link is revoked before it has read it.
+
+### Bench from the image: the Shannon Connector Image Tracker
+- **The image rule follows the Shannon Connector Image Tracker** (Drive,
+  anuj.jain; read 7 Oct), in the scanner (`tools/read_task_toml.py`) and on the
+  page (`truth.js`), where it disagreed:
+  - `obi-benchmark@sha256:8219115c` (zeta-newdbs-20260918) is **Zeta**, not
+    Computer Bench synthetic - 30 verdict rows, 4 accepted;
+  - real-data-v4 (`connectors-harness@sha256:f976065b`, or the tag alone) is
+    **Aster**, not Computer Bench - 40 accepted folders;
+  - the synthetic 12-connector and old synthetic images hosted on Docker Hub as
+    `company-bench-private` (`dcf57c1b`, `f468ad6d`, `bcae80df`, `e3ab159e`,
+    `52ec261e`, `1cb77ee0`) are **Computer Bench synthetic**, not Zeta - 79
+    accepted folders on `dcf57c1b`.
+  Accepted folders by segment, today's data: Aster 550 -> 590, Zeta 286 -> 207,
+  Computer Bench connector 269 -> 308, non-connector 1,687 unchanged. The
+  tracker overrides the older "350 tasks accepted" reference on these images;
+  the test says so rather than the reference being edited.
+- Delivery tab: 7 Company Bench tasks in Batch 2 whose manifest lists real-data-v4
+  for their connectors now read Aster (no harness before). The Drive folders
+  still decide the bench there: Batch 10.1's 38 tasks on the Aster image stay
+  Computer Bench ("Real ComputerBench"), and Batch 2's 2 tasks on synthetic
+  images stay Company Bench ("Batch 2 - CompanyBench").
+
+### Delivery tab: Batch 11.1
+- **Batch 11.1 is on the Delivery tab**: 274 tasks from "10-06 Batch 11.1" on
+  Drive (manifest of 7 Oct, read by hand - the Drive refresh is off the cron).
+  Its packages are grouped by bench, not class: "Aster 180" -> Company Bench ·
+  Aster (180), "Company Bench 4" -> Company Bench · Zeta (4), "Computer Bench
+  (NC 0 RC 0 S 90)" -> Computer Bench, Synthetic by each package's bench_type
+  (90). The reader learns those folder names; no earlier row changed. Delivered
+  now 3,476: Company Bench 1,857, Computer Bench 1,619. GLM-5.3: 118 at 3/4, 79 at
+  2/4, 53 at 1/4, 24 at 0/4. Trainers from the bucket: 240 named (3 by the
+  trainer credit sheet), 19 contested, 15 unattributed. 4 Aster packages swapped
+  in on 7 Oct list no connectors in the manifest ("connectors not read").
+- Drive folder titles in the data are the current ones (ComputerBench (NC 1363
+  RC 72 S 94), 09-16-Batch4.1 (NC 196 ...), 09-25-Batch5.1 (NC 219 ...)).
+
+### Delivery tab: trainers from the trainer credit sheet
+- **Tasks the bucket cannot settle take their trainer from the ops team's
+  "CompanyBench Trainer Credit Analysis Report"** (Drive, jagadeesh.g; tabs Zeta
+  - Trainer Mapping, Astr - Trainer Mapping, Non-Company Bench Mapping, 574
+  rows). Used only where the bucket's owner index names no one (Unattributed) or
+  several people (Contested), and only when the sheet names exactly one trainer
+  for the task; a trainer the bucket names is kept. Matched by Task Tracker id
+  and by every spelling the manifests use (`task_` prefix, underscores,
+  `-<hash>-vN` tails, `100601-` tracker prefixes). Source reads "Trainer credit
+  sheet"; a settled contested row keeps the bucket's candidates. Today: 106
+  tasks filled - Company Bench 32 unattributed and 56 contested, Computer Bench
+  11 and 7. Applied by the page from `assets/trainer-sheet.json` (built by
+  `tools/build_trainer_sheet.py` from a downloaded copy; only task names and the
+  trainer's email are kept), so the VM's owner rebuilds do not undo it.
+- **Still without a trainer, Company Bench:** 1,248 not in the sheet (CompanyBench
+  1: 247, CompanyBench 3: 961 - the sheet covers neither - and 40 across Batches
+  2 to 8.1 and CompanyBench 2), 2 whose sheet row names no trainer.
+- **For Company Bench the sheet also replaces a trainer the bucket names** (a
+  re-run by a lead or service account, a second trainer's rework): 31 tasks, e.g.
+  Batch 2 `a-fortnight-nobody-was-watching` saurabh.p5 -> pawan.g3. The bucket's
+  trainer stays on the row (`bucketTrainer`). A Computer Bench trainer the bucket
+  names is kept (6 disagreements). Trainer credit sheet now decides 137 tasks.
+
+### Pipeline tab
+- **Exclude a previous manifest reads delivery manifests**: a Drive batch
+  manifest or the Delivery tab's Export manifest.json (`harbor/delivery-manifest`)
+  was refused with "no tasks in that file", because only the Pipeline's own
+  manifest shape was read. A delivery entry now excludes by its bucket folder
+  (`source_folder`, or the folder in `source_uri`), its task id and package file,
+  and its declared task name, matched against a ready row's name and the task its
+  package declares. The Delivery export now writes `source_prefix` and
+  `source_folder` too. All batches today: 30 of the 742 ready tasks excluded, each
+  a re-cut of a task a Drive batch already delivered (the page already flagged
+  them as possibly delivered).
+- **A loaded manifest now takes its tasks out of the Ready for delivery list.**
+  Load a previous manifest (the Delivery tab's all-batches export, a Drive batch
+  manifest, or one the Pipeline wrote) and every task it already names - by
+  folder, task id, package file or declared name, a later version included -
+  leaves the table, its counts and the CSV; Drop exclusions brings them back.
+  Create manifest.json then writes exactly what is left. Today: 742 ready, 712
+  after loading the all-batches export, written as 708 tasks.
+- **One entry per task, by the name its package declares.** A task re-cut under
+  a new name after review was two manifest entries; it is now one, the most
+  recent decided run speaking for it and the other listed in `standsFor`
+  (4 such today). The manifest records the file it excluded (`excludedFrom`)
+  and counts the tasks taken out of the list.
+- **Only the files you load exclude.** Create manifest.json no longer adds the
+  tasks it just wrote to the exclusions on its own - which emptied the list
+  after a download and made Drop exclusions look like it undid the file - so the
+  list keeps showing what went into the manifest. For a second round, load the
+  file just written. Several files stack; Drop exclusions clears them all.
+- **Every count on the Tasks pane follows the loaded file**: the filter bar
+  ("712 of 9,348 tasks") and the State, Ready, Gate and Delivery chips still
+  counted all ready tasks (894 on staging) while the table showed the rest.
+- **Fix:** an excluded folder key keeps its suffix. A folder named `...-v5` or
+  `...-20260918` had the suffix stripped before matching, so it was never
+  excluded, even by a manifest the Pipeline wrote itself.
+
+### Tests
+- `test-cohort.cjs`: since 5 Oct the connector scan reads all 2,590 accepted
+  packages, so no folder needs the direct task.toml read the check expected
+  (709 before, 0 now). It now passes when no folder is left unknown.
+- `test_duplicate_sample.py`: the console pull lists 51 submissions twice (same
+  task id, run and timestamp); one, `a-fortnight-nobody-was-watching` run
+  `delivery-11abc37e`, as both error and accepted, which the check read as two
+  submissions tied on time. Repeats are folded into one first, a decided state
+  outranking error or running: 0 ties left, and `duplicate-sample.json` is
+  rewritten (1,350 to 1,333 duplicate task keys).
+
 ## v3 - 2026-10-06, staging promoted to production
 
 ### Drive: the 3 Oct layout, and a switch back to the GLM 5.3 cutoff
@@ -439,8 +565,10 @@ longer decides Company Bench anywhere on the dashboard.
     deploys through `deploy.yml`.
   - `tools/export_gcs_pipeline.py` takes a fresh access token when a read gets
     a 401: a run reads ~50,000 objects and outlived its token on the new VM.
-  - While it is tested the VM publishes `staging` and node 1 keeps publishing
-    `main`; taking over `main` means stopping node 1's two jobs in the same step.
+  - It publishes **`main`** since 2026-10-06, when staging was released to
+    production (`PUBLISH_BRANCH=main` in its crontab). node 1's `publish.sh` and
+    `scan-glm.sh` cron lines still have to be removed so only one VM pushes
+    `main`.
   - `refresh-drive.sh` (every 15 min) refreshes the Delivery tab's Current view
     from Drive: `build_drive_deliveries.py --audit none` with a snapshot cache,
     then `build_drive_owners.py`, then both Drive test suites; it commits
@@ -449,6 +577,9 @@ longer decides Company Bench anywhere on the dashboard.
     credential** - a key at `/root/shannon-refresh/drive-reader.json` with
     Viewer on the folder, or the VM's account given the drive.readonly scope;
     until then each run fails safely and records it in `refresh-drive.status`.
+    **Taken off the cron on 2026-10-07:** the Delivery tab's Drive files are
+    fetched by hand. The script stays on the VM and in `tools/vm/` for a manual
+    run.
 - The Drive reader follows the regrouped Deliveries folder (`ComputerBench/`,
   `CompanyBench/`), ignores `[Deprecated]`, `[Meta]` and `EKW / SVC`, lists every
   batch folder's zips with the folder they sit in, and matches zips saved under

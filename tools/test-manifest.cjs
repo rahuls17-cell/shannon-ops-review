@@ -224,3 +224,56 @@ assert.equal(inManifest.length, suspectRows.length,
 console.log('suspects :', `${suspectIds.length} ready rows may already have shipped,`,
   `${flagged.length} flagged in the full manifest`);
 console.log('all suspect assertions passed');
+
+// --- a delivery manifest as the exclusion list ------------------------------
+// The Drive batch manifests and the Delivery tab's Export manifest.json name a
+// task by task_id / task_name and its folder by source_folder or source_uri;
+// all of them must exclude, and a folder key keeps its suffix.
+{
+  const delivery = {schema: 'harbor/delivery-manifest/v4', tasks: [
+    {task_id: 'gen-g1-audit-v5', task_name: 'harbor/gen-g1-audit-v5', package_path: 'Non-Connector/Harder/Other/gen-g1-audit-v5.zip',
+     source_uri: 'gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gen-g1-audit-v5/abc.zip'},
+    {task_id: 'ASTR_1', task_name: 'harbor/renamed-task', source_folder: 'ASTR_1_review'},
+  ]};
+  const names = namesFromManifest(delivery);
+  assert.ok(names.includes('folder:gen-g1-audit-v5'), 'the folder from source_uri');
+  assert.ok(names.includes('folder:astr_1_review'), 'the folder the export names');
+  assert.ok(names.includes('renamed-task'), 'the declared name, without its namespace');
+  const rowsShown = [
+    {id: 'r1', name: 'gen-g1-audit', cohortFolder: 'gen-g1-audit-v5', decided: '2026-09-10'},
+    {id: 'r2', name: 'other', cohortFolder: 'ASTR_1_review', decided: '2026-09-10'},
+    {id: 'r3', name: 'x', cohortFolder: 'x-folder', packageTask: 'harbor/renamed-task', decided: '2026-09-10'},
+    {id: 'r4', name: 'keep-me', cohortFolder: 'keep-me', decided: '2026-09-10'},
+  ];
+  const cut = buildManifest(rowsShown, {exclude: names});
+  assert.deepEqual(cut.tasks.map(t => t.id), ['r4'], 'folder, suffixed folder and declared name all exclude');
+  assert.equal(cut.selection.excludedByPreviousManifest, 3);
+  // A Pipeline manifest's own folder keys keep their suffix too.
+  const own = buildManifest(rowsShown, {exclude: ['folder:gen-g1-audit-v5']});
+  assert.ok(!own.tasks.some(t => t.id === 'r1'), 'folder:...-v5 excludes the -v5 folder');
+}
+console.log('delivery manifest exclusions passed');
+
+// --- one entry per task, and the table's own exclusion ----------------------
+// Two rows whose packages declare one task - a re-cut under a new name - are
+// one entry; the matcher the table uses removes what a manifest names.
+{
+  const {exclusionMatcher, taskKey} = require(path.join(root, 'manifest.js'));
+  const recut = buildManifest([
+    {id: 'a', name: 'law-l1-audit', packageTask: 'obi/law-l1-audit', decided: '2026-09-10'},
+    {id: 'b', name: 'law-l1-audit-review-resolved', packageTask: 'harbor/law-l1-audit', decided: '2026-09-20'},
+    {id: 'c', name: 'other', decided: '2026-09-11'},
+  ], {});
+  assert.equal(recut.counts.tasks, 2, 'a re-cut of one task is one entry');
+  const entry = recut.tasks.find(t => t.key === 'task:law-l1-audit');
+  assert.deepEqual(entry.standsFor, ['b', 'a'], 'the most recent decided run speaks for it, the other is carried');
+  assert.equal(taskKey({name: 'x-v3'}), 'x', 'without a package, the name with its suffixes stripped');
+  const gone = exclusionMatcher(['task:law-l1-audit']);
+  assert.ok(gone({name: 'anything', packageTask: 'obi/law-l1-audit-v2'}), 'a later version of a delivered task is a redelivery');
+  assert.ok(!gone({name: 'other'}));
+  assert.equal(exclusionMatcher([])({name: 'x'}), false, 'nothing loaded excludes nothing');
+  const again = buildManifest([{id: 'c', name: 'other', decided: '2026-09-11'}], {excludedBefore: 30, excludedFrom: 'm.json'});
+  assert.equal(again.selection.excludedByPreviousManifest, 30, 'the tasks the table already took out are counted');
+  assert.equal(again.selection.excludedFrom, 'm.json');
+}
+console.log('unique-task and exclusion-matcher checks passed');

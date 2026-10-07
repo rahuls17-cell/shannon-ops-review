@@ -1,7 +1,7 @@
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
-const {prepareDeliveryAudit, filterDeliveryAudit, UNSET} = require('../delivery-audit.js');
+const {prepareDeliveryAudit, filterDeliveryAudit, deliveryManifest, UNSET} = require('../delivery-audit.js');
 
 const base = {
   generatedAt: '2026-09-19T00:00:00+00:00',
@@ -190,4 +190,122 @@ if (fs.existsSync(driveAsset) && fs.existsSync(asset)) {
   console.log(`with Drive: ${live.rows.length} tasks in ${Object.keys(all.byBatch).length} batches ` +
     `(${live.auditedCount} audited + ${live.drive.rows} from manifests)`);
 }
-console.log('delivery audit checks passed: attribution, partition, buckets, filters');
+// --- the Delivery tab's manifest.json export ---------------------------------
+// One entry per package shown, restated from its batch manifest, batch order
+// then manifest order; a task in two batches stays two entries; no trainer.
+{
+  const pkg = (id, batch, over) => Object.assign({
+    id, batch, task: `t-${id}`, taskName: `harbor/t-${id}`, packagePath: `Non-Connector/Harder/Other/t-${id}.zip`,
+    class: 'Non-Connector', category: 'Non-Connector · Other', type: 'Non-connector', bench: 'computer',
+    difficulty: 'Harder', glm: 2, glmModel: 'pplx/glm-5.3', connectors: [], trainer: 'a@t.com',
+    sha256: 'f'.repeat(64), sizeBytes: 1000, sourceObject: 'abc', sourceUri: 'gs://b/t.zip',
+  }, over);
+  const shown = [
+    pkg('B10.1-002', 'Batch 10.1'),
+    pkg('B9.1-010', 'Batch 9.1', {task: 'same', taskName: 'harbor/same'}),
+    pkg('B10.1-001', 'Batch 10.1', {task: 'same', taskName: 'harbor/same', type: 'Connector',
+      bench: 'company', class: 'CompanyBench', connectors: ['zeta-gym'], harness: 'zeta', sha256: null, sizeBytes: null}),
+  ];
+  const order = (a, b) => parseFloat(a.replace(/[^\d.]/g, '')) - parseFloat(b.replace(/[^\d.]/g, ''));
+  const m = deliveryManifest(shown, {batchOrder: order, generatedAt: '2026-10-06T08:00:00Z',
+    batches: [{batch: 'Batch 9.1', folder: 'ComputerBench/09-29 Batch 9.1 (NC 297)'}]});
+  assert.equal(m.schema, 'harbor/delivery-manifest/v4');
+  assert.equal(m.generated_at_ist, '20261006-133000', 'IST, written as the batch manifests write it');
+  assert.deepEqual(m.tasks.map(t => t.batch + ' ' + t.task_id), ['Batch 9.1 t-B9.1-010', 'Batch 10.1 t-B10.1-001', 'Batch 10.1 t-B10.1-002'].map(s => s.replace('t-B9.1-010', 'same').replace('t-B10.1-001', 'same')),
+    'batch order, then manifest order');
+  assert.equal(m.tasks.filter(t => t.task_name === 'harbor/same').length, 2, 'a task delivered twice is two entries');
+  assert.equal(m.batch, 'All batches');
+  assert.equal(m.summary.tasks, 3);
+  assert.deepEqual(m.summary.by_bench, {'Computer Bench': 2, 'Company Bench': 1});
+  assert.equal(m.summary.total_bytes, 2000);
+  assert.equal(m.summary.without_checksum, 1, 'a package with no checksum is counted, not invented');
+  assert.equal(m.tasks[1].harness, 'zeta');
+  assert.deepEqual(m.tasks[1].connector_services, [{name: 'zeta-gym'}]);
+  assert.equal(m.tasks[0].original_filename, 't-B9.1-010.zip');
+  assert.equal(m.tasks[0].trial_evidence.successes, 2);
+  assert.ok(!JSON.stringify(m).includes('a@t.com'), 'no trainer in a delivery manifest');
+  const one = deliveryManifest(shown.filter(r => r.batch === 'Batch 9.1'), {batchOrder: order, scope: 'Batch 9.1',
+    batches: [{batch: 'Batch 9.1', folder: 'ComputerBench/09-29 Batch 9.1 (NC 297)'}]});
+  assert.equal(one.batch, 'Batch 9.1');
+  assert.equal(one.drive_batch, '09-29 Batch 9.1 (NC 297)');
+
+  // The published Drive rows carry everything an entry restates.
+  const drivePath = path.join(__dirname, '..', 'assets', 'drive-deliveries.json');
+  if (fs.existsSync(drivePath)) {
+    const drive = JSON.parse(fs.readFileSync(drivePath, 'utf8'));
+    const full = deliveryManifest(drive.rows, {batches: drive.batches});
+    assert.equal(full.tasks.length, drive.rows.length);
+    assert.equal(full.summary.without_checksum, 0, 'every Drive package keeps its full sha256');
+    assert.ok(full.tasks.every(t => t.package_path && Number.isInteger(t.size_bytes)));
+  }
+}
+console.log('delivery audit checks passed: attribution, partition, buckets, filters, manifest export');
+
+// --- the trainer credit sheet ------------------------------------------------
+// Same spellings as tools/test_trainer_sheet.py; fills only rows the bucket
+// cannot settle, never replaces a trainer it names.
+{
+  const {sheetVariants, trainerSheetKeys} = require('../delivery-audit.js');
+  const cases = {
+    'harbor/task_verify_vip_account_8241_interest_fixed.zip': 'verify-vip-account-8241-interest',
+    '100601-august-2024-interest-calculation-payout-r-4457f3-v9': 'august-2024-interest-calculation-payout-r',
+    'audit-missing-due-dates-on-linked-bill-counterpa-8b8b51-v1': 'audit-missing-due-dates-on-linked-bill-counterpa',
+    'seven-urgent-messages-the-filter-buried.zip': 'seven-urgent-messages-the-filter-buried',
+  };
+  Object.entries(cases).forEach(([raw, expected]) =>
+    assert.ok(sheetVariants(raw).includes(expected), `${raw} -> ${expected}`));
+  assert.deepEqual(sheetVariants('abc'), []);
+  assert.ok(trainerSheetKeys({packageName: '100601-august-2024-interest-4457f3-v9'}).includes('tt:100601'));
+  assert.ok(trainerSheetKeys({packageName: 'ASTR_101554'}).includes('tt:astr_101554'));
+
+  const drive = {rows: [
+    {id: 'D-1', batch: 'CompanyBench 9', task: 'one-task-name', bench: 'company', trainer: 'Unattributed'},
+    {id: 'D-2', batch: 'CompanyBench 9', task: 'two-task-name', bench: 'company', trainer: 'Unattributed'},
+    {id: 'D-3', batch: 'CompanyBench 9', task: 'three-task-name', bench: 'company', trainer: 'Unattributed'},
+    {id: 'D-4', batch: 'CompanyBench 9', task: 'four-task-name', bench: 'company', trainer: 'Unattributed'},
+  ]};
+  const owners = {owners: {
+    'D-2': {trainer: null, source: 'Contested', route: 'records', candidates: ['a@t.com', 'b@t.com']},
+    'D-3': {trainer: 'c@t.com', source: 'GCS trainer records', route: 'records'},
+  }};
+  const sheet = {entries: [
+    {tab: 'zeta', trainer: 's@t.com', keys: ['one-task-name']},
+    {tab: 'zeta', trainer: 'b@t.com', keys: ['two-task-name']},
+    {tab: 'zeta', trainer: 's@t.com', keys: ['three-task-name']},
+    {tab: 'zeta', trainer: 'x@t.com', keys: ['four-task-name']},
+    {tab: 'aster', trainer: 'y@t.com', keys: ['four-task-name']},
+  ]};
+  const got = prepareDeliveryAudit({...base, rows: []}, drive, owners, sheet);
+  const by = Object.fromEntries(got.rows.map(r => [r.id, r]));
+  assert.equal(by['D-1'].trainer, 's@t.com', 'unattributed takes the sheet trainer');
+  assert.equal(by['D-1'].source, 'Trainer credit sheet');
+  assert.equal(by['D-2'].trainer, 'b@t.com', 'contested is settled by the sheet');
+  assert.deepEqual(by['D-2'].contestedBefore, ['a@t.com', 'b@t.com']);
+  assert.ok(!by['D-2'].flags.includes('contested owner'));
+  assert.equal(by['D-3'].trainer, 's@t.com', 'for Company Bench the sheet replaces the bucket trainer');
+  assert.equal(by['D-3'].bucketTrainer, 'c@t.com', 'and the replaced trainer is kept on the row');
+  assert.equal(by['D-4'].trainer, null, 'two sheet trainers settle nothing');
+  assert.equal(got.drive.sheet.filled, 3);
+  const computer = prepareDeliveryAudit({...base, rows: []},
+    {rows: [{...drive.rows[2], bench: 'computer'}]}, owners, sheet);
+  assert.equal(computer.rows[0].trainer, 'c@t.com', 'a Computer Bench trainer the bucket names is kept');
+
+  // The published files: every row the sheet fills was unsettled before, and
+  // the count agrees with the builder's when both read the same owner index.
+  const root = path.join(__dirname, '..');
+  const read = f => JSON.parse(fs.readFileSync(path.join(root, 'assets', f), 'utf8'));
+  if (fs.existsSync(path.join(root, 'assets', 'trainer-sheet.json'))) {
+    const live = read('drive-deliveries.json'), liveOwners = read('drive-owners.json'), liveSheet = read('trainer-sheet.json');
+    const after = prepareDeliveryAudit({...base, rows: []}, live, liveOwners, liveSheet);
+    const filled = after.rows.filter(r => r.trainerRoute === 'sheet');
+    assert.ok(filled.every(r => r.bench === 'company' || !(liveOwners.owners[r.id] || {}).trainer),
+      'outside Company Bench only unsettled rows are filled');
+    if (liveSheet.ownersGeneratedAt === liveOwners.generatedAt) {
+      const expected = Object.entries(liveSheet.coverage).filter(([k]) => k.endsWith(':filled') || k.endsWith(':replaced'))
+        .reduce((n, [, v]) => n + v, 0);
+      assert.equal(filled.length, expected, 'the page and the builder fill the same rows');
+    }
+    console.log(`trainer sheet: ${filled.length} Drive rows filled from the sheet`);
+  }
+}
+console.log('trainer sheet checks passed');
