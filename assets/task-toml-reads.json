@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T11:41:10+00:00",
+ "generatedAt": "2026-10-07T11:51:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18315,6 +18315,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-invites-sitting-in-mail/39f7290e2abbade0d36d51be71815ac3358a8d759e5d5a2c017bd7b319d9b9c5.zip",
    "bytesRead": 53863,
+   "readOn": "2026-10-07"
+  },
+  "outside-contribution-signoff-audit": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/outside-contribution-signoff-audit/fc084ac331f0309d637e30d6c45fbda796508f49cd9d18a2ae8ce4dd81e45dcd.zip",
+   "bytesRead": 50592,
+   "readOn": "2026-10-07"
+  },
+  "practice-mail-outside-desk-hours-updated": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practice-mail-outside-desk-hours-updated/1f463bd3f530643e571f8b6b86f8f76404906cb7d3beb5a2c40c1ffd4b05661c.zip",
+   "bytesRead": 53037,
    "readOn": "2026-10-07"
   }
  }
