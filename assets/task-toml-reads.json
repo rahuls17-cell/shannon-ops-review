@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T06:31:20+00:00",
+ "generatedAt": "2026-10-07T07:01:23+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17853,6 +17853,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fall-lab-fee-lines-sept-to-november/04c226ad2a0a44b9fc2d32faa3caefc1a67141cfd357228a9372a40909ecc095.zip",
    "bytesRead": 53361,
+   "readOn": "2026-10-07"
+  },
+  "practice-onboarding-status": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practice-onboarding-status/6b33929be04b37d9f4359c94c110107c2b09f3c21111f948eed06791be2f2ac0.zip",
+   "bytesRead": 57849,
+   "readOn": "2026-10-07"
+  },
+  "training-promised-past-our-standard": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/training-promised-past-our-standard/3381e0b6325f855dc79105f1e29e577b36c42af9e78fff1cde0d2de7bdd36a40.zip",
+   "bytesRead": 49949,
    "readOn": "2026-10-07"
   }
  }
