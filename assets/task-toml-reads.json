@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T11:51:11+00:00",
+ "generatedAt": "2026-10-07T12:21:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18339,6 +18339,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practice-mail-outside-desk-hours-updated/1f463bd3f530643e571f8b6b86f8f76404906cb7d3beb5a2c40c1ffd4b05661c.zip",
    "bytesRead": 53037,
+   "readOn": "2026-10-07"
+  },
+  "practice-exports-to-confirm": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practice-exports-to-confirm/5b9a868610c1645f7904d0a8e445f758aaef37bf3fc5cc92564304704db1249c.zip",
+   "bytesRead": 47910,
+   "readOn": "2026-10-07"
+  },
+  "shared-past-the-people-i-named": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/shared-past-the-people-i-named/c80fe94384a9f74ab81d4a4700e884d228d8e1f1ac0e608f65f159c4f294ab18.zip",
+   "bytesRead": 63591,
+   "readOn": "2026-10-07"
+  },
+  "which-practice-the-lines-belong-to": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-practice-the-lines-belong-to/8cc8c4de4c57619e4258f60f46f2fbbedc8c56e3ab4cd4fa55e0b0fa47452f50.zip",
+   "bytesRead": 53082,
    "readOn": "2026-10-07"
   }
  }
