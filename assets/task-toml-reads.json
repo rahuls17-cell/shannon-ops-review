@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T14:11:13+00:00",
+ "generatedAt": "2026-10-07T14:21:14+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18713,6 +18713,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-can-edit-patient-sheets/c112710998b6eb1c3a20e23fd30747a57cdb3f10a0a96d4c167daeda22c53fec.zip",
    "bytesRead": 57377,
+   "readOn": "2026-10-07"
+  },
+  "drive-version-history-retention-review": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "google-drive-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/drive-version-history-retention-review/87dac77ecf3e744cb6006146a947d9d1dfa473eb0c2afa303775fd3ebed26922.zip",
+   "bytesRead": 51417,
+   "readOn": "2026-10-07"
+  },
+  "nine-flags-from-2024-that-moved-on": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nine-flags-from-2024-that-moved-on/fa19552863d5cec6c1ad5f10b357cbb021b42cbe0a78d72c9525fd2fd8da3b6b.zip",
+   "bytesRead": 62771,
    "readOn": "2026-10-07"
   }
  }
