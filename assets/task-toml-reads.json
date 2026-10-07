@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T08:41:11+00:00",
+ "generatedAt": "2026-10-07T08:51:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17998,6 +17998,43 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-members-left-their-profile-half-done/1f76a12d5fd360ddc2db3576fa016f752c9e9ddf2a4000bf0a8317793f995b26.zip",
    "bytesRead": 54687,
+   "readOn": "2026-10-07"
+  },
+  "the-workload-three-people-are-carrying": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-workload-three-people-are-carrying/ed65e7f5b42eea3f8a3759568f5ab2ead481ac94c553584435066d9e81659a84.zip",
+   "bytesRead": 51498,
+   "readOn": "2026-10-07"
+  },
+  "travel-week-catchup-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/travel-week-catchup-audit/0f6a4af31a823de2dac2e73502554f9daa174f56f609fefa6682df77e9f2ba33.zip",
+   "bytesRead": 45320,
+   "readOn": "2026-10-07"
+  },
+  "what-the-meetings-said": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-meetings-said/9f5cc340a6ff6e4d7c4a9849d046d58d87a60df29470243c83fb161dcf36e1df.zip",
+   "bytesRead": 49612,
    "readOn": "2026-10-07"
   }
  }
