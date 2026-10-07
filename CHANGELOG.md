@@ -28,6 +28,26 @@ When you change what a figure means, add a line under **Unreleased**. When
   of releasing it the moment the download starts: the all-batches manifest is
   4 MB, and Chrome can drop a download whose link is revoked before it has read it.
 
+### Delivery tab: trainers from the trainer credit sheet
+- **Tasks the bucket cannot settle take their trainer from the ops team's
+  "CompanyBench Trainer Credit Analysis Report"** (Drive, jagadeesh.g; tabs Zeta
+  - Trainer Mapping, Astr - Trainer Mapping, Non-Company Bench Mapping, 574
+  rows). Used only where the bucket's owner index names no one (Unattributed) or
+  several people (Contested), and only when the sheet names exactly one trainer
+  for the task; a trainer the bucket names is kept. Matched by Task Tracker id
+  and by every spelling the manifests use (`task_` prefix, underscores,
+  `-<hash>-vN` tails, `100601-` tracker prefixes). Source reads "Trainer credit
+  sheet"; a settled contested row keeps the bucket's candidates. Today: 106
+  tasks filled - Company Bench 32 unattributed and 56 contested, Computer Bench
+  11 and 7. Applied by the page from `assets/trainer-sheet.json` (built by
+  `tools/build_trainer_sheet.py` from a downloaded copy; only task names and the
+  trainer's email are kept), so the VM's owner rebuilds do not undo it.
+- **Still without a trainer, Company Bench:** 1,248 not in the sheet (CompanyBench
+  1: 247, CompanyBench 3: 961 - the sheet covers neither - and 40 across Batches
+  2 to 8.1 and CompanyBench 2), 2 whose sheet row names no trainer. The sheet
+  disagrees with the bucket on 31 attributed Company Bench tasks; those keep the
+  bucket's trainer.
+
 ### Pipeline tab
 - **Exclude a previous manifest reads delivery manifests**: a Drive batch
   manifest or the Delivery tab's Export manifest.json (`harbor/delivery-manifest`)

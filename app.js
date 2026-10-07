@@ -703,13 +703,15 @@ async function loadDeliveryAudit() {
       } catch (ignored) { return null; }
     };
     const cutoff = DRIVE_VIEWS.glm53, current = DRIVE_VIEWS[''];
-    const [cutoffDrive, cutoffOwners, currentDrive, currentOwners] = await Promise.all(
-      [cutoff.deliveries, cutoff.owners, current.deliveries, current.owners].map(readJson));
+    // The trainer credit sheet fills the Current rows the bucket cannot settle;
+    // the GLM 5.3 cutoff stays as it was frozen.
+    const [cutoffDrive, cutoffOwners, currentDrive, currentOwners, trainerSheet] = await Promise.all(
+      [cutoff.deliveries, cutoff.owners, current.deliveries, current.owners, 'assets/trainer-sheet.json'].map(readJson));
     const audited = await response.json();
     audit = window.prepareDeliveryAudit(audited, cutoffDrive, cutoffOwners);
     // The Drive alone: no audited row, so Batches 1 to 4.1 come from their Drive folders.
     driveAudit = currentDrive
-      ? window.prepareDeliveryAudit({...audited, rows: []}, currentDrive, currentOwners) : null;
+      ? window.prepareDeliveryAudit({...audited, rows: []}, currentDrive, currentOwners, trainerSheet) : null;
     if (driveAudit) driveAudit.rows.forEach(row => { row.driveOnly = true; });
     resetTaskBenches();
     populateAuditFilters();

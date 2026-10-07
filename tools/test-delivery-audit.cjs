@@ -240,3 +240,67 @@ if (fs.existsSync(driveAsset) && fs.existsSync(asset)) {
   }
 }
 console.log('delivery audit checks passed: attribution, partition, buckets, filters, manifest export');
+
+// --- the trainer credit sheet ------------------------------------------------
+// Same spellings as tools/test_trainer_sheet.py; fills only rows the bucket
+// cannot settle, never replaces a trainer it names.
+{
+  const {sheetVariants, trainerSheetKeys} = require('../delivery-audit.js');
+  const cases = {
+    'harbor/task_verify_vip_account_8241_interest_fixed.zip': 'verify-vip-account-8241-interest',
+    '100601-august-2024-interest-calculation-payout-r-4457f3-v9': 'august-2024-interest-calculation-payout-r',
+    'audit-missing-due-dates-on-linked-bill-counterpa-8b8b51-v1': 'audit-missing-due-dates-on-linked-bill-counterpa',
+    'seven-urgent-messages-the-filter-buried.zip': 'seven-urgent-messages-the-filter-buried',
+  };
+  Object.entries(cases).forEach(([raw, expected]) =>
+    assert.ok(sheetVariants(raw).includes(expected), `${raw} -> ${expected}`));
+  assert.deepEqual(sheetVariants('abc'), []);
+  assert.ok(trainerSheetKeys({packageName: '100601-august-2024-interest-4457f3-v9'}).includes('tt:100601'));
+  assert.ok(trainerSheetKeys({packageName: 'ASTR_101554'}).includes('tt:astr_101554'));
+
+  const drive = {rows: [
+    {id: 'D-1', batch: 'CompanyBench 9', task: 'one-task-name', bench: 'company', trainer: 'Unattributed'},
+    {id: 'D-2', batch: 'CompanyBench 9', task: 'two-task-name', bench: 'company', trainer: 'Unattributed'},
+    {id: 'D-3', batch: 'CompanyBench 9', task: 'three-task-name', bench: 'company', trainer: 'Unattributed'},
+    {id: 'D-4', batch: 'CompanyBench 9', task: 'four-task-name', bench: 'company', trainer: 'Unattributed'},
+  ]};
+  const owners = {owners: {
+    'D-2': {trainer: null, source: 'Contested', route: 'records', candidates: ['a@t.com', 'b@t.com']},
+    'D-3': {trainer: 'c@t.com', source: 'GCS trainer records', route: 'records'},
+  }};
+  const sheet = {entries: [
+    {tab: 'zeta', trainer: 's@t.com', keys: ['one-task-name']},
+    {tab: 'zeta', trainer: 'b@t.com', keys: ['two-task-name']},
+    {tab: 'zeta', trainer: 's@t.com', keys: ['three-task-name']},
+    {tab: 'zeta', trainer: 'x@t.com', keys: ['four-task-name']},
+    {tab: 'aster', trainer: 'y@t.com', keys: ['four-task-name']},
+  ]};
+  const got = prepareDeliveryAudit({...base, rows: []}, drive, owners, sheet);
+  const by = Object.fromEntries(got.rows.map(r => [r.id, r]));
+  assert.equal(by['D-1'].trainer, 's@t.com', 'unattributed takes the sheet trainer');
+  assert.equal(by['D-1'].source, 'Trainer credit sheet');
+  assert.equal(by['D-2'].trainer, 'b@t.com', 'contested is settled by the sheet');
+  assert.deepEqual(by['D-2'].contestedBefore, ['a@t.com', 'b@t.com']);
+  assert.ok(!by['D-2'].flags.includes('contested owner'));
+  assert.equal(by['D-3'].trainer, 'c@t.com', 'a trainer the bucket names is kept');
+  assert.equal(by['D-4'].trainer, null, 'two sheet trainers settle nothing');
+  assert.equal(got.drive.sheet.filled, 2);
+
+  // The published files: every row the sheet fills was unsettled before, and
+  // the count agrees with the builder's when both read the same owner index.
+  const root = path.join(__dirname, '..');
+  const read = f => JSON.parse(fs.readFileSync(path.join(root, 'assets', f), 'utf8'));
+  if (fs.existsSync(path.join(root, 'assets', 'trainer-sheet.json'))) {
+    const live = read('drive-deliveries.json'), liveOwners = read('drive-owners.json'), liveSheet = read('trainer-sheet.json');
+    const after = prepareDeliveryAudit({...base, rows: []}, live, liveOwners, liveSheet);
+    const filled = after.rows.filter(r => r.trainerRoute === 'sheet');
+    assert.ok(filled.every(r => !(liveOwners.owners[r.id] || {}).trainer), 'only unsettled rows are filled');
+    if (liveSheet.ownersGeneratedAt === liveOwners.generatedAt) {
+      const expected = Object.entries(liveSheet.coverage).filter(([k]) => k.endsWith(':filled'))
+        .reduce((n, [, v]) => n + v, 0);
+      assert.equal(filled.length, expected, 'the page and the builder fill the same rows');
+    }
+    console.log(`trainer sheet: ${filled.length} Drive rows filled from the sheet`);
+  }
+}
+console.log('trainer sheet checks passed');

@@ -48,13 +48,73 @@
     };
   }
 
-  function prepareDeliveryAudit(payload, drivePayload, ownersPayload) {
+  // The ops team's trainer credit sheet (assets/trainer-sheet.json, built by
+  // tools/build_trainer_sheet.py) names the trainer for tasks the bucket cannot
+  // settle. It is used only there: a row with no owner, or a contested one,
+  // takes the sheet's trainer when the sheet names exactly one person for it.
+  // A trainer the bucket names is never replaced. The names are matched in the
+  // spellings the manifests use - kept identical to build_trainer_sheet.py.
+  function sheetVariants(value) {
+    let v = String(value === null || value === undefined ? '' : value).trim().toLowerCase();
+    if (!v || v === 'none') return [];
+    v = v.replace(/^(harbor|obi)\//, '').replace(/\.zip$/, '');
+    const out = new Set([v, v.replace(/_/g, '-')]);
+    [...out].forEach(x => {
+      const y = x.replace(/^task-/, '');
+      const z = y.replace(/-[0-9a-f]{6}-v\d+$/, '');
+      [y, z, z.replace(/(-v\d+|-fixed|-final)+$/, '')].forEach(n => out.add(n));
+      const tracked = z.match(/^\d{6}-(.+)$/);
+      if (tracked) out.add(tracked[1]);
+    });
+    return [...out].filter(x => x.length > 6);
+  }
+  function trainerSheetKeys(row) {
+    const keys = new Set();
+    const parts = String(row.sourceUri || '').split('/').filter(Boolean);
+    [row.task, row.packageName, row.sourceFolder, String(row.packagePath || '').split('/').pop(),
+     parts[parts.length - 1], parts.length > 1 ? parts[parts.length - 2] : null]
+      .forEach(value => sheetVariants(value).forEach(k => keys.add(k)));
+    [row.packageName, row.sourceFolder].forEach(value => {
+      const text = String(value || '').toLowerCase();
+      const id = text.match(/^(\d{6})-/) || text.match(/^(astr_\d+|cb\d_\d+)/);
+      if (id) keys.add(`tt:${id[1]}`);
+    });
+    return [...keys];
+  }
+  function trainerSheetIndex(sheetPayload) {
+    if (!sheetPayload || !Array.isArray(sheetPayload.entries)) return null;
+    const index = new Map();
+    sheetPayload.entries.forEach(entry => (entry.keys || []).forEach(key => {
+      if (!index.has(key)) index.set(key, new Set());
+      index.get(key).add(entry.trainer || null);
+    }));
+    return index;
+  }
+  function withSheetTrainer(row, index) {
+    if (!index || (row.trainer && String(row.trainer).toLowerCase() !== 'unattributed')) return row;
+    const named = new Set();
+    trainerSheetKeys(row).forEach(key => (index.get(key) || []).forEach(person => named.add(person)));
+    const people = [...named].filter(Boolean);
+    if (people.length !== 1) return row;
+    return {
+      ...row,
+      trainer: people[0],
+      source: 'Trainer credit sheet',
+      trainerRoute: 'sheet',
+      ambiguous: false,
+      // Who the bucket named before the sheet settled it, kept for the drawer.
+      contestedBefore: row.ownerCandidates || [],
+    };
+  }
+
+  function prepareDeliveryAudit(payload, drivePayload, ownersPayload, sheetPayload) {
     if (!payload || !Array.isArray(payload.rows)) throw new Error('No delivery audit asset loaded');
     const audited = new Set(payload.rows.map(row => row.batch));
     const owners = ownersPayload && ownersPayload.owners ? ownersPayload.owners : null;
+    const sheet = trainerSheetIndex(sheetPayload);
     const driveRows = (drivePayload && Array.isArray(drivePayload.rows) ? drivePayload.rows : [])
       .filter(row => !audited.has(row.batch))
-      .map(row => withOwner({...row, fromManifest: true}, owners));
+      .map(row => withSheetTrainer(withOwner({...row, fromManifest: true}, owners), sheet));
     // Drive files part of the audited Batches 1 to 4.1 as Company Bench (the
     // 3 Oct layout's "Batch N - CompanyBench" folders). Those audited rows take
     // that bench; every other audited row is the Computer Bench audit it was.
@@ -107,7 +167,12 @@
           generatedAt: ownersPayload.generatedAt,
           scanGeneratedAt: ownersPayload.scanGeneratedAt,
           attributed: driveRows.filter(r => r.trainer && r.trainer !== 'Unattributed').length,
-          contested: driveRows.filter(r => (r.ownerCandidates || []).length > 1).length,
+          contested: driveRows.filter(r => (r.ownerCandidates || []).length > 1 && r.trainerRoute !== 'sheet').length,
+        } : null,
+        sheet: sheetPayload ? {
+          generatedAt: sheetPayload.generatedAt,
+          source: sheetPayload.source || null,
+          filled: driveRows.filter(r => r.trainerRoute === 'sheet').length,
         } : null,
       } : null,
       rows,
@@ -250,6 +315,6 @@
   root.DELIVERY_AUDIT_UNSET = UNSET;
   root.mergedCategory = mergedCategory;
   if (typeof module !== 'undefined') {
-    module.exports = {prepareDeliveryAudit, filterDeliveryAudit, mergedCategory, deliveryManifest, UNSET};
+    module.exports = {prepareDeliveryAudit, filterDeliveryAudit, mergedCategory, deliveryManifest, trainerSheetKeys, sheetVariants, UNSET};
   }
 })(typeof window === 'undefined' ? globalThis : window);
