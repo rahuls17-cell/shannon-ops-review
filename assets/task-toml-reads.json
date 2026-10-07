@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T00:11:16+00:00",
+ "generatedAt": "2026-10-07T00:21:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17504,6 +17504,18 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/stale-finance-export-audit/7cc421f84a9e343d54c5f863a4d0104f97a34d9f4f7236c9119f509664f24f75.zip",
    "bytesRead": 44995,
+   "readOn": "2026-10-07"
+  },
+  "weekly-bot-traffic-audit": {
+   "connector": true,
+   "services": [
+    "shopify-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/weekly-bot-traffic-audit/ff79c6594a01e53c70701a3c20eb7c67d716bad89ad5001fd2523fc5d290c4a5.zip",
+   "bytesRead": 41856,
    "readOn": "2026-10-07"
   }
  }
