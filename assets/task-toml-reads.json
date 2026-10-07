@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T14:01:17+00:00",
+ "generatedAt": "2026-10-07T14:11:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18665,6 +18665,54 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/whose-name-goes-on-each-reply/6b2d9b7315bf666dee6589327f41ea876cbc1dd9ba4955f466e41c9a30e1be30.zip",
    "bytesRead": 59608,
+   "readOn": "2026-10-07"
+  },
+  "the-one-name-behind-every-edit-in-drive": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-one-name-behind-every-edit-in-drive/bff305eb005a862165952f6cd13931e47850f6b203aae2f4bf73c237ac434c85.zip",
+   "bytesRead": 61102,
+   "readOn": "2026-10-07"
+  },
+  "the-passcode-on-fourteen-meetings": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-passcode-on-fourteen-meetings/00ff382c2693021ab38a9836109f7cd08e370e532f72189239f44a18d4194a2a.zip",
+   "bytesRead": 54059,
+   "readOn": "2026-10-07"
+  },
+  "which-clinical-notices-went-unacknowledged": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-clinical-notices-went-unacknowledged/c6534b05397ab222729e58c1d0ff32fdce1b467c20d479bd64f4e288fec1b8d6.zip",
+   "bytesRead": 57483,
+   "readOn": "2026-10-07"
+  },
+  "who-can-edit-patient-sheets": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-can-edit-patient-sheets/c112710998b6eb1c3a20e23fd30747a57cdb3f10a0a96d4c167daeda22c53fec.zip",
+   "bytesRead": 57377,
    "readOn": "2026-10-07"
   }
  }
