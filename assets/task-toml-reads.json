@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T14:41:20+00:00",
+ "generatedAt": "2026-10-07T14:51:19+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18786,6 +18786,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-comment-count-is-not-the-comments/b801096e938ac49c77c95a41cbd1510f4efbf331522a90df56d89d5230a2ea46.zip",
    "bytesRead": 47859,
+   "readOn": "2026-10-07"
+  },
+  "what-the-huddles-never-wrote-down": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-huddles-never-wrote-down/32880dfa265548f5052653d8e255d6ab2a7a21751c72866c2e69527020372925.zip",
+   "bytesRead": 52171,
    "readOn": "2026-10-07"
   }
  }
