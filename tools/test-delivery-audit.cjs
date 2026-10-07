@@ -282,9 +282,13 @@ console.log('delivery audit checks passed: attribution, partition, buckets, filt
   assert.equal(by['D-2'].trainer, 'b@t.com', 'contested is settled by the sheet');
   assert.deepEqual(by['D-2'].contestedBefore, ['a@t.com', 'b@t.com']);
   assert.ok(!by['D-2'].flags.includes('contested owner'));
-  assert.equal(by['D-3'].trainer, 'c@t.com', 'a trainer the bucket names is kept');
+  assert.equal(by['D-3'].trainer, 's@t.com', 'for Company Bench the sheet replaces the bucket trainer');
+  assert.equal(by['D-3'].bucketTrainer, 'c@t.com', 'and the replaced trainer is kept on the row');
   assert.equal(by['D-4'].trainer, null, 'two sheet trainers settle nothing');
-  assert.equal(got.drive.sheet.filled, 2);
+  assert.equal(got.drive.sheet.filled, 3);
+  const computer = prepareDeliveryAudit({...base, rows: []},
+    {rows: [{...drive.rows[2], bench: 'computer'}]}, owners, sheet);
+  assert.equal(computer.rows[0].trainer, 'c@t.com', 'a Computer Bench trainer the bucket names is kept');
 
   // The published files: every row the sheet fills was unsettled before, and
   // the count agrees with the builder's when both read the same owner index.
@@ -294,9 +298,10 @@ console.log('delivery audit checks passed: attribution, partition, buckets, filt
     const live = read('drive-deliveries.json'), liveOwners = read('drive-owners.json'), liveSheet = read('trainer-sheet.json');
     const after = prepareDeliveryAudit({...base, rows: []}, live, liveOwners, liveSheet);
     const filled = after.rows.filter(r => r.trainerRoute === 'sheet');
-    assert.ok(filled.every(r => !(liveOwners.owners[r.id] || {}).trainer), 'only unsettled rows are filled');
+    assert.ok(filled.every(r => r.bench === 'company' || !(liveOwners.owners[r.id] || {}).trainer),
+      'outside Company Bench only unsettled rows are filled');
     if (liveSheet.ownersGeneratedAt === liveOwners.generatedAt) {
-      const expected = Object.entries(liveSheet.coverage).filter(([k]) => k.endsWith(':filled'))
+      const expected = Object.entries(liveSheet.coverage).filter(([k]) => k.endsWith(':filled') || k.endsWith(':replaced'))
         .reduce((n, [, v]) => n + v, 0);
       assert.equal(filled.length, expected, 'the page and the builder fill the same rows');
     }

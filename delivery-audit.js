@@ -49,10 +49,12 @@
   }
 
   // The ops team's trainer credit sheet (assets/trainer-sheet.json, built by
-  // tools/build_trainer_sheet.py) names the trainer for tasks the bucket cannot
-  // settle. It is used only there: a row with no owner, or a contested one,
-  // takes the sheet's trainer when the sheet names exactly one person for it.
-  // A trainer the bucket names is never replaced. The names are matched in the
+  // tools/build_trainer_sheet.py) names the trainer of the tasks it covers. A row
+  // with no owner, or a contested one, takes the sheet's trainer when the sheet
+  // names exactly one person for it. For Company Bench the sheet is the record
+  // of who the trainer is, so it also replaces a trainer the bucket names (a
+  // re-run by a lead or service account, a second trainer's rework); a Computer
+  // Bench trainer the bucket names is kept. The names are matched in the
   // spellings the manifests use - kept identical to build_trainer_sheet.py.
   function sheetVariants(value) {
     let v = String(value === null || value === undefined ? '' : value).trim().toLowerCase();
@@ -91,19 +93,24 @@
     return index;
   }
   function withSheetTrainer(row, index) {
-    if (!index || (row.trainer && String(row.trainer).toLowerCase() !== 'unattributed')) return row;
-    const named = new Set();
-    trainerSheetKeys(row).forEach(key => (index.get(key) || []).forEach(person => named.add(person)));
-    const people = [...named].filter(Boolean);
+    if (!index) return row;
+    const named = Boolean(row.trainer) && String(row.trainer).toLowerCase() !== 'unattributed';
+    if (named && row.bench !== 'company') return row;
+    const sheetNames = new Set();
+    trainerSheetKeys(row).forEach(key => (index.get(key) || []).forEach(person => sheetNames.add(person)));
+    const people = [...sheetNames].filter(Boolean);
     if (people.length !== 1) return row;
+    if (named && String(row.trainer).toLowerCase() === people[0]) return row;
     return {
       ...row,
       trainer: people[0],
       source: 'Trainer credit sheet',
       trainerRoute: 'sheet',
       ambiguous: false,
-      // Who the bucket named before the sheet settled it, kept for the drawer.
-      contestedBefore: row.ownerCandidates || [],
+      // Who the bucket named before the sheet decided, kept for the drawer:
+      // the contested candidates, or the trainer it replaced.
+      contestedBefore: named ? [] : row.ownerCandidates || [],
+      bucketTrainer: named ? row.trainer : null,
     };
   }
 

@@ -16,8 +16,10 @@ assets/trainer-sheet.json: per sheet row, the tab, the names it can be matched
 on and the trainer's email - nothing else from the sheet (no payment status,
 POD lead or review notes), because the dashboard is public.
 
-The page (delivery-audit.js) uses it only where the bucket's owner index names
-no one or several people; a trainer the bucket names is never replaced. The
+The page (delivery-audit.js) uses it where the bucket's owner index names no
+one or several people, and - for Company Bench, whose trainers the sheet is the
+record of - also where the bucket names someone else; a Computer Bench trainer
+the bucket names is kept. The
 names are matched in every spelling the Drive manifests use for one task:
 namespace and .zip dropped, underscores as hyphens, a task_ prefix, a
 -<hash>-vN tail, a version suffix, and a leading Task Tracker id (100601-...).
@@ -133,6 +135,9 @@ def coverage(entries, drive, owners):
                              'state': state, 'candidates': owner.get('candidates') or [],
                              'outcome': outcome, 'sheet': people})
         elif len(people) == 1 and people[0] != str(owner['trainer']).lower():
+            if row['bench'] == 'company':
+                counts['company:attributed:replaced'] += 1
+                continue
             counts[f"{row['bench']}:attributed:sheet disagrees"] += 1
             gaps.append({'id': row['id'], 'batch': row['batch'], 'bench': row['bench'],
                          'task': row['task'], 'package': row.get('packageName'), 'state': state,
@@ -160,8 +165,9 @@ def main():
         'generatedAt': datetime.now(timezone.utc).isoformat(timespec='seconds'),
         'source': {'title': 'CompanyBench Trainer Credit Analysis Report', 'driveFileId': args.source_id,
                    'modified': args.source_modified},
-        'rule': 'used only where the bucket names no trainer or several; a trainer the bucket '
-                'names is kept. One sheet trainer for the task fills it; several leave it contested.',
+        'rule': 'used where the bucket names no trainer or several, and for Company Bench also '
+                'where it names someone else; a Computer Bench trainer the bucket names is kept. '
+                'One sheet trainer for the task decides it; several leave it as it was.',
         'tabs': dict(collections.Counter(e['tab'] for e in entries)),
         'withoutTrainer': sum(1 for e in entries if not e['trainer']),
         'ownersGeneratedAt': json.loads(pathlib.Path(args.owners).read_text(encoding='utf-8')).get('generatedAt'),

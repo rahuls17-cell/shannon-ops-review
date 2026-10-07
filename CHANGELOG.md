@@ -44,9 +44,12 @@ When you change what a figure means, add a line under **Unreleased**. When
   trainer's email are kept), so the VM's owner rebuilds do not undo it.
 - **Still without a trainer, Company Bench:** 1,248 not in the sheet (CompanyBench
   1: 247, CompanyBench 3: 961 - the sheet covers neither - and 40 across Batches
-  2 to 8.1 and CompanyBench 2), 2 whose sheet row names no trainer. The sheet
-  disagrees with the bucket on 31 attributed Company Bench tasks; those keep the
-  bucket's trainer.
+  2 to 8.1 and CompanyBench 2), 2 whose sheet row names no trainer.
+- **For Company Bench the sheet also replaces a trainer the bucket names** (a
+  re-run by a lead or service account, a second trainer's rework): 31 tasks, e.g.
+  Batch 2 `a-fortnight-nobody-was-watching` saurabh.p5 -> pawan.g3. The bucket's
+  trainer stays on the row (`bucketTrainer`). A Computer Bench trainer the bucket
+  names is kept (6 disagreements). Trainer credit sheet now decides 137 tasks.
 
 ### Pipeline tab
 - **Exclude a previous manifest reads delivery manifests**: a Drive batch
