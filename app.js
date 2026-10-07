@@ -652,6 +652,16 @@ let driveView = '';
 // `driveAudit` under Current, the same `audit` under GLM 5.3 cutoff.
 let driveAudit = null;
 const deliveryData = () => (DRIVE_VIEWS[driveView].driveOnly ? driveAudit : audit);
+// What every tab but Delivery reads as delivered - the Pipeline's delivery
+// join, and the bench, harness and connector count a delivered task gives its
+// pipeline row: the GLM 5.3 cutoff rows, plus each batch only the Drive as it
+// is now carries, i.e. one delivered after the cutoff (Batch 11.1 on). Without
+// the second half a new batch never reached the Pipeline.
+const deliveredRows = () => {
+  if (!audit) return [];
+  const known = new Set(audit.rows.map(row => row.batch));
+  return audit.rows.concat(driveAudit ? driveAudit.rows.filter(row => !known.has(row.batch)) : []);
+};
 const deliveryRows = () => {
   const data = deliveryData();
   return data ? data.rows.filter(row => segmentMatches(deliverySegment(row))) : [];
@@ -829,7 +839,7 @@ function taskBenches() {
     });
     return map;
   };
-  const delivered = index((audit ? audit.rows : []).flatMap(row => {
+  const delivered = index(deliveredRows().flatMap(row => {
     const side = row.bench === 'company' ? 'company' : 'computer';
     return [[row.task, side], [row.packageName, side]];
   }));
@@ -886,7 +896,7 @@ function taskHarnesses() {
     const value = HARNESS_OF_BENCH[row.bench] || harnessOfGyms(row.connectorServices);
     return value ? [[row.name, value], [row.packageTask, value], [row.cohortFolder, value]] : [];
   }));
-  const delivered = index((audit ? audit.rows : []).flatMap(row => {
+  const delivered = index(deliveredRows().flatMap(row => {
     const value = row.bench === 'company' ? (row.harness || harnessOfGyms(row.connectors)) : null;
     return value ? [[row.task, value], [row.packageName, value]] : [];
   }));
@@ -964,7 +974,7 @@ function taskCounts() {
     const value = connectorCountOf(row.connectorServices);
     return value ? [[row.name, value], [row.packageTask, value], [row.cohortFolder, value]] : [];
   }));
-  const delivered = index((audit ? audit.rows : []).flatMap(row => {
+  const delivered = index(deliveredRows().flatMap(row => {
     const value = connectorCountOf(row.connectors);
     return value ? [[row.task, value], [row.packageName, value]] : [];
   }));
@@ -1104,13 +1114,14 @@ function resetTaskBenches() {
   stampSides();
 }
 const typeFlag = type => (type === 'Connector' ? true : type === 'Non-connector' ? false : null);
-// Which accepted folders have gone out, over every batch the Delivery tab
-// lists: the audited Batches 1 to 4.1 and every Drive batch after them. Both
+// Which accepted folders have gone out, over every batch delivered: the audited
+// Batches 1 to 4.1, every Drive batch after them, and every batch delivered
+// since the GLM 5.3 cutoff (deliveredRows). Both
 // halves arrive at different times, so it is joined again whenever one lands;
 // truth.js recomputes from its own starting point, so a second run is the same.
 function applyDeliveryJoin() {
   if (!truth || !audit || typeof window.joinDeliveries !== 'function') return;
-  window.joinDeliveries(truth, audit.rows.map(row => ({...row, audited: !row.fromManifest})),
+  window.joinDeliveries(truth, deliveredRows().map(row => ({...row, audited: !row.fromManifest})),
     (truth.deliveredIndex && truth.deliveredIndex.counts.manifestMissing) || []);
 }
 // The join's deliveries in the segment, each with whether its accepted folder
