@@ -50,9 +50,15 @@ When you change what a figure means, add a line under **Unreleased**. When
   a new name after review was two manifest entries; it is now one, the most
   recent decided run speaking for it and the other listed in `standsFor`
   (4 such today). The manifest records the file it excluded (`excludedFrom`)
-  and counts the tasks taken out of the list. As before, the tasks a manifest
-  just wrote are excluded from the next cut in the same visit, so they leave
-  the list too until Drop exclusions.
+  and counts the tasks taken out of the list.
+- **Only the files you load exclude.** Create manifest.json no longer adds the
+  tasks it just wrote to the exclusions on its own - which emptied the list
+  after a download and made Drop exclusions look like it undid the file - so the
+  list keeps showing what went into the manifest. For a second round, load the
+  file just written. Several files stack; Drop exclusions clears them all.
+- **Every count on the Tasks pane follows the loaded file**: the filter bar
+  ("712 of 9,348 tasks") and the State, Ready, Gate and Delivery chips still
+  counted all ready tasks (894 on staging) while the table showed the rest.
 - **Fix:** an excluded folder key keeps its suffix. A folder named `...-v5` or
   `...-20260918` had the suffix stripped before matching, so it was never
   excluded, even by a manifest the Pipeline wrote itself.

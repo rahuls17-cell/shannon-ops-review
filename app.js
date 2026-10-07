@@ -104,7 +104,7 @@ const infoCopy = {
   auditAcceptance: 'Accepted, Rejected or Pending as recorded by the audit workbook, not by the GCS verdicts the Pipeline tab reads. The two are different sources judged at different times, so a task can read Accepted here and Rejected there. Batches read from Drive manifests are Pending until the client decides on them. The status line above gives the date this snapshot was built.',
   auditSource: 'How the task was attributed to a trainer. Accepted portal and Trainer records are direct. QC run owner is inferred from who ran the QC, and unverified means that inference was not confirmed. Contested means more than one trainer claims it, and Unattributed means nobody could be identified.',
   auditFlags: 'Three quality caveats carried per task: contested owner - more than one trainer claims it; unverified - the attribution was inferred and not confirmed; version dependent - the result changes between task versions.',
-  manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. To cut a second round, load the first manifest back in and its tasks are left out.',
+  manifest: 'A manifest is the list of tasks to hand over next. It is cut from whatever the table is showing, so any filter you set narrows it. It is built from task names rather than rows: the pipeline holds more ready rows than ready tasks, because a task submitted more than once appears more than once and the bucket appends version suffixes such as -v5 that the delivery audit does not carry. One entry per task means the same work is never handed over twice in one manifest. Entries are ordered oldest decision first, so the work that has been sitting accepted the longest goes out first, and the run chosen to represent a task is its most recent decided one. Every entry lists the rows it stands for, so nothing is dropped silently. A task re-cut under a new name counts once, by the [task] name its package declares. Exclude a previous manifest takes every task it names - this page’s manifests, the Delivery tab’s export or a Drive batch manifest - out of the list, its counts and the next manifest; files you load stack, and Drop exclusions clears them all. To cut a second round, load the first manifest back in.',
   glm: () => {
     const g = truth && truth.glmIndex && truth.glmIndex.counts;
     return 'How many of four GLM-5.2 trial runs solved the task. The 1 to 3 band is the useful one: 4/4 is too easy, 0/4 unproven'
@@ -1919,8 +1919,15 @@ function renderScope(result) {
 // The filter card: the three cuts people reach for first are chips with live
 // counts (each counted with the other filters applied), the rest are selects.
 function renderTruthFilterChips(filters, filtered) {
-  const verdictRows = filters.search ? truthSearchRows() : truthRows();
-  const cohort = truthCohortRows();
+  // Under Ready for delivery with a previous manifest loaded, the chips count
+  // the list the table shows: the tasks the file names are already out of it.
+  const excludes = filters.delivered === 'ready' && manifestExclusions.length
+    ? window.manifestExclusionMatcher(manifestExclusions) : null;
+  const kept = list => (excludes && list ? list.filter(row => !excludes(row)) : list);
+  const allVerdictRows = filters.search ? truthSearchRows() : truthRows();
+  const allCohort = truthCohortRows();
+  const verdictRows = kept(allVerdictRows);
+  const cohort = kept(allCohort);
   const rows = truthByBucket ? cohort : verdictRows;
   const without = key => window.filterTruth(rows, {...filters, [key]: '', ...(truthByBucket ? {state: ''} : {})});
   const chip = (filter, value, label, count, tone, on) =>
@@ -1936,8 +1943,11 @@ function renderTruthFilterChips(filters, filtered) {
   byId('tStateChips').innerHTML = chip('tState', '', 'All', byState.rows.length, 'var(--slate)', !filters.state) +
     states.map(st => chip('tState', st, stateLabel(st), stateCount(st), stateTone(st), filters.state === st)).join('');
 
-  const byDelivered = without('delivered').rows;
-  const deliveredCount = value => shownTasks(window.filterTruth(byDelivered, {delivered: value}).rows);
+  // The file narrows Ready only, so the other Delivered chips count every row.
+  const byDelivered = window.filterTruth(truthByBucket ? allCohort : allVerdictRows,
+    {...filters, delivered: '', ...(truthByBucket ? {state: ''} : {})}).rows;
+  const deliveredCount = value => shownTasks(window.filterTruth(value === 'ready' ? kept(byDelivered) : byDelivered,
+    {delivered: value}).rows);
   byId('tDeliveredChips').innerHTML = chip('tDelivered', '', 'Any', shownTasks(byDelivered), 'var(--slate)', !filters.delivered) +
     [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
       .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
@@ -2657,6 +2667,9 @@ function renderTruth() {
 // Names claimed by a manifest the user has already issued. Held only for this
 // visit: it is a convenience for cutting a second round, not a record. The
 // authoritative record of what went out is the delivery audit itself.
+// Only files the user loads exclude: a manifest written here is not added on
+// its own, so the list keeps showing what went into it. For a second round,
+// load the file just written. Several files stack; Drop exclusions clears all.
 let manifestExclusions = [];
 let manifestExcludedFrom = '';
 
@@ -2730,13 +2743,6 @@ function downloadManifest() {
   link.click();
   link.remove();
   URL.revokeObjectURL(url);
-
-  // Carry it forward so the next cut in this visit does not reissue the same
-  // work, and say so rather than doing it invisibly.
-  manifestExclusions = [...new Set([...manifestExclusions,
-    ...window.namesFromManifest(manifest)])];
-  manifestExcludedFrom = `${link.download} and anything loaded before it`;
-  renderTruth();
 }
 
 // --- CSV export ------------------------------------------------------------
@@ -2873,7 +2879,8 @@ async function loadManifestExclusions(file) {
     const names = window.namesFromManifest(JSON.parse(await file.text()));
     if (!names.length) throw new Error('no tasks in that file');
     manifestExclusions = [...new Set([...manifestExclusions, ...names])];
-    manifestExcludedFrom = file.name;
+    const loaded = manifestExcludedFrom ? manifestExcludedFrom.split(', ') : [];
+    manifestExcludedFrom = [...new Set([...loaded, file.name])].join(', ');
   } catch (error) {
     setText('manifestSummary', `That file could not be read as a manifest: ${error.message}`);
     return;
