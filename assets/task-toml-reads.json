@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T08:31:13+00:00",
+ "generatedAt": "2026-10-07T08:41:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17949,6 +17949,55 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-replies-my-inbox-never-showed/3fc6e1ef10a5552a384b1ae936fca189e5118590aee5fb67197b4648bb3ee0e2.zip",
    "bytesRead": 55554,
+   "readOn": "2026-10-07"
+  },
+  "pdf-storage-still-held-by-people-who-left": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/pdf-storage-still-held-by-people-who-left/575e3f0d628a22fa8bbaf23a84aceb07785d201befaba41bce126ec57b5d5de6.zip",
+   "bytesRead": 49605,
+   "readOn": "2026-10-07"
+  },
+  "runtime-outlier-excess-cost": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/runtime-outlier-excess-cost/fd221f64c032df3548c6a96dc500a1defe316692f25c0380f847afb55773c6bb.zip",
+   "bytesRead": 45929,
+   "readOn": "2026-10-07"
+  },
+  "the-invite-list-is-not-the-room": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:860e3366e0caf68ed49c7edb0d0aa648255ee0535aa1fec16806a18272db6767",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-invite-list-is-not-the-room/d4a70f0a024301b90aac80b737a613de73256c1d45f00a4a40cbbabd64bee63d.zip",
+   "bytesRead": 56763,
+   "readOn": "2026-10-07"
+  },
+  "which-members-left-their-profile-half-done": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-members-left-their-profile-half-done/1f76a12d5fd360ddc2db3576fa016f752c9e9ddf2a4000bf0a8317793f995b26.zip",
+   "bytesRead": 54687,
    "readOn": "2026-10-07"
   }
  }
