@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T13:41:13+00:00",
+ "generatedAt": "2026-10-07T13:51:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18545,6 +18545,54 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-request-that-outran-the-clock/11437706e60a4be27daabf0ea631d0f9b33e8fdff1187cb8cbfb161396660901.zip",
    "bytesRead": 48298,
+   "readOn": "2026-10-07"
+  },
+  "first-timers-fair-hearing": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/first-timers-fair-hearing/cfed6629d2a34b6eeab8003d813be162fe1f41b8898c9bea20d618a7c30d2dee.zip",
+   "bytesRead": 52405,
+   "readOn": "2026-10-07"
+  },
+  "lab-orders-waiting-on-consent": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-orders-waiting-on-consent/f185f1698caef8cbb7fbcc639cd1e88c42e542f2dd2560a82ee01a8026cafc63.zip",
+   "bytesRead": 50023,
+   "readOn": "2026-10-07"
+  },
+  "spend-ask-costcenter-allocation": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spend-ask-costcenter-allocation/27657b672888762707dff7e7e6194792569b542773ffe42f8e828e819086731c.zip",
+   "bytesRead": 46343,
+   "readOn": "2026-10-07"
+  },
+  "the-voices-that-are-not-on-the-thread": {
+   "connector": true,
+   "services": [
+    "microsoft-teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-voices-that-are-not-on-the-thread/74138d9a801a3a6e37fc14cf6e6271bcc79dc1479006411ae9f4daf7228d533d.zip",
+   "bytesRead": 57690,
    "readOn": "2026-10-07"
   }
  }
