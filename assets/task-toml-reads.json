@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T08:01:10+00:00",
+ "generatedAt": "2026-10-07T08:21:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17913,6 +17913,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-has-been-sitting-in-these-meetings/87dba8e951b24e417f17426e418e16dd5c0d411501bcf47ca3330ba3840a3e23.zip",
    "bytesRead": 47956,
+   "readOn": "2026-10-07"
+  },
+  "vendor-compliance-commitment-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-compliance-commitment-audit/2cac89c5a6f3f6eefbb2942952e2da9ddfa566826ec5ca2f7d9b198d6429608e.zip",
+   "bytesRead": 49580,
+   "readOn": "2026-10-07"
+  },
+  "which-errors-keep-coming-back": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-errors-keep-coming-back/1d8de787c757a8e6b29e997e4bb72d6f7cca62365a9ee270342e6057ac382fa7.zip",
+   "bytesRead": 63879,
    "readOn": "2026-10-07"
   }
  }
