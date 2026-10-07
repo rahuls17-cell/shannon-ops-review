@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T19:41:02+00:00",
+ "generatedAt": "2026-10-07T20:11:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19004,6 +19004,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/pull-requests-too-big-to-review/b96912fea5a888d08dc376c4061a71ed088a47c4c4498897d715d2bf301ac1a8.zip",
    "bytesRead": 46877,
+   "readOn": "2026-10-07"
+  },
+  "the-documents-i-never-signed": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-documents-i-never-signed/4d12bd168c59b9c75c12cd79a89584be7b039953d094e954214d4f76894cda24.zip",
+   "bytesRead": 52227,
    "readOn": "2026-10-07"
   }
  }
