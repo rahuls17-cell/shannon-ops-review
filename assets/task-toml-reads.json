@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T09:31:15+00:00",
+ "generatedAt": "2026-10-07T09:41:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18096,6 +18096,18 @@
    "bench": "company bench zeta",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/workbook-tieout-break-audit/e2c1ad71f7055d8c8b87ae9461f99a91730338199491427e13260bb93c6ee6b4.zip",
    "bytesRead": 44947,
+   "readOn": "2026-10-07"
+  },
+  "prenatal-labs-never-drawn": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/prenatal-labs-never-drawn/a13a5ff0b54ff8e676ff659ad53448c4b6be2bf65f2c34f1b587b0a9ae04a455.zip",
+   "bytesRead": 48680,
    "readOn": "2026-10-07"
   }
  }
