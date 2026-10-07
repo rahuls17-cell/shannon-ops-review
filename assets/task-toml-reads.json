@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T04:31:02+00:00",
+ "generatedAt": "2026-10-07T05:31:12+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17781,6 +17781,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/return-visits-the-note-templates-promise/f9cdafd80cb00f49116651d1a2acd9499b32c2b6a031ddd5f3d37876b9709392.zip",
    "bytesRead": 53081,
+   "readOn": "2026-10-07"
+  },
+  "brand-variance-tieback-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/brand-variance-tieback-audit/b1c486d7951fb16641048399db0ae2cd773135ad37b576b9bc27ec9da523197f.zip",
+   "bytesRead": 40316,
+   "readOn": "2026-10-07"
+  },
+  "lead-pipeline-latest-stage": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lead-pipeline-latest-stage/22b303a79f85545872243085d95b0552246bb3515c16fe9455c54c956afda8c0.zip",
+   "bytesRead": 53735,
    "readOn": "2026-10-07"
   }
  }
