@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T15:01:20+00:00",
+ "generatedAt": "2026-10-07T15:21:15+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18810,6 +18810,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-the-prd-trail-goes-cold/86d04d31f9a241d8856a9aabeae3735b52817ea68c942c9a5358874853bfaa31.zip",
    "bytesRead": 48633,
+   "readOn": "2026-10-07"
+  },
+  "portal-invites-by-practice": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/portal-invites-by-practice/f441e902c58c5ebb65b61dc9c2545e3d60f3765fc9ca5b17ca4f9801cf4888db.zip",
+   "bytesRead": 49134,
+   "readOn": "2026-10-07"
+  },
+  "the-week-the-digest-never-ran": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-week-the-digest-never-ran/e210cde4c3338824b7f09a8cee0bea3a89fbfd2b04f6f41627fcd6bb74410e55.zip",
+   "bytesRead": 60009,
+   "readOn": "2026-10-07"
+  },
+  "which-repositories-my-mail-is-about": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-repositories-my-mail-is-about/05374793b7d5355b74a4876e04abc383f7b90155448af03309593e59dc52c8e0.zip",
+   "bytesRead": 68132,
    "readOn": "2026-10-07"
   }
  }
