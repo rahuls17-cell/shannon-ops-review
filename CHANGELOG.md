@@ -28,6 +28,20 @@ When you change what a figure means, add a line under **Unreleased**. When
   of releasing it the moment the download starts: the all-batches manifest is
   4 MB, and Chrome can drop a download whose link is revoked before it has read it.
 
+### Delivery tab: Batch 11.1
+- **Batch 11.1 is on the Delivery tab**: 274 tasks from "10-06 Batch 11.1" on
+  Drive (manifest of 7 Oct, read by hand - the Drive refresh is off the cron).
+  Its packages are grouped by bench, not class: "Aster 180" -> Company Bench ·
+  Aster (180), "Company Bench 4" -> Company Bench · Zeta (4), "Computer Bench
+  (NC 0 RC 0 S 90)" -> Computer Bench, Synthetic by each package's bench_type
+  (90). The reader learns those folder names; no earlier row changed. Delivered
+  now 3,476: Company Bench 1,857, Computer Bench 1,619. GLM-5.3: 118 at 3/4, 79 at
+  2/4, 53 at 1/4, 24 at 0/4. Trainers from the bucket: 240 named (3 by the
+  trainer credit sheet), 19 contested, 15 unattributed. 4 Aster packages swapped
+  in on 7 Oct list no connectors in the manifest ("connectors not read").
+- Drive folder titles in the data are the current ones (ComputerBench (NC 1363
+  RC 72 S 94), 09-16-Batch4.1 (NC 196 ...), 09-25-Batch5.1 (NC 219 ...)).
+
 ### Delivery tab: trainers from the trainer credit sheet
 - **Tasks the bucket cannot settle take their trainer from the ops team's
   "CompanyBench Trainer Credit Analysis Report"** (Drive, jagadeesh.g; tabs Zeta
