@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T15:41:32+00:00",
+ "generatedAt": "2026-10-07T15:51:24+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18954,6 +18954,19 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-charges-that-moved/c1df00104826002b7f44381efcee0dc37e982c7426c44830b002de38d96e2fbc.zip",
    "bytesRead": 49641,
+   "readOn": "2026-10-07"
+  },
+  "marketing-launch-readiness-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/marketing-launch-readiness-audit/7b64ecf28ce0c867c17b6b90927ee596453e8964fc4aa52f12576e40b48ba40c.zip",
+   "bytesRead": 47875,
    "readOn": "2026-10-07"
   }
  }
