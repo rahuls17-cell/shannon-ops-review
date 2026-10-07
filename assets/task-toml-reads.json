@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T10:31:07+00:00",
+ "generatedAt": "2026-10-07T10:51:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18180,6 +18180,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-same-named-boards-agree/d213b37b2fb1d2872a4e48bcb9fed9fd6b44d194f359a2934c12410f7e3c20d7.zip",
    "bytesRead": 47761,
+   "readOn": "2026-10-07"
+  },
+  "introductions-worth-making": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/introductions-worth-making/daf7aa054cb7d1a197ecdbb32ad6816b57e5f984783019aee4ceb884484b7197.zip",
+   "bytesRead": 60300,
+   "readOn": "2026-10-07"
+  },
+  "the-meetings-nobody-ever-accepted": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-nobody-ever-accepted/ea6bcf615c9bdd683da856ccb16b6c373ef3270f2191b0beffdbaf9baba7c6d4.zip",
+   "bytesRead": 54888,
    "readOn": "2026-10-07"
   }
  }
