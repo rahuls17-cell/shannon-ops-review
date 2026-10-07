@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T03:01:31+00:00",
+ "generatedAt": "2026-10-07T03:41:18+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17696,6 +17696,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/partner-proposal-packages/1fca4995a46ab70035f6ec3be93d9462f99a04dbe76daa97d400910dd4c29baa.zip",
    "bytesRead": 56163,
+   "readOn": "2026-10-07"
+  },
+  "five-hundred-unowned-fourteen-already-in-a-sprint": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/five-hundred-unowned-fourteen-already-in-a-sprint/a844640f9789521f77da2b73813456ed4a8070c629ca90dcb35ba6512b67c0b9.zip",
+   "bytesRead": 66929,
+   "readOn": "2026-10-07"
+  },
+  "the-people-i-only-know-from-a-meeting": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-people-i-only-know-from-a-meeting/52071bef96050ce6c23bdc539d77acd28516fa711adf9b583817cd63cafe7aa6.zip",
+   "bytesRead": 48203,
    "readOn": "2026-10-07"
   }
  }
