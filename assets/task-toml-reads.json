@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T13:51:11+00:00",
+ "generatedAt": "2026-10-07T14:01:17+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18593,6 +18593,78 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-voices-that-are-not-on-the-thread/74138d9a801a3a6e37fc14cf6e6271bcc79dc1479006411ae9f4daf7228d533d.zip",
    "bytesRead": 57690,
+   "readOn": "2026-10-07"
+  },
+  "commitment-project-delivery-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/commitment-project-delivery-audit/25469b3e143c042bdb8a1a064a468a5151723dbd5fac96455a4ad9326b2fa31b.zip",
+   "bytesRead": 44617,
+   "readOn": "2026-10-07"
+  },
+  "editor-plan-delivery-audit": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/editor-plan-delivery-audit/4c823741275514781ec93ec58f3cd344ba0c73e8e3b9a7bfe6ca99fca36d11c6.zip",
+   "bytesRead": 44256,
+   "readOn": "2026-10-07"
+  },
+  "receivables-before-the-books-close": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/receivables-before-the-books-close/ce91c29750dd13d5babcc64eb8f7837fd90b8fb811eab74a05c3a5c9662e50ca.zip",
+   "bytesRead": 55065,
+   "readOn": "2026-10-07"
+  },
+  "schedule-start-slip-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/schedule-start-slip-audit/49ab1fb902ad4aed504f2b9629b93a8904c714bb6c9b41a0a7e6e2d3ef6e40dd.zip",
+   "bytesRead": 42231,
+   "readOn": "2026-10-07"
+  },
+  "the-meetings-that-were-quietly-retitled": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-that-were-quietly-retitled/c00784a65966c01a6d124d3d2aeb7f775702cbc01ce372d4d2802ef38bca6cb6.zip",
+   "bytesRead": 66090,
+   "readOn": "2026-10-07"
+  },
+  "whose-name-goes-on-each-reply": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/whose-name-goes-on-each-reply/6b2d9b7315bf666dee6589327f41ea876cbc1dd9ba4955f466e41c9a30e1be30.zip",
+   "bytesRead": 59608,
    "readOn": "2026-10-07"
   }
  }
