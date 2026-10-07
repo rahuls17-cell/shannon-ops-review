@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T02:31:23+00:00",
+ "generatedAt": "2026-10-07T02:41:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17636,6 +17636,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-june-week-i-left-unread/d38ba37926fe1971fd095c2ddd2ae156f39fc66133e98e8c87598fee64fbc339.zip",
    "bytesRead": 48970,
+   "readOn": "2026-10-07"
+  },
+  "the-guests-i-cannot-reach": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guests-i-cannot-reach/19e3708db1c3074111e5d1ef49d35019f8eb16cfde80d16fb6216213247c5f35.zip",
+   "bytesRead": 78759,
    "readOn": "2026-10-07"
   }
  }
