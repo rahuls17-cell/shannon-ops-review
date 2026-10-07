@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T08:51:09+00:00",
+ "generatedAt": "2026-10-07T09:11:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18035,6 +18035,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-meetings-said/9f5cc340a6ff6e4d7c4a9849d046d58d87a60df29470243c83fb161dcf36e1df.zip",
    "bytesRead": 49612,
+   "readOn": "2026-10-07"
+  },
+  "fin-team-overdue-projects-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fin-team-overdue-projects-audit/7527eeca83a7e9daddd3451c831119beb00dd9d62b3ef6a8b52557b8fe80a20e.zip",
+   "bytesRead": 50630,
+   "readOn": "2026-10-07"
+  },
+  "gws-the-spreadsheets-used-as-documents": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gws-the-spreadsheets-used-as-documents/d519599675b601dec792f331d10123e9d3d922c9abdccfa965a2ac8c3f9e03aa.zip",
+   "bytesRead": 60073,
+   "readOn": "2026-10-07"
+  },
+  "work-left-in-archived-repos": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/work-left-in-archived-repos/23cce065a33ae6bd3c999d1eeebcdabbdd90caa75428214ef15d5ed98ea8ab91.zip",
+   "bytesRead": 45358,
    "readOn": "2026-10-07"
   }
  }
