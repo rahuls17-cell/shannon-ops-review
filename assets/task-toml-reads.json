@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T02:41:11+00:00",
+ "generatedAt": "2026-10-07T02:51:30+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17648,6 +17648,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guests-i-cannot-reach/19e3708db1c3074111e5d1ef49d35019f8eb16cfde80d16fb6216213247c5f35.zip",
    "bytesRead": 78759,
+   "readOn": "2026-10-07"
+  },
+  "custom-domain-cutover-audit": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/custom-domain-cutover-audit/bff4a9e49fdebd1d2914bc6f58fac6ab209145c267a0253d6cb1de4fef89482c.zip",
+   "bytesRead": 47292,
+   "readOn": "2026-10-07"
+  },
+  "the-client-lists-the-scrub-missed": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-client-lists-the-scrub-missed/59b5a84f2776c2bde8710e5dfcb38fe30bcf90a7ea7fcd0e4e729853d2e35e5c.zip",
+   "bytesRead": 52563,
+   "readOn": "2026-10-07"
+  },
+  "what-got-delivered-twice": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-got-delivered-twice/b80073399dba695986264c2965a030c9752c51f2e927a74a54bf8758a74997f0.zip",
+   "bytesRead": 59956,
    "readOn": "2026-10-07"
   }
  }
