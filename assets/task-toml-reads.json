@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T13:31:20+00:00",
+ "generatedAt": "2026-10-07T13:41:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18521,6 +18521,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-entries-still-have-an-open-question/4f82e14678d5708f189978872693f7ebd34a7d825c4d8f60c83ef311604ee6f4.zip",
    "bytesRead": 50818,
+   "readOn": "2026-10-07"
+  },
+  "lab-test-price-list-with-fee-share": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-test-price-list-with-fee-share/82dbd8efdd0b979ecec79afc22bbed695f7b9053fa911f8698d583870feb5226.zip",
+   "bytesRead": 52475,
+   "readOn": "2026-10-07"
+  },
+  "the-request-that-outran-the-clock": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-request-that-outran-the-clock/11437706e60a4be27daabf0ea631d0f9b33e8fdff1187cb8cbfb161396660901.zip",
+   "bytesRead": 48298,
    "readOn": "2026-10-07"
   }
  }
