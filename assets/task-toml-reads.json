@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T09:41:04+00:00",
+ "generatedAt": "2026-10-07T09:51:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18108,6 +18108,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/prenatal-labs-never-drawn/a13a5ff0b54ff8e676ff659ad53448c4b6be2bf65f2c34f1b587b0a9ae04a455.zip",
    "bytesRead": 48680,
+   "readOn": "2026-10-07"
+  },
+  "budget-workbook-tie-out-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/budget-workbook-tie-out-audit/add61fefd0f8e07b17e1cee2125051bd1eab08cd72759c107688e7d0b250cdd6.zip",
+   "bytesRead": 43820,
+   "readOn": "2026-10-07"
+  },
+  "channel-generation-naming-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/channel-generation-naming-audit/73115630535bce2fdf6b370f62cc98f10609fc55af7d3b9651a28ac089ef5e1a.zip",
+   "bytesRead": 43105,
+   "readOn": "2026-10-07"
+  },
+  "four-urgent-messages-i-can-clear-before-nine": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/four-urgent-messages-i-can-clear-before-nine/8dde315d44e442d28c17964d9cc3ed955aabbbd9e343509dc700266ba7a74de0.zip",
+   "bytesRead": 56767,
    "readOn": "2026-10-07"
   }
  }
