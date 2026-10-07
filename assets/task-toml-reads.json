@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T09:51:08+00:00",
+ "generatedAt": "2026-10-07T10:01:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18144,6 +18144,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/four-urgent-messages-i-can-clear-before-nine/8dde315d44e442d28c17964d9cc3ed955aabbbd9e343509dc700266ba7a74de0.zip",
    "bytesRead": 56767,
+   "readOn": "2026-10-07"
+  },
+  "medical-code-sets-in-force": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/medical-code-sets-in-force/de35a67fd298bbe47713c8e78f39f2843e3c7bcf66427cd4de4734f1fe23f28a.zip",
+   "bytesRead": 50022,
+   "readOn": "2026-10-07"
+  },
+  "ready-to-merge-today": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ready-to-merge-today/efb3dd59db68bf79ebae73c403fa75483b741f8ded753abafa76a60150896e40.zip",
+   "bytesRead": 47303,
    "readOn": "2026-10-07"
   }
  }
