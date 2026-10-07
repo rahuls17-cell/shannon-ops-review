@@ -277,7 +277,7 @@ check(bdd_c.harness_of(mislabelled) == 'zeta', 'and names the harness')
 check(bdd_c.bench_of('CompanyBench 3', 'Synthetic', {'bench_type': 'computer bench synth'}) == 'computer',
       'with no image recorded the label still decides')
 check(bdd_c.bench_of('CompanyBench 3', 'Synthetic', {'bench_type': 'computer bench synth',
-      'bench_basis': 'image reference kuzphi/connectors-harness:real-data-v4'}) == 'computer',
+      'bench_basis': 'image reference kuzphi/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89'}) == 'computer',
       'a recorded Computer Bench image keeps a task on the Computer bench')
 
 # The class a Drive folder names wins over the manifest's folder: Batch 10.1's

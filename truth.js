@@ -285,19 +285,32 @@
   // line, and tools/test-task-toml.cjs holds the two to the same answers. An
   // Aster image says aster; a Zeta image says zeta, or is one of the image
   // register's Zeta images, which mostly do not: benchmark-base,
-  // company-bench-private, and obi-benchmark at the V3 pinned-data digest
-  // (obi-benchmark at any other digest is a Computer Bench synthetic image).
+  // company-bench-private, and obi-benchmark at the Zeta digests (obi-benchmark
+  // at any other digest is a Computer Bench synthetic image). The register is
+  // the Shannon Connector Image Tracker: real-data-v4 is Aster, and its
+  // synthetic images hosted as company-bench-private are Computer Bench.
   const ZETA_DIGESTS = [
     'ccc08929160ba6a33ba86c070a240f0865c75f83a20b981e6e571998b8b41c83',
     '975f115a995790786a6dbf124204433ccf77460f0277227fbdd21745388e56ca',
     'cb2fee77bd5b1bbe02471664111fae13711c2a0851147f7da987105bf015f293',
     '1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8',
     'e76ff56a791502397586f102f90902e4a1aa0f9534625605bd31e64ed9f20f24',  // V4, also pulled as connectors-rl-gym/obi-benchmark
+    '8219115ca2895f78f4a64ea6cb6b78a6d09cfb85e063bc8a27f2627bb099fdfe',  // zeta-newdbs-20260918
+  ];
+  const ASTER_IMAGES = ['f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb', 'real-data-v4'];
+  const SYNTHETIC_DIGESTS = [
+    'dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea',
+    'f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f',
+    'bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf',
+    'e3ab159ee9ca4cde6f53c1f694f7831aa70b01bd36df7f0c7150bda7d89f0b83',
+    '52ec261ee5556238d165a0797d5a1071af6b675b7808eb7a0d2d4a382dcdbbf3',
+    '1cb77ee036676d6789a086919dfa3d1023df4f4b718d2f8fd443663ee2d87db4',
   ];
   function benchOfImage(image) {
     const im = String(image || '').toLowerCase();
     if (!im) return null;
-    if (im.includes('aster')) return 'company bench aster';
+    if (im.includes('aster') || ASTER_IMAGES.some(a => im.includes(a))) return 'company bench aster';
+    if (SYNTHETIC_DIGESTS.some(d => im.includes(d))) return 'computer bench synth';
     if (im.includes('zeta') || ZETA_DIGESTS.some(d => im.includes(d))) return 'company bench zeta';
     if (im.includes('real-data')) return 'computer bench real';
     if (im.includes('connectors-rl-gym')) return 'computer bench synth';

@@ -28,6 +28,28 @@ When you change what a figure means, add a line under **Unreleased**. When
   of releasing it the moment the download starts: the all-batches manifest is
   4 MB, and Chrome can drop a download whose link is revoked before it has read it.
 
+### Bench from the image: the Shannon Connector Image Tracker
+- **The image rule follows the Shannon Connector Image Tracker** (Drive,
+  anuj.jain; read 7 Oct), in the scanner (`tools/read_task_toml.py`) and on the
+  page (`truth.js`), where it disagreed:
+  - `obi-benchmark@sha256:8219115c` (zeta-newdbs-20260918) is **Zeta**, not
+    Computer Bench synthetic - 30 verdict rows, 4 accepted;
+  - real-data-v4 (`connectors-harness@sha256:f976065b`, or the tag alone) is
+    **Aster**, not Computer Bench - 40 accepted folders;
+  - the synthetic 12-connector and old synthetic images hosted on Docker Hub as
+    `company-bench-private` (`dcf57c1b`, `f468ad6d`, `bcae80df`, `e3ab159e`,
+    `52ec261e`, `1cb77ee0`) are **Computer Bench synthetic**, not Zeta - 79
+    accepted folders on `dcf57c1b`.
+  Accepted folders by segment, today's data: Aster 550 -> 590, Zeta 286 -> 207,
+  Computer Bench connector 269 -> 308, non-connector 1,687 unchanged. The
+  tracker overrides the older "350 tasks accepted" reference on these images;
+  the test says so rather than the reference being edited.
+- Delivery tab: 7 Company Bench tasks in Batch 2 whose manifest lists real-data-v4
+  for their connectors now read Aster (no harness before). The Drive folders
+  still decide the bench there: Batch 10.1's 38 tasks on the Aster image stay
+  Computer Bench ("Real ComputerBench"), and Batch 2's 2 tasks on synthetic
+  images stay Company Bench ("Batch 2 - CompanyBench").
+
 ### Delivery tab: Batch 11.1
 - **Batch 11.1 is on the Delivery tab**: 274 tasks from "10-06 Batch 11.1" on
   Drive (manifest of 7 Oct, read by hand - the Drive refresh is off the cron).

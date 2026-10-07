@@ -103,8 +103,14 @@ print(json.dumps(m.bench_type(sys.stdin.read().strip())))
 `], {input: image, encoding: 'utf8'}));
 
   // Every distinct image in the reference, checked once.
+  // The Shannon Connector Image Tracker overrides the reference on three images
+  // (tools/read_task_toml.py): zeta-newdbs at 8219115c is Zeta, real-data-v4 is
+  // Aster, and the synthetic images hosted as company-bench-private are synthetic.
+  const tracker = image => (/8219115c/.test(image) ? 'company bench zeta'
+    : /f976065b|real-data-v4/.test(image) ? 'company bench aster'
+    : /dcf57c1b|f468ad6d|bcae80df|e3ab159e|52ec261e|1cb77ee0/.test(image) ? 'computer bench synth' : null);
   const distinct = new Map();
-  ref.labelled.forEach(r => distinct.set(r.image, r.bench));
+  ref.labelled.forEach(r => distinct.set(r.image, tracker(r.image) || r.bench));
   let checked = 0;
   distinct.forEach((expected, image) => {
     assert.equal(bench(image), expected,
@@ -119,7 +125,8 @@ print(json.dumps(m.bench_type(sys.stdin.read().strip())))
     'computer bench synth', 'connectors-rl-gym at a digest the register does not list is a computer image');
   assert.equal(bench('kuzphi/connectors-harness-aster:company-aster-v6'), 'company bench aster',
     'aster is a company bench despite the connectors-harness name');
-  assert.equal(bench('kuzphi/connectors-harness:real-data-v4'), 'computer bench real');
+  assert.equal(bench('kuzphi/connectors-harness:real-data-v4'), 'company bench aster', 'real-data-v4 is Aster in the tracker');
+  assert.equal(bench('kuzphi/connectors-harness:real-data-v5'), 'computer bench real', 'another real-data image stays Computer Bench real');
   assert.equal(bench('python:3.12-slim-bookworm'), null,
     'a plain base image is not a bench at all');
 
@@ -137,6 +144,19 @@ print(json.dumps(m.bench_type(sys.stdin.read().strip())))
     'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:832fec69897f00d324614205d2e70797eab8e991d7b172ea1a52091181011ae2': 'company bench aster',
     'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44': 'company bench aster',
     'docker.io/kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3': 'company bench aster',
+    // The Shannon Connector Image Tracker, 2026-10-07.
+    'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/obi-benchmark@sha256:8219115ca2895f78f4a64ea6cb6b78a6d09cfb85e063bc8a27f2627bb099fdfe': 'company bench zeta',
+    'docker.io/kuzphi/company-bench-private@sha256:8219115ca2895f78f4a64ea6cb6b78a6d09cfb85e063bc8a27f2627bb099fdfe': 'company bench zeta',
+    'docker.io/kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a': 'company bench aster',
+    'us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb': 'company bench aster',
+    'kuzphi/connectors-harness:real-data-v4@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb': 'company bench aster',
+    'docker.io/kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea': 'computer bench synth',
+    'docker.io/kuzphi/company-bench-private@sha256:f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f': 'computer bench synth',
+    'docker.io/kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf': 'computer bench synth',
+    'docker.io/kuzphi/company-bench-private@sha256:e3ab159ee9ca4cde6f53c1f694f7831aa70b01bd36df7f0c7150bda7d89f0b83': 'computer bench synth',
+    'docker.io/kuzphi/company-bench-private@sha256:52ec261ee5556238d165a0797d5a1071af6b675b7808eb7a0d2d4a382dcdbbf3': 'computer bench synth',
+    'docker.io/kuzphi/company-bench-private@sha256:1cb77ee036676d6789a086919dfa3d1023df4f4b718d2f8fd443663ee2d87db4': 'computer bench synth',
+    'docker.io/kuzphi/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89': 'computer bench synth',
   };
   Object.entries(register).forEach(([image, expected]) =>
     assert.equal(bench(image), expected, `register: ${image.slice(0, 80)} should be ${expected}`));
