@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T16:21:12+00:00",
+ "generatedAt": "2026-10-07T18:21:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18980,6 +18980,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/stale-consumption-refresh-cost/084612772a93ec2984b76f0e93b4948f1cabf403b601241f31b4258874f04ccc.zip",
    "bytesRead": 48202,
+   "readOn": "2026-10-07"
+  },
+  "clinic-lab-scorecard": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinic-lab-scorecard/5d4462a12f8d0cda6dad332ec0c399073b8fc04aaf76a13b449fec8e6a815bdf.zip",
+   "bytesRead": 67233,
    "readOn": "2026-10-07"
   }
  }
