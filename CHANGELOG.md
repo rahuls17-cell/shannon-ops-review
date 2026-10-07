@@ -539,6 +539,9 @@ longer decides Company Bench anywhere on the dashboard.
     credential** - a key at `/root/shannon-refresh/drive-reader.json` with
     Viewer on the folder, or the VM's account given the drive.readonly scope;
     until then each run fails safely and records it in `refresh-drive.status`.
+    **Taken off the cron on 2026-10-07:** the Delivery tab's Drive files are
+    fetched by hand. The script stays on the VM and in `tools/vm/` for a manual
+    run.
 - The Drive reader follows the regrouped Deliveries folder (`ComputerBench/`,
   `CompanyBench/`), ignores `[Deprecated]`, `[Meta]` and `EKW / SVC`, lists every
   batch folder's zips with the folder they sit in, and matches zips saved under
