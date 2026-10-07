@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T04:01:08+00:00",
+ "generatedAt": "2026-10-07T04:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17732,6 +17732,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/suspended-account-holdings-audit/9e832ef1cddfae7492fa602b85b8c0ee6ec72df626c8ec7cea430e7fcf18e951.zip",
    "bytesRead": 76677,
+   "readOn": "2026-10-07"
+  },
+  "answer-the-signature-reminders": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/answer-the-signature-reminders/caa56e30ef68f3b74785e4454d80e53ee10843c41b71288906fdf5df6c74ec7b.zip",
+   "bytesRead": 49768,
+   "readOn": "2026-10-07"
+  },
+  "who-actually-gets-this-mail": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-actually-gets-this-mail/5bd2d7a9b6a27e3a5588564dd85d34ef86f0183df173582da2813d8f41a1b01c.zip",
+   "bytesRead": 49101,
    "readOn": "2026-10-07"
   }
  }
