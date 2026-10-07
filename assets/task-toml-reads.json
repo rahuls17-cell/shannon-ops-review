@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T15:21:15+00:00",
+ "generatedAt": "2026-10-07T15:31:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18846,6 +18846,78 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-repositories-my-mail-is-about/05374793b7d5355b74a4876e04abc383f7b90155448af03309593e59dc52c8e0.zip",
    "bytesRead": 68132,
+   "readOn": "2026-10-07"
+  },
+  "email-templates-copied-before-launch": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/email-templates-copied-before-launch/6d9b3cec6b1544066ea4ea31cbe0df4ae7b441c5c853762f0215b0e3460d6714.zip",
+   "bytesRead": 51413,
+   "readOn": "2026-10-07"
+  },
+  "open-renewal-territory-audit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/open-renewal-territory-audit/d2f2bb93e48d2e8fb140aa2c1071b99f5aa7127ac06a2cbeeed59ca4852a27d8.zip",
+   "bytesRead": 41009,
+   "readOn": "2026-10-07"
+  },
+  "patient-record-exports-at-service-end": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/patient-record-exports-at-service-end/8dae4e864aa6bf4fc824b4d55c6dd996a168d6bf9c427d270cc52995830a9483.zip",
+   "bytesRead": 55798,
+   "readOn": "2026-10-07"
+  },
+  "the-fix-that-never-closed": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-fix-that-never-closed/832c4c963180f24b74627af6e18c9dacaf1b43d5897f2bc533062b55a37d143d.zip",
+   "bytesRead": 47418,
+   "readOn": "2026-10-07"
+  },
+  "the-month-my-calendar-peaked": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-month-my-calendar-peaked/b88f88da4a7bec74d4c27f0ebd9d323aae45b1e8bcfe7a7cf6256d5bdb7fa6c2.zip",
+   "bytesRead": 49666,
+   "readOn": "2026-10-07"
+  },
+  "the-unread-that-piled-up-in-the-inbox": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-unread-that-piled-up-in-the-inbox/37a9b0098764e4506632e9d3b41cae8479e81b7669673a1aa4e233d38677d5c8.zip",
+   "bytesRead": 65548,
    "readOn": "2026-10-07"
   }
  }
