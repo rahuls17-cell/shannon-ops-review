@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T13:01:11+00:00",
+ "generatedAt": "2026-10-07T13:11:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -18448,6 +18448,19 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-commitments-that-never-added-up/cbcb9778171a1ba35687b2ce4709df40bb8f98f06fba6a1844c3b443dcc06316.zip",
    "bytesRead": 68759,
+   "readOn": "2026-10-07"
+  },
+  "finance-file-pickup-lag": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "company bench zeta",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-file-pickup-lag/2408cf9fe76b37728536e4a98c7f22cb0902eafff16f81f2740f0027667e9f53.zip",
+   "bytesRead": 46723,
    "readOn": "2026-10-07"
   }
  }
