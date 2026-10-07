@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T08:21:09+00:00",
+ "generatedAt": "2026-10-07T08:31:13+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -17937,6 +17937,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-errors-keep-coming-back/1d8de787c757a8e6b29e997e4bb72d6f7cca62365a9ee270342e6057ac382fa7.zip",
    "bytesRead": 63879,
+   "readOn": "2026-10-07"
+  },
+  "the-replies-my-inbox-never-showed": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-replies-my-inbox-never-showed/3fc6e1ef10a5552a384b1ae936fca189e5118590aee5fb67197b4648bb3ee0e2.zip",
+   "bytesRead": 55554,
    "readOn": "2026-10-07"
   }
  }
