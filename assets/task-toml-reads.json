@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T03:31:03+00:00",
+ "generatedAt": "2026-10-08T03:41:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19185,6 +19185,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fall-high-cost-lab-orders/d47675761e1dd7fcb2e27e8851b8ad756c16193804c3952407be03df9a9240ef.zip",
    "bytesRead": 45421,
+   "readOn": "2026-10-08"
+  },
+  "lab-export-v15": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-export-v15/bd5c41f83d7629c7aed8521e23baf730f6f7af1ad9fe522d0d342d361da826e1.zip",
+   "bytesRead": 43900,
+   "readOn": "2026-10-08"
+  },
+  "the-item-nobody-actually-claimed": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-item-nobody-actually-claimed/38ab7d87a8a70bf32ec609cfd25dbe197caf94918fe31a5c3d44a46a7961bbf5.zip",
+   "bytesRead": 51163,
    "readOn": "2026-10-08"
   }
  }
