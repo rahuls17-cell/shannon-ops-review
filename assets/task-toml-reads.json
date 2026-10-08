@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T23:41:04+00:00",
+ "generatedAt": "2026-10-08T23:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20368,6 +20368,54 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-thread-the-inbox-never-showed-whole/648f843d0ff3e81102c88d5f70fee9c7eb6ad9c1a486bc0a09dc8d6455789753.zip",
    "bytesRead": 50529,
+   "readOn": "2026-10-08"
+  },
+  "beta-support-by-month": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/beta-support-by-month/82ddbfb7530f9581d411b8c57ef326041bc28fd69c6b7f628c9f6a2d2088fd06.zip",
+   "bytesRead": 42781,
+   "readOn": "2026-10-08"
+  },
+  "client-billed-practices-that-skipped-a-month": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/client-billed-practices-that-skipped-a-month/f23a3646444c320dfbeb7e7ff693b4ce7627388d88672f25bd00772246908506.zip",
+   "bytesRead": 56272,
+   "readOn": "2026-10-08"
+  },
+  "lab-work-awaiting-clinical-safety-review-20261008T200339Z-1-001": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-work-awaiting-clinical-safety-review-20261008T200339Z-1-001/62a8a32182a21842987a4f803afa7c9cf2ec1550f22a26dc003d527c0ec5bf83.zip",
+   "bytesRead": 59636,
+   "readOn": "2026-10-08"
+  },
+  "patient-notice-copies-to-drop": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/patient-notice-copies-to-drop/25c0637ae1d654049a2b188807b7af06ed0d2f141cb599b6343e2f24d68420d7.zip",
+   "bytesRead": 55099,
    "readOn": "2026-10-08"
   }
  }
