@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T14:01:06+00:00",
+ "generatedAt": "2026-10-08T14:11:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19787,6 +19787,55 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/revision-check-independence-audit/c664cb93af32557dd513e3ba38e8eb5522d8d1829c704c1c80b4feb9e061d790.zip",
    "bytesRead": 48085,
+   "readOn": "2026-10-08"
+  },
+  "all-day-blocks-on-one-calendar": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/all-day-blocks-on-one-calendar/d9fe990121c3bde7cc2c67f53f9acd711629956de509a42611d431b6f0c787bc.zip",
+   "bytesRead": 51428,
+   "readOn": "2026-10-08"
+  },
+  "gws-the-invoice-lines-that-do-not-add-up": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/gws-the-invoice-lines-that-do-not-add-up/3f7d2c5c52b9e02f8c9cf292fd3a0dbc6e9d707425443cdb6be94badf946217a.zip",
+   "bytesRead": 52460,
+   "readOn": "2026-10-08"
+  },
+  "stuck-backup-closure-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/stuck-backup-closure-audit/a3046e4c9a8b6e03ebd037f089d2f01c4bd510de35249d399125bb72b3a892e2.zip",
+   "bytesRead": 46289,
+   "readOn": "2026-10-08"
+  },
+  "the-pilot-practices-with-no-notes": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pilot-practices-with-no-notes/67fca8ea51e5556c61dfa2616d37906061da3270d65906cf902423f548d29490.zip",
+   "bytesRead": 49502,
    "readOn": "2026-10-08"
   }
  }
