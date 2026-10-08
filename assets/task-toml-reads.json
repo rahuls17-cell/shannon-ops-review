@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T16:31:07+00:00",
+ "generatedAt": "2026-10-08T17:01:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19944,6 +19944,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-with-nobody-else-on-them/a93ba00d6e75331551528bc4ee053ecb0ee6b08de8547cc4e12b2f15a9c54222.zip",
    "bytesRead": 53154,
+   "readOn": "2026-10-08"
+  },
+  "family-dinner-extra-guests": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/family-dinner-extra-guests/7a0c4e78e7ef96e5ab87c4f60af4b9829ff0c3c934731e5ad3f73042d33c194c.zip",
+   "bytesRead": 51633,
+   "readOn": "2026-10-08"
+  },
+  "portfolio-delivery-scorecard-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/portfolio-delivery-scorecard-audit/2adc5f23972efa3415acc692c2faccae9a7550137fb234d3ae3427debcf3157f.zip",
+   "bytesRead": 44694,
    "readOn": "2026-10-08"
   }
  }
