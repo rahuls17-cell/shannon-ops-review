@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T08:31:05+00:00",
+ "generatedAt": "2026-10-08T09:11:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19425,6 +19425,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-replies-the-counts-miss/9e3fa43688aaad3e1e087de76e70950cbc943420fa1ef222be92a368be63f0e7.zip",
    "bytesRead": 46510,
+   "readOn": "2026-10-08"
+  },
+  "summer-high-cost-lab-orders": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/summer-high-cost-lab-orders/d5040c30a3bce9af7c6768fd49f43e098e0d8170a9103628eaa440ef0f006559.zip",
+   "bytesRead": 51171,
+   "readOn": "2026-10-08"
+  },
+  "superseded-takeon-confirm-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/superseded-takeon-confirm-audit/918cd99c321a0a5bf5029b50a2dab0231a6f7b8604f05bec3b82f3da88fb44de.zip",
+   "bytesRead": 45537,
    "readOn": "2026-10-08"
   }
  }
