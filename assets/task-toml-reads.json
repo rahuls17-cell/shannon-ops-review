@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T10:11:06+00:00",
+ "generatedAt": "2026-10-08T10:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19534,6 +19534,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fourteen-columns-seven-names/9b5a5225b012e78bfafa38e812e5912e0d0f57f4be38d7d21f38b64fe877348a.zip",
    "bytesRead": 48547,
+   "readOn": "2026-10-08"
+  },
+  "spend-tracker-budget-audit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spend-tracker-budget-audit/6d780fbf025fa3ef6c64b80b6e15c4b46be076f94e239ed3abe6dde00b0cabdf.zip",
+   "bytesRead": 40401,
+   "readOn": "2026-10-08"
+  },
+  "which-lab-orders-never-came-back": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-lab-orders-never-came-back/191ede096f2a9c0835b7367cb0c077c1f42fac80dbf7cfe7d5e508034a13ae2e.zip",
+   "bytesRead": 55427,
    "readOn": "2026-10-08"
   }
  }
