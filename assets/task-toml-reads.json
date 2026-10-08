@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T04:51:01+00:00",
+ "generatedAt": "2026-10-08T05:41:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19269,6 +19269,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/locked-for-a-reason/d84fca6a0557636f5c57802bccab374dcc037e9a7715682cfc50cab6ba67e52f.zip",
    "bytesRead": 47678,
+   "readOn": "2026-10-08"
+  },
+  "hanging-lab-request-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/hanging-lab-request-audit/d944b59b205afe2ba892d46aa469a24ee3fa89e65ceb12503c078cbe6fa46588.zip",
+   "bytesRead": 44509,
+   "readOn": "2026-10-08"
+  },
+  "investor-update-core-numbers": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/investor-update-core-numbers/1609a5a8805bd06fe4ba16a7c4fabafdb793de6371a7254b27c6b025ec95d68e.zip",
+   "bytesRead": 48276,
    "readOn": "2026-10-08"
   }
  }
