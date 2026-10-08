@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T12:41:02+00:00",
+ "generatedAt": "2026-10-08T13:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19751,6 +19751,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-the-numbers-stop-matching/88d4de37014ab1c8df1b9015d6e9bd5a44386376217d9c9abd3351bb840139aa.zip",
    "bytesRead": 55560,
+   "readOn": "2026-10-08"
+  },
+  "award-software-open-release-audit": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/award-software-open-release-audit/99c5256cfa616bdf505984f7cc654673c7ee5e6325c7227f04dc3d48b7b104f4.zip",
+   "bytesRead": 54403,
    "readOn": "2026-10-08"
   }
  }
