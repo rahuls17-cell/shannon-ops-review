@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T09:41:17+00:00",
+ "generatedAt": "2026-10-08T09:51:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19486,6 +19486,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/half-this-sprint-is-already-gone/c82d7f535d230ed07b5272042622ae5babe21731855d3de52c88197c24f5222f.zip",
    "bytesRead": 49349,
+   "readOn": "2026-10-08"
+  },
+  "beta-program-graduation-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/beta-program-graduation-audit/503b4fb67fd56727ffa19f96bed93685ee9cf3d3d5add9416fd536e55629fc3b.zip",
+   "bytesRead": 43025,
+   "readOn": "2026-10-08"
+  },
+  "initiative-velocity-forecast-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/initiative-velocity-forecast-audit/a042b83cb99aa24414d08505dd033df9eb224744f7aaeace7ac2019f23ed56a0.zip",
+   "bytesRead": 54430,
    "readOn": "2026-10-08"
   }
  }
