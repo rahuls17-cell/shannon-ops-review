@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T05:41:01+00:00",
+ "generatedAt": "2026-10-08T06:01:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19293,6 +19293,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/investor-update-core-numbers/1609a5a8805bd06fe4ba16a7c4fabafdb793de6371a7254b27c6b025ec95d68e.zip",
    "bytesRead": 48276,
+   "readOn": "2026-10-08"
+  },
+  "nobody-picked-this-up": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness:company-synthetic-20260907-0412-pt-pr1331@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/nobody-picked-this-up/cd5b96c499cdb97adaccabcc9df52c92674b291f65349ea6bf39d2e6cdf81d44.zip",
+   "bytesRead": 47360,
+   "readOn": "2026-10-08"
+  },
+  "the-endpoint-that-was-never-written": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-endpoint-that-was-never-written/8690991c9e3077bed5699356db26c638af276798a56393b00cb0442a15c110d8.zip",
+   "bytesRead": 51141,
    "readOn": "2026-10-08"
   }
  }
