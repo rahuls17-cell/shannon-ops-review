@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T06:41:04+00:00",
+ "generatedAt": "2026-10-08T07:11:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19353,6 +19353,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ethics-hold-breach-audit/bc6150bbf31be485798b212d1657cd93c99bfaa7b5254dd181844878b4fad6bf.zip",
    "bytesRead": 44037,
+   "readOn": "2026-10-08"
+  },
+  "entries-with-nothing-on-them": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/entries-with-nothing-on-them/0ec6630894c9e94ae70b30bd7a7f51b2edef41b435ac5d8a4855ca150f8e7346.zip",
+   "bytesRead": 49154,
+   "readOn": "2026-10-08"
+  },
+  "the-calendars-worth-hiding": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-calendars-worth-hiding/4980cecfa1bd78113f47818a1941d3f50e72979b920cd9c939b4fc5bc0e7e16b.zip",
+   "bytesRead": 52029,
    "readOn": "2026-10-08"
   }
  }
