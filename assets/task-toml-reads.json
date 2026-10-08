@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T17:21:04+00:00",
+ "generatedAt": "2026-10-08T17:31:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20005,6 +20005,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practice-codes-priced-off-their-standard-code/d82f3ce4e260e2c8b632ef87e15dc451ebad8abf362d805e5d6529e988ee6209.zip",
    "bytesRead": 54324,
+   "readOn": "2026-10-08"
+  },
+  "calibration-fix-recharge-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/calibration-fix-recharge-audit/ec3295cffce5b42ae74ce7fe5860526aa3696d5d871711944dc72f4d8df26922.zip",
+   "bytesRead": 48226,
    "readOn": "2026-10-08"
   }
  }
