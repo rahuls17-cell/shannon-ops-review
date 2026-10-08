@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T23:21:11+00:00",
+ "generatedAt": "2026-10-08T23:41:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20344,6 +20344,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-compliance-tasks-that-never-leave-the-list/e1b2eb2fb8f5362f205473a695c7372476058322fe0c127795290c5e450992dd.zip",
    "bytesRead": 55736,
+   "readOn": "2026-10-08"
+  },
+  "the-release-train-nobody-audited": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-release-train-nobody-audited/a0ad1d5b537dea57b42a695d250cb3acc5987a03e9a39828478c6f4a695f3411.zip",
+   "bytesRead": 49428,
+   "readOn": "2026-10-08"
+  },
+  "the-thread-the-inbox-never-showed-whole": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-thread-the-inbox-never-showed-whole/648f843d0ff3e81102c88d5f70fee9c7eb6ad9c1a486bc0a09dc8d6455789753.zip",
+   "bytesRead": 50529,
    "readOn": "2026-10-08"
   }
  }
