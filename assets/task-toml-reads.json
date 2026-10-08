@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T04:31:01+00:00",
+ "generatedAt": "2026-10-08T04:51:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19245,6 +19245,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fifteen-quick-wins-nobody-owns/009025e83089228337c1131f76b76f90717b798e8a35cf43b7494c4436e1988a.zip",
    "bytesRead": 48736,
+   "readOn": "2026-10-08"
+  },
+  "lab-results-still-outstanding": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-results-still-outstanding/c2a6150640205726cd003215cfebc2f94a174d4149288c3b3b314e935e46140d.zip",
+   "bytesRead": 49753,
+   "readOn": "2026-10-08"
+  },
+  "locked-for-a-reason": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/locked-for-a-reason/d84fca6a0557636f5c57802bccab374dcc037e9a7715682cfc50cab6ba67e52f.zip",
+   "bytesRead": 47678,
    "readOn": "2026-10-08"
   }
  }
