@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T19:51:07+00:00",
+ "generatedAt": "2026-10-08T20:01:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20089,6 +20089,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/northstar-revised-band-requalification-audit/bc5bb9f45f3095ac93b51c8d0421c6e8e5f548f7fd9259c95049b8838ef7c0c2.zip",
    "bytesRead": 65507,
+   "readOn": "2026-10-08"
+  },
+  "clinical-onsite-safety-fix-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-onsite-safety-fix-audit/9c2b4ac5167785b06c69079a0292357badb1f71bbc039b1d9addd33f7608d6dc.zip",
+   "bytesRead": 47276,
+   "readOn": "2026-10-08"
+  },
+  "expiring-lot-alternate-gap-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/expiring-lot-alternate-gap-audit/c7de79b638c6609033207aee954e291ab77c9edbec5f3b40bfb2d43e25b442ee.zip",
+   "bytesRead": 47661,
    "readOn": "2026-10-08"
   }
  }
