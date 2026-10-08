@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T03:41:03+00:00",
+ "generatedAt": "2026-10-08T04:01:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19209,6 +19209,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-item-nobody-actually-claimed/38ab7d87a8a70bf32ec609cfd25dbe197caf94918fe31a5c3d44a46a7961bbf5.zip",
    "bytesRead": 51163,
+   "readOn": "2026-10-08"
+  },
+  "clinical-reagent-quarantine-gap-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-reagent-quarantine-gap-audit/9c43b65bdbbb5660081c093fe07b8aee158a412200a8617e74706d37b7fac73c.zip",
+   "bytesRead": 53522,
    "readOn": "2026-10-08"
   }
  }
