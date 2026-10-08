@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T11:51:07+00:00",
+ "generatedAt": "2026-10-08T12:01:19+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19643,6 +19643,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/physical-ai-follow-up-block/e9a499c9f25349c9abba3495b10747d7298d5dfe9028b65ee1edcb9526bf5b96.zip",
    "bytesRead": 50230,
+   "readOn": "2026-10-08"
+  },
+  "seed-round-commitments-across-trackers": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/seed-round-commitments-across-trackers/0377eab5c2f079bdd46b8a77f9c3b5d33f2426400d0a4e9d4128e1016d658da7.zip",
+   "bytesRead": 68848,
+   "readOn": "2026-10-08"
+  },
+  "the-threads-my-latest-mail-joined": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-threads-my-latest-mail-joined/a0fc026938f43be47b55e3f67c0c869efe0c239284575b444043130e6873ce42.zip",
+   "bytesRead": 47249,
    "readOn": "2026-10-08"
   }
  }
