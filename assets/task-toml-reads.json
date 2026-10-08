@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T15:51:03+00:00",
+ "generatedAt": "2026-10-08T16:31:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19920,6 +19920,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-whole-days-i-blocked-out/f46982abc231ef0c9db059abbd651ffb896496b74c6deacc7e973e192e77a94e.zip",
    "bytesRead": 42408,
+   "readOn": "2026-10-08"
+  },
+  "leakage-recheck-scope-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/leakage-recheck-scope-audit/492e868384e2553ae115aabf9f0f13ab64d68329a3ce6e4990a53a1c8096c11f.zip",
+   "bytesRead": 58828,
+   "readOn": "2026-10-08"
+  },
+  "the-meetings-with-nobody-else-on-them": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-meetings-with-nobody-else-on-them/a93ba00d6e75331551528bc4ee053ecb0ee6b08de8547cc4e12b2f15a9c54222.zip",
+   "bytesRead": 53154,
    "readOn": "2026-10-08"
   }
  }
