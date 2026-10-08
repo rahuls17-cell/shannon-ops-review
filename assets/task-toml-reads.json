@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T21:11:05+00:00",
+ "generatedAt": "2026-10-08T21:21:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20187,6 +20187,42 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/shipped-release-closeout-audit/2faa44abf2bc0d7533754f8efed14f1bbfbeda83c3fbe6126a505e884545f259.zip",
    "bytesRead": 41487,
+   "readOn": "2026-10-08"
+  },
+  "patient-data-work-awaiting-privacy-review": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/patient-data-work-awaiting-privacy-review/b66463b2ab3e0bf7c9a96758155d558ebe01bfe1a9314066e5988bc924627e61.zip",
+   "bytesRead": 52482,
+   "readOn": "2026-10-08"
+  },
+  "practices-silent-on-the-july-update": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practices-silent-on-the-july-update/14b9a2fdbaa263d714087e01990c1fb98f26bbfc35c6f8565ffdb7a457868a97.zip",
+   "bytesRead": 54799,
+   "readOn": "2026-10-08"
+  },
+  "the-check-that-never-turned-green": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-check-that-never-turned-green/44a429b670c954f519df90edb0e2c9ce7cc6a958b144815b378939c8bf597b32.zip",
+   "bytesRead": 51613,
    "readOn": "2026-10-08"
   }
  }
