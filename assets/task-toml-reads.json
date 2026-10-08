@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T17:01:08+00:00",
+ "generatedAt": "2026-10-08T17:11:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19968,6 +19968,31 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/portfolio-delivery-scorecard-audit/2adc5f23972efa3415acc692c2faccae9a7550137fb234d3ae3427debcf3157f.zip",
    "bytesRead": 44694,
+   "readOn": "2026-10-08"
+  },
+  "finance-partial-load-breach-v1-QC-TESTING-r16": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-partial-load-breach-v1-QC-TESTING-r16/957b6323a93c59a43eb768797a41c00b6004a7a4396350e75c692028eb60eedf.zip",
+   "bytesRead": 45647,
+   "readOn": "2026-10-08"
+  },
+  "mobile2-model-promotion-gate-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/mobile2-model-promotion-gate-audit/35ed5878ca3ca9b2dd071942d207831ca7c4b141ccd6adc044ccd57b592fad21.zip",
+   "bytesRead": 59177,
    "readOn": "2026-10-08"
   }
  }
