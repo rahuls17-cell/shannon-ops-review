@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T20:11:04+00:00",
+ "generatedAt": "2026-10-08T20:31:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20137,6 +20137,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-beta-features-the-parity-board-forgot/bbc96ed3cc3168fecd5ecd7479c88bd3a00b9b9ffdda3544d77e1c6070a6ab22.zip",
    "bytesRead": 47561,
+   "readOn": "2026-10-08"
+  },
+  "the-demographics-that-disagree": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-demographics-that-disagree/babf0d47dfd9c8e283a7dab8c872d8e069d0538446b42be9811f671cabe07240.zip",
+   "bytesRead": 53267,
    "readOn": "2026-10-08"
   }
  }
