@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T11:11:20+00:00",
+ "generatedAt": "2026-10-08T11:31:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19618,6 +19618,19 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-investor-list-that-went-stale/7ec71a9c92b972a2aefd7a93e5fca5b0acca30117c34469001c7e55f1a3a4121.zip",
    "bytesRead": 62191,
+   "readOn": "2026-10-08"
+  },
+  "web-release-blocker-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/web-release-blocker-audit/1ed51f527006177e74b965300033a4a2f5126800b6cf18e096fb0e663be0665d.zip",
+   "bytesRead": 45506,
    "readOn": "2026-10-08"
   }
  }
