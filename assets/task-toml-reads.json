@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T06:01:05+00:00",
+ "generatedAt": "2026-10-08T06:21:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19317,6 +19317,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-endpoint-that-was-never-written/8690991c9e3077bed5699356db26c638af276798a56393b00cb0442a15c110d8.zip",
    "bytesRead": 51141,
+   "readOn": "2026-10-08"
+  },
+  "the-endpoints-that-never-ask-for-a-token": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-endpoints-that-never-ask-for-a-token/2d53bfc7a1447262445bbe1cc71ed491e41ae5ea9147e2fbc1a5026b10443b3c.zip",
+   "bytesRead": 47405,
    "readOn": "2026-10-08"
   }
  }
