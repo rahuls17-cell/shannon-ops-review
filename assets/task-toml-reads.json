@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T01:01:04+00:00",
+ "generatedAt": "2026-10-08T01:11:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19113,6 +19113,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-answer-that-came-before-the-ask/95346b9aa77a84a7d860003d55c520f5b48290804b70ee54a0721dbac7023dbf.zip",
    "bytesRead": 49567,
+   "readOn": "2026-10-08"
+  },
+  "the-work-that-never-closed": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-work-that-never-closed/adeeefc09155c291de3b286c8192ced1cb2272d40f1856c98bbd5b2ef49226ce.zip",
+   "bytesRead": 60616,
    "readOn": "2026-10-08"
   }
  }
