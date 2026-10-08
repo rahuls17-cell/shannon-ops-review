@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T10:51:03+00:00",
+ "generatedAt": "2026-10-08T11:11:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19582,6 +19582,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/investor-lists-already-worked-in-the-seed-round/c93442dbf2d2d556f2aee404b6d19ee55755707787deee527dafab9e8efff67e.zip",
    "bytesRead": 74535,
+   "readOn": "2026-10-08"
+  },
+  "labops-first-reply-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/labops-first-reply-audit/9d7c2d42c110c6cca59df5feed600bd0cfa8c342207b5de2c64fe951ac7fd9d2.zip",
+   "bytesRead": 46515,
+   "readOn": "2026-10-08"
+  },
+  "the-bug-that-got-filed-twice": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-bug-that-got-filed-twice/70c41d351ed3b5ad0ba1650d854f249c72df278d875956c6cfe77c088bf75732.zip",
+   "bytesRead": 48905,
+   "readOn": "2026-10-08"
+  },
+  "the-investor-list-that-went-stale": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-investor-list-that-went-stale/7ec71a9c92b972a2aefd7a93e5fca5b0acca30117c34469001c7e55f1a3a4121.zip",
+   "bytesRead": 62191,
    "readOn": "2026-10-08"
   }
  }
