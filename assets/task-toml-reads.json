@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T12:11:05+00:00",
+ "generatedAt": "2026-10-08T12:21:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19679,6 +19679,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-channel-september-catch-up/a8886983200b79a9f07b396b04904a29651a57385dd53887b065ce43105400f0.zip",
    "bytesRead": 49785,
+   "readOn": "2026-10-08"
+  },
+  "the-shared-folders-that-share-nothing": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-shared-folders-that-share-nothing/15dd1687bc4bccca1d793cc2dc8f908dd796ef04ebc509252147558578e22864.zip",
+   "bytesRead": 62262,
    "readOn": "2026-10-08"
   }
  }
