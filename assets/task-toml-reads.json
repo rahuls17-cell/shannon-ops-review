@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T12:21:03+00:00",
+ "generatedAt": "2026-10-08T12:31:50+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19691,6 +19691,54 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-shared-folders-that-share-nothing/15dd1687bc4bccca1d793cc2dc8f908dd796ef04ebc509252147558578e22864.zip",
    "bytesRead": 62262,
+   "readOn": "2026-10-08"
+  },
+  "after-hours-checkin-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/after-hours-checkin-audit/3ac83edf0380ec510663fb1c5f5f42b7e559d02e27cf6ceb45333ef74db9551d.zip",
+   "bytesRead": 46723,
+   "readOn": "2026-10-08"
+  },
+  "health-experience-on-our-bench": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-experience-on-our-bench/314ae768e4845ab5730c512b2d568e1f2d231c590cb9873da1fd494f29ac124d.zip",
+   "bytesRead": 44928,
+   "readOn": "2026-10-08"
+  },
+  "target-date-overrun-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/target-date-overrun-audit/9d5cf9f66c6067112e62e4872f175f4771bffd62bda70db010e58b46ed94755d.zip",
+   "bytesRead": 43202,
+   "readOn": "2026-10-08"
+  },
+  "the-links-that-were-never-links": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-links-that-were-never-links/4df8e0bf056b3ceac8196638143b08aba41f11425914940a91d93d0f10f6d129.zip",
+   "bytesRead": 50997,
    "readOn": "2026-10-08"
   }
  }
