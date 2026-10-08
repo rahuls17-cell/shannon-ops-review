@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-07T23:11:01+00:00",
+ "generatedAt": "2026-10-08T01:01:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19102,6 +19102,18 @@
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/dev-compute-capitalization-split/c596c79c5fedcb8090a213a8b4ebc2651dd08a58190f66368aabe2d2e5d7bcf7.zip",
    "bytesRead": 42689,
    "readOn": "2026-10-07"
+  },
+  "the-answer-that-came-before-the-ask": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-answer-that-came-before-the-ask/95346b9aa77a84a7d860003d55c520f5b48290804b70ee54a0721dbac7023dbf.zip",
+   "bytesRead": 49567,
+   "readOn": "2026-10-08"
   }
  }
 }
