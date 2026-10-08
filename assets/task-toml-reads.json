@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T20:31:08+00:00",
+ "generatedAt": "2026-10-08T20:51:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20149,6 +20149,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-demographics-that-disagree/babf0d47dfd9c8e283a7dab8c872d8e069d0538446b42be9811f671cabe07240.zip",
    "bytesRead": 53267,
+   "readOn": "2026-10-08"
+  },
+  "model-tag-reuse-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/model-tag-reuse-audit/237ab88620b6d19688da54c92db92ced5f9f15f1cdd6a26f0e077cefca298cf0.zip",
+   "bytesRead": 51454,
+   "readOn": "2026-10-08"
+  },
+  "warehouse-spend-authority-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/warehouse-spend-authority-audit/24ac30a3c389cd1630b72e0e0e74095d658e6617347b99dbce9da81328a8271a.zip",
+   "bytesRead": 47126,
    "readOn": "2026-10-08"
   }
  }
