@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T01:21:04+00:00",
+ "generatedAt": "2026-10-08T01:31:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19137,6 +19137,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/night-worker-checkin-audit/4b6251ce14c02ffadab8cf055ea5285a4e1486319b23a6fd10b344208d40259e.zip",
    "bytesRead": 46842,
+   "readOn": "2026-10-08"
+  },
+  "the-project-that-never-woke-up": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:35aa27a1bbdcb7610cf038db4c0f597b21563d9a7aac2063dbd68a250ef1496a",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-project-that-never-woke-up/0b4fa9fbdb973828de5e25df2834654cc1443ca6173a8cce0843ca0e4f4c61aa.zip",
+   "bytesRead": 50212,
    "readOn": "2026-10-08"
   }
  }
