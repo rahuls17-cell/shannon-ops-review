@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T15:01:09+00:00",
+ "generatedAt": "2026-10-08T15:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19908,6 +19908,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/pricing-changes-before-budget-review/7fe3f3ed58764b87cb3b409f2b5f509372647d50c8f1ecc2f62df2a2f59a9370.zip",
    "bytesRead": 55856,
+   "readOn": "2026-10-08"
+  },
+  "the-whole-days-i-blocked-out": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-whole-days-i-blocked-out/f46982abc231ef0c9db059abbd651ffb896496b74c6deacc7e973e192e77a94e.zip",
+   "bytesRead": 42408,
    "readOn": "2026-10-08"
   }
  }
