@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T23:11:03+00:00",
+ "generatedAt": "2026-10-08T23:21:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20320,6 +20320,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/controls-still-open-for-the-auditor/18c9ebaadd05d272b21dc11190de4d458e147c469f297e0b333a228964261513.zip",
    "bytesRead": 59427,
+   "readOn": "2026-10-08"
+  },
+  "grant-issue-readiness-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/grant-issue-readiness-audit/96e5a513886da0b7c67e0753a84073cc19f2261f269ea14c51cb18a8df2e3c85.zip",
+   "bytesRead": 46975,
+   "readOn": "2026-10-08"
+  },
+  "the-compliance-tasks-that-never-leave-the-list": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-compliance-tasks-that-never-leave-the-list/e1b2eb2fb8f5362f205473a695c7372476058322fe0c127795290c5e450992dd.zip",
+   "bytesRead": 55736,
    "readOn": "2026-10-08"
   }
  }
