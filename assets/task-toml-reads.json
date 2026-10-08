@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T09:11:07+00:00",
+ "generatedAt": "2026-10-08T09:31:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19449,6 +19449,31 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/superseded-takeon-confirm-audit/918cd99c321a0a5bf5029b50a2dab0231a6f7b8604f05bec3b82f3da88fb44de.zip",
    "bytesRead": 45537,
+   "readOn": "2026-10-08"
+  },
+  "flagged-mail-sender-standing": {
+   "connector": true,
+   "services": [
+    "<gym-name>",
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness@sha256:f976065bf0ef919c5e259651c266967f98c8302629d3fbdc41ba2d69f8c73ebb",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/flagged-mail-sender-standing/c8f3269057cedaf903fd7a0ea7e52167b2ba693648e0a25d666b0dba57567ee9.zip",
+   "bytesRead": 56877,
+   "readOn": "2026-10-08"
+  },
+  "the-two-tracker-copies-that-differ-by-two-cells": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-two-tracker-copies-that-differ-by-two-cells/ee4b31438bc309af831457be98578ebe1523caa061355aa899a7d55c28abd3ee.zip",
+   "bytesRead": 58918,
    "readOn": "2026-10-08"
   }
  }
