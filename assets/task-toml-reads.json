@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T02:31:09+00:00",
+ "generatedAt": "2026-10-08T03:31:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19173,6 +19173,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-handbook-pages-were-never-finished/4d0c9ff830bb62cbc60fba1841046805940d40e6610ef99926f2d39875266ab1.zip",
    "bytesRead": 51824,
+   "readOn": "2026-10-08"
+  },
+  "fall-high-cost-lab-orders": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fall-high-cost-lab-orders/d47675761e1dd7fcb2e27e8851b8ad756c16193804c3952407be03df9a9240ef.zip",
+   "bytesRead": 45421,
    "readOn": "2026-10-08"
   }
  }
