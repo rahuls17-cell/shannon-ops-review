@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-08T14:51:06+00:00",
+ "generatedAt": "2026-10-08T15:01:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -19872,6 +19872,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-consent-that-never-became-a-result/500b15483799b42a08900272c757327fd0733e78c748d56e16733a7c30ef92e1.zip",
    "bytesRead": 53310,
+   "readOn": "2026-10-08"
+  },
+  "accessibility-finding-remediation-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/accessibility-finding-remediation-audit/8ccfc24304b34946ec69a75d12b35d91bed78cd969d1dceb4435466bafd111bc.zip",
+   "bytesRead": 54580,
+   "readOn": "2026-10-08"
+  },
+  "personal-data-change-rights-audit": {
+   "connector": true,
+   "services": [
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/personal-data-change-rights-audit/be5fb167dba2aeab78131ffb7277ba542c2c66cc5fcc2d11e28eb227ae3b9d79.zip",
+   "bytesRead": 47108,
+   "readOn": "2026-10-08"
+  },
+  "pricing-changes-before-budget-review": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/pricing-changes-before-budget-review/7fe3f3ed58764b87cb3b409f2b5f509372647d50c8f1ecc2f62df2a2f59a9370.zip",
+   "bytesRead": 55856,
    "readOn": "2026-10-08"
   }
  }
