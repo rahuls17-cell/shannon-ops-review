@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T10:31:04+00:00",
+ "generatedAt": "2026-10-09T10:51:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21188,6 +21188,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/substitute-receipt-hold-audit/bac15b349b5622b5eeeb37ce1a9d4998a62e8f4fc27da7eb0d07b3459621fa75.zip",
    "bytesRead": 50169,
+   "readOn": "2026-10-09"
+  },
+  "one-page-per-billing-code": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/one-page-per-billing-code/1e8a1dd81b0d248ffe45e91895164db7441b4412b8c07d3597c686cd9c3295ab.zip",
+   "bytesRead": 54874,
    "readOn": "2026-10-09"
   }
  }
