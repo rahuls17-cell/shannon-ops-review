@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T05:11:07+00:00",
+ "generatedAt": "2026-10-09T05:51:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20802,6 +20802,54 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-answers-left-past-four-weekday-hours/e7a28cb56c9daaf3b55900df34106cd2d2c70e48e8bff74293fd5d1b915d0ad0.zip",
    "bytesRead": 55507,
+   "readOn": "2026-10-09"
+  },
+  "lab-hold-holder-ping-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-hold-holder-ping-audit/57209b224b18300853ba921af0cdc5140cb9008123df4f5f8d6006276c5540d0.zip",
+   "bytesRead": 47591,
+   "readOn": "2026-10-09"
+  },
+  "phi-deletion-outreach": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/phi-deletion-outreach/f4380b7ecc3097d97f8f46f56f0c2c75d43f69fcf74db52b684f54a389a4a46b.zip",
+   "bytesRead": 47898,
+   "readOn": "2026-10-09"
+  },
+  "result-reconfirm-request-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/result-reconfirm-request-audit/cf0b928032fd190745950830985d78a1ca67028e1593bf7239b11ed1255e41f8.zip",
+   "bytesRead": 41231,
+   "readOn": "2026-10-09"
+  },
+  "the-copyleft-code-and-the-outside-work-it-merged": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-copyleft-code-and-the-outside-work-it-merged/9fc1c43881fb3e0a00311761130d19faa80906e67de6ffa99e86835a6f64ddb2.zip",
+   "bytesRead": 59020,
    "readOn": "2026-10-09"
   }
  }
