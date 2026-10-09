@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T00:01:05+00:00",
+ "generatedAt": "2026-10-09T00:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20440,6 +20440,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/profile-clinical-content-awaiting-review/d49e2a7d390873987ac85713cd9cda89f58c341236d22d0a0e35b549b1cc33db.zip",
    "bytesRead": 52758,
+   "readOn": "2026-10-09"
+  },
+  "collaboration-commitment-matrix-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/collaboration-commitment-matrix-audit/0354f241d71591bff35f7c182bc52b8e4b566b08ffa53fe3e55a7712ae575f92.zip",
+   "bytesRead": 64658,
    "readOn": "2026-10-09"
   }
  }
