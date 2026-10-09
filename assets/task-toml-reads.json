@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T06:11:04+00:00",
+ "generatedAt": "2026-10-09T06:21:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20912,6 +20912,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unread-output-spend-audit/64919eea49a84c079dddd95f25fe5f63ee88438b248f1c369e4b21fe203d1410.zip",
    "bytesRead": 41633,
+   "readOn": "2026-10-09"
+  },
+  "deviation-run-impact-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/deviation-run-impact-audit/28f340640cb8b5efab57331b041640f246b085b4f23c32b10937d429501ec57a.zip",
+   "bytesRead": 58487,
+   "readOn": "2026-10-09"
+  },
+  "the-keys-our-pull-requests-gave-away": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-keys-our-pull-requests-gave-away/4cd934d65dbd356987b55aca4c590996cfd0da90275ff77ac345f9e33a58914d.zip",
+   "bytesRead": 53209,
    "readOn": "2026-10-09"
   }
  }
