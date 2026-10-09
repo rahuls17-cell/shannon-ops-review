@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T14:01:06+00:00",
+ "generatedAt": "2026-10-09T14:41:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21495,6 +21495,54 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/investors-tiered-and-commitments-totalled/663f1ba376f5beaa00236e12fa7a540c468c9e8a8f591fe54c3ab71af26b0b01.zip",
    "bytesRead": 59042,
+   "readOn": "2026-10-09"
+  },
+  "data-check-load-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/data-check-load-audit/32e0d3f72566937b50c8d003887aaf95db37fc9af0be90b4582626f44ea22fff.zip",
+   "bytesRead": 44492,
+   "readOn": "2026-10-09"
+  },
+  "software-costs-by-service-period": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/software-costs-by-service-period/5778dd60db7943e69f2af6bf535111343a4b1ddb363789782a213ccc092390a8.zip",
+   "bytesRead": 56613,
+   "readOn": "2026-10-09"
+  },
+  "the-visit-templates-missing-required-elements": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-visit-templates-missing-required-elements/3f5213f3336e1e5f591411ab1991d613913709602055ff4bdd389f27443e384c.zip",
+   "bytesRead": 53927,
+   "readOn": "2026-10-09"
+  },
+  "what-cms-pays-for-our-codes": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-cms-pays-for-our-codes/181571f63a69a4f265b972bef29b14842ce9dcf6dc5a64bfc87ede02991d4bbd.zip",
+   "bytesRead": 49773,
    "readOn": "2026-10-09"
   }
  }
