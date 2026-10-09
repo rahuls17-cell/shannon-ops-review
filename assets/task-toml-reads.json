@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T10:01:05+00:00",
+ "generatedAt": "2026-10-09T10:11:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21140,6 +21140,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/user-research-evidence-strength-audit/bf27688b38afe915cfbf272a866eeb6aa8df10f071191199960e78406dd43bc0.zip",
    "bytesRead": 58314,
+   "readOn": "2026-10-09"
+  },
+  "clinical-questions-settled-without-a-clinician": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-questions-settled-without-a-clinician/c7165aa0686ad20c7534ecc6c5cff7d4f95baa8f33d9aa73062de716970b3961.zip",
+   "bytesRead": 52460,
+   "readOn": "2026-10-09"
+  },
+  "who-spoke-for-us-on-hipaa": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-spoke-for-us-on-hipaa/3e5d39a53f4e4bb2dfa340a7cea41d934a38d06e6247a20cc6f8b4c8ae85b7ff.zip",
+   "bytesRead": 56659,
    "readOn": "2026-10-09"
   }
  }
