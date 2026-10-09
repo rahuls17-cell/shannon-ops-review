@@ -9,6 +9,18 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+## v4.3 - 2026-10-09, staging promoted to production
+
+### Delivery tab: Batch 13.1
+- **Batch 13.1 is on the Delivery tab**: 158 tasks from "10-09 Batch 13.1" on
+  Drive (manifest of 9 Oct, read by hand; same layout as 12.1). Company Bench ·
+  Aster 89, Computer Bench Synthetic 69; no non-connector tasks. No earlier row
+  changed. Delivered now 3,917: Company Bench 2,091, Computer Bench 1,826.
+  GLM-5.3: 70 at 3/4, 39 at 2/4, 37 at 1/4, 12 at 0/4. Trainers: 128 from the
+  bucket, 25 contested, 5 unattributed. All 158 match an accepted folder, so the
+  Pipeline marks them delivered (DL). Like 12.1, the manifest lists no
+  connectors ("connectors not read" on the Aster tasks).
+
 ## v4.2 - 2026-10-09, staging promoted to production
 
 ### Delivery tab: Batch 12.1
