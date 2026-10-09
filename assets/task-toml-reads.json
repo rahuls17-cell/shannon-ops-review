@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T04:01:07+00:00",
+ "generatedAt": "2026-10-09T04:21:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20682,6 +20682,54 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/github-access-to-revoke-before-the-sale/23a976a47db12b07c67b8d316fa479c9cce324251649ee00bec6b7dbc0e03314.zip",
    "bytesRead": 55672,
+   "readOn": "2026-10-09"
+  },
+  "how-much-of-the-master-sheet-is-real": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-much-of-the-master-sheet-is-real/5549653fc06181990fb263798d3ba1eae014fb37d0df867cbf4382f0ed9ef3e4.zip",
+   "bytesRead": 51102,
+   "readOn": "2026-10-09"
+  },
+  "phi-deletions-due-before-the-shutdown": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/phi-deletions-due-before-the-shutdown/3bcb271401761d5630fdaf3aa23cbf66fa7947f527e4225feda34b1cf87b8c79.zip",
+   "bytesRead": 53122,
+   "readOn": "2026-10-09"
+  },
+  "royalty-filing-record": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/royalty-filing-record/6b8b20dd1f0bf2cba7b42387300b43f5ab44b25ec15f280c77fdee1ad2c64267.zip",
+   "bytesRead": 48430,
+   "readOn": "2026-10-09"
+  },
+  "the-tool-trials-that-turned-into-bills": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-tool-trials-that-turned-into-bills/442d3c8354e4b5e1b80acf203b95e61506f50c1e9f9ceeee7bee95cb32f25153.zip",
+   "bytesRead": 57245,
    "readOn": "2026-10-09"
   }
  }
