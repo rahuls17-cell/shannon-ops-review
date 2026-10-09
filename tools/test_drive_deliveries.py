@@ -259,6 +259,9 @@ check(bdd_c.package_parts('Computer Bench (NC 39 RC 0 S 99)/Synthetic 99/Easier 
 check(bdd_c.package_parts('Computer Bench (NC 39 RC 0 S 99)/Non-Connector 39/Harder 20/b.zip') == ['Non-Connector', 'Harder 20', 'b.zip'],
       'and its difficulty folder is not read as a domain')
 check(bdd_c.package_parts('Aster 145/Easier 63/c.zip') == ['Aster 145', 'Easier 63', 'c.zip'], 'an Aster group is unchanged')
+check([bdd_c.domain_of_name(n) for n in ('code-c39-x', 'tech-t1-y', 'fin-f2', 'health-h1', 'law-l3', 'edu-e1', 'gen-g9', 'x')]
+      == ['Engineering', 'Engineering', 'Finance', 'Health', 'Legal', 'Other', 'Other', 'Other'],
+      'a non-connector domain from the task name prefix')
 check(bdd_c.bench_of('Batch 11.1', 'Aster', {}) == 'company', 'Aster is Company Bench')
 check(bdd_c.bench_of('Batch 11.1', 'Aster', {}, 'Aster 180/Easier 89') == 'company', 'an Aster folder is Company Bench')
 check(bdd_c.bench_of('Batch 11.1', 'Synthetic', {}, 'Computer Bench (NC 0 RC 0 S 90)/Easier 27') == 'computer',

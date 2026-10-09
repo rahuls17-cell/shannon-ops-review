@@ -23,6 +23,13 @@ When you change what a figure means, add a line under **Unreleased**. When
   trainer credit sheet, 56 contested, 1 unattributed. The Pipeline marks all 283
   delivered (DL). The manifest lists no connectors, so its 145 Aster tasks read
   "connectors not read" (single or multi-connector unknown).
+- **Batch 12.1's non-connector tasks take a domain from their name.** Its layout
+  stops at difficulty (`Non-Connector 39/Harder 20/x.zip`) and the manifest names
+  no domain, so the 39 read plain "Non-Connector". Where a manifest gives none,
+  the domain now comes from the task-name prefix, as the delivery team's domain
+  folders do in every earlier batch (all but 2 of about 1,350): code- and tech-
+  Engineering, fin- Finance, health- Health, law- Legal, anything else Other.
+  12.1: Other 23, Engineering 12, Health 3, Finance 1. No earlier row changed.
 
 ## v4.1 - 2026-10-07, staging promoted to production
 

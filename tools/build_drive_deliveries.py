@@ -462,6 +462,8 @@ def normalise(manifest, label, files=None, require_present=False):
         if filed and not (filed == 'CompanyBench' and bench_of(label, klass, task, location) != 'company'):
             klass = filed
         domain = parts[2] if klass == 'Non-Connector' and len(parts) > 3 else first(task.get('domain'))
+        if klass == 'Non-Connector' and not domain:
+            domain = domain_of_name(name)
         band = first(task.get('difficulty'), parts[1] if len(parts) > 2 else None)
         trials = task.get('trial_evidence') if isinstance(task.get('trial_evidence'), dict) else {}
         glm = trials.get('successes') if isinstance(trials.get('successes'), int) else None
@@ -528,6 +530,19 @@ def normalise(manifest, label, files=None, require_present=False):
 
 
 DIFFICULTIES = ('easier', 'harder')
+
+# The domain of a non-connector package whose manifest names none - Batch 12.1
+# files them under Non-Connector/<difficulty> with no domain folder. Read from
+# the task name's prefix, as the delivery team's domain folders follow it in
+# every earlier batch (all but 2 of about 1,350 packages): code- and tech- are
+# Engineering, fin- Finance, health- Health, law- Legal, anything else Other.
+NAME_DOMAINS = {'code': 'Engineering', 'tech': 'Engineering', 'fin': 'Finance',
+                'health': 'Health', 'law': 'Legal'}
+
+
+def domain_of_name(name):
+    prefix = re.match(r'^([a-z]+)-', str(name or '').lower())
+    return NAME_DOMAINS.get(prefix.group(1), 'Other') if prefix else 'Other'
 
 
 def package_parts(path):
