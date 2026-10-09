@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T12:41:03+00:00",
+ "generatedAt": "2026-10-09T12:51:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21359,6 +21359,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/reagent-pi-escalation-audit/c15af8e63c39a8abdbefa5ffa36b1ad8e3f1141aa2e5ea7c7a7dabf25a8759f1.zip",
    "bytesRead": 45354,
+   "readOn": "2026-10-09"
+  },
+  "new-practice-requisition-fees-we-waived": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/new-practice-requisition-fees-we-waived/75797615109184b278d6ecb12532bd1992e620ac0a7c532d1be34013b2abf64a.zip",
+   "bytesRead": 55596,
+   "readOn": "2026-10-09"
+  },
+  "the-payment-plan-that-came-up-short": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-payment-plan-that-came-up-short/089168a91435c32e93758434dd5332ef21530e021d6b2419fef5cb7add79ac44.zip",
+   "bytesRead": 59171,
    "readOn": "2026-10-09"
   }
  }
