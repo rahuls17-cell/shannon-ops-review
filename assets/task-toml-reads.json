@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T13:41:04+00:00",
+ "generatedAt": "2026-10-09T13:51:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21457,6 +21457,32 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-ordering-go-live-queue/0149ee588195bbfada17003772f5e19fc4c034ba11ab7cc0a99a4d491955daa4.zip",
    "bytesRead": 51520,
+   "readOn": "2026-10-09"
+  },
+  "finance-rebuild-waste-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-rebuild-waste-audit/e78eb20f4b7ea6c3eefee5b812f5a5a2146fe9918e860703706fb366d26a21a1.zip",
+   "bytesRead": 46062,
+   "readOn": "2026-10-09"
+  },
+  "finance-record-confidentiality-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-record-confidentiality-audit/97afd097c065f364b5bd57672cd63189e6be25b4b99e6d1ed6e4947b948af13e.zip",
+   "bytesRead": 48018,
    "readOn": "2026-10-09"
   }
  }
