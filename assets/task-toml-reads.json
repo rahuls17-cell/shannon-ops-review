@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T12:01:03+00:00",
+ "generatedAt": "2026-10-09T12:11:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21249,6 +21249,42 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/hold-release-owner-audit/40e6eaef1befd7b24ffc9d2f5c7adf74208fc161a4654e1a78fba5d37d658c93.zip",
    "bytesRead": 45057,
+   "readOn": "2026-10-09"
+  },
+  "invoices-i-sent-against-what-was-paid": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/invoices-i-sent-against-what-was-paid/3e99a3d498fc17abbe5a485bcc13e86170b0f02af0087eec7615ae5e489cef9b.zip",
+   "bytesRead": 79767,
+   "readOn": "2026-10-09"
+  },
+  "outside-contributions-no-maintainer-approved": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/outside-contributions-no-maintainer-approved/5e8136bfbfd230460c064f6fc8326c409f69f91192fae925f286f3d0beefd1f7.zip",
+   "bytesRead": 60945,
+   "readOn": "2026-10-09"
+  },
+  "storage-ceiling-preview-branch-audit": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/storage-ceiling-preview-branch-audit/d7be0a724c0b34304c1a80eb5abca1487307da96f97ac978282eec49a29eb1a2.zip",
+   "bytesRead": 40845,
    "readOn": "2026-10-09"
   }
  }
