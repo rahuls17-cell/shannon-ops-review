@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T13:51:06+00:00",
+ "generatedAt": "2026-10-09T14:01:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21483,6 +21483,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-record-confidentiality-audit/97afd097c065f364b5bd57672cd63189e6be25b4b99e6d1ed6e4947b948af13e.zip",
    "bytesRead": 48018,
+   "readOn": "2026-10-09"
+  },
+  "investors-tiered-and-commitments-totalled": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/investors-tiered-and-commitments-totalled/663f1ba376f5beaa00236e12fa7a540c468c9e8a8f591fe54c3ab71af26b0b01.zip",
+   "bytesRead": 59042,
    "readOn": "2026-10-09"
   }
  }
