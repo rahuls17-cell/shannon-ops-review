@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T03:21:05+00:00",
+ "generatedAt": "2026-10-09T03:31:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20645,6 +20645,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/security-warranty-in-the-repository-sale/d60ea8b5942e64e94147f47bdbe484b295b91d87a8c61547f27833e2167487a3.zip",
    "bytesRead": 53268,
+   "readOn": "2026-10-09"
+  },
+  "first-year-revenue-beside-every-customer": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/first-year-revenue-beside-every-customer/669bdbc8b4e1ea3d1a79e7421f1ea93cf6c28be2ab75db073cbbc0435ebf02d5.zip",
+   "bytesRead": 53379,
    "readOn": "2026-10-09"
   }
  }
