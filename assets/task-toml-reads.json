@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T15:11:06+00:00",
+ "generatedAt": "2026-10-09T15:21:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21603,6 +21603,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-dataset-steward-conflict-audit/1808553246eb9132a6a89bacb533bc6cf39be89b4342f3b8d9329bad50e74dd8.zip",
    "bytesRead": 54888,
+   "readOn": "2026-10-09"
+  },
+  "the-clinical-threads-that-outlasted-their-day": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-threads-that-outlasted-their-day/444f709ef528725af1937c47263e9fa2fef47009cb3be3c05693617f007ad479.zip",
+   "bytesRead": 52903,
    "readOn": "2026-10-09"
   }
  }
