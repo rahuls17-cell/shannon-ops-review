@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T09:11:04+00:00",
+ "generatedAt": "2026-10-09T09:21:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21116,6 +21116,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-forms-library-signed-off/99e825369fbdcaee7daaa0c0949394913554871294b4dad70ec575f00c3609e8.zip",
    "bytesRead": 52567,
+   "readOn": "2026-10-09"
+  },
+  "summer-lab-fee-lines-may-to-july": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/summer-lab-fee-lines-may-to-july/0425e05d623721b6fa9b3b5d1a28b2f64e20eeb01acf49c43759b56441338449.zip",
+   "bytesRead": 51883,
    "readOn": "2026-10-09"
   }
  }
