@@ -153,7 +153,8 @@ def class_of(head, task):
     Batch 11.1 groups by bench instead of by class, with counts in the names:
     "Aster 180" (Company Bench, Aster), "Company Bench 4" (Company Bench, Zeta)
     and "Computer Bench (NC 0 RC 0 S 90)", whose class the package's own
-    bench_type then says (synthetic, real, or non-connector).
+    bench_type then says (synthetic, real, or non-connector) - or, in Batch
+    12.1's manifest, which has no bench_type, its tracker_family.
     """
     known = CLASSES.get(head.lower())
     if known:
@@ -165,7 +166,7 @@ def class_of(head, task):
     if name in ('company bench', 'companybench'):
         return 'CompanyBench'
     if name in ('computer bench', 'computerbench'):
-        declared = str(task.get('bench_type') or '').lower()
+        declared = str(task.get('bench_type') or task.get('tracker_family') or '').lower()
         if 'synth' in declared:
             return 'Synthetic'
         if 'real' in declared:
@@ -461,6 +462,8 @@ def normalise(manifest, label, files=None, require_present=False):
         if filed and not (filed == 'CompanyBench' and bench_of(label, klass, task, location) != 'company'):
             klass = filed
         domain = parts[2] if klass == 'Non-Connector' and len(parts) > 3 else first(task.get('domain'))
+        if klass == 'Non-Connector' and not domain:
+            domain = domain_of_name(name)
         band = first(task.get('difficulty'), parts[1] if len(parts) > 2 else None)
         trials = task.get('trial_evidence') if isinstance(task.get('trial_evidence'), dict) else {}
         glm = trials.get('successes') if isinstance(trials.get('successes'), int) else None
@@ -528,6 +531,19 @@ def normalise(manifest, label, files=None, require_present=False):
 
 DIFFICULTIES = ('easier', 'harder')
 
+# The domain of a non-connector package whose manifest names none - Batch 12.1
+# files them under Non-Connector/<difficulty> with no domain folder. Read from
+# the task name's prefix, as the delivery team's domain folders follow it in
+# every earlier batch (all but 2 of about 1,350 packages): code- and tech- are
+# Engineering, fin- Finance, health- Health, law- Legal, anything else Other.
+NAME_DOMAINS = {'code': 'Engineering', 'tech': 'Engineering', 'fin': 'Finance',
+                'health': 'Health', 'law': 'Legal'}
+
+
+def domain_of_name(name):
+    prefix = re.match(r'^([a-z]+)-', str(name or '').lower())
+    return NAME_DOMAINS.get(prefix.group(1), 'Other') if prefix else 'Other'
+
 
 def package_parts(path):
     """A manifest's package_path as class/difficulty/[domain/]file.
@@ -538,6 +554,13 @@ def package_parts(path):
     to 3 the difficulty before the class: harder/non-connector/engineering/x.zip.
     """
     parts = [p for p in str(path).split('/') if p]
+    # Batch 12.1: the bench group, then the class with its count -
+    # "Computer Bench (NC 39 RC 0 S 99)/Synthetic 99/Easier 34/x.zip". The class
+    # folder names the class, so the group folder is dropped.
+    if len(parts) > 3:
+        counted = re.sub(r'\s+\d+\s*$', '', parts[1]).strip()
+        if counted != parts[1] and counted.lower() in CLASSES:
+            parts = [counted] + parts[2:]
     if len(parts) > 2 and parts[0].lower() not in CLASSES and (
             parts[1].lower() in CLASSES or parts[1].lower() in DIFFICULTIES):
         parts = parts[1:]

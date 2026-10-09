@@ -9,6 +9,30 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+## v4.2 - 2026-10-09, staging promoted to production
+
+### Delivery tab: Batch 12.1
+- **Batch 12.1 is on the Delivery tab**: 283 tasks from "10-08 Batch 12.1" on
+  Drive (manifest of 8 Oct, read by hand). Only 12.1 was added - "10-08 Batch
+  11.2", "10-07 Calibration-Batch" and the fixed folders beside it are left out.
+  Company Bench · Aster 145, Computer Bench Synthetic 99 and Non-connector 39.
+  Its manifest has no bench_type and puts the class, with its count, under the
+  bench group ("Computer Bench (NC 39 RC 0 S 99)/Synthetic 99/Easier 34/x.zip"):
+  the reader takes the class from that folder, and from `tracker_family` where
+  a Computer Bench package has no class folder. No earlier row changed.
+  Delivered now 3,759: Company Bench 2,002, Computer Bench 1,757. GLM-5.3: 116 at
+  3/4, 76 at 2/4, 61 at 1/4, 30 at 0/4. Trainers: 225 from the bucket, 1 from the
+  trainer credit sheet, 56 contested, 1 unattributed. The Pipeline marks all 283
+  delivered (DL). The manifest lists no connectors, so its 145 Aster tasks read
+  "connectors not read" (single or multi-connector unknown).
+- **Batch 12.1's non-connector tasks take a domain from their name.** Its layout
+  stops at difficulty (`Non-Connector 39/Harder 20/x.zip`) and the manifest names
+  no domain, so the 39 read plain "Non-Connector". Where a manifest gives none,
+  the domain now comes from the task-name prefix, as the delivery team's domain
+  folders do in every earlier batch (all but 2 of about 1,350): code- and tech-
+  Engineering, fin- Finance, health- Health, law- Legal, anything else Other.
+  12.1: Other 23, Engineering 12, Health 3, Finance 1. No earlier row changed.
+
 ## v4.1 - 2026-10-07, staging promoted to production
 
 ### Pipeline tab: Batch 11.1 counts as delivered
