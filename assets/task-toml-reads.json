@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T06:01:03+00:00",
+ "generatedAt": "2026-10-09T06:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20874,6 +20874,44 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spring-statements-where-the-totals-disagree/8d7dfa146c3a0d5a26acecbb6694783162f39e38c41d54a2c57a56a1d297b901.zip",
    "bytesRead": 53884,
+   "readOn": "2026-10-09"
+  },
+  "load-unit-cost-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/load-unit-cost-audit/72092ff5ec45d6149e90073c4e06310246f30d16d627c820ba1ef8d292e46b7e.zip",
+   "bytesRead": 39781,
+   "readOn": "2026-10-09"
+  },
+  "the-terms-of-use-clauses-counsel-found-missing-v2": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-terms-of-use-clauses-counsel-found-missing-v2/0feaffeb4462bc3e42c02f8d5aba1a6641eae0d770752efe68bc48f01337ca5b.zip",
+   "bytesRead": 55079,
+   "readOn": "2026-10-09"
+  },
+  "unread-output-spend-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unread-output-spend-audit/64919eea49a84c079dddd95f25fe5f63ee88438b248f1c369e4b21fe203d1410.zip",
+   "bytesRead": 41633,
    "readOn": "2026-10-09"
   }
  }
