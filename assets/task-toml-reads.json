@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T08:51:03+00:00",
+ "generatedAt": "2026-10-09T09:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21092,6 +21092,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-our-bug-reports-were-followed-up/ec1f57940e76750da416848a51394ef85a8eba22496fc42b98ff04ca8adc7843.zip",
    "bytesRead": 50086,
+   "readOn": "2026-10-09"
+  },
+  "changes-merged-outside-their-window": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/changes-merged-outside-their-window/b00720c1a1670ab869aba70993b325ea5b1286b80d1dbdba3c61c4dda639705c.zip",
+   "bytesRead": 56906,
+   "readOn": "2026-10-09"
+  },
+  "clinical-forms-library-signed-off": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-forms-library-signed-off/99e825369fbdcaee7daaa0c0949394913554871294b4dad70ec575f00c3609e8.zip",
+   "bytesRead": 52567,
    "readOn": "2026-10-09"
   }
  }
