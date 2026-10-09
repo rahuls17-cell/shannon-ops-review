@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T07:51:01+00:00",
+ "generatedAt": "2026-10-09T08:31:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21056,6 +21056,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/dependency-maintainers-slow-on-security/be07eef49f79c4bed02210729f3f9dad7f081b5b17bf51fd7526570ec5363999.zip",
    "bytesRead": 53113,
+   "readOn": "2026-10-09"
+  },
+  "event-spend-closed-out-against-budget": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/event-spend-closed-out-against-budget/9477bddf6b3d37dfc054f77e05e0512554cdf1dd58757bf385960b3c8a6b210c.zip",
+   "bytesRead": 52045,
    "readOn": "2026-10-09"
   }
  }
