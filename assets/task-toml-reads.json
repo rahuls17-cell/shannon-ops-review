@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T02:31:03+00:00",
+ "generatedAt": "2026-10-09T03:01:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20609,6 +20609,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/prenatal-sections-awaiting-clinical-sign-off/ed6bb2cc1bcf13ca3862d2b62d3e9a859a4d92ff0c69dfb2101f5a54309fc184.zip",
    "bytesRead": 54529,
+   "readOn": "2026-10-09"
+  },
+  "ehr-priorities-that-slipped": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/ehr-priorities-that-slipped/407309c58c49552e3d14c3afd11d2e882212c151965f7451cfb1576a9ef29d35.zip",
+   "bytesRead": 48765,
    "readOn": "2026-10-09"
   }
  }
