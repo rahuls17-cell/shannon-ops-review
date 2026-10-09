@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T01:01:04+00:00",
+ "generatedAt": "2026-10-09T01:11:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20501,6 +20501,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-senders-who-left-no-way-out/19891af8ec2ee4a511cf3345a28a6ddfe264aefc3f896df68e3c6a289b92b24e.zip",
    "bytesRead": 54070,
+   "readOn": "2026-10-09"
+  },
+  "drive-access-requests-still-open": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/drive-access-requests-still-open/a3f6effdf50f161dd7611768d074912a95adcd39ba852ab0e2f824bff8b04f36.zip",
+   "bytesRead": 50354,
    "readOn": "2026-10-09"
   }
  }
