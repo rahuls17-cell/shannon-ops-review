@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T06:21:04+00:00",
+ "generatedAt": "2026-10-09T06:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20936,6 +20936,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-keys-our-pull-requests-gave-away/4cd934d65dbd356987b55aca4c590996cfd0da90275ff77ac345f9e33a58914d.zip",
    "bytesRead": 53209,
+   "readOn": "2026-10-09"
+  },
+  "integration-partners-gone-quiet": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/integration-partners-gone-quiet/d311c5d3b345f69040ce25d12c53c9b18255b9ea36cf2b19a6ec2f7c1f0d0d80.zip",
+   "bytesRead": 51600,
+   "readOn": "2026-10-09"
+  },
+  "issue-reply-wait-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/issue-reply-wait-audit/584ff51029c3290e526aea441d9a39fb234dc2fc05ea3afa4e9cbf279bea1e06.zip",
+   "bytesRead": 46101,
    "readOn": "2026-10-09"
   }
  }
