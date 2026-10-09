@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T00:31:03+00:00",
+ "generatedAt": "2026-10-09T00:41:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20465,6 +20465,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/warehouse-task-credit-audit/da4bdbaf6b802ac7353c33c1f4c9fc301a7777f3cc89e0d9dd2e4b1531a44b83.zip",
    "bytesRead": 40353,
+   "readOn": "2026-10-09"
+  },
+  "august-trackers-cleared-or-named": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/august-trackers-cleared-or-named/4db1016e394acd84b31ff166bc9e7f4abaf8b3734d2e801b4b632b1211f851ce.zip",
+   "bytesRead": 53557,
+   "readOn": "2026-10-09"
+  },
+  "the-risk-register-nobody-updated": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-risk-register-nobody-updated/06a2fb9933b07ad8e93dd2facfeff5e96a22d374d9eeac78fc88908319289a18.zip",
+   "bytesRead": 51217,
    "readOn": "2026-10-09"
   }
  }
