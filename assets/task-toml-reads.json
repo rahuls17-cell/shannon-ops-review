@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T13:31:05+00:00",
+ "generatedAt": "2026-10-09T13:41:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21433,6 +21433,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guidelines-missing-their-handouts-v2/9d9db771be477c96ab736df59ff5f560c05d545582ed9fbce687e7efe5f4b232.zip",
    "bytesRead": 52745,
+   "readOn": "2026-10-09"
+  },
+  "audit-log-protection-audit": {
+   "connector": true,
+   "services": [
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/audit-log-protection-audit/21540647025520d75b7e4b903b30a93210df9a69f74a4669128292828ea66e2a.zip",
+   "bytesRead": 45070,
+   "readOn": "2026-10-09"
+  },
+  "lab-ordering-go-live-queue": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-ordering-go-live-queue/0149ee588195bbfada17003772f5e19fc4c034ba11ab7cc0a99a4d491955daa4.zip",
+   "bytesRead": 51520,
    "readOn": "2026-10-09"
   }
  }
