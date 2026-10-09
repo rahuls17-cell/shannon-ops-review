@@ -153,7 +153,8 @@ def class_of(head, task):
     Batch 11.1 groups by bench instead of by class, with counts in the names:
     "Aster 180" (Company Bench, Aster), "Company Bench 4" (Company Bench, Zeta)
     and "Computer Bench (NC 0 RC 0 S 90)", whose class the package's own
-    bench_type then says (synthetic, real, or non-connector).
+    bench_type then says (synthetic, real, or non-connector) - or, in Batch
+    12.1's manifest, which has no bench_type, its tracker_family.
     """
     known = CLASSES.get(head.lower())
     if known:
@@ -165,7 +166,7 @@ def class_of(head, task):
     if name in ('company bench', 'companybench'):
         return 'CompanyBench'
     if name in ('computer bench', 'computerbench'):
-        declared = str(task.get('bench_type') or '').lower()
+        declared = str(task.get('bench_type') or task.get('tracker_family') or '').lower()
         if 'synth' in declared:
             return 'Synthetic'
         if 'real' in declared:
@@ -538,6 +539,13 @@ def package_parts(path):
     to 3 the difficulty before the class: harder/non-connector/engineering/x.zip.
     """
     parts = [p for p in str(path).split('/') if p]
+    # Batch 12.1: the bench group, then the class with its count -
+    # "Computer Bench (NC 39 RC 0 S 99)/Synthetic 99/Easier 34/x.zip". The class
+    # folder names the class, so the group folder is dropped.
+    if len(parts) > 3:
+        counted = re.sub(r'\s+\d+\s*$', '', parts[1]).strip()
+        if counted != parts[1] and counted.lower() in CLASSES:
+            parts = [counted] + parts[2:]
     if len(parts) > 2 and parts[0].lower() not in CLASSES and (
             parts[1].lower() in CLASSES or parts[1].lower() in DIFFICULTIES):
         parts = parts[1:]

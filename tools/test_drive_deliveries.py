@@ -251,6 +251,14 @@ check(bdd_c.class_of('Company Bench 4', {}) == 'CompanyBench', 'Company Bench 4 
 check(bdd_c.class_of('Computer Bench (NC 0 RC 0 S 90)', {'bench_type': 'computer bench synthetic'}) == 'Synthetic',
       'a Computer Bench group folder takes its class from the bench_type')
 check(bdd_c.class_of('Non-Connector', {}) == 'Non-Connector', 'the older class folders read as before')
+check(bdd_c.class_of('Computer Bench (NC 0 RC 0 S 90)', {'tracker_family': 'Synthetic (old)'}) == 'Synthetic',
+      'with no bench_type, the tracker_family says the class')
+# Batch 12.1 puts the class, with its count, under the bench group.
+check(bdd_c.package_parts('Computer Bench (NC 39 RC 0 S 99)/Synthetic 99/Easier 34/a.zip') == ['Synthetic', 'Easier 34', 'a.zip'],
+      'a counted class folder under a bench group names the class')
+check(bdd_c.package_parts('Computer Bench (NC 39 RC 0 S 99)/Non-Connector 39/Harder 20/b.zip') == ['Non-Connector', 'Harder 20', 'b.zip'],
+      'and its difficulty folder is not read as a domain')
+check(bdd_c.package_parts('Aster 145/Easier 63/c.zip') == ['Aster 145', 'Easier 63', 'c.zip'], 'an Aster group is unchanged')
 check(bdd_c.bench_of('Batch 11.1', 'Aster', {}) == 'company', 'Aster is Company Bench')
 check(bdd_c.bench_of('Batch 11.1', 'Aster', {}, 'Aster 180/Easier 89') == 'company', 'an Aster folder is Company Bench')
 check(bdd_c.bench_of('Batch 11.1', 'Synthetic', {}, 'Computer Bench (NC 0 RC 0 S 90)/Easier 27') == 'computer',
