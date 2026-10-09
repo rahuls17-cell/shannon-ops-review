@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T04:21:09+00:00",
+ "generatedAt": "2026-10-09T04:31:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20730,6 +20730,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-tool-trials-that-turned-into-bills/442d3c8354e4b5e1b80acf203b95e61506f50c1e9f9ceeee7bee95cb32f25153.zip",
    "bytesRead": 57245,
+   "readOn": "2026-10-09"
+  },
+  "grant-pi-review-gap-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/grant-pi-review-gap-audit/9a7cd842d4518ac1f3dcee6bd9c95c1819d8dbff4cb340404664083fb032957d.zip",
+   "bytesRead": 46331,
+   "readOn": "2026-10-09"
+  },
+  "the-clinical-forms-in-one-patient-page": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-forms-in-one-patient-page/628cea9faa7913a44a327e8c4d014089aa9033c8e8dd5a346f7c0a951fa77468.zip",
+   "bytesRead": 54876,
    "readOn": "2026-10-09"
   }
  }
