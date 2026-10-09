@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T04:41:02+00:00",
+ "generatedAt": "2026-10-09T05:01:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20766,6 +20766,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/security-docs-access-audit/a6fd4c04e823bd93dda3c4379792a59ee10e61282cee63504b46c76ad98ba60b.zip",
    "bytesRead": 44170,
+   "readOn": "2026-10-09"
+  },
+  "largest-customer-lab-fees-in-dollars": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/largest-customer-lab-fees-in-dollars/3a4c6aca10b6bdffcd562f31a1a71b755c24ce1de70f254c5f9ad1141281842e.zip",
+   "bytesRead": 53637,
+   "readOn": "2026-10-09"
+  },
+  "legal-hold-privilege-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/legal-hold-privilege-audit/01cded0768323735341c29214bf4b70c98e175754541d9d2cf5e74a382e794c8.zip",
+   "bytesRead": 56728,
    "readOn": "2026-10-09"
   }
  }
