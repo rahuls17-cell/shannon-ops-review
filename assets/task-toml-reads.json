@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T07:01:08+00:00",
+ "generatedAt": "2026-10-09T07:11:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20984,6 +20984,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/buried-thread-recaps/804a905c3c119942b34d8c7a143520295c6963390e95f916bddba9b7d90e8053.zip",
    "bytesRead": 44949,
+   "readOn": "2026-10-09"
+  },
+  "card-charges-without-a-receipt": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/card-charges-without-a-receipt/c0ae37d323347df812c680fe84011504c1a07aac6b0e9f11dcff2af31b318ffb.zip",
+   "bytesRead": 57991,
+   "readOn": "2026-10-09"
+  },
+  "slack-incident-response-gap": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/slack-incident-response-gap/d259c851b651d978cb4332369e5afbf6cf207f563e45b74a7b884823654bc188.zip",
+   "bytesRead": 40055,
    "readOn": "2026-10-09"
   }
  }
