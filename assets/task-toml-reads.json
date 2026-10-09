@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T01:41:00+00:00",
+ "generatedAt": "2026-10-09T01:51:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20525,6 +20525,54 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/grant-paper-check-audit/a5b4ea3acc1e990fc043f57ee762fcb642185bbbbe6bc433536007cb71d64ebf.zip",
    "bytesRead": 44293,
+   "readOn": "2026-10-09"
+  },
+  "edit-rights-left-on-the-cpt-code-pages": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/edit-rights-left-on-the-cpt-code-pages/0c540ab57c7e18c21ffed8c34d282674300a715e377acf4115737e3b43487fce.zip",
+   "bytesRead": 57699,
+   "readOn": "2026-10-09"
+  },
+  "everything-richardclark-wrote-in-five-repositories": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/everything-richardclark-wrote-in-five-repositories/25fd5ba00f46d8d9c1b2d0cade42aaddcd7d368178dcb33b1de8925b7f8c0182.zip",
+   "bytesRead": 55081,
+   "readOn": "2026-10-09"
+  },
+  "notice-before-prescribing-changes": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/notice-before-prescribing-changes/d9c663eaf6084ef072b3d53eb9177bdb05c10e57c6de3ade56bb526e7bbc199b.zip",
+   "bytesRead": 51835,
+   "readOn": "2026-10-09"
+  },
+  "practices-checked-in-after-onboarding": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/practices-checked-in-after-onboarding/2cb96089fa1356f09a15e6dab7402d1dfd6fc5b9fb9b27abfea68fb0ebf2b18a.zip",
+   "bytesRead": 55098,
    "readOn": "2026-10-09"
   }
  }
