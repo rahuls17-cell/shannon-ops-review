@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T12:31:06+00:00",
+ "generatedAt": "2026-10-09T12:41:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21323,6 +21323,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-guideline-reviews-the-committee-missed-v2/3aaa29c5fd72166d96e44d9e3eb96ad829059cede0c843443cea941ce491df69.zip",
    "bytesRead": 54348,
+   "readOn": "2026-10-09"
+  },
+  "lab-hold-timeliness-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-hold-timeliness-audit/525ea302f0f46db890b1c66d37d70ed11a596a05c77698f9b6f3c35604d0d250.zip",
+   "bytesRead": 50599,
+   "readOn": "2026-10-09"
+  },
+  "lab-software-changes-never-validated": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-software-changes-never-validated/0d67a31e30c779553d6df3307895290f0701d103cacac265363266d46d0c6013.zip",
+   "bytesRead": 51719,
+   "readOn": "2026-10-09"
+  },
+  "reagent-pi-escalation-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/reagent-pi-escalation-audit/c15af8e63c39a8abdbefa5ffa36b1ad8e3f1141aa2e5ea7c7a7dabf25a8759f1.zip",
+   "bytesRead": 45354,
    "readOn": "2026-10-09"
   }
  }
