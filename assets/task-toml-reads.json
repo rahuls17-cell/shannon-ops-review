@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T11:01:05+00:00",
+ "generatedAt": "2026-10-09T11:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21212,6 +21212,19 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-security-reports-closed-without-a-proper-record/28554f1d98128cde359fdab08e35fabeb0d9087daa8b37bee027bac914c2c871.zip",
    "bytesRead": 58800,
+   "readOn": "2026-10-09"
+  },
+  "silent-pipeline-failure-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/silent-pipeline-failure-audit/a3a9520272be143390c6b203c8095f63aa18f6c7d6cef870d2df970d5fb7da1f.zip",
+   "bytesRead": 39341,
    "readOn": "2026-10-09"
   }
  }
