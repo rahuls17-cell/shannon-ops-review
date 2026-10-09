@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T14:41:06+00:00",
+ "generatedAt": "2026-10-09T14:51:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21543,6 +21543,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-cms-pays-for-our-codes/181571f63a69a4f265b972bef29b14842ce9dcf6dc5a64bfc87ede02991d4bbd.zip",
    "bytesRead": 49773,
+   "readOn": "2026-10-09"
+  },
+  "lab-and-erx-threads-still-open": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-and-erx-threads-still-open/41448e86cb565c9cfe7b7536a41757013520cb530ced0f3b51739db5473be179.zip",
+   "bytesRead": 48591,
+   "readOn": "2026-10-09"
+  },
+  "the-clinical-questions-someone-else-answered-v3-QC-TESTING": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-questions-someone-else-answered-v3-QC-TESTING/47fa14703156c909d7fe86305e39efe8d3e9bbcd0e7d083a3d22282c4725d759.zip",
+   "bytesRead": 58008,
    "readOn": "2026-10-09"
   }
  }
