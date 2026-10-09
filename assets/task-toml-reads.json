@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T07:31:03+00:00",
+ "generatedAt": "2026-10-09T07:41:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21020,6 +21020,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-births-our-quality-standard-sends-to-review-v2/52e90ff3c2ee9840aea313bdc30e881cb56fa4e3e91cf17d0985a570ebdc47c9.zip",
    "bytesRead": 57362,
+   "readOn": "2026-10-09"
+  },
+  "contact-details-in-our-trackers": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "docker.io/kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/contact-details-in-our-trackers/df4e23a9787ceff896dbde6d39485821e2dd45463117eec97818cbdc330ce9f4.zip",
+   "bytesRead": 49059,
+   "readOn": "2026-10-09"
+  },
+  "drafting-problem-loss-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/drafting-problem-loss-audit/fac4eb47df4d31f988d57c8c932d09f16ab75db2c1981238baee66a6825175bd.zip",
+   "bytesRead": 45019,
    "readOn": "2026-10-09"
   }
  }
