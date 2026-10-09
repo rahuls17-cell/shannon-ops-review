@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T12:51:05+00:00",
+ "generatedAt": "2026-10-09T13:01:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21383,6 +21383,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-payment-plan-that-came-up-short/089168a91435c32e93758434dd5332ef21530e021d6b2419fef5cb7add79ac44.zip",
    "bytesRead": 59171,
+   "readOn": "2026-10-09"
+  },
+  "the-royalty-reporting-rounds-the-ama-ran-with-us": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-royalty-reporting-rounds-the-ama-ran-with-us/aa8aa2d3a2e1470e44b99ceb2e9c2c4f6f8759f504a6891309fa7f05a5456370.zip",
+   "bytesRead": 60598,
+   "readOn": "2026-10-09"
+  },
+  "the-vendor-invoices-billed-above-our-terms": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-vendor-invoices-billed-above-our-terms/77c0f6185aa7c838d47bca90c84d73adc7767e019fcdeafbc43c98871ae6e154.zip",
+   "bytesRead": 53517,
    "readOn": "2026-10-09"
   }
  }
