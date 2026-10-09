@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T08:31:02+00:00",
+ "generatedAt": "2026-10-09T08:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21068,6 +21068,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/event-spend-closed-out-against-budget/9477bddf6b3d37dfc054f77e05e0512554cdf1dd58757bf385960b3c8a6b210c.zip",
    "bytesRead": 52045,
+   "readOn": "2026-10-09"
+  },
+  "contractor-invoices-billing-unfinished-work": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/contractor-invoices-billing-unfinished-work/3d30d43bfd0d4fdaaf2b472234b3d965c89d323b6d0317a78c91a3dd8b19e02f.zip",
+   "bytesRead": 53693,
+   "readOn": "2026-10-09"
+  },
+  "how-our-bug-reports-were-followed-up": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/how-our-bug-reports-were-followed-up/ec1f57940e76750da416848a51394ef85a8eba22496fc42b98ff04ca8adc7843.zip",
+   "bytesRead": 50086,
    "readOn": "2026-10-09"
   }
  }
