@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T09:21:02+00:00",
+ "generatedAt": "2026-10-09T10:01:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21128,6 +21128,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/summer-lab-fee-lines-may-to-july/0425e05d623721b6fa9b3b5d1a28b2f64e20eeb01acf49c43759b56441338449.zip",
    "bytesRead": 51883,
+   "readOn": "2026-10-09"
+  },
+  "user-research-evidence-strength-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/user-research-evidence-strength-audit/bf27688b38afe915cfbf272a866eeb6aa8df10f071191199960e78406dd43bc0.zip",
+   "bytesRead": 58314,
    "readOn": "2026-10-09"
   }
  }
