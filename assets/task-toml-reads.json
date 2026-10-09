@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T05:51:04+00:00",
+ "generatedAt": "2026-10-09T06:01:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20850,6 +20850,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-copyleft-code-and-the-outside-work-it-merged/9fc1c43881fb3e0a00311761130d19faa80906e67de6ffa99e86835a6f64ddb2.zip",
    "bytesRead": 59020,
+   "readOn": "2026-10-09"
+  },
+  "release-regression-gate-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/release-regression-gate-audit/01a6556f2ed42922839cf402773175c8922e1d8382001e87bb70e12102867254.zip",
+   "bytesRead": 56219,
+   "readOn": "2026-10-09"
+  },
+  "spring-statements-where-the-totals-disagree": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spring-statements-where-the-totals-disagree/8d7dfa146c3a0d5a26acecbb6694783162f39e38c41d54a2c57a56a1d297b901.zip",
+   "bytesRead": 53884,
    "readOn": "2026-10-09"
   }
  }
