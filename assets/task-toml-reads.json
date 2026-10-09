@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T04:31:02+00:00",
+ "generatedAt": "2026-10-09T04:41:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -20754,6 +20754,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-forms-in-one-patient-page/628cea9faa7913a44a327e8c4d014089aa9033c8e8dd5a346f7c0a951fa77468.zip",
    "bytesRead": 54876,
+   "readOn": "2026-10-09"
+  },
+  "security-docs-access-audit": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/security-docs-access-audit/a6fd4c04e823bd93dda3c4379792a59ee10e61282cee63504b46c76ad98ba60b.zip",
+   "bytesRead": 44170,
    "readOn": "2026-10-09"
   }
  }
