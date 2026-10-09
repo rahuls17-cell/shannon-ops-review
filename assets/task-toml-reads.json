@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T15:21:04+00:00",
+ "generatedAt": "2026-10-09T15:31:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21615,6 +21615,54 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-threads-that-outlasted-their-day/444f709ef528725af1937c47263e9fa2fef47009cb3be3c05693617f007ad479.zip",
    "bytesRead": 52903,
+   "readOn": "2026-10-09"
+  },
+  "suggestion-pickup-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/suggestion-pickup-audit/e741241161232d58b2bf78a71c876685f23680b9d90c673c6e7c20d817c48158.zip",
+   "bytesRead": 48449,
+   "readOn": "2026-10-09"
+  },
+  "third-party-components-before-the-audit": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/third-party-components-before-the-audit/bb52bc8d9e172ee9dbff024e590253eb428cc08bf2f63563598c861ed5d6a362.zip",
+   "bytesRead": 54075,
+   "readOn": "2026-10-09"
+  },
+  "visits-changed-at-short-notice": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/visits-changed-at-short-notice/e7ec1ef7b28d6891aa6a0b7a262a30a1aab2aef4acde01b02b0606ffd2b95613.zip",
+   "bytesRead": 53349,
+   "readOn": "2026-10-09"
+  },
+  "where-our-tool-trials-were-left": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster:company-aster-v6-20260917@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-our-tool-trials-were-left/1259aa52e4311ae206e4b46b07d805320b5085f28935bca959ca6c63465127ab.zip",
+   "bytesRead": 54556,
    "readOn": "2026-10-09"
   }
  }
