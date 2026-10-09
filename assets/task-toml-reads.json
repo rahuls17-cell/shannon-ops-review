@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T10:11:05+00:00",
+ "generatedAt": "2026-10-09T10:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21164,6 +21164,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-spoke-for-us-on-hipaa/3e5d39a53f4e4bb2dfa340a7cea41d934a38d06e6247a20cc6f8b4c8ae85b7ff.zip",
    "bytesRead": 56659,
+   "readOn": "2026-10-09"
+  },
+  "closing-the-birth-centre-pilot": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/closing-the-birth-centre-pilot/331b0e81c5ce4f9ed9e1466ee28e3349aca5a095703f4d94b5ed14776cb799ec.zip",
+   "bytesRead": 58600,
+   "readOn": "2026-10-09"
+  },
+  "substitute-receipt-hold-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/substitute-receipt-hold-audit/bac15b349b5622b5eeeb37ce1a9d4998a62e8f4fc27da7eb0d07b3459621fa75.zip",
+   "bytesRead": 50169,
    "readOn": "2026-10-09"
   }
  }
