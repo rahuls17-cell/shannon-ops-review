@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T14:51:05+00:00",
+ "generatedAt": "2026-10-09T15:01:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21567,6 +21567,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-questions-someone-else-answered-v3-QC-TESTING/47fa14703156c909d7fe86305e39efe8d3e9bbcd0e7d083a3d22282c4725d759.zip",
    "bytesRead": 58008,
+   "readOn": "2026-10-09"
+  },
+  "summer-lab-results-that-waited-a-month": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/summer-lab-results-that-waited-a-month/cd61f247a2275827fd7d1f1efc1bae95a221f798386cc2f63a1b9d6ddecc517c.zip",
+   "bytesRead": 53550,
+   "readOn": "2026-10-09"
+  },
+  "the-editors-on-files-open-past-the-team": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-editors-on-files-open-past-the-team/dc3b95a0a3989845b1d87a2924bfa11446a33a38233be0c37e3b010607fce8bd.zip",
+   "bytesRead": 59806,
    "readOn": "2026-10-09"
   }
  }
