@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T03:31:06+00:00",
+ "generatedAt": "2026-10-10T03:41:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21783,6 +21783,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-folders-where-open-files-cluster/0931689001b0befbd993417ba2cb0419eabf2881d84838a4f9dfef48ca961f1a.zip",
    "bytesRead": 57680,
+   "readOn": "2026-10-10"
+  },
+  "clinical-answers-that-took-over-a-day": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-answers-that-took-over-a-day/824e1e1a46ccc8985f77f95ac573a6e8552b3e925b0da4c1e5ba62a764b108ca.zip",
+   "bytesRead": 51896,
    "readOn": "2026-10-10"
   }
  }
