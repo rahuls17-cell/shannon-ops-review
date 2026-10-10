@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T15:11:22+00:00",
+ "generatedAt": "2026-10-10T15:21:25+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22739,6 +22739,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-conversations-of-august-2023/5df2150d998c0eb87a78dae206f91a2d1b7a0611fb7490aad1a08966bfa6c193.zip",
    "bytesRead": 50536,
+   "readOn": "2026-10-10"
+  },
+  "documents-still-awaiting-signature--from-non-coding": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/documents-still-awaiting-signature--from-non-coding/52538c609d293d21d610d673ebc9034dfca301d60e5752affd4c1065fc1ec640.zip",
+   "bytesRead": 56098,
+   "readOn": "2026-10-10"
+  },
+  "the-security-reports-assigned-outside-the-org-v2": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-security-reports-assigned-outside-the-org-v2/ad8644854faee71eabc19e26b3bf2a0f63b232dd5ff75643acf2741f8531b41f.zip",
+   "bytesRead": 55039,
    "readOn": "2026-10-10"
   }
  }
