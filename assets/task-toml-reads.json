@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T20:31:04+00:00",
+ "generatedAt": "2026-10-10T20:41:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23042,6 +23042,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/refund-pipeline-staleness-audit/936adbcc8b873aa96f381314dee91f684238ef921f754dd35b5a4049f81f5bf6.zip",
    "bytesRead": 45853,
+   "readOn": "2026-10-10"
+  },
+  "harbor-single-task-iuny0pn2": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/harbor-single-task-iuny0pn2/d1ae2190ecdce4bfbb4cde9a27cbc8fe64e6976c60688567fb1284033cdce07e.zip",
+   "bytesRead": 46915,
+   "readOn": "2026-10-10"
+  },
+  "manuscript-safeguard-lapse-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/manuscript-safeguard-lapse-audit/df51173db174719c84944142c4f9e0ea18f642df36fcc8b710239e5b0ec01745.zip",
+   "bytesRead": 47431,
    "readOn": "2026-10-10"
   }
  }
