@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T12:11:04+00:00",
+ "generatedAt": "2026-10-10T12:21:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22450,6 +22450,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-card-charges-without-a-receipt-v4/2909b7473d4dc8a131873b227853c2d337fe032c9cf5edcf789399b4a2e558d4.zip",
    "bytesRead": 77294,
+   "readOn": "2026-10-10"
+  },
+  "manuscript-curation-credit-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/manuscript-curation-credit-audit/6aa4f9439a461ae945688f6fac5359551e787387ccb14828f852e2ec25f0ce5a.zip",
+   "bytesRead": 63326,
+   "readOn": "2026-10-10"
+  },
+  "paper-review-confirm-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/paper-review-confirm-audit/6c7254f510c0ee366a19bf31bbbd69c7555fa3569a9bd06034b4d01588bfdc47.zip",
+   "bytesRead": 40967,
+   "readOn": "2026-10-10"
+  },
+  "workspace-ring-fence-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/workspace-ring-fence-audit/f0073a23a5a4503cf5c72bc8a17d1a97e6770d8b0389f6d7a7c136e615afc76d.zip",
+   "bytesRead": 45669,
    "readOn": "2026-10-10"
   }
  }
