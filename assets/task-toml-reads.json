@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T16:41:07+00:00",
+ "generatedAt": "2026-10-10T16:51:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22872,6 +22872,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-investor-updates-whose-cash-missed-the-bank/949ec9644b52fa1538ee81e4b8c02f315b90d3b9180fc76d965344cb08bc5f3f.zip",
    "bytesRead": 54755,
+   "readOn": "2026-10-10"
+  },
+  "intake-form-invitation-chase": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/intake-form-invitation-chase/9e5d24a06313933933d610ccbc5d3806e3969ea1ee4eceb951c71722dbbf781a.zip",
+   "bytesRead": 50927,
    "readOn": "2026-10-10"
   }
  }
