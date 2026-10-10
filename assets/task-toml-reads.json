@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T13:31:04+00:00",
+ "generatedAt": "2026-10-10T13:41:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22559,6 +22559,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-weighed-in-on-the-summer-charting/4ce44746391131dc4e5205303c716172abf47393de07982cbe3a2af5756338b5.zip",
    "bytesRead": 51469,
+   "readOn": "2026-10-10"
+  },
+  "paused-item-safeguard-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/paused-item-safeguard-audit/6329abe2e7a2db8b96428c9b8fef09f5be3de742697b00a2ebd2986cb59469d6.zip",
+   "bytesRead": 48829,
+   "readOn": "2026-10-10"
+  },
+  "the-money-questions-and-who-came-back": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-money-questions-and-who-came-back/e8d6972e00a4f0c054d253881145e9087be911496e1ecc0659cbf89a64fef4bf.zip",
+   "bytesRead": 50195,
    "readOn": "2026-10-10"
   }
  }
