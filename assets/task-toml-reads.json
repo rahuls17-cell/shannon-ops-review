@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T08:21:04+00:00",
+ "generatedAt": "2026-10-10T08:41:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22220,6 +22220,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/when-the-pre-seed-cash-runs-out/24d31262c1f177aed8c52ec8843f1d5cff291560798bb72facf602a79aa35e9b.zip",
    "bytesRead": 53078,
+   "readOn": "2026-10-10"
+  },
+  "app-components-that-need-licence-consent": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/app-components-that-need-licence-consent/9e162b478904469eb466970004cd8275f7bdef23d03a4e692793f54863673321.zip",
+   "bytesRead": 62429,
+   "readOn": "2026-10-10"
+  },
+  "what-the-receipts-say-we-paid": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-receipts-say-we-paid/eb5b171b44dceb668dfee0146fcf938ab283dfb3721bb30cf64331734c4d7d3d.zip",
+   "bytesRead": 58195,
    "readOn": "2026-10-10"
   }
  }
