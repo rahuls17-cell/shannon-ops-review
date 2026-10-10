@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T13:51:01+00:00",
+ "generatedAt": "2026-10-10T14:11:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22595,6 +22595,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-repos-where-a-pushed-secret-goes-unseen/1a563159644163c53bf2d92019f0725fd00ddd9a0b951de8ba7d40c66dcfb04e.zip",
    "bytesRead": 57829,
+   "readOn": "2026-10-10"
+  },
+  "the-applicant-files-others-could-edit": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-applicant-files-others-could-edit/f93409b29b28ff445405cd4843a559da517707bce5dce074bc4cc582412eae8f.zip",
+   "bytesRead": 54293,
+   "readOn": "2026-10-10"
+  },
+  "unanswered-spend-request-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unanswered-spend-request-audit/2b1cd3eb79f48c98a6ec84dda0d269d75779f06b9e2cdaf1733490d71aad02f3.zip",
+   "bytesRead": 44390,
    "readOn": "2026-10-10"
   }
  }
