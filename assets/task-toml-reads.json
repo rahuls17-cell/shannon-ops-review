@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T05:21:08+00:00",
+ "generatedAt": "2026-10-10T05:31:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21880,6 +21880,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-1password-came-up-in-2023/7cd9a721164b4d1462685db349d1773a5390e5be4e9ad649fa2388ed08355758.zip",
    "bytesRead": 50042,
+   "readOn": "2026-10-10"
+  },
+  "the-reviews-no-quarter-closed": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-reviews-no-quarter-closed/828163876ace0a6022475330b33e30e09cf45592b967e5e7ecd96017526a4981.zip",
+   "bytesRead": 51119,
+   "readOn": "2026-10-10"
+  },
+  "the-user-table-left-open": {
+   "connector": true,
+   "services": [
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-user-table-left-open/4fe8414d0706deb96786e17416f9eb34864783d53d78451c657835b7ab65f494.zip",
+   "bytesRead": 45991,
    "readOn": "2026-10-10"
   }
  }
