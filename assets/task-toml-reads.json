@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T04:51:05+00:00",
+ "generatedAt": "2026-10-10T05:01:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21831,6 +21831,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/payment-terms-beside-every-invoice/2332cd57350500d0ce7df4d7632b088cd8d8b38f74c045c4614c6ddc53b082bc.zip",
    "bytesRead": 48550,
+   "readOn": "2026-10-10"
+  },
+  "the-dashboard-stack-vulnerabilities-by-stated-risk": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-dashboard-stack-vulnerabilities-by-stated-risk/8d86a9112999408f7675bc50fd8b1fb6f9e36e5982b9d178709919048e24e78a.zip",
+   "bytesRead": 56267,
    "readOn": "2026-10-10"
   }
  }
