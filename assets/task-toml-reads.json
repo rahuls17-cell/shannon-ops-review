@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T10:41:03+00:00",
+ "generatedAt": "2026-10-10T11:11:20+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22377,6 +22377,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-our-datadog-overage-cost/33668c4aafa27044aff8c1d23b373259f049763ac25d0286b509c0326b5c9fac.zip",
    "bytesRead": 57183,
+   "readOn": "2026-10-10"
+  },
+  "clinical-record-problems-by-practice": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-record-problems-by-practice/afc8cbe5867d17e621ad423075eb185be351e8ad4ad9b38ac4d31e1944c6778a.zip",
+   "bytesRead": 57175,
    "readOn": "2026-10-10"
   }
  }
