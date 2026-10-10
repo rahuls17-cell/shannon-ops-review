@@ -309,3 +309,50 @@ console.log('delivery audit checks passed: attribution, partition, buckets, filt
   }
 }
 console.log('trainer sheet checks passed');
+
+// --- the hand-reviewed trainer table ------------------------------------------
+// A reviewed task takes the review's trainer ahead of the sheet and the bucket;
+// a review with no trainer leaves the task without one.
+{
+  const drive = {rows: [
+    {id: 'R-1', batch: 'Batch 9', task: 'reviewed-contested-task', bench: 'company', trainer: 'Unattributed'},
+    {id: 'R-2', batch: 'Batch 9', task: 'reviewed-named-task', bench: 'computer', trainer: 'Unattributed'},
+    {id: 'R-3', batch: 'Batch 9', task: 'reviewed-no-trainer-task', bench: 'company', trainer: 'Unattributed'},
+    {id: 'R-4', batch: 'Batch 8', task: 'reviewed-named-task', bench: 'computer', trainer: 'Unattributed'},
+  ]};
+  const owners = {owners: {
+    'R-1': {trainer: null, source: 'Contested', route: 'records', candidates: ['a@t.com', 'b@t.com']},
+    'R-2': {trainer: 'c@t.com', source: 'GCS trainer records', route: 'records'},
+  }};
+  const sheet = {entries: [{tab: 'zeta', trainer: 's@t.com', keys: ['reviewed-contested-task']}]};
+  const review = {entries: [
+    {task: 'reviewed-contested-task', batch: 'Batch 9', trainer: 'r@t.com', confidence: 'High'},
+    {task: 'reviewed-named-task', batch: 'Batch 9', trainer: 'q@t.com', confidence: 'Low'},
+    {task: 'reviewed-no-trainer-task', batch: 'Batch 9', trainer: null, trainerType: 'In-house / DataOS (leads)'},
+  ]};
+  const got = prepareDeliveryAudit({...base, rows: []}, drive, owners, sheet, review);
+  const by = Object.fromEntries(got.rows.map(r => [r.id, r]));
+  assert.equal(by['R-1'].trainer, 'r@t.com', 'the review comes before the sheet');
+  assert.equal(by['R-1'].source, 'Trainer review');
+  assert.deepEqual(by['R-1'].contestedBefore, ['a@t.com', 'b@t.com']);
+  assert.equal(by['R-2'].trainer, 'q@t.com', 'and before the bucket, on either bench');
+  assert.equal(by['R-2'].bucketTrainer, 'c@t.com');
+  assert.equal(by['R-3'].trainer, null, 'a review with no trainer names none');
+  assert.equal(by['R-3'].reviewedNoTrainer, 'In-house / DataOS (leads)');
+  assert.equal(by['R-4'].trainer, null, 'a review is for its own batch only');
+  assert.deepEqual(got.drive.review, {generatedAt: undefined, named: 2, noTrainer: 1});
+
+  // The published review lands on the published Drive rows, every entry on one row.
+  const root = path.join(__dirname, '..');
+  const read = f => JSON.parse(fs.readFileSync(path.join(root, 'assets', f), 'utf8'));
+  if (fs.existsSync(path.join(root, 'assets', 'trainer-review.json'))) {
+    const live = read('trainer-review.json');
+    const after = prepareDeliveryAudit({...base, rows: []}, read('drive-deliveries.json'), read('drive-owners.json'),
+      read('trainer-sheet.json'), live);
+    const named = live.entries.filter(e => e.trainer);
+    assert.equal(after.rows.filter(r => r.trainerRoute === 'review').length, named.length, 'every reviewed trainer lands');
+    assert.equal(after.rows.filter(r => r.reviewedNoTrainer).length, live.entries.length - named.length);
+    console.log(`trainer review: ${named.length} tasks named, ${live.entries.length - named.length} reviewed as having no trainer`);
+  }
+}
+console.log('trainer review checks passed');

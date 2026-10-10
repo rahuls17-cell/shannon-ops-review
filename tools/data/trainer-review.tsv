@@ -1,0 +1,22 @@
+task	batch	trainer	trainer_type	confidence	mapping
+the-cover-list-reaches-strangers	Batch 5.1	akash.d3@turing.com	Computer team trainer	High	Found - harbor only
+the-open-door-nobody-watches	Batch 5.1	akash.d3@turing.com	Computer team trainer	High	Found - harbor only
+opened-files-migration-volume-signoff-realdocoutput	Batch 2	arjun.sikhwal@turing.com	Company trainer	High	Found - Task Tracker + harbor
+how-much-of-my-drive-is-link-only-realdocoutput	Batch 2	ghosh.m1@turing.com	Company trainer	High	Found - Task Tracker + harbor
+diagnose-failed-2-500-3-d-secure-card-purchase-on-card-49391	Batch 5.1	luis.m5@turing.com	Company trainer	High	Found - Task Tracker + harbor
+general-rooms-what-the-scroll-hides-realdocoutput	Batch 4.1	preet.s@turing.com	Company trainer	High	Found - Task Tracker + harbor
+the-owner-column-is-not-an-owner	Batch 5.1	saddam.h1@turing.com	Computer team trainer	High	Found - harbor only
+the-money-nobody-picked-up	Batch 5.1	sahil.garg-fx@turing.com	Computer team trainer	High	Found - harbor only
+daily-ach-debit-pull-batch-report-2024-08-30-sameday-vs-standard-retur	Batch 5.1	ammar.a@turing.com	Company trainer	Medium	Found - Task Tracker
+intake-v2-and-the-transfers-still-owed	Batch 5.1	kirtilekha.b@turing.com	Company trainer	Medium	Found - Task Tracker
+file-data-fix-request-for-closed-accounts-missing-closed-at-timestamps	Batch 5.1	miroslav.m@turing.com	Lead	Medium	Found - Task Tracker
+verify-mcdonald-s-19-38-overcharge-dispute-outcome-for-customer-50567	Batch 5.1	mohamed.a@turing.com	Company trainer	Medium	Found - Task Tracker
+diagnose-why-check-deposit-2329-for-254-01-ended-in-returned-status	Batch 5.1	rana.a3@turing.com	Lead (offboarded 16-Sep)	Medium	Found - harbor only
+canceled-funding-transfer-retries-next-day	Batch 5.1	saad.m3@turing.com	Company trainer	Medium	Found - Task Tracker
+recurring-bill-double-pay-audit-after-due-date-edits-sql-confluence-slack-jira	CompanyBench 2	daniel.q@turing.com	Company trainer	Low	Possible - derived variant
+ach-pull-583848-support-evidence-review	Batch 5.1	gyanaranjan.s@turing.com	Company trainer	Low	Likely - renamed
+check-deposit-1931-redeposit-review	Batch 5.1	gyanaranjan.s@turing.com	Company trainer	Low	Likely - renamed
+ach-debit-hold-schedule-conformance-audit-sql-confluence-slack-jira	CompanyBench 2		In-house / DataOS (leads)	No trainer	Found - Data-OS only (no trainer)
+hard-regcc-01-reg-cc-large-deposit-exception-actual-funds-availability	CompanyBench 2		In-house / DataOS (leads)	No trainer	Found - Data-OS only (no trainer)
+rubric-demo-settled-outbound-transfers-slack-deliverable-atomic-rubrics	CompanyBench 2		In-house / DataOS (leads)	No trainer	Found - Data-OS only (no trainer)
+verify-permanent-credit-issued-on-9-dispute-tx-11kc8dqb2s00f79-case-11	CompanyBench 2		Unassigned	No trainer	Found - Task Tracker only (no trainer)
