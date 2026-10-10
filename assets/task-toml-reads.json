@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T16:31:08+00:00",
+ "generatedAt": "2026-10-10T16:41:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22848,6 +22848,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/payment-methods-subscriptions-feed-audit/1bb54c40a029ec3125e84bfcc9692c52abb4e59f8918af3112fee4711d1438ad.zip",
    "bytesRead": 51625,
+   "readOn": "2026-10-10"
+  },
+  "spring-lab-orders-who-was-billed": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/spring-lab-orders-who-was-billed/b4fc47a6c5997827e1527067f1a9a9e4671f2760e4433697778b93e38290a8c9.zip",
+   "bytesRead": 51725,
+   "readOn": "2026-10-10"
+  },
+  "the-investor-updates-whose-cash-missed-the-bank": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-investor-updates-whose-cash-missed-the-bank/949ec9644b52fa1538ee81e4b8c02f315b90d3b9180fc76d965344cb08bc5f3f.zip",
+   "bytesRead": 54755,
    "readOn": "2026-10-10"
   }
  }
