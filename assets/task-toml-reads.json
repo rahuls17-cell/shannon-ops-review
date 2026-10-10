@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T06:01:08+00:00",
+ "generatedAt": "2026-10-10T06:21:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21965,6 +21965,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/suggestion-later-takeon-audit/5c2bac91ae6b5bd4d42827d5984b2106fe471097be1becbdfb51ccc856b329bb.zip",
    "bytesRead": 46040,
+   "readOn": "2026-10-10"
+  },
+  "the-clinical-questions-asked-after-hours": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-questions-asked-after-hours/003d62e0c709e94d4924226aedd3254762d95935a3ff0b2cac391cdb552a6f23.zip",
+   "bytesRead": 51155,
+   "readOn": "2026-10-10"
+  },
+  "the-tier-written-two-ways": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-tier-written-two-ways/15c3c30c3e1e3874a60f4243ce812a64f6f42ded8d86eeb101d067cfd02dabea.zip",
+   "bytesRead": 49731,
    "readOn": "2026-10-10"
   }
  }
