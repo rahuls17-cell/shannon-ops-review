@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T17:21:06+00:00",
+ "generatedAt": "2026-10-10T01:31:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21700,6 +21700,18 @@
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/Task_1_Row_403_what-a-lab-order-really-costs-r12-em-approved/f65ed9a72c3dcccd94320dd0275b1b80f7560b0f020247b4b281dfb695174156.zip",
    "bytesRead": 115481,
    "readOn": "2026-10-09"
+  },
+  "the-forms-the-board-does-not-show": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-forms-the-board-does-not-show/b542a064ed14ee6d7e719ed43f1066bb77dbb8175521eeef9706b8bfce4d5f92.zip",
+   "bytesRead": 53737,
+   "readOn": "2026-10-10"
   }
  }
 }
