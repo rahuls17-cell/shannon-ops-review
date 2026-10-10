@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T11:31:03+00:00",
+ "generatedAt": "2026-10-10T11:41:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22402,6 +22402,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/h1-failure-cost-audit/f8709bb7265a7c6f5574b3c6ec8fbd03ffa2abbfe8934c358b0b09939eabee70.zip",
    "bytesRead": 47387,
+   "readOn": "2026-10-10"
+  },
+  "clinical-threads-the-cover-missed": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/clinical-threads-the-cover-missed/c407622512d4d6e8481ef5e076c2b210d60dd1678301dcde203e420c25eca24f.zip",
+   "bytesRead": 51320,
    "readOn": "2026-10-10"
   }
  }
