@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T01:41:05+00:00",
+ "generatedAt": "2026-10-10T02:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21723,6 +21723,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-atlas-check-ins-that-slipped/00d3b69ad116f9d56a9791bf9a7b37eb87cd5f3264f672c13201fc449789090e.zip",
    "bytesRead": 54733,
+   "readOn": "2026-10-10"
+  },
+  "patient-sheets-shared-beyond-the-care-team": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/patient-sheets-shared-beyond-the-care-team/c9d886f0fc7e9cf776a2604c83a858ff22ef138a9a2b310ce7443e8bb18e4d58.zip",
+   "bytesRead": 57640,
    "readOn": "2026-10-10"
   }
  }
