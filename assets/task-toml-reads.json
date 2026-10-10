@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T13:41:04+00:00",
+ "generatedAt": "2026-10-10T13:51:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22583,6 +22583,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-money-questions-and-who-came-back/e8d6972e00a4f0c054d253881145e9087be911496e1ecc0659cbf89a64fef4bf.zip",
    "bytesRead": 50195,
+   "readOn": "2026-10-10"
+  },
+  "the-repos-where-a-pushed-secret-goes-unseen": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-repos-where-a-pushed-secret-goes-unseen/1a563159644163c53bf2d92019f0725fd00ddd9a0b951de8ba7d40c66dcfb04e.zip",
+   "bytesRead": 57829,
    "readOn": "2026-10-10"
   }
  }
