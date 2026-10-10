@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T22:41:00+00:00",
+ "generatedAt": "2026-10-10T22:51:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23140,6 +23140,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/equipment-hold-closeout-audit/edb226a1d4bdf486978c6d42bb66049d2e1fe24336095b870f12d20b8e1ecd81.zip",
    "bytesRead": 36237,
+   "readOn": "2026-10-10"
+  },
+  "denial-appeal-writeoff-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/denial-appeal-writeoff-audit/5cdfb5b36f7547d1cd0d215a718cbb539da276109d38dcf90c7ed5b69f5dd3ff.zip",
+   "bytesRead": 46101,
+   "readOn": "2026-10-10"
+  },
+  "standup-disclosure-accounting-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/standup-disclosure-accounting-audit/643234dc0579f11c8112b7c2a08fdbbc1513126d5b4632341458e57ec074b0e3.zip",
+   "bytesRead": 53213,
    "readOn": "2026-10-10"
   }
  }
