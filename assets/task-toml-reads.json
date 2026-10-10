@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T09:31:04+00:00",
+ "generatedAt": "2026-10-10T09:51:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22329,6 +22329,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-q3-work-we-can-capitalize/7f937b0ba0f5707965bf5691e42242c8dc67ba32be59be830748345c978e042a.zip",
    "bytesRead": 54186,
+   "readOn": "2026-10-10"
+  },
+  "evaluation-claims-standard-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/evaluation-claims-standard-audit/e42124468971f2430e7b84f41e865ee77175de3ab65bdf618d39a58ce062b309.zip",
+   "bytesRead": 59279,
+   "readOn": "2026-10-10"
+  },
+  "restricted-dataset-use-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/restricted-dataset-use-audit/24247850a89aab4830871fefd8bbe41f1c72eeb59de55b86e5cbd79740d9b2a8.zip",
+   "bytesRead": 56015,
    "readOn": "2026-10-10"
   }
  }
