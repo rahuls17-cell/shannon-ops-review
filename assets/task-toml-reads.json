@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T07:21:03+00:00",
+ "generatedAt": "2026-10-10T07:31:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22037,6 +22037,55 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/night-report-checkin-audit/31cc9d19753e2f04f0c6370cb1ddebcbda05fd99b5c520aec741247259d239a8.zip",
    "bytesRead": 48189,
+   "readOn": "2026-10-10"
+  },
+  "closure-notices-left-unanswered": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/closure-notices-left-unanswered/74858fd1c61e37337740ef898feb1e5043d822c91910d8b9eb1eca6c1020262e.zip",
+   "bytesRead": 52115,
+   "readOn": "2026-10-10"
+  },
+  "methods-owner-checkin-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/methods-owner-checkin-audit/429aab18269758557ea73c98bc09559ccef144ebb15dc305f26d4d01a345960e.zip",
+   "bytesRead": 47823,
+   "readOn": "2026-10-10"
+  },
+  "the-clinical-askers-who-never-came-back": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-askers-who-never-came-back/65f44a15c9f0549f676b7cecca3a1e2252726d5ef96f216277533b39b41857c7.zip",
+   "bytesRead": 50884,
+   "readOn": "2026-10-10"
+  },
+  "the-pilot-threads-answered-within-the-hour": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pilot-threads-answered-within-the-hour/e37406b4dafa29622d22cb1596471db5388b2b1f25932afccb942cc6dd4e90cb.zip",
+   "bytesRead": 52034,
    "readOn": "2026-10-10"
   }
  }
