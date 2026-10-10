@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T14:11:03+00:00",
+ "generatedAt": "2026-10-10T14:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22619,6 +22619,42 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unanswered-spend-request-audit/2b1cd3eb79f48c98a6ec84dda0d269d75779f06b9e2cdaf1733490d71aad02f3.zip",
    "bytesRead": 44390,
+   "readOn": "2026-10-10"
+  },
+  "github-bills-against-the-quote": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/github-bills-against-the-quote/3fe8c2bac9d66e3f6e87fc1face68321e37210191067c26fd9d5aa03d42cd7fb.zip",
+   "bytesRead": 55125,
+   "readOn": "2026-10-10"
+  },
+  "manuscript-handson-confirm-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/manuscript-handson-confirm-audit/be4a2cdb922a381b1ecabd1a3e69b7d839fb01fee3410b46303632a1b65a054e.zip",
+   "bytesRead": 47725,
+   "readOn": "2026-10-10"
+  },
+  "the-security-settings-on-off-or-never-reported": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-security-settings-on-off-or-never-reported/b151b638c67851b7643006e2f257781fe244cf84988dcb9969a8707d9f275694.zip",
+   "bytesRead": 54087,
    "readOn": "2026-10-10"
   }
  }
