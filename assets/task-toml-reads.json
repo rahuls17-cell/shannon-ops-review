@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T14:51:04+00:00",
+ "generatedAt": "2026-10-10T15:11:22+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22679,6 +22679,66 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unanswered-security-review-audit/e942af6bb649d657d055b954f819cca722e6778366fa12b2f1ce80d89d81c43b.zip",
    "bytesRead": 47771,
+   "readOn": "2026-10-10"
+  },
+  "incident-day-timeline-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/incident-day-timeline-audit/f5f0d658b42e7c5febfa133e69925204525efc06b5f6fcc360efe470a31eff9b.zip",
+   "bytesRead": 44364,
+   "readOn": "2026-10-10"
+  },
+  "orders-against-the-pickup-requests": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/orders-against-the-pickup-requests/04101e70aa3aa7eaca15e64c9093bda2bb95969e7656192e834b9ca6fe174b6e.zip",
+   "bytesRead": 50461,
+   "readOn": "2026-10-10"
+  },
+  "prescribing-downtime-windows": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/prescribing-downtime-windows/c7ef34409e859649b2558b57cf2f51b0a5938117295218b5641c533afbe60129.zip",
+   "bytesRead": 47809,
+   "readOn": "2026-10-10"
+  },
+  "stock-safeguard-confirm-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/stock-safeguard-confirm-audit/eda2b76239abf4534432c19d672544154da84fcfc805525c6835ff9fd0a56085.zip",
+   "bytesRead": 46566,
+   "readOn": "2026-10-10"
+  },
+  "the-clinical-conversations-of-august-2023": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-clinical-conversations-of-august-2023/5df2150d998c0eb87a78dae206f91a2d1b7a0611fb7490aad1a08966bfa6c193.zip",
+   "bytesRead": 50536,
    "readOn": "2026-10-10"
   }
  }
