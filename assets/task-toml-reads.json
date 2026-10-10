@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T18:21:01+00:00",
+ "generatedAt": "2026-10-10T18:41:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22944,6 +22944,31 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/returned-item-handover-audit/7438bf5b990c7efc36530867948ba0e008692a35e9d109719fef903dc912e9a3.zip",
    "bytesRead": 46638,
+   "readOn": "2026-10-10"
+  },
+  "unworked-hold-confirm-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unworked-hold-confirm-audit/c5bc53dbacf1fcd4bea27e8985a2aab673bf5ffd493650a75ae0af5f90be424d.zip",
+   "bytesRead": 45669,
+   "readOn": "2026-10-10"
+  },
+  "warehouse-uptime-billing-recon": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/warehouse-uptime-billing-recon/cb56fc5e2a5a1172a51907bb575436d2f882ad039ac76d8a18d1bc9c9d629da4.zip",
+   "bytesRead": 49958,
    "readOn": "2026-10-10"
   }
  }
