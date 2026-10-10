@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T08:11:04+00:00",
+ "generatedAt": "2026-10-10T08:21:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22196,6 +22196,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-invoicing-came-up-in-2024/a04d66edebfa74b5fae4f90b7f94ffc9afcb114d9131a1d1b09df19614ac776c.zip",
    "bytesRead": 48350,
+   "readOn": "2026-10-10"
+  },
+  "the-pilot-threads-with-a-single-responder": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pilot-threads-with-a-single-responder/06934e1f469f35d972435cfa25feac25bdd473cf18b2fbfe7043342992d94672.zip",
+   "bytesRead": 51441,
+   "readOn": "2026-10-10"
+  },
+  "when-the-pre-seed-cash-runs-out": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/when-the-pre-seed-cash-runs-out/24d31262c1f177aed8c52ec8843f1d5cff291560798bb72facf602a79aa35e9b.zip",
+   "bytesRead": 53078,
    "readOn": "2026-10-10"
   }
  }
