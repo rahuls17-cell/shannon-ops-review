@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T08:41:07+00:00",
+ "generatedAt": "2026-10-10T08:51:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22244,6 +22244,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-the-receipts-say-we-paid/eb5b171b44dceb668dfee0146fcf938ab283dfb3721bb30cf64331734c4d7d3d.zip",
    "bytesRead": 58195,
+   "readOn": "2026-10-10"
+  },
+  "the-billing-partners-we-talked-to": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-billing-partners-we-talked-to/f82f65d7370c0e94587822687de4546411534e88298f2358513c2b827462d068.zip",
+   "bytesRead": 51345,
    "readOn": "2026-10-10"
   }
  }
