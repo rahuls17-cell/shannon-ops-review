@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T12:01:05+00:00",
+ "generatedAt": "2026-10-10T12:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22438,6 +22438,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pilot-questions-and-who-came-back/8e8938b0839e25bdb0f95c13fdb1b119d464fd29e9de351474c584b8258221ad.zip",
    "bytesRead": 47787,
+   "readOn": "2026-10-10"
+  },
+  "the-card-charges-without-a-receipt-v4": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-card-charges-without-a-receipt-v4/2909b7473d4dc8a131873b227853c2d337fe032c9cf5edcf789399b4a2e558d4.zip",
+   "bytesRead": 77294,
    "readOn": "2026-10-10"
   }
  }
