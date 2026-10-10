@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T07:51:03+00:00",
+ "generatedAt": "2026-10-10T08:01:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22110,6 +22110,56 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-our-cash-pay-lab-patients-owe/4384f9cab62317cce0ca131fca88992e6f21bb0628577b85cf2b90d3ba42cb00.zip",
    "bytesRead": 53611,
+   "readOn": "2026-10-10"
+  },
+  "sso-trust-boundary-audit": {
+   "connector": true,
+   "services": [
+    "outlook-gym",
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/sso-trust-boundary-audit/ab8622bbb093f6588577f262c801e3499f68edbf81f2d10b1f7cbf2f28b5d65f.zip",
+   "bytesRead": 41481,
+   "readOn": "2026-10-10"
+  },
+  "the-postman-bills-in-the-mail-body": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-postman-bills-in-the-mail-body/4aecb9452cdf8274510aee159d523bd52723cb9365a40ec6aa4c7d99ea5974a1.zip",
+   "bytesRead": 59526,
+   "readOn": "2026-10-10"
+  },
+  "the-social-security-numbers-we-should-not-keep-v3": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-social-security-numbers-we-should-not-keep-v3/d559107a70aea822fd4472f7c2874f3c4ee3cd193ac9ddcfd2b77420a9b325e9.zip",
+   "bytesRead": 58159,
+   "readOn": "2026-10-10"
+  },
+  "winter-lab-costs-never-passed-to-practices": {
+   "connector": true,
+   "services": [
+    "gws-gym",
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/winter-lab-costs-never-passed-to-practices/949f402936bd68bb7dbb2db22ced245215e97823c439a2569d45e1c4b70f8365.zip",
+   "bytesRead": 60648,
    "readOn": "2026-10-10"
   }
  }
