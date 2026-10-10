@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T08:51:04+00:00",
+ "generatedAt": "2026-10-10T09:01:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22256,6 +22256,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-billing-partners-we-talked-to/f82f65d7370c0e94587822687de4546411534e88298f2358513c2b827462d068.zip",
    "bytesRead": 51345,
+   "readOn": "2026-10-10"
+  },
+  "numbers-that-keep-faxing-us": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/numbers-that-keep-faxing-us/2bb3a3e914a6bee4f6a1ed0b8cbf1b0fb6aa23c6b83cc4f9d1fa8aa8f50e592a.zip",
+   "bytesRead": 50779,
+   "readOn": "2026-10-10"
+  },
+  "where-ultrasound-came-up-in-2024": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-ultrasound-came-up-in-2024/edc37386202368b1e29e6ebc22891a0fda1b22935dda3c73ea27448bf98d82b1.zip",
+   "bytesRead": 52014,
+   "readOn": "2026-10-10"
+  },
+  "which-subscriptions-are-failing": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-subscriptions-are-failing/531a8796bdf8e1ba763bb3d0922353513d2bb6d82c1117721cc3f1333736abaa.zip",
+   "bytesRead": 55129,
    "readOn": "2026-10-10"
   }
  }
