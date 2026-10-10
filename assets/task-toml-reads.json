@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T16:11:04+00:00",
+ "generatedAt": "2026-10-10T16:31:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22823,6 +22823,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-shape-these-trackers-are-in/456946b8f5a5d9d2e9f9b564cdc8cd0d325e38d7340c0912b092c73a67fa8f34.zip",
    "bytesRead": 57762,
+   "readOn": "2026-10-10"
+  },
+  "classifier-champion-conflict-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/classifier-champion-conflict-audit/37dab7f723a2dbf19dd43ee96aab9013d38ddc9f29882451510dee1e8d3f772e.zip",
+   "bytesRead": 58650,
+   "readOn": "2026-10-10"
+  },
+  "payment-methods-subscriptions-feed-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/payment-methods-subscriptions-feed-audit/1bb54c40a029ec3125e84bfcc9692c52abb4e59f8918af3112fee4711d1438ad.zip",
+   "bytesRead": 51625,
    "readOn": "2026-10-10"
   }
  }
