@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T13:01:04+00:00",
+ "generatedAt": "2026-10-10T13:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22510,6 +22510,55 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/investor-updates-for-closed-periods/a1dd744e7591e12ab4516d4516a82becb2f1396bf0ecb04a647a6e4d9eadddc2.zip",
    "bytesRead": 62108,
+   "readOn": "2026-10-10"
+  },
+  "appointment-reminder-coverage": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/appointment-reminder-coverage/5d4247c7d4a7a7d28621464e20e1122f7cfc99d82200cd8a63312b83b9fb9bb2.zip",
+   "bytesRead": 55909,
+   "readOn": "2026-10-10"
+  },
+  "method-safeguard-reraise-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/method-safeguard-reraise-audit/c6556419b148bbe34dc51b7f9b76fc84142e723cc20ab88f83579abd4a4e1fcc.zip",
+   "bytesRead": 47707,
+   "readOn": "2026-10-10"
+  },
+  "the-q1-lab-billing-left-in-the-trash": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-q1-lab-billing-left-in-the-trash/f42c927de17ddf2b0aaa9c91b263f07099e1134dd2d54f47ef42bac3b3e65611.zip",
+   "bytesRead": 53524,
+   "readOn": "2026-10-10"
+  },
+  "who-weighed-in-on-the-summer-charting": {
+   "connector": true,
+   "services": [
+    "gws-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/who-weighed-in-on-the-summer-charting/4ce44746391131dc4e5205303c716172abf47393de07982cbe3a2af5756338b5.zip",
+   "bytesRead": 51469,
    "readOn": "2026-10-10"
   }
  }
