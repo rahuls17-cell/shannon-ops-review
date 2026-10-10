@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T06:21:04+00:00",
+ "generatedAt": "2026-10-10T06:51:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21989,6 +21989,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-tier-written-two-ways/15c3c30c3e1e3874a60f4243ce812a64f6f42ded8d86eeb101d067cfd02dabea.zip",
    "bytesRead": 49731,
+   "readOn": "2026-10-10"
+  },
+  "stage-landing-gap-audit": {
+   "connector": true,
+   "services": [
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/stage-landing-gap-audit/905b8383c3e6310ef8ffaf9f3bee3c5f0ca6e37478a75b639a0225772f195e8c.zip",
+   "bytesRead": 38824,
    "readOn": "2026-10-10"
   }
  }
