@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T05:41:04+00:00",
+ "generatedAt": "2026-10-10T06:01:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21941,6 +21941,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/visits-moved-inside-a-week/97353c1ebcc4f7d9594f3f9a8702d9c9d55605d6a8814626760f24a51c8ebe6f.zip",
    "bytesRead": 52644,
+   "readOn": "2026-10-10"
+  },
+  "subscription-charges-that-moved": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/subscription-charges-that-moved/9b989d2deb417d6528e423ff37c56e1d5bf55206fe32917b87c37a237c9cf5f3.zip",
+   "bytesRead": 54048,
+   "readOn": "2026-10-10"
+  },
+  "suggestion-later-takeon-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/suggestion-later-takeon-audit/5c2bac91ae6b5bd4d42827d5984b2106fe471097be1becbdfb51ccc856b329bb.zip",
+   "bytesRead": 46040,
    "readOn": "2026-10-10"
   }
  }
