@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T15:31:31+00:00",
+ "generatedAt": "2026-10-10T15:51:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22775,6 +22775,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-consents-nobody-could-sign/fb6dbc4fce75a2f4028fa8d18f7f8d5d2957bebcf2af179f9cb3b784c6160cd4.zip",
    "bytesRead": 56373,
+   "readOn": "2026-10-10"
+  },
+  "the-org-security-reports-acknowledged-too-late-v5": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-org-security-reports-acknowledged-too-late-v5/7ed83c2ecf0e52cd4bda4c5d1dcc2966f18deb853fb2591d65d222baced7a3f9.zip",
+   "bytesRead": 55437,
    "readOn": "2026-10-10"
   }
  }
