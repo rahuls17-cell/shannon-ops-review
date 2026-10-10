@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T15:51:07+00:00",
+ "generatedAt": "2026-10-10T16:01:23+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22787,6 +22787,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-org-security-reports-acknowledged-too-late-v5/7ed83c2ecf0e52cd4bda4c5d1dcc2966f18deb853fb2591d65d222baced7a3f9.zip",
    "bytesRead": 55437,
+   "readOn": "2026-10-10"
+  },
+  "the-appointments-that-double-booked": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-appointments-that-double-booked/bba4af75c2340789959c96d51f14cf917c6937c7747676f6f77c79351eac6ea3.zip",
+   "bytesRead": 54096,
    "readOn": "2026-10-10"
   }
  }
