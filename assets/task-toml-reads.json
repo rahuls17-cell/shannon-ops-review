@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T08:01:05+00:00",
+ "generatedAt": "2026-10-10T08:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22160,6 +22160,42 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/winter-lab-costs-never-passed-to-practices/949f402936bd68bb7dbb2db22ced245215e97823c439a2569d45e1c4b70f8365.zip",
    "bytesRead": 60648,
+   "readOn": "2026-10-10"
+  },
+  "lab-results-slow-to-come-back": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:9ee229262fbfc9c57b6f5f54e589296c980f68e7d4655cecba12cfe2b393adf3",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-results-slow-to-come-back/a7a23e58d16fd1294a9ef212e8f3be8dcb05c49d7b1f524b9eb5fca923e94505.zip",
+   "bytesRead": 52691,
+   "readOn": "2026-10-10"
+  },
+  "the-first-tier-lines-on-rooted-births-statements": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-first-tier-lines-on-rooted-births-statements/88e36f03ecdea8afcb016d79f82dd69cce1b85ae5d6299108a9885a7411e4324.zip",
+   "bytesRead": 54961,
+   "readOn": "2026-10-10"
+  },
+  "where-invoicing-came-up-in-2024": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-invoicing-came-up-in-2024/a04d66edebfa74b5fae4f90b7f94ffc9afcb114d9131a1d1b09df19614ac776c.zip",
+   "bytesRead": 48350,
    "readOn": "2026-10-10"
   }
  }
