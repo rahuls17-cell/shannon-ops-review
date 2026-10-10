@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T19:51:03+00:00",
+ "generatedAt": "2026-10-10T20:01:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23005,6 +23005,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/helix-safety-threshold-alert-audit/56890fec776836fdb558b33af661925de9c210f721350ce78fe5868c42f17d6f.zip",
    "bytesRead": 61535,
+   "readOn": "2026-10-10"
+  },
+  "reviewers-who-never-said-a-word": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/reviewers-who-never-said-a-word/a4e97196badb0e17e05b73588162c3879277cf249c7384db0eccbb7419b80fc9.zip",
+   "bytesRead": 50821,
    "readOn": "2026-10-10"
   }
  }
