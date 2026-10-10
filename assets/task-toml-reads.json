@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T02:41:03+00:00",
+ "generatedAt": "2026-10-10T02:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21759,6 +21759,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-charges-to-pass-on-to-patients/6c0e1044ee24230de25f0680bf8fe08b5ca3bf9a9cdbfb7a14be23fe05df03a7.zip",
    "bytesRead": 48610,
+   "readOn": "2026-10-10"
+  },
+  "9001459-vendors-card": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/9001459-vendors-card/24c5bcd45052de0a64538703c8fe70da6ca14f10cad16007571d8a0228c28d97.zip",
+   "bytesRead": 49878,
    "readOn": "2026-10-10"
   }
  }
