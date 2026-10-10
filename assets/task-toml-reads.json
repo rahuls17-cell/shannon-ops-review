@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T05:31:07+00:00",
+ "generatedAt": "2026-10-10T05:41:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21904,6 +21904,43 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-user-table-left-open/4fe8414d0706deb96786e17416f9eb34864783d53d78451c657835b7ab65f494.zip",
    "bytesRead": 45991,
+   "readOn": "2026-10-10"
+  },
+  "billing-load-evidence-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/billing-load-evidence-audit/da8ee7f5b676ef2d8c6c13bef4035aa6722e6c6a22748a47b79cf935c620c5b0.zip",
+   "bytesRead": 45694,
+   "readOn": "2026-10-10"
+  },
+  "code-security-switches-off-in-my-organisations": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/code-security-switches-off-in-my-organisations/4d499eab70b633121a82a54faa21ec16628a455c19661e97c5e68b149e326fe3.zip",
+   "bytesRead": 54921,
+   "readOn": "2026-10-10"
+  },
+  "visits-moved-inside-a-week": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/visits-moved-inside-a-week/97353c1ebcc4f7d9594f3f9a8702d9c9d55605d6a8814626760f24a51c8ebe6f.zip",
+   "bytesRead": 52644,
    "readOn": "2026-10-10"
   }
  }
