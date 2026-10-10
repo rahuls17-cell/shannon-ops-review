@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T02:11:04+00:00",
+ "generatedAt": "2026-10-10T02:31:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21735,6 +21735,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/patient-sheets-shared-beyond-the-care-team/c9d886f0fc7e9cf776a2604c83a858ff22ef138a9a2b310ce7443e8bb18e4d58.zip",
    "bytesRead": 57640,
+   "readOn": "2026-10-10"
+  },
+  "model-validation-inventory-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/model-validation-inventory-audit/fdbefd29b922f624e65dd8dbc4922b40c4ce06eaf8e7bf372eb9b6e4875c0b08.zip",
+   "bytesRead": 58978,
    "readOn": "2026-10-10"
   }
  }
