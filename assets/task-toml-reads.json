@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T16:01:23+00:00",
+ "generatedAt": "2026-10-10T16:11:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22799,6 +22799,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-appointments-that-double-booked/bba4af75c2340789959c96d51f14cf917c6937c7747676f6f77c79351eac6ea3.zip",
    "bytesRead": 54096,
+   "readOn": "2026-10-10"
+  },
+  "the-compliance-tasks-still-on-the-list": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-compliance-tasks-still-on-the-list/70b102a8f495b590feb7c6adace1dcdf7b103f7c5e332b24d54a481f6e166885.zip",
+   "bytesRead": 57441,
+   "readOn": "2026-10-10"
+  },
+  "what-shape-these-trackers-are-in": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness-aster@sha256:3623dc5a28e7e7823e2760342ee389c5b82702c6e5e3739cc918bb4fea69ab44",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-shape-these-trackers-are-in/456946b8f5a5d9d2e9f9b564cdc8cd0d325e38d7340c0912b092c73a67fa8f34.zip",
+   "bytesRead": 57762,
    "readOn": "2026-10-10"
   }
  }
