@@ -114,14 +114,44 @@
     };
   }
 
-  function prepareDeliveryAudit(payload, drivePayload, ownersPayload, sheetPayload) {
+  // The ops team's hand review of rows the bucket could not settle
+  // (assets/trainer-review.json, from tools/data/trainer-review.tsv): one task,
+  // its batch, and the trainer the review settled on. It names one task and says
+  // why, so it comes before the trainer credit sheet and the bucket. A review
+  // that found no trainer (an in-house or DataOS variant) leaves the task without
+  // one and says so.
+  const reviewKey = (batch, task) => `${batch}|${String(task || '').trim().toLowerCase().replace(/^(harbor|obi)\//, '')}`;
+  function trainerReviewIndex(reviewPayload) {
+    if (!reviewPayload || !Array.isArray(reviewPayload.entries)) return null;
+    return new Map(reviewPayload.entries.map(entry => [reviewKey(entry.batch, entry.task), entry]));
+  }
+  function withReviewedTrainer(row, index) {
+    const entry = index && (index.get(reviewKey(row.batch, row.task)) || index.get(reviewKey(row.batch, row.packageName)));
+    if (!entry) return row;
+    const named = Boolean(row.trainer) && String(row.trainer).toLowerCase() !== 'unattributed';
+    if (!entry.trainer) return {...row, reviewedNoTrainer: entry.trainerType || 'no trainer', reviewConfidence: entry.confidence};
+    return {
+      ...row,
+      trainer: entry.trainer,
+      source: 'Trainer review',
+      trainerRoute: 'review',
+      ambiguous: false,
+      reviewConfidence: entry.confidence,
+      reviewMapping: entry.mapping,
+      contestedBefore: row.contestedBefore || (named ? [] : row.ownerCandidates || []),
+      bucketTrainer: row.bucketTrainer || (named && String(row.trainer).toLowerCase() !== entry.trainer ? row.trainer : null),
+    };
+  }
+
+  function prepareDeliveryAudit(payload, drivePayload, ownersPayload, sheetPayload, reviewPayload) {
     if (!payload || !Array.isArray(payload.rows)) throw new Error('No delivery audit asset loaded');
     const audited = new Set(payload.rows.map(row => row.batch));
     const owners = ownersPayload && ownersPayload.owners ? ownersPayload.owners : null;
     const sheet = trainerSheetIndex(sheetPayload);
+    const review = trainerReviewIndex(reviewPayload);
     const driveRows = (drivePayload && Array.isArray(drivePayload.rows) ? drivePayload.rows : [])
       .filter(row => !audited.has(row.batch))
-      .map(row => withSheetTrainer(withOwner({...row, fromManifest: true}, owners), sheet));
+      .map(row => withReviewedTrainer(withSheetTrainer(withOwner({...row, fromManifest: true}, owners), sheet), review));
     // Drive files part of the audited Batches 1 to 4.1 as Company Bench (the
     // 3 Oct layout's "Batch N - CompanyBench" folders). Those audited rows take
     // that bench; every other audited row is the Computer Bench audit it was.
@@ -174,12 +204,17 @@
           generatedAt: ownersPayload.generatedAt,
           scanGeneratedAt: ownersPayload.scanGeneratedAt,
           attributed: driveRows.filter(r => r.trainer && r.trainer !== 'Unattributed').length,
-          contested: driveRows.filter(r => (r.ownerCandidates || []).length > 1 && r.trainerRoute !== 'sheet').length,
+          contested: driveRows.filter(r => (r.ownerCandidates || []).length > 1 && !['sheet', 'review'].includes(r.trainerRoute)).length,
         } : null,
         sheet: sheetPayload ? {
           generatedAt: sheetPayload.generatedAt,
           source: sheetPayload.source || null,
           filled: driveRows.filter(r => r.trainerRoute === 'sheet').length,
+        } : null,
+        review: reviewPayload ? {
+          generatedAt: reviewPayload.generatedAt,
+          named: driveRows.filter(r => r.trainerRoute === 'review').length,
+          noTrainer: driveRows.filter(r => r.reviewedNoTrainer).length,
         } : null,
       } : null,
       rows,

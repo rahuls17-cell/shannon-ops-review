@@ -1,0 +1,175 @@
+{
+ "generatedAt": "2026-10-10T16:31:17+00:00",
+ "source": "ops review of unattributed and contested Delivery rows (tools/data/trainer-review.tsv)",
+ "rule": "a reviewed task takes the review's trainer, ahead of the trainer credit sheet and the bucket; a review with no trainer leaves the task without one and says why",
+ "entries": [
+  {
+   "task": "the-cover-list-reaches-strangers",
+   "batch": "Batch 5.1",
+   "trainer": "akash.d3@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Found - harbor only"
+  },
+  {
+   "task": "the-open-door-nobody-watches",
+   "batch": "Batch 5.1",
+   "trainer": "akash.d3@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Found - harbor only"
+  },
+  {
+   "task": "opened-files-migration-volume-signoff-realdocoutput",
+   "batch": "Batch 2",
+   "trainer": "arjun.sikhwal@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Found - Task Tracker + harbor"
+  },
+  {
+   "task": "how-much-of-my-drive-is-link-only-realdocoutput",
+   "batch": "Batch 2",
+   "trainer": "ghosh.m1@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Found - Task Tracker + harbor"
+  },
+  {
+   "task": "diagnose-failed-2-500-3-d-secure-card-purchase-on-card-49391",
+   "batch": "Batch 5.1",
+   "trainer": "luis.m5@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Found - Task Tracker + harbor"
+  },
+  {
+   "task": "general-rooms-what-the-scroll-hides-realdocoutput",
+   "batch": "Batch 4.1",
+   "trainer": "preet.s@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Found - Task Tracker + harbor"
+  },
+  {
+   "task": "the-owner-column-is-not-an-owner",
+   "batch": "Batch 5.1",
+   "trainer": "saddam.h1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Found - harbor only"
+  },
+  {
+   "task": "the-money-nobody-picked-up",
+   "batch": "Batch 5.1",
+   "trainer": "sahil.garg-fx@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Found - harbor only"
+  },
+  {
+   "task": "daily-ach-debit-pull-batch-report-2024-08-30-sameday-vs-standard-retur",
+   "batch": "Batch 5.1",
+   "trainer": "ammar.a@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "Medium",
+   "mapping": "Found - Task Tracker"
+  },
+  {
+   "task": "intake-v2-and-the-transfers-still-owed",
+   "batch": "Batch 5.1",
+   "trainer": "kirtilekha.b@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "Medium",
+   "mapping": "Found - Task Tracker"
+  },
+  {
+   "task": "file-data-fix-request-for-closed-accounts-missing-closed-at-timestamps",
+   "batch": "Batch 5.1",
+   "trainer": "miroslav.m@turing.com",
+   "trainerType": "Lead",
+   "confidence": "Medium",
+   "mapping": "Found - Task Tracker"
+  },
+  {
+   "task": "verify-mcdonald-s-19-38-overcharge-dispute-outcome-for-customer-50567",
+   "batch": "Batch 5.1",
+   "trainer": "mohamed.a@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "Medium",
+   "mapping": "Found - Task Tracker"
+  },
+  {
+   "task": "diagnose-why-check-deposit-2329-for-254-01-ended-in-returned-status",
+   "batch": "Batch 5.1",
+   "trainer": "rana.a3@turing.com",
+   "trainerType": "Lead (offboarded 16-Sep)",
+   "confidence": "Medium",
+   "mapping": "Found - harbor only"
+  },
+  {
+   "task": "canceled-funding-transfer-retries-next-day",
+   "batch": "Batch 5.1",
+   "trainer": "saad.m3@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "Medium",
+   "mapping": "Found - Task Tracker"
+  },
+  {
+   "task": "recurring-bill-double-pay-audit-after-due-date-edits-sql-confluence-slack-jira",
+   "batch": "CompanyBench 2",
+   "trainer": "daniel.q@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "Low",
+   "mapping": "Possible - derived variant"
+  },
+  {
+   "task": "ach-pull-583848-support-evidence-review",
+   "batch": "Batch 5.1",
+   "trainer": "gyanaranjan.s@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "Low",
+   "mapping": "Likely - renamed"
+  },
+  {
+   "task": "check-deposit-1931-redeposit-review",
+   "batch": "Batch 5.1",
+   "trainer": "gyanaranjan.s@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "Low",
+   "mapping": "Likely - renamed"
+  },
+  {
+   "task": "ach-debit-hold-schedule-conformance-audit-sql-confluence-slack-jira",
+   "batch": "CompanyBench 2",
+   "trainer": null,
+   "trainerType": "In-house / DataOS (leads)",
+   "confidence": "No trainer",
+   "mapping": "Found - Data-OS only (no trainer)"
+  },
+  {
+   "task": "hard-regcc-01-reg-cc-large-deposit-exception-actual-funds-availability",
+   "batch": "CompanyBench 2",
+   "trainer": null,
+   "trainerType": "In-house / DataOS (leads)",
+   "confidence": "No trainer",
+   "mapping": "Found - Data-OS only (no trainer)"
+  },
+  {
+   "task": "rubric-demo-settled-outbound-transfers-slack-deliverable-atomic-rubrics",
+   "batch": "CompanyBench 2",
+   "trainer": null,
+   "trainerType": "In-house / DataOS (leads)",
+   "confidence": "No trainer",
+   "mapping": "Found - Data-OS only (no trainer)"
+  },
+  {
+   "task": "verify-permanent-credit-issued-on-9-dispute-tx-11kc8dqb2s00f79-case-11",
+   "batch": "CompanyBench 2",
+   "trainer": null,
+   "trainerType": "Unassigned",
+   "confidence": "No trainer",
+   "mapping": "Found - Task Tracker only (no trainer)"
+  }
+ ]
+}

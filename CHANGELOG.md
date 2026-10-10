@@ -9,6 +9,18 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Delivery tab: the hand-reviewed trainer table
+- **21 Delivery tasks take their trainer from the ops team's hand review** of rows
+  the bucket could not settle (`tools/data/trainer-review.tsv` ->
+  `assets/trainer-review.json`, built by `tools/build_trainer_review.py`; task,
+  batch, trainer, trainer type, confidence and how it was found - no notes or
+  evidence). A review names one task and says why, so it comes before the
+  trainer credit sheet and the bucket, on either bench; the bucket's candidates
+  or trainer stay on the row. 17 tasks named (Batches 2, 4.1, 5.1 and
+  CompanyBench 2; 9 of them were Contested, 8 Unattributed); 4 CompanyBench 2
+  tasks reviewed as having no trainer (in-house / DataOS variants, one
+  unassigned) stay without one. Source reads "Trainer review".
+
 ## v4.3 - 2026-10-09, staging promoted to production
 
 ### Delivery tab: Batch 13.1
