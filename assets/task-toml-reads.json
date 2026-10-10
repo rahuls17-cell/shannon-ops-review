@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T07:31:05+00:00",
+ "generatedAt": "2026-10-10T07:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22086,6 +22086,30 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pilot-threads-answered-within-the-hour/e37406b4dafa29622d22cb1596471db5388b2b1f25932afccb942cc6dd4e90cb.zip",
    "bytesRead": 52034,
+   "readOn": "2026-10-10"
+  },
+  "the-pre-seed-files-due-for-archiving": {
+   "connector": true,
+   "services": [
+    "gws-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-pre-seed-files-due-for-archiving/eea22246e2e548eb14cb5bd7d6798b221882ee07e740a0ea19f11d5d9b7b322b.zip",
+   "bytesRead": 51645,
+   "readOn": "2026-10-10"
+  },
+  "what-our-cash-pay-lab-patients-owe": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/what-our-cash-pay-lab-patients-owe/4384f9cab62317cce0ca131fca88992e6f21bb0628577b85cf2b90d3ba42cb00.zip",
+   "bytesRead": 53611,
    "readOn": "2026-10-10"
   }
  }
