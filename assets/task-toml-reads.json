@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T14:31:04+00:00",
+ "generatedAt": "2026-10-10T14:41:02+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -22655,6 +22655,18 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-security-settings-on-off-or-never-reported/b151b638c67851b7643006e2f257781fe244cf84988dcb9969a8707d9f275694.zip",
    "bytesRead": 54087,
+   "readOn": "2026-10-10"
+  },
+  "the-software-we-prepaid-at-year-end": {
+   "connector": true,
+   "services": [
+    "outlook-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-software-we-prepaid-at-year-end/b6383839195f4adfff87b078b813bdb3718eddc9e39fb5e5e06e3f9bdc6425f9.zip",
+   "bytesRead": 67403,
    "readOn": "2026-10-10"
   }
  }
