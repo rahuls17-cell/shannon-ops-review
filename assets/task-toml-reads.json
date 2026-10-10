@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T05:11:05+00:00",
+ "generatedAt": "2026-10-10T05:21:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -21855,6 +21855,31 @@
    "bench": "company bench aster",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/strategy-folders-read-only/27c3605535fe82bcbfc0e72a26ab510536d478249914f22f36c0aa35012e862a.zip",
    "bytesRead": 51335,
+   "readOn": "2026-10-10"
+  },
+  "the-dosespot-clinics-to-close": {
+   "connector": true,
+   "services": [
+    "gws-gym",
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/the-dosespot-clinics-to-close/ec158fcd442de060b3632ee348387fb20249ee10ade5ac3d7fe463703e8f29fe.zip",
+   "bytesRead": 53071,
+   "readOn": "2026-10-10"
+  },
+  "where-1password-came-up-in-2023": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/connectors-harness-aster@sha256:eac5acca5dbeddca340babc31ba4b4047bc0e5a880f66fef97181609da4a826a",
+   "bench": "company bench aster",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/where-1password-came-up-in-2023/7cd9a721164b4d1462685db349d1773a5390e5be4e9ad649fa2388ed08355758.zip",
+   "bytesRead": 50042,
    "readOn": "2026-10-10"
   }
  }
