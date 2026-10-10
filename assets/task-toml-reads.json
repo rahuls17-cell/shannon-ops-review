@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T23:01:03+00:00",
+ "generatedAt": "2026-10-10T23:51:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23202,6 +23202,19 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/meeting-guest-exposure-audit/9d5982ebc44aecc5adaa73950a858d8557b925b355e5934688bca31536717891.zip",
    "bytesRead": 46959,
+   "readOn": "2026-10-10"
+  },
+  "database-dump-disposal-audit": {
+   "connector": true,
+   "services": [
+    "outlook-gym",
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/database-dump-disposal-audit/f3b4e923ec614127fd6de1ae7b9d132e75d649dae5c25a51e0a7fc66d0119ada.zip",
+   "bytesRead": 41116,
    "readOn": "2026-10-10"
   }
  }
