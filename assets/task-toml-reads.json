@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T14:31:11+00:00",
+ "generatedAt": "2026-10-11T14:51:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24046,6 +24046,31 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/q3-compute-variance-bridge/3e31db672ceafad69ac8c001b4cb7f688ac1f60d9d7d63dcf1678be279d8b82c.zip",
    "bytesRead": 46581,
+   "readOn": "2026-10-11"
+  },
+  "finance-load-stage-override": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-load-stage-override/47b58b4cdb142268e9788889b16fe83d65fa4169416cc0958753c3eae4be1400.zip",
+   "bytesRead": 48753,
+   "readOn": "2026-10-11"
+  },
+  "which-fixes-are-actually-somebodys": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "us-central1-docker.pkg.dev/delivery-g-obi/connectors-rl-gym/connectors-harness@sha256:9838c0f4d39fc81a11797c4a2d7bf2ccc0b3373d10130aef25bae061575aae24",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/which-fixes-are-actually-somebodys/4931664aefeaa01a182e92701e91833021b3e99adeeffee32bca6a617efdbb1b.zip",
+   "bytesRead": 53799,
    "readOn": "2026-10-11"
   }
  }
