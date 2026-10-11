@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T06:01:09+00:00",
+ "generatedAt": "2026-10-11T06:21:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23532,6 +23532,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/soc2-quarterly-evidence-audit/d537f7e3e4c3dc7e1036db0b1f3b93c02cda3f7db327c289657f9a95d4d13384.zip",
    "bytesRead": 52729,
+   "readOn": "2026-10-11"
+  },
+  "closeout-signoff-authority-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/closeout-signoff-authority-audit/bcbe3868d4d2dc002f3ca8a28e71f097dbfb11a1050a92a13d327b8910b892ed.zip",
+   "bytesRead": 45323,
+   "readOn": "2026-10-11"
+  },
+  "teaching-tool-commit-credit-audit": {
+   "connector": true,
+   "services": [
+    "github-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/teaching-tool-commit-credit-audit/2a63f34f20ed112b195673db692acb3cbd8d35023d55d3845dca3f23250096fe.zip",
+   "bytesRead": 53055,
    "readOn": "2026-10-11"
   }
  }
