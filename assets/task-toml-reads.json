@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T05:21:04+00:00",
+ "generatedAt": "2026-10-11T05:51:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23495,6 +23495,19 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unanswered-hotfix-post-audit/0a83981931658bc20313af047aa439e33a13e4c3564c21dde90be09212325882.zip",
    "bytesRead": 44079,
+   "readOn": "2026-10-11"
+  },
+  "refund-control-exception-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "shopify-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/refund-control-exception-audit/cc9a886d397495a66435f2281bfa7e801bbe26009c59d3712038ee24da6477d7.zip",
+   "bytesRead": 45121,
    "readOn": "2026-10-11"
   }
  }
