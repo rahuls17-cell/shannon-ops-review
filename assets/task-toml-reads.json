@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T17:51:06+00:00",
+ "generatedAt": "2026-10-11T18:11:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24156,6 +24156,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/outcome-record-routing-audit/c9f2c7476caedbccb452d601029ea848933d0171be1289bca87ee434d92236b2.zip",
    "bytesRead": 47263,
+   "readOn": "2026-10-11"
+  },
+  "vendor-contract-tracker-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/vendor-contract-tracker-audit/a0fff874e7d13b4bef749bedd75ca263702585d66fb0ee84b6be9643bcf1fa99.zip",
+   "bytesRead": 49535,
+   "readOn": "2026-10-11"
+  },
+  "workspace-admin-role-scope-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/workspace-admin-role-scope-audit/a1fc3684eb91dbcbe4e71727d9c06241ba693c9e284a0df3e583a6d86da01cb6.zip",
+   "bytesRead": 43155,
    "readOn": "2026-10-11"
   }
  }
