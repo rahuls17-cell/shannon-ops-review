@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T00:41:03+00:00",
+ "generatedAt": "2026-10-11T00:51:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23288,6 +23288,31 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/invoice-export-loopback-audit/82f50855b8edcba9adcbb6f74616e0147c0bc1f21cdb603ac96f3a16ba419cb9.zip",
    "bytesRead": 51806,
+   "readOn": "2026-10-11"
+  },
+  "failure-autosuspend-leak-cost": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/failure-autosuspend-leak-cost/b48d192a707b36b3fb7f8203594f4a2e08e964dc6853c1a53aeb8d6d78edbfe1.zip",
+   "bytesRead": 51374,
+   "readOn": "2026-10-11"
+  },
+  "renewal-commitment-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/renewal-commitment-audit/0b21574e2c580c839dee995f5885b3ead7cc8d21a2cce4f1595a50700170abec.zip",
+   "bytesRead": 47289,
    "readOn": "2026-10-11"
   }
  }
