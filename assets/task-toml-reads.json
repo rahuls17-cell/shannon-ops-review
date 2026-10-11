@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T05:51:05+00:00",
+ "generatedAt": "2026-10-11T06:01:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23508,6 +23508,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/refund-control-exception-audit/cc9a886d397495a66435f2281bfa7e801bbe26009c59d3712038ee24da6477d7.zip",
    "bytesRead": 45121,
+   "readOn": "2026-10-11"
+  },
+  "licensed-dataset-use-audit": {
+   "connector": true,
+   "services": [
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/licensed-dataset-use-audit/0f8a199f83df891c19be68b290f05ff7f7937300d116405ce58119666226becd.zip",
+   "bytesRead": 47449,
+   "readOn": "2026-10-11"
+  },
+  "soc2-quarterly-evidence-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/soc2-quarterly-evidence-audit/d537f7e3e4c3dc7e1036db0b1f3b93c02cda3f7db327c289657f9a95d4d13384.zip",
+   "bytesRead": 52729,
    "readOn": "2026-10-11"
   }
  }
