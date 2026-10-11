@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T02:41:01+00:00",
+ "generatedAt": "2026-10-11T03:31:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23399,6 +23399,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/stage-gate-score-floor-audit/ea1b425183c465726b27dcfd67f4edbfdf4e44e8142d50980fe456bf1bc6a0fc.zip",
    "bytesRead": 44488,
+   "readOn": "2026-10-11"
+  },
+  "decision-request-pi-input-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/decision-request-pi-input-audit/626a43cb7c570fe95be68d6f2150e63da4ae2af28b076d2d328b8ddaf84ff6fd.zip",
+   "bytesRead": 41993,
+   "readOn": "2026-10-11"
+  },
+  "initiative-compliance-hold-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/initiative-compliance-hold-audit/5603ba064b3097a1354159d3cd3d9d4f2d116df4642020017a9d455f295cffdc.zip",
+   "bytesRead": 44490,
    "readOn": "2026-10-11"
   }
  }
