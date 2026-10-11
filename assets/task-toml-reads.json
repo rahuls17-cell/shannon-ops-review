@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T02:21:03+00:00",
+ "generatedAt": "2026-10-11T02:31:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23374,6 +23374,19 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/finance-table-writer-audit/8f6ad33358766876d128ac8c13c6063dd3a67e844c993e591e45d11905cbb70e.zip",
    "bytesRead": 47901,
+   "readOn": "2026-10-11"
+  },
+  "encounter-followup-closure-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/encounter-followup-closure-audit/2ef41d3cb70a396afca01ce1dda308433d4a61d970cd45dc63dba719331f25fa.zip",
+   "bytesRead": 53904,
    "readOn": "2026-10-11"
   }
  }
