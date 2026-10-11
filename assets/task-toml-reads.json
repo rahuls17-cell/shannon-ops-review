@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T14:01:07+00:00",
+ "generatedAt": "2026-10-11T14:31:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23996,6 +23996,56 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/instrument-fix-owner-audit/a108b45a3227ac7c2336cab9ffc73166a8ec751b03be8614ee4413ed584a7f39.zip",
    "bytesRead": 46854,
+   "readOn": "2026-10-11"
+  },
+  "closeout-named-owner-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/closeout-named-owner-audit/9a990a1c1249751a3f0c2d62b81bd2787e0ac69841c97f12a72a62b9620541c2.zip",
+   "bytesRead": 42894,
+   "readOn": "2026-10-11"
+  },
+  "issue-halfhour-reply-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/issue-halfhour-reply-audit/4d0988ec5ea32a61172b3f8813d8b23184c1abe137bd8b566d4aa5c2e1c05998.zip",
+   "bytesRead": 42820,
+   "readOn": "2026-10-11"
+  },
+  "paid-order-revenue-cutoff-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "shopify-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/paid-order-revenue-cutoff-audit/8bd2e1c021fedf0bdd49166ec52b0dc8bffa67e88b12100c7a8143dd0392d288.zip",
+   "bytesRead": 47670,
+   "readOn": "2026-10-11"
+  },
+  "q3-compute-variance-bridge": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/q3-compute-variance-bridge/3e31db672ceafad69ac8c001b4cb7f688ac1f60d9d7d63dcf1678be279d8b82c.zip",
+   "bytesRead": 46581,
    "readOn": "2026-10-11"
   }
  }
