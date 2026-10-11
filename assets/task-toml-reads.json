@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T08:11:09+00:00",
+ "generatedAt": "2026-10-11T08:21:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23689,6 +23689,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/helix-adverse-event-log-audit/b5fee39353804631b05131a62477b5b8c8fa10e4fc9a7154fa069b193f2fd3ba.zip",
    "bytesRead": 45296,
+   "readOn": "2026-10-11"
+  },
+  "enrollment-first-visit-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/enrollment-first-visit-audit/de16825fa57a77848af9f203201f2e21071199a4baaa569f392ddece6aa1aede.zip",
+   "bytesRead": 40814,
    "readOn": "2026-10-11"
   }
  }
