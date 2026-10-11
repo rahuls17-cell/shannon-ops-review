@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T06:31:03+00:00",
+ "generatedAt": "2026-10-11T06:41:01+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23568,6 +23568,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/inbound-contribution-licence-audit/32e48b5bc299eb03c42e19b43b9093e05d7d66438e80db5f59b5cc2e6d22377f.zip",
    "bytesRead": 48518,
+   "readOn": "2026-10-11"
+  },
+  "order-ledger-integrity-audit": {
+   "connector": true,
+   "services": [
+    "shopify-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/order-ledger-integrity-audit/c9c942f2a550dff6cb9c9b2b5ec2d5e96a999a56b9057075711d46b4389e3454.zip",
+   "bytesRead": 40172,
    "readOn": "2026-10-11"
   }
  }
