@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T15:41:13+00:00",
+ "generatedAt": "2026-10-11T15:51:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24083,6 +24083,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/helix-endpoint-source-window-audit/1d83fbe037b7b41076ab250e00638ceaeef9148a521796ca7f945acfcd40099e.zip",
    "bytesRead": 47684,
+   "readOn": "2026-10-11"
+  },
+  "evidence-filing-obligation-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/evidence-filing-obligation-audit/b3892cb37799abc5ae92afe069d6fdcbc3f4581ba78f0ddd915344db54dbece0.zip",
+   "bytesRead": 55141,
    "readOn": "2026-10-11"
   }
  }
