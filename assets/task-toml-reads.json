@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T08:51:03+00:00",
+ "generatedAt": "2026-10-11T09:21:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23713,6 +23713,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/helix-visit-window-timeline-audit/1df810f8c4b9f4ecf89ca1a3501d96d285f0dc4df13c3360400adea7ad65d659.zip",
    "bytesRead": 61169,
+   "readOn": "2026-10-11"
+  },
+  "fy2025-budget-signoff-corroboration-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fy2025-budget-signoff-corroboration-audit/b56d5e3d40ba74c0230f20dd740094d6044fa6093acf46e857c79a6245672e5d.zip",
+   "bytesRead": 48662,
+   "readOn": "2026-10-11"
+  },
+  "lone-working-checkin-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lone-working-checkin-audit/90637b230035d04ed7caf5c63b9e95998a4fcc2bb652fff43ae624ab9ea7a5f0.zip",
+   "bytesRead": 46627,
    "readOn": "2026-10-11"
   }
  }
