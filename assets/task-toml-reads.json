@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T10:31:09+00:00",
+ "generatedAt": "2026-10-11T10:51:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23862,6 +23862,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/revenue-spend-close-readiness/77107cd6666ab4632db3085071867f359c3a640bb59ee3ab3be003481133e9c5.zip",
    "bytesRead": 48004,
+   "readOn": "2026-10-11"
+  },
+  "research-note-citability-audit": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/research-note-citability-audit/e8ac7ea705b1eb8993e34f428e3f8c2add554c4ec977be2fb73794e09e2d4560.zip",
+   "bytesRead": 57087,
    "readOn": "2026-10-11"
   }
  }
