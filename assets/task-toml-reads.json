@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T03:41:05+00:00",
+ "generatedAt": "2026-10-11T04:01:14+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23435,6 +23435,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/software-paper-contributor-roster-audit/ca3c06ab86974b003db45758b4e095e8df4b529b40d8ef26d10375328da22362.zip",
    "bytesRead": 61974,
+   "readOn": "2026-10-11"
+  },
+  "confidential-meeting-invitee-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/confidential-meeting-invitee-audit/d609892773d1092bad96a59f2081c1401dc627b5c98ecf4fbfda28ab7b43aaf9.zip",
+   "bytesRead": 55189,
+   "readOn": "2026-10-11"
+  },
+  "equipment-lookback-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/equipment-lookback-audit/5522b5cf9a73369da2975ed65a078e00f4a584b20282f4f93580e392758e7b89.zip",
+   "bytesRead": 43351,
    "readOn": "2026-10-11"
   }
  }
