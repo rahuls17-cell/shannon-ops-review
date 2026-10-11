@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T04:31:05+00:00",
+ "generatedAt": "2026-10-11T05:21:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23483,6 +23483,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/offsite-safety-fix-audit/19a98a30daf5670bd9c3f7c2506a120862f7b9806e1fe7c92861c8b9886ffe86.zip",
    "bytesRead": 46050,
+   "readOn": "2026-10-11"
+  },
+  "unanswered-hotfix-post-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/unanswered-hotfix-post-audit/0a83981931658bc20313af047aa439e33a13e4c3564c21dde90be09212325882.zip",
+   "bytesRead": 44079,
    "readOn": "2026-10-11"
   }
  }
