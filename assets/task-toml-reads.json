@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T10:21:03+00:00",
+ "generatedAt": "2026-10-11T10:31:09+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23824,6 +23824,44 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fedramp-ksi-ownership-audit/4d0cf32ddbc24be4e2d8dccf8bc183f6313056e278a220beb2f9d95bd3a98d86.zip",
    "bytesRead": 47754,
+   "readOn": "2026-10-11"
+  },
+  "calibration-lookahead-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/calibration-lookahead-audit/5a4c8633118e764ee2a66e45f72969680e1c339b8c81a79e84c7277bc75c1752.zip",
+   "bytesRead": 48900,
+   "readOn": "2026-10-11"
+  },
+  "records-edit-rights-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/records-edit-rights-audit/95434884e4e689a04bf1f0c1429e13769f915f340ac3cca63d802ab7b76be26b.zip",
+   "bytesRead": 43783,
+   "readOn": "2026-10-11"
+  },
+  "revenue-spend-close-readiness": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/revenue-spend-close-readiness/77107cd6666ab4632db3085071867f359c3a640bb59ee3ab3be003481133e9c5.zip",
+   "bytesRead": 48004,
    "readOn": "2026-10-11"
   }
  }
