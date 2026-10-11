@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T00:21:02+00:00",
+ "generatedAt": "2026-10-11T00:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23239,6 +23239,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/invitation-data-handling-audit/97fe1a6747caa3c1b76f1ea2f76775fa4c1b2eec5a7c55c7632cc7bc46818063.zip",
    "bytesRead": 48502,
+   "readOn": "2026-10-11"
+  },
+  "manuscript-recheck-request-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/manuscript-recheck-request-audit/7c0016ac65f0d1542e21630fa2c9b8cf7f7d7717e043d489e58d682c2b9472bc.zip",
+   "bytesRead": 46475,
+   "readOn": "2026-10-11"
+  },
+  "rota-commitment-handover-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/rota-commitment-handover-audit/2a51da781b30cfae2b77efbaf8fc92cda2e75fde987d8775f98c462b6fc55fc1.zip",
+   "bytesRead": 46956,
    "readOn": "2026-10-11"
   }
  }
