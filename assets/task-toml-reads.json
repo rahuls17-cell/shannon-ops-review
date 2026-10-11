@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T07:11:05+00:00",
+ "generatedAt": "2026-10-11T07:31:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23616,6 +23616,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/compliance-remediation-control-audit/75d11c553caa2dad9ddb38e49a22978c19cbf9a3d4bfc37b35edd99d3b06fe6b.zip",
    "bytesRead": 78644,
+   "readOn": "2026-10-11"
+  },
+  "pause-safeguard-gap-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/pause-safeguard-gap-audit/fdd6188ad5c90ef0b0e622bc677c646eaefa8dcc816b156a297b2e2a0361efce.zip",
+   "bytesRead": 47361,
+   "readOn": "2026-10-11"
+  },
+  "pi-meeting-coverage-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/pi-meeting-coverage-audit/9d6c64f91914e18c38e9f6b7478f370f29021e8169b020f08e22376b8d04a0e8.zip",
+   "bytesRead": 45980,
    "readOn": "2026-10-11"
   }
  }
