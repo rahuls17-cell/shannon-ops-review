@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T22:11:07+00:00",
+ "generatedAt": "2026-10-11T23:31:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24265,6 +24265,19 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/issue-first-reply-audit/b13ffaa8cf5fa56ff599e6b45d5dec4782be7700d74f9733720a0097968dbaed.zip",
    "bytesRead": 45609,
+   "readOn": "2026-10-11"
+  },
+  "billing-recon-coverage-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/billing-recon-coverage-audit/183c7abc362642e2d013c96d3501aa4a045969f0cf820c6e3d6a05a789988a16.zip",
+   "bytesRead": 44360,
    "readOn": "2026-10-11"
   }
  }
