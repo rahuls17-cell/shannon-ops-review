@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T01:01:05+00:00",
+ "generatedAt": "2026-10-11T01:51:00+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23325,6 +23325,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/small-spend-approval-authority/c96b820a059fe266c1237eef408651fb04dcb32786cd7856e99776a352c0de98.zip",
    "bytesRead": 48147,
+   "readOn": "2026-10-11"
+  },
+  "custodian-litigation-hold-audit": {
+   "connector": true,
+   "services": [
+    "teams-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/custodian-litigation-hold-audit/d2a3f764a5b705c2d271bd430560958fc66edf4a059399b62b254979da885791.zip",
+   "bytesRead": 43885,
+   "readOn": "2026-10-11"
+  },
+  "reagent-first-check-turnaround-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/reagent-first-check-turnaround-audit/fcffcd734bbfd7e61f948207befeb2b9a83ebc62a85d372471c530427385e708.zip",
+   "bytesRead": 48601,
    "readOn": "2026-10-11"
   }
  }
