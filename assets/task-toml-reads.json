@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T16:41:03+00:00",
+ "generatedAt": "2026-10-11T17:11:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24120,6 +24120,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/q3-finance-extract-audit/972ecf712a76e254a5a1653cb95cbf90acc57357f81cdbc0e01fd3851bc95c44.zip",
    "bytesRead": 49043,
+   "readOn": "2026-10-11"
+  },
+  "aliquot-parent-release-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/aliquot-parent-release-audit/80202ab7be0629b10c1cc5f3e79d9dc9287ff0dcbc03b690dc6a2914a140550e.zip",
+   "bytesRead": 45015,
+   "readOn": "2026-10-11"
+  },
+  "review-onpaper-confirm-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/review-onpaper-confirm-audit/0fc045041f60177452f7184cdb955b596ca20df804cdb6669d6728305a48594e.zip",
+   "bytesRead": 46911,
    "readOn": "2026-10-11"
   }
  }
