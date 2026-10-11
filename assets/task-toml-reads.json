@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T06:41:01+00:00",
+ "generatedAt": "2026-10-11T07:01:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23580,6 +23580,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/order-ledger-integrity-audit/c9c942f2a550dff6cb9c9b2b5ec2d5e96a999a56b9057075711d46b4389e3454.zip",
    "bytesRead": 40172,
+   "readOn": "2026-10-11"
+  },
+  "onboarding-curriculum-readiness-audit": {
+   "connector": true,
+   "services": [
+    "notion-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/onboarding-curriculum-readiness-audit/e53f4b1e3d6362d604225475f4b47d1638ab28d7749c6c6be90ce8826b34698b.zip",
+   "bytesRead": 46299,
+   "readOn": "2026-10-11"
+  },
+  "pci-audit-calendar-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/pci-audit-calendar-audit/4cf6475735599d1e6c76fdf3c2f7598ec4d238bdc852ce55b34185f50e57b3fa.zip",
+   "bytesRead": 41734,
    "readOn": "2026-10-11"
   }
  }
