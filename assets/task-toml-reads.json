@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T10:01:05+00:00",
+ "generatedAt": "2026-10-11T10:21:03+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -23812,6 +23812,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/study-owner-ping-audit/d8d148da5d485b72b9693aaa4404631d1150345163143893b02987fe1599fa46.zip",
    "bytesRead": 41172,
+   "readOn": "2026-10-11"
+  },
+  "fedramp-ksi-ownership-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/fedramp-ksi-ownership-audit/4d0cf32ddbc24be4e2d8dccf8bc183f6313056e278a220beb2f9d95bd3a98d86.zip",
+   "bytesRead": 47754,
    "readOn": "2026-10-11"
   }
  }
