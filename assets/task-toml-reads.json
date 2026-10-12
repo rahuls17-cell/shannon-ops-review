@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T03:41:05+00:00",
+ "generatedAt": "2026-10-12T03:51:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24388,6 +24388,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/warehouse-cost-center-chargeback-audit/3956173e429f5fbd83dabdab3b1e94b2866fe1fe7d48247b0a95f2556d349ddf.zip",
    "bytesRead": 42695,
+   "readOn": "2026-10-12"
+  },
+  "procurement-representation-audit": {
+   "connector": true,
+   "services": [
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:dcf57c1b3362bb5ebb2ea59819c0892dc74699a3fa12a340677a317c37f4ddea",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/procurement-representation-audit/703e1b35088d349463c869dc166f945edaeea031f92fe5dac8dc2cb18fead20d.zip",
+   "bytesRead": 51300,
    "readOn": "2026-10-12"
   }
  }
