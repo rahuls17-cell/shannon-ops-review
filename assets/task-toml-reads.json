@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T03:51:06+00:00",
+ "generatedAt": "2026-10-12T04:01:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24400,6 +24400,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/procurement-representation-audit/703e1b35088d349463c869dc166f945edaeea031f92fe5dac8dc2cb18fead20d.zip",
    "bytesRead": 51300,
+   "readOn": "2026-10-12"
+  },
+  "deal-advisor-fee-accrual": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/deal-advisor-fee-accrual/f152f0af1b8e2b7623cdac546276585cfae4dc55417523c63731434adaa24bfb.zip",
+   "bytesRead": 44219,
+   "readOn": "2026-10-12"
+  },
+  "q4-bookings-revenue-forecast": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/q4-bookings-revenue-forecast/cd86ace4423c65b0eb6ec879a21d62f95725266500fd7cbf3bb84ad4b4aa9263.zip",
+   "bytesRead": 46259,
    "readOn": "2026-10-12"
   }
  }
