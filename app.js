@@ -1051,7 +1051,26 @@ function stampSides() {
     const leaf = leafOf(truthSegment(row));
     row.side = SIDE_OF[leaf] || 'unknown';
     row.domainKind = domainKindOf(row, leaf);
+    row.glm53 = glm53Of(row);
+    row.glm53Failed = Boolean(row.glm53 && row.glm53.failed);
   }));
+}
+// A task's GLM-5.3 runs, by its task name, the task its package declares or the
+// task it was delivered as - with a -vN suffix and without - or by the package
+// folder a run names. GLM-5.3 failed is every complete run at 0 of 4.
+let glm53Index = null;
+function glm53Of(row) {
+  if (!glm53Index) return null;
+  const {tasks = {}, alias = {}} = glm53Index;
+  for (const name of [row.name, row.packageTask, row.deliveredTask, row.cohortFolder]) {
+    const key = benchKey(name);
+    if (!key) continue;
+    for (const k of [key, key.replace(/(-v\d+)+$/, '')]) {
+      const hit = tasks[k] || tasks[alias[k]];
+      if (hit) return hit;
+    }
+  }
+  return null;
 }
 // What the Pipeline's Domain dropdown filters on. A non-connector task keeps
 // its name-prefix domain (gen-, code-, health- ...). A connector task has no
@@ -1629,6 +1648,12 @@ async function loadTruth() {
       const g = await fetch(`assets/glm-index.json?t=${Date.now()}`, {cache: 'no-store'});
       if (g.ok) glmIndex = await g.json();
     } catch (ignored) { glmIndex = null; }
+    // The GLM-5.3 runs per task, from gs://obi-harbor-pipeline/glm53-runs/
+    // (tools/build_glm53_index.py). Optional: without it no task is GLM-5.3 failed.
+    try {
+      const g53 = await fetch(`assets/glm53-index.json?t=${Date.now()}`, {cache: 'no-store'});
+      glm53Index = g53.ok ? await g53.json() : null;
+    } catch (ignored) { glm53Index = null; }
     // The accepted cohort counted by bucket folder. Optional: without it the
     // strip is simply not drawn.
     try {
@@ -2006,7 +2031,8 @@ function renderTruthFilterChips(filters, filtered) {
   const deliveredCount = value => shownTasks(window.filterTruth(value === 'ready' ? kept(byDelivered) : byDelivered,
     {delivered: value}).rows);
   byId('tDeliveredChips').innerHTML = chip('tDelivered', '', 'Any', shownTasks(byDelivered), 'var(--slate)', !filters.delivered) +
-    [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
+    [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'],
+      ['glm53failed', 'GLM-5.3 failed', 'var(--red)'], ['no', 'Not delivered', 'var(--amber)']]
       .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
 
 
@@ -2398,6 +2424,10 @@ The steps below are the verdict chain. It counts submissions, and it is kept her
 // full explanation on hover and a legend under the table, so the name always
 // has the space.
 const FLAGS = [
+  {code: 'G3', tone: 'alert', when: row => row.glm53Failed && !row.delivered,
+   label: 'GLM-5.3 failed',
+   tip: () => 'GLM-5.3 failed: all four GLM-5.3 attempts failed, so the task is held out of Ready for delivery. ' +
+     'It still counts under Not delivered.'},
   {code: 'DL', tone: 'good', when: row => row.delivered,
    label: 'delivered',
    tip: row => 'Already covered by the delivery audit on the Delivery tab, matched by ' +
@@ -2436,6 +2466,14 @@ const FLAGS = [
      'by the current pipeline rather than new work.'},
 ];
 
+function glm53Detail(g) {
+  if (!g) return 'No GLM-5.3 run of this task in gs://obi-harbor-pipeline/glm53-runs/.';
+  const runs = g.runs.map(r => `${esc(r.run)}: ${r.complete && r.passes !== null ? `${fmt(r.passes)}/4` : 'not 4 clean attempts'}`).join(' &middot; ');
+  const verdict = g.failed ? '<strong>GLM-5.3 failed</strong> - every complete run passed 0 of 4'
+    : g.disagree ? 'Runs disagree - one package was solved, so it is not GLM-5.3 failed'
+    : g.passes === null ? 'No run reached 4 clean attempts' : `${fmt(g.passes)} of 4 passed`;
+  return `${verdict} &middot; ${runs} <span class="muted">a run passes only at a reward of exactly 1</span>`;
+}
 function flagBadges(row, dupTarget) {
   const shown = FLAGS.filter(flag => flag.when(row));
   if (!shown.length) return '<span class="flag-none">-</span>';
@@ -2593,6 +2631,7 @@ function renderTruthRows(rows) {
           ? 'Not recorded. The batch this run was decided in lists no GLM trials, which is not the same as having failed them.'
           : `${fmt(row.glmPasses)} of ${fmt(row.glmTrials)} passed &middot; rewards ${esc((row.glmRewards || []).map(v => (v === null ? 'not read' : v)).join(', '))}` +
             ` <span class="muted">a run passes only at exactly 1.0; read from verifier/reward.txt in the bucket</span>`}</dd>
+        <dt>GLM-5.3</dt><dd>${glm53Detail(row.glm53)}</dd>
         <dt>Read from</dt><dd><code>${esc(row.source)}</code></dd>
       </dl>
     </td></tr>${row.dupFolders ? `

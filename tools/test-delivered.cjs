@@ -317,8 +317,8 @@ Object.entries(jc.unmatchedCohorts).forEach(([c, n]) => console.log(`    ${Strin
    {delivered: 'ready'}, {delivered: 'yes'}, {carriedOver: 'yes'},
    {search: 'audit'}].forEach(f => {
     const r = filterTruth(model.rows, f);
-    assert.equal(r.acceptedAtBarTasks, r.deliveredAtBarTasks + r.readyTasks,
-      `delivered + ready must be the whole of accepted-at-the-bar under ${JSON.stringify(f)}`);
+    assert.equal(r.acceptedAtBarTasks, r.deliveredAtBarTasks + r.readyTasks + r.glm53HeldTasks,
+      `delivered + ready + GLM-5.3 held must be the whole of accepted-at-the-bar under ${JSON.stringify(f)}`);
     assert.ok(r.acceptedAtBarRows >= r.acceptedAtBarTasks,
       'rows can never be fewer than the tasks they fold into');
   });
@@ -373,6 +373,33 @@ Object.entries(jc.unmatchedCohorts).forEach(([c, n]) => console.log(`    ${Strin
   assert.equal(r.readyTasks, 2, 'a legacy-accepted task at the bar is still ready to send');
   assert.equal(r.acceptedAtBarTasks, r.deliveredAtBarTasks + r.readyTasks);
   console.log('legacy-accepted work is counted as ready: 4 = 2 delivered + 2 ready on synthetic rows');
+}
+
+// --- GLM-5.3 failed ---------------------------------------------------------
+// A task whose four GLM-5.3 attempts all failed is held out of Ready and stays
+// under Not delivered; a delivered one is still Delivered.
+{
+  const row = (name, over) => Object.assign({
+    id: name, name, state: 'accepted', atCurrentBar: true, delivered: false, deliveredTask: null,
+    findings: [], cohorts: [], connector: null, domain: 'Not recorded',
+  }, over);
+  const rows = [
+    row('a'),
+    row('b', {glm53Failed: true}),
+    row('c', {glm53Failed: true, delivered: true, deliveredTask: 'c'}),
+    row('d', {glm53Failed: true, state: 'rejected'}),
+  ];
+  const r = filterTruth(rows, {});
+  const names = f => filterTruth(rows, {delivered: f}).rows.map(x => x.name).sort().join(',');
+  assert.equal(names('ready'), 'a', 'a GLM-5.3 failed task is not ready for delivery');
+  assert.equal(names('glm53failed'), 'b,d', 'GLM-5.3 failed lists the undelivered tasks that failed, whatever their state');
+  assert.equal(names('no'), 'a,b,d', 'GLM-5.3 failed tasks still count under Not delivered');
+  assert.equal(names('yes'), 'c', 'a delivered task stays Delivered');
+  assert.equal(r.readyTasks, 1);
+  assert.equal(r.glm53HeldTasks, 1, 'only the accepted, undelivered one is held out of Ready');
+  assert.equal(r.glm53FailedTasks, 2);
+  assert.equal(r.acceptedAtBarTasks, r.deliveredAtBarTasks + r.readyTasks + r.glm53HeldTasks);
+  console.log('GLM-5.3 failed: held out of Ready, still Not delivered: 3 = 1 delivered + 1 ready + 1 held');
 }
 
 // --- the delivery manifests -------------------------------------------------

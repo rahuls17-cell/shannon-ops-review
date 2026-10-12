@@ -9,6 +9,23 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Pipeline tab: "GLM-5.3 failed" status
+- **New Delivered option "GLM-5.3 failed"**: a task whose four GLM-5.3 attempts
+  all failed (every complete run 0 of 4; an attempt passes only at a reward of
+  exactly 1). Read from the run folders in `gs://obi-harbor-pipeline/glm53-runs/`
+  by `tools/build_glm53_index.py` into `assets/glm53-index.json` (1,746 tasks
+  with runs, 384 failed). Rows carry a red **G3** flag, and the task's detail
+  shows each GLM-5.3 run.
+- **These tasks are left out of Ready for delivery** (and so out of a manifest
+  cut under Ready) but **still count under Not delivered**. Today: Ready 595 →
+  586, GLM-5.3 failed 11 (9 of them were Ready), Not delivered 4,806 unchanged.
+  Accepted at the bar 2,994 = 2,399 delivered + 586 ready + 9 held by GLM-5.3.
+- A task run twice whose runs disagree (16, mostly a fixed `-v2` package that
+  passed) is not GLM-5.3 failed. 41 tasks never got 4 clean attempts and have no
+  GLM-5.3 score.
+- VM: `tools/vm/scan-glm53.sh` refreshes the index and `publish.sh` copies it in.
+  Not on the VM's cron yet; until then the index is the one committed here.
+
 ### Pipeline tab: Domain filter lists Real Aster and Real Zeta
 - **The Domain filter now offers Real Aster, Real Zeta and "Real · Aster or Zeta
   not recorded"**, the same categories as the Delivery tab. A delivered connector
