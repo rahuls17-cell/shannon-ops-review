@@ -18,6 +18,9 @@ for run in $(gcloud storage ls "$SRC/" | sed "s#^$SRC/##; s#/\$##"); do
   files=$(gcloud storage ls "$SRC/$run/" | grep -v '/$' || true)
   [ -n "$files" ] && gcloud storage cp -q $files "$RUNS/$run/"
 done
-cd "$BASE/repo"
-python3 tools/build_glm53_index.py --runs "$RUNS" --out "$BASE/glm53-index.json.new" \
+# The builder from the clone publish.sh keeps on PUBLISH_BRANCH; until that
+# branch carries it, the copy installed beside this script.
+TOOL="$BASE/repo/tools/build_glm53_index.py"
+[ -f "$TOOL" ] || TOOL="$BASE/build_glm53_index.py"
+python3 "$TOOL" --runs "$RUNS" --out "$BASE/glm53-index.json.new" \
   && mv "$BASE/glm53-index.json.new" "$BASE/glm53-index.json"

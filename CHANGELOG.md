@@ -23,8 +23,10 @@ When you change what a figure means, add a line under **Unreleased**. When
 - A task run twice whose runs disagree (16, mostly a fixed `-v2` package that
   passed) is not GLM-5.3 failed. 41 tasks never got 4 clean attempts and have no
   GLM-5.3 score.
-- VM: `tools/vm/scan-glm53.sh` refreshes the index and `publish.sh` copies it in.
-  Not on the VM's cron yet; until then the index is the one committed here.
+- VM: `tools/vm/scan-glm53.sh` refreshes the index daily at 03:47 UTC (root cron,
+  installed 12 Oct; previous crontab saved as `crontab.before-glm53.txt`) and
+  `publish.sh` copies it into the repo on the next tick. Until `main` carries
+  `tools/build_glm53_index.py`, the scan runs the copy installed beside it.
 
 ### Pipeline tab: Domain filter lists Real Aster and Real Zeta
 - **The Domain filter now offers Real Aster, Real Zeta and "Real · Aster or Zeta
