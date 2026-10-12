@@ -850,6 +850,35 @@ function taskBenches() {
   taskBenchCache = {delivered, built};
   return taskBenchCache;
 }
+// The Delivery tab's Computer Bench connector kind of a delivered task - Real
+// Aster, Real Zeta or Synthetic - read from the Current Drive rows, whose family
+// and bench the manifest, the package image and Hussain's Computer Bench sheet
+// decide (tools/build_drive_deliveries.py). A name delivered under two kinds
+// gives none.
+const REAL_UNSPLIT = 'Real · Aster or Zeta not recorded';
+const DELIVERED_KIND = {'real-aster': 'Real Aster', 'real-zeta': 'Real Zeta', real: REAL_UNSPLIT, synthetic: 'Synthetic'};
+let deliveredKindCache = null;
+function deliveredKindOf(...names) {
+  if (!deliveredKindCache) {
+    deliveredKindCache = new Map();
+    (driveAudit ? driveAudit.rows : []).forEach(row => {
+      const kind = row.bench === 'computer' ? DELIVERED_KIND[row.family] : null;
+      if (!kind) return;
+      [row.task, row.packageName].forEach(name => {
+        const key = benchKey(name);
+        if (!key) return;
+        const was = deliveredKindCache.get(key);
+        deliveredKindCache.set(key, was === undefined || was === kind ? kind : null);
+      });
+    });
+  }
+  for (const name of names) {
+    const kind = deliveredKindCache.get(benchKey(name));
+    if (kind) return kind;
+  }
+  return null;
+}
+const deliveredKindOfRow = row => deliveredKindOf(row.deliveredTask, row.packageTask, row.name);
 function benchOfTask(...names) {
   const {delivered, built} = taskBenches();
   for (const map of [delivered, built]) {
@@ -862,6 +891,11 @@ function benchOfTask(...names) {
 }
 // A pipeline row carries its own bench; a delivered one takes where it was delivered.
 function truthBench(row) {
+  // A task the Delivery tab puts on Computer Bench as real connector work - the
+  // manifest's Real Connector class, or Hussain's sheet - is Computer Bench
+  // here too, although its image is the Aster or Zeta harness.
+  const kind = deliveredKindOfRow(row);
+  if (kind && kind !== 'Synthetic') return 'computer';
   // The image names a bench outright - Aster or Zeta, synthetic or real - and
   // that beats the folder the package was filed in.
   const fromImage = imageSide(row.bench, row.connectorServices);
@@ -1022,11 +1056,13 @@ function stampSides() {
 // What the Pipeline's Domain dropdown filters on. A non-connector task keeps
 // its name-prefix domain (gen-, code-, health- ...). A connector task has no
 // such prefix, so it is named by its kind instead, the same names the Delivery
-// tab's categories use: Synthetic, Real Connector or Connector on the Computer
-// bench, by its image; on the Company bench its harness and how many
+// tab's categories use. On the Computer bench: a delivered task takes its
+// Delivery category - Real Aster, Real Zeta or Synthetic; any other goes by its
+// image, Synthetic or Real (an image alone does not say Aster or Zeta), else
+// Connector. On the Company bench its harness and how many
 // connectors it declares - Aster or Zeta, single connector or multi-connector.
 // row.domain itself is left as the name says, for the named-domain card.
-const KIND_OF_IMAGE = {'computer bench synth': 'Synthetic', 'computer bench real': 'Real Connector'};
+const KIND_OF_IMAGE = {'computer bench synth': 'Synthetic', 'computer bench real': REAL_UNSPLIT};
 function domainKindOf(row, leaf) {
   if (String(leaf).startsWith('company')) {
     const harness = COMPANY_HARNESS[truthHarness(row)] || 'Company Bench';
@@ -1034,7 +1070,7 @@ function domainKindOf(row, leaf) {
       || countOfTask(row.name, row.deliveredTask, row.packageTask, row.cohortFolder);
     return `${harness} · ${COMPANY_COUNT[count] || 'connectors not read'}`;
   }
-  if (leaf === 'computer-connector') return KIND_OF_IMAGE[row.bench] || 'Connector';
+  if (leaf === 'computer-connector') return deliveredKindOfRow(row) || KIND_OF_IMAGE[row.bench] || 'Connector';
   return row.domain || 'Not recorded';
 }
 // The Dockerfile image decides the bench whenever it names one: an Aster or
@@ -1108,6 +1144,7 @@ function resetTaskBenches() {
   applyImageBench();
   applyDeliveryJoin();
   taskBenchCache = null;
+  deliveredKindCache = null;
   taskHarnessCache = null;
   cohortRowByFolder = null;
   taskCountCache = null;

@@ -9,6 +9,19 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Pipeline tab: Domain filter lists Real Aster and Real Zeta
+- **The Domain filter now offers Real Aster, Real Zeta and "Real · Aster or Zeta
+  not recorded"**, the same categories as the Delivery tab. A delivered connector
+  task takes its Delivery category; an undelivered one goes by its image
+  (Synthetic, or Real when the image does not say Aster or Zeta). "Real
+  Connector" is gone.
+- **A task the Delivery tab puts on Computer Bench as real work (the manifest's
+  Real Connector class, or Hussain's sheet) is Computer Bench on the Pipeline
+  too**, although its image is the Aster or Zeta harness. About 277 tasks move
+  from Company Bench to Computer Bench · Connector (Company Bench 3,269 → 2,992,
+  Computer Bench Connector 726 → 1,002). Domain counts in tasks: Real Aster 266,
+  Real Zeta 8, Real not split 4, Synthetic 724.
+
 ### Delivery tab: trainers settled for 66 connector tasks
 - **65 connector tasks that showed no trainer now name one**, from the hand-review
   list (`tools/data/trainer-review.tsv`). 62 are clean: the trainer on Hussain's
