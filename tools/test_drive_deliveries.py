@@ -318,6 +318,10 @@ check(fam({'connector_services': ['zeta3-sql-gym', 'slack-gym']}, 'CompanyBench'
       'a real package with no image takes Zeta from the Zeta SQL gym it lists')
 check(fam({'connector': False}, 'Connector') == ('non-connector', 'the manifest'), 'connector false is non-connector')
 check(fam({}, 'Connector') == (None, None), 'nothing recorded anywhere is not classified')
+bdd_c.COMPUTER_BENCH_SHEET.clear(); bdd_c.COMPUTER_BENCH_SHEET.update(bdd_c.sheet_variants('account-notice-audit'))
+check(bdd_c.on_computer_bench_sheet('harbor/account-notice-audit') and bdd_c.on_computer_bench_sheet('task_account_notice_audit')
+      and not bdd_c.on_computer_bench_sheet('another-task'), 'the Computer Bench sheet matches a task in its spellings')
+bdd_c.COMPUTER_BENCH_SHEET.clear()
 check(fam({}, 'Connector', zeta, 'the image in the package (delivered zip on Drive)')
       == ('real-zeta', 'the image in the package (delivered zip on Drive)'), 'a zip read on Drive says where it was read')
 bdd_c.DRIVE_IMAGES.clear(); bdd_c.PACKAGE_IMAGES.clear()
@@ -430,8 +434,11 @@ if asset.exists():
     check(all(r['family'] in ('real-aster', 'real-zeta', 'real') for r in blob['rows'] if r['bench'] == 'company'),
           'a Company Bench package is Aster or Zeta')
     check(all(r['bench'] == 'company' for r in blob['rows']
-              if r['family'] in ('real-aster', 'real-zeta', 'real') and r['class'] != 'Real Connector'),
-          'an Aster or Zeta package is Company Bench unless its manifest classes it Real Connector')
+              if r['family'] in ('real-aster', 'real-zeta', 'real') and not r.get('benchFrom')),
+          'an Aster or Zeta package is Company Bench unless its manifest classes it Real Connector '
+          'or the Computer Bench sheet lists it')
+    check(all(r['bench'] == 'computer' for r in blob['rows'] if r.get('benchFrom')),
+          'a package the Computer Bench sheet or a Real Connector class places is Computer Bench')
     check(all((r['category'] == 'CompanyBench') == (r['bench'] == 'company') for r in blob['rows']),
           'a row is in the CompanyBench category exactly when it is a Company Bench task')
     check(not any('folder' in str(r.get('familyFrom') or '').lower() for r in blob['rows']),

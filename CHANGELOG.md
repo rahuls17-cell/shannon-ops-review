@@ -9,6 +9,16 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Delivery tab: Hussain's sheet decides what is Computer Bench
+- **The 255 Aster tasks Hussain's "Connector Accepted Data Computer Bench" sheet
+  lists as real move from Company Bench · Aster to Computer Bench · Connector ·
+  Real Aster** (Yogesh's call): Batch 11.1 103, 12.1 81, 13.1 70, 10.1 1. The
+  sheet's task names (`tools/data/computer-bench-sheet.tsv`, names, task ids and
+  data type only) decide that a real task is Computer Bench; the row says so
+  (`benchFrom`). Company Bench · Aster 657 -> 402; Computer Bench Real Aster
+  7 -> 262. The other Aster tasks in those batches are not on the sheet and stay
+  Company Bench (11.1: 77, 12.1: 64, 13.1: 19, 10.1: 37).
+
 ### Delivery tab: 27 contested Company Bench tasks settled
 - **27 Batch 11.1-13.1 Company Bench tasks the dashboard showed as Contested take
   their trainer from the hand-reviewed list** (`tools/data/trainer-review.tsv`).

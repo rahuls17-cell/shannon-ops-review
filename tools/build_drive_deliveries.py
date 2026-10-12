@@ -186,6 +186,36 @@ OBJECT_IMAGES = {}
 # matched the manifest; an earlier copy is the same task before the repair pass,
 # used only when the delivered zip was too large to read.
 DRIVE_IMAGES = {}
+# Task names (every spelling) that Hussain's "Connector Accepted Data Computer
+# Bench" sheet lists as Computer Bench: tools/data/computer-bench-sheet.tsv.
+# Yogesh's call (2026-10-12): the sheet is the source for what is Computer Bench,
+# so a real (Aster or Zeta) task it lists is Computer Bench Real, not Company Bench.
+COMPUTER_BENCH_SHEET = set()
+
+
+def sheet_variants(value):
+    v = re.sub(r'\.zip$', '', re.sub(r'^(harbor|obi)/', '', str(value or '').strip().lower()))
+    out = {v, v.replace('_', '-')}
+    for x in list(out):
+        y = re.sub(r'^task-', '', x)
+        out |= {y, re.sub(r'-[0-9a-f]{6}-v\d+$', '', y)}
+    return {x for x in out if len(x) > 6}
+
+
+def load_computer_bench_sheet(path):
+    COMPUTER_BENCH_SHEET.clear()
+    if not path or not pathlib.Path(path).exists():
+        return 0
+    import csv
+    with open(path, encoding='utf-8') as handle:
+        rows = list(csv.DictReader(handle, delimiter='	'))
+    for row in rows:
+        COMPUTER_BENCH_SHEET.update(sheet_variants(row['task']))
+    return len(rows)
+
+
+def on_computer_bench_sheet(*names):
+    return any(v in COMPUTER_BENCH_SHEET for n in names for v in sheet_variants(n))
 
 
 def load_drive_images(path):
@@ -636,7 +666,9 @@ def normalise(manifest, label, files=None, require_present=False):
         # Connector is Computer Bench, its real data split by image into Real
         # Aster and Real Zeta; any other Aster or Zeta package is Company Bench.
         computer_real = klass == 'Real Connector'
-        bench = 'company' if family in ('real-aster', 'real-zeta', 'real') and not computer_real else 'computer'
+        listed = on_computer_bench_sheet(name, package, source_folder(task)[1])
+        bench = ('company' if family in ('real-aster', 'real-zeta', 'real') and not computer_real and not listed
+                 else 'computer')
         band = first(task.get('difficulty'), parts[1] if len(parts) > 2 else None)
         trials = task.get('trial_evidence') if isinstance(task.get('trial_evidence'), dict) else {}
         glm = trials.get('successes') if isinstance(trials.get('successes'), int) else None
@@ -657,6 +689,8 @@ def normalise(manifest, label, files=None, require_present=False):
             'domain': domain if family == 'non-connector' else None,
             'type': 'Non-connector' if family == 'non-connector' else 'Connector',
             'bench': bench,
+            'benchFrom': ("the Computer Bench sheet" if listed and family in ('real-aster', 'real-zeta', 'real')
+                          else "the manifest's Real Connector class" if computer_real else None),
             'harness': {'real-aster': 'aster', 'real-zeta': 'zeta'}.get(family) if bench == 'company' else None,
             'driveFolder': location,
             'difficulty': band.capitalize() if band else None,
@@ -1086,13 +1120,16 @@ def main():
                     help="the bucket scan's package images, by task name")
     ap.add_argument('--toml-reads', default='assets/task-toml-reads.json',
                     help="the bucket scan's package images, by folder")
+    ap.add_argument('--computer-bench-sheet', default='tools/data/computer-bench-sheet.tsv',
+                    help="the task names Hussain's sheet lists as Computer Bench")
     ap.add_argument('--drive-images', default='tools/data/drive-package-images.tsv',
                     help='package images read by hand from the zips on Drive')
     ap.add_argument('--truth', default='assets/pipeline-truth.json',
                     help="the pipeline's verdict records: which task name each family is")
     args = ap.parse_args()
     print(f'package images: {load_package_images(args.bench_index, args.toml_reads, args.truth)} names from the bucket scan, '
-          f'{load_drive_images(args.drive_images)} zips read on Drive')
+          f'{load_drive_images(args.drive_images)} zips read on Drive, '
+          f'{load_computer_bench_sheet(args.computer_bench_sheet)} tasks on the Computer Bench sheet')
 
     if args.from_dir:
         listing, manifests = snapshot_from_dir(args.from_dir)
