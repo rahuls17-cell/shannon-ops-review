@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T07:01:06+00:00",
+ "generatedAt": "2026-10-12T07:21:08+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24642,6 +24642,32 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/expired-lot-draw-audit/b8987c20b111e525359e827c09c18b0cdbcaa8584fab4d5b99a5608da5515d1a.zip",
    "bytesRead": 46187,
+   "readOn": "2026-10-12"
+  },
+  "northstar-run-authorisation-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/northstar-run-authorisation-audit/0df109b88e3352fb4532ddf33ca62dc0c74b0700741b97933a8e91e8032aac0a.zip",
+   "bytesRead": 49455,
+   "readOn": "2026-10-12"
+  },
+  "warehouse-cross-charge-audit": {
+   "connector": true,
+   "services": [
+    "outlook-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/warehouse-cross-charge-audit/259f1e3e1b7b190332053d01acde828397ab2fb83c47d47cdcc56e02aead74c1.zip",
+   "bytesRead": 45917,
    "readOn": "2026-10-12"
   }
  }
