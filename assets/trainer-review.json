@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-10T16:31:17+00:00",
+ "generatedAt": "2026-10-12T15:09:05+00:00",
  "source": "ops review of unattributed and contested Delivery rows (tools/data/trainer-review.tsv)",
  "rule": "a reviewed task takes the review's trainer, ahead of the trainer credit sheet and the bucket; a review with no trainer leaves the task without one and says why",
  "entries": [
@@ -170,6 +170,222 @@
    "trainerType": "Unassigned",
    "confidence": "No trainer",
    "mapping": "Found - Task Tracker only (no trainer)"
+  },
+  {
+   "task": "is-the-import-redundant",
+   "batch": "Batch 11.1",
+   "trainer": "ayaz.m1@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "vendors-we-already-named-to-investors",
+   "batch": "Batch 11.1",
+   "trainer": "alina.mustaqeem-fx@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-quarterly-bug-scorecard",
+   "batch": "Batch 11.1",
+   "trainer": "vinoth.k1@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-meetings-nobody-ever-accepted",
+   "batch": "Batch 12.1",
+   "trainer": "bhargav.c@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-day-an-all-day-block-covers",
+   "batch": "Batch 12.1",
+   "trainer": "bhargav.k@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "fifteen-quick-wins-nobody-owns",
+   "batch": "Batch 12.1",
+   "trainer": "bhargav.k@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-link-two-meetings-share",
+   "batch": "Batch 11.1",
+   "trainer": "ritik.g2@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-shared-folders-that-share-nothing",
+   "batch": "Batch 13.1",
+   "trainer": "kashif.m@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-calendars-worth-hiding",
+   "batch": "Batch 13.1",
+   "trainer": "bhargav.k@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-standup-that-runs-less-than-it-claims",
+   "batch": "Batch 12.1",
+   "trainer": "elslam.a@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "shared-past-the-people-i-named",
+   "batch": "Batch 12.1",
+   "trainer": "kashif.m@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "shipped-with-work-still-open",
+   "batch": "Batch 12.1",
+   "trainer": "vinoth.k1@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "family-dinner-extra-guests",
+   "batch": "Batch 13.1",
+   "trainer": "bhargav.k@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "half-this-sprint-is-already-gone",
+   "batch": "Batch 13.1",
+   "trainer": "bhargav.k@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-meetings-that-were-quietly-retitled",
+   "batch": "Batch 12.1",
+   "trainer": "bhargav.k@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "one-hundred-and-fifty-one-digests-and-a-login-alert",
+   "batch": "Batch 12.1",
+   "trainer": "bhargav.k@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-client-lists-the-scrub-missed",
+   "batch": "Batch 12.1",
+   "trainer": "bhargav.k@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "fourteen-columns-seven-names",
+   "batch": "Batch 13.1",
+   "trainer": "bhargav.k@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "twelve-of-fifteen-wear-nothing-else",
+   "batch": "Batch 12.1",
+   "trainer": "bhargav.k@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-workload-three-people-are-carrying",
+   "batch": "Batch 12.1",
+   "trainer": "prasanth.d@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-focused-mail-i-have-not-read",
+   "batch": "Batch 12.1",
+   "trainer": "elslam.a@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-threads-my-latest-mail-joined",
+   "batch": "Batch 13.1",
+   "trainer": "saad.m3@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "nine-shipped-twenty-four-points",
+   "batch": "Batch 11.1",
+   "trainer": "kashif.m@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "unread-piling-up-under-labels",
+   "batch": "Batch 11.1",
+   "trainer": "kashif.m@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "how-much-of-the-master-sheet-is-real",
+   "batch": "Batch 13.1",
+   "trainer": "m.h@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "what-the-meetings-said",
+   "batch": "Batch 12.1",
+   "trainer": "prasanth.d@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
+  },
+  {
+   "task": "the-latest-change-everywhere",
+   "batch": "Batch 11.1",
+   "trainer": "prasanth.d@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Latest accepted submission in the pipeline; matches Hussain's sheet"
   }
  ]
 }

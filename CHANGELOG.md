@@ -9,6 +9,17 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Delivery tab: 27 contested Company Bench tasks settled
+- **27 Batch 11.1-13.1 Company Bench tasks the dashboard showed as Contested take
+  their trainer from the hand-reviewed list** (`tools/data/trainer-review.tsv`).
+  For each, the pipeline's latest accepted submission was made by the trainer
+  Hussain's Connector Accepted Data sheet names, before the batch was cut, and
+  nobody else has an accepted submission; the other names came from rejected runs
+  (mostly the companybench@turing.com service account) and the bucket's trainer
+  records. Bhargav Kallam 11, Kashif Mehmood 4, Prasanth Varma Dandu 3, Vinoth
+  Kumar 2, Ahmad Reda Abd-Elslam 2, one each for Ayaz, Alina, Bhargav Chikkala,
+  Ritik, Saad, M Wasilah Hadi. The review now names 44 tasks.
+
 ### Delivery tab: bench and family come from the manifest and the package, not the Drive folder
 - **The tree:** Company Bench - Aster, Zeta (unchanged). Computer Bench - Connector
   (Real Aster, Real Zeta, Synthetic) and Non-connector. Computer Bench's Real
