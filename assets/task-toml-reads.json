@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T01:11:06+00:00",
+ "generatedAt": "2026-10-12T02:01:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24326,6 +24326,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/compliance-remediation-record-audit/50435073748e5c2d5e33c7304f50556b12e22d4ae02566667795f756f06bb82f.zip",
    "bytesRead": 52286,
+   "readOn": "2026-10-12"
+  },
+  "contract-playbook-signature-hold-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/contract-playbook-signature-hold-audit/cf73fcc81228200b2c52631912dbb0a896ca079dda5320fdf16846499ce53bfc.zip",
+   "bytesRead": 54061,
+   "readOn": "2026-10-12"
+  },
+  "seminar-programme-record-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/seminar-programme-record-audit/091e1b1cf1f6aa019722da21a57538a9759fdf5fe40c88501b90a376752cb4b4.zip",
+   "bytesRead": 48363,
    "readOn": "2026-10-12"
   }
  }
