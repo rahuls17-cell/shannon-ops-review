@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T00:31:11+00:00",
+ "generatedAt": "2026-10-12T00:51:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24302,6 +24302,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/trademark-filing-owner-audit/7c02f6c49de3d12f0b54fc17ea45034dc765d8d8fdb7c89833fcd70a5d23eba2.zip",
    "bytesRead": 46628,
+   "readOn": "2026-10-12"
+  },
+  "design-playbook-exception-register-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/design-playbook-exception-register-audit/a52c786e4c6b821d9a51d17b3215f5f5118985933a43f67bd0d062eb630587e2.zip",
+   "bytesRead": 57961,
    "readOn": "2026-10-12"
   }
  }
