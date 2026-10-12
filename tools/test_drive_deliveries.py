@@ -311,12 +311,26 @@ check(fam({'image': syn, 'bench_type': 'company bench aster'}, 'Connector') == (
 check(fam({'bench_type': 'company bench aster'}, 'Connector', zeta) == ('real-aster', 'the manifest'),
       'what the manifest declares beats the package image')
 check(fam({}, 'Connector', zeta) == ('real-zeta', 'the image in the package'), 'the package image when the manifest names none')
-check(fam({}, 'Real Connector', syn) == ('real', 'the manifest says real, the package image is synthetic'),
+check(fam({}, 'Real Connector', syn) == ('real', 'the manifest says real, the image in the package is synthetic'),
       'a real manifest and a synthetic package image disagree, and say so')
 check(fam({'connector_services': ['zeta3-sql-gym', 'slack-gym']}, 'CompanyBench') == ('real-zeta', 'the connectors the manifest lists'),
       'a real package with no image takes Zeta from the Zeta SQL gym it lists')
 check(fam({'connector': False}, 'Connector') == ('non-connector', 'the manifest'), 'connector false is non-connector')
 check(fam({}, 'Connector') == (None, None), 'nothing recorded anywhere is not classified')
+check(fam({}, 'Connector', zeta, 'the image in the package (delivered zip on Drive)')
+      == ('real-zeta', 'the image in the package (delivered zip on Drive)'), 'a zip read on Drive says where it was read')
+bdd_c.DRIVE_IMAGES.clear(); bdd_c.PACKAGE_IMAGES.clear()
+bdd_c.DRIVE_IMAGES[('Batch 5.1', 'a.zip')] = (zeta, 'delivered zip')
+bdd_c.DRIVE_IMAGES[('Batch 5.1', 'b.zip')] = (syn, 'earlier copy')
+bdd_c.PACKAGE_IMAGES['b'] = zeta
+check(bdd_c.image_of_package('Batch 5.1', 'a.zip', 'a') == (zeta, 'the image in the package (delivered zip on Drive)'),
+      'the delivered zip on Drive comes first')
+check(bdd_c.image_of_package('Batch 5.1', 'b.zip', 'b') == (zeta, 'the image in the package'),
+      'the bucket scan comes before an earlier copy')
+bdd_c.PACKAGE_IMAGES.clear()
+check(bdd_c.image_of_package('Batch 5.1', 'b.zip', 'b') == (syn, 'the image in the package (earlier copy on Drive)'),
+      'an earlier copy only when nothing else reads the package')
+bdd_c.DRIVE_IMAGES.clear()
 
 # --- the live read, against a fake Drive -------------------------------------
 # The VM is the only place with credentials, so the request side is exercised

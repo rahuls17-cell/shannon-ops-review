@@ -175,6 +175,36 @@ FAMILY_LABELS = {'real-aster': 'Real · Aster', 'real-zeta': 'Real · Zeta',
                  'real': 'Real · Aster or Zeta not recorded', 'synthetic': 'Synthetic'}
 # name -> Dockerfile image, from the bucket scan; filled by load_package_images().
 PACKAGE_IMAGES = {}
+# (batch, zip) -> (image, 'delivered zip' | 'earlier copy'), read by hand from the
+# package zips on Drive where the bucket has no package (Batch 5.1's Company
+# Bench share): tools/data/drive-package-images.tsv. A delivered zip's sha256
+# matched the manifest; an earlier copy is the same task before the repair pass,
+# used only when the delivered zip was too large to read.
+DRIVE_IMAGES = {}
+
+
+def load_drive_images(path):
+    DRIVE_IMAGES.clear()
+    if not path or not pathlib.Path(path).exists():
+        return 0
+    import csv
+    with open(path, encoding='utf-8') as handle:
+        for row in csv.DictReader(handle, delimiter='	'):
+            DRIVE_IMAGES[(row['batch'], row['zip'].lower())] = (row['image'], row['read_from'])
+    return len(DRIVE_IMAGES)
+
+
+def image_of_package(label, zip_name, *names):
+    """(image, how it was read): the delivered zip on Drive, the bucket scan, an earlier copy on Drive."""
+    drive = DRIVE_IMAGES.get((label, str(zip_name or '').lower()))
+    if drive and drive[1] == 'delivered zip':
+        return drive[0], 'the image in the package (delivered zip on Drive)'
+    bucket = package_image(*names)
+    if bucket:
+        return bucket, 'the image in the package'
+    if drive:
+        return drive[0], 'the image in the package (earlier copy on Drive)'
+    return None, None
 
 
 def load_package_images(bench_index=None, toml_reads=None, truth=None):
@@ -215,7 +245,7 @@ def package_image(*names):
     return None
 
 
-def family_of(task, klass, image=None):
+def family_of(task, klass, image=None, image_from='the image in the package'):
     """(family, how it was decided); family None when nothing says."""
     recorded = [manifest_image(task), task.get('image'),
                 *[s.get('image') for s in connector_entries(task) if isinstance(s, dict)]]
@@ -240,11 +270,11 @@ def family_of(task, klass, image=None):
     real = partial or (('real', 'the manifest') if re.search(r'real|company\s*bench', declared) else None)
     family = FAMILY_OF_BENCH.get(bench_type(str(image))) if image else None
     if family in ('real-aster', 'real-zeta'):
-        return family, 'the image in the package'
+        return family, image_from
     if family == 'synthetic' and not real:
-        return 'synthetic', 'the image in the package'
+        return 'synthetic', image_from
     if family == 'synthetic' and real:
-        return 'real', 'the manifest says real, the package image is synthetic'
+        return 'real', f'the manifest says real, {image_from} is synthetic'
     if real:
         # Real, the harness not recorded: the connector gyms the manifest lists.
         # Zeta's own SQL gym is Zeta; among real packages only Aster mounts
@@ -569,8 +599,9 @@ def normalise(manifest, label, files=None, require_present=False):
         # The family comes from the manifest and the package, never from the
         # Drive folder the zip sits in (see family_of); the folder is kept only
         # as where the package was found.
-        family, family_from = family_of(task, klass, package_image(
-            source_folder(task)[1], name, package, task.get('original_folder')))
+        image, image_from = image_of_package(label, parts[-1], source_folder(task)[1], name, package,
+                                             task.get('original_folder'))
+        family, family_from = family_of(task, klass, image, image_from or 'the image in the package')
         domain = parts[2] if klass == 'Non-Connector' and len(parts) > 3 else first(task.get('domain'))
         if family == 'non-connector' and not domain:
             domain = domain_of_name(name)
@@ -1023,10 +1054,13 @@ def main():
                     help="the bucket scan's package images, by task name")
     ap.add_argument('--toml-reads', default='assets/task-toml-reads.json',
                     help="the bucket scan's package images, by folder")
+    ap.add_argument('--drive-images', default='tools/data/drive-package-images.tsv',
+                    help='package images read by hand from the zips on Drive')
     ap.add_argument('--truth', default='assets/pipeline-truth.json',
                     help="the pipeline's verdict records: which task name each family is")
     args = ap.parse_args()
-    print(f'package images: {load_package_images(args.bench_index, args.toml_reads, args.truth)} names from the bucket scan')
+    print(f'package images: {load_package_images(args.bench_index, args.toml_reads, args.truth)} names from the bucket scan, '
+          f'{load_drive_images(args.drive_images)} zips read on Drive')
 
     if args.from_dir:
         listing, manifests = snapshot_from_dir(args.from_dir)

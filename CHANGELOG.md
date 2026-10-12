@@ -16,21 +16,27 @@ When you change what a figure means, add a line under **Unreleased**. When
   package's family comes from, in order: the image the manifest records; what
   the manifest declares (bench_type, tracker_family, the class in its own
   package_path); the image in the package itself, from the bucket scan (by
-  folder, task name, or the pipeline family the verdict records name); for a
+  folder, task name, or the pipeline family the verdict records name) - or, where
+  the bucket has no package, the zip on Drive itself (`tools/data/drive-package-images.tsv`:
+  the delivered zip, its sha256 matched to the manifest, or an earlier copy of the
+  task when the delivered zip is over the Drive connector's 10 MB limit); for a
   Real package with no image, the connector gyms the manifest lists. Each row
   says which (`family`, `familyFrom`). Company Bench is the view of Real Aster
   and Real Zeta; categories read "Real Aster" / "Real Zeta".
 - Delivered tasks, before -> after: Real Aster 599 -> 664, Real Zeta 1,362 ->
-  1,442, Synthetic 424 -> 378, Non-connector 1,402 unchanged, Company Bench with
-  no Zeta/Aster tag 130 -> 0; 210 tasks move (list:
-  `delivery-family-moves.csv`). Batch 10.1's 37 "Real ComputerBench" tasks are
+  1,463, Synthetic 424 -> 379, Non-connector 1,402 unchanged, Company Bench with
+  no Zeta/Aster tag 130 -> 0, flagged 9; Real 2,127 + Synthetic 379 +
+  Non-connector 1,402 = 3,908 of 3,917. Batch 10.1's 37 "Real ComputerBench" tasks are
   Real Aster by their manifest; Batch 4.1 / 5.1's "Real Connector" tasks follow
   their package images (8 Aster, 25 Zeta).
-- Not classified, reported rather than guessed: 29 Batch 5.1 packages whose
-  manifest says only "Connector" / "harbor" and whose package image the bucket
-  scan does not have (they counted as Company Bench only by the Drive's share
-  folder), and 2 Batch 5.1 "Real Connector" packages on images the tracker does
-  not list. They sit in no segment.
+- Batch 5.1's Company Bench share (manifest: only "Connector" / "harbor"; no
+  package in the bucket) read from its zips on Drive: 13 delivered zips and 8
+  earlier copies give Real Zeta 20 and Synthetic 1 (`the-plan-we-do-not-keep`);
+  `audit-self-healing-retry-chain-…` Real Zeta (earlier copy, Zeta V3).
+- Still flagged, reported rather than guessed (in no segment): 8 Batch 5.1
+  packages whose every Drive copy is over 10 MB, and `slack-first-reply-baseline`
+  (Real by its manifest, on `connectors-harness@sha256:926ccf10…`, which the image
+  tracker does not list).
 
 ## v4.4 - 2026-10-10, staging promoted to production
 
