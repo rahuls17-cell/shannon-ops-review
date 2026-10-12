@@ -1029,7 +1029,7 @@ function stampSides() {
 const KIND_OF_IMAGE = {'computer bench synth': 'Synthetic', 'computer bench real': 'Real Connector'};
 function domainKindOf(row, leaf) {
   if (String(leaf).startsWith('company')) {
-    const harness = COMPANY_HARNESS[truthHarness(row)] || 'Real';
+    const harness = COMPANY_HARNESS[truthHarness(row)] || 'Company Bench';
     const count = connectorCountOf(row.connectorServices)
       || countOfTask(row.name, row.deliveredTask, row.packageTask, row.cohortFolder);
     return `${harness} · ${COMPANY_COUNT[count] || 'connectors not read'}`;
@@ -1093,14 +1093,13 @@ function keepFolderAnswer(row) {
 // CompanyBench. Its category is its harness and how many connectors the task
 // declares in its task.toml - one, or two and more: Aster or Zeta, single
 // connector or multi-connector.
-// The Real connector families, Aster and Zeta; Company Bench is the view of both.
-const COMPANY_HARNESS = {aster: 'Real Aster', zeta: 'Real Zeta'};
+const COMPANY_HARNESS = {aster: 'Aster', zeta: 'Zeta'};
 const COMPANY_COUNT = {single: 'Single connector', multi: 'Multi-connector'};
 function applyCompanyCategory() {
   [...(audit ? audit.rows : []), ...(driveAudit ? driveAudit.rows : [])].forEach(row => {
     keepFolderAnswer(row);
     if (row.bench !== 'company') return;
-    row.category = `${COMPANY_HARNESS[deliveryHarness(row)] || 'Real'} \u00b7 ${COMPANY_COUNT[deliveryCount(row)] || 'connectors not read'}`;
+    row.category = `${COMPANY_HARNESS[deliveryHarness(row)] || 'Company Bench'} \u00b7 ${COMPANY_COUNT[deliveryCount(row)] || 'connectors not read'}`;
   });
 }
 // Everything above is read from data that arrives at different times, so it

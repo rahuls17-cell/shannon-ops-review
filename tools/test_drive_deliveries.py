@@ -53,9 +53,10 @@ by = {r['packageName']: r for r in rows or []}
 check(by['x']['category'] == 'Non-Connector · Legal' and by['x']['type'] == 'Non-connector',
       'Non-Connector keeps its domain as the second level')
 check(by['y']['category'] == 'Real · Aster or Zeta not recorded' and by['y']['type'] == 'Connector'
-      and by['y']['bench'] == 'company' and by['y']['family'] == 'real',
-      'a manifest that says real but names no image or harness is Real, harness unknown')
-check(by['z']['family'] == 'real-zeta' and by['z']['category'] == 'Real · Zeta', 'a manifest class naming Zeta is Real Zeta')
+      and by['y']['bench'] == 'computer' and by['y']['family'] == 'real',
+      'a Real Connector package stays Computer Bench; with no image its Aster or Zeta is unknown')
+check(by['z']['family'] == 'real-zeta' and by['z']['bench'] == 'company' and by['z']['category'] == 'CompanyBench',
+      'a manifest class naming Company Bench Zeta is Company Bench, Zeta')
 check(by['z']['difficulty'] is None and by['z']['glm'] is None and by['z']['bucket'] is None,
       'no difficulty or trials recorded means none claimed, not zero')
 check(by['x']['glm'] == 1 and by['x']['bucket'] == '1/4', 'GLM successes carried through')
@@ -322,13 +323,19 @@ check(fam({}, 'Connector', zeta, 'the image in the package (delivered zip on Dri
 bdd_c.DRIVE_IMAGES.clear(); bdd_c.PACKAGE_IMAGES.clear()
 bdd_c.DRIVE_IMAGES[('Batch 5.1', 'a.zip')] = (zeta, 'delivered zip')
 bdd_c.DRIVE_IMAGES[('Batch 5.1', 'b.zip')] = (syn, 'earlier copy')
-bdd_c.PACKAGE_IMAGES['b'] = zeta
-check(bdd_c.image_of_package('Batch 5.1', 'a.zip', 'a') == (zeta, 'the image in the package (delivered zip on Drive)'),
+bdd_c.PACKAGE_IMAGES['b'] = {zeta}
+check(bdd_c.image_of_package('Batch 5.1', 'a.zip', None, 'a') == (zeta, 'the image in the package (delivered zip on Drive)'),
       'the delivered zip on Drive comes first')
-check(bdd_c.image_of_package('Batch 5.1', 'b.zip', 'b') == (zeta, 'the image in the package'),
+check(bdd_c.image_of_package('Batch 5.1', 'b.zip', None, 'b') == (zeta, 'the image in the package'),
       'the bucket scan comes before an earlier copy')
-bdd_c.PACKAGE_IMAGES.clear()
-check(bdd_c.image_of_package('Batch 5.1', 'b.zip', 'b') == (syn, 'the image in the package (earlier copy on Drive)'),
+bdd_c.PACKAGE_IMAGES['b'] = {zeta, syn}
+check(bdd_c.image_of_package('Batch 5.1', 'c.zip', None, 'b') == (None, 'package versions disagree'),
+      'versions of a task on different images decide nothing')
+bdd_c.OBJECT_IMAGES['f' * 64] = syn
+check(bdd_c.image_of_package('Batch 5.1', 'c.zip', 'f' * 64, 'b') == (syn, 'the image in the package (the archive the manifest names)'),
+      'the archive the manifest names settles which version was delivered')
+bdd_c.PACKAGE_IMAGES.clear(); bdd_c.OBJECT_IMAGES.clear()
+check(bdd_c.image_of_package('Batch 5.1', 'b.zip', None, 'b') == (syn, 'the image in the package (earlier copy on Drive)'),
       'an earlier copy only when nothing else reads the package')
 bdd_c.DRIVE_IMAGES.clear()
 
@@ -420,10 +427,13 @@ if asset.exists():
     check(all(r.get('bench') in ('company', 'computer') for r in blob['rows']), 'every Drive row has a bench')
     check(all(r.get('family') in ('real-aster', 'real-zeta', 'real', 'synthetic', 'non-connector', None)
               for r in blob['rows']), 'every Drive row has a family or none')
-    check(all((r['family'] in ('real-aster', 'real-zeta', 'real')) == (r['bench'] == 'company') for r in blob['rows']),
-          'Company Bench is exactly the Real families')
-    check(all(r['category'].startswith('Real') == (r['bench'] == 'company') for r in blob['rows']),
-          'a row is in a Real category exactly when it is a Company Bench task')
+    check(all(r['family'] in ('real-aster', 'real-zeta', 'real') for r in blob['rows'] if r['bench'] == 'company'),
+          'a Company Bench package is Aster or Zeta')
+    check(all(r['bench'] == 'company' for r in blob['rows']
+              if r['family'] in ('real-aster', 'real-zeta', 'real') and r['class'] != 'Real Connector'),
+          'an Aster or Zeta package is Company Bench unless its manifest classes it Real Connector')
+    check(all((r['category'] == 'CompanyBench') == (r['bench'] == 'company') for r in blob['rows']),
+          'a row is in the CompanyBench category exactly when it is a Company Bench task')
     check(not any('folder' in str(r.get('familyFrom') or '').lower() for r in blob['rows']),
           'no family is decided by a Drive folder')
     per = {}

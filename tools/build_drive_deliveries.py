@@ -151,9 +151,10 @@ CLASSES = {'connector': 'Connector', 'real connector': 'Real Connector',
 #
 # Which family a delivered package is - the tree the dashboard reports:
 #
+#   Company Bench   - Aster, Zeta
 #   Computer Bench
 #   +- Connector
-#   |   +- Real   - Real Aster, Real Zeta   (Company Bench is the view of these)
+#   |   +- Real      - Real Aster, Real Zeta (the manifest's Real Connector class)
 #   |   +- Synthetic
 #   +- Non-connector
 #
@@ -171,10 +172,14 @@ CLASSES = {'connector': 'Connector', 'real connector': 'Real Connector',
 # settle it, is Real with the harness unknown.
 FAMILY_OF_BENCH = {'company bench zeta': 'real-zeta', 'company bench aster': 'real-aster',
                    'computer bench synth': 'synthetic', 'computer bench real': 'real'}
-FAMILY_LABELS = {'real-aster': 'Real · Aster', 'real-zeta': 'Real · Zeta',
+# Computer Bench connector categories; a Company Bench package's category is
+# CompanyBench, and the page names it Aster or Zeta as before.
+FAMILY_LABELS = {'real-aster': 'Real Aster', 'real-zeta': 'Real Zeta',
                  'real': 'Real · Aster or Zeta not recorded', 'synthetic': 'Synthetic'}
-# name -> Dockerfile image, from the bucket scan; filled by load_package_images().
+# name -> every Dockerfile image the bucket scan holds under it, and archive
+# sha256 -> image; filled by load_package_images().
 PACKAGE_IMAGES = {}
+OBJECT_IMAGES = {}
 # (batch, zip) -> (image, 'delivered zip' | 'earlier copy'), read by hand from the
 # package zips on Drive where the bucket has no package (Batch 5.1's Company
 # Bench share): tools/data/drive-package-images.tsv. A delivered zip's sha256
@@ -194,16 +199,24 @@ def load_drive_images(path):
     return len(DRIVE_IMAGES)
 
 
-def image_of_package(label, zip_name, *names):
-    """(image, how it was read): the delivered zip on Drive, the bucket scan, an earlier copy on Drive."""
+def image_of_package(label, zip_name, archive, *names):
+    """(image, how it was read). The delivered zip on Drive; the bucket archive
+    the manifest names (source_version); the bucket scan by name, only when every
+    version under the name runs the same family; an earlier copy on Drive.
+    When the bucket holds versions of the task on different families and nothing
+    names the delivered one, (None, 'package versions disagree')."""
     drive = DRIVE_IMAGES.get((label, str(zip_name or '').lower()))
     if drive and drive[1] == 'delivered zip':
         return drive[0], 'the image in the package (delivered zip on Drive)'
+    if archive and archive in OBJECT_IMAGES:
+        return OBJECT_IMAGES[archive], 'the image in the package (the archive the manifest names)'
     bucket = package_image(*names)
     if bucket:
         return bucket, 'the image in the package'
     if drive:
         return drive[0], 'the image in the package (earlier copy on Drive)'
+    if package_images(*names):
+        return None, 'package versions disagree'
     return None, None
 
 
@@ -214,6 +227,7 @@ def load_package_images(bench_index=None, toml_reads=None, truth=None):
     name each family's task, so a task name reaches its image through them. A
     name whose families run different images is left out rather than guessed."""
     PACKAGE_IMAGES.clear()
+    OBJECT_IMAGES.clear()
     for path, keyed in ((toml_reads, 'reads'), (bench_index, 'bench')):
         if not path or not pathlib.Path(path).exists():
             continue
@@ -223,7 +237,10 @@ def load_package_images(bench_index=None, toml_reads=None, truth=None):
             if not image:
                 continue
             name = re.sub(r'^(task|family):', '', key)
-            PACKAGE_IMAGES.setdefault(re.sub(r'^(harbor|obi)/', '', name.strip().lower()), image)
+            PACKAGE_IMAGES.setdefault(re.sub(r'^(harbor|obi)/', '', name.strip().lower()), set()).add(image)
+            archive = SOURCE_OBJECT.search(str(value.get('object') or ''))
+            if archive:
+                OBJECT_IMAGES.setdefault(archive.group(1), image)
     if truth and bench_index and pathlib.Path(truth).exists() and pathlib.Path(bench_index).exists():
         bench = json.loads(pathlib.Path(bench_index).read_text(encoding='utf-8')).get('bench') or {}
         by_name = collections.defaultdict(set)
@@ -232,17 +249,24 @@ def load_package_images(bench_index=None, toml_reads=None, truth=None):
             if image and record.get('name'):
                 by_name[re.sub(r'^(harbor|obi)/', '', str(record['name']).strip().lower())].add(image)
         for name, images in by_name.items():
-            if len(images) == 1:
-                PACKAGE_IMAGES.setdefault(name, images.pop())
+            PACKAGE_IMAGES.setdefault(name, set()).update(images)
     return len(PACKAGE_IMAGES)
 
 
-def package_image(*names):
+def package_images(*names):
+    """Every image the bucket scan holds under any of these names."""
+    found = set()
     for name in names:
         key = re.sub(r'^(harbor|obi)/', '', str(name or '').strip().lower())
-        if key and key in PACKAGE_IMAGES:
-            return PACKAGE_IMAGES[key]
-    return None
+        found |= PACKAGE_IMAGES.get(key, set()) if key else set()
+    return found
+
+
+def package_image(*names):
+    """One image, when every image under these names is the same family; else None."""
+    images = package_images(*names)
+    families = {FAMILY_OF_BENCH.get(bench_type(i)) for i in images}
+    return sorted(images)[0] if images and len(families) == 1 else None
 
 
 def family_of(task, klass, image=None, image_from='the image in the package'):
@@ -599,13 +623,20 @@ def normalise(manifest, label, files=None, require_present=False):
         # The family comes from the manifest and the package, never from the
         # Drive folder the zip sits in (see family_of); the folder is kept only
         # as where the package was found.
-        image, image_from = image_of_package(label, parts[-1], source_folder(task)[1], name, package,
-                                             task.get('original_folder'))
+        image, image_from = image_of_package(label, parts[-1], source_object(task), source_folder(task)[1],
+                                             name, package, task.get('original_folder'))
         family, family_from = family_of(task, klass, image, image_from or 'the image in the package')
+        if image_from == 'package versions disagree' and family_from in (None, 'the manifest'):
+            family_from = ('the manifest; the bucket holds versions of the task on different images'
+                           if family else 'not classified: the bucket holds versions of the task on different images')
         domain = parts[2] if klass == 'Non-Connector' and len(parts) > 3 else first(task.get('domain'))
         if family == 'non-connector' and not domain:
             domain = domain_of_name(name)
-        bench = 'company' if family in ('real-aster', 'real-zeta', 'real') else 'computer'
+        # The bench is the manifest's too. A package its manifest classes Real
+        # Connector is Computer Bench, its real data split by image into Real
+        # Aster and Real Zeta; any other Aster or Zeta package is Company Bench.
+        computer_real = klass == 'Real Connector'
+        bench = 'company' if family in ('real-aster', 'real-zeta', 'real') and not computer_real else 'computer'
         band = first(task.get('difficulty'), parts[1] if len(parts) > 2 else None)
         trials = task.get('trial_evidence') if isinstance(task.get('trial_evidence'), dict) else {}
         glm = trials.get('successes') if isinstance(trials.get('successes'), int) else None
@@ -617,15 +648,16 @@ def normalise(manifest, label, files=None, require_present=False):
             'batch': label,
             # The family (family_of): Real Aster / Real Zeta (the Company Bench
             # view), Synthetic, or Non-connector; and which source decided it.
-            'category': (f'Non-Connector · {domain}' if domain else 'Non-Connector') if family == 'non-connector'
-                        else FAMILY_LABELS.get(family, 'Connector · not classified'),
+            'category': ((f'Non-Connector · {domain}' if domain else 'Non-Connector') if family == 'non-connector'
+                         else 'CompanyBench' if bench == 'company'
+                         else FAMILY_LABELS.get(family, 'Connector · not classified')),
             'class': klass,
             'family': family,
             'familyFrom': family_from,
             'domain': domain if family == 'non-connector' else None,
             'type': 'Non-connector' if family == 'non-connector' else 'Connector',
             'bench': bench,
-            'harness': {'real-aster': 'aster', 'real-zeta': 'zeta'}.get(family),
+            'harness': {'real-aster': 'aster', 'real-zeta': 'zeta'}.get(family) if bench == 'company' else None,
             'driveFolder': location,
             'difficulty': band.capitalize() if band else None,
             'glm': glm,
