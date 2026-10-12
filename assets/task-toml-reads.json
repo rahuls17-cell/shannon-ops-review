@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-11T23:31:04+00:00",
+ "generatedAt": "2026-10-12T00:31:11+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24279,6 +24279,30 @@
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/billing-recon-coverage-audit/183c7abc362642e2d013c96d3501aa4a045969f0cf820c6e3d6a05a789988a16.zip",
    "bytesRead": 44360,
    "readOn": "2026-10-11"
+  },
+  "innovation-theme-concentration-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/innovation-theme-concentration-audit/c015e977e28ee8c377c08922a6b90a616b7b93987fea577a0cf9d957913e25b0.zip",
+   "bytesRead": 59366,
+   "readOn": "2026-10-12"
+  },
+  "trademark-filing-owner-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/trademark-filing-owner-audit/7c02f6c49de3d12f0b54fc17ea45034dc765d8d8fdb7c89833fcd70a5d23eba2.zip",
+   "bytesRead": 46628,
+   "readOn": "2026-10-12"
   }
  }
 }
