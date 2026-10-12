@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T05:21:07+00:00",
+ "generatedAt": "2026-10-12T05:31:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24472,6 +24472,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/helix-study-site-arrangement-audit/7771399441ef8af4311d54fac1bdc4b7aca08e7c6c9c083ab900b1e403277e12.zip",
    "bytesRead": 47954,
+   "readOn": "2026-10-12"
+  },
+  "decision-backlog-live-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/decision-backlog-live-audit/97faaaa9fa2fa0a3db5fe5c19e676b94d5580141e8f5020d28148fd0ef0a5d1b.zip",
+   "bytesRead": 47902,
+   "readOn": "2026-10-12"
+  },
+  "escalator-overbilling-claim-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/escalator-overbilling-claim-audit/29445a0a10826d198a3e56b0ac8ffcd92adc4584968808dec207c407f3c6e79a.zip",
+   "bytesRead": 45850,
    "readOn": "2026-10-12"
   }
  }
