@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T06:31:10+00:00",
+ "generatedAt": "2026-10-12T06:41:04+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24617,6 +24617,19 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/response-deadline-docket-audit/379eac6c5ed1ca06985dc4e8e37ebdcb3d12574d878b450bc11410cf06c771e4.zip",
    "bytesRead": 51487,
+   "readOn": "2026-10-12"
+  },
+  "abnormal-lab-followup-audit-email-calendar": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/abnormal-lab-followup-audit-email-calendar/4c8b93d2a991fa01fd4ab1794ad28f072bd913c47406286111c3d3c06c0e52ee.zip",
+   "bytesRead": 58700,
    "readOn": "2026-10-12"
   }
  }
