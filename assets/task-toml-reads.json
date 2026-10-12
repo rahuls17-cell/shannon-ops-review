@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T05:31:06+00:00",
+ "generatedAt": "2026-10-12T05:41:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24496,6 +24496,31 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/escalator-overbilling-claim-audit/29445a0a10826d198a3e56b0ac8ffcd92adc4584968808dec207c407f3c6e79a.zip",
    "bytesRead": 45850,
+   "readOn": "2026-10-12"
+  },
+  "health-scope-growth-audit": {
+   "connector": true,
+   "services": [
+    "email-calendar-gym",
+    "linear-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/health-scope-growth-audit/824a7dffa94db1c1eec45763c56256a141432ff76316a575dbe7314e073d14c8.zip",
+   "bytesRead": 47955,
+   "readOn": "2026-10-12"
+  },
+  "precoverage-recoupment-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:f468ad6dd75dbffa092a554cd663c4be4884586315737577bbc043ad0daba83f",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/precoverage-recoupment-audit/5946e1ab77a8df40479244b94ed8212489786a8c02dfa5eba7e643f54d4d2207.zip",
+   "bytesRead": 55981,
    "readOn": "2026-10-12"
   }
  }
