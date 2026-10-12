@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T05:11:05+00:00",
+ "generatedAt": "2026-10-12T05:21:07+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24460,6 +24460,18 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/devrel-restricted-party-screening-audit/471896f41c824852dcf7746f6d3f3bab980338ae7cdc0743930042b3f189279e.zip",
    "bytesRead": 59718,
+   "readOn": "2026-10-12"
+  },
+  "helix-study-site-arrangement-audit": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/helix-study-site-arrangement-audit/7771399441ef8af4311d54fac1bdc4b7aca08e7c6c9c083ab900b1e403277e12.zip",
+   "bytesRead": 47954,
    "readOn": "2026-10-12"
   }
  }
