@@ -10,15 +10,18 @@ When you change what a figure means, add a line under **Unreleased**. When
 ## Unreleased - on `staging`, not yet on `main`
 
 ### Pipeline tab: "GLM-5.3 failed" status
-- **New Delivered option "GLM-5.3 failed"**: a task whose four GLM-5.3 attempts
+- **New Gate chip "GLM-5.3 failed"**, beside KESTREL, Opus and GLM-5.2: a task whose four GLM-5.3 attempts
   all failed (every complete run 0 of 4; an attempt passes only at a reward of
   exactly 1). Read from the run folders in `gs://obi-harbor-pipeline/glm53-runs/`
   by `tools/build_glm53_index.py` into `assets/glm53-index.json` (1,746 tasks
-  with runs, 384 failed). Rows carry a red **G3** flag, and the task's detail
-  shows each GLM-5.3 run.
+  with runs, 384 failed). Its count follows the other filters, like every gate
+  chip: 444 pipeline rows (284 tasks) with nothing else set, 265 under Delivered,
+  11 under Not delivered. The other 100 failed tasks are Data OS submissions
+  (`dataos-286`/`dataos-133` runs) that are not pipeline tasks. Rows carry a red
+  **G3** flag, and the task's detail shows each GLM-5.3 run.
 - **These tasks are left out of Ready for delivery** (and so out of a manifest
   cut under Ready) but **still count under Not delivered**. Today: Ready 595 →
-  586, GLM-5.3 failed 11 (9 of them were Ready), Not delivered 4,806 unchanged.
+  586 (9 held back), Not delivered 4,806 unchanged.
   Accepted at the bar 2,994 = 2,399 delivered + 586 ready + 9 held by GLM-5.3.
 - A task run twice whose runs disagree (16, mostly a fixed `-v2` package that
   passed) is not GLM-5.3 failed. 41 tasks never got 4 clean attempts and have no

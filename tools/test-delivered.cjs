@@ -392,7 +392,8 @@ Object.entries(jc.unmatchedCohorts).forEach(([c, n]) => console.log(`    ${Strin
   const r = filterTruth(rows, {});
   const names = f => filterTruth(rows, {delivered: f}).rows.map(x => x.name).sort().join(',');
   assert.equal(names('ready'), 'a', 'a GLM-5.3 failed task is not ready for delivery');
-  assert.equal(names('glm53failed'), 'b,d', 'GLM-5.3 failed lists the undelivered tasks that failed, whatever their state');
+  const gate = filterTruth(rows, {gateEra: 'GLM-5.3 failed'}).rows.map(x => x.name).sort().join(',');
+  assert.equal(gate, 'b,c,d', 'the GLM-5.3 failed gate lists every task that failed, delivered or not, whatever its state');
   assert.equal(names('no'), 'a,b,d', 'GLM-5.3 failed tasks still count under Not delivered');
   assert.equal(names('yes'), 'c', 'a delivered task stays Delivered');
   assert.equal(r.readyTasks, 1);

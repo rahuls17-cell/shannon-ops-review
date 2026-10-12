@@ -517,6 +517,7 @@
     return {folders, tasks: names.size, extraFolders: folders - names.size};
   }
 
+  const GLM53_FAILED = 'GLM-5.3 failed';
   function filterTruth(rows, filters) {
     const f = filters || {};
     const has = (list, value) => !value || (list || []).includes(value);
@@ -524,7 +525,9 @@
       const text = [row.name, row.owner, row.why, (row.findings || []).join(' ')]
         .join(' ').toLowerCase();
       return (!f.state || f.state === row.state) &&
-        (!f.gateEra || f.gateEra === row.gateEra) &&
+        // GLM-5.3 failed sits with the gates: every task whose four GLM-5.3
+        // attempts all failed (app.js stamps glm53Failed), whatever gate decided it.
+        (!f.gateEra || (f.gateEra === GLM53_FAILED ? row.glm53Failed === true : f.gateEra === row.gateEra)) &&
         (!f.domain || f.domain === row.domain) &&
         // The Pipeline's Domain dropdown: the name-prefix domain, or a
         // connector task's kind (app.js domainKindOf).
@@ -544,11 +547,9 @@
         (f.carriedOver === undefined || f.carriedOver === null || f.carriedOver === ''
           ? true : Boolean(row.carriedOver) === (f.carriedOver === 'yes')) &&
         (!f.delivered || (f.delivered === 'yes' ? row.delivered === true
-          // GLM-5.3 failed - all four GLM-5.3 attempts failed - is held out of
-          // Ready and stays under Not delivered (app.js stamps glm53Failed).
+          // A GLM-5.3 failed task is held out of Ready and stays under Not delivered.
           : f.delivered === 'ready' ? (row.delivered !== true && !row.glm53Failed && row.atCurrentBar &&
               (row.state === 'accepted' || row.state === 'legacy accepted'))
-          : f.delivered === 'glm53failed' ? (row.delivered !== true && row.glm53Failed === true)
           : f.delivered === 'no' ? row.delivered !== true
           : true)) &&
         (!f.connector || (f.connector === 'yes' ? connectorType(row) === true

@@ -1059,6 +1059,7 @@ function stampSides() {
 // task it was delivered as - with a -vN suffix and without - or by the package
 // folder a run names. GLM-5.3 failed is every complete run at 0 of 4.
 let glm53Index = null;
+const GLM53_GATE = 'GLM-5.3 failed';
 function glm53Of(row) {
   if (!glm53Index) return null;
   const {tasks = {}, alias = {}} = glm53Index;
@@ -1933,6 +1934,9 @@ function populateTruthFilters() {
   fillSelect('tState', states, 'Any state',
     value => (value === 'accepted' && cohort ? 'packages' : 'submissions'), true);
   fillSelect('tGate', v.gateEra, 'Any gate', undefined, true);
+  // The GLM-5.3 failed chip sets the same select, so it needs an option there.
+  const gate = byId('tGate');
+  if (gate && ![...gate.options].some(o => o.value === GLM53_GATE)) gate.add(new Option(GLM53_GATE, GLM53_GATE));
   fillSelect('tFinding', v.findingFamilies, 'Any finding', undefined, true);
   // Domain lists its choices without counts.
   fillSelect('tDomain', v.domainKind, 'Any domain', undefined, true, false);
@@ -2031,16 +2035,18 @@ function renderTruthFilterChips(filters, filtered) {
   const deliveredCount = value => shownTasks(window.filterTruth(value === 'ready' ? kept(byDelivered) : byDelivered,
     {delivered: value}).rows);
   byId('tDeliveredChips').innerHTML = chip('tDelivered', '', 'Any', shownTasks(byDelivered), 'var(--slate)', !filters.delivered) +
-    [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'],
-      ['glm53failed', 'GLM-5.3 failed', 'var(--red)'], ['no', 'Not delivered', 'var(--amber)']]
+    [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
       .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
 
 
   const byGate = without('gateEra').rows;
   const gates = [...new Set(byGate.map(r => r.gateEra).filter(Boolean))].sort((a, b) => byGate.filter(r => r.gateEra === b).length - byGate.filter(r => r.gateEra === a).length);
   const GATE_TONES = {'KESTREL full': 'var(--green)', 'KESTREL on': 'var(--aqua)', 'Opus gate': 'var(--violet)', 'GLM-5.2 gate only': 'var(--amber)'};
+  // GLM-5.3 failed is not a gate era but sits with them: every task in the
+  // current selection whose four GLM-5.3 attempts all failed.
   byId('tGateChips').innerHTML = chip('tGate', '', 'Any', shownTasks(byGate), 'var(--slate)', !filters.gateEra) +
-    gates.map(g => chip('tGate', g, g, shownTasks(byGate.filter(r => r.gateEra === g)), GATE_TONES[g] || 'var(--blue)', filters.gateEra === g)).join('');
+    gates.map(g => chip('tGate', g, g, shownTasks(byGate.filter(r => r.gateEra === g)), GATE_TONES[g] || 'var(--blue)', filters.gateEra === g)).join('') +
+    chip('tGate', GLM53_GATE, GLM53_GATE, shownTasks(byGate.filter(r => r.glm53Failed)), 'var(--red)', filters.gateEra === GLM53_GATE);
 
   const byDelivery = without('delivery').rows;
   const deliveryCount = value => shownTasks(window.filterTruth(byDelivery, {delivery: value}).rows);
@@ -2424,10 +2430,10 @@ The steps below are the verdict chain. It counts submissions, and it is kept her
 // full explanation on hover and a legend under the table, so the name always
 // has the space.
 const FLAGS = [
-  {code: 'G3', tone: 'alert', when: row => row.glm53Failed && !row.delivered,
+  {code: 'G3', tone: 'alert', when: row => row.glm53Failed,
    label: 'GLM-5.3 failed',
-   tip: () => 'GLM-5.3 failed: all four GLM-5.3 attempts failed, so the task is held out of Ready for delivery. ' +
-     'It still counts under Not delivered.'},
+   tip: row => 'GLM-5.3 failed: all four GLM-5.3 attempts failed. ' + (row.delivered
+     ? 'It was delivered already.' : 'It is held out of Ready for delivery and still counts under Not delivered.')},
   {code: 'DL', tone: 'good', when: row => row.delivered,
    label: 'delivered',
    tip: row => 'Already covered by the delivery audit on the Delivery tab, matched by ' +
