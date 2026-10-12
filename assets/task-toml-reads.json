@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T06:21:04+00:00",
+ "generatedAt": "2026-10-12T06:31:10+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24581,6 +24581,42 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-suggestion-owner-audit/316ea95c791d273e7431103a3af9da839e71f280d82ae269ca5e91a74117efed.zip",
    "bytesRead": 45322,
+   "readOn": "2026-10-12"
+  },
+  "it-q4-cash-out-forecast": {
+   "connector": true,
+   "services": [
+    "microsoft-365-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/it-q4-cash-out-forecast/79dda046af5b08f1048224cc534d928133f66468f3d8bbc35745ea02d2e1dfea.zip",
+   "bytesRead": 42867,
+   "readOn": "2026-10-12"
+  },
+  "regulatory-filing-review-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/regulatory-filing-review-audit/2afa064208cd5356a1296e44e15742e417dc3e63c3cfbaada1970552bc0597b1.zip",
+   "bytesRead": 49487,
+   "readOn": "2026-10-12"
+  },
+  "response-deadline-docket-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/response-deadline-docket-audit/379eac6c5ed1ca06985dc4e8e37ebdcb3d12574d878b450bc11410cf06c771e4.zip",
+   "bytesRead": 51487,
    "readOn": "2026-10-12"
   }
  }
