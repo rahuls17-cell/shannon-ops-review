@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T03:21:06+00:00",
+ "generatedAt": "2026-10-12T03:41:05+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24362,6 +24362,32 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/innovation-fund-gate-audit/d3b3b64a0b76310ab41d8b2af28bf4465a8d0529a02045a60744a028caa81db8.zip",
    "bytesRead": 43652,
+   "readOn": "2026-10-12"
+  },
+  "subprocessor-authorisation-audit": {
+   "connector": true,
+   "services": [
+    "outlook-gym",
+    "supabase-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/subprocessor-authorisation-audit/865251a5838d8588bce1086c4d714fc7ebbf12249f1762ee03ccd8a004a11304.zip",
+   "bytesRead": 58115,
+   "readOn": "2026-10-12"
+  },
+  "warehouse-cost-center-chargeback-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym",
+    "snowflake-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/warehouse-cost-center-chargeback-audit/3956173e429f5fbd83dabdab3b1e94b2866fe1fe7d48247b0a95f2556d349ddf.zip",
+   "bytesRead": 42695,
    "readOn": "2026-10-12"
   }
  }
