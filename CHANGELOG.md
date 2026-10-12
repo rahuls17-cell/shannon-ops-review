@@ -9,6 +9,29 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Delivery tab: the family comes from the manifest and the package, not the Drive folder
+- **Real Aster, Real Zeta, Synthetic, Non-connector, decided by the manifest.**
+  Drive folders get renamed and moved, so where a zip sits no longer decides
+  anything but whether it was delivered (the zip-present check stays). Each
+  package's family comes from, in order: the image the manifest records; what
+  the manifest declares (bench_type, tracker_family, the class in its own
+  package_path); the image in the package itself, from the bucket scan (by
+  folder, task name, or the pipeline family the verdict records name); for a
+  Real package with no image, the connector gyms the manifest lists. Each row
+  says which (`family`, `familyFrom`). Company Bench is the view of Real Aster
+  and Real Zeta; categories read "Real Aster" / "Real Zeta".
+- Delivered tasks, before -> after: Real Aster 599 -> 664, Real Zeta 1,362 ->
+  1,442, Synthetic 424 -> 378, Non-connector 1,402 unchanged, Company Bench with
+  no Zeta/Aster tag 130 -> 0; 210 tasks move (list:
+  `delivery-family-moves.csv`). Batch 10.1's 37 "Real ComputerBench" tasks are
+  Real Aster by their manifest; Batch 4.1 / 5.1's "Real Connector" tasks follow
+  their package images (8 Aster, 25 Zeta).
+- Not classified, reported rather than guessed: 29 Batch 5.1 packages whose
+  manifest says only "Connector" / "harbor" and whose package image the bucket
+  scan does not have (they counted as Company Bench only by the Drive's share
+  folder), and 2 Batch 5.1 "Real Connector" packages on images the tracker does
+  not list. They sit in no segment.
+
 ## v4.4 - 2026-10-10, staging promoted to production
 
 ### Delivery tab: the hand-reviewed trainer table

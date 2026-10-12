@@ -842,7 +842,8 @@ function taskBenches() {
     return map;
   };
   const delivered = index(deliveredRows().flatMap(row => {
-    const side = row.bench === 'company' ? 'company' : 'computer';
+    // A package no manifest or image classifies gives its pipeline row no bench.
+    const side = row.family === null ? null : row.bench === 'company' ? 'company' : 'computer';
     return [[row.task, side], [row.packageName, side]];
   }));
   const built = index((truth ? truth.rows : []).map(row => [row.name, row.benchSide]));
@@ -1028,7 +1029,7 @@ function stampSides() {
 const KIND_OF_IMAGE = {'computer bench synth': 'Synthetic', 'computer bench real': 'Real Connector'};
 function domainKindOf(row, leaf) {
   if (String(leaf).startsWith('company')) {
-    const harness = COMPANY_HARNESS[truthHarness(row)] || 'Company Bench';
+    const harness = COMPANY_HARNESS[truthHarness(row)] || 'Real';
     const count = connectorCountOf(row.connectorServices)
       || countOfTask(row.name, row.deliveredTask, row.packageTask, row.cohortFolder);
     return `${harness} · ${COMPANY_COUNT[count] || 'connectors not read'}`;
@@ -1092,13 +1093,14 @@ function keepFolderAnswer(row) {
 // CompanyBench. Its category is its harness and how many connectors the task
 // declares in its task.toml - one, or two and more: Aster or Zeta, single
 // connector or multi-connector.
-const COMPANY_HARNESS = {aster: 'Aster', zeta: 'Zeta'};
+// The Real connector families, Aster and Zeta; Company Bench is the view of both.
+const COMPANY_HARNESS = {aster: 'Real Aster', zeta: 'Real Zeta'};
 const COMPANY_COUNT = {single: 'Single connector', multi: 'Multi-connector'};
 function applyCompanyCategory() {
   [...(audit ? audit.rows : []), ...(driveAudit ? driveAudit.rows : [])].forEach(row => {
     keepFolderAnswer(row);
     if (row.bench !== 'company') return;
-    row.category = `${COMPANY_HARNESS[deliveryHarness(row)] || 'Company Bench'} \u00b7 ${COMPANY_COUNT[deliveryCount(row)] || 'connectors not read'}`;
+    row.category = `${COMPANY_HARNESS[deliveryHarness(row)] || 'Real'} \u00b7 ${COMPANY_COUNT[deliveryCount(row)] || 'connectors not read'}`;
   });
 }
 // Everything above is read from data that arrives at different times, so it
@@ -1202,8 +1204,12 @@ const shownTasks = rows => rows.length;
 // Computer Bench task, split by its connector flag.
 // A delivered package's own manifest list first, then the pipeline's reading.
 const deliveryCount = row => connectorCountOf(row.connectors) || (row.driveOnly ? null : countOfTask(row.task, row.packageName));
-const deliverySegment = row => taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type),
-  row.bench === 'company' ? deliveryHarness(row) : null);
+// A Drive package whose manifest and package name no family (row.family null,
+// tools/build_drive_deliveries.py family_of) sits in no segment - it is
+// reported as not classified rather than counted as Synthetic.
+const deliverySegment = row => (row.fromManifest && row.family === null ? 'unknown'
+  : taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type),
+    row.bench === 'company' ? deliveryHarness(row) : null));
 const auditRows = () => (audit ? audit.rows.filter(row => segmentMatches(deliverySegment(row))) : []);
 const ledgerRows = () => payoutLedgerTasks.filter(task => segmentMatches(ledgerSegment(task)));
 

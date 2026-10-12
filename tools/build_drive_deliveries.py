@@ -147,6 +147,120 @@ CLASSES = {'connector': 'Connector', 'real connector': 'Real Connector',
            'companybench': 'CompanyBench', 'company bench zeta': 'Company Bench Zeta'}
 
 
+# ------------------------------------------------------------ the task family
+#
+# Which family a delivered package is - the tree the dashboard reports:
+#
+#   Computer Bench
+#   +- Connector
+#   |   +- Real   - Real Aster, Real Zeta   (Company Bench is the view of these)
+#   |   +- Synthetic
+#   +- Non-connector
+#
+# Decided by the manifest and the package, never by the Drive folder the zip
+# sits in (folders get renamed and moved; the 3 Oct layout turned Batch 10.1's
+# CompanyBench/ into "Real ComputerBench"). In order:
+#   1. the image the manifest records - image, image_ref, the image named in
+#      bench_basis, or a connector's image - read with the image tracker's rule;
+#   2. what the manifest declares - bench_type, tracker_family, bench_group and
+#      the class in its own package_path (the packager's grouping, not Drive's);
+#   3. the image in the package itself, from the bucket scan (Dockerfile FROM),
+#      when the manifest names none - Batch 5.1 lists only "harbor";
+#   4. otherwise not classified, and reported rather than guessed.
+# A manifest that says real but names neither Aster nor Zeta, with no image to
+# settle it, is Real with the harness unknown.
+FAMILY_OF_BENCH = {'company bench zeta': 'real-zeta', 'company bench aster': 'real-aster',
+                   'computer bench synth': 'synthetic', 'computer bench real': 'real'}
+FAMILY_LABELS = {'real-aster': 'Real · Aster', 'real-zeta': 'Real · Zeta',
+                 'real': 'Real · Aster or Zeta not recorded', 'synthetic': 'Synthetic'}
+# name -> Dockerfile image, from the bucket scan; filled by load_package_images().
+PACKAGE_IMAGES = {}
+
+
+def load_package_images(bench_index=None, toml_reads=None, truth=None):
+    """The image each package in the bucket runs, by task name and folder.
+
+    The bench index is keyed by pipeline family; the pipeline's verdict records
+    name each family's task, so a task name reaches its image through them. A
+    name whose families run different images is left out rather than guessed."""
+    PACKAGE_IMAGES.clear()
+    for path, keyed in ((toml_reads, 'reads'), (bench_index, 'bench')):
+        if not path or not pathlib.Path(path).exists():
+            continue
+        table = json.loads(pathlib.Path(path).read_text(encoding='utf-8')).get(keyed) or {}
+        for key, value in table.items():
+            image = value.get('image') if isinstance(value, dict) else None
+            if not image:
+                continue
+            name = re.sub(r'^(task|family):', '', key)
+            PACKAGE_IMAGES.setdefault(re.sub(r'^(harbor|obi)/', '', name.strip().lower()), image)
+    if truth and bench_index and pathlib.Path(truth).exists() and pathlib.Path(bench_index).exists():
+        bench = json.loads(pathlib.Path(bench_index).read_text(encoding='utf-8')).get('bench') or {}
+        by_name = collections.defaultdict(set)
+        for record in json.loads(pathlib.Path(truth).read_text(encoding='utf-8')).get('tasks') or []:
+            image = (bench.get(record.get('id')) or {}).get('image')
+            if image and record.get('name'):
+                by_name[re.sub(r'^(harbor|obi)/', '', str(record['name']).strip().lower())].add(image)
+        for name, images in by_name.items():
+            if len(images) == 1:
+                PACKAGE_IMAGES.setdefault(name, images.pop())
+    return len(PACKAGE_IMAGES)
+
+
+def package_image(*names):
+    for name in names:
+        key = re.sub(r'^(harbor|obi)/', '', str(name or '').strip().lower())
+        if key and key in PACKAGE_IMAGES:
+            return PACKAGE_IMAGES[key]
+    return None
+
+
+def family_of(task, klass, image=None):
+    """(family, how it was decided); family None when nothing says."""
+    recorded = [manifest_image(task), task.get('image'),
+                *[s.get('image') for s in connector_entries(task) if isinstance(s, dict)]]
+    partial = None
+    for value in recorded:
+        family = FAMILY_OF_BENCH.get(bench_type(str(value))) if value else None
+        if family == 'real':
+            partial = partial or ('real', 'the image the manifest records')
+        elif family:
+            return family, 'the image the manifest records'
+    if task.get('connector') is False or klass == 'Non-Connector':
+        return 'non-connector', 'the manifest'
+    declared = ' '.join(str(task.get(k) or '') for k in
+                        ('bench_type', 'tracker_family', 'bench_family', 'bench_group', 'bench_class'))
+    declared = f'{declared} {klass}'.lower()
+    if 'zeta' in declared:
+        return 'real-zeta', 'the manifest'
+    if 'aster' in declared:
+        return 'real-aster', 'the manifest'
+    if 'synth' in declared:
+        return 'synthetic', 'the manifest'
+    real = partial or (('real', 'the manifest') if re.search(r'real|company\s*bench', declared) else None)
+    family = FAMILY_OF_BENCH.get(bench_type(str(image))) if image else None
+    if family in ('real-aster', 'real-zeta'):
+        return family, 'the image in the package'
+    if family == 'synthetic' and not real:
+        return 'synthetic', 'the image in the package'
+    if family == 'synthetic' and real:
+        return 'real', 'the manifest says real, the package image is synthetic'
+    if real:
+        # Real, the harness not recorded: the connector gyms the manifest lists.
+        # Zeta's own SQL gym is Zeta; among real packages only Aster mounts
+        # GitHub, Notion, Linear, Outlook, Gmail + Calendar or Google Workspace.
+        gyms = [str(g).lower() for g in connector_names(task)]
+        if any(re.match(r'^zeta3-sql(-gym)?$', g) for g in gyms):
+            return 'real-zeta', 'the connectors the manifest lists'
+        if any(re.match(r'^(github|notion|linear|outlook|email-calendar|gws)(-gym)?$', g) for g in gyms):
+            return 'real-aster', 'the connectors the manifest lists'
+        return real
+    if image and family is None:
+        # A plain base image runs no connector gym.
+        return 'non-connector', 'the image in the package (no connector harness)'
+    return None, None
+
+
 def class_of(head, task):
     """The class a manifest's first package_path folder names.
 
@@ -452,18 +566,15 @@ def normalise(manifest, label, files=None, require_present=False):
         declared = re.sub(r'^(harbor|obi)/', '', str(task.get('task_name') or '').strip())
         name = declared or package
         klass = class_of(parts[0], task)
-        # Where the zip sits on Drive names its class when the folder says one -
-        # Batch 10.1's CompanyBench folder became "Real ComputerBench" in the
-        # 3 Oct layout while its manifest still says CompanyBench/.
-        # A Company Bench folder does not make a package Company Bench on its own:
-        # the 9 synthetic tasks CompanyBench 3 ships are Computer Bench by its
-        # manifest wherever they are filed, so then the manifest's class stays.
-        filed = folder_class(location)
-        if filed and not (filed == 'CompanyBench' and bench_of(label, klass, task, location) != 'company'):
-            klass = filed
+        # The family comes from the manifest and the package, never from the
+        # Drive folder the zip sits in (see family_of); the folder is kept only
+        # as where the package was found.
+        family, family_from = family_of(task, klass, package_image(
+            source_folder(task)[1], name, package, task.get('original_folder')))
         domain = parts[2] if klass == 'Non-Connector' and len(parts) > 3 else first(task.get('domain'))
-        if klass == 'Non-Connector' and not domain:
+        if family == 'non-connector' and not domain:
             domain = domain_of_name(name)
+        bench = 'company' if family in ('real-aster', 'real-zeta', 'real') else 'computer'
         band = first(task.get('difficulty'), parts[1] if len(parts) > 2 else None)
         trials = task.get('trial_evidence') if isinstance(task.get('trial_evidence'), dict) else {}
         glm = trials.get('successes') if isinstance(trials.get('successes'), int) else None
@@ -473,19 +584,17 @@ def normalise(manifest, label, files=None, require_present=False):
             'task': name,
             'packageName': package if package != name else None,
             'batch': label,
-            # A Company Bench package is CompanyBench, whatever the manifest's own
-            # folder calls it - CompanyBench 1 and 2 and the 5.1 to 7.1 Company
-            # Bench connectors say Connector/ - so the category never contradicts
-            # the bench it was delivered as.
-            'category': 'CompanyBench' if bench_of(label, klass, task, location) == 'company'
-                        else f'Non-Connector · {domain}' if klass == 'Non-Connector' and domain else klass,
+            # The family (family_of): Real Aster / Real Zeta (the Company Bench
+            # view), Synthetic, or Non-connector; and which source decided it.
+            'category': (f'Non-Connector · {domain}' if domain else 'Non-Connector') if family == 'non-connector'
+                        else FAMILY_LABELS.get(family, 'Connector · not classified'),
             'class': klass,
-            'domain': domain,
-            'type': type_of(klass, location),
-            'bench': bench_of(label, klass, task, location),
-            # Aster or Zeta, for a Company Bench package; the page prefers the
-            # image read from the task's own Dockerfile and falls back to this.
-            'harness': harness_of(task, klass) if bench_of(label, klass, task, location) == 'company' else None,
+            'family': family,
+            'familyFrom': family_from,
+            'domain': domain if family == 'non-connector' else None,
+            'type': 'Non-connector' if family == 'non-connector' else 'Connector',
+            'bench': bench,
+            'harness': {'real-aster': 'aster', 'real-zeta': 'zeta'}.get(family),
             'driveFolder': location,
             'difficulty': band.capitalize() if band else None,
             'glm': glm,
@@ -573,22 +682,6 @@ def package_parts(path):
 
 COMPANY_FOLDER = re.compile(r'^company\s*bench', re.I)
 ASTER_FOLDER = re.compile(r'^aster\b', re.I)
-# A Drive folder name read as a class: counts in brackets and "ComputerBench"
-# dropped - "Real ComputerBench (NC 0 RC 37 S 0)" is Real Connector,
-# "Synthetic ComputerBench (...)" Synthetic, "Non-Connector (NC 297 ...)"
-# Non-Connector. A difficulty or domain folder names no class.
-FOLDER_CLASSES = {'real': 'Real Connector', 'real connector': 'Real Connector', 'synthetic': 'Synthetic',
-                  'non-connector': 'Non-Connector', 'non connector': 'Non-Connector', 'connector': 'Connector',
-                  'companybench': 'CompanyBench', 'company bench': 'CompanyBench'}
-
-
-def folder_class(location):
-    if not location:
-        return None
-    head = re.sub(r'\(.*?\)', '', location.split('/')[0])
-    head = re.sub(r'computer\s*bench', '', head, flags=re.I)
-    head = re.sub(r'\s+\d+\s*$', '', head).strip().lower()
-    return FOLDER_CLASSES.get(head)
 NON_CONNECTOR_FOLDER = re.compile(r'^non[\s_-]*connector', re.I)
 
 
@@ -926,7 +1019,14 @@ def main():
                                        'used as a cache so unchanged manifests are not re-downloaded')
     ap.add_argument('--audit', default='assets/delivery-audit.json')
     ap.add_argument('--out', default='assets/drive-deliveries.json')
+    ap.add_argument('--bench-index', default='assets/bench-index.json',
+                    help="the bucket scan's package images, by task name")
+    ap.add_argument('--toml-reads', default='assets/task-toml-reads.json',
+                    help="the bucket scan's package images, by folder")
+    ap.add_argument('--truth', default='assets/pipeline-truth.json',
+                    help="the pipeline's verdict records: which task name each family is")
     args = ap.parse_args()
+    print(f'package images: {load_package_images(args.bench_index, args.toml_reads, args.truth)} names from the bucket scan')
 
     if args.from_dir:
         listing, manifests = snapshot_from_dir(args.from_dir)
