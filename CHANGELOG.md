@@ -9,6 +9,17 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Delivery tab: trainers settled for 66 connector tasks
+- **65 connector tasks that showed no trainer now name one**, from the hand-review
+  list (`tools/data/trainer-review.tsv`). 62 are clean: the trainer on Hussain's
+  sheet is the only accepted submitter and a recorded owner. Three were traced to
+  the delivered run: card-charges-billed-twice → sahil.garg-fx;
+  the-download-that-came-back-empty → ahsan.r4 (the version in Batch 9.1;
+  okwuzi.e redid it after delivery); egress-destination-audit → naveen.k12
+  (delivered run of 2 Oct; the sheet says atif.z, whose run came after delivery).
+- **the-guests-i-never-write-to → shivam.g13**, owner confirmed.
+- The 197 Aster tasks not on Hussain's sheet stay on Company Bench.
+
 ### Delivery tab: Hussain's sheet decides what is Computer Bench
 - **The 255 Aster tasks Hussain's "Connector Accepted Data Computer Bench" sheet
   lists as real move from Company Bench · Aster to Computer Bench · Connector ·
