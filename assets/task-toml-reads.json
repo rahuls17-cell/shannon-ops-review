@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T05:51:06+00:00",
+ "generatedAt": "2026-10-12T06:01:06+00:00",
  "rule": "connector when task.toml declares at least one mcp_servers entry; an empty list is a declaration of nothing",
  "reads": {
   "bus-b46-b3-interstate-move-quote-tariff-recompute": {
@@ -24533,6 +24533,30 @@
    "bench": "computer bench synth",
    "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/lab-reopened-closeout-audit-20261007T155457Z-1-001/05a384cf92743edc172c33f22a4ea13a90f30ad2c0a46bff4e09f795685fc273.zip",
    "bytesRead": 52561,
+   "readOn": "2026-10-12"
+  },
+  "crb-audit-rights-owner-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/crb-audit-rights-owner-audit/ab4a2ca366a5ae1babbba7e87f81e91da305c85ba12fa7b2423bed825644a70a.zip",
+   "bytesRead": 48169,
+   "readOn": "2026-10-12"
+  },
+  "disclosure-metric-owner-audit": {
+   "connector": true,
+   "services": [
+    "slack-gym"
+   ],
+   "basis": "a [[mcp_servers]] table with entries",
+   "image": "kuzphi/company-bench-private@sha256:bcae80df8a044bdd5d22af1f10fc27e975cc3f9443daf24dc30c9dc0fc20c6cf",
+   "bench": "computer bench synth",
+   "object": "gs://obi-harbor-pipeline/tasks/finalisation_client_qc_accepted_iteration_2/disclosure-metric-owner-audit/04ae6992ddb9740fa3c152922e351044c0c504115cff2930e0d69f6ebecfebeb.zip",
+   "bytesRead": 62535,
    "readOn": "2026-10-12"
   }
  }
