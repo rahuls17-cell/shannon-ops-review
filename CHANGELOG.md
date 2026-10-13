@@ -9,6 +9,10 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+_Nothing yet._
+
+## v4.6 - 2026-10-13, staging promoted to production
+
 ### Delivery tab: layout
 - Export CSV and Export manifest.json sit side by side on the search bar's line
   instead of stacked in the page header, which frees the space above.
