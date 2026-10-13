@@ -143,15 +143,36 @@
     };
   }
 
-  function prepareDeliveryAudit(payload, drivePayload, ownersPayload, sheetPayload, reviewPayload) {
+  // The client's decision on a delivered task, from the client feedback sheet:
+  // the audited Batches 1 to 3 ("Final Harbor Audit", priority Low accepted,
+  // High or Medium rejected), keyed by batch and task name. Only that batch's
+  // copy takes it - a task delivered again later is a new version the client
+  // has not judged.
+  function clientFeedbackIndex(rows) {
+    const key = (batch, name) => `${batch}|${String(name || '').trim().toLowerCase().replace(/^(harbor|obi)\//, '')}`;
+    const index = new Map();
+    (rows || []).filter(row => row.acceptance === 'Accepted' || row.acceptance === 'Rejected')
+      .forEach(row => index.set(key(row.batch, row.task), row));
+    return {get: row => index.get(key(row.batch, row.task)) || index.get(key(row.batch, row.packageName))};
+  }
+  function withClientFeedback(row, index) {
+    const hit = index && index.get(row);
+    if (!hit) return row;
+    return {...row, acceptance: hit.acceptance, priority: hit.priority || row.priority,
+      qc_result: hit.qc_result || row.qc_result, feedback_url: hit.feedback_url || row.feedback_url,
+      acceptanceFrom: 'client feedback sheet'};
+  }
+
+  function prepareDeliveryAudit(payload, drivePayload, ownersPayload, sheetPayload, reviewPayload, feedbackRows) {
     if (!payload || !Array.isArray(payload.rows)) throw new Error('No delivery audit asset loaded');
     const audited = new Set(payload.rows.map(row => row.batch));
     const owners = ownersPayload && ownersPayload.owners ? ownersPayload.owners : null;
     const sheet = trainerSheetIndex(sheetPayload);
     const review = trainerReviewIndex(reviewPayload);
+    const feedback = feedbackRows ? clientFeedbackIndex(feedbackRows) : null;
     const driveRows = (drivePayload && Array.isArray(drivePayload.rows) ? drivePayload.rows : [])
       .filter(row => !audited.has(row.batch))
-      .map(row => withReviewedTrainer(withSheetTrainer(withOwner({...row, fromManifest: true}, owners), sheet), review));
+      .map(row => withClientFeedback(withReviewedTrainer(withSheetTrainer(withOwner({...row, fromManifest: true}, owners), sheet), review), feedback));
     // Drive files part of the audited Batches 1 to 4.1 as Company Bench (the
     // 3 Oct layout's "Batch N - CompanyBench" folders). Those audited rows take
     // that bench; every other audited row is the Computer Bench audit it was.

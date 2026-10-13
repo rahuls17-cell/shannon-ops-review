@@ -9,6 +9,17 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Delivery tab: client decisions for Batches 1 to 3 on the live view
+- **The live Delivery rows of Batches 1 to 3 now carry the client's Accepted /
+  Rejected**, with the priority and the per-task feedback link, from the client
+  feedback sheet ("Final Harbor Audit": priority Low accepted, High or Medium
+  rejected) that until now only the hidden GLM 5.3 cutoff view showed. Matched
+  by batch and task name: Batch 1 5 accepted / 53 rejected, Batch 2 9 / 45 (1
+  undecided in the sheet), Batch 3 14 / 45. Every other row stays Pending.
+- 8 of the sheet's 180 decisions are not applied: those tasks are no longer in
+  their Batch 1 to 3 folder on Drive and were delivered again in Batch 5.1 or
+  6.1, a new version the client has not judged.
+
 ### Delivery tab: missing image and connector count filled into the Drive manifests
 - **195 tasks had no family, no Aster/Zeta split or no connector count** because
   their batch manifest never recorded them (Batches 1, 3, 4.1, 5.1, 11.1, 12.1,
