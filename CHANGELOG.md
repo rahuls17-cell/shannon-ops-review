@@ -9,6 +9,10 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+_Nothing yet._
+
+## v4.4 - 2026-10-13, staging promoted to production
+
 ### Delivery tab: credit for the 73 owner-vs-accepted-run tasks
 - **65 of the 73 tasks where the dashboard's trainer was not the accepted run's
   submitter are now credited by the "Actual Credit" column** of
@@ -114,6 +118,8 @@ When you change what a figure means, add a line under **Unreleased**. When
   bucket holds versions of the task on both Aster and Zeta images and nothing
   names the delivered one (Batch 1, 3, 4.1, 5.1); `slack-first-reply-baseline`, on
   `connectors-harness@sha256:926ccf10…`, which the image tracker does not list.
+
+## v4.3.1 - 2026-10-10, staging promoted to production
 
 ### Delivery tab: the hand-reviewed trainer table
 - **21 Delivery tasks take their trainer from the ops team's hand review** of rows
