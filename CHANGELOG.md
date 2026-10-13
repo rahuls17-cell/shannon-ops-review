@@ -9,6 +9,15 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Delivery tab: credit for the 73 owner-vs-accepted-run tasks
+- **65 of the 73 tasks where the dashboard's trainer was not the accepted run's
+  submitter are now credited by the "Actual Credit" column** of
+  `trainer73-dashboard-vs-accepted-new.xlsx` (13 Oct), through the hand-review
+  list: 43 keep the task owner the dashboard showed, 22 move to the accepted
+  run's submitter.
+- The other 8 have no Actual Credit (one is marked Rejected Task) and keep the
+  trainer they had.
+
 ### Pipeline tab: "GLM-5.3 failed" status
 - **New Gate chip "GLM-5.3 failed"**, beside KESTREL, Opus and GLM-5.2: a task whose four GLM-5.3 attempts
   all failed (every complete run 0 of 4; an attempt passes only at a reward of

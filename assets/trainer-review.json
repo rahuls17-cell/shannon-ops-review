@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-12T16:24:11+00:00",
+ "generatedAt": "2026-10-13T09:33:24+00:00",
  "source": "ops review of unattributed and contested Delivery rows (tools/data/trainer-review.tsv)",
  "rule": "a reviewed task takes the review's trainer, ahead of the trainer credit sheet and the bucket; a review with no trainer leaves the task without one and says why",
  "entries": [
@@ -49,7 +49,7 @@
    "trainer": "preet.s@turing.com",
    "trainerType": "Company trainer",
    "confidence": "High",
-   "mapping": "Found - Task Tracker + harbor"
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter zhengyuan.ma@turing.com"
   },
   {
    "task": "the-owner-column-is-not-an-owner",
@@ -96,8 +96,8 @@
    "batch": "Batch 5.1",
    "trainer": "mohamed.a@turing.com",
    "trainerType": "Company trainer",
-   "confidence": "Medium",
-   "mapping": "Found - Task Tracker"
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter mohamed.e6@turing.com"
   },
   {
    "task": "diagnose-why-check-deposit-2329-for-254-01-ended-in-returned-status",
@@ -914,6 +914,510 @@
    "trainerType": "Computer team trainer",
    "confidence": "High",
    "mapping": "Owner confirmed; only trainer who submitted it (accepted 30 Sep)"
+  },
+  {
+   "task": "drive-version-history-retention-review",
+   "batch": "Batch 1",
+   "trainer": "daud.f@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "code-c423-multi-campus-account-access-audit",
+   "batch": "Batch 1",
+   "trainer": "michael.b2@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "gen-g292-grazing-cup-design-audit",
+   "batch": "Batch 1",
+   "trainer": "shwetank.c@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "health-h107-equine-therapy-session-compliance-audit",
+   "batch": "Batch 1",
+   "trainer": "shwetank.c@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "health-h23-specimen-labelling-taxonomy",
+   "batch": "Batch 1",
+   "trainer": "michael.b2@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "health-tdt5-a2-canine-supplement-dose-sheet",
+   "batch": "Batch 10.1",
+   "trainer": "naveen.k12@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "the-switching-guides-we-publish",
+   "batch": "Batch 10.1",
+   "trainer": "preet.s@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "edu-s1-d5-pacing-guide-quarter-compaction",
+   "batch": "Batch 12.1",
+   "trainer": "atif.z@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "finance-partial-load-breach",
+   "batch": "Batch 13.1",
+   "trainer": "nkwachukwu.o@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "code-c221-api-auth-method-compliance-audit",
+   "batch": "Batch 2",
+   "trainer": "eyob.t@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c14-pii-redaction-fix",
+   "batch": "Batch 2",
+   "trainer": "shashank.s5@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "health-h28-screening-interval-recall",
+   "batch": "Batch 2",
+   "trainer": "michael.b2@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "law-l51-sstb-compensation-concentration-audit",
+   "batch": "Batch 2",
+   "trainer": "michael.b2@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "gen-g469-thesis-terminology-compliance-audit",
+   "batch": "Batch 2",
+   "trainer": "abdullah.m7@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "code-c274-elevator-inspection-compliance-audit",
+   "batch": "Batch 4.1",
+   "trainer": "rajdeep.r@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter tiago.brandao@turing.com"
+  },
+  {
+   "task": "code-c290-breach-notification-deadline-audit",
+   "batch": "Batch 4.1",
+   "trainer": "nihal.b@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "ephyra-intake-form-column-teardown-rebuild-census",
+   "batch": "Batch 4.1",
+   "trainer": "muhammad.a11@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "fin-f27-earnings-per-share",
+   "batch": "Batch 4.1",
+   "trainer": "zaid.b@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter tiago.brandao@turing.com"
+  },
+  {
+   "task": "law-l79-occupational-health-disciplinary-audit",
+   "batch": "Batch 4.1",
+   "trainer": "tarun.s3@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "diagnose-failed-50-bill-payment-105133-customer-disputes-insufficient",
+   "batch": "Batch 5.1",
+   "trainer": "rana.a3@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "determine-effective-daily-ach-debit-ceiling-for-account-11556-vs-confi",
+   "batch": "Batch 5.1",
+   "trainer": "shan.a1@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "code-c214-pod-security-context-audit",
+   "batch": "Batch 5.1",
+   "trainer": "shreyash.d1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "law-l36-litigation-hold-custodians",
+   "batch": "Batch 5.1",
+   "trainer": "abhas.b@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "code-c341-loan-bulletin-version-audit",
+   "batch": "Batch 5.1",
+   "trainer": "abhishek.y@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c103-paging-escalation-policy-audit",
+   "batch": "Batch 6.1",
+   "trainer": "mohammad.f3@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c13-feature-flag-cleanup",
+   "batch": "Batch 6.1",
+   "trainer": "gul.s@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c152-battery-sku-compatibility-audit",
+   "batch": "Batch 6.1",
+   "trainer": "shreyash.d1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c155-gas-detector-calibration-audit",
+   "batch": "Batch 6.1",
+   "trainer": "eyob.t@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c158-sports-feed-outage-reconcile",
+   "batch": "Batch 6.1",
+   "trainer": "shashank.m1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c198-network-segmentation-policy-audit",
+   "batch": "Batch 6.1",
+   "trainer": "manish.k15@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c200-cron-retry-budget-audit",
+   "batch": "Batch 6.1",
+   "trainer": "sharvesh.s@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c53-backup-retention-reconcile",
+   "batch": "Batch 6.1",
+   "trainer": "subodh.k@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c10-dependency-policy-audit",
+   "batch": "Batch 7.1",
+   "trainer": "ajay.s2@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c157-image-asset-spec-audit",
+   "batch": "Batch 7.1",
+   "trainer": "shashank.m1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c179-network-failover-config-audit",
+   "batch": "Batch 7.1",
+   "trainer": "arpit.v@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c222-branch-protection-policy-audit",
+   "batch": "Batch 7.1",
+   "trainer": "mehra.a@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c25-idempotent-write-semantics",
+   "batch": "Batch 7.1",
+   "trainer": "saddam.h1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c282-training-module-version-compliance-audit",
+   "batch": "Batch 7.1",
+   "trainer": "aman.s12@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c285-image-export-format-audit",
+   "batch": "Batch 7.1",
+   "trainer": "chinnappagari.s@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c6-deploy-remediation",
+   "batch": "Batch 7.1",
+   "trainer": "alemu.b@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c121-compaction-small-file-policy-audit",
+   "batch": "Batch 8.1",
+   "trainer": "aondohemba.e1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c170-gis-utility-marker-audit",
+   "batch": "Batch 8.1",
+   "trainer": "vishnu.g2@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c180-hardware-compat-matrix-audit",
+   "batch": "Batch 8.1",
+   "trainer": "shreyash.d1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c218-replica-lag-sla-audit",
+   "batch": "Batch 8.1",
+   "trainer": "arifur.r@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c219-vulnerability-remediation-sla-audit",
+   "batch": "Batch 8.1",
+   "trainer": "sharvesh.s@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c238-dependency-license-compliance-audit",
+   "batch": "Batch 8.1",
+   "trainer": "malik.a1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c266-saas-tool-procurement-audit",
+   "batch": "Batch 8.1",
+   "trainer": "muhammad.a108@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c168-reminder-source-truth-audit",
+   "batch": "Batch 8.1",
+   "trainer": "noor.a1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c190-weather-alert-threshold-audit",
+   "batch": "Batch 8.1",
+   "trainer": "shashank.m1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c225-sbom-vulnerability-waiver-audit",
+   "batch": "Batch 8.1",
+   "trainer": "sharvesh.s@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c262-ai-resource-link-accessibility-audit",
+   "batch": "Batch 8.1",
+   "trainer": "varsh.v@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c270-ai-model-endpoint-governance-audit",
+   "batch": "Batch 8.1",
+   "trainer": "monu.k@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c104-log-sampling-ingestion-volume-recompute",
+   "batch": "Batch 9.1",
+   "trainer": "jalees.r@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c178-build-config-env-audit",
+   "batch": "Batch 9.1",
+   "trainer": "chandu.s@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "code-c29-patch-application-correctness",
+   "batch": "Batch 9.1",
+   "trainer": "zaid.s@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c299-deck-export-handoff-audit",
+   "batch": "Batch 9.1",
+   "trainer": "muhammad.y6@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c315-backrun-candidate-promotion-gate-audit",
+   "batch": "Batch 9.1",
+   "trainer": "sifat.h@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com"
+  },
+  {
+   "task": "code-c622-saas-tenant-pilot-readiness-audit",
+   "batch": "Batch 9.1",
+   "trainer": "atif.z@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "health-h6-visit-window-compliance",
+   "batch": "Batch 9.1",
+   "trainer": "malik.a1@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com"
+  },
+  {
+   "task": "tech-b50-t5-packaged-goods-weight-overcharge-attribution",
+   "batch": "Batch 9.1",
+   "trainer": "naveen.k12@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "tech-b51-t9-mobile-plan-bill-variance-attribution",
+   "batch": "Batch 9.1",
+   "trainer": "naveen.k12@turing.com",
+   "trainerType": "Computer team trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
+  },
+  {
+   "task": "plaid-linked-accounts-stuck-in-pending-manual-verification-open-queue-and-next-step-2021-01-01-2025-05-31",
+   "batch": "CompanyBench 2",
+   "trainer": "mohamed.a@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter vamsi.m@turing.com"
+  },
+  {
+   "task": "audit-paycheck-automation-book-transfers-cancelled-by-the-ats-check",
+   "batch": "CompanyBench 2",
+   "trainer": "talha.m2@turing.com",
+   "trainerType": "Company trainer",
+   "confidence": "High",
+   "mapping": "Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter"
   }
  ]
 }
