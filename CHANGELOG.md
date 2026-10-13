@@ -11,6 +11,20 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 _Nothing yet._
 
+## v4.7 - 2026-10-14, staging promoted to production
+
+### Delivery tab: Hussain's Company/Aster tasks are Computer Bench Real Aster
+- **225 delivered tasks move from Company Bench · Aster to Computer Bench ·
+  Real Aster.** Hussain's "Connector Accepted Data Computer Bench" sheet lists
+  233 Aster tasks under team Company (first tab, "Accurate Data"), which count
+  toward the Computer Bench volume. They are added to
+  `tools/data/computer-bench-sheet.tsv` (new `tab` column says which tab a row
+  came from), so the existing rule makes them Computer Bench Real. 225 are
+  delivered (one is listed twice); 7 are not delivered yet.
+- Company Bench Aster 419 -> 194; Computer Bench Real Aster 362 -> 587. On the
+  Pipeline, the delivered ones move to Computer Bench · Connector (Real Aster);
+  Ready and Not delivered do not change. Total 4,207 unchanged.
+
 ## v4.6 - 2026-10-13, staging promoted to production
 
 ### Delivery tab: layout
