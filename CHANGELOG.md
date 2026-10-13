@@ -9,6 +9,28 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+### Delivery tab: Batch 14.1 (290 tasks)
+- **Batch 14.1 is on the Delivery tab**: 290 tasks from "10-13 Batch 14.1" on
+  Drive (read on the VM with rclone; same layout as 12.1 and 13.1). Computer
+  Bench Synthetic 183; Aster 107, of which 97 are on Hussain's Computer Bench
+  sheet (Computer Bench · Real Aster) and 10 are Company Bench · Aster. Trainers:
+  230 from the bucket, 46 contested, 13 unattributed, 1 from the trainer credit
+  sheet. Delivered now 4,207. No earlier row changed.
+- Its manifest records no image or connector list, so the 10 Company Bench Aster
+  tasks read "connectors not read", as 13.1 did before its manifest was filled.
+- 2 Batch 13.1 trainers that newer bucket records would now call contested
+  (yousef.g also submitted them) were left as they were.
+
+### Pipeline tab: delivered submissions under a versioned folder
+- **A submission named after a versioned bucket folder (`the-task-v2`) is now
+  marked delivered** by the folder its Drive manifest names in `source_uri`,
+  though the delivered task name has no version. 40 tasks left Ready: 17 of
+  Batch 14.1 and 23 of Batches 10.1, 12.1 and 13.1 that had been delivered but
+  still counted as ready.
+- With Batch 14.1 and this fix (main's pipeline of 13 Oct): Delivered 2,607 ->
+  2,909, Ready 738 -> 421, Not delivered 4,959 -> 4,641. Accepted at the bar
+  3,144 = 2,713 delivered + 421 ready + 10 held by GLM-5.3.
+
 ### Delivery tab: client decisions for Batches 1 to 3 on the live view
 - **The live Delivery rows of Batches 1 to 3 now carry the client's Accepted /
   Rejected**, with the priority and the per-task feedback link, from the client

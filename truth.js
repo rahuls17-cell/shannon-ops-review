@@ -447,6 +447,12 @@
         add(byName, keyOf(n), d);
         if (!d.audited) add(driveByName, keyOf(n), d);
       });
+      // A submission is named after its bucket folder, which can carry a
+      // version the package's task name does not (the-task-v2): the folder the
+      // manifest names in source_uri marks it too - an exact folder, not a guess.
+      if (!d.audited && d.sourcePrefix === prefix && d.sourceFolder && keyOf(d.sourceFolder) !== keyOf(d.task)) {
+        add(driveByName, keyOf(d.sourceFolder), d);
+      }
     });
     const folders = new Map(cohort.map(row => [keyOf(row.cohortFolder), row]));
     const reached = new Map();
