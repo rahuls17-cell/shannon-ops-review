@@ -52,8 +52,11 @@ check(reason is None, f'a well-formed manifest must be accepted: {reason}')
 by = {r['packageName']: r for r in rows or []}
 check(by['x']['category'] == 'Non-Connector · Legal' and by['x']['type'] == 'Non-connector',
       'Non-Connector keeps its domain as the second level')
-check(by['y']['category'] == 'Real Connector' and by['y']['type'] == 'Connector',
-      'connector classes keep the manifest spelling')
+check(by['y']['category'] == 'Real · Aster or Zeta not recorded' and by['y']['type'] == 'Connector'
+      and by['y']['bench'] == 'computer' and by['y']['family'] == 'real',
+      'a Real Connector package stays Computer Bench; with no image its Aster or Zeta is unknown')
+check(by['z']['family'] == 'real-zeta' and by['z']['bench'] == 'company' and by['z']['category'] == 'CompanyBench',
+      'a manifest class naming Company Bench Zeta is Company Bench, Zeta')
 check(by['z']['difficulty'] is None and by['z']['glm'] is None and by['z']['bucket'] is None,
       'no difficulty or trials recorded means none claimed, not zero')
 check(by['x']['glm'] == 1 and by['x']['bucket'] == '1/4', 'GLM successes carried through')
@@ -156,9 +159,10 @@ check(five['tasks'] == 2 and five['leftOut'] == ['b.zip'] and len(five['notes'])
       f'a package taken out of the dedup copy is left out and named, got {five}')
 ids = [r['id'] for r in out['rows'] if r['batch'] == 'Batch 5.1']
 check(ids == ['B51-001', 'B51-003'], f'ids keep the manifest numbering when a package is left out, got {ids}')
-benches = {r['packageName']: (r['bench'], r['driveFolder']) for r in out['rows'] if r['batch'] == 'Batch 5.1'}
-check(benches == {'a': ('company', 'CompanyBench/Easier'), 'c': ('computer', 'Synthetic')},
-      f'the Drive folder a zip sits in decides its bench, got {benches}')
+benches = {r['packageName']: (r['family'], r['driveFolder']) for r in out['rows'] if r['batch'] == 'Batch 5.1'}
+check(benches == {'a': (None, 'CompanyBench/Easier'), 'c': ('synthetic', 'Synthetic')},
+      f'the Drive folder a zip sits in is kept but decides nothing - a Connector/ package with no image '
+      f'is not classified, wherever it is filed; got {benches}')
 skipped = {s['name']: s['reason'] for s in out['skipped']}
 check('ComputerBench/10-01 Batch 10.1' in skipped, 'a batch folder with no manifest is reported, not dropped')
 check('ComputerBench/10-02 Batch 11.1' in skipped and 'ComputerBench/10-02 Batch11.1 v2' in skipped,
@@ -291,17 +295,53 @@ check(bdd_c.bench_of('CompanyBench 3', 'Synthetic', {'bench_type': 'computer ben
       'bench_basis': 'image reference kuzphi/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89'}) == 'computer',
       'a recorded Computer Bench image keeps a task on the Computer bench')
 
-# The class a Drive folder names wins over the manifest's folder: Batch 10.1's
-# CompanyBench folder became "Real ComputerBench" in the 3 Oct layout.
-import build_drive_deliveries as bdd_classes      # noqa: E402
-check(bdd_classes.folder_class('Real ComputerBench (NC 0 RC 37 S 0)/Easier 24') == 'Real Connector', 'Real ComputerBench is Real Connector')
-check(bdd_classes.folder_class('Synthetic ComputerBench (NC 0 RC 0 S 21)/Harder') == 'Synthetic', 'Synthetic ComputerBench is Synthetic')
-check(bdd_classes.folder_class('Non-Connector (NC 297 RC 0 S 0)/Harder/Legal') == 'Non-Connector', 'counts in brackets are dropped')
-check(bdd_classes.folder_class('Easier 43') is None and bdd_classes.folder_class(None) is None, 'a difficulty folder names no class')
+# The manifest decides, never the Drive folder: Batch 10.1's CompanyBench folder
+# became "Real ComputerBench" in the 3 Oct layout, but its manifest says Aster.
 ten = json.dumps({'tasks': [task('CompanyBench/Easier/r.zip', bench_type='company bench aster')]}).encode()
 rows, _ = normalise(json.loads(ten), 'Batch 10.1', [{'name': 'r.zip', 'path': 'Real ComputerBench (NC 0 RC 37 S 0)/Easier 24'}])
-check(rows[0]['bench'] == 'computer' and rows[0]['category'] == 'Real Connector' and rows[0]['type'] == 'Connector',
-      f"a package filed under Real ComputerBench is Computer Bench Real Connector, got {rows[0]['bench'], rows[0]['category']}")
+check(rows[0]['family'] == 'real-aster' and rows[0]['bench'] == 'company' and rows[0]['familyFrom'] == 'the manifest'
+      and rows[0]['driveFolder'] == 'Real ComputerBench (NC 0 RC 37 S 0)/Easier 24',
+      f"a package's manifest decides its family, not the folder it is filed in; got {rows[0]['family'], rows[0]['familyFrom']}")
+# The order: the image the manifest records, then what it declares, then the
+# package's own image, then the connectors it lists.
+fam = bdd_c.family_of
+syn = 'kuzphi/connectors-harness@sha256:b1374cd8a392ea66f9a649e700a1498e8fcb03ee35776362db7cc15dc3049b89'
+zeta = 'docker.io/kuzphi/company-bench-private@sha256:1e2fbc7a1278c395f1d80d97fa468429854827776b70e84e056789b0f73112c8'
+check(fam({'image': syn, 'bench_type': 'company bench aster'}, 'Connector') == ('synthetic', 'the image the manifest records'),
+      'a recorded image beats the declared label')
+check(fam({'bench_type': 'company bench aster'}, 'Connector', zeta) == ('real-aster', 'the manifest'),
+      'what the manifest declares beats the package image')
+check(fam({}, 'Connector', zeta) == ('real-zeta', 'the image in the package'), 'the package image when the manifest names none')
+check(fam({}, 'Real Connector', syn) == ('real', 'the manifest says real, the image in the package is synthetic'),
+      'a real manifest and a synthetic package image disagree, and say so')
+check(fam({'connector_services': ['zeta3-sql-gym', 'slack-gym']}, 'CompanyBench') == ('real-zeta', 'the connectors the manifest lists'),
+      'a real package with no image takes Zeta from the Zeta SQL gym it lists')
+check(fam({'connector': False}, 'Connector') == ('non-connector', 'the manifest'), 'connector false is non-connector')
+check(fam({}, 'Connector') == (None, None), 'nothing recorded anywhere is not classified')
+bdd_c.COMPUTER_BENCH_SHEET.clear(); bdd_c.COMPUTER_BENCH_SHEET.update(bdd_c.sheet_variants('account-notice-audit'))
+check(bdd_c.on_computer_bench_sheet('harbor/account-notice-audit') and bdd_c.on_computer_bench_sheet('task_account_notice_audit')
+      and not bdd_c.on_computer_bench_sheet('another-task'), 'the Computer Bench sheet matches a task in its spellings')
+bdd_c.COMPUTER_BENCH_SHEET.clear()
+check(fam({}, 'Connector', zeta, 'the image in the package (delivered zip on Drive)')
+      == ('real-zeta', 'the image in the package (delivered zip on Drive)'), 'a zip read on Drive says where it was read')
+bdd_c.DRIVE_IMAGES.clear(); bdd_c.PACKAGE_IMAGES.clear()
+bdd_c.DRIVE_IMAGES[('Batch 5.1', 'a.zip')] = (zeta, 'delivered zip')
+bdd_c.DRIVE_IMAGES[('Batch 5.1', 'b.zip')] = (syn, 'earlier copy')
+bdd_c.PACKAGE_IMAGES['b'] = {zeta}
+check(bdd_c.image_of_package('Batch 5.1', 'a.zip', None, 'a') == (zeta, 'the image in the package (delivered zip on Drive)'),
+      'the delivered zip on Drive comes first')
+check(bdd_c.image_of_package('Batch 5.1', 'b.zip', None, 'b') == (zeta, 'the image in the package'),
+      'the bucket scan comes before an earlier copy')
+bdd_c.PACKAGE_IMAGES['b'] = {zeta, syn}
+check(bdd_c.image_of_package('Batch 5.1', 'c.zip', None, 'b') == (None, 'package versions disagree'),
+      'versions of a task on different images decide nothing')
+bdd_c.OBJECT_IMAGES['f' * 64] = syn
+check(bdd_c.image_of_package('Batch 5.1', 'c.zip', 'f' * 64, 'b') == (syn, 'the image in the package (the archive the manifest names)'),
+      'the archive the manifest names settles which version was delivered')
+bdd_c.PACKAGE_IMAGES.clear(); bdd_c.OBJECT_IMAGES.clear()
+check(bdd_c.image_of_package('Batch 5.1', 'b.zip', None, 'b') == (syn, 'the image in the package (earlier copy on Drive)'),
+      'an earlier copy only when nothing else reads the package')
+bdd_c.DRIVE_IMAGES.clear()
 
 # --- the live read, against a fake Drive -------------------------------------
 # The VM is the only place with credentials, so the request side is exercised
@@ -389,18 +429,20 @@ if asset.exists():
           'published Drive rows carry no trainer and no decision')
     check(not any('@' in json.dumps(r) for r in blob['rows']), 'no email address in a Drive row')
     check(all(r.get('bench') in ('company', 'computer') for r in blob['rows']), 'every Drive row has a bench')
+    check(all(r.get('family') in ('real-aster', 'real-zeta', 'real', 'synthetic', 'non-connector', None)
+              for r in blob['rows']), 'every Drive row has a family or none')
+    check(all(r['family'] in ('real-aster', 'real-zeta', 'real') for r in blob['rows'] if r['bench'] == 'company'),
+          'a Company Bench package is Aster or Zeta')
+    check(all(r['bench'] == 'company' for r in blob['rows']
+              if r['family'] in ('real-aster', 'real-zeta', 'real') and not r.get('benchFrom')),
+          'an Aster or Zeta package is Company Bench unless its manifest classes it Real Connector '
+          'or the Computer Bench sheet lists it')
+    check(all(r['bench'] == 'computer' for r in blob['rows'] if r.get('benchFrom')),
+          'a package the Computer Bench sheet or a Real Connector class places is Computer Bench')
     check(all((r['category'] == 'CompanyBench') == (r['bench'] == 'company') for r in blob['rows']),
           'a row is in the CompanyBench category exactly when it is a Company Bench task')
-    for r in blob['rows']:
-        if not r['batch'].startswith('Batch'):
-            continue
-        where = (r.get('driveFolder') or r['packagePath']).split('/')[0]
-        # Batch 11.1 files Aster on its own ("Aster 180"): Company Bench, Aster.
-        flat = where.lower().replace(' ', '')
-        expected = 'company' if flat.startswith('companybench') or flat.startswith('aster') else 'computer'
-        if r['bench'] != expected:
-            check(False, f"{r['batch']} {r['task']} in {where} should be {expected}, is {r['bench']}")
-            break
+    check(not any('folder' in str(r.get('familyFrom') or '').lower() for r in blob['rows']),
+          'no family is decided by a Drive folder')
     per = {}
     for r in blob['rows']:
         per.setdefault(r['batch'], set()).add(r.get('packageName') or r['task'])

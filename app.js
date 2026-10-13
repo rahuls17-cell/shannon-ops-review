@@ -842,13 +842,43 @@ function taskBenches() {
     return map;
   };
   const delivered = index(deliveredRows().flatMap(row => {
-    const side = row.bench === 'company' ? 'company' : 'computer';
+    // A package no manifest or image classifies gives its pipeline row no bench.
+    const side = row.family === null ? null : row.bench === 'company' ? 'company' : 'computer';
     return [[row.task, side], [row.packageName, side]];
   }));
   const built = index((truth ? truth.rows : []).map(row => [row.name, row.benchSide]));
   taskBenchCache = {delivered, built};
   return taskBenchCache;
 }
+// The Delivery tab's Computer Bench connector kind of a delivered task - Real
+// Aster, Real Zeta or Synthetic - read from the Current Drive rows, whose family
+// and bench the manifest, the package image and Hussain's Computer Bench sheet
+// decide (tools/build_drive_deliveries.py). A name delivered under two kinds
+// gives none.
+const REAL_UNSPLIT = 'Real · Aster or Zeta not recorded';
+const DELIVERED_KIND = {'real-aster': 'Real Aster', 'real-zeta': 'Real Zeta', real: REAL_UNSPLIT, synthetic: 'Synthetic'};
+let deliveredKindCache = null;
+function deliveredKindOf(...names) {
+  if (!deliveredKindCache) {
+    deliveredKindCache = new Map();
+    (driveAudit ? driveAudit.rows : []).forEach(row => {
+      const kind = row.bench === 'computer' ? DELIVERED_KIND[row.family] : null;
+      if (!kind) return;
+      [row.task, row.packageName].forEach(name => {
+        const key = benchKey(name);
+        if (!key) return;
+        const was = deliveredKindCache.get(key);
+        deliveredKindCache.set(key, was === undefined || was === kind ? kind : null);
+      });
+    });
+  }
+  for (const name of names) {
+    const kind = deliveredKindCache.get(benchKey(name));
+    if (kind) return kind;
+  }
+  return null;
+}
+const deliveredKindOfRow = row => deliveredKindOf(row.deliveredTask, row.packageTask, row.name);
 function benchOfTask(...names) {
   const {delivered, built} = taskBenches();
   for (const map of [delivered, built]) {
@@ -861,6 +891,11 @@ function benchOfTask(...names) {
 }
 // A pipeline row carries its own bench; a delivered one takes where it was delivered.
 function truthBench(row) {
+  // A task the Delivery tab puts on Computer Bench as real connector work - the
+  // manifest's Real Connector class, or Hussain's sheet - is Computer Bench
+  // here too, although its image is the Aster or Zeta harness.
+  const kind = deliveredKindOfRow(row);
+  if (kind && kind !== 'Synthetic') return 'computer';
   // The image names a bench outright - Aster or Zeta, synthetic or real - and
   // that beats the folder the package was filed in.
   const fromImage = imageSide(row.bench, row.connectorServices);
@@ -1016,16 +1051,38 @@ function stampSides() {
     const leaf = leafOf(truthSegment(row));
     row.side = SIDE_OF[leaf] || 'unknown';
     row.domainKind = domainKindOf(row, leaf);
+    row.glm53 = glm53Of(row);
+    row.glm53Failed = Boolean(row.glm53 && row.glm53.failed);
   }));
+}
+// A task's GLM-5.3 runs, by its task name, the task its package declares or the
+// task it was delivered as - with a -vN suffix and without - or by the package
+// folder a run names. GLM-5.3 failed is every complete run at 0 of 4.
+let glm53Index = null;
+const GLM53_GATE = 'GLM-5.3 failed';
+function glm53Of(row) {
+  if (!glm53Index) return null;
+  const {tasks = {}, alias = {}} = glm53Index;
+  for (const name of [row.name, row.packageTask, row.deliveredTask, row.cohortFolder]) {
+    const key = benchKey(name);
+    if (!key) continue;
+    for (const k of [key, key.replace(/(-v\d+)+$/, ''), key.replace(/(-for-qc(-v\d+)?|-v\d+)+$/, '')]) {
+      const hit = tasks[k] || tasks[alias[k]];
+      if (hit) return hit;
+    }
+  }
+  return null;
 }
 // What the Pipeline's Domain dropdown filters on. A non-connector task keeps
 // its name-prefix domain (gen-, code-, health- ...). A connector task has no
 // such prefix, so it is named by its kind instead, the same names the Delivery
-// tab's categories use: Synthetic, Real Connector or Connector on the Computer
-// bench, by its image; on the Company bench its harness and how many
+// tab's categories use. On the Computer bench: a delivered task takes its
+// Delivery category - Real Aster, Real Zeta or Synthetic; any other goes by its
+// image, Synthetic or Real (an image alone does not say Aster or Zeta), else
+// Connector. On the Company bench its harness and how many
 // connectors it declares - Aster or Zeta, single connector or multi-connector.
 // row.domain itself is left as the name says, for the named-domain card.
-const KIND_OF_IMAGE = {'computer bench synth': 'Synthetic', 'computer bench real': 'Real Connector'};
+const KIND_OF_IMAGE = {'computer bench synth': 'Synthetic', 'computer bench real': REAL_UNSPLIT};
 function domainKindOf(row, leaf) {
   if (String(leaf).startsWith('company')) {
     const harness = COMPANY_HARNESS[truthHarness(row)] || 'Company Bench';
@@ -1033,7 +1090,7 @@ function domainKindOf(row, leaf) {
       || countOfTask(row.name, row.deliveredTask, row.packageTask, row.cohortFolder);
     return `${harness} · ${COMPANY_COUNT[count] || 'connectors not read'}`;
   }
-  if (leaf === 'computer-connector') return KIND_OF_IMAGE[row.bench] || 'Connector';
+  if (leaf === 'computer-connector') return deliveredKindOfRow(row) || KIND_OF_IMAGE[row.bench] || 'Connector';
   return row.domain || 'Not recorded';
 }
 // The Dockerfile image decides the bench whenever it names one: an Aster or
@@ -1107,6 +1164,7 @@ function resetTaskBenches() {
   applyImageBench();
   applyDeliveryJoin();
   taskBenchCache = null;
+  deliveredKindCache = null;
   taskHarnessCache = null;
   cohortRowByFolder = null;
   taskCountCache = null;
@@ -1202,8 +1260,12 @@ const shownTasks = rows => rows.length;
 // Computer Bench task, split by its connector flag.
 // A delivered package's own manifest list first, then the pipeline's reading.
 const deliveryCount = row => connectorCountOf(row.connectors) || (row.driveOnly ? null : countOfTask(row.task, row.packageName));
-const deliverySegment = row => taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type),
-  row.bench === 'company' ? deliveryHarness(row) : null);
+// A Drive package whose manifest and package name no family (row.family null,
+// tools/build_drive_deliveries.py family_of) sits in no segment - it is
+// reported as not classified rather than counted as Synthetic.
+const deliverySegment = row => (row.fromManifest && row.family === null ? 'unknown'
+  : taskSegment(row.bench === 'company' ? 'company' : 'computer', typeFlag(row.type),
+    row.bench === 'company' ? deliveryHarness(row) : null));
 const auditRows = () => (audit ? audit.rows.filter(row => segmentMatches(deliverySegment(row))) : []);
 const ledgerRows = () => payoutLedgerTasks.filter(task => segmentMatches(ledgerSegment(task)));
 
@@ -1587,6 +1649,12 @@ async function loadTruth() {
       const g = await fetch(`assets/glm-index.json?t=${Date.now()}`, {cache: 'no-store'});
       if (g.ok) glmIndex = await g.json();
     } catch (ignored) { glmIndex = null; }
+    // The GLM-5.3 runs per task, from gs://obi-harbor-pipeline/glm53-runs/
+    // (tools/build_glm53_index.py). Optional: without it no task is GLM-5.3 failed.
+    try {
+      const g53 = await fetch(`assets/glm53-index.json?t=${Date.now()}`, {cache: 'no-store'});
+      glm53Index = g53.ok ? await g53.json() : null;
+    } catch (ignored) { glm53Index = null; }
     // The accepted cohort counted by bucket folder. Optional: without it the
     // strip is simply not drawn.
     try {
@@ -1866,6 +1934,9 @@ function populateTruthFilters() {
   fillSelect('tState', states, 'Any state',
     value => (value === 'accepted' && cohort ? 'packages' : 'submissions'), true);
   fillSelect('tGate', v.gateEra, 'Any gate', undefined, true);
+  // The GLM-5.3 failed chip sets the same select, so it needs an option there.
+  const gate = byId('tGate');
+  if (gate && ![...gate.options].some(o => o.value === GLM53_GATE)) gate.add(new Option(GLM53_GATE, GLM53_GATE));
   fillSelect('tFinding', v.findingFamilies, 'Any finding', undefined, true);
   // Domain lists its choices without counts.
   fillSelect('tDomain', v.domainKind, 'Any domain', undefined, true, false);
@@ -1961,8 +2032,9 @@ function renderTruthFilterChips(filters, filtered) {
   // The file narrows Ready only, so the other Delivered chips count every row.
   const byDelivered = window.filterTruth(truthByBucket ? allCohort : allVerdictRows,
     {...filters, delivered: '', ...(truthByBucket ? {state: ''} : {})}).rows;
+  // The gate goes along: under GLM-5.3 failed, Ready counts the failed tasks that would be ready.
   const deliveredCount = value => shownTasks(window.filterTruth(value === 'ready' ? kept(byDelivered) : byDelivered,
-    {delivered: value}).rows);
+    {delivered: value, gateEra: filters.gateEra}).rows);
   byId('tDeliveredChips').innerHTML = chip('tDelivered', '', 'Any', shownTasks(byDelivered), 'var(--slate)', !filters.delivered) +
     [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
       .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
@@ -1971,8 +2043,14 @@ function renderTruthFilterChips(filters, filtered) {
   const byGate = without('gateEra').rows;
   const gates = [...new Set(byGate.map(r => r.gateEra).filter(Boolean))].sort((a, b) => byGate.filter(r => r.gateEra === b).length - byGate.filter(r => r.gateEra === a).length);
   const GATE_TONES = {'KESTREL full': 'var(--green)', 'KESTREL on': 'var(--aqua)', 'Opus gate': 'var(--violet)', 'GLM-5.2 gate only': 'var(--amber)'};
+  // GLM-5.3 failed is not a gate era but sits with them: every task in the
+  // current selection whose four GLM-5.3 attempts all failed.
   byId('tGateChips').innerHTML = chip('tGate', '', 'Any', shownTasks(byGate), 'var(--slate)', !filters.gateEra) +
-    gates.map(g => chip('tGate', g, g, shownTasks(byGate.filter(r => r.gateEra === g)), GATE_TONES[g] || 'var(--blue)', filters.gateEra === g)).join('');
+    gates.map(g => chip('tGate', g, g, shownTasks(byGate.filter(r => r.gateEra === g)), GATE_TONES[g] || 'var(--blue)', filters.gateEra === g)).join('') +
+    // Counted with the gate set, not from byGate: under Ready, byGate has already
+    // dropped the failed tasks, and this chip counts the ready ones that failed.
+    chip('tGate', GLM53_GATE, GLM53_GATE, shownTasks(window.filterTruth(rows,
+      {...filters, gateEra: GLM53_GATE, ...(truthByBucket ? {state: ''} : {})}).rows), 'var(--red)', filters.gateEra === GLM53_GATE);
 
   const byDelivery = without('delivery').rows;
   const deliveryCount = value => shownTasks(window.filterTruth(byDelivery, {delivery: value}).rows);
@@ -2356,6 +2434,10 @@ The steps below are the verdict chain. It counts submissions, and it is kept her
 // full explanation on hover and a legend under the table, so the name always
 // has the space.
 const FLAGS = [
+  {code: 'G3', tone: 'alert', when: row => row.glm53Failed,
+   label: 'GLM-5.3 failed',
+   tip: row => 'GLM-5.3 failed: all four GLM-5.3 attempts failed. ' + (row.delivered
+     ? 'It was delivered already.' : 'It is held out of Ready for delivery and still counts under Not delivered.')},
   {code: 'DL', tone: 'good', when: row => row.delivered,
    label: 'delivered',
    tip: row => 'Already covered by the delivery audit on the Delivery tab, matched by ' +
@@ -2394,6 +2476,14 @@ const FLAGS = [
      'by the current pipeline rather than new work.'},
 ];
 
+function glm53Detail(g) {
+  if (!g) return 'No GLM-5.3 run of this task in gs://obi-harbor-pipeline/glm53-runs/.';
+  const runs = g.runs.map(r => `${esc(r.run)}: ${r.complete && r.passes !== null ? `${fmt(r.passes)}/4` : 'not 4 clean attempts'}`).join(' &middot; ');
+  const verdict = g.failed ? '<strong>GLM-5.3 failed</strong> - every complete run passed 0 of 4'
+    : g.disagree ? 'Runs disagree - one package was solved, so it is not GLM-5.3 failed'
+    : g.passes === null ? 'No run reached 4 clean attempts' : `${fmt(g.passes)} of 4 passed`;
+  return `${verdict} &middot; ${runs} <span class="muted">a run passes only at a reward of exactly 1</span>`;
+}
 function flagBadges(row, dupTarget) {
   const shown = FLAGS.filter(flag => flag.when(row));
   if (!shown.length) return '<span class="flag-none">-</span>';
@@ -2551,6 +2641,7 @@ function renderTruthRows(rows) {
           ? 'Not recorded. The batch this run was decided in lists no GLM trials, which is not the same as having failed them.'
           : `${fmt(row.glmPasses)} of ${fmt(row.glmTrials)} passed &middot; rewards ${esc((row.glmRewards || []).map(v => (v === null ? 'not read' : v)).join(', '))}` +
             ` <span class="muted">a run passes only at exactly 1.0; read from verifier/reward.txt in the bucket</span>`}</dd>
+        <dt>GLM-5.3</dt><dd>${glm53Detail(row.glm53)}</dd>
         <dt>Read from</dt><dd><code>${esc(row.source)}</code></dd>
       </dl>
     </td></tr>${row.dupFolders ? `

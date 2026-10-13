@@ -120,6 +120,9 @@ fi
 if [ -f "$BASE/glm-index.json" ]; then
   cp "$BASE/glm-index.json" assets/glm-index.json
 fi
+if [ -f "$BASE/glm53-index.json" ]; then
+  cp "$BASE/glm53-index.json" assets/glm53-index.json
+fi
 python3 tools/build_manifest_index.py --listing "$LISTING" >>"$LOG" 2>&1
 # The accepted cohort, counted by bucket folder. It uses the same daily
 # listing the manifest check does, so the folder set cannot move between the
@@ -223,7 +226,7 @@ s = collections.Counter(r['state'] for r in t['tasks'])
 print(f\"{len(t['tasks'])} tasks, {s['accepted']} accepted, {s['rejected']} rejected\")
 ")
 
-git add assets/pipeline-truth.json assets/delivered-index.json assets/connector-index.json assets/manifest-index.json assets/glm-index.json assets/cohort-index.json assets/task-toml-reads.json assets/bench-index.json assets/task-names.json
+git add assets/pipeline-truth.json assets/delivered-index.json assets/connector-index.json assets/manifest-index.json assets/glm-index.json assets/glm53-index.json assets/cohort-index.json assets/task-toml-reads.json assets/bench-index.json assets/task-names.json
 git add assets/gcs-pipeline.json assets/pipeline-version.json assets/drive-owners.json 2>/dev/null || true
 git commit -q -m "Refresh from the VM: $SUMMARY"
 

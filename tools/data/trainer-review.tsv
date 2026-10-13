@@ -4,13 +4,13 @@ the-open-door-nobody-watches	Batch 5.1	akash.d3@turing.com	Computer team trainer
 opened-files-migration-volume-signoff-realdocoutput	Batch 2	arjun.sikhwal@turing.com	Company trainer	High	Found - Task Tracker + harbor
 how-much-of-my-drive-is-link-only-realdocoutput	Batch 2	ghosh.m1@turing.com	Company trainer	High	Found - Task Tracker + harbor
 diagnose-failed-2-500-3-d-secure-card-purchase-on-card-49391	Batch 5.1	luis.m5@turing.com	Company trainer	High	Found - Task Tracker + harbor
-general-rooms-what-the-scroll-hides-realdocoutput	Batch 4.1	preet.s@turing.com	Company trainer	High	Found - Task Tracker + harbor
+general-rooms-what-the-scroll-hides-realdocoutput	Batch 4.1	preet.s@turing.com	Company trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter zhengyuan.ma@turing.com
 the-owner-column-is-not-an-owner	Batch 5.1	saddam.h1@turing.com	Computer team trainer	High	Found - harbor only
 the-money-nobody-picked-up	Batch 5.1	sahil.garg-fx@turing.com	Computer team trainer	High	Found - harbor only
 daily-ach-debit-pull-batch-report-2024-08-30-sameday-vs-standard-retur	Batch 5.1	ammar.a@turing.com	Company trainer	Medium	Found - Task Tracker
 intake-v2-and-the-transfers-still-owed	Batch 5.1	kirtilekha.b@turing.com	Company trainer	Medium	Found - Task Tracker
 file-data-fix-request-for-closed-accounts-missing-closed-at-timestamps	Batch 5.1	miroslav.m@turing.com	Lead	Medium	Found - Task Tracker
-verify-mcdonald-s-19-38-overcharge-dispute-outcome-for-customer-50567	Batch 5.1	mohamed.a@turing.com	Company trainer	Medium	Found - Task Tracker
+verify-mcdonald-s-19-38-overcharge-dispute-outcome-for-customer-50567	Batch 5.1	mohamed.a@turing.com	Company trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter mohamed.e6@turing.com
 diagnose-why-check-deposit-2329-for-254-01-ended-in-returned-status	Batch 5.1	rana.a3@turing.com	Lead (offboarded 16-Sep)	Medium	Found - harbor only
 canceled-funding-transfer-retries-next-day	Batch 5.1	saad.m3@turing.com	Company trainer	Medium	Found - Task Tracker
 recurring-bill-double-pay-audit-after-due-date-edits-sql-confluence-slack-jira	CompanyBench 2	daniel.q@turing.com	Company trainer	Low	Possible - derived variant
@@ -20,3 +20,159 @@ ach-debit-hold-schedule-conformance-audit-sql-confluence-slack-jira	CompanyBench
 hard-regcc-01-reg-cc-large-deposit-exception-actual-funds-availability	CompanyBench 2		In-house / DataOS (leads)	No trainer	Found - Data-OS only (no trainer)
 rubric-demo-settled-outbound-transfers-slack-deliverable-atomic-rubrics	CompanyBench 2		In-house / DataOS (leads)	No trainer	Found - Data-OS only (no trainer)
 verify-permanent-credit-issued-on-9-dispute-tx-11kc8dqb2s00f79-case-11	CompanyBench 2		Unassigned	No trainer	Found - Task Tracker only (no trainer)
+is-the-import-redundant	Batch 11.1	ayaz.m1@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+vendors-we-already-named-to-investors	Batch 11.1	alina.mustaqeem-fx@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-quarterly-bug-scorecard	Batch 11.1	vinoth.k1@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-meetings-nobody-ever-accepted	Batch 12.1	bhargav.c@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-day-an-all-day-block-covers	Batch 12.1	bhargav.k@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+fifteen-quick-wins-nobody-owns	Batch 12.1	bhargav.k@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-link-two-meetings-share	Batch 11.1	ritik.g2@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-shared-folders-that-share-nothing	Batch 13.1	kashif.m@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-calendars-worth-hiding	Batch 13.1	bhargav.k@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-standup-that-runs-less-than-it-claims	Batch 12.1	elslam.a@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+shared-past-the-people-i-named	Batch 12.1	kashif.m@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+shipped-with-work-still-open	Batch 12.1	vinoth.k1@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+family-dinner-extra-guests	Batch 13.1	bhargav.k@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+half-this-sprint-is-already-gone	Batch 13.1	bhargav.k@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-meetings-that-were-quietly-retitled	Batch 12.1	bhargav.k@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+one-hundred-and-fifty-one-digests-and-a-login-alert	Batch 12.1	bhargav.k@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-client-lists-the-scrub-missed	Batch 12.1	bhargav.k@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+fourteen-columns-seven-names	Batch 13.1	bhargav.k@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+twelve-of-fifteen-wear-nothing-else	Batch 12.1	bhargav.k@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-workload-three-people-are-carrying	Batch 12.1	prasanth.d@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-focused-mail-i-have-not-read	Batch 12.1	elslam.a@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-threads-my-latest-mail-joined	Batch 13.1	saad.m3@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+nine-shipped-twenty-four-points	Batch 11.1	kashif.m@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+unread-piling-up-under-labels	Batch 11.1	kashif.m@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+how-much-of-the-master-sheet-is-real	Batch 13.1	m.h@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+what-the-meetings-said	Batch 12.1	prasanth.d@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+the-latest-change-everywhere	Batch 11.1	prasanth.d@turing.com	Company trainer	High	Latest accepted submission in the pipeline; matches Hussain's sheet
+fall-requisitions-resulted-next-month	Batch 12.1	shepherd.u@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+lab-orders-waiting-on-consent	Batch 12.1	ardhendu.p@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-commitments-that-never-added-up	Batch 12.1	shepherd.u@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+seed-round-commitments-across-trackers	Batch 13.1	tsehayneh.t@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+target-date-overrun-audit	Batch 13.1	danish.b@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+unread-output-spend-audit	Batch 13.1	shwetank.c@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+substitute-receipt-hold-audit	Batch 13.1	ayaz.m1@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+github-access-to-revoke-before-the-sale	Batch 13.1	pawan.g3@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-people-who-were-only-ever-copied	Batch 10.1	shepherd.u@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-reports-safe-to-switch-back-on	Batch 10.1	abhishek.y@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+a-green-review-is-not-a-green-light	Batch 11.1	victor.i1@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+who-wrote-while-i-was-heads-down	Batch 11.1	piper.m@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+nobody-checked-who-can-open-them	Batch 11.1	piper.m@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-function-that-shipped-without-a-lock	Batch 11.1	shepherd.u@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+invites-that-never-synced	Batch 11.1	emmanuel.m1@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-entries-i-can-sign-off	Batch 11.1	srinivas.p2@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+which-notification-emails-are-really-ready	Batch 11.1	muhammad.o4@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+which-vendors-put-a-price-in-front-of-us	Batch 11.1	danish.b@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+who-can-prescribe-at-each-practice	Batch 11.1	piper.m@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+billing-chain-foreign-writes	Batch 11.1	victor.i1@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+egress-destination-audit	Batch 11.1	naveen.k12@turing.com	Computer team trainer	High	Delivered run (evaluation-8cadbfe3f4624734, 2 Oct); the sheet says atif.z, whose run came after delivery
+the-project-that-never-woke-up	Batch 12.1	rajoka.a@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-request-that-outran-the-clock	Batch 12.1	shepherd.u@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-week-the-digest-never-ran	Batch 12.1	jagadeesh.v1@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-invite-list-is-not-the-room	Batch 12.1	shwetank.c@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-fix-that-never-closed	Batch 12.1	abdullah.c1@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+nobody-picked-this-up	Batch 12.1	vanshika.d@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-endpoint-that-was-never-written	Batch 12.1	haseeb.s2@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+who-has-been-sitting-in-these-meetings	Batch 12.1	shwetank.c@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-answer-that-came-before-the-ask	Batch 12.1	sai.d2@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-answer-that-never-left	Batch 12.1	arifur.r@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-item-nobody-actually-claimed	Batch 12.1	sahil.garg-fx@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+answer-the-signature-reminders	Batch 12.1	akash.d3@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+what-got-delivered-twice	Batch 12.1	shwetank.c@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+which-same-named-boards-agree	Batch 12.1	arifur.r@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+who-actually-gets-this-mail	Batch 12.1	adarsh.s3@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+who-is-still-waiting-on-me	Batch 12.1	adarsh.s3@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+vendor-charges-that-moved	Batch 12.1	yousef.g@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+where-our-cpt-licence-stands	Batch 12.1	vishal.k15@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+bug-postmortem-coverage-audit	Batch 12.1	chahat.b@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+channel-generation-naming-audit	Batch 12.1	michael.b2@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+chat-counterpart-identity-audit	Batch 12.1	chahat.b@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+commitment-project-delivery-audit	Batch 12.1	victor.i1@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+compliance-hold-breach-audit	Batch 12.1	shwetank.c@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+computer-gtm-todo-audit	Batch 12.1	yousef.g@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+escalation-reply-window-audit	Batch 12.1	chahat.b@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+fin-team-overdue-projects-audit	Batch 12.1	chahat.b@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-bug-that-got-filed-twice	Batch 13.1	michael.b2@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+buried-thread-recaps	Batch 13.1	hamza.m7@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-links-that-were-never-links	Batch 13.1	muhammad.h36@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+patient-notice-copies-to-drop	Batch 13.1	yousef.g@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+calibration-fix-recharge-audit	Batch 13.1	piper.m@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+collaboration-commitment-matrix-audit	Batch 13.1	usman.a9@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+ethics-hold-breach-audit	Batch 13.1	abdullah.c1@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+lab-review-handson-audit	Batch 13.1	chahat.b@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+clinical-questions-settled-without-a-clinician	Batch 13.1	shreyash.d1@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-copyleft-code-and-the-outside-work-it-merged	Batch 13.1	muhammad.y7@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-mailbox-that-looked-busier-than-it-was	Batch 5.1	tsehayneh.t@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-urgent-tickets-nobody-is-holding	Batch 6.1	saddam.h1@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-download-that-came-back-empty	Batch 9.1	ahsan.r4@turing.com	Computer team trainer	High	Only accepted run before the Batch 9.1 cut (27 Sep); okwuzi.e redid it after delivery
+blocker-picture-before-planning	Batch 9.1	akash.d3@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+card-charges-billed-twice	Batch 11.1	sahil.garg-fx@turing.com	Computer team trainer	High	Delivered run (evaluation-c520f380689941f7) submitted by sahil.garg-fx; matches the sheet
+practice-mail-outside-desk-hours	Batch 12.1	akash.d3@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+incident-response-gap	Batch 13.1	shwetank.c@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+lab-work-awaiting-clinical-safety-review	Batch 13.1	bhargav.k@turing.com	Computer team trainer	High	Only accepted submitter and a recorded owner; matches Hussain's sheet
+the-guests-i-never-write-to	Batch 11.1	shivam.g13@turing.com	Computer team trainer	High	Owner confirmed; only trainer who submitted it (accepted 30 Sep)
+drive-version-history-retention-review	Batch 1	daud.f@turing.com	Company trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+code-c423-multi-campus-account-access-audit	Batch 1	michael.b2@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+gen-g292-grazing-cup-design-audit	Batch 1	shwetank.c@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+health-h107-equine-therapy-session-compliance-audit	Batch 1	shwetank.c@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+health-h23-specimen-labelling-taxonomy	Batch 1	michael.b2@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+health-tdt5-a2-canine-supplement-dose-sheet	Batch 10.1	naveen.k12@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+the-switching-guides-we-publish	Batch 10.1	preet.s@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+edu-s1-d5-pacing-guide-quarter-compaction	Batch 12.1	atif.z@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+finance-partial-load-breach	Batch 13.1	nkwachukwu.o@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+code-c221-api-auth-method-compliance-audit	Batch 2	eyob.t@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c14-pii-redaction-fix	Batch 2	shashank.s5@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+health-h28-screening-interval-recall	Batch 2	michael.b2@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+law-l51-sstb-compensation-concentration-audit	Batch 2	michael.b2@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+gen-g469-thesis-terminology-compliance-audit	Batch 2	abdullah.m7@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+code-c274-elevator-inspection-compliance-audit	Batch 4.1	rajdeep.r@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter tiago.brandao@turing.com
+code-c290-breach-notification-deadline-audit	Batch 4.1	nihal.b@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+ephyra-intake-form-column-teardown-rebuild-census	Batch 4.1	muhammad.a11@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+fin-f27-earnings-per-share	Batch 4.1	zaid.b@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter tiago.brandao@turing.com
+law-l79-occupational-health-disciplinary-audit	Batch 4.1	tarun.s3@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+diagnose-failed-50-bill-payment-105133-customer-disputes-insufficient	Batch 5.1	rana.a3@turing.com	Company trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+determine-effective-daily-ach-debit-ceiling-for-account-11556-vs-confi	Batch 5.1	shan.a1@turing.com	Company trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+code-c214-pod-security-context-audit	Batch 5.1	shreyash.d1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+law-l36-litigation-hold-custodians	Batch 5.1	abhas.b@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+code-c341-loan-bulletin-version-audit	Batch 5.1	abhishek.y@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c103-paging-escalation-policy-audit	Batch 6.1	mohammad.f3@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c13-feature-flag-cleanup	Batch 6.1	gul.s@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c152-battery-sku-compatibility-audit	Batch 6.1	shreyash.d1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c155-gas-detector-calibration-audit	Batch 6.1	eyob.t@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c158-sports-feed-outage-reconcile	Batch 6.1	shashank.m1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c198-network-segmentation-policy-audit	Batch 6.1	manish.k15@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c200-cron-retry-budget-audit	Batch 6.1	sharvesh.s@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c53-backup-retention-reconcile	Batch 6.1	subodh.k@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c10-dependency-policy-audit	Batch 7.1	ajay.s2@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c157-image-asset-spec-audit	Batch 7.1	shashank.m1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c179-network-failover-config-audit	Batch 7.1	arpit.v@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c222-branch-protection-policy-audit	Batch 7.1	mehra.a@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c25-idempotent-write-semantics	Batch 7.1	saddam.h1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c282-training-module-version-compliance-audit	Batch 7.1	aman.s12@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c285-image-export-format-audit	Batch 7.1	chinnappagari.s@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c6-deploy-remediation	Batch 7.1	alemu.b@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c121-compaction-small-file-policy-audit	Batch 8.1	aondohemba.e1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c170-gis-utility-marker-audit	Batch 8.1	vishnu.g2@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c180-hardware-compat-matrix-audit	Batch 8.1	shreyash.d1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c218-replica-lag-sla-audit	Batch 8.1	arifur.r@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c219-vulnerability-remediation-sla-audit	Batch 8.1	sharvesh.s@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c238-dependency-license-compliance-audit	Batch 8.1	malik.a1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c266-saas-tool-procurement-audit	Batch 8.1	muhammad.a108@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c168-reminder-source-truth-audit	Batch 8.1	noor.a1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c190-weather-alert-threshold-audit	Batch 8.1	shashank.m1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c225-sbom-vulnerability-waiver-audit	Batch 8.1	sharvesh.s@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c262-ai-resource-link-accessibility-audit	Batch 8.1	varsh.v@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c270-ai-model-endpoint-governance-audit	Batch 8.1	monu.k@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c104-log-sampling-ingestion-volume-recompute	Batch 9.1	jalees.r@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c178-build-config-env-audit	Batch 9.1	chandu.s@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+code-c29-patch-application-correctness	Batch 9.1	zaid.s@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c299-deck-export-handoff-audit	Batch 9.1	muhammad.y6@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c315-backrun-candidate-promotion-gate-audit	Batch 9.1	sifat.h@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter shayan.a@turing.com
+code-c622-saas-tenant-pilot-readiness-audit	Batch 9.1	atif.z@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+health-h6-visit-window-compliance	Batch 9.1	malik.a1@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter muhammad.t4@turing.com
+tech-b50-t5-packaged-goods-weight-overcharge-attribution	Batch 9.1	naveen.k12@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+tech-b51-t9-mobile-plan-bill-variance-attribution	Batch 9.1	naveen.k12@turing.com	Computer team trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter
+plaid-linked-accounts-stuck-in-pending-manual-verification-open-queue-and-next-step-2021-01-01-2025-05-31	CompanyBench 2	mohamed.a@turing.com	Company trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the task owner, not the accepted run's submitter vamsi.m@turing.com
+audit-paycheck-automation-book-transfers-cancelled-by-the-ats-check	CompanyBench 2	talha.m2@turing.com	Company trainer	High	Actual Credit, trainer73-dashboard-vs-accepted-new.xlsx (13 Oct): the accepted run's submitter

@@ -517,14 +517,18 @@
     return {folders, tasks: names.size, extraFolders: folders - names.size};
   }
 
+  const GLM53_FAILED = 'GLM-5.3 failed';
   function filterTruth(rows, filters) {
     const f = filters || {};
     const has = (list, value) => !value || (list || []).includes(value);
+    const glm53Asked = f.gateEra === GLM53_FAILED;
     const selected = rows.filter(row => {
       const text = [row.name, row.owner, row.why, (row.findings || []).join(' ')]
         .join(' ').toLowerCase();
       return (!f.state || f.state === row.state) &&
-        (!f.gateEra || f.gateEra === row.gateEra) &&
+        // GLM-5.3 failed sits with the gates: every task whose four GLM-5.3
+        // attempts all failed (app.js stamps glm53Failed), whatever gate decided it.
+        (!f.gateEra || (f.gateEra === GLM53_FAILED ? row.glm53Failed === true : f.gateEra === row.gateEra)) &&
         (!f.domain || f.domain === row.domain) &&
         // The Pipeline's Domain dropdown: the name-prefix domain, or a
         // connector task's kind (app.js domainKindOf).
@@ -544,7 +548,10 @@
         (f.carriedOver === undefined || f.carriedOver === null || f.carriedOver === ''
           ? true : Boolean(row.carriedOver) === (f.carriedOver === 'yes')) &&
         (!f.delivered || (f.delivered === 'yes' ? row.delivered === true
-          : f.delivered === 'ready' ? (row.delivered !== true && row.atCurrentBar &&
+          // A GLM-5.3 failed task is held out of Ready and stays under Not
+          // delivered - unless GLM-5.3 failed is the gate asked for: then Ready
+          // lists the failed tasks that would otherwise be ready.
+          : f.delivered === 'ready' ? (row.delivered !== true && (glm53Asked || !row.glm53Failed) && row.atCurrentBar &&
               (row.state === 'accepted' || row.state === 'legacy accepted'))
           : f.delivered === 'no' ? row.delivered !== true
           : true)) &&
@@ -578,7 +585,8 @@
     // delivered or is waiting to be; there is no third thing it can be.
     const collectable = matched.filter(row => row.atCurrentBar &&
       (row.state === 'accepted' || row.state === 'legacy accepted'));
-    const ready = collectable.filter(row => row.delivered !== true);
+    const ready = collectable.filter(row => row.delivered !== true && (glm53Asked || !row.glm53Failed));
+    const heldByGlm53 = glm53Asked ? [] : collectable.filter(row => row.delivered !== true && row.glm53Failed);
 
     const tally = key => matched.reduce((counts, row) => {
       const value = row[key];
@@ -627,11 +635,16 @@
       // that looks unrelated to it.
       deliveredTasks: new Set(matched.filter(row => row.delivered).map(taskKey)).size,
       readyTasks: new Set(ready.map(taskKey)).size,
+      // Accepted at the bar and not delivered, but held out of Ready because
+      // all four GLM-5.3 attempts failed; and every undelivered task that did.
+      glm53HeldTasks: new Set(heldByGlm53.map(taskKey)).size,
+      glm53FailedTasks: new Set(matched.filter(row => row.delivered !== true && row.glm53Failed)
+        .map(taskKey)).size,
       // The one population that genuinely partitions: a task accepted with a
       // package collectable at the current bar has either gone out or is
-      // waiting to. `ready` is defined as this set minus the delivered ones,
-      // so acceptedAtBarTasks = deliveredAtBarTasks + readyTasks holds by
-      // construction and cannot drift as either definition changes.
+      // waiting to, or is held back by GLM-5.3. `ready` is this set minus the
+      // delivered and the held ones, so acceptedAtBarTasks = deliveredAtBarTasks
+      // + readyTasks + glm53HeldTasks holds by construction.
       acceptedAtBarTasks: new Set(collectable.map(taskKey)).size,
       deliveredAtBarTasks: new Set(collectable.filter(row => row.delivered === true)
         .map(taskKey)).size,

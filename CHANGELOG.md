@@ -9,7 +9,117 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
-## v4.4 - 2026-10-10, staging promoted to production
+_Nothing yet._
+
+## v4.4 - 2026-10-13, staging promoted to production
+
+### Delivery tab: credit for the 73 owner-vs-accepted-run tasks
+- **65 of the 73 tasks where the dashboard's trainer was not the accepted run's
+  submitter are now credited by the "Actual Credit" column** of
+  `trainer73-dashboard-vs-accepted-new.xlsx` (13 Oct), through the hand-review
+  list: 43 keep the task owner the dashboard showed, 22 move to the accepted
+  run's submitter.
+- The other 8 have no Actual Credit (one is marked Rejected Task) and keep the
+  trainer they had.
+
+### Pipeline tab: "GLM-5.3 failed" status
+- **New Gate chip "GLM-5.3 failed"**, beside KESTREL, Opus and GLM-5.2: a task whose four GLM-5.3 attempts
+  all failed (every complete run 0 of 4; an attempt passes only at a reward of
+  exactly 1). Read from the run folders in `gs://obi-harbor-pipeline/glm53-runs/`
+  by `tools/build_glm53_index.py` into `assets/glm53-index.json` (1,746 tasks
+  with runs, 384 failed). Its count follows the other filters, like every gate
+  chip: 446 pipeline rows with nothing else set, 13 under Not delivered, 11
+  under Ready. The other 100 failed tasks are Data OS submissions
+  (`dataos-286`/`dataos-133` runs) that are not pipeline tasks. Rows carry a red
+  **G3** flag, and the task's detail shows each GLM-5.3 run.
+- **These tasks are left out of Ready for delivery** (and so out of a manifest
+  cut under Ready) but **still count under Not delivered**. Today: Ready 595 →
+  584 (11 held back), Not delivered 4,806 unchanged.
+- **Ready with the GLM-5.3 failed chip on lists the 11 held back**: the failed
+  tasks that would otherwise be ready, so Ready alone (584) + Ready and GLM-5.3
+  failed (11) = 595. Under Ready the GLM-5.3 failed chip counts those 11.
+- Names also match without a `-FOR-QC-V2` suffix, which catches 2 more Ready
+  tasks (gen-g424 and gen-g457).
+  Accepted at the bar 2,994 = 2,399 delivered + 586 ready + 9 held by GLM-5.3.
+- A task run twice whose runs disagree (16, mostly a fixed `-v2` package that
+  passed) is not GLM-5.3 failed. 41 tasks never got 4 clean attempts and have no
+  GLM-5.3 score.
+- VM: `tools/vm/scan-glm53.sh` refreshes the index daily at 03:47 UTC (root cron,
+  installed 12 Oct; previous crontab saved as `crontab.before-glm53.txt`) and
+  `publish.sh` copies it into the repo on the next tick. Until `main` carries
+  `tools/build_glm53_index.py`, the scan runs the copy installed beside it.
+
+### Pipeline tab: Domain filter lists Real Aster and Real Zeta
+- **The Domain filter now offers Real Aster, Real Zeta and "Real · Aster or Zeta
+  not recorded"**, the same categories as the Delivery tab. A delivered connector
+  task takes its Delivery category; an undelivered one goes by its image
+  (Synthetic, or Real when the image does not say Aster or Zeta). "Real
+  Connector" is gone.
+- **A task the Delivery tab puts on Computer Bench as real work (the manifest's
+  Real Connector class, or Hussain's sheet) is Computer Bench on the Pipeline
+  too**, although its image is the Aster or Zeta harness. About 277 tasks move
+  from Company Bench to Computer Bench · Connector (Company Bench 3,269 → 2,992,
+  Computer Bench Connector 726 → 1,002). Domain counts in tasks: Real Aster 266,
+  Real Zeta 8, Real not split 4, Synthetic 724.
+
+### Delivery tab: trainers settled for 66 connector tasks
+- **65 connector tasks that showed no trainer now name one**, from the hand-review
+  list (`tools/data/trainer-review.tsv`). 62 are clean: the trainer on Hussain's
+  sheet is the only accepted submitter and a recorded owner. Three were traced to
+  the delivered run: card-charges-billed-twice → sahil.garg-fx;
+  the-download-that-came-back-empty → ahsan.r4 (the version in Batch 9.1;
+  okwuzi.e redid it after delivery); egress-destination-audit → naveen.k12
+  (delivered run of 2 Oct; the sheet says atif.z, whose run came after delivery).
+- **the-guests-i-never-write-to → shivam.g13**, owner confirmed.
+- The 197 Aster tasks not on Hussain's sheet stay on Company Bench.
+
+### Delivery tab: Hussain's sheet decides what is Computer Bench
+- **The 255 Aster tasks Hussain's "Connector Accepted Data Computer Bench" sheet
+  lists as real move from Company Bench · Aster to Computer Bench · Connector ·
+  Real Aster** (Yogesh's call): Batch 11.1 103, 12.1 81, 13.1 70, 10.1 1. The
+  sheet's task names (`tools/data/computer-bench-sheet.tsv`, names, task ids and
+  data type only) decide that a real task is Computer Bench; the row says so
+  (`benchFrom`). Company Bench · Aster 657 -> 402; Computer Bench Real Aster
+  7 -> 262. The other Aster tasks in those batches are not on the sheet and stay
+  Company Bench (11.1: 77, 12.1: 64, 13.1: 19, 10.1: 37).
+
+### Delivery tab: 27 contested Company Bench tasks settled
+- **27 Batch 11.1-13.1 Company Bench tasks the dashboard showed as Contested take
+  their trainer from the hand-reviewed list** (`tools/data/trainer-review.tsv`).
+  For each, the pipeline's latest accepted submission was made by the trainer
+  Hussain's Connector Accepted Data sheet names, before the batch was cut, and
+  nobody else has an accepted submission; the other names came from rejected runs
+  (mostly the companybench@turing.com service account) and the bucket's trainer
+  records. Bhargav Kallam 11, Kashif Mehmood 4, Prasanth Varma Dandu 3, Vinoth
+  Kumar 2, Ahmad Reda Abd-Elslam 2, one each for Ayaz, Alina, Bhargav Chikkala,
+  Ritik, Saad, M Wasilah Hadi. The review now names 44 tasks.
+
+### Delivery tab: bench and family come from the manifest and the package, not the Drive folder
+- **The tree:** Company Bench - Aster, Zeta (unchanged). Computer Bench - Connector
+  (Real Aster, Real Zeta, Synthetic) and Non-connector. Computer Bench's Real
+  Connector tasks (the manifest's own class) are split by image into Real Aster
+  and Real Zeta and stay Computer Bench; any other Aster or Zeta package is
+  Company Bench.
+- **Decided by the manifest and the package, never the Drive folder** (folders get
+  renamed and moved; the zip-present check stays). In order: the image the
+  manifest records; what it declares (bench_type, tracker_family, the class in its
+  own package_path); the image in the package - the delivered zip read on Drive
+  (sha256 matched to the manifest; `tools/data/drive-package-images.tsv`), the
+  bucket archive the manifest names (source_version), the bucket scan by name
+  only when every version under the name runs the same family, or an earlier copy
+  of the zip on Drive; for a Real package with no image, the connector gyms the
+  manifest lists. Each row says which (`family`, `familyFrom`).
+- Delivered tasks: Company Bench Aster 657, Zeta 1,430; Computer Bench Connector
+  Real Aster 7, Real Zeta 23, Synthetic 378; Non-connector 1,402; flagged 20
+  (3,917). Before (by Drive folder): Company Bench Aster 599, Zeta 1,362, no tag
+  130; Computer Bench connector 424, non-connector 1,402.
+- **Flagged, reported rather than guessed** (`delivery-flagged.csv`): 6 Batch 5.1
+  packages whose every Drive copy is over the 10 MB connector limit; 13 where the
+  bucket holds versions of the task on both Aster and Zeta images and nothing
+  names the delivered one (Batch 1, 3, 4.1, 5.1); `slack-first-reply-baseline`, on
+  `connectors-harness@sha256:926ccf10…`, which the image tracker does not list.
+
+## v4.3.1 - 2026-10-10, staging promoted to production
 
 ### Delivery tab: the hand-reviewed trainer table
 - **21 Delivery tasks take their trainer from the ops team's hand review** of rows
