@@ -9,6 +9,10 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+_Nothing yet._
+
+## v4.5 - 2026-10-13, staging promoted to production
+
 ### Delivery tab: Batch 14.1 (290 tasks)
 - **Batch 14.1 is on the Delivery tab**: 290 tasks from "10-13 Batch 14.1" on
   Drive (read on the VM with rclone; same layout as 12.1 and 13.1). Computer
@@ -16,8 +20,9 @@ When you change what a figure means, add a line under **Unreleased**. When
   sheet (Computer Bench · Real Aster) and 10 are Company Bench · Aster. Trainers:
   230 from the bucket, 46 contested, 13 unattributed, 1 from the trainer credit
   sheet. Delivered now 4,207. No earlier row changed.
-- Its manifest records no image or connector list, so the 10 Company Bench Aster
-  tasks read "connectors not read", as 13.1 did before its manifest was filled.
+- Its manifest recorded no image or connector list; for the 10 Company Bench
+  Aster tasks they were filled into the Drive manifest from each zip (13 Oct,
+  as for Batches 1 to 13.1), so they read Aster · Single connector.
 - 2 Batch 13.1 trainers that newer bucket records would now call contested
   (yousef.g also submitted them) were left as they were.
 
