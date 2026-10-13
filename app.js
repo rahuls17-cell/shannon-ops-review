@@ -1066,7 +1066,7 @@ function glm53Of(row) {
   for (const name of [row.name, row.packageTask, row.deliveredTask, row.cohortFolder]) {
     const key = benchKey(name);
     if (!key) continue;
-    for (const k of [key, key.replace(/(-v\d+)+$/, '')]) {
+    for (const k of [key, key.replace(/(-v\d+)+$/, ''), key.replace(/(-for-qc(-v\d+)?|-v\d+)+$/, '')]) {
       const hit = tasks[k] || tasks[alias[k]];
       if (hit) return hit;
     }
@@ -2032,8 +2032,9 @@ function renderTruthFilterChips(filters, filtered) {
   // The file narrows Ready only, so the other Delivered chips count every row.
   const byDelivered = window.filterTruth(truthByBucket ? allCohort : allVerdictRows,
     {...filters, delivered: '', ...(truthByBucket ? {state: ''} : {})}).rows;
+  // The gate goes along: under GLM-5.3 failed, Ready counts the failed tasks that would be ready.
   const deliveredCount = value => shownTasks(window.filterTruth(value === 'ready' ? kept(byDelivered) : byDelivered,
-    {delivered: value}).rows);
+    {delivered: value, gateEra: filters.gateEra}).rows);
   byId('tDeliveredChips').innerHTML = chip('tDelivered', '', 'Any', shownTasks(byDelivered), 'var(--slate)', !filters.delivered) +
     [['yes', 'Delivered', 'var(--green)'], ['ready', 'Ready', 'var(--blue)'], ['no', 'Not delivered', 'var(--amber)']]
       .map(([v, l, tone]) => chip('tDelivered', v, l, deliveredCount(v), tone, filters.delivered === v)).join('');
@@ -2046,7 +2047,10 @@ function renderTruthFilterChips(filters, filtered) {
   // current selection whose four GLM-5.3 attempts all failed.
   byId('tGateChips').innerHTML = chip('tGate', '', 'Any', shownTasks(byGate), 'var(--slate)', !filters.gateEra) +
     gates.map(g => chip('tGate', g, g, shownTasks(byGate.filter(r => r.gateEra === g)), GATE_TONES[g] || 'var(--blue)', filters.gateEra === g)).join('') +
-    chip('tGate', GLM53_GATE, GLM53_GATE, shownTasks(byGate.filter(r => r.glm53Failed)), 'var(--red)', filters.gateEra === GLM53_GATE);
+    // Counted with the gate set, not from byGate: under Ready, byGate has already
+    // dropped the failed tasks, and this chip counts the ready ones that failed.
+    chip('tGate', GLM53_GATE, GLM53_GATE, shownTasks(window.filterTruth(rows,
+      {...filters, gateEra: GLM53_GATE, ...(truthByBucket ? {state: ''} : {})}).rows), 'var(--red)', filters.gateEra === GLM53_GATE);
 
   const byDelivery = without('delivery').rows;
   const deliveryCount = value => shownTasks(window.filterTruth(byDelivery, {delivery: value}).rows);

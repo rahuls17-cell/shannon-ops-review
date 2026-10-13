@@ -15,13 +15,18 @@ When you change what a figure means, add a line under **Unreleased**. When
   exactly 1). Read from the run folders in `gs://obi-harbor-pipeline/glm53-runs/`
   by `tools/build_glm53_index.py` into `assets/glm53-index.json` (1,746 tasks
   with runs, 384 failed). Its count follows the other filters, like every gate
-  chip: 444 pipeline rows (284 tasks) with nothing else set, 265 under Delivered,
-  11 under Not delivered. The other 100 failed tasks are Data OS submissions
+  chip: 446 pipeline rows with nothing else set, 13 under Not delivered, 11
+  under Ready. The other 100 failed tasks are Data OS submissions
   (`dataos-286`/`dataos-133` runs) that are not pipeline tasks. Rows carry a red
   **G3** flag, and the task's detail shows each GLM-5.3 run.
 - **These tasks are left out of Ready for delivery** (and so out of a manifest
   cut under Ready) but **still count under Not delivered**. Today: Ready 595 →
-  586 (9 held back), Not delivered 4,806 unchanged.
+  584 (11 held back), Not delivered 4,806 unchanged.
+- **Ready with the GLM-5.3 failed chip on lists the 11 held back**: the failed
+  tasks that would otherwise be ready, so Ready alone (584) + Ready and GLM-5.3
+  failed (11) = 595. Under Ready the GLM-5.3 failed chip counts those 11.
+- Names also match without a `-FOR-QC-V2` suffix, which catches 2 more Ready
+  tasks (gen-g424 and gen-g457).
   Accepted at the bar 2,994 = 2,399 delivered + 586 ready + 9 held by GLM-5.3.
 - A task run twice whose runs disagree (16, mostly a fixed `-v2` package that
   passed) is not GLM-5.3 failed. 41 tasks never got 4 clean attempts and have no

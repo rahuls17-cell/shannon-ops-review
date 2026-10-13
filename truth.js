@@ -521,6 +521,7 @@
   function filterTruth(rows, filters) {
     const f = filters || {};
     const has = (list, value) => !value || (list || []).includes(value);
+    const glm53Asked = f.gateEra === GLM53_FAILED;
     const selected = rows.filter(row => {
       const text = [row.name, row.owner, row.why, (row.findings || []).join(' ')]
         .join(' ').toLowerCase();
@@ -547,8 +548,10 @@
         (f.carriedOver === undefined || f.carriedOver === null || f.carriedOver === ''
           ? true : Boolean(row.carriedOver) === (f.carriedOver === 'yes')) &&
         (!f.delivered || (f.delivered === 'yes' ? row.delivered === true
-          // A GLM-5.3 failed task is held out of Ready and stays under Not delivered.
-          : f.delivered === 'ready' ? (row.delivered !== true && !row.glm53Failed && row.atCurrentBar &&
+          // A GLM-5.3 failed task is held out of Ready and stays under Not
+          // delivered - unless GLM-5.3 failed is the gate asked for: then Ready
+          // lists the failed tasks that would otherwise be ready.
+          : f.delivered === 'ready' ? (row.delivered !== true && (glm53Asked || !row.glm53Failed) && row.atCurrentBar &&
               (row.state === 'accepted' || row.state === 'legacy accepted'))
           : f.delivered === 'no' ? row.delivered !== true
           : true)) &&
@@ -582,8 +585,8 @@
     // delivered or is waiting to be; there is no third thing it can be.
     const collectable = matched.filter(row => row.atCurrentBar &&
       (row.state === 'accepted' || row.state === 'legacy accepted'));
-    const ready = collectable.filter(row => row.delivered !== true && !row.glm53Failed);
-    const heldByGlm53 = collectable.filter(row => row.delivered !== true && row.glm53Failed);
+    const ready = collectable.filter(row => row.delivered !== true && (glm53Asked || !row.glm53Failed));
+    const heldByGlm53 = glm53Asked ? [] : collectable.filter(row => row.delivered !== true && row.glm53Failed);
 
     const tally = key => matched.reduce((counts, row) => {
       const value = row[key];
