@@ -356,3 +356,29 @@ console.log('trainer sheet checks passed');
   }
 }
 console.log('trainer review checks passed');
+
+// --- client feedback on the live (Drive) rows ---------------------------------
+// The Drive records no client decision; Batches 1 to 3 take theirs from the
+// feedback sheet, by batch and task name. A later batch's copy of the same task
+// is a new version and stays Pending.
+{
+  const drive = {rows: [
+    {id: 'd1', batch: 'Batch 1', task: 'alpha', acceptance: 'Pending'},
+    {id: 'd2', batch: 'Batch 2', task: 'other', packageName: 'harbor/beta', acceptance: 'Pending'},
+    {id: 'd3', batch: 'Batch 5.1', task: 'alpha', acceptance: 'Pending'},
+    {id: 'd4', batch: 'Batch 3', task: 'gamma', acceptance: 'Pending'},
+  ]};
+  const feedback = [
+    {batch: 'Batch 1', task: 'alpha', acceptance: 'Accepted', priority: 'Low', feedback_url: 'u1'},
+    {batch: 'Batch 2', task: 'beta', acceptance: 'Rejected', priority: 'High', feedback_url: 'u2'},
+    {batch: 'Batch 3', task: 'gamma', acceptance: 'Pending'},
+  ];
+  const live = prepareDeliveryAudit({rows: []}, drive, null, null, null, feedback);
+  const by = Object.fromEntries(live.rows.map(r => [r.id, r]));
+  assert.equal(by.d1.acceptance, 'Accepted');
+  assert.equal(by.d1.feedback_url, 'u1');
+  assert.equal(by.d2.acceptance, 'Rejected', 'matched by the package name too');
+  assert.equal(by.d3.acceptance, 'Pending', 'a later batch copy of the task is not judged');
+  assert.equal(by.d4.acceptance, 'Pending', 'a Pending feedback row decides nothing');
+  console.log('client feedback checks passed');
+}

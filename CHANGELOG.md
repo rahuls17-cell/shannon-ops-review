@@ -11,6 +11,60 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 _Nothing yet._
 
+## v4.5 - 2026-10-13, staging promoted to production
+
+### Delivery tab: Batch 14.1 (290 tasks)
+- **Batch 14.1 is on the Delivery tab**: 290 tasks from "10-13 Batch 14.1" on
+  Drive (read on the VM with rclone; same layout as 12.1 and 13.1). Computer
+  Bench Synthetic 183; Aster 107, of which 97 are on Hussain's Computer Bench
+  sheet (Computer Bench · Real Aster) and 10 are Company Bench · Aster. Trainers:
+  230 from the bucket, 46 contested, 13 unattributed, 1 from the trainer credit
+  sheet. Delivered now 4,207. No earlier row changed.
+- Its manifest recorded no image or connector list; for the 10 Company Bench
+  Aster tasks they were filled into the Drive manifest from each zip (13 Oct,
+  as for Batches 1 to 13.1), so they read Aster · Single connector.
+- 2 Batch 13.1 trainers that newer bucket records would now call contested
+  (yousef.g also submitted them) were left as they were.
+
+### Pipeline tab: delivered submissions under a versioned folder
+- **A submission named after a versioned bucket folder (`the-task-v2`) is now
+  marked delivered** by the folder its Drive manifest names in `source_uri`,
+  though the delivered task name has no version. 40 tasks left Ready: 17 of
+  Batch 14.1 and 23 of Batches 10.1, 12.1 and 13.1 that had been delivered but
+  still counted as ready.
+- With Batch 14.1 and this fix (main's pipeline of 13 Oct): Delivered 2,607 ->
+  2,909, Ready 738 -> 421, Not delivered 4,959 -> 4,641. Accepted at the bar
+  3,144 = 2,713 delivered + 421 ready + 10 held by GLM-5.3.
+
+### Delivery tab: client decisions for Batches 1 to 3 on the live view
+- **The live Delivery rows of Batches 1 to 3 now carry the client's Accepted /
+  Rejected**, with the priority and the per-task feedback link, from the client
+  feedback sheet ("Final Harbor Audit": priority Low accepted, High or Medium
+  rejected) that until now only the hidden GLM 5.3 cutoff view showed. Matched
+  by batch and task name: Batch 1 5 accepted / 53 rejected, Batch 2 9 / 45 (1
+  undecided in the sheet), Batch 3 14 / 45. Every other row stays Pending.
+- 8 of the sheet's 180 decisions are not applied: those tasks are no longer in
+  their Batch 1 to 3 folder on Drive and were delivered again in Batch 5.1 or
+  6.1, a new version the client has not judged.
+
+### Delivery tab: missing image and connector count filled into the Drive manifests
+- **195 tasks had no family, no Aster/Zeta split or no connector count** because
+  their batch manifest never recorded them (Batches 1, 3, 4.1, 5.1, 11.1, 12.1,
+  13.1). On 13 Oct each task's delivered zip was read on the VM and the missing
+  fields were **added** to its entry in that batch's `manifest.json` on Drive -
+  `image` (Dockerfile FROM), `connector_count` and, where absent,
+  `connector_services` (task.toml `mcp_servers`), with `filled_from_package`
+  saying what was added and from which zip. No existing field changed; each file
+  kept its Drive id, so the previous version is in its version history.
+- The reader keeps `connectorCount`, and the page uses it when the connector
+  list names no gym (Batch 5.1's manifest lists only "harbor").
+- Result: 0 flagged (was 15), 0 "connectors not read" (was 175), 0 Real without
+  Aster/Zeta (was 5). Company Bench Aster 409 (+7: Batch 1 3, Batch 3 1, Batch
+  5.1 3), Zeta 1,435 (+5, Batch 5.1); Computer Bench Real Aster 265 (+3, Batch
+  4.1), Synthetic 383 (+5: 3 Batch 4.1 packages filed in a CompanyBench folder
+  and 2 Batch 5.1 "Real Connector" packages, all on a synthetic image). Total
+  3,917 unchanged.
+
 ## v4.4 - 2026-10-13, staging promoted to production
 
 ### Delivery tab: credit for the 73 owner-vs-accepted-run tasks

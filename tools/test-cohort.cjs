@@ -417,3 +417,24 @@ console.log(`  reported weak spots: ${c.placeholderNames} machine-named folders,
   console.log(`connector: ${c.connectorTasks} / ${c.nonConnectorTasks} / ${c.connectorUnknown} unknown `
     + `(${c.connectorFromManifest} read from the manifest that packaged them)`);
 }
+
+// A submission named after a versioned bucket folder (the-task-v2) is marked
+// delivered by the folder its Drive manifest names, though the package's task
+// name has no version. A folder in another prefix marks nothing.
+{
+  const T = require(path.join(root, 'truth.js'));
+  const model = {cohortIndex: {cohort: 'finalisation_client_qc_accepted_iteration_2'}, cohortRows: [], rows: [
+    {id: 'a', name: 'the-task-v2'}, {id: 'b', name: 'other-v3'}, {id: 'c', name: 'plain'},
+  ]};
+  T.joinDeliveries(model, [
+    {batch: 'Batch 14.1', task: 'the-task', sourcePrefix: 'finalisation_client_qc_accepted_iteration_2', sourceFolder: 'the-task-v2'},
+    {batch: 'Batch 14.1', task: 'other', sourcePrefix: 'somewhere_else', sourceFolder: 'other-v3'},
+    {batch: 'Batch 14.1', task: 'plain'},
+  ], []);
+  const by = Object.fromEntries(model.rows.map(r => [r.id, r]));
+  assert.equal(by.a.delivered, true, 'the folder the manifest names marks the versioned submission');
+  assert.equal(by.a.deliveredTask, 'the-task');
+  assert.equal(by.b.delivered, false, 'a folder under another prefix does not');
+  assert.equal(by.c.delivered, true, 'the task name still marks as before');
+  console.log('delivery join: versioned submission folders are marked by the folder the manifest names');
+}

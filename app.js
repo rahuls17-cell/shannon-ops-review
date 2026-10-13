@@ -203,7 +203,7 @@ const infoCopy = {
       `${fmt(rows.length - SEGMENT_LEAVES.reduce((total, key) => total + count(key), 0))} carry no bench, type or harness yet and appear under All, or under their bench alone. ` +
       'A person counts in every segment they have tasks in, so someone who works on both benches shows under both. The 240 audit counts and the daily plan are not split, and say so.';
   },
-  driveView: 'Which Drive reading this tab shows. Current is the Drive and nothing else, as the Deliveries folder is now: since 3 Oct Company Bench sits in one CompanyBench folder - CompanyBench 1 to 3 and, under From Pipeline, the Company Bench share of each Shannon batch - duplicates are taken out, and Batches 5.1 to 7.1 were re-cut. Every task is a package in a Drive folder, Batches 1 to 4.1 included; bench, Aster or Zeta and connector count come from the Drive folder and the manifest; the Drive records no client decision, so every task is Pending. GLM 5.3 cutoff is this tab as it stood before, kept unchanged: the delivery audit for Batches 1 to 4.1 with its decisions, the Drive read on 1 Oct for the rest. The switch changes this tab only; the other tabs keep reading the GLM 5.3 cutoff rows.',
+  driveView: 'Which Drive reading this tab shows. Current is the Drive and nothing else, as the Deliveries folder is now: since 3 Oct Company Bench sits in one CompanyBench folder - CompanyBench 1 to 3 and, under From Pipeline, the Company Bench share of each Shannon batch - duplicates are taken out, and Batches 5.1 to 7.1 were re-cut. Every task is a package in a Drive folder, Batches 1 to 4.1 included; bench, Aster or Zeta and connector count come from the Drive folder and the manifest; the Drive records no client decision, so a task is Pending unless the client feedback sheet decided it - Batches 1 to 3, Accepted or Rejected. GLM 5.3 cutoff is this tab as it stood before, kept unchanged: the delivery audit for Batches 1 to 4.1 with its decisions, the Drive read on 1 Oct for the rest. The switch changes this tab only; the other tabs keep reading the GLM 5.3 cutoff rows.',
   slicer: 'One range for the whole dashboard. It filters Overview, Delivery and Pipeline by the date each record carries - the day a task was last submitted, the day an archive landed, the day of the mining plan. Payouts is deliberately excluded: the Paid Out tab records what was paid, not when the work was done, so a date filter there would silently drop people who were paid for older work. Both ends are inclusive and either can be left empty. Records with no date are excluded as soon as a date is set.',
   clientAccepted: 'Tasks the client accepted, taken from the Harbor 240 dashboard. A task counts as accepted when the audit sheet marks it priority Low; the published acceptance layer is derived from the same sheet and agrees with that rule on every task, so it is used as a cross-check rather than a second source. This covers the 240-task audit set only, not the whole bucket, and it is a review verdict rather than a payment.',
   v2Accepted: 'Task folders in tasks/finalisation_client_qc_accepted_iteration_2/ in the bucket - the second client QC finalisation round. It is one of three accepted cohorts, so it is smaller than the accepted total on the Finalisation tab, and a task finalised into more than one cohort is counted here once per folder. Read it as the size of the v2 round, not as the total accepted work.',
@@ -723,7 +723,9 @@ async function loadDeliveryAudit() {
     audit = window.prepareDeliveryAudit(audited, cutoffDrive, cutoffOwners);
     // The Drive alone: no audited row, so Batches 1 to 4.1 come from their Drive folders.
     driveAudit = currentDrive
-      ? window.prepareDeliveryAudit({...audited, rows: []}, currentDrive, currentOwners, trainerSheet, trainerReview) : null;
+      ? window.prepareDeliveryAudit({...audited, rows: []}, currentDrive, currentOwners, trainerSheet, trainerReview,
+        // The client's Accepted / Rejected for Batches 1 to 3, from the audit's feedback sheet.
+        audited.rows) : null;
     if (driveAudit) driveAudit.rows.forEach(row => { row.driveOnly = true; });
     resetTaskBenches();
     populateAuditFilters();
@@ -1259,7 +1261,11 @@ const shownTasks = rows => rows.length;
 // moves. A row with no bench recorded - the audited batches 1 to 4.1 - is a
 // Computer Bench task, split by its connector flag.
 // A delivered package's own manifest list first, then the pipeline's reading.
-const deliveryCount = row => connectorCountOf(row.connectors) || (row.driveOnly ? null : countOfTask(row.task, row.packageName));
+// The connector names first; then the count the manifest records (filled in
+// from each package on 13 Oct, where the names say only "harbor").
+const countOfNumber = n => (Number.isInteger(n) && n > 0 ? (n === 1 ? 'single' : 'multi') : null);
+const deliveryCount = row => connectorCountOf(row.connectors) || countOfNumber(row.connectorCount)
+  || (row.driveOnly ? null : countOfTask(row.task, row.packageName));
 // A Drive package whose manifest and package name no family (row.family null,
 // tools/build_drive_deliveries.py family_of) sits in no segment - it is
 // reported as not classified rather than counted as Synthetic.
