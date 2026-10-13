@@ -1341,6 +1341,15 @@ let auditLens = 'category';
 let auditSort = {key: 'task', dir: 1};
 
 const auditTone = (lens, key) => (lens === 'category' ? categoryTone(key) : `var(${(AUDIT_TONES[lens] || {})[key] || '--slate'})`);
+const BATCH_STACKS_SHOWN = 6;
+let batchStacksOpen = false;
+// The inventory's category cell, shortened so the column stays narrow; the
+// full name is its tooltip. Zeta · Multi-connector is Zeta MC, Aster · Single
+// connector Aster SC, Company Bench CB, Non-Connector NC.
+const shortCategory = category => String(category || '-')
+  .replace(/\s*·\s*Multi-connector$/, ' MC').replace(/\s*·\s*Single connector$/, ' SC')
+  .replace(/\s*·\s*connectors not read$/, ' (conn. n/r)').replace(/^Company Bench/, 'CB').replace(/^Computer Bench/, 'CPB')
+  .replace(/^Non-Connector/, 'NC').replace(/^Real Connector$/, 'Real Conn.').replace(/^Real · Aster or Zeta not recorded$/, 'Real (A/Z ?)');
 const lensValue = (row, lens) => lens === 'glm' ? row.glmBucket : (row[lens] || window.DELIVERY_AUDIT_UNSET);
 const verdictBar = (acc, rej, pen, total) => `<span class="vbar" aria-hidden="true">
   ${acc ? `<i class="is-accepted" style="flex:${acc}" data-tip="Accepted ${fmt(acc)} (${Math.round((acc / total) * 100)}%)"></i>` : ''}
@@ -1391,7 +1400,7 @@ function renderAuditRows(rows) {
       <td><div class="taskcell"><span class="taskname" title="${esc(row.task)}">${esc(row.task)}</span>
         ${row.flags.map(f => `<span class="flag flag-warn" title="${esc(f)}">${AUDIT_FLAG_CODES[f] || esc(f)}</span>`).join('')}</div></td>
       <td><span class="batch-chip" data-series="${/^companybench/i.test(String(row.batch)) ? 'company' : 'batch'}">${esc(String(row.batch || '-').replace(/^Batch\s*/i, 'B').replace(/^CompanyBench\s*/i, 'CB'))}</span></td>
-      <td><span class="cat" style="--c:${auditTone('category', row.category)}"><i></i>${esc(row.category || '-')}</span></td>
+      <td><span class="cat" style="--c:${auditTone('category', row.category)}" title="${esc(row.category || '')}"><i></i>${esc(shortCategory(row.category))}</span></td>
       <td>${glmDots(row.glmBucket)}</td>
       <td><span class="diff" style="--c:${auditTone('difficulty', row.difficulty)}">${esc(row.difficulty || '-')}</span></td>
       <td>${row.trainer
@@ -1524,16 +1533,20 @@ function renderDeliveryCharts(rows, result, filters, shown, total) {
   byId('trainerBars').innerHTML = top.length ? top.map(([k, n], i) => bar('aTrainer', k, esc(short(k)), n, topMax, 'var(--violet)', i)).join('') : '<p class="empty">No attributed tasks match.</p>';
   setText('trainerNote', `${fmt(people.length)} accounts`);
 
-  // Verdicts by batch
+  // Verdicts by batch. Six bars, then a toggle for the rest: with every batch
+  // in scope the card would otherwise run to seventeen rows.
   const order = batchOrder;
   const batches = [...new Set(rows.map(r => r.batch || window.DELIVERY_AUDIT_UNSET))].sort(order);
-  byId('batchStacks').innerHTML = batches.length ? batches.map((batch, i) => {
+  const hidden = batchStacksOpen ? 0 : Math.max(0, batches.length - BATCH_STACKS_SHOWN);
+  const toggle = batches.length > BATCH_STACKS_SHOWN
+    ? `<button type="button" class="ghost stack-toggle" id="batchStacksToggle" aria-expanded="${batchStacksOpen}">${batchStacksOpen ? 'Show fewer' : `Show all ${fmt(batches.length)} batches`}</button>` : '';
+  byId('batchStacks').innerHTML = batches.length ? batches.slice(0, batches.length - hidden).map((batch, i) => {
     const list = rows.filter(r => (r.batch || window.DELIVERY_AUDIT_UNSET) === batch);
     const v = verdicts(list);
     return `<button type="button" class="stack-row${isOn('aBatch', batch) ? ' is-on' : ''}" style="--i:${i}" data-filter="aBatch" data-value="${esc(batch)}">
       <span class="stack-label">${esc(batch)}</span>${verdictBar(v.acc, v.rej, v.pen, list.length)}<span class="stack-n"><b data-count="${list.length}" data-key="stack:${esc(batch)}">${fmt(list.length)}</b><small>${v.rate == null ? 'pending' : `${v.rate}% acc.`}</small></span>
     </button>`;
-  }).join('') : '<p class="empty">No tasks match these filters.</p>';
+  }).join('') + toggle : '<p class="empty">No tasks match these filters.</p>';
 
   // Current view strip and the coverage card in the rail
   const attributed = result.attributed, coverage = shown ? Math.round((attributed / shown) * 100) : 0;
@@ -5016,6 +5029,12 @@ function wireEvents() {
   });
   AUDIT_FILTERS.forEach(id => byId(id)?.addEventListener('change', () => { auditPage = 0; renderAudit(); }));
   byId('aSearch')?.addEventListener('input', () => { auditPage = 0; renderAudit(); });
+  // Verdicts by batch: show every batch, or back to six.
+  byId('batchStacks')?.addEventListener('click', event => {
+    if (!event.target.closest('#batchStacksToggle')) return;
+    batchStacksOpen = !batchStacksOpen;
+    renderAudit();
+  });
   byId('aReset')?.addEventListener('click', () => {
     [...AUDIT_FILTERS, 'aSearch'].forEach(id => { if (byId(id)) byId(id).value = ''; });
     auditPage = 0; renderAudit();

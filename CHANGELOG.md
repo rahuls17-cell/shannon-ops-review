@@ -9,7 +9,13 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
-_Nothing yet._
+### Delivery tab: layout
+- Export CSV and Export manifest.json sit side by side on the search bar's line
+  instead of stacked in the page header, which frees the space above.
+- Verdicts by batch shows six batches and a "Show all N batches" / "Show fewer"
+  toggle, instead of every batch (17 with all in scope).
+- The task inventory's category column uses short names - Zeta MC, Aster SC,
+  CB (Company Bench), NC (Non-Connector) - with the full name on hover.
 
 ## v4.5 - 2026-10-13, staging promoted to production
 

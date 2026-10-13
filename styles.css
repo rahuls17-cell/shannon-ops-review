@@ -2551,6 +2551,7 @@ button.stat[aria-pressed="true"] { background: color-mix(in srgb, var(--c) 18%, 
 .stack-n { display: grid; text-align: right; line-height: 1.15; }
 .stack-n b { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
 .stack-n small { font-size: 10.5px; color: var(--muted); }
+.stack-toggle { justify-self: start; margin-top: 2px; font-size: 12px; padding: 4px 10px; }
 .key-item.is-acc::before { background: var(--aqua); }
 .key-item.is-rej::before { background: var(--red); }
 .key-item.is-pen::before { background: var(--yellow); }
@@ -3263,7 +3264,7 @@ button.trow:hover span:first-child { color: var(--accent); }
 
 
 /* Delivery: page-wide search above the figures; export without a hairline. */
-.dsearch { display: flex; align-items: center; gap: 12px; }
+.dsearch { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 .dsearch .fsearch { flex: 1 1 360px; max-width: 560px; }
 .dsearch .fsearch input { height: 38px; border-radius: 10px; border: 1px solid var(--line); background: var(--panel); font-size: 13px; box-shadow: var(--shadow); }
 .dsearch .fsearch input:focus { border-color: var(--ink); box-shadow: 0 0 0 3px rgba(15, 20, 32, .06); }
@@ -3377,5 +3378,5 @@ body #stagingBanner .sb-link:hover { text-decoration: underline; }
 .rail-drive .drive-switch .segbtn { flex: 1; justify-content: center; text-align: center; }
 
 /* Delivery header: Export CSV with Export manifest.json right below it. */
-.export-stack { display: flex; flex-direction: column; align-items: stretch; gap: 6px; }
-.export-stack .export-btn { justify-content: center; text-align: center; }
+.export-row { display: flex; align-items: center; gap: 8px; flex: 0 0 auto; }
+.export-row .export-btn { justify-content: center; text-align: center; white-space: nowrap; }
