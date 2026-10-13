@@ -704,6 +704,11 @@ def normalise(manifest, label, files=None, require_present=False):
             # Some manifests list each service as {name, transport, url}; the page
             # shows names, so an object is reduced to its name.
             'connectors': connector_names(task),
+            # How many connectors the package's task.toml declares, where the
+            # manifest records it: Batches 1 to 5.1 and 11.1 to 13.1 had it
+            # filled in from each zip on 13 Oct (filled_from_package). Batch
+            # 5.1's own connector list says only "harbor", so this is its count.
+            'connectorCount': task.get('connector_count') if isinstance(task.get('connector_count'), int) else None,
             'dates': [],
             'priority': None,
             'qc_result': None,

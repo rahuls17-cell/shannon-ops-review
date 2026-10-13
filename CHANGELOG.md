@@ -9,7 +9,23 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
-_Nothing yet._
+### Delivery tab: missing image and connector count filled into the Drive manifests
+- **195 tasks had no family, no Aster/Zeta split or no connector count** because
+  their batch manifest never recorded them (Batches 1, 3, 4.1, 5.1, 11.1, 12.1,
+  13.1). On 13 Oct each task's delivered zip was read on the VM and the missing
+  fields were **added** to its entry in that batch's `manifest.json` on Drive -
+  `image` (Dockerfile FROM), `connector_count` and, where absent,
+  `connector_services` (task.toml `mcp_servers`), with `filled_from_package`
+  saying what was added and from which zip. No existing field changed; each file
+  kept its Drive id, so the previous version is in its version history.
+- The reader keeps `connectorCount`, and the page uses it when the connector
+  list names no gym (Batch 5.1's manifest lists only "harbor").
+- Result: 0 flagged (was 15), 0 "connectors not read" (was 175), 0 Real without
+  Aster/Zeta (was 5). Company Bench Aster 409 (+7: Batch 1 3, Batch 3 1, Batch
+  5.1 3), Zeta 1,435 (+5, Batch 5.1); Computer Bench Real Aster 265 (+3, Batch
+  4.1), Synthetic 383 (+5: 3 Batch 4.1 packages filed in a CompanyBench folder
+  and 2 Batch 5.1 "Real Connector" packages, all on a synthetic image). Total
+  3,917 unchanged.
 
 ## v4.4 - 2026-10-13, staging promoted to production
 

@@ -1259,7 +1259,11 @@ const shownTasks = rows => rows.length;
 // moves. A row with no bench recorded - the audited batches 1 to 4.1 - is a
 // Computer Bench task, split by its connector flag.
 // A delivered package's own manifest list first, then the pipeline's reading.
-const deliveryCount = row => connectorCountOf(row.connectors) || (row.driveOnly ? null : countOfTask(row.task, row.packageName));
+// The connector names first; then the count the manifest records (filled in
+// from each package on 13 Oct, where the names say only "harbor").
+const countOfNumber = n => (Number.isInteger(n) && n > 0 ? (n === 1 ? 'single' : 'multi') : null);
+const deliveryCount = row => connectorCountOf(row.connectors) || countOfNumber(row.connectorCount)
+  || (row.driveOnly ? null : countOfTask(row.task, row.packageName));
 // A Drive package whose manifest and package name no family (row.family null,
 // tools/build_drive_deliveries.py family_of) sits in no segment - it is
 // reported as not classified rather than counted as Synthetic.
