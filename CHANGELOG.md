@@ -9,6 +9,10 @@ When you change what a figure means, add a line under **Unreleased**. When
 
 ## Unreleased - on `staging`, not yet on `main`
 
+_Nothing yet._
+
+## v4.7 - 2026-10-14, staging promoted to production
+
 ### Delivery tab: Hussain's Company/Aster tasks are Computer Bench Real Aster
 - **225 delivered tasks move from Company Bench · Aster to Computer Bench ·
   Real Aster.** Hussain's "Connector Accepted Data Computer Bench" sheet lists
