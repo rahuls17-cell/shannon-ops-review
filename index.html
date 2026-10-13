@@ -402,10 +402,6 @@
             <div>
               <h1 id="delivery-title">Delivery</h1>
             </div>
-            <div class="export-stack">
-              <button id="aExportTop" class="ghost export-btn" title="Download the tasks currently shown as a CSV">Export CSV</button>
-              <button id="aManifestTop" class="ghost export-btn" title="Download the tasks currently shown as a delivery manifest.json - all batches, or the batch selected">Export manifest.json</button>
-            </div>
           </header>
           <p class="rangeecho" data-range="delivery"></p>
 
@@ -429,6 +425,10 @@
               <div class="dsearch">
                 <label class="fsearch"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg><input id="aSearch" type="search" placeholder="Search tasks, trainers, batches, categories or SHA" aria-label="Search deliveries" /></label>
                 <span class="fcount" id="auditSearchCount"></span>
+                <div class="export-row">
+                  <button id="aExportTop" class="ghost export-btn" title="Download the tasks currently shown as a CSV">Export CSV</button>
+                  <button id="aManifestTop" class="ghost export-btn" title="Download the tasks currently shown as a delivery manifest.json - all batches, or the batch selected">Export manifest.json</button>
+                </div>
               </div>
               <div class="viewstrip" id="auditView"></div>
               <div id="auditFigures" class="status-grid"></div>
